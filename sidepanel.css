@@ -108,6 +108,39 @@ body {
     font-weight: bold;
 }
 
+/* --- 分頁群組樣式 --- */
+.tab-group-header {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 8px;
+}
+
+.tab-group-header:hover {
+    background-color: #313244;
+}
+
+.tab-group-arrow {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    text-align: center;
+}
+
+.tab-group-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.tab-group-content {
+    padding-left: 20px; /* 群組內分頁的縮排 */
+}
+
 /* --- 書籤樣式 --- */
 .bookmark-folder {
     display: flex;

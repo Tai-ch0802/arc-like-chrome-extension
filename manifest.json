@@ -6,7 +6,8 @@
   "permissions": [
     "tabs",
     "sidePanel",
-    "bookmarks"
+    "bookmarks",
+    "tabGroups"
   ],
   "side_panel": {
     "default_path": "sidepanel.html"
