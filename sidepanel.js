@@ -3,15 +3,119 @@ const tabListContainer = document.getElementById('tab-list');
 const bookmarkListContainer = document.getElementById('bookmark-list');
 const searchBox = document.getElementById('search-box');
 
-// --- 搜尋邏輯 (重構) ---
+// --- 全域變數 ---
+let tabSortableInstances = [];
+let bookmarkSortableInstances = [];
+
+// --- Tab 拖曳功能 ---
+function initializeSortable() {
+    tabSortableInstances.forEach(instance => instance.destroy());
+    tabSortableInstances = [];
+    const sortableOptions = {
+        group: 'tabs',
+        animation: 150,
+        onEnd: handleDragEnd,
+        onAdd: handleDragAdd,
+    };
+    tabSortableInstances.push(new Sortable(tabListContainer, sortableOptions));
+    document.querySelectorAll('.tab-group-content').forEach(groupContent => {
+        tabSortableInstances.push(new Sortable(groupContent, sortableOptions));
+    });
+}
+async function handleDragEnd(evt) {
+    const { item, newIndex } = evt;
+    await moveItem(item, newIndex, evt.to);
+}
+async function handleDragAdd(evt) {
+    const { item, newIndex, to } = evt;
+    const tabIdToMove = parseInt(item.dataset.tabId, 10);
+    if (!tabIdToMove) return;
+    if (to.classList.contains('tab-group-content')) {
+        const header = to.previousElementSibling;
+        const targetGroupId = parseInt(header.dataset.groupId, 10);
+        await chrome.tabs.group({ tabIds: [tabIdToMove], groupId: targetGroupId });
+    } else if (to.id === 'tab-list') {
+        await chrome.tabs.ungroup(tabIdToMove);
+    }
+    await moveItem(item, newIndex, to);
+}
+async function moveItem(item, newIndex, container) {
+    const allDraggables = Array.from(container.closest('#tab-list').querySelectorAll('.tab-item, .tab-group-header'));
+    const droppedItemElement = allDraggables.find(el => el === item);
+    const actualNewIndex = allDraggables.indexOf(droppedItemElement);
+    const targetElement = allDraggables[actualNewIndex + 1];
+    let targetAbsoluteIndex = -1;
+    if (targetElement) {
+        if (targetElement.classList.contains('tab-item')) {
+            const targetTabId = parseInt(targetElement.dataset.tabId, 10);
+            const tab = await chrome.tabs.get(targetTabId);
+            targetAbsoluteIndex = tab.index;
+        } else if (targetElement.classList.contains('tab-group-header')) {
+            const targetGroupId = parseInt(targetElement.dataset.groupId, 10);
+            const tabsInGroup = await chrome.tabs.query({ groupId: targetGroupId });
+            if (tabsInGroup.length > 0) {
+                targetAbsoluteIndex = Math.min(...tabsInGroup.map(t => t.index));
+            }
+        }
+    }
+    if (item.classList.contains('tab-item')) {
+        const tabIdToMove = parseInt(item.dataset.tabId, 10);
+        chrome.tabs.move(tabIdToMove, { index: targetAbsoluteIndex });
+    } else if (item.classList.contains('tab-group-header')) {
+        const groupIdToMove = parseInt(item.dataset.groupId, 10);
+        chrome.tabGroups.move(groupIdToMove, { index: targetAbsoluteIndex });
+    }
+}
+
+// --- 書籤拖曳功能 ---
+function initializeBookmarkSortable() {
+    bookmarkSortableInstances.forEach(instance => instance.destroy());
+    bookmarkSortableInstances = [];
+    const sortableOptions = {
+        group: 'bookmarks',
+        animation: 150,
+        onEnd: handleBookmarkDrop,
+        onAdd: handleBookmarkDrop,
+    };
+    const sortableContainers = [bookmarkListContainer, ...document.querySelectorAll('.folder-content')];
+    sortableContainers.forEach(container => {
+        bookmarkSortableInstances.push(new Sortable(container, sortableOptions));
+    });
+}
+async function handleBookmarkDrop(evt) {
+    const { item, to, newIndex } = evt;
+    const bookmarkId = item.dataset.bookmarkId;
+    const newParentId = to.dataset.parentId;
+    if (!bookmarkId || !newParentId) {
+        console.error("Missing bookmark ID or new parent ID.");
+        return;
+    }
+    try {
+        await chrome.bookmarks.move(bookmarkId, {
+            parentId: newParentId,
+            index: newIndex
+        });
+        refreshBookmarks();
+    } catch (error) {
+        console.error("Failed to move bookmark:", error);
+        refreshBookmarks();
+    }
+}
+function refreshBookmarks() {
+    chrome.bookmarks.getTree(tree => {
+        if (tree[0] && tree[0].children) {
+            bookmarkListContainer.innerHTML = '';
+            renderBookmarks(tree[0].children, bookmarkListContainer, '1');
+            initializeBookmarkSortable();
+            handleSearch();
+        }
+    });
+}
+
+// --- 搜尋邏輯 ---
 function handleSearch() {
     const query = searchBox.value.toLowerCase().trim();
-
-    // --- 過濾分頁 (邏輯不變) ---
     filterTabsAndGroups(query);
-
-    // --- 全新：過濾書籤的兩步驟流程 ---
-    // 步驟 1: 計算哪些書籤節點應該可見
     const visibleBookmarkNodes = new Set();
     if (bookmarkListContainer.children.length > 0) {
         const topLevelItems = bookmarkListContainer.querySelectorAll(':scope > .bookmark-item, :scope > .bookmark-folder');
@@ -19,11 +123,8 @@ function handleSearch() {
             calculateBookmarkVisibility(item, query, visibleBookmarkNodes);
         }
     }
-    
-    // 步驟 2: 根據計算結果，更新畫面
     applyBookmarkVisibility(query, visibleBookmarkNodes);
 }
-
 function filterTabsAndGroups(query) {
     const tabItems = document.querySelectorAll('#tab-list .tab-item');
     const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
@@ -50,51 +151,37 @@ function filterTabsAndGroups(query) {
         }
     });
 }
-
-// --- 全新：步驟 1 的遞迴計算函式 ---
 function calculateBookmarkVisibility(node, query, visibleItems) {
     const titleElement = node.querySelector('.bookmark-title');
     if (!titleElement) return false;
-
     const title = titleElement.textContent.toLowerCase();
-    const selfMatches = query ? title.includes(query) : false;
-
+    const selfMatches = query ? title.includes(query) : true;
+    let hasVisibleChild = false;
     if (node.classList.contains('bookmark-folder')) {
-        let hasVisibleChild = false;
         const content = node.nextElementSibling;
-        if (content) {
+        if (content && content.classList.contains('folder-content')) {
             for (const child of content.children) {
                 if (calculateBookmarkVisibility(child, query, visibleItems)) {
                     hasVisibleChild = true;
                 }
             }
         }
-        const shouldBeVisible = selfMatches || hasVisibleChild;
-        if (shouldBeVisible) {
-            visibleItems.add(node); // 將可見的資料夾加入清單
-        }
-        return shouldBeVisible;
-    } else {
-        if (selfMatches) {
-            visibleItems.add(node); // 將可見的書籤加入清單
-        }
-        return selfMatches;
     }
+    const shouldBeVisible = selfMatches || hasVisibleChild;
+    if (shouldBeVisible) {
+        visibleItems.add(node);
+    }
+    return shouldBeVisible;
 }
-
-// --- 全新：步驟 2 的畫面渲染函式 ---
 function applyBookmarkVisibility(query, visibleItems) {
     const allItems = bookmarkListContainer.querySelectorAll('.bookmark-item, .bookmark-folder');
     allItems.forEach(node => {
         const isVisible = visibleItems.has(node);
         node.classList.toggle('hidden', !isVisible);
-
         if (node.classList.contains('bookmark-folder')) {
             const content = node.nextElementSibling;
             const icon = node.querySelector('.bookmark-icon');
             if (isVisible && query) {
-                // 只有在「可見清單」中的資料夾，才需要考慮是否展開
-                // 我們透過檢查其子元素是否也在可見清單中來決定
                 let shouldExpand = false;
                 if (content) {
                      for(const child of content.children) {
@@ -107,11 +194,11 @@ function applyBookmarkVisibility(query, visibleItems) {
                 if (shouldExpand) {
                     content.style.display = 'block';
                     icon.textContent = '▼';
-                } else { // 資料夾本身匹配，但子項目不匹配
+                } else {
                     content.style.display = 'none';
                     icon.textContent = '▶';
                 }
-            } else { // 重置狀態
+            } else {
                 content.style.display = 'none';
                 icon.textContent = '▶';
             }
@@ -119,8 +206,7 @@ function applyBookmarkVisibility(query, visibleItems) {
     });
 }
 
-
-// --- 輔助函式：建立單一分頁的 DOM 元素 ---
+// --- 渲染邏輯 ---
 function createTabElement(tab) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
@@ -157,69 +243,74 @@ function createTabElement(tab) {
     });
     return tabItem;
 }
-
-// --- 重構：處理分頁和分頁群組的函式 ---
 async function updateTabList() {
     const [groups, tabs] = await Promise.all([
         chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }),
         chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT })
     ]);
     tabListContainer.innerHTML = ''; 
-    const groupsMap = new Map(groups.map(group => [group.id, { ...group, tabs: [] }]));
-    const ungroupedTabs = [];
+    const groupsMap = new Map(groups.map(group => [group.id, group]));
+    const renderedTabIds = new Set();
     for (const tab of tabs) {
-        if (tab.groupId > 0 && groupsMap.has(tab.groupId)) {
-            groupsMap.get(tab.groupId).tabs.push(tab);
+        if (renderedTabIds.has(tab.id)) {
+            continue;
+        }
+        const isInGroup = tab.groupId > 0;
+        if (isInGroup) {
+            const group = groupsMap.get(tab.groupId);
+            if (!group) continue;
+            const groupHeader = document.createElement('div');
+            groupHeader.className = 'tab-group-header';
+            groupHeader.dataset.collapsed = group.collapsed;
+            groupHeader.dataset.groupId = group.id;
+            const arrow = document.createElement('span');
+            arrow.className = 'tab-group-arrow';
+            arrow.textContent = group.collapsed ? '▶' : '▼';
+            const colorDot = document.createElement('div');
+            colorDot.className = 'tab-group-color-dot';
+            colorDot.style.backgroundColor = group.color;
+            const title = document.createElement('span');
+            title.className = 'tab-group-title';
+            title.textContent = group.title;
+            title.style.color = group.color;
+            groupHeader.appendChild(arrow);
+            groupHeader.appendChild(colorDot);
+            groupHeader.appendChild(title);
+            tabListContainer.appendChild(groupHeader);
+            const groupContent = document.createElement('div');
+            groupContent.className = 'tab-group-content';
+            groupContent.style.display = group.collapsed ? 'none' : 'block';
+            const tabsInThisGroup = tabs.filter(t => t.groupId === group.id);
+            for (const groupTab of tabsInThisGroup) {
+                const tabElement = createTabElement(groupTab);
+                groupContent.appendChild(tabElement);
+                renderedTabIds.add(groupTab.id);
+            }
+            tabListContainer.appendChild(groupContent);
+            groupHeader.addEventListener('click', (e) => {
+                if (e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
+                    const isCollapsed = groupContent.style.display === 'none';
+                    groupContent.style.display = isCollapsed ? 'block' : 'none';
+                    arrow.textContent = isCollapsed ? '▼' : '▶';
+                    chrome.tabGroups.update(group.id, { collapsed: !isCollapsed });
+                }
+            });
         } else {
-            ungroupedTabs.push(tab);
+            const tabElement = createTabElement(tab);
+            tabListContainer.appendChild(tabElement);
+            renderedTabIds.add(tab.id);
         }
     }
-    for (const group of groupsMap.values()) {
-        const groupHeader = document.createElement('div');
-        groupHeader.className = 'tab-group-header';
-        groupHeader.dataset.collapsed = group.collapsed;
-        const arrow = document.createElement('span');
-        arrow.className = 'tab-group-arrow';
-        arrow.textContent = group.collapsed ? '▶' : '▼';
-        const colorDot = document.createElement('div');
-        colorDot.className = 'tab-group-color-dot';
-        colorDot.style.backgroundColor = group.color;
-        const title = document.createElement('span');
-        title.className = 'tab-group-title';
-        title.textContent = group.title;
-        title.style.color = group.color;
-        groupHeader.appendChild(arrow);
-        groupHeader.appendChild(colorDot);
-        groupHeader.appendChild(title);
-        tabListContainer.appendChild(groupHeader);
-        const groupContent = document.createElement('div');
-        groupContent.className = 'tab-group-content';
-        groupContent.style.display = group.collapsed ? 'none' : 'block';
-        group.tabs.sort((a, b) => a.index - b.index).forEach(tab => {
-            const tabElement = createTabElement(tab);
-            groupContent.appendChild(tabElement);
-        });
-        tabListContainer.appendChild(groupContent);
-        groupHeader.addEventListener('click', () => {
-            const isCollapsed = groupContent.style.display === 'none';
-            groupContent.style.display = isCollapsed ? 'block' : 'none';
-            arrow.textContent = isCollapsed ? '▼' : '▶';
-            chrome.tabGroups.update(group.id, { collapsed: !isCollapsed });
-        });
-    }
-    ungroupedTabs.sort((a, b) => a.index - b.index).forEach(tab => {
-        const tabElement = createTabElement(tab);
-        tabListContainer.appendChild(tabElement);
-    });
     handleSearch();
+    initializeSortable();
 }
-
-// --- 處理書籤的函式 ---
-function renderBookmarks(bookmarkNodes, container) {
+function renderBookmarks(bookmarkNodes, container, parentId) {
+    container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
         if (node.url) { 
             const bookmarkItem = document.createElement('a');
             bookmarkItem.className = 'bookmark-item';
+            bookmarkItem.dataset.bookmarkId = node.id;
             bookmarkItem.href = node.url;
             bookmarkItem.target = '_blank';
             const icon = document.createElement('span');
@@ -238,6 +329,7 @@ function renderBookmarks(bookmarkNodes, container) {
         } else if (node.children) {
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
+            folderItem.dataset.bookmarkId = node.id;
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
             icon.textContent = '▶';
@@ -256,18 +348,19 @@ function renderBookmarks(bookmarkNodes, container) {
                 folderContent.style.display = isHidden ? 'block' : 'none';
                 icon.textContent = isHidden ? '▼' : '▶';
             });
-            renderBookmarks(node.children, folderContent);
+            renderBookmarks(node.children, folderContent, node.id);
         }
     });
 }
 
-// --- 初始化和事件監聽 ---
+// --- 初始化 ---
 function initialize() {
     updateTabList();
     chrome.bookmarks.getTree(tree => {
         if (tree[0] && tree[0].children) {
             bookmarkListContainer.innerHTML = '';
-            renderBookmarks(tree[0].children, bookmarkListContainer);
+            renderBookmarks(tree[0].children, bookmarkListContainer, '1');
+            initializeBookmarkSortable();
             handleSearch();
         }
     });
@@ -276,6 +369,7 @@ function initialize() {
 
 initialize();
 
+// --- 事件監聽 ---
 chrome.tabs.onCreated.addListener(updateTabList);
 chrome.tabs.onUpdated.addListener(updateTabList);
 chrome.tabs.onRemoved.addListener(updateTabList);
