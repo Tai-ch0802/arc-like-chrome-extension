@@ -4,21 +4,61 @@
 body {
     font-family: 'SF Mono', 'Menlo', 'Consolas', 'Courier New', monospace;
     margin: 0;
-    padding: 8px;
+    /* 為搜尋框留出空間 */
+    padding: 50px 8px 8px 8px; 
     background-color: #1e1e2e; 
-    color: #a0e8a0; /* 基礎的淺綠色文字 */
+    color: #a0e8a0;
     width: 280px;
     font-size: 14px;
+    position: relative; /* 為了定位搜尋框 */
 }
+
+/* --- 新增：搜尋框樣式 --- */
+#search-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background-color: #1e1e2e;
+    z-index: 10;
+}
+
+#search-box {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background-color: #313244;
+    border: 1px solid #45475a;
+    color: #cdd6f4;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+#search-box:focus {
+    outline: none;
+    border-color: #00ff41; /* 使用高亮綠色 */
+}
+
+#search-box::placeholder {
+    color: #6c7086;
+}
+
+/* --- 新增：用於隱藏元素的通用 Class --- */
+.hidden {
+    display: none !important;
+}
+
 
 /* --- 通用樣式 --- */
 .section-header {
     font-size: 12px;
     text-transform: uppercase;
-    color: #558b2f; /* 較深沉的綠色標題 */
+    color: #558b2f;
     margin: 16px 0 8px 4px;
     letter-spacing: 1px;
 }
+/* ... 其餘 CSS 內容保持不變 ... */
 
 .divider {
     border: none;
@@ -141,8 +181,9 @@ body {
     padding-left: 20px; /* 群組內分頁的縮排 */
 }
 
+
 /* --- 書籤樣式 --- */
-.bookmark-folder {
+.bookmark-item, .bookmark-folder {
     display: flex;
     align-items: center;
     padding: 6px 8px;
@@ -152,25 +193,7 @@ body {
     text-overflow: ellipsis;
     border-left: 3px solid transparent;
     transition: background-color 0.15s ease-in-out;
-    
-    /* --- ↓↓↓ 這裡是修正的部分 ↓↓↓ --- */
     color: inherit; /* 強制繼承父元素的顏色 (綠色) */
-    text-decoration: none; /* 移除連結底線 */
-}
-
-.bookmark-item {
-    display: flex;
-    align-items: center;
-    padding: 6px 8px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-left: 3px solid transparent;
-    transition: background-color 0.15s ease-in-out;
-
-    /* --- ↓↓↓ 這裡是修正的部分 ↓↓↓ --- */
-    color: #00ff41; /* 強制繼承父元素的顏色 (綠色) */
     text-decoration: none; /* 移除連結底線 */
 }
 
