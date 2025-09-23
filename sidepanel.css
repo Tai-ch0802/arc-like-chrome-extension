@@ -1,0 +1,159 @@
+/* --- Geek 風格主題 (駭客綠) --- */
+
+/* 全局與字體設定 */
+body {
+    font-family: 'SF Mono', 'Menlo', 'Consolas', 'Courier New', monospace;
+    margin: 0;
+    padding: 8px;
+    background-color: #1e1e2e; 
+    color: #a0e8a0; /* 基礎的淺綠色文字 */
+    width: 280px;
+    font-size: 14px;
+}
+
+/* --- 通用樣式 --- */
+.section-header {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #558b2f; /* 較深沉的綠色標題 */
+    margin: 16px 0 8px 4px;
+    letter-spacing: 1px;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #45475a;
+    margin: 16px 0;
+}
+
+/* --- 分頁樣式 --- */
+#tab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tab-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 0; 
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    border-left: 3px solid transparent;
+}
+
+.tab-item:hover {
+    background-color: #313244;
+}
+
+.tab-item.active {
+    background-color: #45475a;
+    border-left: 3px solid #00ff41; /* 亮綠色邊框 */
+}
+
+.tab-item.active .tab-title {
+    color: #00ff41; /* 亮綠色文字 */
+}
+
+.tab-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    filter: grayscale(30%);
+}
+
+.tab-item:hover .tab-favicon,
+.tab-item.active .tab-favicon {
+    filter: grayscale(0%);
+}
+
+.tab-title {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s ease-in-out;
+}
+
+.close-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    color: #6c7086;
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.tab-item:hover .close-btn {
+    opacity: 1;
+}
+
+.close-btn:hover {
+    color: #f38ba8; /* 保留紅色以符合操作直覺 */
+    font-weight: bold;
+}
+
+/* --- 書籤樣式 --- */
+.bookmark-folder {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: 3px solid transparent;
+    transition: background-color 0.15s ease-in-out;
+    
+    /* --- ↓↓↓ 這裡是修正的部分 ↓↓↓ --- */
+    color: inherit; /* 強制繼承父元素的顏色 (綠色) */
+    text-decoration: none; /* 移除連結底線 */
+}
+
+.bookmark-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: 3px solid transparent;
+    transition: background-color 0.15s ease-in-out;
+
+    /* --- ↓↓↓ 這裡是修正的部分 ↓↓↓ --- */
+    color: #00ff41; /* 強制繼承父元素的顏色 (綠色) */
+    text-decoration: none; /* 移除連結底線 */
+}
+
+.bookmark-item:hover, .bookmark-folder:hover {
+    background-color: #313244;
+}
+
+.bookmark-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.folder-content {
+    /* 巢狀結構的縮排 */
+    padding-left: 20px;
+}
