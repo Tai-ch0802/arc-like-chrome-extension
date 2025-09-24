@@ -365,7 +365,6 @@ function renderBookmarks(bookmarkNodes, container, parentId, expandAll = false) 
             container.appendChild(bookmarkItem);
 
         } else if (node.children) {
-            // ... (資料夾的邏輯保持不變) ...
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
             folderItem.dataset.bookmarkId = node.id;
