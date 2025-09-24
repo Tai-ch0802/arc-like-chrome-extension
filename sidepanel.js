@@ -304,7 +304,10 @@ async function updateTabList() {
     handleSearch();
     initializeSortable();
 }
-function renderBookmarks(bookmarkNodes, container, parentId) {
+
+
+// --- 書籤渲染函式 ---
+function renderBookmarks(bookmarkNodes, container, parentId, expandAll = false) {
     container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
         if (node.url) { 
@@ -313,42 +316,92 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             bookmarkItem.dataset.bookmarkId = node.id;
             bookmarkItem.href = node.url;
             bookmarkItem.target = '_blank';
-            const icon = document.createElement('span');
+            
+            // --- 核心修改：從 span 改為 img ---
+            const icon = document.createElement('img');
             icon.className = 'bookmark-icon';
-            icon.textContent = '★';
+            try {
+                // 從書籤 URL 中獲取網域
+                const domain = new URL(node.url).hostname;
+                // 設定 src 指向 Google Favicon 服務
+                icon.src = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
+            } catch (error) {
+                // 如果 URL 無效 (例如 javascript:...)，使用預設圖示
+                icon.src = 'icons/icon_default.svg';
+            }
+            
+            // 錯誤處理：如果 Google 找不到圖示，也換回預設圖示
+            icon.onerror = () => { 
+                icon.src = 'icons/icon_default.svg'; 
+            };
+            
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
+
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'bookmark-close-btn';
+            closeBtn.textContent = '×';
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (confirm(`你確定要永久刪除書籤「${node.title}」嗎？`)) {
+                    chrome.bookmarks.remove(node.id, () => {
+                        refreshBookmarks();
+                    });
+                }
+            });
+
             bookmarkItem.appendChild(icon);
             bookmarkItem.appendChild(title);
+            bookmarkItem.appendChild(closeBtn);
+
             bookmarkItem.addEventListener('click', (e) => {
-                e.preventDefault();
-                chrome.tabs.create({ url: node.url });
+                if (e.target !== closeBtn) {
+                    e.preventDefault();
+                    chrome.tabs.create({ url: node.url });
+                }
             });
             container.appendChild(bookmarkItem);
+
         } else if (node.children) {
+            // ... (資料夾的邏輯保持不變) ...
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
             folderItem.dataset.bookmarkId = node.id;
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
-            icon.textContent = '▶';
+            icon.textContent = expandAll ? '▼' : '▶';
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'bookmark-close-btn';
+            closeBtn.textContent = '×';
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm(`你確定要永久刪除資料夾「${node.title}」以及裡面的所有內容嗎？\n\n這個操作無法復原！`)) {
+                    chrome.bookmarks.removeTree(node.id, () => {
+                        refreshBookmarks();
+                    });
+                }
+            });
             folderItem.appendChild(icon);
             folderItem.appendChild(title);
+            folderItem.appendChild(closeBtn);
             container.appendChild(folderItem);
             const folderContent = document.createElement('div');
             folderContent.className = 'folder-content';
-            folderContent.style.display = 'none';
+            folderContent.style.display = expandAll ? 'block' : 'none';
             container.appendChild(folderContent);
-            folderItem.addEventListener('click', () => {
-                const isHidden = folderContent.style.display === 'none';
-                folderContent.style.display = isHidden ? 'block' : 'none';
-                icon.textContent = isHidden ? '▼' : '▶';
+            folderItem.addEventListener('click', (e) => {
+                if (e.target !== closeBtn) {
+                    const isHidden = folderContent.style.display === 'none';
+                    folderContent.style.display = isHidden ? 'block' : 'none';
+                    icon.textContent = isHidden ? '▼' : '▶';
+                }
             });
-            renderBookmarks(node.children, folderContent, node.id);
+            renderBookmarks(node.children, folderContent, node.id, expandAll);
         }
     });
 }

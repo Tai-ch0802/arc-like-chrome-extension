@@ -58,7 +58,6 @@ body {
     margin: 16px 0 8px 4px;
     letter-spacing: 1px;
 }
-/* ... 其餘 CSS 內容保持不變 ... */
 
 .divider {
     border: none;
@@ -195,6 +194,7 @@ body {
     transition: background-color 0.15s ease-in-out;
     color: inherit; /* 強制繼承父元素的顏色 (綠色) */
     text-decoration: none; /* 移除連結底線 */
+    position: relative; /* 新增：為了定位刪除按鈕 */
 }
 
 .bookmark-item:hover, .bookmark-folder:hover {
@@ -206,7 +206,36 @@ body {
     height: 16px;
     margin-right: 12px;
     flex-shrink: 0;
+    /* text-align: center; */
+}
+
+/* --- 書籤刪除按鈕的樣式 --- */
+.bookmark-close-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 18px;
     text-align: center;
+    color: #6c7086;
+    opacity: 0; /* 預設隱藏 */
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.bookmark-item:hover .bookmark-close-btn,
+.bookmark-folder:hover .bookmark-close-btn {
+    opacity: 1; /* 滑鼠懸停時顯示 */
+}
+
+.bookmark-close-btn:hover {
+    color: #f38ba8; /* 懸停時變為紅色 */
+    font-weight: bold;
 }
 
 .folder-content {

@@ -17,5 +17,11 @@
   },
   "action": {
     "default_title": "打開/關閉 書籤分頁側邊欄"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }
