@@ -32,21 +32,6 @@
 
 ---
 
-## 專案結構
-
-```
-arc-like-chrome-extension/
-├── manifest.json
-├── background.js
-├── sidepanel.html
-├── sidepanel.css
-├── sidepanel.js
-├── icon_default.svg
-└── README.md
-```
-
----
-
 ## 安裝說明
 
 1.  將本專案下載至本機。
@@ -62,7 +47,7 @@ arc-like-chrome-extension/
 
 * [x] **搜尋功能**：過濾分頁與書籤。
 * [ ] **釘選分頁**：將重要分頁固定於列表頂部。
-* [ ] **拖曳排序**：支援手動拖曳重新排列分頁與群組。
+* [x] **拖曳排序**：支援手動拖曳重新排列分頁與群組。
 * [ ] **主題化選項**：提供淺色模式或其他色彩主題的切換功能。
 * [ ] **設定頁面**：建立選項頁面以供使用者進行個人化設定。
 
