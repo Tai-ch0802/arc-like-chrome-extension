@@ -6,19 +6,18 @@ const searchBox = document.getElementById('search-box');
 // --- 全域變數 ---
 let tabSortableInstances = [];
 let bookmarkSortableInstances = [];
-let folderOpenTimer = null; // 新增：用於懸停展開資料夾的計時器
-let expandedBookmarkFolders = new Set(); // 新增用於儲存書籤資料夾展開狀態的變數
+let folderOpenTimer = null;
+let expandedBookmarkFolders = new Set();
 
 // --- Tab 拖曳功能 ---
 function initializeSortable() {
     tabSortableInstances.forEach(instance => instance.destroy());
     tabSortableInstances = [];
     const sortableOptions = {
-        // --- 修改：統一 group 名稱，並設定規則 ---
         group: {
             name: 'shared-list',
-            pull: true, // 允許從這個列表拖出
-            put: true   // 允許項目拖入這個列表
+            pull: true,
+            put: true
         },
         animation: 150,
         onEnd: handleDragEnd,
@@ -30,27 +29,20 @@ function initializeSortable() {
     });
 }
 async function handleDragEnd(evt) {
-    // 如果分頁被拖曳到書籤區，這個函式就不需要處理，直接返回
     if (evt.to.closest('#bookmark-list')) {
         return;
     }
-    const { item, newIndex, from, to } = evt;
-    // 如果是從書籤區拖回來的，取消操作
-    if (from.closest('#bookmark-list')) return;
-    await moveItem(item, newIndex, to);
+    const { item, newIndex } = evt;
+    await moveItem(item, newIndex, evt.to);
 }
 async function handleDragAdd(evt) {
     const { item, newIndex, to, from } = evt;
-
-    // 如果是書籤被錯誤地拖到分頁區，則取消
     if (item.classList.contains('bookmark-item') || item.classList.contains('bookmark-folder')) {
-        from.appendChild(item); // 將其放回原位
+        from.appendChild(item);
         return;
     }
-
     const tabIdToMove = parseInt(item.dataset.tabId, 10);
     if (!tabIdToMove) return;
-
     if (to.classList.contains('tab-group-content')) {
         const header = to.previousElementSibling;
         const targetGroupId = parseInt(header.dataset.groupId, 10);
@@ -93,20 +85,15 @@ function initializeBookmarkSortable() {
     bookmarkSortableInstances.forEach(instance => instance.destroy());
     bookmarkSortableInstances = [];
     const sortableOptions = {
-        group: 'shared-list', // 與分頁使用同一個 group 名稱
+        group: 'shared-list',
         animation: 150,
         onEnd: handleBookmarkDrop,
         onAdd: handleBookmarkDrop,
-        // --- 新增：懸停展開的核心邏輯 ---
         onDragOver: function (evt) {
-            clearTimeout(folderOpenTimer); // 清除舊的計時器
-            const { related } = evt; // related 是滑鼠指標當前懸停的元素
-            
-            // 檢查是否懸停在一個「已收合」的書籤資料夾上
+            clearTimeout(folderOpenTimer);
+            const { related } = evt;
             const isCollapsedFolder = related.classList.contains('bookmark-folder') && related.querySelector('.bookmark-icon').textContent === '▶';
-
             if (isCollapsedFolder) {
-                // 設定一個 1 秒的計時器，時間到就模擬點擊來展開資料夾
                 folderOpenTimer = setTimeout(() => {
                     related.click();
                 }, 1000);
@@ -119,36 +106,27 @@ function initializeBookmarkSortable() {
     });
 }
 async function handleBookmarkDrop(evt) {
-    const { item, to, newIndex, from } = evt;
-
-    // --- 新增：判斷拖曳進來的是否為分頁 ---
+    const { item, to, newIndex } = evt;
     if (item.classList.contains('tab-item')) {
         const title = item.querySelector('.tab-title').textContent;
         const url = item.dataset.url;
         const parentId = to.dataset.parentId;
-
         if (title && url && parentId) {
-            // 建立新書籤
             await chrome.bookmarks.create({
                 parentId: parentId,
                 title: title,
                 url: url,
                 index: newIndex
             });
-            // 移除被拖曳過來的分頁幻影，並刷新兩個列表
             item.remove();
             refreshBookmarks();
             updateTabList();
         }
         return;
     }
-
-
-    // --- 原有的書籤排序邏輯 ---
     const bookmarkId = item.dataset.bookmarkId;
     const newParentId = to.dataset.parentId;
     if (!bookmarkId || !newParentId) return;
-
     try {
         await chrome.bookmarks.move(bookmarkId, {
             parentId: newParentId,
@@ -164,18 +142,22 @@ function refreshBookmarks() {
     chrome.bookmarks.getTree(tree => {
         if (tree[0] && tree[0].children) {
             bookmarkListContainer.innerHTML = '';
-            // 現在渲染函式會自動參考 expandedBookmarkFolders 變數來決定狀態
             renderBookmarks(tree[0].children, bookmarkListContainer, '1'); 
             initializeBookmarkSortable();
-            handleSearch();
+            // --- ↓↓↓ 修改點：刷新書籤後，只過濾書籤 ---
+            filterBookmarks(searchBox.value.toLowerCase().trim());
         }
     });
 }
 
-// --- 搜尋邏輯 ---
+
+// --- 搜尋邏輯 (拆分) ---
 function handleSearch() {
     const query = searchBox.value.toLowerCase().trim();
     filterTabsAndGroups(query);
+    filterBookmarks(query);
+}
+function filterBookmarks(query) {
     const visibleBookmarkNodes = new Set();
     if (bookmarkListContainer.children.length > 0) {
         const topLevelItems = bookmarkListContainer.querySelectorAll(':scope > .bookmark-item, :scope > .bookmark-folder');
@@ -185,7 +167,6 @@ function handleSearch() {
     }
     applyBookmarkVisibility(query, visibleBookmarkNodes);
 }
-
 function filterTabsAndGroups(query) {
     const tabItems = document.querySelectorAll('#tab-list .tab-item');
     const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
@@ -260,8 +241,14 @@ function applyBookmarkVisibility(query, visibleItems) {
                     icon.textContent = '▶';
                 }
             } else {
-                content.style.display = 'none';
-                icon.textContent = '▶';
+                // 如果沒有搜尋詞，則根據我們儲存的狀態來決定是否展開
+                if (expandedBookmarkFolders.has(node.dataset.bookmarkId)) {
+                    content.style.display = 'block';
+                    icon.textContent = '▼';
+                } else {
+                    content.style.display = 'none';
+                    icon.textContent = '▶';
+                }
             }
         }
     });
@@ -275,7 +262,7 @@ function createTabElement(tab) {
         tabItem.classList.add('active');
     }
     tabItem.dataset.tabId = tab.id;
-    tabItem.dataset.url = tab.url; // 新增：儲存 URL 到 data 屬性
+    tabItem.dataset.url = tab.url;
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';
     if (tab.favIconUrl && tab.favIconUrl.startsWith('http')) {
@@ -363,14 +350,13 @@ async function updateTabList() {
             renderedTabIds.add(tab.id);
         }
     }
-    handleSearch();
+    filterTabsAndGroups(searchBox.value.toLowerCase().trim());
     initializeSortable();
 }
 function renderBookmarks(bookmarkNodes, container, parentId) {
     container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
         if (node.url) { 
-            // 書籤項目的渲染邏輯不變
             const bookmarkItem = document.createElement('a');
             bookmarkItem.className = 'bookmark-item';
             bookmarkItem.dataset.bookmarkId = node.id;
@@ -417,18 +403,13 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
             folderItem.dataset.bookmarkId = node.id;
-            
-            // --- 修正點 3：根據狀態變數決定初始的展開/收合狀態 ---
             const isExpanded = expandedBookmarkFolders.has(node.id);
-
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
-            icon.textContent = isExpanded ? '▼' : '▶'; // 根據 isExpanded 決定圖示
-            
+            icon.textContent = isExpanded ? '▼' : '▶';
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
-            
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
@@ -440,47 +421,40 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
                     });
                 }
             });
-
             folderItem.appendChild(icon);
             folderItem.appendChild(title);
             folderItem.appendChild(closeBtn);
             container.appendChild(folderItem);
-            
             const folderContent = document.createElement('div');
             folderContent.className = 'folder-content';
-            folderContent.style.display = isExpanded ? 'block' : 'none'; // 根據 isExpanded 決定顯示
+            folderContent.style.display = isExpanded ? 'block' : 'none';
             container.appendChild(folderContent);
-            
-            // --- 修正點 4：在點擊事件中，同步更新狀態變數 ---
             folderItem.addEventListener('click', (e) => {
                 if (e.target !== closeBtn && !e.target.classList.contains('bookmark-title')) {
-                    const isNowHidden = folderContent.style.display === 'none';
-                    folderContent.style.display = isNowHidden ? 'block' : 'none';
-                    icon.textContent = isNowHidden ? '▼' : '▶';
-                    
-                    // 同步更新我們的狀態 Set
-                    if (isNowHidden) {
+                    const isNowExpanded = folderContent.style.display === 'none';
+                    folderContent.style.display = isNowExpanded ? 'block' : 'none';
+                    icon.textContent = isNowExpanded ? '▼' : '▶';
+                    if (isNowExpanded) {
                         expandedBookmarkFolders.add(node.id);
                     } else {
                         expandedBookmarkFolders.delete(node.id);
                     }
                 }
             });
-            // 遞迴呼叫時，不再需要 expandAll 參數
             renderBookmarks(node.children, folderContent, node.id);
         }
     });
 }
+
+// --- 初始化 ---
 function initialize() {
     updateTabList();
-    chrome.bookmarks.getTree(tree => {
-        if (tree[0] && tree[0].children) {
-            refreshBookmarks();
-        }
-    });
+    refreshBookmarks(); 
     searchBox.addEventListener('input', handleSearch);
 }
+
 initialize();
+
 chrome.tabs.onCreated.addListener(updateTabList);
 chrome.tabs.onUpdated.addListener(updateTabList);
 chrome.tabs.onRemoved.addListener(updateTabList);
