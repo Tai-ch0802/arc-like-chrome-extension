@@ -1,0 +1,49 @@
+{
+    "extensionName": {
+      "message": "書籤/分頁側邊欄",
+      "description": "擴充功能的名稱。"
+    },
+    "extensionDescription": {
+      "message": "一個參考 Arc 瀏覽器垂直分頁的 Chrome 擴充功能。",
+      "description": "擴充功能的描述。"
+    },
+    "searchPlaceholder": {
+      "message": "搜尋分頁或書籤...",
+      "description": "搜尋框的提示文字。"
+    },
+    "tabsHeader": {
+      "message": "分頁",
+      "description": "分頁區塊的標題。"
+    },
+    "bookmarksHeader": {
+      "message": "書籤",
+      "description": "書籤區塊的標題。"
+    },
+    "deleteBookmarkConfirm": {
+      "message": "你確定要永久刪除書籤「$bookmark_title$」嗎？",
+      "description": "刪除單一書籤的確認訊息。",
+      "placeholders": {
+        "bookmark_title": {
+          "content": "$1"
+        }
+      }
+    },
+    "deleteFolderConfirm": {
+      "message": "你確定要永久刪除資料夾「$folder_title$」以及裡面的所有內容嗎？\n\n這個操作無法復原！",
+      "description": "刪除書籤資料夾的確認訊息。",
+      "placeholders": {
+        "folder_title": {
+          "content": "$1"
+        }
+      }
+    },
+    "addFolderPrompt": {
+      "message": "請輸入要在「$parent_folder$」底下新增的資料夾名稱：",
+      "description": "新增書籤資料夾的提示訊息。",
+      "placeholders": {
+        "parent_folder": {
+          "content": "$1"
+        }
+      }
+    }
+  }

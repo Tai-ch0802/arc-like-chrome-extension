@@ -9,6 +9,11 @@ let bookmarkSortableInstances = [];
 let folderOpenTimer = null;
 let expandedBookmarkFolders = new Set();
 
+function applyStaticTranslations() {
+    document.title = chrome.i18n.getMessage("extensionName");
+    searchBox.placeholder = chrome.i18n.getMessage("searchPlaceholder");
+}
+
 // --- Tab 拖曳功能 ---
 function initializeSortable() {
     tabSortableInstances.forEach(instance => instance.destroy());
@@ -280,7 +285,7 @@ function createTabElement(tab) {
     };
     const title = document.createElement('span');
     title.className = 'tab-title';
-    title.textContent = tab.title || '載入中...';
+    title.textContent = tab.title || 'Loading...';
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
@@ -387,7 +392,9 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             closeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (confirm(`你確定要永久刪除書籤「${node.title}」嗎？`)) {
+                // 使用 i18n API 獲取翻譯，並傳入參數
+                const confirmMsg = chrome.i18n.getMessage("deleteBookmarkConfirm", node.title);
+                if (confirm(confirmMsg)) {
                     chrome.bookmarks.remove(node.id, () => {
                         refreshBookmarks();
                     });
@@ -416,13 +423,13 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             title.className = 'bookmark-title';
             title.textContent = node.title;
 
-            // --- ↓↓↓ 新增：「新增資料夾」按鈕 ---
             const addFolderBtn = document.createElement('button');
             addFolderBtn.className = 'add-folder-btn';
             addFolderBtn.textContent = '+'; // 或是其他你喜歡的圖示
             addFolderBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const newFolderName = prompt(`請輸入要在「${node.title}」底下新增的資料夾名稱：`);
+                const promptMsg = chrome.i18n.getMessage("addFolderPrompt", node.title);
+                const newFolderName = prompt(promptMsg);
                 if (newFolderName) { // 確保使用者不是按取消或輸入空值
                     chrome.bookmarks.create({
                         parentId: node.id,
@@ -440,7 +447,8 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             closeBtn.textContent = '×';
             closeBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (confirm(`你確定要永久刪除資料夾「${node.title}」以及裡面的所有內容嗎？\n\n這個操作無法復原！`)) {
+                const confirmMsg = chrome.i18n.getMessage("deleteFolderConfirm", node.title);
+                if (confirm(confirmMsg)) {
                     chrome.bookmarks.removeTree(node.id, () => {
                         // 如果被刪除的資料夾剛好在我們的狀態裡，就順便移除
                         expandedBookmarkFolders.delete(node.id);
@@ -479,6 +487,7 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
 
 // --- 初始化 ---
 function initialize() {
+    applyStaticTranslations();
     updateTabList();
     refreshBookmarks(); 
     searchBox.addEventListener('input', handleSearch);

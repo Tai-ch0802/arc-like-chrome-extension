@@ -267,3 +267,13 @@ body {
     /* 巢狀結構的縮排 */
     padding-left: 20px;
 }
+
+/* --- i18n Styles --- */
+
+[data-i18n="tabsHeader"]::before {
+    content: '__MSG_tabsHeader__';
+}
+
+[data-i18n="bookmarksHeader"]::before {
+    content: '__MSG_bookmarksHeader__';
+}
