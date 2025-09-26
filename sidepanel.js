@@ -128,13 +128,21 @@ async function handleBookmarkDrop(evt) {
     const newParentId = to.dataset.parentId;
     if (!bookmarkId || !newParentId) return;
     try {
+        const destinationChildren = await chrome.bookmarks.getChildren(newParentId);
+        const safeIndex = Math.min(newIndex, destinationChildren.length);
         await chrome.bookmarks.move(bookmarkId, {
             parentId: newParentId,
-            index: newIndex
+            index: safeIndex
         });
         refreshBookmarks();
     } catch (error) {
-        console.error("Failed to move bookmark:", error);
+        console.error("Failed to move bookmark with safe index. Details:", {
+            bookmarkId,
+            newParentId,
+            originalIndex: newIndex,
+            safeIndex,
+            error
+        });
         refreshBookmarks();
     }
 }
@@ -144,12 +152,10 @@ function refreshBookmarks() {
             bookmarkListContainer.innerHTML = '';
             renderBookmarks(tree[0].children, bookmarkListContainer, '1'); 
             initializeBookmarkSortable();
-            // --- ↓↓↓ 修改點：刷新書籤後，只過濾書籤 ---
             filterBookmarks(searchBox.value.toLowerCase().trim());
         }
     });
 }
-
 
 // --- 搜尋邏輯 (拆分) ---
 function handleSearch() {
@@ -241,7 +247,6 @@ function applyBookmarkVisibility(query, visibleItems) {
                     icon.textContent = '▶';
                 }
             } else {
-                // 如果沒有搜尋詞，則根據我們儲存的狀態來決定是否展開
                 if (expandedBookmarkFolders.has(node.dataset.bookmarkId)) {
                     content.style.display = 'block';
                     icon.textContent = '▼';
@@ -410,6 +415,26 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
+
+            // --- ↓↓↓ 新增：「新增資料夾」按鈕 ---
+            const addFolderBtn = document.createElement('button');
+            addFolderBtn.className = 'add-folder-btn';
+            addFolderBtn.textContent = '+'; // 或是其他你喜歡的圖示
+            addFolderBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newFolderName = prompt(`請輸入要在「${node.title}」底下新增的資料夾名稱：`);
+                if (newFolderName) { // 確保使用者不是按取消或輸入空值
+                    chrome.bookmarks.create({
+                        parentId: node.id,
+                        title: newFolderName
+                    }, () => {
+                        // 新增成功後，自動展開當前資料夾以顯示新成員
+                        expandedBookmarkFolders.add(node.id);
+                        refreshBookmarks();
+                    });
+                }
+            });
+
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
@@ -417,20 +442,26 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
                 e.stopPropagation();
                 if (confirm(`你確定要永久刪除資料夾「${node.title}」以及裡面的所有內容嗎？\n\n這個操作無法復原！`)) {
                     chrome.bookmarks.removeTree(node.id, () => {
+                        // 如果被刪除的資料夾剛好在我們的狀態裡，就順便移除
+                        expandedBookmarkFolders.delete(node.id);
                         refreshBookmarks();
                     });
                 }
             });
+
             folderItem.appendChild(icon);
             folderItem.appendChild(title);
+            folderItem.appendChild(addFolderBtn); // 將新增按鈕加入
             folderItem.appendChild(closeBtn);
             container.appendChild(folderItem);
+            
             const folderContent = document.createElement('div');
             folderContent.className = 'folder-content';
             folderContent.style.display = isExpanded ? 'block' : 'none';
             container.appendChild(folderContent);
+            
             folderItem.addEventListener('click', (e) => {
-                if (e.target !== closeBtn && !e.target.classList.contains('bookmark-title')) {
+                if (e.target.tagName !== 'BUTTON') {
                     const isNowExpanded = folderContent.style.display === 'none';
                     folderContent.style.display = isNowExpanded ? 'block' : 'none';
                     icon.textContent = isNowExpanded ? '▼' : '▶';
@@ -455,6 +486,7 @@ function initialize() {
 
 initialize();
 
+// --- 事件監聽 ---
 chrome.tabs.onCreated.addListener(updateTabList);
 chrome.tabs.onUpdated.addListener(updateTabList);
 chrome.tabs.onRemoved.addListener(updateTabList);
