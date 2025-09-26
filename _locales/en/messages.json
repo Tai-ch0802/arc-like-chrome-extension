@@ -48,5 +48,17 @@
           "example": "Personal"
         }
       }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "Edit Folder Name:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "Edit Bookmark Name:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "Edit Bookmark URL:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     }
   }

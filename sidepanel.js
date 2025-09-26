@@ -386,6 +386,29 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
+
+            // --- 建立按鈕容器 ---
+            const actionsContainer = document.createElement('div');
+            actionsContainer.className = 'bookmark-actions';
+
+            const editBtn = document.createElement('button');
+            editBtn.className = 'bookmark-edit-btn';
+            editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><path d="m15 5 4 4"></path></svg>`;
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const editBookmarkTitleMsg = chrome.i18n.getMessage("editBookmarkPromptForTitle");
+                const newTitle = prompt(editBookmarkTitleMsg, node.title);
+                if (newTitle === null) return; // 使用者按了取消
+
+                const editBookmarkUrlMsg = chrome.i18n.getMessage("editBookmarkPromptForUrl");
+                const newUrl = prompt(editBookmarkUrlMsg, node.url);
+                if (newUrl === null) return; // 使用者按了取消
+
+                chrome.bookmarks.update(node.id, { title: newTitle, url: newUrl }, refreshBookmarks);
+            });
+
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
@@ -400,9 +423,14 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
                     });
                 }
             });
+
+            
+            actionsContainer.appendChild(editBtn);
+            actionsContainer.appendChild(closeBtn);
             bookmarkItem.appendChild(icon);
             bookmarkItem.appendChild(title);
-            bookmarkItem.appendChild(closeBtn);
+            bookmarkItem.appendChild(actionsContainer);
+            
             bookmarkItem.addEventListener('click', (e) => {
                 if (e.target !== closeBtn) {
                     e.preventDefault();
@@ -423,19 +451,33 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             title.className = 'bookmark-title';
             title.textContent = node.title;
 
+            const actionsContainer = document.createElement('div');
+            actionsContainer.className = 'bookmark-actions';
+
+            const editBtn = document.createElement('button');
+            editBtn.className = 'bookmark-edit-btn';
+            editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><path d="m15 5 4 4"></path></svg>`;
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const promptMsg = chrome.i18n.getMessage("editBookmarkFolderPromptForTitle");
+                const newTitle = prompt(promptMsg, node.title);
+                if (newTitle && newTitle !== node.title) {
+                    chrome.bookmarks.update(node.id, { title: newTitle }, refreshBookmarks);
+                }
+            });
+
             const addFolderBtn = document.createElement('button');
             addFolderBtn.className = 'add-folder-btn';
-            addFolderBtn.textContent = '+'; // 或是其他你喜歡的圖示
+            addFolderBtn.textContent = '+';
             addFolderBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const promptMsg = chrome.i18n.getMessage("addFolderPrompt", node.title);
                 const newFolderName = prompt(promptMsg);
-                if (newFolderName) { // 確保使用者不是按取消或輸入空值
+                if (newFolderName) {
                     chrome.bookmarks.create({
                         parentId: node.id,
                         title: newFolderName
                     }, () => {
-                        // 新增成功後，自動展開當前資料夾以顯示新成員
                         expandedBookmarkFolders.add(node.id);
                         refreshBookmarks();
                     });
@@ -450,17 +492,22 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
                 const confirmMsg = chrome.i18n.getMessage("deleteFolderConfirm", node.title);
                 if (confirm(confirmMsg)) {
                     chrome.bookmarks.removeTree(node.id, () => {
-                        // 如果被刪除的資料夾剛好在我們的狀態裡，就順便移除
                         expandedBookmarkFolders.delete(node.id);
                         refreshBookmarks();
                     });
                 }
             });
 
+            actionsContainer.appendChild(editBtn);
+            if (!node.url) { 
+                // 只有資料夾才需要「新增資料夾」按鈕
+                actionsContainer.appendChild(addFolderBtn);
+            }
+            actionsContainer.appendChild(closeBtn);
+
             folderItem.appendChild(icon);
             folderItem.appendChild(title);
-            folderItem.appendChild(addFolderBtn); // 將新增按鈕加入
-            folderItem.appendChild(closeBtn);
+            folderItem.appendChild(actionsContainer);
             container.appendChild(folderItem);
             
             const folderContent = document.createElement('div');

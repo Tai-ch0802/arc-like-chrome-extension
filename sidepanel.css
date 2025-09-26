@@ -209,30 +209,34 @@ body {
     /* text-align: center; */
 }
 
-/* --- 書籤刪除按鈕的樣式 --- */
-.bookmark-close-btn {
+.bookmark-actions {
     position: absolute;
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 18px;
-    text-align: center;
-    color: #6c7086;
-    opacity: 0; /* 預設隱藏 */
-    transition: opacity 0.2s ease, color 0.2s ease;
+    display: flex; /* 使用 Flexbox */
+    align-items: center;
+    gap: 0px; /* 設定按鈕之間的間距 */
+    opacity: 0; /* 預設隱藏整個容器 */
+    transition: opacity 0.2s ease;
 }
 
-.add-folder-btn {
-    position: absolute;
-    right: 26px; /* 放在刪除按鈕的左邊 */
-    top: 50%;
-    transform: translateY(-50%);
+.bookmark-edit-btn img {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle; /* 讓 SVG 圖示垂直置中 */
+}
+
+
+.bookmark-item:hover .bookmark-actions,
+.bookmark-folder:hover .bookmark-actions {
+    opacity: 1;
+}
+
+/* --- 統一的按鈕樣式 --- */
+.bookmark-edit-btn,
+.add-folder-btn,
+.bookmark-close-btn {
     width: 18px;
     height: 18px;
     border: none;
@@ -242,24 +246,34 @@ body {
     line-height: 18px;
     text-align: center;
     color: #6c7086;
-    opacity: 0; /* 預設隱藏 */
-    transition: opacity 0.2s ease, color 0.2s ease;
+    transition: color 0.2s ease;
+    padding: 0;
 }
 
 .bookmark-item:hover .bookmark-close-btn,
+.bookmark-item:hover .bookmark-edit-btn,
 .bookmark-folder:hover .bookmark-close-btn,
-.bookmark-folder:hover .add-folder-btn { /* 新增：讓新增按鈕在懸停時顯示 */
+.bookmark-folder:hover .bookmark-edit-btn,
+.bookmark-folder:hover .add-folder-btn { 
     opacity: 1; /* 滑鼠懸停時顯示 */
 }
 
 .bookmark-close-btn:hover,
-.add-folder-btn:hover { /* 新增：讓新增按鈕也有懸停效果 */
-    color: #f38ba8; /* 刪除按鈕的懸停顏色，使用紅色系以示警告 */
+.add-folder-btn:hover,
+.bookmark-edit-btn:hover {
     font-weight: bold;
 }
 
+.bookmark-close-btn:hover {
+    color: #f38ba8;
+}
+
 .add-folder-btn:hover {
-    color: #89b4fa; /* 新增按鈕使用不同的懸停顏色，例如藍色 */
+    color: #89b4fa;
+}
+
+.bookmark-edit-btn:hover {
+    color: #0fa1f0; 
 }
 
 
