@@ -17,7 +17,8 @@ SRC_FILES = \
     sidepanel.css \
     sidepanel.js \
     icons \
-    lib
+    lib \
+	_locales
 
 # --- Targets ---
 
