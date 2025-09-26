@@ -8,9 +8,10 @@ body {
     padding: 50px 8px 8px 8px; 
     background-color: #1e1e2e; 
     color: #a0e8a0;
-    width: 280px;
     font-size: 14px;
     position: relative; /* 為了定位搜尋框 */
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* --- 新增：搜尋框樣式 --- */
@@ -121,10 +122,9 @@ body {
 }
 
 .close-btn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
+    flex-shrink: 0; /* 確保按鈕不會被壓縮 */
+    margin-left: 5px; /* 與標題的間距 */
     width: 18px;
     height: 18px;
     border: none;
@@ -209,16 +209,22 @@ body {
     /* text-align: center; */
 }
 
+.bookmark-title {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .bookmark-actions {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+    flex-shrink: 0; /* 確保按鈕不會被壓縮 */
     display: flex; /* 使用 Flexbox */
     align-items: center;
     gap: 0px; /* 設定按鈕之間的間距 */
     opacity: 0; /* 預設隱藏整個容器 */
     transition: opacity 0.2s ease;
+    margin-left: auto;
+    padding-left: 5px;
 }
 
 .bookmark-edit-btn img {

@@ -273,6 +273,14 @@ function createTabElement(tab) {
     }
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
+
+    let urlPreview = tab.url;
+    if (urlPreview && urlPreview.length > 300) {
+        urlPreview = urlPreview.substring(0, 300) + '...';
+    }
+    tabItem.title = `${tab.title}\n${urlPreview}`; // 使用換行符 \n
+
+
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';
     if (tab.favIconUrl && tab.favIconUrl.startsWith('http')) {
@@ -322,6 +330,8 @@ async function updateTabList() {
             groupHeader.className = 'tab-group-header';
             groupHeader.dataset.collapsed = group.collapsed;
             groupHeader.dataset.groupId = group.id;
+            groupHeader.title = group.title;
+
             const arrow = document.createElement('span');
             arrow.className = 'tab-group-arrow';
             arrow.textContent = group.collapsed ? '▶' : '▼';
@@ -372,6 +382,13 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             bookmarkItem.dataset.bookmarkId = node.id;
             bookmarkItem.href = node.url;
             bookmarkItem.target = '_blank';
+
+            let urlPreview = node.url;
+            if (urlPreview && urlPreview.length > 300) {
+                urlPreview = urlPreview.substring(0, 300) + '...';
+            }
+            bookmarkItem.title = `${node.title}\n${urlPreview}`;
+
             const icon = document.createElement('img');
             icon.className = 'bookmark-icon';
             try {
@@ -443,6 +460,8 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
             folderItem.dataset.bookmarkId = node.id;
+            folderItem.title = node.title;
+
             const isExpanded = expandedBookmarkFolders.has(node.id);
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
