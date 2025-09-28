@@ -24,7 +24,7 @@ This is a Chrome extension project that aims to bring an Arc browser-like vertic
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation & Development
 
 ### Option 1: Install from the Chrome Web Store (Recommended)
 
@@ -34,10 +34,41 @@ You can install the extension directly from the official store to receive automa
 
 ### Option 2: Manual Installation from Source (for Developers)
 
-1.  Download or clone this project to your local machine.
-2.  Open the Chrome browser and navigate to `chrome://extensions`.
-3.  Enable "Developer mode" in the top right corner.
-4.  Click "Load unpacked" and select the project's root directory.
+**1. Prerequisites**
+
+Before you begin, ensure you have [Node.js](https://nodejs.org/) (which includes npm) installed on your system.
+
+**2. Setup Steps**
+
+1.  Clone or download this project to your local machine.
+    ```bash
+    git clone https://github.com/Tai-ch0802/arc-like-chrome-extension.git
+    ```
+2.  Navigate into the project directory and install the required development dependencies:
+    ```bash
+    cd arc-like-chrome-extension
+    npm install
+    ```
+3.  Open the Chrome browser and navigate to `chrome://extensions`.
+4.  Enable "Developer mode" in the top right corner.
+5.  Click "Load unpacked" and select the project's root directory.
+
+---
+
+## 🛠️ Build Commands
+
+This project uses a `Makefile` to automate the build process.
+
+*   **Development Mode**: `make` or `make package`
+
+    This command creates an unminified development build. All source code remains as-is, making it easy to debug in Chrome's developer tools. The packaged file will be `arc-sidebar-v<version>-dev.zip`.
+
+*   **Production Mode**: `make release`
+
+    This command runs the production build process, which includes the following steps:
+    1.  Bundles and minifies all JavaScript modules into a single file using `esbuild`.
+    2.  Minifies the CSS file.
+    3.  Packages the output into a `.zip` file suitable for uploading to the Chrome Web Store.
 
 ---
 
