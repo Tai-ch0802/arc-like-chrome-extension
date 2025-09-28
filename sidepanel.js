@@ -1,3 +1,6 @@
+import * as api from './modules/apiManager.js';
+import * as state from './modules/stateManager.js';
+
 // --- DOM 元素獲取 ---
 const tabListContainer = document.getElementById('tab-list');
 const bookmarkListContainer = document.getElementById('bookmark-list');
@@ -7,11 +10,10 @@ const searchBox = document.getElementById('search-box');
 let tabSortableInstances = [];
 let bookmarkSortableInstances = [];
 let folderOpenTimer = null;
-let expandedBookmarkFolders = new Set();
 
 function applyStaticTranslations() {
-    document.title = chrome.i18n.getMessage("extensionName");
-    searchBox.placeholder = chrome.i18n.getMessage("searchPlaceholder");
+    document.title = api.getMessage("extensionName");
+    searchBox.placeholder = api.getMessage("searchPlaceholder");
 }
 
 // --- Tab 拖曳功能 ---
@@ -51,9 +53,9 @@ async function handleDragAdd(evt) {
     if (to.classList.contains('tab-group-content')) {
         const header = to.previousElementSibling;
         const targetGroupId = parseInt(header.dataset.groupId, 10);
-        await chrome.tabs.group({ tabIds: [tabIdToMove], groupId: targetGroupId });
+        await api.groupTabs([tabIdToMove], targetGroupId);
     } else if (to.id === 'tab-list') {
-        await chrome.tabs.ungroup(tabIdToMove);
+        await api.ungroupTabs(tabIdToMove);
     }
     await moveItem(item, newIndex, to);
 }
@@ -66,11 +68,11 @@ async function moveItem(item, newIndex, container) {
     if (targetElement) {
         if (targetElement.classList.contains('tab-item')) {
             const targetTabId = parseInt(targetElement.dataset.tabId, 10);
-            const tab = await chrome.tabs.get(targetTabId);
+            const tab = await api.getTab(targetTabId);
             targetAbsoluteIndex = tab.index;
         } else if (targetElement.classList.contains('tab-group-header')) {
             const targetGroupId = parseInt(targetElement.dataset.groupId, 10);
-            const tabsInGroup = await chrome.tabs.query({ groupId: targetGroupId });
+            const tabsInGroup = await api.getTabsInCurrentWindow({ groupId: targetGroupId });
             if (tabsInGroup.length > 0) {
                 targetAbsoluteIndex = Math.min(...tabsInGroup.map(t => t.index));
             }
@@ -78,10 +80,10 @@ async function moveItem(item, newIndex, container) {
     }
     if (item.classList.contains('tab-item')) {
         const tabIdToMove = parseInt(item.dataset.tabId, 10);
-        chrome.tabs.move(tabIdToMove, { index: targetAbsoluteIndex });
+        api.moveTab(tabIdToMove, targetAbsoluteIndex);
     } else if (item.classList.contains('tab-group-header')) {
         const groupIdToMove = parseInt(item.dataset.groupId, 10);
-        chrome.tabGroups.move(groupIdToMove, { index: targetAbsoluteIndex });
+        api.moveTabGroup(groupIdToMove, targetAbsoluteIndex);
     }
 }
 
@@ -117,7 +119,7 @@ async function handleBookmarkDrop(evt) {
         const url = item.dataset.url;
         const parentId = to.dataset.parentId;
         if (title && url && parentId) {
-            await chrome.bookmarks.create({
+            await api.createBookmark({
                 parentId: parentId,
                 title: title,
                 url: url,
@@ -133,9 +135,9 @@ async function handleBookmarkDrop(evt) {
     const newParentId = to.dataset.parentId;
     if (!bookmarkId || !newParentId) return;
     try {
-        const destinationChildren = await chrome.bookmarks.getChildren(newParentId);
+        const destinationChildren = await api.getBookmarkChildren(newParentId);
         const safeIndex = Math.min(newIndex, destinationChildren.length);
-        await chrome.bookmarks.move(bookmarkId, {
+        await api.moveBookmark(bookmarkId, {
             parentId: newParentId,
             index: safeIndex
         });
@@ -151,15 +153,14 @@ async function handleBookmarkDrop(evt) {
         refreshBookmarks();
     }
 }
-function refreshBookmarks() {
-    chrome.bookmarks.getTree(tree => {
-        if (tree[0] && tree[0].children) {
-            bookmarkListContainer.innerHTML = '';
-            renderBookmarks(tree[0].children, bookmarkListContainer, '1'); 
-            initializeBookmarkSortable();
-            filterBookmarks(searchBox.value.toLowerCase().trim());
-        }
-    });
+async function refreshBookmarks() {
+    const tree = await api.getBookmarkTree();
+    if (tree[0] && tree[0].children) {
+        bookmarkListContainer.innerHTML = '';
+        renderBookmarks(tree[0].children, bookmarkListContainer, '1');
+        initializeBookmarkSortable();
+        filterBookmarks(searchBox.value.toLowerCase().trim());
+    }
 }
 
 // --- 搜尋邏輯 (拆分) ---
@@ -252,7 +253,7 @@ function applyBookmarkVisibility(query, visibleItems) {
                     icon.textContent = '▶';
                 }
             } else {
-                if (expandedBookmarkFolders.has(node.dataset.bookmarkId)) {
+                if (state.isFolderExpanded(node.dataset.bookmarkId)) {
                     content.style.display = 'block';
                     icon.textContent = '▼';
                 } else {
@@ -278,7 +279,8 @@ function createTabElement(tab) {
     if (urlPreview && urlPreview.length > 300) {
         urlPreview = urlPreview.substring(0, 300) + '...';
     }
-    tabItem.title = `${tab.title}\n${urlPreview}`; // 使用換行符 \n
+    tabItem.title = `${tab.title}\n${urlPreview}`; // 使用換行符 
+
 
 
     const favicon = document.createElement('img');
@@ -288,8 +290,8 @@ function createTabElement(tab) {
     } else {
         favicon.src = 'icons/icon_default.svg';
     }
-    favicon.onerror = () => { 
-        favicon.src = 'icons/icon_default.svg'; 
+    favicon.onerror = () => {
+        favicon.src = 'icons/icon_default.svg';
     };
     const title = document.createElement('span');
     title.className = 'tab-title';
@@ -299,23 +301,23 @@ function createTabElement(tab) {
     closeBtn.textContent = '×';
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        chrome.tabs.remove(tab.id);
+        api.removeTab(tab.id);
     });
     tabItem.appendChild(favicon);
     tabItem.appendChild(title);
     tabItem.appendChild(closeBtn);
     tabItem.addEventListener('click', () => {
-        chrome.tabs.update(tab.id, { active: true });
-        chrome.windows.update(tab.windowId, { focused: true });
+        api.updateTab(tab.id, { active: true });
+        api.updateWindow(tab.windowId, { focused: true });
     });
     return tabItem;
 }
 async function updateTabList() {
     const [groups, tabs] = await Promise.all([
-        chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }),
-        chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT })
+        api.getTabGroupsInCurrentWindow(),
+        api.getTabsInCurrentWindow()
     ]);
-    tabListContainer.innerHTML = ''; 
+    tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
     const renderedTabIds = new Set();
     for (const tab of tabs) {
@@ -361,7 +363,7 @@ async function updateTabList() {
                     const isCollapsed = groupContent.style.display === 'none';
                     groupContent.style.display = isCollapsed ? 'block' : 'none';
                     arrow.textContent = isCollapsed ? '▼' : '▶';
-                    chrome.tabGroups.update(group.id, { collapsed: !isCollapsed });
+                    api.updateTabGroup(group.id, { collapsed: !isCollapsed });
                 }
             });
         } else {
@@ -376,7 +378,7 @@ async function updateTabList() {
 function renderBookmarks(bookmarkNodes, container, parentId) {
     container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
-        if (node.url) { 
+        if (node.url) {
             const bookmarkItem = document.createElement('a');
             bookmarkItem.className = 'bookmark-item';
             bookmarkItem.dataset.bookmarkId = node.id;
@@ -397,8 +399,8 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             } catch (error) {
                 icon.src = 'icons/icon_default.svg';
             }
-            icon.onerror = () => { 
-                icon.src = 'icons/icon_default.svg'; 
+            icon.onerror = () => {
+                icon.src = 'icons/icon_default.svg';
             };
             const title = document.createElement('span');
             title.className = 'bookmark-title';
@@ -415,15 +417,15 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const editBookmarkTitleMsg = chrome.i18n.getMessage("editBookmarkPromptForTitle");
+                const editBookmarkTitleMsg = api.getMessage("editBookmarkPromptForTitle");
                 const newTitle = prompt(editBookmarkTitleMsg, node.title);
                 if (newTitle === null) return; // 使用者按了取消
 
-                const editBookmarkUrlMsg = chrome.i18n.getMessage("editBookmarkPromptForUrl");
+                const editBookmarkUrlMsg = api.getMessage("editBookmarkPromptForUrl");
                 const newUrl = prompt(editBookmarkUrlMsg, node.url);
                 if (newUrl === null) return; // 使用者按了取消
 
-                chrome.bookmarks.update(node.id, { title: newTitle, url: newUrl }, refreshBookmarks);
+                api.updateBookmark(node.id, { title: newTitle, url: newUrl }).then(refreshBookmarks);
             });
 
             const closeBtn = document.createElement('button');
@@ -433,25 +435,23 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
                 e.preventDefault();
                 e.stopPropagation();
                 // 使用 i18n API 獲取翻譯，並傳入參數
-                const confirmMsg = chrome.i18n.getMessage("deleteBookmarkConfirm", node.title);
+                const confirmMsg = api.getMessage("deleteBookmarkConfirm", node.title);
                 if (confirm(confirmMsg)) {
-                    chrome.bookmarks.remove(node.id, () => {
-                        refreshBookmarks();
-                    });
+                    api.removeBookmark(node.id).then(refreshBookmarks);
                 }
             });
 
-            
+
             actionsContainer.appendChild(editBtn);
             actionsContainer.appendChild(closeBtn);
             bookmarkItem.appendChild(icon);
             bookmarkItem.appendChild(title);
             bookmarkItem.appendChild(actionsContainer);
-            
+
             bookmarkItem.addEventListener('click', (e) => {
                 if (e.target !== closeBtn) {
                     e.preventDefault();
-                    chrome.tabs.create({ url: node.url });
+                    api.createTab({ url: node.url });
                 }
             });
             container.appendChild(bookmarkItem);
@@ -462,7 +462,7 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             folderItem.dataset.bookmarkId = node.id;
             folderItem.title = node.title;
 
-            const isExpanded = expandedBookmarkFolders.has(node.id);
+            const isExpanded = state.isFolderExpanded(node.id);
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
             icon.textContent = isExpanded ? '▼' : '▶';
@@ -478,10 +478,10 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><path d="m15 5 4 4"></path></svg>`;
             editBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const promptMsg = chrome.i18n.getMessage("editBookmarkFolderPromptForTitle");
+                const promptMsg = api.getMessage("editBookmarkFolderPromptForTitle");
                 const newTitle = prompt(promptMsg, node.title);
                 if (newTitle && newTitle !== node.title) {
-                    chrome.bookmarks.update(node.id, { title: newTitle }, refreshBookmarks);
+                    api.updateBookmark(node.id, { title: newTitle }).then(refreshBookmarks);
                 }
             });
 
@@ -490,14 +490,14 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             addFolderBtn.textContent = '+';
             addFolderBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const promptMsg = chrome.i18n.getMessage("addFolderPrompt", node.title);
+                const promptMsg = api.getMessage("addFolderPrompt", node.title);
                 const newFolderName = prompt(promptMsg);
                 if (newFolderName) {
-                    chrome.bookmarks.create({
+                    api.createBookmark({
                         parentId: node.id,
                         title: newFolderName
-                    }, () => {
-                        expandedBookmarkFolders.add(node.id);
+                    }).then(() => {
+                        state.addExpandedFolder(node.id);
                         refreshBookmarks();
                     });
                 }
@@ -508,17 +508,17 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             closeBtn.textContent = '×';
             closeBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const confirmMsg = chrome.i18n.getMessage("deleteFolderConfirm", node.title);
+                const confirmMsg = api.getMessage("deleteFolderConfirm", node.title);
                 if (confirm(confirmMsg)) {
-                    chrome.bookmarks.removeTree(node.id, () => {
-                        expandedBookmarkFolders.delete(node.id);
+                    api.removeBookmarkTree(node.id).then(() => {
+                        state.removeExpandedFolder(node.id);
                         refreshBookmarks();
                     });
                 }
             });
 
             actionsContainer.appendChild(editBtn);
-            if (!node.url) { 
+            if (!node.url) {
                 // 只有資料夾才需要「新增資料夾」按鈕
                 actionsContainer.appendChild(addFolderBtn);
             }
@@ -528,21 +528,21 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
             folderItem.appendChild(title);
             folderItem.appendChild(actionsContainer);
             container.appendChild(folderItem);
-            
+
             const folderContent = document.createElement('div');
             folderContent.className = 'folder-content';
             folderContent.style.display = isExpanded ? 'block' : 'none';
             container.appendChild(folderContent);
-            
+
             folderItem.addEventListener('click', (e) => {
                 if (e.target.tagName !== 'BUTTON') {
                     const isNowExpanded = folderContent.style.display === 'none';
                     folderContent.style.display = isNowExpanded ? 'block' : 'none';
                     icon.textContent = isNowExpanded ? '▼' : '▶';
                     if (isNowExpanded) {
-                        expandedBookmarkFolders.add(node.id);
+                        state.addExpandedFolder(node.id);
                     } else {
-                        expandedBookmarkFolders.delete(node.id);
+                        state.removeExpandedFolder(node.id);
                     }
                 }
             });
@@ -555,7 +555,7 @@ function renderBookmarks(bookmarkNodes, container, parentId) {
 function initialize() {
     applyStaticTranslations();
     updateTabList();
-    refreshBookmarks(); 
+    refreshBookmarks();
     searchBox.addEventListener('input', handleSearch);
 }
 
