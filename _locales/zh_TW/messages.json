@@ -57,5 +57,21 @@
     "editBookmarkPromptForUrl": {
         "message": "編輯書籤網址：",
         "description": "提示使用者輸入或編輯特定書籤的網址（URL）。"
+    },
+    "cancelButton": {
+        "message": "取消",
+        "description": "對話框中「取消」按鈕的文字。"
+    },
+    "deleteButton": {
+        "message": "刪除",
+        "description": "對話框中「刪除」按鈕的文字。"
+    },
+    "createButton": {
+        "message": "建立",
+        "description": "對話框中「建立」按鈕的文字。"
+    },
+    "saveButton": {
+        "message": "儲存",
+        "description": "對話框中「儲存」按鈕的文字。"
     }
   }

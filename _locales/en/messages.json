@@ -60,5 +60,21 @@
     "editBookmarkPromptForUrl": {
         "message": "Edit Bookmark URL:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": {
+        "message": "Cancel",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "Delete",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "Create",
+        "description": "Label for the create button in dialogs."
+    },
+    "saveButton": {
+        "message": "Save",
+        "description": "Label for the save button in dialogs."
     }
   }

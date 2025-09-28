@@ -1,5 +1,6 @@
 import * as api from './apiManager.js';
 import * as state from './stateManager.js';
+import * as modal from './modalManager.js';
 
 // --- DOM 元素獲取與導出 ---
 export const tabListContainer = document.getElementById('tab-list');
@@ -151,14 +152,22 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             const editBtn = document.createElement('button');
             editBtn.className = 'bookmark-edit-btn';
             editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><path d="m15 5 4 4"></path></svg>`;
-            editBtn.addEventListener('click', (e) => {
+            editBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const newTitle = prompt(api.getMessage("editBookmarkPromptForTitle"), node.title);
+                const newTitle = await modal.showPrompt({
+                    title: api.getMessage("editBookmarkPromptForTitle"),
+                    defaultValue: node.title,
+                    confirmButtonText: api.getMessage("saveButton")
+                });
                 if (newTitle === null) return;
 
-                const newUrl = prompt(api.getMessage("editBookmarkPromptForUrl"), node.url);
+                const newUrl = await modal.showPrompt({
+                    title: api.getMessage("editBookmarkPromptForUrl"),
+                    defaultValue: node.url,
+                    confirmButtonText: api.getMessage("saveButton")
+                });
                 if (newUrl === null) return;
 
                 api.updateBookmark(node.id, { title: newTitle, url: newUrl }).then(refreshBookmarksCallback);
@@ -167,11 +176,15 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
-            closeBtn.addEventListener('click', (e) => {
+            closeBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                const confirmMsg = api.getMessage("deleteBookmarkConfirm", node.title);
-                if (confirm(confirmMsg)) {
+                const confirm = await modal.showConfirm({
+                    title: api.getMessage("deleteBookmarkConfirm", node.title),
+                    confirmButtonText: api.getMessage("deleteButton"),
+                    confirmButtonClass: 'danger'
+                });
+                if (confirm) {
                     api.removeBookmark(node.id).then(refreshBookmarksCallback);
                 }
             });
@@ -210,20 +223,27 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             const editBtn = document.createElement('button');
             editBtn.className = 'bookmark-edit-btn';
             editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><path d="m15 5 4 4"></path></svg>`;
-            editBtn.addEventListener('click', (e) => {
+            editBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                const newFolderName = prompt(api.getMessage("editBookmarkFolderPromptForTitle"), node.title);
-                if (newFolderName && newFolderName !== node.title) {
-                    api.updateBookmark(node.id, { title: newFolderName }).then(refreshBookmarksCallback);
+                const newTitle = await modal.showPrompt({
+                    title: api.getMessage("editBookmarkFolderPromptForTitle"),
+                    defaultValue: node.title,
+                    confirmButtonText: api.getMessage("saveButton")
+                });
+                if (newTitle && newTitle !== node.title) {
+                    api.updateBookmark(node.id, { title: newTitle }).then(refreshBookmarksCallback);
                 }
             });
 
             const addFolderBtn = document.createElement('button');
             addFolderBtn.className = 'add-folder-btn';
             addFolderBtn.textContent = '+';
-            addFolderBtn.addEventListener('click', (e) => {
+            addFolderBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                const newFolderName = prompt(api.getMessage("addFolderPrompt", node.title));
+                const newFolderName = await modal.showPrompt({
+                    title: api.getMessage("addFolderPrompt", node.title),
+                    confirmButtonText: api.getMessage("createButton")
+                });
                 if (newFolderName) {
                     api.createBookmark({ parentId: node.id, title: newFolderName }).then(() => {
                         state.addExpandedFolder(node.id);
@@ -235,10 +255,14 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
-            closeBtn.addEventListener('click', (e) => {
+            closeBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                const confirmMsg = api.getMessage("deleteFolderConfirm", node.title);
-                if (confirm(confirmMsg)) {
+                const confirm = await modal.showConfirm({
+                    title: api.getMessage("deleteFolderConfirm", node.title),
+                    confirmButtonText: api.getMessage("deleteButton"),
+                    confirmButtonClass: 'danger'
+                });
+                if (confirm) {
                     api.removeBookmarkTree(node.id).then(() => {
                         state.removeExpandedFolder(node.id);
                         refreshBookmarksCallback();

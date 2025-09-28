@@ -27,6 +27,8 @@ key_files:
     description: "[總指揮] 應用程式進入點與總協調者。僅負責初始化各模組及串連瀏覽器事件監聽。"
   - file_path: modules/uiManager.js
     description: "[渲染] UI 渲染模組。專門負責所有 DOM 的操作和更新，接收資料並將其渲染成 HTML 畫面。"
+  - file_path: modules/modalManager.js
+    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。"
   - file_path: modules/apiManager.js
     description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫，方便維護與測試。"
   - file_path: modules/stateManager.js
@@ -37,12 +39,6 @@ key_files:
     description: "[功能] 搜尋過濾模組。負責處理搜尋框的輸入與列表的即時過濾邏輯。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
-  - file_path: sidepanel.html
-    description: "側邊欄的 HTML 骨架，定義了 UI 的基本結構。"
-  - file_path: sidepanel.css
-    description: "側邊欄的樣式表，定義了整體的暗黑風格與佈局。"
-  - file_path: background.js
-    description: "背景腳本，負責監聽擴充功能安裝事件並設定側邊欄行為。"
 
 # 主要語言：與 Gemini CLI 互動時偏好的自然語言
 language: zh-TW

@@ -297,3 +297,97 @@ body {
 [data-i18n="bookmarksHeader"]::before {
     content: '__MSG_bookmarksHeader__';
 }
+
+/* --- Modal Dialog Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 30, 46, 0.8); /* #1e1e2e with 80% opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: #313244; /* Use element background color */
+    padding: 20px;
+    border: 1px solid #45475a;
+    width: 85%;
+    max-width: 400px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-title {
+    font-size: 16px;
+    color: #cdd6f4; /* Lighter text for title */
+    margin: 0;
+    font-weight: normal;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background-color: #1e1e2e; /* Darker background for input */
+    border: 1px solid #45475a;
+    color: #cdd6f4;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.modal-input:focus {
+    outline: none;
+    border-color: #00ff41; /* Highlight color on focus */
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.modal-button {
+    padding: 8px 16px;
+    border: 1px solid #45475a;
+    background-color: transparent;
+    color: #cdd6f4;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.modal-button:hover {
+    background-color: #45475a;
+}
+
+.modal-button.primary {
+    background-color: #00ff41;
+    color: #1e1e2e;
+    border-color: #00ff41;
+    font-weight: bold;
+}
+
+.modal-button.primary:hover {
+    background-color: #33ff66;
+}
+
+.modal-button.danger {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+    border-color: #f38ba8;
+    font-weight: bold;
+}
+
+.modal-button.danger:hover {
+    background-color: #f5a2b8;
+}
