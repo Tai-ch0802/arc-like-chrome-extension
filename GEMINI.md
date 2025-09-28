@@ -24,7 +24,9 @@ tech_stack:
 # 關鍵檔案說明：各主要檔案的職責
 key_files:
   - file_path: sidepanel.js
-    description: "重構後的主檔案，作為應用程式的總協調者。負責初始化各模組，並串連事件監聽與功能呼叫。"
+    description: "應用程式的總協調者。負責初始化各模組，串連事件監聽與功能呼叫，但本身不處理具體的渲染或 API 請求。"
+  - file_path: modules/uiManager.js
+    description: "UI 渲染模組。專門負責所有 DOM 的操作和更新，接收資料並將其渲染成 HTML 畫面。"
   - file_path: modules/apiManager.js
     description: "Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫，方便維護與測試。"
   - file_path: modules/stateManager.js
