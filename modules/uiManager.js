@@ -21,16 +21,16 @@ export function createTabElement(tab) {
     if (urlPreview && urlPreview.length > 300) {
         urlPreview = urlPreview.substring(0, 300) + '...';
     }
-    tabItem.title = `${tab.title}\n${urlPreview}`; // 使用換行符 \n
+    tabItem.title = `${tab.title}\n${urlPreview}`;
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';
     if (tab.favIconUrl && tab.favIconUrl.startsWith('http')) {
         favicon.src = tab.favIconUrl;
     } else {
-        favicon.src = 'icons/icon_default.svg';
+        favicon.src = 'icons/fallback-favicon.svg';
     }
     favicon.onerror = () => {
-        favicon.src = 'icons/icon_default.svg';
+        favicon.src = 'icons/fallback-favicon.svg';
     };
     const title = document.createElement('span');
     title.className = 'tab-title';
@@ -137,10 +137,10 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
                 const domain = new URL(node.url).hostname;
                 icon.src = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
             } catch (error) {
-                icon.src = 'icons/icon_default.svg';
+                icon.src = 'icons/fallback-favicon.svg';
             }
             icon.onerror = () => {
-                icon.src = 'icons/icon_default.svg';
+                icon.src = 'icons/fallback-favicon.svg';
             };
             const title = document.createElement('span');
             title.className = 'bookmark-title';

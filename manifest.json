@@ -20,18 +20,18 @@
     "default_title": "__MSG_extensionName__"
   },
   "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/extension-icon-16.png",
+    "32": "icons/extension-icon-32.png",
+    "48": "icons/extension-icon-48.png",
+    "128": "icons/extension-icon-128.png"
   },
   "commands": {
-    "_execute_action": {
+    "_execute_side_panel_action": {
       "suggested_key": {
         "default": "Ctrl+I",
         "mac": "Command+I"
       },
-      "description": "打開或關閉 Arc 風格側邊欄"
+      "description": "__MSG_commandOpenSidePanel__"
     }
   }
 }

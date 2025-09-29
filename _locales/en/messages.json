@@ -76,5 +76,9 @@
     "saveButton": {
         "message": "Save",
         "description": "Label for the save button in dialogs."
+    },
+    "commandOpenSidePanel": {
+      "message": "Open or close the Arc-style sidebar",
+      "description": "Description for the command that opens the side panel."
     }
   }

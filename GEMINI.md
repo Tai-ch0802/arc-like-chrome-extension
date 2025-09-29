@@ -75,3 +75,11 @@ welcome_message: |
   你好！這是一個 Arc 風格的 Chrome 側邊欄擴充功能，提供垂直分頁與書籤管理。
   你可以使用 `make` 指令來打包專案，或直接在 Chrome 中載入未封裝的專案目錄進行測試。
   需要幫忙嗎？
+
+# Commit Message 規範：撰寫 commit message 時應遵循的風格
+commit_guidelines: |
+  請遵循以下格式撰寫 commit message：
+  - **第一行 (Subject):** 必須使用英文，並簡潔地總結改動的核心。
+  - **內容 (Body):**
+    - 應使用繁體中文撰寫。
+    - 著重於條列式呈現，清楚說明改動的「原因」與「內容」。
