@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "Thanh bên cho Tab/Dấu trang",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "Một tiện ích mở rộng của Chrome mô phỏng các tab dọc của trình duyệt Arc.",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "Tìm kiếm tab hoặc dấu trang...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "Tab",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "Dấu trang",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "Bạn có chắc chắn muốn xóa vĩnh viễn dấu trang \"$bookmark_title$\"?",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "Bạn có chắc chắn muốn xóa vĩnh viễn thư mục \"$folder_title$\" và tất cả nội dung của nó không?\n\nHành động này không thể hoàn tác!",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "Vui lòng nhập tên cho thư mục mới trong \"$parent_folder$\":",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "Chỉnh sửa Tên Thư mục:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "Chỉnh sửa Tên Dấu trang:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "Chỉnh sửa URL Dấu trang:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "Hủy", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "Xóa", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "Tạo", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "Lưu", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "Mở hoặc đóng thanh bên kiểu Arc",
+      "description": "Description for the command that opens the side panel."
+    }
+}

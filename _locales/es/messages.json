@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "Barra lateral para Pestañas/Marcadores",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "Una extensión de Chrome que imita las pestañas verticales del navegador Arc.",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "Buscar pestañas o marcadores...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "Pestañas",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "Marcadores",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "¿Estás seguro de que quieres eliminar permanentemente el marcador \"$bookmark_title$\"?",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "¿Estás seguro de que quieres eliminar permanentemente la carpeta \"$folder_title$\" and todo su contenido?\n\n¡Esta acción no se puede deshacer!",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "Por favor, introduce el nombre de la nueva carpeta en \"$parent_folder$\":",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "Editar nombre de la carpeta:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "Editar nombre del marcador:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "Editar URL del marcador:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "Cancelar", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "Eliminar", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "Crear", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "Guardar", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "Abrir o cerrar la barra lateral estilo Arc",
+      "description": "Description for the command that opens the side panel."
+    }
+}

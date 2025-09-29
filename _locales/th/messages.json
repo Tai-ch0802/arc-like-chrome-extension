@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "แถบด้านข้างสำหรับแท็บ/บุ๊กมาร์ก",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "ส่วนขยายของ Chrome ที่เลียนแบบแท็บแนวตั้งของเบราว์เซอร์ Arc",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "ค้นหาแท็บหรือบุ๊กมาร์ก...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "แท็บ",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "บุ๊กมาร์ก",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "คุณแน่ใจหรือไม่ว่าต้องการลบบุ๊กมาร์ก \"$bookmark_title$\" อย่างถาวร",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "คุณแน่ใจหรือไม่ว่าต้องการลบโฟลเดอร์ \"$folder_title$\" และเนื้อหาทั้งหมดอย่างถาวร\n\nการกระทำนี้ไม่สามารถยกเลิกได้!",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "โปรดป้อนชื่อสำหรับโฟลเดอร์ใหม่ภายใต้ \"$parent_folder$\":",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "แก้ไขชื่อโฟลเดอร์:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "แก้ไขชื่อบุ๊กมาร์ก:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "แก้ไข URL บุ๊กมาร์ก:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "ยกเลิก", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "ลบ", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "สร้าง", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "บันทึก", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "เปิดหรือปิดแถบด้านข้างสไตล์ Arc",
+      "description": "Description for the command that opens the side panel."
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "タブ/ブックマーク用のサイドバー",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "Arcブラウザの垂直タブを模倣したChrome拡張機能。",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "タブまたはブックマークを検索...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "タブ",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "ブックマーク",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "ブックマーク「$bookmark_title$」を完全に削除してもよろしいですか？",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "フォルダ「$folder_title$」とその中のすべてのコンテンツを完全に削除してもよろしいですか？\n\nこの操作は元に戻せません！",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "「$parent_folder$」の下に新しいフォルダの名前を入力してください：",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "フォルダ名を編集：",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "ブックマーク名を編集：",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "ブックマークURLを編集：",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "キャンセル", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "削除", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "作成", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "保存", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "Arcスタイルのサイドバーを開閉する",
+      "description": "Description for the command that opens the side panel."
+    }
+}

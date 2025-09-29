@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "Barra lateral para Guias/Favoritos",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "Uma extensão do Chrome que imita as guias verticais do navegador Arc.",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "Pesquisar guias ou favoritos...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "Guias",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "Favoritos",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "Tem certeza de que deseja excluir permanentemente o favorito \"$bookmark_title$\"?",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "Tem certeza de que deseja excluir permanentemente a pasta \"$folder_title$\" e todo o seu conteúdo?\n\nEsta ação não pode ser desfeita!",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "Digite o nome da nova pasta em \"$parent_folder$\":",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "Editar nome da pasta:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "Editar nome do favorito:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "Editar URL do favorito:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "Cancelar", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "Excluir", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "Criar", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "Salvar", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "Abrir ou fechar a barra lateral estilo Arc",
+      "description": "Description for the command that opens the side panel."
+    }
+}

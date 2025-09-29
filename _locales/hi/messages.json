@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "टैब/बुकमार्क के लिए साइडबार",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "एक क्रोम एक्सटेंशन जो आर्क ब्राउज़र के वर्टिकल टैब की नकल करता है।",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "टैब या बुकमार्क खोजें...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "टैब",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "बुकमार्क",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "क्या आप वाकई बुकमार्क \"$bookmark_title$\" को स्थायी रूप से हटाना चाहते हैं?",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "क्या आप वाकई फ़ोल्डर \"$folder_title$\" और उसकी सभी सामग्री को स्थायी रूप से हटाना चाहते हैं?\n\nयह कार्रवाई पूर्ववत नहीं की जा सकती!",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "कृपया \"$parent_folder$\" के अंतर्गत नए फ़ोल्डर का नाम दर्ज करें:",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "फ़ोल्डर का नाम संपादित करें:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "बुकमार्क का नाम संपादित करें:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "बुकमार्क URL संपादित करें:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "रद्द करें", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "हटाएं", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "बनाएं", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "सहेजें", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "आर्क-शैली साइडबार खोलें या बंद करें",
+      "description": "Description for the command that opens the side panel."
+    }
+}

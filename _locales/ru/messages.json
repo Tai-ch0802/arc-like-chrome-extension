@@ -1,0 +1,57 @@
+{
+    "extensionName": {
+      "message": "Боковая панель для вкладок/закладок",
+      "description": "The name of the extension."
+    },
+    "extensionDescription": {
+      "message": "Расширение для Chrome, имитирующее вертикальные вкладки браузера Arc.",
+      "description": "The description of the extension."
+    },
+    "searchPlaceholder": {
+      "message": "Поиск вкладок или закладок...",
+      "description": "Placeholder text for the search box."
+    },
+    "tabsHeader": {
+      "message": "Вкладки",
+      "description": "Header for the tabs section."
+    },
+    "bookmarksHeader": {
+      "message": "Закладки",
+      "description": "Header for the bookmarks section."
+    },
+    "deleteBookmarkConfirm": {
+      "message": "Вы уверены, что хотите навсегда удалить закладку \"$bookmark_title$\"?",
+      "description": "Confirmation message for deleting a single bookmark.",
+      "placeholders": { "bookmark_title": { "content": "$1" } }
+    },
+    "deleteFolderConfirm": {
+      "message": "Вы уверены, что хотите навсегда удалить папку \"$folder_title$\" и все ее содержимое?\n\nЭто действие нельзя отменить!",
+      "description": "Confirmation message for deleting a bookmark folder.",
+      "placeholders": { "folder_title": { "content": "$1" } }
+    },
+    "addFolderPrompt": {
+      "message": "Введите имя для новой папки в \"$parent_folder$\":",
+      "description": "Prompt for adding a new bookmark folder.",
+      "placeholders": { "parent_folder": { "content": "$1" } }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "Изменить имя папки:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "Изменить имя закладки:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "Изменить URL закладки:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+    },
+    "cancelButton": { "message": "Отмена", "description": "Label for the cancel button in dialogs." },
+    "deleteButton": { "message": "Удалить", "description": "Label for the delete button in dialogs." },
+    "createButton": { "message": "Создать", "description": "Label for the create button in dialogs." },
+    "saveButton": { "message": "Сохранить", "description": "Label for the save button in dialogs." },
+    "commandOpenSidePanel": {
+      "message": "Открыть или закрыть боковую панель в стиле Arc",
+      "description": "Description for the command that opens the side panel."
+    }
+}
