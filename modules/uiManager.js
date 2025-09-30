@@ -133,12 +133,17 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             const icon = document.createElement('img');
             icon.className = 'bookmark-icon';
-            try {
-                const domain = new URL(node.url).hostname;
-                icon.src = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
-            } catch (error) {
+            if (node.url && (node.url.startsWith('http') || node.url.startsWith('https'))) {
+                try {
+                    const domain = new URL(node.url).hostname;
+                    icon.src = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
+                } catch (error) {
+                    icon.src = 'icons/fallback-favicon.svg';
+                }
+            } else {
                 icon.src = 'icons/fallback-favicon.svg';
             }
+
             icon.onerror = () => {
                 icon.src = 'icons/fallback-favicon.svg';
             };
@@ -156,21 +161,18 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
                 e.preventDefault();
                 e.stopPropagation();
 
-                const newTitle = await modal.showPrompt({
+                const result = await modal.showFormDialog({
                     title: api.getMessage("editBookmarkPromptForTitle"),
-                    defaultValue: node.title,
+                    fields: [
+                        { name: 'title', label: 'Name', defaultValue: node.title },
+                        { name: 'url', label: 'URL', defaultValue: node.url }
+                    ],
                     confirmButtonText: api.getMessage("saveButton")
                 });
-                if (newTitle === null) return;
 
-                const newUrl = await modal.showPrompt({
-                    title: api.getMessage("editBookmarkPromptForUrl"),
-                    defaultValue: node.url,
-                    confirmButtonText: api.getMessage("saveButton")
-                });
-                if (newUrl === null) return;
-
-                api.updateBookmark(node.id, { title: newTitle, url: newUrl }).then(refreshBookmarksCallback);
+                if (result && (result.title !== node.title || result.url !== node.url)) {
+                    api.updateBookmark(node.id, { title: result.title, url: result.url }).then(refreshBookmarksCallback);
+                }
             });
 
             const closeBtn = document.createElement('button');
