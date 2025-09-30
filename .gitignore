@@ -2,3 +2,4 @@ arc-sidebar-v*
 .DS_Store
 .idea/
 node_modules/
+RELEASE_NOTE.md

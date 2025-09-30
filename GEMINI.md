@@ -83,3 +83,12 @@ commit_guidelines: |
   - **內容 (Body):**
     - 應使用繁體中文撰寫。
     - 著重於條列式呈現，清楚說明改動的「原因」與「內容」。
+
+# Release Note 規範：撰寫 release note 時應遵循的風格
+release_note_guidelines: |
+  當需要撰寫 release note 時，請遵循 `.github/release.yml` 中定義的結構與風格。
+  主要包含以下區塊：
+  - **✨ 新功能 (New Features)**
+  - **🚀 改善與錯誤修復 (Improvements & Bug Fixes)**
+  語言應以繁體中文為主。
+  產出的 `RELEASE_NOTE.md` 檔案僅為臨時預覽用途，應被加入 `.gitignore` 中，不進入版控。

@@ -1,0 +1,23 @@
+body:
+  - type: markdown
+    attributes:
+      value: "請在這裡簡短描述本次發布的重點。"
+  - type: textarea
+    id: features
+    attributes:
+      label: "✨ 新功能 (New Features)"
+      description: "條列出本次發布所包含的所有新功能。"
+      placeholder: "- 新增了...功能，讓使用者可以..."
+    validations:
+      required: false
+  - type: textarea
+    id: fixes
+    attributes:
+      label: "🚀 改善與錯誤修復 (Improvements & Bug Fixes)"
+      description: "條列出所有的改善、重構與錯誤修復。"
+      placeholder: "- 修復了...問題，現在...可以正常運作。"
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "感謝所有貢獻者！"
