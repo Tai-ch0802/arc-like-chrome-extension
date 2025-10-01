@@ -70,6 +70,14 @@
         "message": "Google",
         "description": "Name for the Google theme option."
     },
+    "themeOptionDarcula": {
+        "message": "Darcula (JetBrains)",
+        "description": "Name for the Darcula (JetBrains) theme option."
+    },
+    "themeOptionGeekBlue": {
+        "message": "Geek Biru",
+        "description": "Name for the Geek Biru theme option."
+    },
     "commandOpenSidePanel": {
       "message": "Buka atau tutup bilah sisi gaya Arc",
       "description": "Description for the command that opens the side panel."

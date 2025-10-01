@@ -331,7 +331,9 @@ export function initThemeSwitcher() {
 
         const themeOptions = [
             { value: 'geek', labelKey: 'themeOptionGeek' },
-            { value: 'google', labelKey: 'themeOptionGoogle' }
+            { value: 'google', labelKey: 'themeOptionGoogle' },
+            { value: 'darcula', labelKey: 'themeOptionDarcula' },
+            { value: 'geek-blue', labelKey: 'themeOptionGeekBlue' }
         ];
 
         const themeSelectHtml = `

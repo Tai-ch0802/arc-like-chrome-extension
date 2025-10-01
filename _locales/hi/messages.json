@@ -73,6 +73,14 @@
         "message": "Google",
         "description": "Name for the Google theme option."
     },
+    "themeOptionDarcula": {
+        "message": "Darcula (JetBrains)",
+        "description": "Name for the Darcula (JetBrains) theme option."
+    },
+    "themeOptionGeekBlue": {
+        "message": "गीक ब्लू",
+        "description": "Name for the गीक ब्लू theme option."
+    },
     "commandOpenSidePanel": {
       "message": "आर्क-शैली साइडबार खोलें या बंद करें",
       "description": "Description for the command that opens the side panel."

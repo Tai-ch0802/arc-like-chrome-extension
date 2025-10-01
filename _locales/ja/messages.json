@@ -73,6 +73,14 @@
         "message": "Google",
         "description": "Name for the Google theme option."
     },
+    "themeOptionDarcula": {
+        "message": "Darcula (JetBrains)",
+        "description": "Name for the Darcula (JetBrains) theme option."
+    },
+    "themeOptionGeekBlue": {
+        "message": "ギークブルー",
+        "description": "Name for the ギークブルー theme option."
+    },
     "commandOpenSidePanel": {
       "message": "Arcスタイルのサイドバーを開閉する",
       "description": "Description for the command that opens the side panel."

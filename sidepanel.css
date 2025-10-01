@@ -56,6 +56,62 @@
     --modal-shadow-color: rgba(60, 64, 67, 0.3);
 }
 
+/* 3. Darcula (JetBrains) 風格主題 */
+[data-theme='darcula'] {
+    --main-bg-color: #2b2b2b;
+    --text-color-primary: #a9b7c6;
+    --text-color-secondary: #808080;
+    --text-color-header: #bbb529;
+    --text-color-inverted: #2b2b2b;
+    --text-color-placeholder: #616161;
+    --text-color-light: #a9b7c6;
+
+    --element-bg-color: #3c3f41;
+    --element-bg-hover-color: #4e5254;
+    --element-bg-active-color: #515a5c;
+
+    --border-color: #515a5c;
+    --border-color-accent: #6a8759;
+
+    --accent-color: #6a8759;
+    --accent-color-hover: #8cb369;
+    --danger-color: #cc7832;
+    --danger-color-hover: #e09040;
+    --info-color: #6d9cbe;
+    --warning-color: #ffc66d;
+
+    --modal-overlay-bg-color: rgba(43, 43, 43, 0.8);
+    --modal-shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 4. Geek Blue 風格主題 */
+[data-theme='geek-blue'] {
+    --main-bg-color: #1e1e2e;
+    --text-color-primary: #89b4fa;
+    --text-color-secondary: #6c7086;
+    --text-color-header: #1a73e8;
+    --text-color-inverted: #1e1e2e;
+    --text-color-placeholder: #6c7086;
+    --text-color-light: #cdd6f4;
+
+    --element-bg-color: #313244;
+    --element-bg-hover-color: #313244;
+    --element-bg-active-color: #45475a;
+
+    --border-color: #45475a;
+    --border-color-accent: #1a73e8;
+
+    --accent-color: #1a73e8;
+    --accent-color-hover: #3399ff;
+    --danger-color: #f38ba8;
+    --danger-color-hover: #f5a2b8;
+    --info-color: #89b4fa;
+    --warning-color: #0fa1f0;
+
+    --modal-overlay-bg-color: rgba(30, 30, 46, 0.8);
+    --modal-shadow-color: rgba(0, 0, 0, 0.5);
+}
+
 
 /* --- 全局與字體設定 --- */
 body {

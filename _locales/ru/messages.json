@@ -73,6 +73,14 @@
         "message": "Google",
         "description": "Name for the Google theme option."
     },
+    "themeOptionDarcula": {
+        "message": "Darcula (JetBrains)",
+        "description": "Name for the Darcula (JetBrains) theme option."
+    },
+    "themeOptionGeekBlue": {
+        "message": "Гик Синий",
+        "description": "Name for the Гик Синий theme option."
+    },
     "commandOpenSidePanel": {
       "message": "Открыть или закрыть боковую панель в стиле Arc",
       "description": "Description for the command that opens the side panel."
