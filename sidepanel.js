@@ -32,12 +32,23 @@ function applyStaticTranslations() {
     ui.searchBox.placeholder = api.getMessage("searchPlaceholder");
 }
 
+// 新增：動態調整 body padding-top 的函式
+function adjustBodyPadding() {
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer) {
+        document.body.style.paddingTop = `${searchContainer.offsetHeight}px`;
+    }
+}
+
 function initialize() {
-    applyStaticTranslations();
-    search.initialize();
-    updateTabList();
-    refreshBookmarks();
-    addEventListeners();
+    console.log('initialize() called'); // DEBUG
+    applyStaticTranslations(); console.log('applyStaticTranslations done');
+    search.initialize(); console.log('search.initialize done');
+    adjustBodyPadding(); console.log('adjustBodyPadding done');
+    ui.initThemeSwitcher(); console.log('ui.initThemeSwitcher done'); // 初始化主題切換器
+    updateTabList(); console.log('updateTabList done');
+    refreshBookmarks(); console.log('refreshBookmarks done');
+    addEventListeners(); console.log('addEventListeners done');
 }
 
 function addEventListeners() {
@@ -62,4 +73,4 @@ function addEventListeners() {
 }
 
 // --- 啟動 ---
-initialize();
+document.addEventListener('DOMContentLoaded', initialize);

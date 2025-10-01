@@ -1,51 +1,138 @@
-/* --- Geek 風格主題 (駭客綠) --- */
+/* --- 主題定義 --- */
 
-/* 全局與字體設定 */
+/* 1. 預設主題 (GEEK 黑) */
+:root {
+    --main-bg-color: #1e1e2e;
+    --text-color-primary: #a0e8a0;
+    --text-color-secondary: #6c7086;
+    --text-color-header: #558b2f;
+    --text-color-inverted: #1e1e2e;
+    --text-color-placeholder: #6c7086;
+    --text-color-light: #cdd6f4;
+
+    --element-bg-color: #313244;
+    --element-bg-hover-color: #313244;
+    --element-bg-active-color: #45475a;
+
+    --border-color: #45475a;
+    --border-color-accent: #00ff41;
+
+    --accent-color: #00ff41;
+    --accent-color-hover: #33ff66;
+    --danger-color: #f38ba8;
+    --danger-color-hover: #f5a2b8;
+    --info-color: #89b4fa;
+    --warning-color: #0fa1f0;
+
+    --modal-overlay-bg-color: rgba(30, 30, 46, 0.8);
+    --modal-shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 2. Google 風格主題 */
+[data-theme='google'] {
+    --main-bg-color: #ffffff;
+    --text-color-primary: #202124;
+    --text-color-secondary: #5f6368;
+    --text-color-header: #1a73e8;
+    --text-color-inverted: #ffffff;
+    --text-color-placeholder: #80868b;
+    --text-color-light: #202124;
+
+    --element-bg-color: #f1f3f4;
+    --element-bg-hover-color: #e8eaed;
+    --element-bg-active-color: #d2e3fc;
+
+    --border-color: #dadce0;
+    --border-color-accent: #1a73e8;
+
+    --accent-color: #1a73e8;
+    --accent-color-hover: #1765cc;
+    --danger-color: #d93025;
+    --danger-color-hover: #c5221f;
+    --info-color: #1a73e8;
+    --warning-color: #f9ab00;
+
+    --modal-overlay-bg-color: rgba(60, 64, 67, 0.8);
+    --modal-shadow-color: rgba(60, 64, 67, 0.3);
+}
+
+
+/* --- 全局與字體設定 --- */
 body {
     font-family: 'SF Mono', 'Menlo', 'Consolas', 'Courier New', monospace;
     margin: 0;
-    /* 為搜尋框留出空間 */
-    padding: 50px 8px 8px 8px; 
-    background-color: #1e1e2e; 
-    color: #a0e8a0;
+    padding: 8px 8px 8px;
+    background-color: var(--main-bg-color);
+    color: var(--text-color-primary);
     font-size: 14px;
     position: relative; /* 為了定位搜尋框 */
     min-height: 100vh;
     box-sizing: border-box;
 }
 
-/* --- 新增：搜尋框樣式 --- */
+/* --- 搜尋框樣式 --- */
 #search-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     padding: 8px;
-    background-color: #1e1e2e;
+    background-color: var(--main-bg-color);
     z-index: 10;
+    display: flex; /* 使用 Flexbox */
+    align-items: center; /* 垂直置中 */
+    gap: 8px; /* 搜尋框和設定圖示之間的間距 */
 }
 
 #search-box {
+    flex-grow: 1; /* 讓搜尋框佔據剩餘空間 */
     width: 100%;
     padding: 8px 12px;
     box-sizing: border-box;
-    background-color: #313244;
-    border: 1px solid #45475a;
-    color: #cdd6f4;
+    background-color: var(--element-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-light);
     font-family: inherit;
     font-size: 14px;
 }
 
 #search-box:focus {
     outline: none;
-    border-color: #00ff41; /* 使用高亮綠色 */
+    border-color: var(--border-color-accent);
 }
 
 #search-box::placeholder {
-    color: #6c7086;
+    color: var(--text-color-placeholder);
 }
 
-/* --- 新增：用於隱藏元素的通用 Class --- */
+/* --- 設定按鈕樣式 --- */
+#settings-toggle {
+    flex-shrink: 0; /* 防止設定圖示被壓縮 */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 確保 SVG 在按鈕內置中 */
+    width: 24px; /* 調整大小 */
+    height: 24px; /* 調整大小 */
+    padding: 4px; /* 增加點擊區域 */
+    border-radius: 4px; /* 輕微圓角 */
+    transition: background-color 0.2s ease;
+}
+
+#settings-toggle:hover {
+    background-color: var(--element-bg-hover-color);
+}
+
+#settings-toggle svg {
+    stroke: var(--text-color-secondary);
+    transition: stroke 0.2s ease;
+}
+
+#settings-toggle:hover svg {
+    stroke: var(--text-color-primary);
+}
+
+/* --- 通用隱藏 Class --- */
 .hidden {
     display: none !important;
 }
@@ -55,7 +142,7 @@ body {
 .section-header {
     font-size: 12px;
     text-transform: uppercase;
-    color: #558b2f;
+    color: var(--text-color-header);
     margin: 16px 0 8px 4px;
     letter-spacing: 1px;
 }
@@ -63,7 +150,7 @@ body {
 .divider {
     border: none;
     height: 1px;
-    background-color: #45475a;
+    background-color: var(--border-color);
     margin: 16px 0;
 }
 
@@ -78,7 +165,7 @@ body {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    border-radius: 0; 
+    border-radius: 0;
     cursor: pointer;
     transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
     white-space: nowrap;
@@ -89,16 +176,16 @@ body {
 }
 
 .tab-item:hover {
-    background-color: #313244;
+    background-color: var(--element-bg-hover-color);
 }
 
 .tab-item.active {
-    background-color: #45475a;
-    border-left: 3px solid #00ff41; /* 亮綠色邊框 */
+    background-color: var(--element-bg-active-color);
+    border-left: 3px solid var(--accent-color); /* 亮綠色邊框 */
 }
 
 .tab-item.active .tab-title {
-    color: #00ff41; /* 亮綠色文字 */
+    color: var(--accent-color); /* 亮綠色文字 */
 }
 
 .tab-favicon {
@@ -133,8 +220,8 @@ body {
     font-size: 16px;
     line-height: 18px;
     text-align: center;
-    color: #6c7086;
     opacity: 0;
+    color: var(--text-color-secondary);
     transition: opacity 0.2s ease, color 0.2s ease;
 }
 
@@ -143,7 +230,7 @@ body {
 }
 
 .close-btn:hover {
-    color: #f38ba8; /* 保留紅色以符合操作直覺 */
+    color: var(--danger-color);
     font-weight: bold;
 }
 
@@ -158,7 +245,7 @@ body {
 }
 
 .tab-group-header:hover {
-    background-color: #313244;
+    background-color: var(--element-bg-hover-color);
 }
 
 .tab-group-arrow {
@@ -197,16 +284,11 @@ body {
     position: relative; /* 新增：為了定位刪除按鈕 */
 }
 
-.bookmark-item:hover, .bookmark-folder:hover {
-    background-color: #313244;
-}
-
 .bookmark-icon {
     width: 16px;
     height: 16px;
     margin-right: 12px;
     flex-shrink: 0;
-    /* text-align: center; */
 }
 
 .bookmark-title {
@@ -251,7 +333,7 @@ body {
     font-size: 16px;
     line-height: 18px;
     text-align: center;
-    color: #6c7086;
+    color: var(--text-color-secondary);
     transition: color 0.2s ease;
     padding: 0;
 }
@@ -260,7 +342,7 @@ body {
 .bookmark-item:hover .bookmark-edit-btn,
 .bookmark-folder:hover .bookmark-close-btn,
 .bookmark-folder:hover .bookmark-edit-btn,
-.bookmark-folder:hover .add-folder-btn { 
+.bookmark-folder:hover .add-folder-btn {
     opacity: 1; /* 滑鼠懸停時顯示 */
 }
 
@@ -271,15 +353,15 @@ body {
 }
 
 .bookmark-close-btn:hover {
-    color: #f38ba8;
+    color: var(--danger-color);
 }
 
 .add-folder-btn:hover {
-    color: #89b4fa;
+    color: var(--info-color);
 }
 
 .bookmark-edit-btn:hover {
-    color: #0fa1f0; 
+    color: var(--warning-color);
 }
 
 
@@ -305,7 +387,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(30, 30, 46, 0.8); /* #1e1e2e with 80% opacity */
+    background-color: var(--modal-overlay-bg-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -314,12 +396,12 @@ body {
 }
 
 .modal-content {
-    background-color: #313244; /* Use element background color */
+    background-color: var(--element-bg-color);
     padding: 20px;
-    border: 1px solid #45475a;
+    border: 1px solid var(--border-color);
     width: 85%;
     max-width: 400px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 25px var(--modal-shadow-color);
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -327,7 +409,7 @@ body {
 
 .modal-title {
     font-size: 16px;
-    color: #cdd6f4; /* Lighter text for title */
+    color: var(--text-color-light); /* Lighter text for title */
     margin: 0;
     font-weight: normal;
 }
@@ -336,16 +418,44 @@ body {
     width: 100%;
     padding: 8px 12px;
     box-sizing: border-box;
-    background-color: #1e1e2e; /* Darker background for input */
-    border: 1px solid #45475a;
-    color: #cdd6f4;
+    background-color: var(--main-bg-color); /* Darker background for input */
+    border: 1px solid var(--border-color);
+    color: var(--text-color-light);
     font-family: inherit;
     font-size: 14px;
 }
 
 .modal-input:focus {
     outline: none;
-    border-color: #00ff41; /* Highlight color on focus */
+    border-color: var(--accent-color); /* Highlight color on focus */
+}
+
+.modal-select {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background-color: var(--main-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-light);
+    font-family: inherit;
+    font-size: 14px;
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+}
+
+.modal-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.modal-select option {
+    background-color: var(--main-bg-color);
+    color: var(--text-color-light);
 }
 
 .modal-buttons {
@@ -357,9 +467,9 @@ body {
 
 .modal-button {
     padding: 8px 16px;
-    border: 1px solid #45475a;
+    border: 1px solid var(--border-color);
     background-color: transparent;
-    color: #cdd6f4;
+    color: var(--text-color-light);
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
@@ -367,27 +477,27 @@ body {
 }
 
 .modal-button:hover {
-    background-color: #45475a;
+    background-color: var(--element-bg-active-color);
 }
 
 .modal-button.primary {
-    background-color: #00ff41;
-    color: #1e1e2e;
-    border-color: #00ff41;
+    background-color: var(--accent-color);
+    color: var(--text-color-inverted);
+    border-color: var(--accent-color);
     font-weight: bold;
 }
 
 .modal-button.primary:hover {
-    background-color: #33ff66;
+    background-color: var(--accent-color-hover);
 }
 
 .modal-button.danger {
-    background-color: #f38ba8;
-    color: #1e1e2e;
-    border-color: #f38ba8;
+    background-color: var(--danger-color);
+    color: var(--text-color-inverted);
+    border-color: var(--danger-color);
     font-weight: bold;
 }
 
 .modal-button.danger:hover {
-    background-color: #f5a2b8;
+    background-color: var(--danger-color-hover);
 }

@@ -72,4 +72,24 @@
 
 ---
 
+## 🧪 測試 (Testing)
+
+為了確保專案的品質與功能的穩定性，我們採用 use case test 的方式來驗證每次的改動。
+
+### Use Case Tests
+
+*   **目的**: 每個 use case test 旨在清晰地定義特定功能的預期行為和操作流程。它們以描述性文字呈現，詳細說明了測試步驟、前置條件、預期結果及驗證方法。
+*   **位置**: 所有的 use case test 檔案都儲存於專案根目錄下的 `usecase_tests/` 資料夾中。
+*   **執行與驗證**: 這些測試目前主要透過手動方式執行。開發者需根據測試檔案中的步驟，在實際運行的 Chrome 擴充功能中模擬使用者操作，並觀察結果是否符合預期。
+
+### 自動化測試框架 (Automated Testing Framework)
+
+為了未來實現自動化測試，我們選用了 **Puppeteer** 作為端對端 (End-to-End, E2E) 測試框架。
+
+*   **Puppeteer**: 是一個 Node.js 函式庫，提供高階 API 來透過 DevTools 協定控制 Chromium 或 Chrome。它允許我們編寫腳本來模擬使用者在瀏覽器中的各種操作，例如點擊、輸入、導航等，並截圖或獲取頁面內容進行驗證。
+*   **安裝**: Puppeteer 已透過 `npm install puppeteer` 安裝於專案中。
+*   **未來展望**: 未來將會把 `usecase_tests/` 中的描述性測試案例逐步轉換為可執行的 Puppeteer 腳本，以實現自動化測試與持續整合。
+
+---
+
 本專案採用 MIT 授權。

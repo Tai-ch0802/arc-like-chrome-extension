@@ -49,7 +49,30 @@
     "cancelButton": { "message": "취소", "description": "Label for the cancel button in dialogs." },
     "deleteButton": { "message": "삭제", "description": "Label for the delete button in dialogs." },
     "createButton": { "message": "만들기", "description": "Label for the create button in dialogs." },
-    "saveButton": { "message": "저장", "description": "Label for the save button in dialogs." },
+    "saveButton": {
+        "message": "저장",
+        "description": "Label for the save button in dialogs."
+    },
+    "closeButton": {
+        "message": "Close",
+        "description": "Label for the close button in dialogs."
+    },
+    "settingsTitle": {
+        "message": "Settings",
+        "description": "Title for the settings dialog."
+    },
+    "themeSectionHeader": {
+        "message": "Appearance",
+        "description": "Header for the theme/appearance section in settings."
+    },
+    "themeOptionGeek": {
+        "message": "Geek (Default)",
+        "description": "Name for the Geek theme option."
+    },
+    "themeOptionGoogle": {
+        "message": "Google",
+        "description": "Name for the Google theme option."
+    },
     "commandOpenSidePanel": {
       "message": "Arc 스타일 사이드바 열기 또는 닫기",
       "description": "Description for the command that opens the side panel."

@@ -16,6 +16,7 @@ tech_stack:
     - chrome.tabGroups
     - chrome.bookmarks
     - chrome.i18n
+    - chrome.storage
   js_libraries:
     - Sortable.js
   build_tools:
@@ -26,7 +27,7 @@ key_files:
   - file_path: sidepanel.js
     description: "[總指揮] 應用程式進入點與總協調者。僅負責初始化各模組及串連瀏覽器事件監聽。"
   - file_path: modules/uiManager.js
-    description: "[渲染] UI 渲染模組。專門負責所有 DOM 的操作和更新，接收資料並將其渲染成 HTML 畫面。"
+    description: "[渲染與互動] UI 模組。負責所有 DOM 操作、畫面渲染，並處理如主題切換等 UI 互動事件。"
   - file_path: modules/modalManager.js
     description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。"
   - file_path: modules/apiManager.js
@@ -92,3 +93,6 @@ release_note_guidelines: |
   - **🚀 改善與錯誤修復 (Improvements & Bug Fixes)**
   語言應以繁體中文為主。
   產出的 `RELEASE_NOTE.md` 檔案僅為臨時預覽用途，應被加入 `.gitignore` 中，不進入版控。
+
+# 開發準則
+- 在做任何改動時，需要留意是否可能影響其他的檔案。並且時刻留意此次的改動項目，必要時在 GEMINI.md 上調整專案 key_files 的描述及調整。

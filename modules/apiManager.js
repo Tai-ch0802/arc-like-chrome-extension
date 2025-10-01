@@ -29,3 +29,20 @@ export const updateWindow = (windowId, options) => chrome.windows.update(windowI
 
 // Wrappers for chrome.i18n API
 export const getMessage = (key, substitutions) => chrome.i18n.getMessage(key, substitutions);
+
+// Wrappers for chrome.storage API
+export const getStorage = (area, keys) => {
+    return new Promise((resolve) => {
+        chrome.storage[area].get(keys, (result) => {
+            resolve(result);
+        });
+    });
+};
+
+export const setStorage = (area, items) => {
+    return new Promise((resolve) => {
+        chrome.storage[area].set(items, () => {
+            resolve();
+        });
+    });
+};

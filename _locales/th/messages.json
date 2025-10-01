@@ -49,7 +49,30 @@
     "cancelButton": { "message": "ยกเลิก", "description": "Label for the cancel button in dialogs." },
     "deleteButton": { "message": "ลบ", "description": "Label for the delete button in dialogs." },
     "createButton": { "message": "สร้าง", "description": "Label for the create button in dialogs." },
-    "saveButton": { "message": "บันทึก", "description": "Label for the save button in dialogs." },
+    "saveButton": {
+        "message": "บันทึก",
+        "description": "Label for the save button in dialogs."
+    },
+    "closeButton": {
+        "message": "Close",
+        "description": "Label for the close button in dialogs."
+    },
+    "settingsTitle": {
+        "message": "Settings",
+        "description": "Title for the settings dialog."
+    },
+    "themeSectionHeader": {
+        "message": "Appearance",
+        "description": "Header for the theme/appearance section in settings."
+    },
+    "themeOptionGeek": {
+        "message": "Geek (Default)",
+        "description": "Name for the Geek theme option."
+    },
+    "themeOptionGoogle": {
+        "message": "Google",
+        "description": "Name for the Google theme option."
+    },
     "commandOpenSidePanel": {
       "message": "เปิดหรือปิดแถบด้านข้างสไตล์ Arc",
       "description": "Description for the command that opens the side panel."

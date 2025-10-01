@@ -105,14 +105,29 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
         form.appendChild(titleEl);
 
         fields.forEach(field => {
-            // In a real app, you might have more input types, but for now, text is fine.
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = field.name;
-            input.className = 'modal-input';
-            input.value = field.defaultValue || '';
-            input.placeholder = field.label;
-            form.appendChild(input);
+            if (field.type === 'select') {
+                const select = document.createElement('select');
+                select.name = field.name;
+                select.className = 'modal-select'; // Apply the new CSS class
+                field.options.forEach(option => {
+                    const optionEl = document.createElement('option');
+                    optionEl.value = option.value;
+                    optionEl.textContent = option.label;
+                    if (option.value === field.defaultValue) {
+                        optionEl.selected = true;
+                    }
+                    select.appendChild(optionEl);
+                });
+                form.appendChild(select);
+            } else { // Default to text input
+                const input = document.createElement('input');
+                input.type = field.type || 'text'; // Allow other input types or default to text
+                input.name = field.name;
+                input.className = 'modal-input';
+                input.value = field.defaultValue || '';
+                input.placeholder = field.label;
+                form.appendChild(input);
+            }
         });
 
         const buttons = document.createElement('div');
@@ -150,6 +165,38 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
         overlay.onclick = (e) => {
             if (e.target === overlay) {
                 cleanupAndResolve(null);
+            }
+        };
+    });
+}
+
+export function showCustomDialog({ title, content, closeButtonText = api.getMessage("closeButton") || 'Close', onOpen = () => {} }) {
+    return new Promise((resolve) => {
+        const dialogContent = document.createElement('div');
+
+        dialogContent.innerHTML = `
+            <h3 class="modal-title">${title}</h3>
+            <div class="modal-custom-content">${content}</div>
+            <div class="modal-buttons">
+                <button class="modal-button close-btn">${closeButtonText}</button>
+            </div>
+        `;
+
+        const { overlay, modalContent } = createModal(dialogContent);
+
+        onOpen(modalContent); // 在內容被添加到 DOM 後執行 onOpen 回呼函式
+
+        const closeBtn = modalContent.querySelector('.close-btn');
+
+        const cleanupAndResolve = () => {
+            removeModal(overlay);
+            resolve();
+        };
+
+        closeBtn.onclick = () => cleanupAndResolve();
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                cleanupAndResolve();
             }
         };
     });

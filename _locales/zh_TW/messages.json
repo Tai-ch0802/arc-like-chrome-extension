@@ -74,6 +74,46 @@
         "message": "儲存",
         "description": "對話框中「儲存」按鈕的文字。"
     },
+    "closeButton": {
+        "message": "關閉",
+        "description": "對話框中「關閉」按鈕的文字。"
+    },
+    "settingsTitle": {
+        "message": "設定",
+        "description": "設定對話框的標題。"
+    },
+    "themeSectionHeader": {
+        "message": "外觀",
+        "description": "設定中外觀區塊的標題。"
+    },
+    "themeOptionGeek": {
+        "message": "極客 (預設)",
+        "description": "極客主題選項的名稱。"
+    },
+    "themeOptionGoogle": {
+        "message": "Google",
+        "description": "Google 主題選項的名稱。"
+    },
+    "closeButton": {
+        "message": "關閉",
+        "description": "對話框中「關閉」按鈕的文字。"
+    },
+    "settingsTitle": {
+        "message": "設定",
+        "description": "設定對話框的標題。"
+    },
+    "themeSectionHeader": {
+        "message": "外觀",
+        "description": "設定中外觀區塊的標題。"
+    },
+    "themeOptionGeek": {
+        "message": "極客 (預設)",
+        "description": "極客主題選項的名稱。"
+    },
+    "themeOptionGoogle": {
+        "message": "Google",
+        "description": "Google 主題選項的名稱。"
+    },
     "commandOpenSidePanel": {
       "message": "打開或關閉 Arc 風格側邊欄",
       "description": "打開側邊欄指令的描述。"

@@ -50,6 +50,26 @@
     "deleteButton": { "message": "Löschen", "description": "Label for the delete button in dialogs." },
     "createButton": { "message": "Erstellen", "description": "Label for the create button in dialogs." },
     "saveButton": { "message": "Speichern", "description": "Label for the save button in dialogs." },
+    "closeButton": {
+        "message": "Close",
+        "description": "Label for the close button in dialogs."
+    },
+    "settingsTitle": {
+        "message": "Settings",
+        "description": "Title for the settings dialog."
+    },
+    "themeSectionHeader": {
+        "message": "Appearance",
+        "description": "Header for the theme/appearance section in settings."
+    },
+    "themeOptionGeek": {
+        "message": "Geek (Default)",
+        "description": "Name for the Geek theme option."
+    },
+    "themeOptionGoogle": {
+        "message": "Google",
+        "description": "Name for the Google theme option."
+    },
     "commandOpenSidePanel": {
       "message": "Arc-Stil Seitenleiste öffnen oder schließen",
       "description": "Description for the command that opens the side panel."

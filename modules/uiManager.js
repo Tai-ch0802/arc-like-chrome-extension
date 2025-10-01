@@ -304,3 +304,75 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
         }
     });
 }
+
+// --- 新增：主題切換功能 ---
+
+/**
+ * 應用指定的主題到文檔的 body 上。
+ * @param {string} themeName - 要應用的主題名稱 (e.g., 'geek', 'google')。
+ */
+export function applyTheme(themeName) {
+    document.body.dataset.theme = themeName;
+}
+
+/**
+ * 初始化主題切換器。
+ * - 從存儲中加載並應用保存的主題。
+ * - 為設定面板和主題選項添加事件監聽器。
+ */
+export function initThemeSwitcher() {
+    const settingsToggle = document.getElementById('settings-toggle');
+    console.log('settingsToggle element:', settingsToggle); // DEBUG
+
+    // 點擊設定圖示，彈出設定對話框
+    settingsToggle.addEventListener('click', async () => {
+        console.log('Settings toggle clicked!'); // DEBUG
+        const currentTheme = document.body.dataset.theme || 'geek';
+
+        const themeOptions = [
+            { value: 'geek', labelKey: 'themeOptionGeek' },
+            { value: 'google', labelKey: 'themeOptionGoogle' }
+        ];
+
+        const themeSelectHtml = `
+            <select id="theme-select-dropdown" class="modal-select">
+                ${themeOptions.map(option => `
+                    <option value="${option.value}" ${currentTheme === option.value ? 'selected' : ''}>
+                        ${api.getMessage(option.labelKey)}
+                    </option>
+                `).join('')}
+            </select>
+        `;
+
+        const content = `
+            <div class="settings-section">
+                <h4 class="settings-section-header">${api.getMessage('themeSectionHeader')}</h4>
+                <div class="theme-options">
+                    ${themeSelectHtml}
+                </div>
+            </div>
+        `;
+
+        console.log('Calling showCustomDialog...'); // DEBUG
+        await modal.showCustomDialog({
+            title: api.getMessage('settingsTitle'),
+            content: content,
+            onOpen: (modalContentElement) => {
+                // 在對話框內容被添加到 DOM 後，綁定事件監聽器
+                const themeSelectDropdown = modalContentElement.querySelector('#theme-select-dropdown');
+                if (themeSelectDropdown) {
+                    themeSelectDropdown.addEventListener('change', (event) => {
+                        const newTheme = event.target.value;
+                        applyTheme(newTheme);
+                        api.setStorage('sync', { theme: newTheme });
+                    });
+                }
+            }
+        });
+    });
+
+    // 從存儲中加載並應用主題 (首次載入時)
+    api.getStorage('sync', { theme: 'geek' }).then(data => {
+        applyTheme(data.theme);
+    });
+}

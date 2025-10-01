@@ -72,4 +72,24 @@ This project uses a `Makefile` to automate the build process.
 
 ---
 
+## 🧪 Testing
+
+To ensure the quality and stability of the project's features, we adopt a use case testing approach to validate every change.
+
+### Use Case Tests
+
+*   **Purpose**: Each use case test clearly defines the expected behavior and operational flow of a specific feature. They are presented in descriptive text, detailing the test steps, preconditions, expected results, and verification methods.
+*   **Location**: All use case test files are stored in the `usecase_tests/` folder at the project root.
+*   **Execution & Verification**: These tests are currently primarily executed manually. Developers need to simulate user operations in the running Chrome extension according to the steps in the test files and observe whether the results meet expectations.
+
+### Automated Testing Framework
+
+For future automated testing, we have chosen **Puppeteer** as our End-to-End (E2E) testing framework.
+
+*   **Puppeteer**: A Node.js library that provides a high-level API to control Chromium or Chrome over the DevTools Protocol. It allows us to write scripts to simulate various user actions in the browser, such as clicks, input, navigation, etc., and capture screenshots or retrieve page content for verification.
+*   **Installation**: Puppeteer has been installed in the project via `npm install puppeteer`.
+*   **Future Outlook**: In the future, the descriptive test cases in `usecase_tests/` will be gradually converted into executable Puppeteer scripts to achieve automated testing and continuous integration.
+
+---
+
 This project is licensed under the MIT License.
