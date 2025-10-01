@@ -81,6 +81,34 @@
         "message": "गीक ब्लू",
         "description": "Name for the गीक ब्लू theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "कीबोर्ड शॉर्टकट सेटिंग्स",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "आप Chrome के एक्सटेंशन शॉर्टकट सेटिंग्स पेज पर इस एक्सटेंशन के कीबोर्ड शॉर्टकट को अनुकूलित कर सकते हैं।",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "शॉर्टकट सेटिंग्स पेज पर जाएं",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "वर्तमान शॉर्टकट:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "साइड पैनल स्थिति",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "आप Chrome की उपस्थिति सेटिंग्स में साइड पैनल की स्थिति (बाएं या दाएं) को समायोजित कर सकते हैं।",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "उपस्थिति सेटिंग्स पर जाएं",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "आर्क-शैली साइडबार खोलें या बंद करें",
       "description": "Description for the command that opens the side panel."

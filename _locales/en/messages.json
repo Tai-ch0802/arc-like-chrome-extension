@@ -104,5 +104,33 @@
     "themeOptionGeekBlue": {
         "message": "Geek Blue",
         "description": "Name for the Geek Blue theme option."
+    },
+    "shortcutSectionHeader": {
+        "message": "Keyboard Shortcut Settings",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "You can customize this extension's keyboard shortcuts on Chrome's extension shortcut settings page.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Go to Shortcut Settings Page",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Current Shortcut:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Side Panel Position",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "You can adjust the side panel's position (left or right) in Chrome's appearance settings.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Go to Appearance Settings",
+        "description": "Link text to Chrome's appearance settings page."
     }
   }

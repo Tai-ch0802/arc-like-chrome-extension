@@ -81,6 +81,34 @@
         "message": "긱 블루",
         "description": "Name for the 긱 블루 theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "키보드 단축키 설정",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Chrome 확장 프로그램 단축키 설정 페이지에서 이 확장 프로그램의 키보드 단축키를 사용자 지정할 수 있습니다.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "단축키 설정 페이지로 이동",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "현재 단축키:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "사이드 패널 위치",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Chrome의 모양 설정에서 사이드 패널의 위치(왼쪽 또는 오른쪽)를 조정할 수 있습니다.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "모양 설정으로 이동",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Arc 스타일 사이드바 열기 또는 닫기",
       "description": "Description for the command that opens the side panel."

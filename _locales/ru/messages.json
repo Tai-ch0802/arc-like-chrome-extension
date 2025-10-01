@@ -81,6 +81,34 @@
         "message": "Гик Синий",
         "description": "Name for the Гик Синий theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "Настройки горячих клавиш",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Вы можете настроить горячие клавиши этого расширения на странице настроек горячих клавиш расширений Chrome.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Перейти на страницу настроек горячих клавиш",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Текущая горячая клавиша:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Положение боковой панели",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Вы можете настроить положение боковой панели (слева или справа) в настройках внешнего вида Chrome.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Перейти к настройкам внешнего вида",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Открыть или закрыть боковую панель в стиле Arc",
       "description": "Description for the command that opens the side panel."

@@ -78,6 +78,34 @@
         "message": "Geek Azul",
         "description": "Name for the Geek Azul theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "Configuración de Atajos de Teclado",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Puedes personalizar los atajos de teclado de esta extensión en la página de configuración de atajos de extensiones de Chrome.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Ir a la página de configuración de atajos",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Atajo actual:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Posición del Panel Lateral",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Puedes ajustar la posición del panel lateral (izquierda o derecha) en la configuración de apariencia de Chrome.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Ir a la configuración de apariencia",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Abrir o cerrar la barra lateral estilo Arc",
       "description": "Description for the command that opens the side panel."

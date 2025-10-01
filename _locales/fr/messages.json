@@ -81,6 +81,34 @@
         "message": "Geek Bleu",
         "description": "Name for the Geek Bleu theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "Paramètres des raccourcis clavier",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Vous pouvez personnaliser les raccourcis clavier de cette extension sur la page des paramètres de raccourcis des extensions Chrome.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Accéder à la page des paramètres de raccourcis",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Raccourci actuel :",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Position du panneau latéral",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Vous pouvez ajuster la position du panneau latéral (gauche ou droite) dans les paramètres d'apparence de Chrome.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Accéder aux paramètres d'apparence",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Ouvrir ou fermer la barre latérale de style Arc",
       "description": "Description for the command that opens the side panel."

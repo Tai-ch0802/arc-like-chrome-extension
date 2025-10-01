@@ -81,6 +81,34 @@
         "message": "Geek Xanh",
         "description": "Name for the Geek Xanh theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "Cài đặt phím tắt",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Bạn có thể tùy chỉnh phím tắt của tiện ích này trên trang cài đặt phím tắt tiện ích của Chrome.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Đi tới trang cài đặt phím tắt",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Phím tắt hiện tại:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Vị trí bảng điều khiển bên",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Bạn có thể điều chỉnh vị trí bảng điều khiển bên (trái hoặc phải) trong cài đặt giao diện của Chrome.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Đi tới cài đặt giao diện",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Mở hoặc đóng thanh bên kiểu Arc",
       "description": "Description for the command that opens the side panel."

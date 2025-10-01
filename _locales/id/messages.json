@@ -78,6 +78,34 @@
         "message": "Geek Biru",
         "description": "Name for the Geek Biru theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "Pengaturan Pintasan Keyboard",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Anda dapat menyesuaikan pintasan keyboard ekstensi ini di halaman pengaturan pintasan ekstensi Chrome.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Buka Halaman Pengaturan Pintasan",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Pintasan Saat Ini:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Posisi Panel Samping",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Anda dapat menyesuaikan posisi panel samping (kiri atau kanan) di pengaturan tampilan Chrome.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Buka Pengaturan Tampilan",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Buka atau tutup bilah sisi gaya Arc",
       "description": "Description for the command that opens the side panel."

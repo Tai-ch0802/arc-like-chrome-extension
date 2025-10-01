@@ -5,3 +5,12 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
     .catch((error) => console.error(error));
 });
+
+// 監聽來自側邊面板的訊息
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'openShortcutsPage') {
+    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+  } else if (message.action === 'openAppearanceSettingsPage') {
+    chrome.tabs.create({ url: 'chrome://settings/appearance' });
+  }
+});

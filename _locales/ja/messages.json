@@ -81,6 +81,34 @@
         "message": "ギークブルー",
         "description": "Name for the ギークブルー theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "キーボードショートカット設定",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Chromeの拡張機能ショートカット設定ページで、この拡張機能のキーボードショートカットをカスタマイズできます。",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "ショートカット設定ページへ移動",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "現在のショートカット:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "サイドパネルの位置",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Chromeの外観設定でサイドパネルの位置（左または右）を調整できます。",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "外観設定へ移動",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Arcスタイルのサイドバーを開閉する",
       "description": "Description for the command that opens the side panel."

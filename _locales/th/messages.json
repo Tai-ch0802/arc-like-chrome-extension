@@ -81,6 +81,34 @@
         "message": "Geek สีน้ำเงิน",
         "description": "Name for the Geek สีน้ำเงิน theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "การตั้งค่าแป้นพิมพ์ลัด",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "คุณสามารถปรับแต่งแป้นพิมพ์ลัดของส่วนขยายนี้ได้ที่หน้าการตั้งค่าแป้นพิมพ์ลัดของส่วนขยาย Chrome",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "ไปที่หน้าการตั้งค่าแป้นพิมพ์ลัด",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "แป้นพิมพ์ลัดปัจจุบัน:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "ตำแหน่งแผงด้านข้าง",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "คุณสามารถปรับตำแหน่งของแผงด้านข้าง (ซ้ายหรือขวา) ได้ในการตั้งค่าลักษณะที่ปรากฏของ Chrome",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "ไปที่การตั้งค่าลักษณะที่ปรากฏ",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "เปิดหรือปิดแถบด้านข้างสไตล์ Arc",
       "description": "Description for the command that opens the side panel."

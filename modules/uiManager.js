@@ -346,12 +346,37 @@ export function initThemeSwitcher() {
             </select>
         `;
 
+        // Fetch current shortcut
+        let currentShortcut = 'N/A';
+        try {
+            const commands = await chrome.commands.getAll();
+            console.log('All commands:', commands); // DEBUG
+            const toggleCommand = commands.find(cmd => cmd.name === '_execute_action');
+            console.log('Toggle command:', toggleCommand); // DEBUG
+            if (toggleCommand && toggleCommand.shortcut) {
+                currentShortcut = toggleCommand.shortcut;
+            }
+        } catch (error) {
+            console.error('Failed to get commands:', error);
+        }
+
         const content = `
             <div class="settings-section">
                 <h4 class="settings-section-header">${api.getMessage('themeSectionHeader')}</h4>
                 <div class="theme-options">
                     ${themeSelectHtml}
                 </div>
+            </div>
+            <div class="settings-section">
+                <h4 class="settings-section-header">${api.getMessage('shortcutSectionHeader')}</h4>
+                <p>${api.getMessage('shortcutExplanation')}</p>
+                <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
+                <button id="open-shortcuts-button" class="modal-button">${api.getMessage('shortcutLinkText')}</button>
+            </div>
+            <div class="settings-section">
+                <h4 class="settings-section-header">${api.getMessage('sidePanelPositionSectionHeader')}</h4>
+                <p>${api.getMessage('sidePanelPositionExplanation')}</p>
+                <button id="open-appearance-settings-button" class="modal-button">${api.getMessage('sidePanelPositionLinkText')}</button>
             </div>
         `;
 
@@ -367,6 +392,18 @@ export function initThemeSwitcher() {
                         const newTheme = event.target.value;
                         applyTheme(newTheme);
                         api.setStorage('sync', { theme: newTheme });
+                    });
+                }
+                const openShortcutsButton = modalContentElement.querySelector('#open-shortcuts-button');
+                if (openShortcutsButton) {
+                    openShortcutsButton.addEventListener('click', () => {
+                        chrome.runtime.sendMessage({ action: 'openShortcutsPage' });
+                    });
+                }
+                const openAppearanceSettingsButton = modalContentElement.querySelector('#open-appearance-settings-button');
+                if (openAppearanceSettingsButton) {
+                    openAppearanceSettingsButton.addEventListener('click', () => {
+                        chrome.runtime.sendMessage({ action: 'openAppearanceSettingsPage' });
                     });
                 }
             }

@@ -78,6 +78,34 @@
         "message": "Geek Blau",
         "description": "Name for the Geek Blau theme option."
     },
+    "shortcutSectionHeader": {
+        "message": "Tastenkombinationen-Einstellungen",
+        "description": "Header for the keyboard shortcut section in settings."
+    },
+    "shortcutExplanation": {
+        "message": "Sie können die Tastenkombinationen dieser Erweiterung auf der Chrome-Erweiterungs-Tastenkombinationen-Einstellungsseite anpassen.",
+        "description": "Explanation text for how to set keyboard shortcuts."
+    },
+    "shortcutLinkText": {
+        "message": "Zur Seite für Tastenkombinationen-Einstellungen gehen",
+        "description": "Link text to Chrome's shortcut settings page."
+    },
+    "currentShortcutLabel": {
+        "message": "Aktuelle Tastenkombination:",
+        "description": "Label for displaying the current shortcut."
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "Seitenpanel-Position",
+        "description": "Header for the side panel position section in settings."
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Sie können die Position des Seitenpanels (links oder rechts) in den Chrome-Darstellungseinstellungen anpassen.",
+        "description": "Explanation text for how to set the side panel position."
+    },
+    "sidePanelPositionLinkText": {
+        "message": "Zu den Darstellungseinstellungen gehen",
+        "description": "Link text to Chrome's appearance settings page."
+    },
     "commandOpenSidePanel": {
       "message": "Arc-Stil Seitenleiste öffnen oder schließen",
       "description": "Description for the command that opens the side panel."

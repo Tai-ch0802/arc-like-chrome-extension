@@ -87,8 +87,8 @@
         "description": "設定中外觀區塊的標題。"
     },
     "themeOptionGeek": {
-        "message": "極客 (預設)",
-        "description": "極客主題選項的名稱。"
+        "message": "Geek (Default)",
+        "description": "Geek 主題選項的名稱。"
     },
     "themeOptionGoogle": {
         "message": "Google",
@@ -99,8 +99,36 @@
         "description": "Darcula (JetBrains) 主題選項的名稱。"
     },
     "themeOptionGeekBlue": {
-        "message": "極客藍",
-        "description": "極客藍主題選項的名稱。"
+        "message": "Geek Blue",
+        "description": "Geek Blue 主題選項的名稱。"
+    },
+    "shortcutSectionHeader": {
+        "message": "快捷鍵設定",
+        "description": "設定中快捷鍵區塊的標題。"
+    },
+    "shortcutExplanation": {
+        "message": "您可以在 Chrome 的擴充功能快捷鍵設定頁面中自訂本擴充功能的快捷鍵。",
+        "description": "解釋如何設定快捷鍵的說明文字。"
+    },
+    "shortcutLinkText": {
+        "message": "前往快捷鍵設定頁面",
+        "description": "前往 Chrome 快捷鍵設定頁面的連結文字。"
+    },
+    "currentShortcutLabel": {
+        "message": "當前快捷鍵：",
+        "description": "顯示當前快捷鍵的標籤。"
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "側邊面板位置",
+        "description": "設定中側邊面板位置區塊的標題。"
+    },
+    "sidePanelPositionExplanation": {
+        "message": "您可以在 Chrome 的外觀設定中調整側邊面板的位置（左側或右側）。",
+        "description": "解釋如何設定側邊面板位置的說明文字。"
+    },
+    "sidePanelPositionLinkText": {
+        "message": "前往外觀設定",
+        "description": "前往 Chrome 外觀設定頁面的連結文字。"
     },
     "commandOpenSidePanel": {
       "message": "打開或關閉 Arc 風格側邊欄",
