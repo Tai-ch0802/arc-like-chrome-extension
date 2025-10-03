@@ -3,7 +3,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "permissions": [
     "tabs",
     "sidePanel",
