@@ -110,7 +110,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "เปิดหรือปิดแถบด้านข้างสไตล์ Arc",
-      "description": "Description for the command that opens the side panel."
+      "message": "เปิดแถบด้านข้าง",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "สร้างแท็บใหม่ทางด้านขวาของแท็บปัจจุบัน",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "สร้างแท็บใหม่ทางด้านขวา:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

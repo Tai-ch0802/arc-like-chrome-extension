@@ -110,7 +110,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Mở hoặc đóng thanh bên kiểu Arc",
-      "description": "Description for the command that opens the side panel."
+      "message": "Mở thanh bên",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "Tạo tab mới ở bên phải tab hiện tại",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "Tạo tab mới ở bên phải:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

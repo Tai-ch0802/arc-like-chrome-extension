@@ -77,13 +77,11 @@ welcome_message: |
   你可以使用 `make` 指令來打包專案，或直接在 Chrome 中載入未封裝的專案目錄進行測試。
   需要幫忙嗎？
 
-# Commit Message 規範：撰寫 commit message 時應遵循的風格
+# Commit 指南：撰寫 Commit Message 的風格指南
 commit_guidelines: |
-  請遵循以下格式撰寫 commit message：
-  - **第一行 (Subject):** 必須使用英文，並簡潔地總結改動的核心。
-  - **內容 (Body):**
-    - 應使用繁體中文撰寫。
-    - 著重於條列式呈現，清楚說明改動的「原因」與「內容」。
+  請遵循 Conventional Commits 規範。
+  Commit message 的第一行 (subject) 必須使用英文。
+  Commit message 的內文 (body) 應使用繁體中文，詳細說明改動的背景、原因和實現細節。
 
 # Release Note 規範：撰寫 release note 時應遵循的風格
 release_note_guidelines: |

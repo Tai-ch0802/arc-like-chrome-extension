@@ -30,6 +30,8 @@ Bilah Sisi Gaya Arc menyediakan panel terpadu yang kuat untuk mengelola semua ta
 
 ⌨️ Pintasan Keyboard yang Nyaman: Alihkan bilah sisi kapan saja dengan Command+I (di Mac) atau Ctrl+I (di Windows).
 
+⌨️ Pintasan Praktis Lainnya: Buat tab baru secara instan di sebelah kanan tab saat ini dengan Option+T (di Mac) atau Alt+T (di Windows).
+
 
 ---
 

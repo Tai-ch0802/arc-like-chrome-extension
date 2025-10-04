@@ -348,6 +348,7 @@ export function initThemeSwitcher() {
 
         // Fetch current shortcut
         let currentShortcut = 'N/A';
+        let newTabRightShortcut = 'N/A';
         try {
             const commands = await chrome.commands.getAll();
             console.log('All commands:', commands); // DEBUG
@@ -355,6 +356,10 @@ export function initThemeSwitcher() {
             console.log('Toggle command:', toggleCommand); // DEBUG
             if (toggleCommand && toggleCommand.shortcut) {
                 currentShortcut = toggleCommand.shortcut;
+            }
+            const newTabRightCommand = commands.find(cmd => cmd.name === 'create-new-tab-right');
+            if (newTabRightCommand && newTabRightCommand.shortcut) {
+                newTabRightShortcut = newTabRightCommand.shortcut;
             }
         } catch (error) {
             console.error('Failed to get commands:', error);
@@ -371,6 +376,8 @@ export function initThemeSwitcher() {
                 <h4 class="settings-section-header">${api.getMessage('shortcutSectionHeader')}</h4>
                 <p>${api.getMessage('shortcutExplanation')}</p>
                 <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
+                <p>${api.getMessage('settingsShortcutCreateTabRight')} <span                                                    │
+ │           id="create-new-tab-right-shortcut">${newTabRightShortcut}</span></p>
                 <button id="open-shortcuts-button" class="modal-button">${api.getMessage('shortcutLinkText')}</button>
             </div>
             <div class="settings-section">

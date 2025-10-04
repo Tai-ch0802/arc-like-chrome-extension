@@ -30,6 +30,8 @@ A Barra Lateral Estilo Arc oferece um painel unificado e poderoso para gerenciar
 
 ⌨️ Atalho de Teclado Conveniente: Alterne a barra lateral a qualquer momento com Command+I (no Mac) ou Ctrl+I (no Windows).
 
+⌨️ Outro Atalho Prático: Crie instantaneamente uma nova aba à direita da atual com Option+T (no Mac) ou Alt+T (no Windows).
+
 
 ---
 

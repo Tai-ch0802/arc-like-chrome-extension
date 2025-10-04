@@ -107,7 +107,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Buka atau tutup bilah sisi gaya Arc",
-      "description": "Description for the command that opens the side panel."
+      "message": "Buka bilah sisi",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "Buat tab baru di sebelah kanan tab saat ini",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "Buat tab baru di sebelah kanan:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

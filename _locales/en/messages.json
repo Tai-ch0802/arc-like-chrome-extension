@@ -132,5 +132,17 @@
     "sidePanelPositionLinkText": {
         "message": "Go to Appearance Settings",
         "description": "Link text to Chrome's appearance settings page."
+    },
+    "commandOpenSidePanel": {
+      "message": "Open the sidebar",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "Create a new tab to the right of the current tab",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "Create new tab on the right:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
   }

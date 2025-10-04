@@ -30,6 +30,8 @@ La Barra Lateral Estilo Arc proporciona un panel unificado y potente para gestio
 
 ⌨️ Atajo de Teclado Conveniente: Activa o desactiva la barra lateral en cualquier momento con Command+I (en Mac) o Ctrl+I (en Windows).
 
+⌨️ Otro Atajo Útil: Crea instantáneamente una nueva pestaña a la derecha de la actual con Opción+T (en Mac) o Alt+T (en Windows).
+
 
 ---
 

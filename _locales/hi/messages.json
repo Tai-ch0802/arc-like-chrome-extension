@@ -110,7 +110,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "आर्क-शैली साइडबार खोलें या बंद करें",
-      "description": "Description for the command that opens the side panel."
+      "message": "साइडबार खोलें",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "वर्तमान टैब के दाईं ओर एक नया टैब बनाएं",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "दाईं ओर नया टैब बनाएं:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

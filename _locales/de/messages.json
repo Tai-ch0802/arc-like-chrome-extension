@@ -107,7 +107,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Arc-Stil Seitenleiste öffnen oder schließen",
-      "description": "Description for the command that opens the side panel."
+      "message": "Seitenleiste öffnen",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "Neuen Tab rechts erstellen:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

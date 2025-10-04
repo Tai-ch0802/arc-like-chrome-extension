@@ -30,6 +30,8 @@ La barre latérale de style Arc fournit un panneau unifié et puissant pour gér
 
 ⌨️ Raccourci clavier pratique : Affichez ou masquez la barre latérale à tout moment avec Command+I (sur Mac) ou Ctrl+I (sous Windows).
 
+⌨️ Un autre raccourci pratique : Créez instantanément un nouvel onglet à droite de l'actuel avec Option+T (sur Mac) ou Alt+T (sous Windows).
+
 
 ---
 

@@ -30,6 +30,8 @@ Thanh bên kiểu Arc cung cấp một bảng điều khiển thống nhất, m�
 
 ⌨️ Phím tắt tiện lợi: Chuyển đổi thanh bên bất cứ lúc nào bằng Command+I (trên Mac) hoặc Ctrl+I (trên Windows).
 
+⌨️ Một phím tắt tiện dụng khác: Tạo ngay một tab mới ở bên phải tab hiện tại bằng Option+T (trên Mac) hoặc Alt+T (trên Windows).
+
 
 ---
 

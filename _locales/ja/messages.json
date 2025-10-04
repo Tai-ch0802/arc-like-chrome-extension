@@ -110,7 +110,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Arcスタイルのサイドバーを開閉する",
-      "description": "Description for the command that opens the side panel."
+      "message": "サイドバーを開く",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "現在のタブの右側に新しいタブを作成",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "右側に新しいタブを作成:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

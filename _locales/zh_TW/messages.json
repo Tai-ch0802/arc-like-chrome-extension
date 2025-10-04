@@ -131,7 +131,15 @@
         "description": "前往 Chrome 外觀設定頁面的連結文字。"
     },
     "commandOpenSidePanel": {
-      "message": "打開或關閉 Arc 風格側邊欄",
-      "description": "打開側邊欄指令的描述。"
+      "message": "開啟側邊欄",
+      "description": "開啟側邊欄的指令。"
+    },
+    "commandCreateNewTabRight": {
+      "message": "在當前分頁右側新增一個分頁",
+      "description": "在當前分頁右側新增一個分頁的指令。"
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "在右側新增分頁：",
+      "description": "在設定中，『在右側新增分頁』快捷鍵的說明。"
     }
   }

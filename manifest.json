@@ -33,6 +33,13 @@
         "mac": "Command+I"
       },
       "description": "__MSG_commandOpenSidePanel__"
+    },
+    "create-new-tab-right": {
+      "suggested_key": {
+        "default": "Alt+T",
+        "mac": "Alt+T"
+      },
+      "description": "__MSG_commandCreateNewTabRight__"
     }
   }
 }

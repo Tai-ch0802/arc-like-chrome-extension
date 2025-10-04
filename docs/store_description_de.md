@@ -30,6 +30,8 @@ Die Arc-Style Sidebar bietet ein einheitliches, leistungsstarkes Panel zur Verwa
 
 ⌨️ Praktische Tastenkombination: Schalten Sie die Seitenleiste jederzeit mit Command+I (auf Mac) oder Strg+I (unter Windows) um.
 
+⌨️ Eine weitere praktische Tastenkombination: Erstellen Sie sofort einen neuen Tab rechts neben dem aktuellen mit Option+T (auf Mac) oder Alt+T (unter Windows).
+
 
 ---
 

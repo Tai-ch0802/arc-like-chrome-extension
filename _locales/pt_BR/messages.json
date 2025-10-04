@@ -107,7 +107,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Abrir ou fechar a barra lateral estilo Arc",
-      "description": "Description for the command that opens the side panel."
+      "message": "Abrir a barra lateral",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "Criar uma nova guia à direita da guia atual",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "Criar nova guia à direita:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

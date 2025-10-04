@@ -110,7 +110,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Открыть или закрыть боковую панель в стиле Arc",
-      "description": "Description for the command that opens the side panel."
+      "message": "Открыть боковую панель",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "Создать новую вкладку справа от текущей",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "Создать новую вкладку справа:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }

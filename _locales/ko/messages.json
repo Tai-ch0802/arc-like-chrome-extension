@@ -110,7 +110,15 @@
         "description": "Link text to Chrome's appearance settings page."
     },
     "commandOpenSidePanel": {
-      "message": "Arc 스타일 사이드바 열기 또는 닫기",
-      "description": "Description for the command that opens the side panel."
+      "message": "사이드바 열기",
+      "description": "Command to open the sidebar."
+    },
+    "commandCreateNewTabRight": {
+      "message": "현재 탭의 오른쪽에 새 탭 만들기",
+      "description": "Command to create a new tab to the right."
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "오른쪽에 새 탭 만들기:",
+      "description": "Description for the create new tab to the right shortcut in settings."
     }
 }
