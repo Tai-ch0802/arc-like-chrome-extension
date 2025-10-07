@@ -20,6 +20,9 @@ function initializeTabSortable(updateTabList) {
             put: true
         },
         animation: 150,
+        scroll: true,
+        scrollSensitivity: 50,
+        scrollSpeed: 15,
         onEnd: (evt) => handleDragEnd(evt, updateTabList),
         onAdd: (evt) => handleDragAdd(evt, updateTabList),
     };
@@ -35,6 +38,9 @@ function initializeBookmarkSortable(refreshBookmarks, updateTabList) {
     const sortableOptions = {
         group: 'shared-list',
         animation: 150,
+        scroll: true,
+        scrollSensitivity: 50,
+        scrollSpeed: 15,
         onEnd: (evt) => handleBookmarkDrop(evt, refreshBookmarks, updateTabList),
         onAdd: (evt) => handleBookmarkDrop(evt, refreshBookmarks, updateTabList),
         onDragOver: function (evt) {
