@@ -144,5 +144,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "Create new tab on the right:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "Close Tab",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "Add to bookmarks",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "Add Bookmark",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "Bookmarks Bar",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "Add",
+        "description": "The confirm button text in the new dialog."
     }
-  }
+}

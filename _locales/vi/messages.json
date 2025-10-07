@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "Tạo tab mới ở bên phải:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "Đóng tab",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "Thêm vào dấu trang",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "Thêm dấu trang",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "Thanh dấu trang",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "Thêm",
+        "description": "The confirm button text in the new dialog."
     }
 }

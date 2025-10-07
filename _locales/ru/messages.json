@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "Создать новую вкладку справа:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "Закрыть вкладку",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "Добавить в закладки",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "Добавить закладку",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "Панель закладок",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "Добавить",
+        "description": "The confirm button text in the new dialog."
     }
 }

@@ -117,5 +117,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "Neuen Tab rechts erstellen:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "Tab schließen",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "Zu Lesezeichen hinzufügen",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "Lesezeichen hinzufügen",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "Lesezeichenleiste",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "Hinzufügen",
+        "description": "The confirm button text in the new dialog."
     }
 }

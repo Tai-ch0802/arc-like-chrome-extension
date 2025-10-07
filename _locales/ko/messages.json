@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "오른쪽에 새 탭 만들기:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "탭 닫기",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "북마크에 추가",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "북마크 추가",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "북마크바",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "추가",
+        "description": "The confirm button text in the new dialog."
     }
 }

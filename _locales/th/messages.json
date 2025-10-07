@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "สร้างแท็บใหม่ทางด้านขวา:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "ปิดแท็บ",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "เพิ่มในบุ๊กมาร์ก",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "เพิ่มบุ๊กมาร์ก",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "แถบบุ๊กมาร์ก",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "เพิ่ม",
+        "description": "The confirm button text in the new dialog."
     }
 }

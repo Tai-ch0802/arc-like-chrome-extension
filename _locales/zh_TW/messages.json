@@ -141,5 +141,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "在右側新增分頁：",
       "description": "在設定中，『在右側新增分頁』快捷鍵的說明。"
+    },
+    "closeTab": {
+        "message": "關閉分頁",
+        "description": "分頁上關閉按鈕的提示文字。"
+    },
+    "addBookmark": {
+        "message": "加入書籤",
+        "description": "分頁上加入書籤按鈕的提示文字。"
+    },
+    "addBookmarkDialogTitle": {
+        "message": "新增書籤",
+        "description": "新增書籤對話框的標題。"
+    },
+    "bookmarksBar": {
+        "message": "書籤列",
+        "description": "根書籤資料夾的名稱。"
+    },
+    "addButton": {
+        "message": "新增",
+        "description": "新增書籤對話框中的確認按鈕文字。"
     }
   }

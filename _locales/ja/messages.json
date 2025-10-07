@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "右側に新しいタブを作成:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "タブを閉じる",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "ブックマークに追加",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "ブックマークを追加",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "ブックマークバー",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "追加",
+        "description": "The confirm button text in the new dialog."
     }
 }

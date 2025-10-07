@@ -117,5 +117,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "Criar nova guia à direita:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "Fechar Aba",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "Adicionar aos favoritos",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "Adicionar Favorito",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "Barra de Favoritos",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "Adicionar",
+        "description": "The confirm button text in the new dialog."
     }
 }

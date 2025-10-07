@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "Créer un nouvel onglet à droite :",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "Fermer l'onglet",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "Ajouter aux favoris",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "Ajouter un favori",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "Barre de favoris",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "Ajouter",
+        "description": "The confirm button text in the new dialog."
     }
 }

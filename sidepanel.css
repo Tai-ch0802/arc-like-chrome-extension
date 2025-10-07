@@ -264,10 +264,43 @@ body {
     transition: color 0.15s ease-in-out;
 }
 
+.tab-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+    padding-left: 5px;
+}
+
+.tab-item:hover .tab-actions {
+    opacity: 1;
+}
+
+.add-to-bookmark-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-color-secondary);
+    transition: color 0.2s ease;
+}
+
+.add-to-bookmark-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
 .close-btn {
-    position: relative;
-    flex-shrink: 0; /* 確保按鈕不會被壓縮 */
-    margin-left: 5px; /* 與標題的間距 */
+    /* The opacity is now controlled by the .tab-actions container */
+    flex-shrink: 0;
     width: 18px;
     height: 18px;
     border: none;
@@ -276,18 +309,17 @@ body {
     font-size: 16px;
     line-height: 18px;
     text-align: center;
-    opacity: 0;
     color: var(--text-color-secondary);
-    transition: opacity 0.2s ease, color 0.2s ease;
-}
-
-.tab-item:hover .close-btn {
-    opacity: 1;
+    transition: color 0.2s ease;
 }
 
 .close-btn:hover {
     color: var(--danger-color);
     font-weight: bold;
+}
+
+.add-to-bookmark-btn:hover {
+    color: var(--info-color);
 }
 
 /* --- 分頁群組樣式 --- */
@@ -556,4 +588,39 @@ body {
 
 .modal-button.danger:hover {
     background-color: var(--danger-color-hover);
+}
+
+.modal-location-path {
+    background-color: var(--main-bg-color);
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--text-color-secondary);
+    border: 1px solid var(--border-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 2px;
+}
+
+.modal-bookmark-tree {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    padding: 5px;
+    background-color: var(--main-bg-color);
+    border-radius: 2px;
+}
+
+/* Style for folders inside the dialog */
+.modal-bookmark-tree .bookmark-folder {
+    padding: 4px 8px;
+    border-radius: 2px;
+}
+
+.modal-bookmark-tree .bookmark-folder.selected {
+    background-color: var(--element-bg-active-color);
+}
+
+.modal-bookmark-tree .bookmark-folder.selected .bookmark-title {
+    color: var(--accent-color);
 }

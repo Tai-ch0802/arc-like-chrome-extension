@@ -120,5 +120,25 @@
     "settingsShortcutCreateTabRight": {
       "message": "दाईं ओर नया टैब बनाएं:",
       "description": "Description for the create new tab to the right shortcut in settings."
+    },
+    "closeTab": {
+        "message": "टैब बंद करें",
+        "description": "Tooltip for the close button on a tab."
+    },
+    "addBookmark": {
+        "message": "बुकमार्क में जोड़ें",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
+    },
+    "addBookmarkDialogTitle": {
+        "message": "बुकमार्क जोड़ें",
+        "description": "Title for the new dialog."
+    },
+    "bookmarksBar": {
+        "message": "बुकमार्क बार",
+        "description": "The name for the root bookmark folder."
+    },
+    "addButton": {
+        "message": "जोड़ें",
+        "description": "The confirm button text in the new dialog."
     }
 }

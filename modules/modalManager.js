@@ -201,3 +201,117 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
         };
     });
 }
+
+export function showAddToBookmarkDialog({ name, url }) {
+    return new Promise(async (resolve) => {
+        const form = document.createElement('form');
+        form.noValidate = true;
+        form.className = 'add-bookmark-form';
+
+        let selectedFolder = { id: '1', path: api.getMessage("bookmarksBar") || "Bookmarks Bar" };
+        let selectedFolderElement = null;
+
+        const tree = await api.getBookmarkTree();
+        const rootFolders = tree[0]?.children || [];
+
+        form.innerHTML = `
+            <h3 class="modal-title">${api.getMessage("addBookmarkDialogTitle") || "Add Bookmark"}</h3>
+            <input type="text" name="title" class="modal-input" value="${name}">
+            <input type="text" name="url" class="modal-input" value="${url}">
+            <div class="modal-location-path">${selectedFolder.path}</div>
+            <div class="modal-bookmark-tree"></div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
+                <button type="submit" class="modal-button confirm-btn primary">${api.getMessage("addButton") || 'Add'}</button>
+            </div>
+        `;
+
+        const locationPathDiv = form.querySelector('.modal-location-path');
+        const treeContainer = form.querySelector('.modal-bookmark-tree');
+
+        function renderFolders(nodes, container, path) {
+            nodes.forEach(node => {
+                if (node.children) { // It's a folder
+                    const folderItem = document.createElement('div');
+                    folderItem.className = 'bookmark-folder'; // Reuse style
+                    folderItem.dataset.bookmarkId = node.id;
+                    folderItem.title = node.title;
+
+                    const icon = document.createElement('span');
+                    icon.className = 'bookmark-icon';
+                    icon.textContent = '▼'; // Always expanded
+
+                    const title = document.createElement('span');
+                    title.className = 'bookmark-title';
+                    title.textContent = node.title || api.getMessage("bookmarksBar") || "Bookmarks Bar";
+
+                    folderItem.appendChild(icon);
+                    folderItem.appendChild(title);
+
+                    const newPath = path ? `${path} / ${title.textContent}` : title.textContent;
+
+                    folderItem.addEventListener('click', () => {
+                        selectedFolder = { id: node.id, path: newPath };
+                        locationPathDiv.textContent = newPath;
+                        if (selectedFolderElement) {
+                            selectedFolderElement.classList.remove('selected');
+                        }
+                        folderItem.classList.add('selected');
+                        selectedFolderElement = folderItem;
+                    });
+
+                    container.appendChild(folderItem);
+
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'folder-content'; // Reuse style
+                    childrenContainer.style.display = 'block'; // Always expanded
+                    container.appendChild(childrenContainer);
+
+                    if (node.children.length > 0) {
+                        renderFolders(node.children, childrenContainer, newPath);
+                    }
+                }
+            });
+        }
+
+        renderFolders(rootFolders, treeContainer, '');
+        
+        const firstFolder = treeContainer.querySelector('.bookmark-folder');
+        if (firstFolder) {
+            firstFolder.classList.add('selected');
+            selectedFolderElement = firstFolder;
+        }
+
+
+        const { overlay, modalContent } = createModal(form);
+        const firstInput = modalContent.querySelector('input');
+        if (firstInput) {
+            firstInput.focus();
+            firstInput.select();
+        }
+
+        const cleanupAndResolve = (value) => {
+            removeModal(overlay);
+            resolve(value);
+        };
+
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const result = {
+                parentId: selectedFolder.id,
+                title: formData.get('title'),
+                url: formData.get('url')
+            };
+            cleanupAndResolve(result);
+        };
+
+        const cancelBtn = modalContent.querySelector('.cancel-btn');
+        cancelBtn.onclick = () => cleanupAndResolve(null);
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                cleanupAndResolve(null);
+            }
+        };
+    });
+}

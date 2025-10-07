@@ -38,13 +38,35 @@ export function createTabElement(tab) {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
+    closeBtn.title = api.getMessage("closeTab") || "Close Tab";
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         api.removeTab(tab.id);
     });
+
+    const addToBookmarkBtn = document.createElement('button');
+    addToBookmarkBtn.className = 'add-to-bookmark-btn';
+    addToBookmarkBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
+    addToBookmarkBtn.title = api.getMessage("addBookmark") || "Add to bookmarks";
+    addToBookmarkBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const result = await modal.showAddToBookmarkDialog({
+            name: tab.title,
+            url: tab.url
+        });
+        if (result) {
+            await api.createBookmark(result);
+        }
+    });
+
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'tab-actions';
+    actionsContainer.appendChild(addToBookmarkBtn);
+    actionsContainer.appendChild(closeBtn);
+
     tabItem.appendChild(favicon);
     tabItem.appendChild(title);
-    tabItem.appendChild(closeBtn);
+    tabItem.appendChild(actionsContainer);
     tabItem.addEventListener('click', () => {
         api.updateTab(tab.id, { active: true });
         api.updateWindow(tab.windowId, { focused: true });
