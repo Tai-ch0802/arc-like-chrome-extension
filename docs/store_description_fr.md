@@ -1,39 +1,40 @@
----
+Fatigué de vous perdre parmi des dizaines d'onglets en désordre ? Vous rêvez de la gestion d'onglets fluide et élégante du navigateur Arc, mais ne pouvez pas quitter Chrome ? Votre souhait est exaucé ! 🚀
 
-Fatigué d'une barre d'onglets encombrée ? Apportez la gestion révolutionnaire des onglets verticaux du navigateur Arc directement dans votre Google Chrome ! 🚀
+La Barre Latérale Style Arc transforme votre expérience Chrome en introduisant un panneau latéral unifié pour tous vos onglets, groupes d'onglets et favoris. Dites adieu au chaos du passage entre les fenêtres et le gestionnaire de favoris. Reprenez le contrôle de votre navigateur et augmentez considérablement votre productivité et votre concentration.
 
+POINTS FORTS
 
-La barre latérale de style Arc fournit un panneau unifié et puissant pour gérer tous vos onglets et favoris dans une seule interface épurée. Augmentez votre productivité et organisez votre vie numérique avec facilité.
+🗂️ Espace de Travail Unifié
+Gérez de manière transparente tous vos onglets et favoris dans une seule interface. Un panneau pour les gouverner tous, offrant une clarté inégalée.
 
----
+🤏 Glisser-Déposer Intuitif
+Faites glisser et déposez librement les onglets, les groupes d'onglets natifs, les favoris et les dossiers pour organiser votre espace de travail exactement comme vous le souhaitez. Votre espace, vos règles.
 
-✨ CARACTÉRISTIQUES CLÉS ✨
+✨ Glisser pour Créer un Favori
+L'inspiration frappe ? Il suffit de faire glisser un onglet et de le déposer dans la zone des favoris pour l'enregistrer en permanence.
 
+📂 Dossiers qui s'étendent au Survol
+Fini les clics fastidieux lors de l'organisation. Survolez simplement un élément au-dessus d'un dossier réduit, et il s'étendra comme par magie pour vous.
 
-🗂️ Barre latérale tout-en-un : Gérez tous vos onglets actifs ET l'ensemble de votre bibliothèque de favoris dans une seule vue unifiée. Plus besoin de basculer entre les fenêtres !
+⚡️ Actions Intelligentes au Survol
+Une interface épurée et sans distraction qui révèle élégamment des actions rapides comme fermer, modifier ou supprimer uniquement lorsque vous survolez un élément.
 
-🤏 Liberté totale de glisser-déposer : Réorganisez librement les onglets, les groupes d'onglets natifs, les favoris et les dossiers. Votre espace de travail, vos règles.
+🧠 Mémorise Votre Affichage
+La barre latérale mémorise intelligemment les dossiers de favoris que vous avez étendus. Chaque fois que vous l'ouvrez, vous êtes accueilli avec votre disposition préférée.
 
-✨ Création instantanée de favoris : Faites simplement glisser un onglet et déposez-le dans la section des favoris pour l'enregistrer instantanément.
+🎨 Intégration Transparente des Groupes d'Onglets
+Parfaitement compatible avec les groupes d'onglets natifs de Chrome ! Les noms et les couleurs des groupes sont magnifiquement rendus et restent entièrement réductibles.
 
-📂 Dossiers intelligents qui s'ouvrent au survol : Vous faites glisser un élément sur un dossier de favoris réduit ? Survolez-le un instant et il s'ouvrira comme par magie. Organiser n'a jamais été aussi simple.
+🔍 Recherche Floue Instantanée
+Pendant que vous tapez, effectuez une recherche floue ultra-rapide parmi des centaines d'onglets et de favoris. Trouvez ce dont vous avez besoin en un clin d'œil.
 
-⚡ Actions rapides au survol : Une interface épurée qui révèle des actions puissantes lorsque vous en avez besoin. Survolez n'importe quel élément pour le fermer, le modifier ou le supprimer rapidement.
+💻 Thème Axé sur la Concentration
+Profitez d'un thème sombre élégant à contraste élevé avec une touche de vert signature, conçu pour de longues heures de travail concentré et une lecture confortable.
 
-🧠 Persistance d'affichage intelligente : La barre latérale se souvient des dossiers de favoris que vous avez développés. Votre mise en page reste exactement comme vous l'aimez, même après un rafraîchissement.
+⌨️ Raccourcis de Productivité
+- Basculer la Barre Latérale: Cmd/Ctrl + I
+- Nouvel Onglet à Droite: Opt/Alt + T
 
-🎨 Prise en charge complète des groupes d'onglets natifs : Vos groupes d'onglets Chrome existants sont magnifiquement rendus avec leurs noms et couleurs d'origine, et ils restent entièrement réductibles.
+Conçu pour les utilisateurs avancés, les développeurs et tous ceux qui recherchent une expérience de navigation sans encombrement, organisée et ciblée.
 
-🔍 Recherche ultra-rapide : Filtrez instantanément des centaines d'onglets et de favoris au fur et à mesure que vous tapez. Trouvez ce dont vous avez besoin en un éclair.
-
-💻 Thème cool de style hacker : Profitez d'un thème sombre élégant à contraste élevé avec une touche de vert, conçu pour la concentration et la lisibilité.
-
-⌨️ Raccourci clavier pratique : Affichez ou masquez la barre latérale à tout moment avec Command+I (sur Mac) ou Ctrl+I (sous Windows).
-
-⌨️ Un autre raccourci pratique : Créez instantanément un nouvel onglet à droite de l'actuel avec Option+T (sur Mac) ou Alt+T (sous Windows).
-
-
----
-
-
-Conçu pour les utilisateurs expérimentés, les développeurs et tous ceux qui recherchent une expérience de navigation plus organisée. Installez maintenant et prenez le contrôle de vos onglets ! 🌟
+Installez maintenant et élevez votre navigateur Chrome à un tout autre niveau ! 🌟

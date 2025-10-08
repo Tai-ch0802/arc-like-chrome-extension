@@ -75,6 +75,7 @@ zip-prod:
 clean:
 	@echo "🧹 Cleaning up old packages and directories..."
 	@rm -f *.zip
+	@rm -rf arc-sidebar-v*
 	@rm -rf $(DEV_BUILD_DIR) $(PROD_BUILD_DIR)
 
 # Deprecated cleanup targets, kept for compatibility if needed

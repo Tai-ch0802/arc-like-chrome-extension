@@ -178,7 +178,7 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
             <h3 class="modal-title">${title}</h3>
             <div class="modal-custom-content">${content}</div>
             <div class="modal-buttons">
-                <button class="modal-button close-btn">${closeButtonText}</button>
+                <button class="modal-button" id="closeButton">${closeButtonText}</button>
             </div>
         `;
 
@@ -186,7 +186,7 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
 
         onOpen(modalContent); // 在內容被添加到 DOM 後執行 onOpen 回呼函式
 
-        const closeBtn = modalContent.querySelector('.close-btn');
+        const closeBtn = modalContent.querySelector('#closeButton');
 
         const cleanupAndResolve = () => {
             removeModal(overlay);

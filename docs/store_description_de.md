@@ -1,39 +1,40 @@
---- 
+Haben Sie es satt, sich in Dutzenden von unübersichtlichen Tabs zu verlieren? Sehnen Sie sich nach der flüssigen, eleganten Tab-Verwaltung des Arc-Browsers, können aber Chrome nicht verlassen? Ihr Wunsch wird erhört! 🚀
 
-Sind Sie eine überladene Tab-Leiste leid? Holen Sie sich das revolutionäre vertikale Tab-Management des Arc-Browsers direkt in Ihr Google Chrome! 🚀
+Die Arc-Style Sidebar transformiert Ihr Chrome-Erlebnis und führt ein einheitliches Seitenpanel für all Ihre Tabs, Tab-Gruppen und Lesezeichen ein. Verabschieden Sie sich vom Chaos des Wechsels zwischen Fenstern und dem Lesezeichen-Manager. Gewinnen Sie die Kontrolle über Ihren Browser zurück und steigern Sie Ihre Produktivität und Konzentration erheblich.
 
+KERNFUNKTIONEN
 
-Die Arc-Style Sidebar bietet ein einheitliches, leistungsstarkes Panel zur Verwaltung all Ihrer Tabs und Lesezeichen in einer sauberen Oberfläche. Steigern Sie Ihre Produktivität und organisieren Sie Ihr digitales Leben mit Leichtigkeit.
+🗂️ Einheitlicher Arbeitsbereich
+Verwalten Sie nahtlos all Ihre Tabs und Lesezeichen in einer einzigen Oberfläche. Ein Panel, um sie alle zu beherrschen, für unübertroffene Klarheit.
 
----
+🤏 Intuitives Drag & Drop
+Ziehen und ablegen Sie Tabs, native Tab-Gruppen, Lesezeichen und Ordner frei, um Ihren Arbeitsbereich genau nach Ihren Wünschen zu organisieren. Ihr Bereich, Ihre Regeln.
 
-✨ HAUPTMERKMALE ✨
+✨ Drag-to-Bookmark
+Ein Geistesblitz? Ziehen Sie einfach einen Tab und legen Sie ihn im Lesezeichenbereich ab, um ihn dauerhaft zu speichern.
 
+📂 Hover-to-Expand Ordner
+Keine mühsamen Klicks mehr beim Organisieren. Fahren Sie einfach mit dem Mauszeiger über einen zugeklappten Ordner, und er wird sich magisch für Sie erweitern.
 
-🗂️ All-in-One-Seitenleiste: Verwalten Sie alle Ihre aktiven Tabs UND Ihre gesamte Lesezeichen-Bibliothek in einer einzigen, einheitlichen Ansicht. Kein Wechseln zwischen Fenstern mehr!
+⚡️ Smarte Hover-Aktionen
+Eine saubere, ablenkungsfreie Oberfläche, die elegante Schnellaktionen wie Schließen, Bearbeiten oder Löschen nur dann anzeigt, wenn Sie mit dem Mauszeiger über ein Element fahren.
 
-🤏 Totale Drag & Drop-Freiheit: Ordnen Sie Tabs, native Tab-Gruppen, Lesezeichen und Ordner frei neu an. Ihr Arbeitsbereich, Ihre Regeln.
+🧠 Erinnert sich an Ihre Ansicht
+Die Seitenleiste merkt sich intelligent, welche Lesezeichenordner Sie erweitert haben. Jedes Mal, wenn Sie sie öffnen, werden Sie mit Ihrem bevorzugten Layout begrüßt.
 
-✨ Sofortige Lesezeichen-Erstellung: Ziehen Sie einfach einen Tab und legen Sie ihn im Lesezeichen-Bereich ab, um ihn sofort zu speichern.
+🎨 Nahtlose Tab-Gruppen-Integration
+Perfekt kompatibel mit den nativen Tab-Gruppen von Chrome! Gruppennamen und -farben werden wunderschön dargestellt und bleiben vollständig einklappbar.
 
-📂 Intelligente Ordner, die sich beim Darüberfahren öffnen: Ziehen Sie ein Element über einen zugeklappten Lesezeichen-Ordner? Halten Sie einfach einen Moment inne, und er wird sich magisch für Sie erweitern. Organisieren war noch nie einfacher.
+🔍 Sofortige Fuzzy-Suche
+Führen Sie während der Eingabe eine blitzschnelle Fuzzy-Suche über Hunderte von Tabs und Lesezeichen durch. Finden Sie im Handumdrehen, was Sie brauchen.
 
-⚡ Schnellaktionen beim Darüberfahren: Eine saubere Oberfläche, die leistungsstarke Aktionen anzeigt, wenn Sie sie brauchen. Fahren Sie über ein beliebiges Element, um es schnell zu schließen, zu bearbeiten oder zu löschen.
+💻 Fokusorientiertes Theme
+Genießen Sie ein schlankes, kontrastreiches dunkles Theme mit einem charakteristischen grünen Akzent, das für lange Stunden konzentrierter Arbeit und angenehmes Lesen konzipiert ist.
 
-🧠 Intelligente Ansichtspersistenz: Die Seitenleiste merkt sich, welche Lesezeichen-Ordner Sie erweitert haben. Ihr Layout bleibt genau so, wie Sie es mögen, auch nach dem Aktualisieren.
+⌨️ Produktivitäts-Shortcuts
+- Seitenleiste umschalten: Cmd/Ctrl + I
+- Neuer Tab rechts: Opt/Alt + T
 
-🎨 Volle Unterstützung für native Tab-Gruppen: Ihre vorhandenen Chrome-Tab-Gruppen werden wunderschön mit ihren ursprünglichen Namen und Farben dargestellt und bleiben vollständig einklappbar.
+Entwickelt für Power-User, Entwickler und alle, die sich ein aufgeräumtes, organisiertes und fokussiertes Browser-Erlebnis wünschen.
 
-🔍 Blitzschnelle Suche: Filtern Sie sofort durch Hunderte von Tabs und Lesezeichen, während Sie tippen. Finden Sie im Handumdrehen, was Sie brauchen.
-
-💻 Cooles Hacker-Style-Theme: Genießen Sie ein schlankes, kontrastreiches dunkles Theme mit einem grünen Akzent, das für Fokus und Lesbarkeit entwickelt wurde.
-
-⌨️ Praktische Tastenkombination: Schalten Sie die Seitenleiste jederzeit mit Command+I (auf Mac) oder Strg+I (unter Windows) um.
-
-⌨️ Eine weitere praktische Tastenkombination: Erstellen Sie sofort einen neuen Tab rechts neben dem aktuellen mit Option+T (auf Mac) oder Alt+T (unter Windows).
-
-
----
-
-
-Entwickelt für Power-User, Entwickler und alle, die sich ein organisierteres Browser-Erlebnis wünschen. Installieren Sie jetzt und übernehmen Sie die Kontrolle über Ihre Tabs! 🌟
+Installieren Sie jetzt und heben Sie Ihren Chrome-Browser auf ein ganz neues Level! 🌟

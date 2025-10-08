@@ -561,6 +561,7 @@ body {
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
+    white-space: nowrap;
     transition: background-color 0.2s, color 0.2s;
 }
 

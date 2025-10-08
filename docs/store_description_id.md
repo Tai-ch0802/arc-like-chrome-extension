@@ -1,39 +1,40 @@
----
+Bosan tersesat di antara puluhan tab yang berantakan? Menginginkan manajemen tab yang lancar dan elegan seperti peramban Arc, tetapi tidak bisa meninggalkan Chrome? Keinginan Anda terkabul! 🚀
 
-Bosan dengan bilah tab yang berantakan? Bawa manajemen tab vertikal revolusioner dari peramban Arc langsung ke Google Chrome Anda! 🚀
+Bilah Sisi Gaya Arc mengubah pengalaman Chrome Anda, memperkenalkan panel samping terpadu untuk semua tab, grup tab, dan markah Anda. Ucapkan selamat tinggal pada kekacauan beralih antara jendela dan pengelola markah. Ambil kembali kendali peramban Anda dan tingkatkan produktivitas serta fokus Anda secara signifikan.
 
+SOROTAN UTAMA
 
-Bilah Sisi Gaya Arc menyediakan panel terpadu yang kuat untuk mengelola semua tab dan markah Anda dalam satu antarmuka yang bersih. Tingkatkan produktivitas Anda dan atur kehidupan digital Anda dengan mudah.
+🗂️ Ruang Kerja Terpadu
+Kelola semua tab dan markah Anda dengan lancar dalam satu antarmuka. Satu panel untuk mengatur semuanya, memberikan kejelasan yang tak tertandingi.
 
----
+🤏 Seret & Lepas Intuitif
+Seret dan lepas tab, grup tab asli, markah, dan folder dengan bebas untuk mengatur ruang kerja Anda persis seperti yang Anda inginkan. Ruang Anda, aturan Anda.
 
-✨ FITUR UTAMA ✨
+✨ Seret-untuk-Menandai
+Dapat inspirasi? Cukup seret tab dan lepaskan ke area markah untuk menyimpannya secara permanen.
 
+📂 Folder yang Diperluas saat Melayang
+Tidak ada lagi klik yang membosankan saat mengatur. Cukup arahkan kursor item ke atas folder yang diciutkan, dan itu akan meluas secara ajaib untuk Anda.
 
-🗂️ Bilah Sisi All-in-One: Kelola semua tab aktif ANDA dan seluruh perpustakaan markah Anda dalam satu tampilan terpadu. Tidak perlu lagi beralih antar jendela!
+⚡️ Tindakan Melayang Cerdas
+Antarmuka yang bersih dan bebas gangguan yang dengan elegan menampilkan tindakan cepat seperti tutup, edit, atau hapus hanya saat Anda mengarahkan kursor ke suatu item.
 
-🤏 Kebebasan Seret & Lepas Total: Susun ulang tab, grup tab asli, markah, dan folder dengan bebas. Ruang kerja Anda, aturan Anda.
+🧠 Mengingat Tampilan Anda
+Bilah sisi secara cerdas mengingat folder markah mana yang telah Anda luaskan. Setiap kali Anda membukanya, Anda akan disambut dengan tata letak pilihan Anda.
 
-✨ Pembuatan Markah Instan: Cukup seret tab dan lepaskan ke bagian markah untuk menyimpannya secara instan.
+🎨 Integrasi Grup Tab yang Mulus
+Sangat kompatibel dengan grup tab asli Chrome! Nama dan warna grup ditampilkan dengan indah dan tetap dapat diciutkan sepenuhnya.
 
-📂 Folder Cerdas Buka-saat-Arahkan: Menyeret item ke atas folder markah yang diciutkan? Cukup arahkan kursor sejenak, dan itu akan meluas secara ajaib untuk Anda. Mengatur tidak pernah semudah ini.
+🔍 Pencarian Kabur Instan
+Saat Anda mengetik, lakukan pencarian kabur secepat kilat di ratusan tab dan markah. Temukan apa yang Anda butuhkan dalam sekejap mata.
 
-⚡ Tindakan Cepat saat Arahkan: Antarmuka bersih yang menampilkan tindakan kuat saat Anda membutuhkannya. Arahkan kursor ke item apa pun untuk menutup, mengedit, atau menghapusnya dengan cepat.
+💻 Tema yang Didorong oleh Fokus
+Nikmati tema gelap kontras tinggi yang ramping dengan aksen hijau khas, yang dirancang untuk berjam-jam kerja terfokus dan membaca yang nyaman.
 
-🧠 Kegigihan Tampilan Cerdas: Bilah sisi mengingat folder markah mana yang telah Anda luaskan. Tata letak Anda tetap seperti yang Anda suka, bahkan setelah menyegarkan.
+⌨️ Pintasan Produktivitas
+- Alihkan Bilah Sisi: Cmd/Ctrl + I
+- Tab Baru di Kanan: Opt/Alt + T
 
-🎨 Dukungan Grup Tab Asli Penuh: Grup tab Chrome Anda yang ada dirender dengan indah dengan nama dan warna aslinya, dan tetap dapat diciutkan sepenuhnya.
+Dirancang untuk pengguna ahli, pengembang, dan siapa saja yang mendambakan pengalaman menjelajah yang bebas dari kekacauan, teratur, dan terfokus.
 
-🔍 Pencarian Secepat Kilat: Saring secara instan ratusan tab dan markah saat Anda mengetik. Temukan apa yang Anda butuhkan dalam sekejap.
-
-💻 Tema Gaya Peretas Keren: Nikmati tema gelap kontras tinggi yang ramping dengan aksen hijau, dirancang untuk fokus dan keterbacaan.
-
-⌨️ Pintasan Keyboard yang Nyaman: Alihkan bilah sisi kapan saja dengan Command+I (di Mac) atau Ctrl+I (di Windows).
-
-⌨️ Pintasan Praktis Lainnya: Buat tab baru secara instan di sebelah kanan tab saat ini dengan Option+T (di Mac) atau Alt+T (di Windows).
-
-
----
-
-
-Dirancang untuk pengguna ahli, pengembang, dan siapa saja yang mendambakan pengalaman menjelajah yang lebih teratur. Instal sekarang dan kendalikan tab Anda! 🌟
+Instal sekarang dan tingkatkan peramban Chrome Anda ke level yang sama sekali baru! 🌟

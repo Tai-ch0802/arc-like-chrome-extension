@@ -1,39 +1,40 @@
----
+Bạn mệt mỏi vì bị lạc giữa hàng tá tab lộn xộn? Thèm muốn trải nghiệm quản lý tab mượt mà, thanh lịch của trình duyệt Arc nhưng không thể rời bỏ Chrome? Mong muốn của bạn đã thành hiện thực! 🚀
 
-Bạn đã mệt mỏi với một thanh tab lộn xộn? Hãy mang trình quản lý tab dọc mang tính cách mạng của trình duyệt Arc trực tiếp vào Google Chrome của bạn! 🚀
+Thanh bên kiểu Arc biến đổi trải nghiệm Chrome của bạn, giới thiệu một bảng điều khiển bên thống nhất cho tất cả các tab, nhóm tab và dấu trang của bạn. Tạm biệt sự hỗn loạn của việc chuyển đổi giữa các cửa sổ và trình quản lý dấu trang. Lấy lại quyền kiểm soát trình duyệt của bạn và tăng đáng kể năng suất và sự tập trung của bạn.
 
+ĐIỂM NỔI BẬT
 
-Thanh bên kiểu Arc cung cấp một bảng điều khiển thống nhất, mạnh mẽ để quản lý tất cả các tab và dấu trang của bạn trong một giao diện sạch sẽ. Tăng năng suất của bạn và tổ chức cuộc sống số của bạn một cách dễ dàng.
+🗂️ Không gian làm việc thống nhất
+Quản lý liền mạch tất cả các tab và dấu trang của bạn trong một giao diện duy nhất. Một bảng điều khiển để cai trị tất cả, mang lại sự rõ ràng vô song.
 
----
+🤏 Kéo và thả trực quan
+Kéo và thả tự do các tab, nhóm tab gốc, dấu trang và thư mục để sắp xếp không gian làm việc của bạn chính xác theo cách bạn muốn. Không gian của bạn, quy tắc của bạn.
 
-✨ TÍNH NĂNG CHÍNH ✨
+✨ Kéo để đánh dấu trang
+Cảm hứng chợt đến? Chỉ cần kéo một tab và thả nó vào khu vực dấu trang để lưu vĩnh viễn.
 
+📂 Thư mục mở rộng khi di chuột qua
+Không còn những cú nhấp chuột tẻ nhạt khi sắp xếp. Chỉ cần di chuột một mục qua một thư mục đã thu gọn, và nó sẽ tự động mở rộng một cách kỳ diệu cho bạn.
 
-🗂️ Thanh bên tất cả trong một: Quản lý tất cả các tab đang hoạt động VÀ toàn bộ thư viện dấu trang của bạn trong một chế độ xem thống nhất. Không còn phải chuyển đổi giữa các cửa sổ!
+⚡️ Hành động thông minh khi di chuột qua
+Một giao diện sạch sẽ, không gây xao lãng, hiển thị một cách thanh lịch các hành động nhanh như đóng, chỉnh sửa hoặc xóa chỉ khi bạn di chuột qua một mục.
 
-🤏 Hoàn toàn tự do kéo và thả: Tự do sắp xếp lại các tab, nhóm tab gốc, dấu trang và thư mục. Không gian làm việc của bạn, quy tắc của bạn.
+🧠 Ghi nhớ chế độ xem của bạn
+Thanh bên ghi nhớ một cách thông minh những thư mục dấu trang nào bạn đã mở rộng. Mỗi khi bạn mở nó, bạn sẽ được chào đón bằng bố cục ưa thích của mình.
 
-✨ Tạo dấu trang tức thì: Chỉ cần kéo một tab và thả nó vào phần dấu trang để lưu lại ngay lập tức.
+🎨 Tích hợp nhóm tab liền mạch
+Tương thích hoàn hảo với các nhóm tab gốc của Chrome! Tên và màu sắc của nhóm được hiển thị đẹp mắt và vẫn hoàn toàn có thể thu gọn.
 
-📂 Thư mục thông minh mở khi di chuột qua: Kéo một mục qua một thư mục dấu trang đã thu gọn? Chỉ cần di chuột qua một lát, và nó sẽ tự động mở rộng cho bạn. Việc tổ chức chưa bao giờ dễ dàng hơn thế.
+🔍 Tìm kiếm mờ tức thì
+Khi bạn nhập, hãy thực hiện tìm kiếm mờ nhanh như chớp trên hàng trăm tab và dấu trang. Tìm thấy những gì bạn cần trong nháy mắt.
 
-⚡ Hành động nhanh khi di chuột qua: Một giao diện sạch sẽ cho thấy các hành động mạnh mẽ khi bạn cần. Di chuột qua bất kỳ mục nào để nhanh chóng đóng, chỉnh sửa hoặc xóa.
+💻 Chủ đề tập trung vào sự tập trung
+Tận hưởng một chủ đề tối đẹp mắt, có độ tương phản cao với điểm nhấn màu xanh lá cây đặc trưng, được thiết kế cho nhiều giờ làm việc tập trung và đọc thoải mái.
 
-🧠 Ghi nhớ chế độ xem thông minh: Thanh bên ghi nhớ những thư mục dấu trang nào bạn đã mở rộng. Bố cục của bạn vẫn giữ nguyên theo ý muốn, ngay cả sau khi làm mới.
+⌨️ Phím tắt năng suất
+- Chuyển đổi thanh bên: Cmd/Ctrl + I
+- Tab mới ở bên phải: Opt/Alt + T
 
-🎨 Hỗ trợ đầy đủ nhóm tab gốc: Các nhóm tab Chrome hiện có của bạn được hiển thị đẹp mắt với tên và màu sắc ban đầu, và chúng vẫn hoàn toàn có thể thu gọn.
+Được thiết kế cho người dùng thành thạo, nhà phát triển và bất kỳ ai khao khát trải nghiệm duyệt web không lộn xộn, có tổ chức và tập trung.
 
-🔍 Tìm kiếm nhanh như chớp: Lọc ngay lập tức qua hàng trăm tab và dấu trang khi bạn nhập. Tìm thấy những gì bạn cần trong nháy mắt.
-
-💻 Chủ đề kiểu hacker cực ngầu: Tận hưởng một chủ đề tối đẹp mắt, có độ tương phản cao với điểm nhấn màu xanh lá cây, được thiết kế để tập trung và dễ đọc.
-
-⌨️ Phím tắt tiện lợi: Chuyển đổi thanh bên bất cứ lúc nào bằng Command+I (trên Mac) hoặc Ctrl+I (trên Windows).
-
-⌨️ Một phím tắt tiện dụng khác: Tạo ngay một tab mới ở bên phải tab hiện tại bằng Option+T (trên Mac) hoặc Alt+T (trên Windows).
-
-
----
-
-
-Được thiết kế cho người dùng thành thạo, nhà phát triển và bất kỳ ai khao khát trải nghiệm duyệt web có tổ chức hơn. Cài đặt ngay bây giờ và kiểm soát các tab của bạn! 🌟
+Cài đặt ngay bây giờ và nâng tầm trình duyệt Chrome của bạn lên một cấp độ hoàn toàn mới! 🌟
