@@ -214,13 +214,13 @@ body {
 #tab-list {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
 }
 
 .tab-item {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 6px 12px;
     border-radius: 0;
     cursor: pointer;
     transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
@@ -326,10 +326,10 @@ body {
 .tab-group-header {
     display: flex;
     align-items: center;
-    padding: 8px;
+    padding: 4px 8px;
     cursor: pointer;
     border-radius: 2px;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .tab-group-header:hover {
@@ -360,7 +360,7 @@ body {
 .bookmark-item, .bookmark-folder {
     display: flex;
     align-items: center;
-    padding: 6px 8px;
+    padding: 4px 8px;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
