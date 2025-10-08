@@ -20,17 +20,17 @@
       "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "ブックマーク「$bookmark_title$」を完全に削除してもよろしいですか？",
+      "message": "ブックマーク\"$bookmark_title$\"を完全に削除してもよろしいですか？",
       "description": "Confirmation message for deleting a single bookmark.",
       "placeholders": { "bookmark_title": { "content": "$1" } }
     },
     "deleteFolderConfirm": {
-      "message": "フォルダ「$folder_title$」とその中のすべてのコンテンツを完全に削除してもよろしいですか？\n\nこの操作は元に戻せません！",
+      "message": "フォルダ\"$folder_title$\"とその中のすべてのコンテンツを完全に削除してもよろしいですか？\n\nこの操作は元に戻せません！",
       "description": "Confirmation message for deleting a bookmark folder.",
       "placeholders": { "folder_title": { "content": "$1" } }
     },
     "addFolderPrompt": {
-      "message": "「$parent_folder$」の下に新しいフォルダの名前を入力してください：",
+      "message": "\"$parent_folder$\"の下に新しいフォルダの名前を入力してください：",
       "description": "Prompt for adding a new bookmark folder.",
       "placeholders": { "parent_folder": { "content": "$1" } }
     },
@@ -86,12 +86,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Chromeの拡張機能ショートカット設定ページで、この拡張機能のキーボードショートカットをカスタマイズできます。",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Chromeの管理ページで拡張機能のショートカットをカスタマイズできます。",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "ショートカット設定ページへ移動",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "拡張機能のショートカットを管理",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "現在のショートカット:",
@@ -102,12 +102,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Chromeの外観設定でサイドパネルの位置（左または右）を調整できます。",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chromeにはサイドパネルの位置に関する組み込みの設定があります。ここで、パネルをブラウザの左側または右側に表示するかを調整できます。",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "外観設定へ移動",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Chromeサイドパネルの位置を変更",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "サイドバーを開く",

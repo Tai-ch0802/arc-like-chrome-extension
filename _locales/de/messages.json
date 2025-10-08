@@ -83,12 +83,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Sie können die Tastenkombinationen dieser Erweiterung auf der Chrome-Erweiterungs-Tastenkombinationen-Einstellungsseite anpassen.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Sie können die Tastenkombinationen der Erweiterung auf der Verwaltungsseite von Chrome anpassen.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Zur Seite für Tastenkombinationen-Einstellungen gehen",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "Tastenkombinationen für Erweiterungen verwalten",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "Aktuelle Tastenkombination:",
@@ -99,12 +99,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Sie können die Position des Seitenpanels (links oder rechts) in den Chrome-Darstellungseinstellungen anpassen.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome hat eine integrierte Einstellung für die Position der Seitenleiste. Hier können Sie anpassen, ob das Panel auf der linken oder rechten Seite des Browsers erscheint.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Zu den Darstellungseinstellungen gehen",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Position der Chrome-Seitenleiste ändern",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "Seitenleiste öffnen",

@@ -20,7 +20,7 @@
       "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"?",
+      "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"",
       "description": "Confirmation message for deleting a single bookmark.",
       "placeholders": { "bookmark_title": { "content": "$1" } }
     },
@@ -30,7 +30,7 @@
       "placeholders": { "folder_title": { "content": "$1" } }
     },
     "addFolderPrompt": {
-      "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\":",
+      "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\"",
       "description": "Prompt for adding a new bookmark folder.",
       "placeholders": { "parent_folder": { "content": "$1" } }
     },
@@ -86,12 +86,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Vous pouvez personnaliser les raccourcis clavier de cette extension sur la page des paramètres de raccourcis des extensions Chrome.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Vous pouvez personnaliser les raccourcis de l'extension sur la page de gestion de Chrome.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Accéder à la page des paramètres de raccourcis",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "Gérer les raccourcis de l'extension",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "Raccourci actuel :",
@@ -102,12 +102,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Vous pouvez ajuster la position du panneau latéral (gauche ou droite) dans les paramètres d'apparence de Chrome.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome dispose d'un paramètre intégré pour la position du panneau latéral. Vous pouvez ajuster ici si le panneau apparaît sur le côté gauche ou droit du navigateur.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Accéder aux paramètres d'apparence",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Modifier la position du panneau latéral de Chrome",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "Ouvrir la barre latérale",

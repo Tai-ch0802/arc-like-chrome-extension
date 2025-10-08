@@ -83,12 +83,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Anda dapat menyesuaikan pintasan keyboard ekstensi ini di halaman pengaturan pintasan ekstensi Chrome.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Anda dapat menyesuaikan pintasan ekstensi di halaman pengelolaan Chrome.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Buka Halaman Pengaturan Pintasan",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "Kelola Pintasan Ekstensi",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "Pintasan Saat Ini:",
@@ -99,12 +99,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Anda dapat menyesuaikan posisi panel samping (kiri atau kanan) di pengaturan tampilan Chrome.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome memiliki pengaturan bawaan untuk posisi panel samping. Anda dapat menyesuaikan apakah panel muncul di sisi kiri atau kanan browser di sini.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Buka Pengaturan Tampilan",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Ubah Posisi Panel Samping Chrome",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "Buka bilah sisi",

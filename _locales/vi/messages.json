@@ -20,7 +20,7 @@
       "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Bạn có chắc chắn muốn xóa vĩnh viễn dấu trang \"$bookmark_title$\"?",
+      "message": "Bạn có chắc chắn muốn xóa vĩnh viễn dấu trang \"$bookmark_title$\"",
       "description": "Confirmation message for deleting a single bookmark.",
       "placeholders": { "bookmark_title": { "content": "$1" } }
     },
@@ -30,7 +30,7 @@
       "placeholders": { "folder_title": { "content": "$1" } }
     },
     "addFolderPrompt": {
-      "message": "Vui lòng nhập tên cho thư mục mới trong \"$parent_folder$\":",
+      "message": "Vui lòng nhập tên cho thư mục mới trong \"$parent_folder$\"",
       "description": "Prompt for adding a new bookmark folder.",
       "placeholders": { "parent_folder": { "content": "$1" } }
     },
@@ -86,12 +86,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Bạn có thể tùy chỉnh phím tắt của tiện ích này trên trang cài đặt phím tắt tiện ích của Chrome.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Bạn có thể tùy chỉnh các phím tắt của tiện ích trên trang quản lý của Chrome.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Đi tới trang cài đặt phím tắt",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "Quản lý Phím tắt Tiện ích",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "Phím tắt hiện tại:",
@@ -102,12 +102,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Bạn có thể điều chỉnh vị trí bảng điều khiển bên (trái hoặc phải) trong cài đặt giao diện của Chrome.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome có một cài đặt tích hợp cho vị trí của thanh bên. Bạn có thể điều chỉnh xem thanh bên xuất hiện ở bên trái hay bên phải của trình duyệt tại đây.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Đi tới cài đặt giao diện",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Thay đổi Vị trí Thanh bên của Chrome",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "Mở thanh bên",

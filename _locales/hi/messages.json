@@ -86,12 +86,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "आप Chrome के एक्सटेंशन शॉर्टकट सेटिंग्स पेज पर इस एक्सटेंशन के कीबोर्ड शॉर्टकट को अनुकूलित कर सकते हैं।",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "आप Chrome के प्रबंधन पृष्ठ पर एक्सटेंशन के शॉर्टकट को अनुकूलित कर सकते हैं।",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "शॉर्टकट सेटिंग्स पेज पर जाएं",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "एक्सटेंशन शॉर्टकट प्रबंधित करें",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "वर्तमान शॉर्टकट:",
@@ -102,12 +102,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "आप Chrome की उपस्थिति सेटिंग्स में साइड पैनल की स्थिति (बाएं या दाएं) को समायोजित कर सकते हैं।",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome में साइड पैनल की स्थिति के लिए एक अंतर्निहित सेटिंग है। आप यहां समायोजित कर सकते हैं कि पैनल ब्राउज़र के बाईं ओर या दाईं ओर दिखाई दे।",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "उपस्थिति सेटिंग्स पर जाएं",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Chrome साइड पैनल की स्थिति बदलें",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "साइडबार खोलें",

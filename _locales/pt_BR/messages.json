@@ -83,12 +83,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Você pode personalizar os atalhos de teclado desta extensão na página de configurações de atalhos de extensões do Chrome.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Você pode personalizar os atalhos da extensão na página de gerenciamento do Chrome.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Ir para a página de configurações de atalhos",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "Gerenciar Atalhos da Extensão",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "Atalho Atual:",
@@ -99,12 +99,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Você pode ajustar a posição do painel lateral (esquerda ou direita) nas configurações de aparência do Chrome.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "O Chrome possui uma configuração integrada para a posição do painel lateral. Você pode ajustar se o painel aparece no lado esquerdo ou direito do navegador aqui.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Ir para as Configurações de Aparência",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Alterar Posição do Painel Lateral do Chrome",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "Abrir a barra lateral",

@@ -86,12 +86,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Chrome 확장 프로그램 단축키 설정 페이지에서 이 확장 프로그램의 키보드 단축키를 사용자 지정할 수 있습니다.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Chrome의 관리 페이지에서 확장 프로그램의 단축키를 사용자 지정할 수 있습니다.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "단축키 설정 페이지로 이동",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "확장 프로그램 단축키 관리",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "현재 단축키:",
@@ -102,12 +102,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Chrome의 모양 설정에서 사이드 패널의 위치(왼쪽 또는 오른쪽)를 조정할 수 있습니다.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome에는 사이드 패널 위치에 대한 기본 제공 설정이 있습니다. 여기에서 패널이 브라우저의 왼쪽 또는 오른쪽에 표시되는지 조정할 수 있습니다.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "모양 설정으로 이동",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Chrome 사이드 패널 위치 변경",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "사이드바 열기",

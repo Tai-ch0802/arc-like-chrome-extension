@@ -107,12 +107,12 @@
         "description": "設定中快捷鍵區塊的標題。"
     },
     "shortcutExplanation": {
-        "message": "您可以在 Chrome 的擴充功能快捷鍵設定頁面中自訂本擴充功能的快捷鍵。",
-        "description": "解釋如何設定快捷鍵的說明文字。"
+        "message": "你可以在 Chrome 的管理頁面中自訂擴充功能的快捷鍵。",
+        "description": "關於如何設定擴充功能快捷鍵的簡短說明。"
     },
     "shortcutLinkText": {
-        "message": "前往快捷鍵設定頁面",
-        "description": "前往 Chrome 快捷鍵設定頁面的連結文字。"
+        "message": "管理擴充功能快捷鍵",
+        "description": "前往 Chrome 快捷鍵管理頁面的連結文字。"
     },
     "currentShortcutLabel": {
         "message": "當前快捷鍵：",
@@ -123,12 +123,12 @@
         "description": "設定中側邊面板位置區塊的標題。"
     },
     "sidePanelPositionExplanation": {
-        "message": "您可以在 Chrome 的外觀設定中調整側邊面板的位置（左側或右側）。",
-        "description": "解釋如何設定側邊面板位置的說明文字。"
+        "message": "Chrome 已內建側邊欄位置設定。你可以在此調整面板要顯示在瀏覽器的左側或右側。",
+        "description": "解釋如何設定 Chrome 內建的側邊面板位置。"
     },
     "sidePanelPositionLinkText": {
-        "message": "前往外觀設定",
-        "description": "前往 Chrome 外觀設定頁面的連結文字。"
+        "message": "更改 Chrome 側邊欄位置",
+        "description": "前往 Chrome 側邊欄位置設定的連結文字。"
     },
     "commandOpenSidePanel": {
       "message": "開啟側邊欄",

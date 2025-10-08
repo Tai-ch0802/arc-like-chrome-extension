@@ -20,7 +20,7 @@
       "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "¿Estás seguro de que quieres eliminar permanentemente el marcador \"$bookmark_title$\"?",
+      "message": "¿Estás seguro de que quieres eliminar permanentemente el marcador \"$bookmark_title$\"",
       "description": "Confirmation message for deleting a single bookmark.",
       "placeholders": { "bookmark_title": { "content": "$1" } }
     },
@@ -83,12 +83,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Puedes personalizar los atajos de teclado de esta extensión en la página de configuración de atajos de extensiones de Chrome.",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "Puedes personalizar los atajos de la extensión en la página de gestión de Chrome.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Ir a la página de configuración de atajos",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "Gestionar Atajos de Extensión",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "Atajo actual:",
@@ -99,12 +99,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Puedes ajustar la posición del panel lateral (izquierda o derecha) en la configuración de apariencia de Chrome.",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome tiene una configuración integrada para la posición del panel lateral. Aquí puedes ajustar si el panel aparece en el lado izquierdo o derecho del navegador.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Ir a la configuración de apariencia",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "Cambiar Posición del Panel Lateral de Chrome",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "Abrir la barra lateral",

@@ -86,12 +86,12 @@
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "คุณสามารถปรับแต่งแป้นพิมพ์ลัดของส่วนขยายนี้ได้ที่หน้าการตั้งค่าแป้นพิมพ์ลัดของส่วนขยาย Chrome",
-        "description": "Explanation text for how to set keyboard shortcuts."
+        "message": "คุณสามารถปรับแต่งทางลัดของส่วนขยายได้ที่หน้าการจัดการของ Chrome",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "ไปที่หน้าการตั้งค่าแป้นพิมพ์ลัด",
-        "description": "Link text to Chrome's shortcut settings page."
+        "message": "จัดการทางลัดส่วนขยาย",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
         "message": "แป้นพิมพ์ลัดปัจจุบัน:",
@@ -102,12 +102,12 @@
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "คุณสามารถปรับตำแหน่งของแผงด้านข้าง (ซ้ายหรือขวา) ได้ในการตั้งค่าลักษณะที่ปรากฏของ Chrome",
-        "description": "Explanation text for how to set the side panel position."
+        "message": "Chrome มีการตั้งค่าในตัวสำหรับตำแหน่งของแผงด้านข้าง คุณสามารถปรับได้ว่าต้องการให้แผงปรากฏทางด้านซ้ายหรือด้านขวาของเบราว์เซอร์ที่นี่",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "ไปที่การตั้งค่าลักษณะที่ปรากฏ",
-        "description": "Link text to Chrome's appearance settings page."
+        "message": "เปลี่ยนตำแหน่งแผงด้านข้างของ Chrome",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
       "message": "เปิดแถบด้านข้าง",
