@@ -2,6 +2,25 @@ import * as api from './apiManager.js';
 import * as state from './stateManager.js';
 import * as modal from './modalManager.js';
 
+const GROUP_COLORS = {
+    grey: '#5f6368',
+    blue: '#8ab4f8',
+    red: '#f28b82',
+    yellow: '#fdd663',
+    green: '#81c995',
+    pink: '#ff8bcb',
+    purple: '#c58af9',
+    cyan: '#78d9ec',
+    orange: '#ffab70'
+};
+
+function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 // --- DOM 元素獲取與導出 ---
 export const tabListContainer = document.getElementById('tab-list');
 export const bookmarkListContainer = document.getElementById('bookmark-list');
@@ -97,13 +116,24 @@ export function renderTabsAndGroups(tabs, groups) {
             const arrow = document.createElement('span');
             arrow.className = 'tab-group-arrow';
             arrow.textContent = group.collapsed ? '▶' : '▼';
+
             const colorDot = document.createElement('div');
             colorDot.className = 'tab-group-color-dot';
-            colorDot.style.backgroundColor = group.color;
+            const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
+            colorDot.style.backgroundColor = groupColorHex;
+
             const title = document.createElement('span');
             title.className = 'tab-group-title';
             title.textContent = group.title;
-            title.style.color = group.color;
+
+            groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
+            groupHeader.addEventListener('mouseenter', () => {
+                groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.35);
+            });
+            groupHeader.addEventListener('mouseleave', () => {
+                groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
+            });
+
             groupHeader.appendChild(arrow);
             groupHeader.appendChild(colorDot);
             groupHeader.appendChild(title);
@@ -398,8 +428,8 @@ export function initThemeSwitcher() {
                 <h4 class="settings-section-header">${api.getMessage('shortcutSectionHeader')}</h4>
                 <p>${api.getMessage('shortcutExplanation')}</p>
                 <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
-                <p>${api.getMessage('settingsShortcutCreateTabRight')} <span                                                    │
- │           id="create-new-tab-right-shortcut">${newTabRightShortcut}</span></p>
+                <p>${api.getMessage('settingsShortcutCreateTabRight')} <span                                                    
+           id="create-new-tab-right-shortcut">${newTabRightShortcut}</span></p>
                 <button id="open-shortcuts-button" class="modal-button">${api.getMessage('shortcutLinkText')}</button>
             </div>
             <div class="settings-section">

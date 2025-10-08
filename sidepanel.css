@@ -333,7 +333,7 @@ body {
 }
 
 .tab-group-header:hover {
-    background-color: var(--element-bg-hover-color);
+    /* background-color is now handled by JavaScript */
 }
 
 .tab-group-arrow {
