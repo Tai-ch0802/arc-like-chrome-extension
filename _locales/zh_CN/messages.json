@@ -1,0 +1,165 @@
+{
+    "extensionName": {
+      "message": "标签页/书签侧边栏",
+      "description": "扩展程序的名称。"
+    },
+    "extensionDescription": {
+      "message": "一个模仿 Arc 浏览器垂直标签页的 Chrome 扩展程序。",
+      "description": "扩展程序的描述。"
+    },
+    "searchPlaceholder": {
+      "message": "搜索标签页或书签...",
+      "description": "搜索框的占位符文本。"
+    },
+    "tabsHeader": {
+      "message": "标签页",
+      "description": "标签页部分的标题。"
+    },
+    "bookmarksHeader": {
+      "message": "书签",
+      "description": "书签部分的标题。"
+    },
+    "deleteBookmarkConfirm": {
+      "message": "您确定要永久删除书签“$bookmark_title$”吗？",
+      "description": "删除单个书签的确认信息。",
+      "placeholders": {
+        "bookmark_title": {
+          "content": "$1"
+        }
+      }
+    },
+    "deleteFolderConfirm": {
+      "message": "您确定要永久删除文件夹“$folder_title$”及其所有内容吗？\n\n此操作无法撤销！",
+      "description": "删除书签文件夹的确认信息。",
+      "placeholders": {
+        "folder_title": {
+          "content": "$1"
+        }
+      }
+    },
+    "addFolderPrompt": {
+      "message": "请输入要在“$parent_folder$”下创建的新文件夹的名称：",
+      "description": "添加新书签文件夹的提示信息。",
+      "placeholders": {
+        "parent_folder": {
+          "content": "$1"
+        }
+      }
+    },
+    "editBookmarkFolderPromptForTitle": {
+        "message": "编辑文件夹名称：",
+        "description": "提示用户输入或编辑书签文件夹的名称。"
+    },
+    "editBookmarkPromptForTitle": {
+        "message": "编辑书签名称：",
+        "description": "提示用户输入或编辑特定书签的标题或名称。"
+    },
+    "editBookmarkPromptForUrl": {
+        "message": "编辑书签网址：",
+        "description": "提示用户输入或编辑特定书签的网址（URL）。"
+    },
+    "cancelButton": {
+        "message": "取消",
+        "description": "对话框中“取消”按钮的文本。"
+    },
+    "deleteButton": {
+        "message": "删除",
+        "description": "对话框中“删除”按钮的文本。"
+    },
+    "createButton": {
+        "message": "创建",
+        "description": "对话框中“创建”按钮的文本。"
+    },
+    "saveButton": {
+        "message": "保存",
+        "description": "对话框中“保存”按钮的文本。"
+    },
+    "closeButton": {
+        "message": "关闭",
+        "description": "对话框中“关闭”按钮的文本。"
+    },
+    "settingsTitle": {
+        "message": "设置",
+        "description": "设置对话框的标题。"
+    },
+    "themeSectionHeader": {
+        "message": "外观",
+        "description": "设置中外观部分的标题。"
+    },
+    "themeOptionGeek": {
+        "message": "Geek (默认)",
+        "description": "Geek 主题选项的名称。"
+    },
+    "themeOptionGoogle": {
+        "message": "Google",
+        "description": "Google 主题选项的名称。"
+    },
+    "themeOptionDarcula": {
+        "message": "Darcula (JetBrains)",
+        "description": "Darcula (JetBrains) 主题选项的名称。"
+    },
+    "themeOptionGeekBlue": {
+        "message": "Geek Blue",
+        "description": "Geek Blue 主题选项的名称。"
+    },
+    "shortcutSectionHeader": {
+        "message": "快捷键设置",
+        "description": "设置中快捷键部分的标题。"
+    },
+    "shortcutExplanation": {
+        "message": "您可以在 Chrome 的管理页面中自定义扩展程序的快捷键。",
+        "description": "关于如何设置扩展程序快捷键的简短说明。"
+    },
+    "shortcutLinkText": {
+        "message": "管理扩展程序快捷键",
+        "description": "前往 Chrome 快捷键管理页面的链接文本。"
+    },
+    "currentShortcutLabel": {
+        "message": "当前快捷键：",
+        "description": "显示当前快捷键的标签。"
+    },
+    "sidePanelPositionSectionHeader": {
+        "message": "侧边面板位置",
+        "description": "设置中侧边面板位置部分的标题。"
+    },
+    "sidePanelPositionExplanation": {
+        "message": "Chrome 已内置侧边栏位置设定。您可在此调整面板要显示在浏览器的左侧或右侧。",
+        "description": "解释如何设置 Chrome 内置的侧边面板位置。"
+    },
+    "sidePanelPositionLinkText": {
+        "message": "更改 Chrome 侧边栏位置",
+        "description": "前往 Chrome 侧边栏位置设置的链接文本。"
+    },
+    "commandOpenSidePanel": {
+      "message": "打开侧边栏",
+      "description": "打开侧边栏的命令。"
+    },
+    "commandCreateNewTabRight": {
+      "message": "在当前标签页右侧新建一个标签页",
+      "description": "在当前标签页右侧新建一个标签页的命令。"
+    },
+    "settingsShortcutCreateTabRight": {
+      "message": "在右侧新建标签页：",
+      "description": "在设置中，“在右侧新建标签页”快捷键的说明。"
+    },
+    "closeTab": {
+        "message": "关闭标签页",
+        "description": "标签页上关闭按钮的提示文本。"
+    },
+    "addBookmark": {
+        "message": "添加到书签",
+        "description": "标签页上添加到书签按钮的提示文本。"
+    },
+    "addBookmarkDialogTitle": {
+        "message": "添加书签",
+        "description": "添加书签对话框的标题。"
+    },
+    "bookmarksBar": {
+        "message": "书签栏",
+        "description": "根书签文件夹的名称。"
+    },
+    "addButton": {
+        "message": "添加",
+        "description": "添加书签对话框中的确认按钮文本。"
+    }
+  }
