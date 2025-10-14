@@ -133,6 +133,22 @@
         "message": "북마크 추가",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "새 그룹에 탭 추가",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "새 그룹 만들기",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "그룹 이름 입력...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "그룹 만들기",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "북마크바",
         "description": "The name for the root bookmark folder."

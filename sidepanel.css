@@ -625,3 +625,49 @@ body {
 .modal-bookmark-tree .bookmark-folder.selected .bookmark-title {
     color: var(--accent-color);
 }
+
+/* --- Add to Group Button --- */
+.add-to-group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-color-secondary);
+    transition: color 0.2s ease;
+}
+
+.add-to-group-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.add-to-group-btn:hover {
+    color: var(--info-color);
+}
+
+/* --- Create Group Dialog --- */
+.color-swatches-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 5px 0;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.color-swatch.selected {
+    border-color: var(--accent-color);
+}

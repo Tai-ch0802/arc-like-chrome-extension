@@ -154,6 +154,22 @@
         "message": "新增書籤",
         "description": "新增書籤對話框的標題。"
     },
+    "addToGroup": {
+        "message": "將分頁加入新群組",
+        "description": "分頁上「加入群組」按鈕的提示文字。"
+    },
+    "createGroupDialogTitle": {
+        "message": "建立新群組",
+        "description": "建立新群組對話框的標題。"
+    },
+    "groupNameInputPlaceholder": {
+        "message": "輸入群組名稱...",
+        "description": "建立新群組對話框中，群組名稱輸入框的提示文字。"
+    },
+    "createGroupButton": {
+        "message": "建立群組",
+        "description": "建立新群組對話框中，「建立」按鈕的文字。"
+    },
     "bookmarksBar": {
         "message": "書籤列",
         "description": "根書籤資料夾的名稱。"

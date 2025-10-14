@@ -2,15 +2,24 @@ import * as api from './modules/apiManager.js';
 import * as ui from './modules/uiManager.js';
 import * as search from './modules/searchManager.js';
 import * as dragDrop from './modules/dragDropManager.js';
+import * as modal from './modules/modalManager.js';
 
 // --- 主要協調器 ---
+
+async function handleAddToGroupClick(tabId) {
+    const result = await modal.showCreateGroupDialog();
+    if (result && result.title) {
+        await api.addTabToNewGroup(tabId, result.title, result.color);
+        // The onUpdated and onCreated events from the Chrome API will automatically trigger updateTabList
+    }
+}
 
 async function updateTabList() {
     const [groups, tabs] = await Promise.all([
         api.getTabGroupsInCurrentWindow(),
         api.getTabsInCurrentWindow()
     ]);
-    ui.renderTabsAndGroups(tabs, groups);
+    ui.renderTabsAndGroups(tabs, groups, { onAddToGroupClick: handleAddToGroupClick });
     search.filterTabsAndGroups(ui.searchBox.value.toLowerCase().trim());
     dragDrop.initializeTabSortable(updateTabList);
 }

@@ -133,6 +133,22 @@
         "message": "Thêm dấu trang",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "Thêm tab vào nhóm mới",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "Tạo nhóm mới",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "Nhập tên nhóm...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "Tạo nhóm",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "Thanh dấu trang",
         "description": "The name for the root bookmark folder."

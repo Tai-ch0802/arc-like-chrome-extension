@@ -130,6 +130,22 @@
         "message": "Añadir marcador",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "Añadir pestaña a nuevo grupo",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "Crear nuevo grupo",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "Introduce el nombre del grupo...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "Crear grupo",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "Barra de marcadores",
         "description": "The name for the root bookmark folder."

@@ -154,6 +154,22 @@
         "message": "添加书签",
         "description": "添加书签对话框的标题。"
     },
+    "addToGroup": {
+        "message": "将标签页添加到新组",
+        "description": "标签页上“添加到组”按钮的工具提示文本。"
+    },
+    "createGroupDialogTitle": {
+        "message": "创建新组",
+        "description": "创建新组对话框的标题。"
+    },
+    "groupNameInputPlaceholder": {
+        "message": "输入组名...",
+        "description": "创建新组对话框中组名输入的占位符。"
+    },
+    "createGroupButton": {
+        "message": "创建组",
+        "description": "创建新组对话框中“创建”按钮的标签。"
+    },
     "bookmarksBar": {
         "message": "书签栏",
         "description": "根书签文件夹的名称。"

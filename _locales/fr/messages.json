@@ -133,6 +133,22 @@
         "message": "Ajouter un favori",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "Ajouter l'onglet à un nouveau groupe",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "Créer un nouveau groupe",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "Saisir le nom du groupe...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "Créer un groupe",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "Barre de favoris",
         "description": "The name for the root bookmark folder."

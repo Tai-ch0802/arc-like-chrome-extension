@@ -133,6 +133,22 @@
         "message": "बुकमार्क जोड़ें",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "टैब को नए समूह में जोड़ें",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "नया समूह बनाएं",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "समूह का नाम दर्ज करें...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "समूह बनाएं",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "बुकमार्क बार",
         "description": "The name for the root bookmark folder."

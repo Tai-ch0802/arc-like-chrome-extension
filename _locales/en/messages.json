@@ -157,6 +157,22 @@
         "message": "Add Bookmark",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "Add tab to new group",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "Create New Group",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "Enter group name...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "Create Group",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "Bookmarks Bar",
         "description": "The name for the root bookmark folder."

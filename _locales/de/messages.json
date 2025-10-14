@@ -130,6 +130,22 @@
         "message": "Lesezeichen hinzufügen",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "Tab zu neuer Gruppe hinzufügen",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "Neue Gruppe erstellen",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "Gruppennamen eingeben...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "Gruppe erstellen",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "Lesezeichenleiste",
         "description": "The name for the root bookmark folder."

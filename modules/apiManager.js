@@ -15,6 +15,12 @@ export const getTabGroupsInCurrentWindow = () => chrome.tabGroups.query({ window
 export const moveTabGroup = (groupId, index) => chrome.tabGroups.move(groupId, { index });
 export const updateTabGroup = (groupId, options) => chrome.tabGroups.update(groupId, options);
 
+export async function addTabToNewGroup(tabId, title, color) {
+    const groupId = await chrome.tabs.group({ tabIds: [tabId] });
+    await chrome.tabGroups.update(groupId, { title, color });
+    return groupId;
+}
+
 // Wrappers for chrome.bookmarks API
 export const getBookmarkTree = () => new Promise(resolve => chrome.bookmarks.getTree(resolve));
 export const getBookmarkChildren = (parentId) => new Promise(resolve => chrome.bookmarks.getChildren(parentId, resolve));

@@ -133,6 +133,22 @@
         "message": "ブックマークを追加",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "タブを新しいグループに追加",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "新しいグループを作成",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "グループ名を入力...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "グループを作成",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "ブックマークバー",
         "description": "The name for the root bookmark folder."

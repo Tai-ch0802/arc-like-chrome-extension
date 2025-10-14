@@ -315,3 +315,79 @@ export function showAddToBookmarkDialog({ name, url }) {
         };
     });
 }
+
+const GROUP_COLORS = {
+    grey: '#5f6368',
+    blue: '#8ab4f8',
+    red: '#f28b82',
+    yellow: '#fdd663',
+    green: '#81c995',
+    pink: '#ff8bcb',
+    purple: '#c58af9',
+    cyan: '#78d9ec',
+    orange: '#ffab70'
+};
+
+export function showCreateGroupDialog() {
+    return new Promise((resolve) => {
+        const form = document.createElement('form');
+        form.noValidate = true;
+        form.className = 'create-group-form';
+
+        let selectedColor = 'grey'; // Default color
+
+        const colorSwatches = Object.entries(GROUP_COLORS).map(([colorName, colorHex]) => `
+            <div class="color-swatch ${colorName === selectedColor ? 'selected' : ''}" data-color="${colorName}" style="background-color: ${colorHex};"></div>
+        `).join('');
+
+        form.innerHTML = `
+            <h3 class="modal-title">${api.getMessage("createGroupDialogTitle") || "Create New Group"}</h3>
+            <input type="text" class="modal-input" placeholder="${api.getMessage("groupNameInputPlaceholder") || "Enter group name..."}">
+            <div class="color-swatches-container">${colorSwatches}</div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
+                <button type="submit" class="modal-button confirm-btn primary">${api.getMessage("createGroupButton") || 'Create Group'}</button>
+            </div>
+        `;
+
+        const { overlay, modalContent } = createModal(form);
+
+        const input = modalContent.querySelector('.modal-input');
+        input.focus();
+
+        const swatchesContainer = modalContent.querySelector('.color-swatches-container');
+        swatchesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('color-swatch')) {
+                const previouslySelected = swatchesContainer.querySelector('.selected');
+                if (previouslySelected) {
+                    previouslySelected.classList.remove('selected');
+                }
+                e.target.classList.add('selected');
+                selectedColor = e.target.dataset.color;
+            }
+        });
+
+        const cleanupAndResolve = (value) => {
+            removeModal(overlay);
+            resolve(value);
+        };
+
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const title = input.value.trim();
+            if (title) {
+                cleanupAndResolve({ title, color: selectedColor });
+            } else {
+                input.focus();
+            }
+        };
+
+        const cancelBtn = modalContent.querySelector('.cancel-btn');
+        cancelBtn.onclick = () => cleanupAndResolve(null);
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                cleanupAndResolve(null);
+            }
+        };
+    });
+}

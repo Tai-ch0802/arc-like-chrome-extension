@@ -133,6 +133,22 @@
         "message": "Добавить закладку",
         "description": "Title for the new dialog."
     },
+    "addToGroup": {
+        "message": "Добавить вкладку в новую группу",
+        "description": "Tooltip for the add to group button on a tab."
+    },
+    "createGroupDialogTitle": {
+        "message": "Создать новую группу",
+        "description": "Title for the create new group dialog."
+    },
+    "groupNameInputPlaceholder": {
+        "message": "Введите название группы...",
+        "description": "Placeholder for the group name input in the create group dialog."
+    },
+    "createGroupButton": {
+        "message": "Создать группу",
+        "description": "Label for the create button in the create group dialog."
+    },
     "bookmarksBar": {
         "message": "Панель закладок",
         "description": "The name for the root bookmark folder."

@@ -27,7 +27,7 @@ export const bookmarkListContainer = document.getElementById('bookmark-list');
 export const searchBox = document.getElementById('search-box');
 
 // --- 渲染邏輯 ---
-export function createTabElement(tab) {
+export function createTabElement(tab, { onAddToGroupClick }) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
     if (tab.active) {
@@ -63,6 +63,15 @@ export function createTabElement(tab) {
         api.removeTab(tab.id);
     });
 
+    const addToGroupBtn = document.createElement('button');
+    addToGroupBtn.className = 'add-to-group-btn';
+    addToGroupBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>`;
+    addToGroupBtn.title = api.getMessage("addToGroup") || "Add tab to new group";
+    addToGroupBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onAddToGroupClick(tab.id);
+    });
+
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
     addToBookmarkBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
@@ -80,6 +89,7 @@ export function createTabElement(tab) {
 
     const actionsContainer = document.createElement('div');
     actionsContainer.className = 'tab-actions';
+    actionsContainer.appendChild(addToGroupBtn);
     actionsContainer.appendChild(addToBookmarkBtn);
     actionsContainer.appendChild(closeBtn);
 
@@ -93,7 +103,7 @@ export function createTabElement(tab) {
     return tabItem;
 }
 
-export function renderTabsAndGroups(tabs, groups) {
+export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
     const renderedTabIds = new Set();
@@ -145,7 +155,7 @@ export function renderTabsAndGroups(tabs, groups) {
 
             const tabsInThisGroup = tabs.filter(t => t.groupId === group.id);
             for (const groupTab of tabsInThisGroup) {
-                const tabElement = createTabElement(groupTab);
+                const tabElement = createTabElement(groupTab, { onAddToGroupClick });
                 groupContent.appendChild(tabElement);
                 renderedTabIds.add(groupTab.id);
             }
@@ -160,7 +170,7 @@ export function renderTabsAndGroups(tabs, groups) {
                 }
             });
         } else {
-            const tabElement = createTabElement(tab);
+            const tabElement = createTabElement(tab, { onAddToGroupClick });
             tabListContainer.appendChild(tabElement);
             renderedTabIds.add(tab.id);
         }
