@@ -6,7 +6,7 @@ const EXTENSION_PATH = path.resolve(__dirname, '../../'); // Path to your extens
 
 async function setupBrowser() {
     const browser = await puppeteer.launch({
-        headless: false, // Set to true for headless mode
+        headless: "new", // Set to "new" for headless mode
         args: [
             `--disable-extensions-except=${EXTENSION_PATH}`,
             `--load-extension=${EXTENSION_PATH}`,
@@ -16,6 +16,7 @@ async function setupBrowser() {
     });
 
     const page = await browser.newPage();
+    await page.setViewport({ width: 1280, height: 800 });
     // Get the extension ID dynamically if possible, or from manifest.json
     // For now, we'll assume the side panel URL structure
     const extensionTarget = await browser.waitForTarget(
