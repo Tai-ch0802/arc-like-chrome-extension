@@ -671,3 +671,71 @@ body {
 .color-swatch.selected {
     border-color: var(--accent-color);
 }
+/* --- Linked Tabs Panel Styles --- */
+.linked-tabs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.linked-tab-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 2px;
+    transition: background-color 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.linked-tab-item:hover {
+    background-color: var(--element-bg-hover-color);
+}
+
+.linked-tab-favicon {
+    height: 1em; /* Match the font-size */
+    width: 1em;  /* Match the font-size */
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.linked-tab-title {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 8px;
+}
+
+.linked-tab-group {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--element-bg-color);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.linked-tab-close-btn {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 18px;
+    text-align: center;
+    color: var(--text-color-secondary);
+    transition: color 0.2s ease, opacity 0.2s ease;
+    margin-left: 8px;
+    opacity: 0;
+}
+
+.linked-tab-item:hover .linked-tab-close-btn {
+    opacity: 1;
+}
+
+.linked-tab-close-btn:hover {
+    color: var(--danger-color);
+    font-weight: bold;
+}

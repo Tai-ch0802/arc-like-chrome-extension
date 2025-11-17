@@ -204,6 +204,7 @@ async function showLinkedTabsPanel(bookmarkId) {
                     <img src="${faviconUrl}" class="linked-tab-favicon" />
                     <span class="linked-tab-title">${tab.title}</span>
                     ${groupName}
+                    <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}">&times;</button>
                 </div>
             `;
         }
@@ -214,13 +215,33 @@ async function showLinkedTabsPanel(bookmarkId) {
         title: `${api.getMessage('linkedTabsPanelTitle')} "${bookmark.title}"`,
         content: contentHtml,
         onOpen: (modalContentElement) => {
+            const listElement = modalContentElement.querySelector('.linked-tabs-list');
+            const closeBtn = modalContentElement.querySelector('#closeButton');
+
             modalContentElement.querySelectorAll('.linked-tab-item').forEach(item => {
-                item.addEventListener('click', async () => {
+                item.addEventListener('click', async (e) => {
+                    if (e.target.classList.contains('linked-tab-close-btn')) {
+                        return; // Handled by the button's own listener
+                    }
                     const tabId = parseInt(item.dataset.tabId, 10);
                     const windowId = parseInt(item.dataset.windowId, 10);
                     await api.updateTab(tabId, { active: true });
                     await api.updateWindow(windowId, { focused: true });
-                    modal.closeCurrentDialog();
+                    if (closeBtn) closeBtn.click();
+                });
+            });
+
+            modalContentElement.querySelectorAll('.linked-tab-close-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const tabId = parseInt(btn.dataset.tabIdToClose, 10);
+                    await api.removeTab(tabId);
+                    btn.closest('.linked-tab-item').remove();
+
+                    // If the list is now empty, close the dialog
+                    if (listElement && listElement.children.length === 0) {
+                        if (closeBtn) closeBtn.click();
+                    }
                 });
             });
         }
@@ -269,15 +290,17 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             if (linkedTabIds.length > 0) {
                 const linkedIcon = document.createElement('span');
                 linkedIcon.className = 'linked-tab-icon';
-                // Using an inline SVG for the link icon
-                linkedIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`;
+                
+                // Get the accent color from the current theme
+                const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color').trim();
+
+                // Using an inline SVG for the link icon with the theme's accent color
+                linkedIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accentColor || 'currentColor'}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`;
                 linkedIcon.title = api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
 
                 linkedIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    // TODO: Implement the panel to show linked tabs
-                    console.log(`Bookmark ${node.id} is linked to tabs: ${linkedTabIds.join(', ')}`);
-                    alert(`Bookmark is linked to ${linkedTabIds.length} tab(s). Panel not yet implemented.`);
+                    showLinkedTabsPanel(node.id);
                 });
                 bookmarkItem.appendChild(linkedIcon); // Append icon after main icon
             }
