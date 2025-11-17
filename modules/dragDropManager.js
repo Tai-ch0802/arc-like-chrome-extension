@@ -1,5 +1,6 @@
 import * as api from './apiManager.js';
 import * as ui from './uiManager.js';
+import * as state from './stateManager.js';
 
 let tabSortableInstances = [];
 let bookmarkSortableInstances = [];
@@ -117,22 +118,31 @@ async function moveItem(item, newIndex, container) {
 async function handleBookmarkDrop(evt, refreshBookmarks, updateTabList) {
     const { item, to, newIndex } = evt;
     if (item.classList.contains('tab-item')) {
+        const tabId = parseInt(item.dataset.tabId, 10);
         const title = item.querySelector('.tab-title').textContent;
         const url = item.dataset.url;
         const parentId = to.dataset.parentId;
-        if (title && url && parentId) {
-            await api.createBookmark({
+
+        if (title && url && parentId && tabId) {
+            const newBookmark = await api.createBookmark({
                 parentId: parentId,
                 title: title,
                 url: url,
                 index: newIndex
             });
+
+            // Add the link between the original tab and the new bookmark
+            if (newBookmark) {
+                await state.addLinkedTab(newBookmark.id, tabId);
+            }
+
             item.remove();
-            refreshBookmarks();
+            refreshBookmarks(); // This will now show the linked icon
             updateTabList();
         }
         return;
     }
+
     const bookmarkId = item.dataset.bookmarkId;
     const newParentId = to.dataset.parentId;
     if (!bookmarkId || !newParentId) return;

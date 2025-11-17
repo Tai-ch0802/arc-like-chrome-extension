@@ -180,5 +180,23 @@
     "addButton": {
         "message": "Add",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "This bookmark is linked to $COUNT$ tab(s). Click to see details.",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "Linked tabs for",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "No linked tabs found for this bookmark.",
+        "description": "Message displayed when a bookmark has no active linked tabs."
     }
 }

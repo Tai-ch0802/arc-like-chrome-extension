@@ -177,15 +177,65 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     }
 }
 
+async function showLinkedTabsPanel(bookmarkId) {
+    const [bookmark, allGroups] = await Promise.all([
+        api.getBookmark(bookmarkId),
+        api.getTabGroupsInCurrentWindow()
+    ]);
+
+    if (!bookmark) return;
+
+    const groupMap = new Map(allGroups.map(g => [g.id, g]));
+    const linkedTabIds = state.getLinkedTabsByBookmarkId(bookmarkId);
+    const linkedTabs = (await Promise.all(linkedTabIds.map(id => api.getTab(id).catch(() => null)))).filter(Boolean);
+
+    let contentHtml = '<div class="linked-tabs-list">';
+
+    if (linkedTabs.length === 0) {
+        contentHtml += `<p>${api.getMessage('noLinkedTabs')}</p>`;
+    } else {
+        for (const tab of linkedTabs) {
+            const group = tab.groupId ? groupMap.get(tab.groupId) : null;
+            const groupName = group ? `<span class="linked-tab-group" style="color: ${GROUP_COLORS[group.color] || '#5f6368'};">${group.title}</span>` : '';
+            const faviconUrl = (tab.favIconUrl && tab.favIconUrl.startsWith('http')) ? tab.favIconUrl : 'icons/fallback-favicon.svg';
+
+            contentHtml += `
+                <div class="linked-tab-item" data-tab-id="${tab.id}" data-window-id="${tab.windowId}" title="Switch to this tab">
+                    <img src="${faviconUrl}" class="linked-tab-favicon" />
+                    <span class="linked-tab-title">${tab.title}</span>
+                    ${groupName}
+                </div>
+            `;
+        }
+    }
+    contentHtml += '</div>';
+
+    await modal.showCustomDialog({
+        title: `${api.getMessage('linkedTabsPanelTitle')} "${bookmark.title}"`,
+        content: contentHtml,
+        onOpen: (modalContentElement) => {
+            modalContentElement.querySelectorAll('.linked-tab-item').forEach(item => {
+                item.addEventListener('click', async () => {
+                    const tabId = parseInt(item.dataset.tabId, 10);
+                    const windowId = parseInt(item.dataset.windowId, 10);
+                    await api.updateTab(tabId, { active: true });
+                    await api.updateWindow(windowId, { focused: true });
+                    modal.closeCurrentDialog();
+                });
+            });
+        }
+    });
+}
+
 export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback) {
     container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
         if (node.url) {
-            const bookmarkItem = document.createElement('a');
+            const linkedTabIds = state.getLinkedTabsByBookmarkId(node.id);
+
+            const bookmarkItem = document.createElement('div'); // Changed from 'a' to 'div'
             bookmarkItem.className = 'bookmark-item';
             bookmarkItem.dataset.bookmarkId = node.id;
-            bookmarkItem.href = node.url;
-            bookmarkItem.target = '_blank';
 
             let urlPreview = node.url;
             if (urlPreview && urlPreview.length > 300) {
@@ -212,6 +262,28 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
+
+            bookmarkItem.appendChild(icon);
+
+            // --- Linked Tab Icon ---
+            if (linkedTabIds.length > 0) {
+                const linkedIcon = document.createElement('span');
+                linkedIcon.className = 'linked-tab-icon';
+                // Using an inline SVG for the link icon
+                linkedIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`;
+                linkedIcon.title = api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
+
+                linkedIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // TODO: Implement the panel to show linked tabs
+                    console.log(`Bookmark ${node.id} is linked to tabs: ${linkedTabIds.join(', ')}`);
+                    alert(`Bookmark is linked to ${linkedTabIds.length} tab(s). Panel not yet implemented.`);
+                });
+                bookmarkItem.appendChild(linkedIcon); // Append icon after main icon
+            }
+
+            bookmarkItem.appendChild(title);
+
 
             const actionsContainer = document.createElement('div');
             actionsContainer.className = 'bookmark-actions';
@@ -255,15 +327,17 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             actionsContainer.appendChild(editBtn);
             actionsContainer.appendChild(closeBtn);
-            bookmarkItem.appendChild(icon);
-            bookmarkItem.appendChild(title);
             bookmarkItem.appendChild(actionsContainer);
 
-            bookmarkItem.addEventListener('click', (e) => {
-                if (e.target !== closeBtn) {
-                    e.preventDefault();
-                    api.createTab({ url: node.url });
+            // --- Modified Click Listener ---
+            bookmarkItem.addEventListener('click', async (e) => {
+                if (e.target.closest('.bookmark-actions') || e.target.closest('.linked-tab-icon')) {
+                    return; // Ignore clicks on action buttons or the linked icon
                 }
+                e.preventDefault();
+                const newTab = await api.createTab({ url: node.url, active: true });
+                await state.addLinkedTab(node.id, newTab.id);
+                refreshBookmarksCallback(); // Refresh to show the new linked icon
             });
             container.appendChild(bookmarkItem);
 

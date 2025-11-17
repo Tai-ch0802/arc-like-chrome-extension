@@ -24,6 +24,7 @@ export async function addTabToNewGroup(tabId, title, color) {
 // Wrappers for chrome.bookmarks API
 export const getBookmarkTree = () => new Promise(resolve => chrome.bookmarks.getTree(resolve));
 export const getBookmarkChildren = (parentId) => new Promise(resolve => chrome.bookmarks.getChildren(parentId, resolve));
+export const getBookmark = (id) => new Promise(resolve => chrome.bookmarks.get(id, (results) => resolve(results[0])));
 export const createBookmark = (options) => chrome.bookmarks.create(options);
 export const updateBookmark = (id, changes) => chrome.bookmarks.update(id, changes);
 export const moveBookmark = (id, destination) => chrome.bookmarks.move(id, destination);

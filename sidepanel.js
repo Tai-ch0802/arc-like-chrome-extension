@@ -3,6 +3,7 @@ import * as ui from './modules/uiManager.js';
 import * as search from './modules/searchManager.js';
 import * as dragDrop from './modules/dragDropManager.js';
 import * as modal from './modules/modalManager.js';
+import * as state from './modules/stateManager.js';
 
 // --- 主要協調器 ---
 
@@ -49,7 +50,8 @@ function adjustBodyPadding() {
     }
 }
 
-function initialize() {
+async function initialize() {
+    await state.initLinkedTabs(); // Load linked tabs state first
     console.log('initialize() called'); // DEBUG
     applyStaticTranslations(); console.log('applyStaticTranslations done');
     search.initialize(); console.log('search.initialize done');
@@ -63,21 +65,38 @@ function initialize() {
 function addEventListeners() {
     // --- 事件監聽 ---
     chrome.tabs.onCreated.addListener(updateTabList);
-    chrome.tabs.onUpdated.addListener(updateTabList);
-    chrome.tabs.onRemoved.addListener(updateTabList);
     chrome.tabs.onActivated.addListener(updateTabList);
     chrome.tabs.onMoved.addListener(updateTabList);
     chrome.tabs.onAttached.addListener(updateTabList);
     chrome.tabs.onDetached.addListener(updateTabList);
+
+    chrome.tabs.onRemoved.addListener(async (tabId) => {
+        await state.removeLinkedTabByTabId(tabId);
+        updateTabList();
+        refreshBookmarks(); // Refresh bookmarks to update icon state
+    });
+
+    chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+        updateTabList();
+        refreshBookmarks(); // Refresh bookmarks to update icon state
+    });
 
     chrome.tabGroups.onCreated.addListener(updateTabList);
     chrome.tabGroups.onUpdated.addListener(updateTabList);
     chrome.tabGroups.onRemoved.addListener(updateTabList);
     chrome.tabGroups.onMoved.addListener(updateTabList);
 
-    chrome.bookmarks.onChanged.addListener(refreshBookmarks);
+    chrome.bookmarks.onRemoved.addListener((id) => {
+        state.removeLinksByBookmarkId(id);
+        refreshBookmarks();
+    });
+
+    chrome.bookmarks.onChanged.addListener((id) => {
+        //state.removeLinksByBookmarkId(id);
+        refreshBookmarks();
+    });
+
     chrome.bookmarks.onCreated.addListener(refreshBookmarks);
-    chrome.bookmarks.onRemoved.addListener(refreshBookmarks);
     chrome.bookmarks.onMoved.addListener(refreshBookmarks);
 }
 

@@ -177,5 +177,23 @@
     "addButton": {
         "message": "新增",
         "description": "新增書籤對話框中的確認按鈕文字。"
+    },
+    "linkedTabsTooltip": {
+        "message": "這個書籤已連結 $COUNT$ 個分頁。點擊查看詳情。",
+        "description": "用於提示書籤已連結到開啟的分頁的圖示的工具提示。",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "已連結的分頁：",
+        "description": "顯示與書籤關聯的分頁的面板標題。"
+    },
+    "noLinkedTabs": {
+        "message": "此書籤目前沒有已連結的分頁。",
+        "description": "當書籤沒有任何活躍的已連結分頁時顯示的訊息。"
     }
   }
