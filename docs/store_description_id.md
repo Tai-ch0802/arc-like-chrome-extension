@@ -1,3 +1,15 @@
+Versi Terbaru - 1.7.0
+✨ Fitur Baru
+- Penautan Tab-Bookmark: Menerapkan fitur gaya Arc untuk menautkan bookmark dengan tab. Sekarang, mengklik bookmark atau menyeret tab untuk membuat bookmark secara otomatis membuat tautan. Ikon tautan muncul di sebelah bookmark, yang dapat diklik untuk melihat semua tab yang terhubung untuk beralih atau menutup dengan cepat.
+- Tema Natal Baru: Menambahkan tema Natal yang lembut dan hangat di pengaturan untuk merayakan musim liburan.
+
+🚀 Peningkatan & Perbaikan Bug
+- Pelindung Seret-ke-Bookmark: Saat menyeret tab untuk membuat bookmark, sistem sekarang memeriksa apakah bookmark dengan URL yang sama sudah ada dan menampilkan dialog konfirmasi untuk mencegah duplikat.
+
+Untuk catatan rilis lebih lanjut, silakan kunjungi: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 Bosan tersesat di antara puluhan tab yang berantakan? Menginginkan manajemen tab yang lancar dan elegan seperti peramban Arc, tetapi tidak bisa meninggalkan Chrome? Keinginan Anda terkabul! 🚀
 
 Bilah Sisi Gaya Arc mengubah pengalaman Chrome Anda, memperkenalkan panel samping terpadu untuk semua tab, grup tab, dan markah Anda. Ucapkan selamat tinggal pada kekacauan beralih antara jendela dan pengelola markah. Ambil kembali kendali peramban Anda dan tingkatkan produktivitas serta fokus Anda secara signifikan.

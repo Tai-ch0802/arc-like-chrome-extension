@@ -1,3 +1,15 @@
+Dernière Version - 1.7.0
+✨ Nouvelles Fonctionnalités
+- Liaison Onglet-Favori : Implémentation d'une fonctionnalité de style Arc pour lier les favoris aux onglets. Désormais, cliquer sur un favori ou faire glisser un onglet pour créer un favori crée automatiquement un lien. Une icône de lien apparaît à côté du favori, sur laquelle on peut cliquer pour voir tous les onglets liés pour un changement rapide ou une fermeture.
+- Nouveau Thème de Noël : Ajout d'un thème de Noël doux et chaleureux dans les paramètres pour célébrer la saison des fêtes.
+
+🚀 Améliorations & Corrections de Bugs
+- Protection Glisser-pour-Favori : Lors du glissement d'un onglet pour créer un favori, le système vérifie maintenant si un favori avec la même URL existe déjà et affiche une boîte de dialogue de confirmation pour éviter les doublons.
+
+Pour plus de notes de version, veuillez visiter : https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 Fatigué de vous perdre parmi des dizaines d'onglets en désordre ? Vous rêvez de la gestion d'onglets fluide et élégante du navigateur Arc, mais ne pouvez pas quitter Chrome ? Votre souhait est exaucé ! 🚀
 
 La Barre Latérale Style Arc transforme votre expérience Chrome en introduisant un panneau latéral unifié pour tous vos onglets, groupes d'onglets et favoris. Dites adieu au chaos du passage entre les fenêtres et le gestionnaire de favoris. Reprenez le contrôle de votre navigateur et augmentez considérablement votre productivité et votre concentration.

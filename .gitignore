@@ -3,3 +3,5 @@ arc-sidebar-v*
 .idea/
 node_modules/
 RELEASE_NOTE.md
+tmp/
+.gemini/

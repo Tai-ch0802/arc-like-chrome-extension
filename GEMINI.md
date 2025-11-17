@@ -25,17 +25,17 @@ tech_stack:
 # 關鍵檔案說明：各主要檔案的職責
 key_files:
   - file_path: sidepanel.js
-    description: "[總指揮] 應用程式進入點與總協調者。僅負責初始化各模組及串連瀏覽器事件監聽。"
+    description: "[總指揮] 應用程式進入點與總協調者。負責初始化各模組、串連瀏覽器事件監聽（特別是同步書籤與分頁關聯狀態的生命週期事件）。"
   - file_path: modules/uiManager.js
-    description: "[渲染與互動] UI 模組。負責所有 DOM 操作、畫面渲染，並處理如主題切換等 UI 互動事件。"
+    description: "[渲染與互動] UI 模組。負責所有 DOM 操作、畫面渲染（包含書籤的關聯圖示與資訊面板），並處理如主題切換等 UI 互動事件。"
   - file_path: modules/modalManager.js
     description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。"
   - file_path: modules/apiManager.js
-    description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫，方便維護與測試。"
+    description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。"
   - file_path: modules/stateManager.js
-    description: "[狀態] UI 狀態管理員。集中管理如『書籤資料夾是否展開』等非同步的 UI 狀態。"
+    description: "[狀態] UI 狀態管理員。集中管理如『書籤資料夾是否展開』等非同步 UI 狀態，以及『書籤-分頁』的持久化關聯狀態。"
   - file_path: modules/dragDropManager.js
-    description: "[功能] 拖曳排序模組。封裝 SortableJS 的所有邏輯，處理分頁與書籤的拖曳事件。"
+    description: "[功能] 拖曳排序模組。封裝 SortableJS 的所有邏輯，處理分頁與書籤的拖曳事件，並在拖曳分頁成為書籤時建立關聯。"
   - file_path: modules/searchManager.js
     description: "[功能] 搜尋過濾模組。負責處理搜尋框的輸入與列表的即時過濾邏輯。"
   - file_path: manifest.json
@@ -94,3 +94,6 @@ release_note_guidelines: |
 
 # 開發準則
 - 在做任何改動時，需要留意是否可能影響其他的檔案。並且時刻留意此次的改動項目，必要時在 GEMINI.md 上調整專案 key_files 的描述及調整。
+
+# Context Engineering
+- 在一個開發 session 結束時，應將當次所有變動內容進行摘要，並儲存至 `.gemini/NOTE_YYYYMMDD.md` 檔案中，以作為未來開發的脈絡參考。

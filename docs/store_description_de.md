@@ -1,3 +1,15 @@
+Neueste Version - 1.7.0
+✨ Neue Funktionen
+- Lesezeichen-Tab-Verknüpfung: Eine Funktion im Arc-Stil implementiert, um Lesezeichen mit Tabs zu verknüpfen. Jetzt wird beim Klicken auf ein Lesezeichen oder beim Ziehen eines Tabs, um ein Lesezeichen zu erstellen, automatisch ein Link erstellt. Ein Link-Symbol erscheint neben dem Lesezeichen, das angeklickt werden kann, um alle verknüpften Tabs für schnelles Wechseln oder Schließen anzuzeigen.
+- Neues Weihnachtsthema: Ein weiches und warmes Weihnachtsthema wurde in den Einstellungen hinzugefügt, um die Weihnachtszeit zu feiern.
+
+🚀 Verbesserungen & Fehlerbehebungen
+- Drag-to-Bookmark-Schutz: Beim Ziehen eines Tabs zum Erstellen eines Lesezeichens prüft das System jetzt, ob bereits ein Lesezeichen mit derselben URL vorhanden ist, und zeigt einen Bestätigungsdialog an, um Duplikate zu vermeiden.
+
+Weitere Versionshinweise finden Sie unter: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 Haben Sie es satt, sich in Dutzenden von unübersichtlichen Tabs zu verlieren? Sehnen Sie sich nach der flüssigen, eleganten Tab-Verwaltung des Arc-Browsers, können aber Chrome nicht verlassen? Ihr Wunsch wird erhört! 🚀
 
 Die Arc-Style Sidebar transformiert Ihr Chrome-Erlebnis und führt ein einheitliches Seitenpanel für all Ihre Tabs, Tab-Gruppen und Lesezeichen ein. Verabschieden Sie sich vom Chaos des Wechsels zwischen Fenstern und dem Lesezeichen-Manager. Gewinnen Sie die Kontrolle über Ihren Browser zurück und steigern Sie Ihre Produktivität und Konzentration erheblich.

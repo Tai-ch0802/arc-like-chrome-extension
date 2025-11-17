@@ -1,3 +1,15 @@
+Phiên bản Mới nhất - 1.7.0
+✨ Tính năng Mới
+- Liên kết Tab-Bookmark: Đã triển khai tính năng kiểu Arc để liên kết bookmark với các tab. Bây giờ, việc nhấp vào một bookmark hoặc kéo một tab để tạo bookmark sẽ tự động tạo một liên kết. Một biểu tượng liên kết xuất hiện bên cạnh bookmark, có thể nhấp vào để xem tất cả các tab được liên kết để chuyển đổi hoặc đóng nhanh.
+- Chủ đề Giáng sinh Mới: Đã thêm một chủ đề Giáng sinh mềm mại và ấm áp trong cài đặt để chào mừng mùa lễ.
+
+🚀 Cải tiến & Sửa lỗi
+- Bảo vệ Kéo-để-Bookmark: Khi kéo một tab để tạo bookmark, hệ thống bây giờ sẽ kiểm tra xem có bookmark nào có cùng URL đã tồn tại chưa và hiển thị hộp thoại xác nhận để ngăn chặn việc tạo bản sao.
+
+Để biết thêm ghi chú phát hành, vui lòng truy cập: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 Bạn mệt mỏi vì bị lạc giữa hàng tá tab lộn xộn? Thèm muốn trải nghiệm quản lý tab mượt mà, thanh lịch của trình duyệt Arc nhưng không thể rời bỏ Chrome? Mong muốn của bạn đã thành hiện thực! 🚀
 
 Thanh bên kiểu Arc biến đổi trải nghiệm Chrome của bạn, giới thiệu một bảng điều khiển bên thống nhất cho tất cả các tab, nhóm tab và dấu trang của bạn. Tạm biệt sự hỗn loạn của việc chuyển đổi giữa các cửa sổ và trình quản lý dấu trang. Lấy lại quyền kiểm soát trình duyệt của bạn và tăng đáng kể năng suất và sự tập trung của bạn.

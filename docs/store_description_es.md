@@ -1,3 +1,15 @@
+Última Versión - 1.7.0
+✨ Nuevas Características
+- Vinculación de Pestañas y Marcadores: Se implementó una función al estilo Arc para vincular marcadores con pestañas. Ahora, al hacer clic en un marcador o arrastrar una pestaña para crear un marcador, se crea un enlace automáticamente. Aparece un ícono de enlace junto al marcador, que se puede hacer clic para ver todas las pestañas vinculadas para cambiar rápidamente o cerrarlas.
+- Nuevo Tema de Navidad: Se agregó un tema de Navidad suave y cálido en la configuración para celebrar la temporada festiva.
+
+🚀 Mejoras y Correcciones de Errores
+- Protección al Arrastrar para Marcar: Al arrastrar una pestaña para crear un marcador, el sistema ahora verifica si ya existe un marcador con la misma URL y muestra un diálogo de confirmación para evitar duplicados.
+
+Para más notas de la versión, por favor visite: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 ¿Cansado de perderte entre docenas de pestañas desordenadas? ¿Anhelas la gestión de pestañas fluida y elegante del navegador Arc, pero no puedes dejar Chrome? ¡Tu deseo ha sido concedido! 🚀
 
 La Barra Lateral Estilo Arc transforma tu experiencia en Chrome, introduciendo un panel lateral unificado para todas tus pestañas, grupos de pestañas y marcadores. Di adiós al caos de cambiar entre ventanas y el gestor de marcadores. Recupera el control de tu navegador y aumenta significativamente tu productividad y concentración.

@@ -1,3 +1,15 @@
+Última Versão - 1.7.0
+✨ Novas Funcionalidades
+- Vinculação de Abas e Favoritos: Implementada uma funcionalidade ao estilo Arc para vincular favoritos a abas. Agora, clicar em um favorito ou arrastar uma aba para criar um favorito cria automaticamente um link. Um ícone de link aparece ao lado do favorito, que pode ser clicado para ver todas as abas vinculadas para troca rápida ou fechamento.
+- Novo Tema de Natal: Adicionado um tema de Natal suave e acolhedor nas configurações para celebrar a época festiva.
+
+🚀 Melhorias e Correções de Bugs
+- Proteção ao Arrastar para Favoritar: Ao arrastar uma aba para criar um favorito, o sistema agora verifica se já existe um favorito com a mesma URL e exibe um diálogo de confirmação para evitar duplicatas.
+
+Para mais notas de lançamento, por favor visite: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 Cansado de se perder em dezenas de abas desorganizadas? Desejando o gerenciamento de abas fluido e elegante do navegador Arc, mas não pode deixar o Chrome? Seu desejo foi concedido! 🚀
 
 A Barra Lateral Estilo Arc transforma sua experiência no Chrome, introduzindo um painel lateral unificado para todas as suas abas, grupos de abas e favoritos. Diga adeus ao caos de alternar entre janelas e o gerenciador de favoritos. Recupere o controle do seu navegador e aumente significativamente sua produtividade e foco.

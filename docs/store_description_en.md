@@ -1,3 +1,15 @@
+Latest Version - 1.7.0
+✨ New Features
+- Bookmark-Tab Linking: Implemented an Arc-style feature to link bookmarks with tabs. Now, clicking a bookmark or dragging a tab to create a bookmark automatically creates a link. A link icon appears next to the bookmark, which can be clicked to view all linked tabs for quick switching or closing.
+- New Christmas Theme: Added a soft and warm Christmas theme in the settings to celebrate the holiday season.
+
+🚀 Improvements & Bug Fixes
+- Drag-to-Bookmark Guard: When dragging a tab to create a bookmark, the system now checks if a bookmark with the same URL already exists and shows a confirmation dialog to prevent duplicates.
+
+For more release notes, please visit: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+----
+
 Tired of getting lost in dozens of cluttered tabs? Craving the fluid, elegant tab management of the Arc browser, but can't leave Chrome? Your wish is granted! 🚀
 
 The Arc-Style Sidebar transforms your Chrome experience, introducing a unified side panel for all your tabs, tab groups, and bookmarks. Say goodbye to the chaos of switching between windows and the bookmark manager. Reclaim control of your browser and significantly boost your productivity and focus.
