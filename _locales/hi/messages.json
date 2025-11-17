@@ -81,6 +81,10 @@
         "message": "गीक ब्लू",
         "description": "Name for the गीक ब्लू theme option."
     },
+    "themeOptionChristmas": {
+        "message": "क्रिसमस",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "कीबोर्ड शॉर्टकट सेटिंग्स",
         "description": "Header for the keyboard shortcut section in settings."
@@ -156,5 +160,33 @@
     "addButton": {
         "message": "जोड़ें",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "यह बुकमार्क $COUNT$ टैब से जुड़ा है। विवरण देखने के लिए क्लिक करें।",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "इसके लिए लिंक किए गए टैब",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "इस बुकमार्क के लिए कोई लिंक किया गया टैब नहीं मिला।",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "यह पृष्ठ पहले से ही \"$BOOKMARK_NAME$\" के रूप में बुकमार्क किया गया है।<br><br>क्या आप इसे फिर से जोड़ना चाहते हैं?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

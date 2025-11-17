@@ -78,6 +78,10 @@
         "message": "Geek Azul",
         "description": "Name for the Geek Azul theme option."
     },
+    "themeOptionChristmas": {
+        "message": "Natal",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Configurações de Atalhos de Teclado",
         "description": "Header for the keyboard shortcut section in settings."
@@ -153,5 +157,33 @@
     "addButton": {
         "message": "Adicionar",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "Este favorito está vinculado a $COUNT$ aba(s). Clique para ver os detalhes.",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "Abas vinculadas para",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "Nenhuma aba vinculada encontrada para este favorito.",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "Esta página já foi favoritada como \"$BOOKMARK_NAME$\".<br><br>Deseja adicioná-la novamente?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

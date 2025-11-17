@@ -105,6 +105,10 @@
         "message": "Geek Blue",
         "description": "Name for the Geek Blue theme option."
     },
+    "themeOptionChristmas": {
+        "message": "Christmas",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Keyboard Shortcut Settings",
         "description": "Header for the keyboard shortcut section in settings."

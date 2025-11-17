@@ -81,6 +81,10 @@
         "message": "Geek Bleu",
         "description": "Name for the Geek Bleu theme option."
     },
+    "themeOptionChristmas": {
+        "message": "Noël",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Paramètres des raccourcis clavier",
         "description": "Header for the keyboard shortcut section in settings."
@@ -156,5 +160,33 @@
     "addButton": {
         "message": "Ajouter",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "Ce favori est lié à $COUNT$ onglet(s). Cliquez pour voir les détails.",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "Onglets liés pour",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "Aucun onglet lié trouvé pour ce favori.",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "Cette page est déjà dans les favoris sous le nom « $BOOKMARK_NAME$ ».<br><br>Voulez-vous l'ajouter à nouveau ?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

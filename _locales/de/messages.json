@@ -78,6 +78,10 @@
         "message": "Geek Blau",
         "description": "Name for the Geek Blau theme option."
     },
+    "themeOptionChristmas": {
+        "message": "Weihnachten",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Tastenkombinationen-Einstellungen",
         "description": "Header for the keyboard shortcut section in settings."
@@ -153,5 +157,33 @@
     "addButton": {
         "message": "Hinzufügen",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "Dieses Lesezeichen ist mit $COUNT$ Tab(s) verknüpft. Klicken für Details.",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "Verknüpfte Tabs für",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "Keine verknüpften Tabs für dieses Lesezeichen gefunden.",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "Diese Seite ist bereits als Lesezeichen „$BOOKMARK_NAME$“ vorhanden.<br><br>Möchten Sie es erneut hinzufügen?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

@@ -81,6 +81,10 @@
         "message": "Geek สีน้ำเงิน",
         "description": "Name for the Geek สีน้ำเงิน theme option."
     },
+    "themeOptionChristmas": {
+        "message": "คริสต์มาส",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "การตั้งค่าแป้นพิมพ์ลัด",
         "description": "Header for the keyboard shortcut section in settings."
@@ -156,5 +160,33 @@
     "addButton": {
         "message": "เพิ่ม",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "บุ๊กมาร์กนี้เชื่อมโยงกับ $COUNT$ แท็บ คลิกเพื่อดูรายละเอียด",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "แท็บที่เชื่อมโยงสำหรับ",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "ไม่พบแท็บที่เชื่อมโยงสำหรับบุ๊กมาร์กนี้",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "หน้านี้ถูกบุ๊กมาร์กไว้แล้วในชื่อ \"$BOOKMARK_NAME$\"<br><br>คุณต้องการเพิ่มอีกครั้งหรือไม่",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

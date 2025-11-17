@@ -81,6 +81,10 @@
         "message": "ギークブルー",
         "description": "Name for the ギークブルー theme option."
     },
+    "themeOptionChristmas": {
+        "message": "クリスマス",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "キーボードショートカット設定",
         "description": "Header for the keyboard shortcut section in settings."
@@ -156,5 +160,33 @@
     "addButton": {
         "message": "追加",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "このブックマークは$COUNT$個のタブにリンクされています。クリックして詳細を表示します。",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "関連付けられたタブ：",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "このブックマークに関連付けられたタブはありません。",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "このページは既に「$BOOKMARK_NAME$」としてブックマークされています。<br><br>再度追加しますか？",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

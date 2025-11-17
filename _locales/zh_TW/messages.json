@@ -102,6 +102,10 @@
         "message": "Geek Blue",
         "description": "Geek Blue 主題選項的名稱。"
     },
+    "themeOptionChristmas": {
+        "message": "聖誕節",
+        "description": "聖誕節主題選項的名稱。"
+    },
     "shortcutSectionHeader": {
         "message": "快捷鍵設定",
         "description": "設定中快捷鍵區塊的標題。"

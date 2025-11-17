@@ -290,6 +290,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             if (linkedTabIds.length > 0) {
                 const linkedIcon = document.createElement('span');
                 linkedIcon.className = 'linked-tab-icon';
+                linkedIcon.style.marginRight = '8px'; // Add margin to separate from title
                 
                 // Get the accent color from the current theme
                 const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color').trim();
@@ -492,7 +493,8 @@ export function initThemeSwitcher() {
             { value: 'geek', labelKey: 'themeOptionGeek' },
             { value: 'google', labelKey: 'themeOptionGoogle' },
             { value: 'darcula', labelKey: 'themeOptionDarcula' },
-            { value: 'geek-blue', labelKey: 'themeOptionGeekBlue' }
+            { value: 'geek-blue', labelKey: 'themeOptionGeekBlue' },
+            { value: 'christmas', labelKey: 'themeOptionChristmas' }
         ];
 
         const themeSelectHtml = `

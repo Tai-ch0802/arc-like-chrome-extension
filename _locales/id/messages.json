@@ -78,6 +78,10 @@
         "message": "Geek Biru",
         "description": "Name for the Geek Biru theme option."
     },
+    "themeOptionChristmas": {
+        "message": "Natal",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Pengaturan Pintasan Keyboard",
         "description": "Header for the keyboard shortcut section in settings."
@@ -153,5 +157,33 @@
     "addButton": {
         "message": "Tambah",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "Bookmark ini tertaut ke $COUNT$ tab. Klik untuk melihat detail.",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "Tab tertaut untuk",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "Tidak ada tab tertaut yang ditemukan untuk bookmark ini.",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "Halaman ini sudah ditandai sebagai \"$BOOKMARK_NAME$\".<br><br>Apakah Anda ingin menambahkannya lagi?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

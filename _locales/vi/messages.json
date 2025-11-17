@@ -81,6 +81,10 @@
         "message": "Geek Xanh",
         "description": "Name for the Geek Xanh theme option."
     },
+    "themeOptionChristmas": {
+        "message": "Giáng Sinh",
+        "description": "Name for the Christmas theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Cài đặt phím tắt",
         "description": "Header for the keyboard shortcut section in settings."
@@ -156,5 +160,33 @@
     "addButton": {
         "message": "Thêm",
         "description": "The confirm button text in the new dialog."
+    },
+    "linkedTabsTooltip": {
+        "message": "Dấu trang này được liên kết với $COUNT$ tab. Nhấp để xem chi tiết.",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "Các tab được liên kết cho",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "Không tìm thấy tab nào được liên kết cho dấu trang này.",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "Trang này đã được đánh dấu là \"$BOOKMARK_NAME$\".<br><br>Bạn có muốn thêm lại không?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

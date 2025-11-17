@@ -10,9 +10,9 @@
     --text-color-placeholder: #6c7086;
     --text-color-light: #cdd6f4;
 
-    --element-bg-color: #313244;
-    --element-bg-hover-color: #313244;
-    --element-bg-active-color: #45475a;
+    --element-bg-color: #282a36;
+    --element-bg-hover-color: #383a4a;
+    --element-bg-active-color: #44475a;
 
     --border-color: #45475a;
     --border-color-accent: #00ff41;
@@ -94,9 +94,9 @@
     --text-color-placeholder: #6c7086;
     --text-color-light: #cdd6f4;
 
-    --element-bg-color: #313244;
-    --element-bg-hover-color: #313244;
-    --element-bg-active-color: #45475a;
+    --element-bg-color: #282a36;
+    --element-bg-hover-color: #383a4a;
+    --element-bg-active-color: #44475a;
 
     --border-color: #45475a;
     --border-color-accent: #1a73e8;
@@ -111,6 +111,35 @@
     --modal-overlay-bg-color: rgba(30, 30, 46, 0.8);
     --modal-shadow-color: rgba(0, 0, 0, 0.5);
 }
+
+/* 5. Christmas 風格主題 */
+[data-theme='christmas'] {
+    --main-bg-color: #2a3d32;
+    --text-color-primary: #fdf6e3;
+    --text-color-secondary: #93a1a1;
+    --text-color-header: #cb8b43;
+    --text-color-inverted: #2a3d32;
+    --text-color-placeholder: #93a1a1;
+    --text-color-light: #fdf6e3;
+
+    --element-bg-color: #344e41;
+    --element-bg-hover-color: #3a5a40;
+    --element-bg-active-color: #a55353; /* Soft red background for active items */
+
+    --border-color: #3a5a40;
+    --border-color-accent: #cb8b43; /* Soft gold for accent border */
+
+    --accent-color: #cb8b43; /* Soft gold for active text */
+    --accent-color-hover: #dcb173; /* Brighter gold for hover */
+    --danger-color: #d96666;
+    --danger-color-hover: #e07878;
+    --info-color: #588da8;
+    --warning-color: #cb8b43;
+
+    --modal-overlay-bg-color: rgba(42, 61, 50, 0.8);
+    --modal-shadow-color: rgba(0, 0, 0, 0.5);
+}
+
 
 
 /* --- 全局與字體設定 --- */

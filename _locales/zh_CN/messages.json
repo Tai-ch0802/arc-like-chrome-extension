@@ -102,6 +102,10 @@
         "message": "Geek Blue",
         "description": "Geek Blue 主题选项的名称。"
     },
+    "themeOptionChristmas": {
+        "message": "圣诞节",
+        "description": "圣诞节主题选项的名称。"
+    },
     "shortcutSectionHeader": {
         "message": "快捷键设置",
         "description": "设置中快捷键部分的标题。"
@@ -177,5 +181,33 @@
     "addButton": {
         "message": "添加",
         "description": "添加书签对话框中的确认按钮文本。"
+    },
+    "linkedTabsTooltip": {
+        "message": "此书签已链接 $COUNT$ 个标签页。点击查看详情。",
+        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "linkedTabsPanelTitle": {
+        "message": "已链接的标签页：",
+        "description": "Title for the panel that shows tabs linked to a bookmark."
+    },
+    "noLinkedTabs": {
+        "message": "此书签当前没有已链接的标签页。",
+        "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "此页面已存在于书签“$BOOKMARK_NAME$”中。<br><br>您确定要重复添加吗？",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
   }
