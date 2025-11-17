@@ -198,5 +198,15 @@
     "noLinkedTabs": {
         "message": "No linked tabs found for this bookmark.",
         "description": "Message displayed when a bookmark has no active linked tabs."
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "This page is already bookmarked as \"$BOOKMARK_NAME$\".<br><br>Do you want to add it again?",
+        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
 }

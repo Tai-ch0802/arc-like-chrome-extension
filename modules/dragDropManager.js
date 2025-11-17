@@ -1,6 +1,7 @@
 import * as api from './apiManager.js';
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
+import * as modal from './modalManager.js';
 
 let tabSortableInstances = [];
 let bookmarkSortableInstances = [];
@@ -124,6 +125,23 @@ async function handleBookmarkDrop(evt, refreshBookmarks, updateTabList) {
         const parentId = to.dataset.parentId;
 
         if (title && url && parentId && tabId) {
+            // Check for duplicate bookmark
+            const existingBookmark = await api.searchBookmarksByUrl(url);
+            if (existingBookmark) {
+                const confirm = await modal.showConfirm({
+                    title: api.getMessage('duplicateBookmarkConfirm', existingBookmark.title),
+                    confirmButtonText: api.getMessage('addButton'),
+                    cancelButtonText: api.getMessage('cancelButton')
+                });
+                if (!confirm) {
+                    // User cancelled, do not create bookmark.
+                    // SortableJS will handle returning the item to its original list.
+                    refreshBookmarks(); // This will now show the linked icon
+                    updateTabList();
+                    return;
+                }
+            }
+
             const newBookmark = await api.createBookmark({
                 parentId: parentId,
                 title: title,

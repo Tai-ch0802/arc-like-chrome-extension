@@ -31,6 +31,27 @@ export const moveBookmark = (id, destination) => chrome.bookmarks.move(id, desti
 export const removeBookmark = (id) => new Promise(resolve => chrome.bookmarks.remove(id, resolve));
 export const removeBookmarkTree = (id) => new Promise(resolve => chrome.bookmarks.removeTree(id, resolve));
 
+export async function searchBookmarksByUrl(url) {
+    const tree = await getBookmarkTree();
+
+    function searchNode(nodes) {
+        for (const node of nodes) {
+            if (node.url && node.url === url) {
+                return node;
+            }
+            if (node.children) {
+                const found = searchNode(node.children);
+                if (found) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    return searchNode(tree);
+}
+
 // Wrappers for chrome.windows API
 export const updateWindow = (windowId, options) => chrome.windows.update(windowId, options);
 

@@ -195,5 +195,15 @@
     "noLinkedTabs": {
         "message": "此書籤目前沒有已連結的分頁。",
         "description": "當書籤沒有任何活躍的已連結分頁時顯示的訊息。"
+    },
+    "duplicateBookmarkConfirm": {
+        "message": "此分頁已存在於書籤「$BOOKMARK_NAME$」中。<br><br>您確定要重複新增嗎？",
+        "description": "當嘗試新增一個已存在的書籤時顯示的確認訊息。",
+        "placeholders": {
+            "BOOKMARK_NAME": {
+                "content": "$1",
+                "example": "Google"
+            }
+        }
     }
   }
