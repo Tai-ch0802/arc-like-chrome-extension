@@ -1,23 +1,21 @@
-當前最新版本 - 1.8.0
-✨ 新功能 (New Features)
-- **強大的搜尋增強**：
-    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
-    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
-    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
-    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
-    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
-    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
+Versión Actual - 1.8.0
+✨ Nuevas Características
+- **Mejoras Potentes de Búsqueda**:
+    - **Búsqueda de Múltiples Palabras Clave**: Admite palabras clave separadas por espacios para una búsqueda flexible (lógica OR).
+    - **Búsqueda de Dominio URL**: Ahora busca en dominios de pestañas y marcadores.
+    - **Visualización Inteligente**: Muestra automáticamente la información del dominio coincidente debajo del título cuando coincide una URL.
+    - **Resaltado Instantáneo**: Las palabras clave en los resultados se resaltan, compatible con todos los colores de temas.
+    - **Contador de Resultados**: Muestra instantáneamente el número de pestañas y marcadores encontrados.
+    - **Botón Borrar**: Se agregó un botón para borrar el contenido de búsqueda con un clic.
 
-🚀 改善與錯誤修復 (Improvements & Bug Fixes)
-- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
-- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
-- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
+🚀 Mejoras y Corrección de Errores
+- **Soporte Multilingüe**: Traducciones de la función de búsqueda completadas para los 14 idiomas soportados.
+- **Optimización de Interfaz**: Se corrigió la alineación de iconos y títulos en los resultados de búsqueda y se optimizó el espaciado de visualización del dominio.
+- **Optimización de Rendimiento**: Se agregó mecanismo Debounce para mejorar la fluidez de la búsqueda.
 
-
-查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Ver más notas de la versión en: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
-
 ¿Cansado de perderte entre docenas de pestañas desordenadas? ¿Anhelas la gestión de pestañas fluida y elegante del navegador Arc, pero no puedes dejar Chrome? ¡Tu deseo ha sido concedido! 🚀
 
 La Barra Lateral Estilo Arc transforma tu experiencia en Chrome, introduciendo un panel lateral unificado para todas tus pestañas, grupos de pestañas y marcadores. Di adiós al caos de cambiar entre ventanas y el gestor de marcadores. Recupera el control de tu navegador y aumenta significativamente tu productividad y concentración.

@@ -1,23 +1,21 @@
-當前最新版本 - 1.8.0
-✨ 新功能 (New Features)
-- **強大的搜尋增強**：
-    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
-    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
-    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
-    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
-    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
-    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
+Version Actuelle - 1.8.0
+✨ Nouvelles Fonctionnalités
+- **Améliorations Puissantes de la Recherche** :
+    - **Recherche Multi-mots-clés** : Prend en charge les mots-clés séparés par des espaces pour une recherche flexible (logique OU).
+    - **Recherche de Domaine URL** : Recherche maintenant dans les domaines des onglets et des favoris.
+    - **Affichage Intelligent** : Affiche automatiquement les informations de domaine correspondantes sous le titre lorsqu'une URL correspond.
+    - **Surlignage Instantané** : Les mots-clés dans les résultats sont surlignés, prenant en charge toutes les couleurs de thème.
+    - **Compteur de Résultats** : Affiche instantanément le nombre d'onglets et de favoris trouvés.
+    - **Bouton Effacer** : Ajout d'un bouton pour effacer le contenu de la recherche en un clic.
 
-🚀 改善與錯誤修復 (Improvements & Bug Fixes)
-- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
-- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
-- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
+🚀 Améliorations et Corrections de Bugs
+- **Support Multilingue** : Traductions de la fonction de recherche complétées pour les 14 langues prises en charge.
+- **Optimisation de l'Interface** : Correction de l'alignement des icônes et des titres dans les résultats de recherche et optimisation de l'espacement de l'affichage du domaine.
+- **Optimisation des Performances** : Ajout du mécanisme Debounce pour améliorer la fluidité de la recherche.
 
-
-查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Voir plus de notes de version sur : https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
-
 Fatigué de vous perdre parmi des dizaines d'onglets en désordre ? Vous rêvez de la gestion d'onglets fluide et élégante du navigateur Arc, mais ne pouvez pas quitter Chrome ? Votre souhait est exaucé ! 🚀
 
 La Barre Latérale Style Arc transforme votre expérience Chrome en introduisant un panneau latéral unifié pour tous vos onglets, groupes d'onglets et favoris. Dites adieu au chaos du passage entre les fenêtres et le gestionnaire de favoris. Reprenez le contrôle de votre navigateur et augmentez considérablement votre productivité et votre concentration.

@@ -1,23 +1,21 @@
-當前最新版本 - 1.8.0
-✨ 新功能 (New Features)
-- **強大的搜尋增強**：
-    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
-    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
-    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
-    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
-    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
-    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
+Phiên bản mới nhất - 1.8.0
+✨ Tính năng mới
+- **Cải tiến tìm kiếm mạnh mẽ**:
+    - **Tìm kiếm nhiều từ khóa**: Hỗ trợ các từ khóa phân tách bằng dấu cách để tìm kiếm linh hoạt (logic HOẶC).
+    - **Tìm kiếm tên miền URL**: Bây giờ có thể tìm kiếm tên miền của các tab và dấu trang.
+    - **Hiển thị thông minh**: Tự động hiển thị thông tin tên miền phù hợp bên dưới tiêu đề khi URL khớp.
+    - **Làm nổi bật tức thì**: Các từ khóa trong kết quả tìm kiếm được làm nổi bật, hỗ trợ tất cả các màu chủ đề.
+    - **Đếm kết quả**: Hiển thị ngay lập tức số lượng tab và dấu trang được tìm thấy.
+    - **Nút Xóa**: Đã thêm nút để xóa nội dung tìm kiếm bằng một cú nhấp chuột.
 
-🚀 改善與錯誤修復 (Improvements & Bug Fixes)
-- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
-- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
-- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
+🚀 Cải tiến và sửa lỗi
+- **Hỗ trợ đa ngôn ngữ**: Hoàn thành bản dịch chức năng tìm kiếm cho tất cả 14 ngôn ngữ được hỗ trợ.
+- **Tối ưu hóa giao diện**: Đã sửa lỗi căn chỉnh biểu tượng và tiêu đề trong kết quả tìm kiếm và tối ưu hóa khoảng cách hiển thị tên miền.
+- **Tối ưu hóa hiệu suất**: Đã thêm cơ chế Debounce để cải thiện độ mượt mà của tìm kiếm.
 
-
-查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Xem thêm ghi chú phát hành tại: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
-
 Bạn mệt mỏi vì bị lạc giữa hàng tá tab lộn xộn? Thèm muốn trải nghiệm quản lý tab mượt mà, thanh lịch của trình duyệt Arc nhưng không thể rời bỏ Chrome? Mong muốn của bạn đã thành hiện thực! 🚀
 
 Thanh bên kiểu Arc biến đổi trải nghiệm Chrome của bạn, giới thiệu một bảng điều khiển bên thống nhất cho tất cả các tab, nhóm tab và dấu trang của bạn. Tạm biệt sự hỗn loạn của việc chuyển đổi giữa các cửa sổ và trình quản lý dấu trang. Lấy lại quyền kiểm soát trình duyệt của bạn và tăng đáng kể năng suất và sự tập trung của bạn.

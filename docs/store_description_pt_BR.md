@@ -1,23 +1,21 @@
-當前最新版本 - 1.8.0
-✨ 新功能 (New Features)
-- **強大的搜尋增強**：
-    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
-    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
-    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
-    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
-    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
-    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
+Versão Atual - 1.8.0
+✨ Novos Recursos
+- **Melhorias Poderosas na Pesquisa**:
+    - **Pesquisa de Múltiplas Palavras-chave**: Suporta palavras-chave separadas por espaço para pesquisa flexível (lógica OU).
+    - **Pesquisa de Domínio de URL**: Agora pesquisa domínios de guias e favoritos.
+    - **Exibição Inteligente**: Exibe automaticamente informações de domínio correspondentes abaixo do título quando uma URL corresponde.
+    - **Destaque Instantâneo**: Palavras-chave nos resultados são destacadas, suportando todas as cores de tema.
+    - **Contagem de Resultados**: Exibe instantaneamente o número de guias e favoritos encontrados.
+    - **Botão Limpar**: Adicionado um botão para limpar o conteúdo da pesquisa com um clique.
 
-🚀 改善與錯誤修復 (Improvements & Bug Fixes)
-- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
-- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
-- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
+🚀 Melhorias e Correções de Bugs
+- **Suporte Multilíngue**: Traduções da função de pesquisa concluídas para todos os 14 idiomas suportados.
+- **Otimização de Interface**: Corrigido o alinhamento de ícones e títulos nos resultados da pesquisa e otimizado o espaçamento de exibição do domínio.
+- **Otimização de Desempenho**: Adicionado mecanismo Debounce para melhorar a fluidez da pesquisa.
 
-
-查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Veja mais notas de lançamento em: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
-
 Cansado de se perder em dezenas de abas desorganizadas? Desejando o gerenciamento de abas fluido e elegante do navegador Arc, mas não pode deixar o Chrome? Seu desejo foi concedido! 🚀
 
 A Barra Lateral Estilo Arc transforma sua experiência no Chrome, introduzindo um painel lateral unificado para todas as suas abas, grupos de abas e favoritos. Diga adeus ao caos de alternar entre janelas e o gerenciador de favoritos. Recupere o controle do seu navegador e aumente significativamente sua produtividade e foco.

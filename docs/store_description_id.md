@@ -1,23 +1,21 @@
-當前最新版本 - 1.8.0
-✨ 新功能 (New Features)
-- **強大的搜尋增強**：
-    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
-    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
-    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
-    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
-    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
-    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
+Versi Terbaru - 1.8.0
+✨ Fitur Baru
+- **Peningkatan Pencarian yang Kuat**:
+    - **Pencarian Multi-kata kunci**: Mendukung kata kunci yang dipisahkan spasi untuk pencarian fleksibel (logika OR).
+    - **Pencarian Domain URL**: Sekarang mencari domain tab dan bookmark.
+    - **Tampilan Cerdas**: Secara otomatis menampilkan info domain yang cocok di bawah judul ketika URL cocok.
+    - **Sorotan Instan**: Kata kunci dalam hasil pencarian disorot, mendukung semua warna tema.
+    - **Hitungan Hasil**: Menampilkan jumlah tab dan bookmark yang ditemukan secara instan.
+    - **Tombol Hapus**: Menambahkan tombol untuk menghapus konten pencarian dengan satu klik.
 
-🚀 改善與錯誤修復 (Improvements & Bug Fixes)
-- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
-- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
-- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
+🚀 Perbaikan & Perbaikan Bug
+- **Dukungan Multibahasa**: Terjemahan fungsi pencarian selesai untuk semua 14 bahasa yang didukung.
+- **Optimalisasi Antarmuka**: Memperbaiki penyelarasan ikon dan judul dalam hasil pencarian dan mengoptimalkan jarak tampilan domain.
+- **Optimalisasi Kinerja**: Menambahkan mekanisme Debounce untuk meningkatkan kelancaran pencarian.
 
-
-查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Lihat catatan rilis selengkapnya di: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
-
 Bosan tersesat di antara puluhan tab yang berantakan? Menginginkan manajemen tab yang lancar dan elegan seperti peramban Arc, tetapi tidak bisa meninggalkan Chrome? Keinginan Anda terkabul! 🚀
 
 Bilah Sisi Gaya Arc mengubah pengalaman Chrome Anda, memperkenalkan panel samping terpadu untuk semua tab, grup tab, dan markah Anda. Ucapkan selamat tinggal pada kekacauan beralih antara jendela dan pengelola markah. Ambil kembali kendali peramban Anda dan tingkatkan produktivitas serta fokus Anda secara signifikan.
