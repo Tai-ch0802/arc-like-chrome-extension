@@ -1,38 +1,50 @@
 {
     "extensionName": {
-      "message": "Barre latérale pour Onglets/Favoris",
-      "description": "The name of the extension."
+        "message": "Barre latérale pour Onglets/Favoris",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "Une extension Chrome qui imite les onglets verticaux du navigateur Arc.",
-      "description": "The description of the extension."
+        "message": "Une extension Chrome qui imite les onglets verticaux du navigateur Arc.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "Rechercher des onglets ou des favoris...",
-      "description": "Placeholder text for the search box."
+        "message": "Rechercher des onglets ou des favoris...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "Onglets",
-      "description": "Header for the tabs section."
+        "message": "Onglets",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "Favoris",
-      "description": "Header for the bookmarks section."
+        "message": "Favoris",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": { "bookmark_title": { "content": "$1" } }
+        "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1"
+            }
+        }
     },
     "deleteFolderConfirm": {
-      "message": "Êtes-vous sûr de vouloir supprimer définitivement le dossier \"$folder_title$\" et tout son contenu ?\n\nCette action est irréversible !",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": { "folder_title": { "content": "$1" } }
+        "message": "Êtes-vous sûr de vouloir supprimer définitivement le dossier \"$folder_title$\" et tout son contenu ?\n\nCette action est irréversible !",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1"
+            }
+        }
     },
     "addFolderPrompt": {
-      "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\"",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": { "parent_folder": { "content": "$1" } }
+        "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\"",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1"
+            }
+        }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "Modifier le nom du dossier :",
@@ -46,9 +58,18 @@
         "message": "Modifier l'URL du favori :",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
-    "cancelButton": { "message": "Annuler", "description": "Label for the cancel button in dialogs." },
-    "deleteButton": { "message": "Supprimer", "description": "Label for the delete button in dialogs." },
-    "createButton": { "message": "Créer", "description": "Label for the create button in dialogs." },
+    "cancelButton": {
+        "message": "Annuler",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "Supprimer",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "Créer",
+        "description": "Label for the create button in dialogs."
+    },
     "saveButton": {
         "message": "Enregistrer",
         "description": "Label for the save button in dialogs."
@@ -114,16 +135,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "Ouvrir la barre latérale",
-      "description": "Command to open the sidebar."
+        "message": "Ouvrir la barre latérale",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "Créer un nouvel onglet à droite de l'onglet actuel",
-      "description": "Command to create a new tab to the right."
+        "message": "Créer un nouvel onglet à droite de l'onglet actuel",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "Créer un nouvel onglet à droite :",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "Créer un nouvel onglet à droite :",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "Fermer l'onglet",
@@ -188,5 +209,23 @@
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$ onglet(s), $BOOKMARK_COUNT$ favori(s)",
+        "description": "Message affichant le nombre de résultats de recherche.",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "Aucun résultat trouvé",
+        "description": "Message affiché lorsque la recherche ne renvoie aucun résultat."
     }
 }

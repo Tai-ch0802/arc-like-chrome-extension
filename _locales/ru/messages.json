@@ -1,38 +1,50 @@
 {
     "extensionName": {
-      "message": "Боковая панель для вкладок/закладок",
-      "description": "The name of the extension."
+        "message": "Боковая панель для вкладок/закладок",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "Расширение для Chrome, имитирующее вертикальные вкладки браузера Arc.",
-      "description": "The description of the extension."
+        "message": "Расширение для Chrome, имитирующее вертикальные вкладки браузера Arc.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "Поиск вкладок или закладок...",
-      "description": "Placeholder text for the search box."
+        "message": "Поиск вкладок или закладок...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "Вкладки",
-      "description": "Header for the tabs section."
+        "message": "Вкладки",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "Закладки",
-      "description": "Header for the bookmarks section."
+        "message": "Закладки",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Вы уверены, что хотите навсегда удалить закладку \"$bookmark_title$\"",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": { "bookmark_title": { "content": "$1" } }
+        "message": "Вы уверены, что хотите навсегда удалить закладку \"$bookmark_title$\"",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1"
+            }
+        }
     },
     "deleteFolderConfirm": {
-      "message": "Вы уверены, что хотите навсегда удалить папку \"$folder_title$\" и все ее содержимое?\n\nЭто действие нельзя отменить!",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": { "folder_title": { "content": "$1" } }
+        "message": "Вы уверены, что хотите навсегда удалить папку \"$folder_title$\" и все ее содержимое?\n\nЭто действие нельзя отменить!",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1"
+            }
+        }
     },
     "addFolderPrompt": {
-      "message": "Введите имя для новой папки в \"$parent_folder$\"",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": { "parent_folder": { "content": "$1" } }
+        "message": "Введите имя для новой папки в \"$parent_folder$\"",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1"
+            }
+        }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "Изменить имя папки:",
@@ -46,9 +58,18 @@
         "message": "Изменить URL закладки:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
-    "cancelButton": { "message": "Отмена", "description": "Label for the cancel button in dialogs." },
-    "deleteButton": { "message": "Удалить", "description": "Label for the delete button in dialogs." },
-    "createButton": { "message": "Создать", "description": "Label for the create button in dialogs." },
+    "cancelButton": {
+        "message": "Отмена",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "Удалить",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "Создать",
+        "description": "Label for the create button in dialogs."
+    },
     "saveButton": {
         "message": "Сохранить",
         "description": "Label for the save button in dialogs."
@@ -114,16 +135,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "Открыть боковую панель",
-      "description": "Command to open the sidebar."
+        "message": "Открыть боковую панель",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "Создать новую вкладку справа от текущей",
-      "description": "Command to create a new tab to the right."
+        "message": "Создать новую вкладку справа от текущей",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "Создать новую вкладку справа:",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "Создать новую вкладку справа:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "Закрыть вкладку",
@@ -188,5 +209,23 @@
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$ вкладок, $BOOKMARK_COUNT$ закладок",
+        "description": "Сообщение, отображающее количество результатов поиска.",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "Результаты не найдены",
+        "description": "Сообщение, отображаемое, когда поиск не возвращает результатов."
     }
 }

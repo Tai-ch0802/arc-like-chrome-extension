@@ -1,38 +1,50 @@
 {
     "extensionName": {
-      "message": "टैब/बुकमार्क के लिए साइडबार",
-      "description": "The name of the extension."
+        "message": "टैब/बुकमार्क के लिए साइडबार",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "एक क्रोम एक्सटेंशन जो आर्क ब्राउज़र के वर्टिकल टैब की नकल करता है।",
-      "description": "The description of the extension."
+        "message": "एक क्रोम एक्सटेंशन जो आर्क ब्राउज़र के वर्टिकल टैब की नकल करता है।",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "टैब या बुकमार्क खोजें...",
-      "description": "Placeholder text for the search box."
+        "message": "टैब या बुकमार्क खोजें...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "टैब",
-      "description": "Header for the tabs section."
+        "message": "टैब",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "बुकमार्क",
-      "description": "Header for the bookmarks section."
+        "message": "बुकमार्क",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "क्या आप वाकई बुकमार्क \"$bookmark_title$\" को स्थायी रूप से हटाना चाहते हैं?",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": { "bookmark_title": { "content": "$1" } }
+        "message": "क्या आप वाकई बुकमार्क \"$bookmark_title$\" को स्थायी रूप से हटाना चाहते हैं?",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1"
+            }
+        }
     },
     "deleteFolderConfirm": {
-      "message": "क्या आप वाकई फ़ोल्डर \"$folder_title$\" और उसकी सभी सामग्री को स्थायी रूप से हटाना चाहते हैं?\n\nयह कार्रवाई पूर्ववत नहीं की जा सकती!",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": { "folder_title": { "content": "$1" } }
+        "message": "क्या आप वाकई फ़ोल्डर \"$folder_title$\" और उसकी सभी सामग्री को स्थायी रूप से हटाना चाहते हैं?\n\nयह कार्रवाई पूर्ववत नहीं की जा सकती!",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1"
+            }
+        }
     },
     "addFolderPrompt": {
-      "message": "कृपया \"$parent_folder$\" के अंतर्गत नए फ़ोल्डर का नाम दर्ज करें:",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": { "parent_folder": { "content": "$1" } }
+        "message": "कृपया \"$parent_folder$\" के अंतर्गत नए फ़ोल्डर का नाम दर्ज करें:",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1"
+            }
+        }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "फ़ोल्डर का नाम संपादित करें:",
@@ -46,9 +58,18 @@
         "message": "बुकमार्क URL संपादित करें:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
-    "cancelButton": { "message": "रद्द करें", "description": "Label for the cancel button in dialogs." },
-    "deleteButton": { "message": "हटाएं", "description": "Label for the delete button in dialogs." },
-    "createButton": { "message": "बनाएं", "description": "Label for the create button in dialogs." },
+    "cancelButton": {
+        "message": "रद्द करें",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "हटाएं",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "बनाएं",
+        "description": "Label for the create button in dialogs."
+    },
     "saveButton": {
         "message": "सहेजें",
         "description": "Label for the save button in dialogs."
@@ -114,16 +135,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "साइडबार खोलें",
-      "description": "Command to open the sidebar."
+        "message": "साइडबार खोलें",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "वर्तमान टैब के दाईं ओर एक नया टैब बनाएं",
-      "description": "Command to create a new tab to the right."
+        "message": "वर्तमान टैब के दाईं ओर एक नया टैब बनाएं",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "दाईं ओर नया टैब बनाएं:",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "दाईं ओर नया टैब बनाएं:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "टैब बंद करें",
@@ -188,5 +209,23 @@
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$ टैब, $BOOKMARK_COUNT$ बुकमार्क",
+        "description": "खोज परिणामों की संख्या प्रदर्शित करने वाला संदेश।",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "कोई परिणाम नहीं मिला",
+        "description": "खोज कोई परिणाम नहीं देती तो प्रदर्शित संदेश।"
     }
 }

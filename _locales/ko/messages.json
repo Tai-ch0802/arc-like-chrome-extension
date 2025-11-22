@@ -1,38 +1,50 @@
 {
     "extensionName": {
-      "message": "탭/북마크용 사이드바",
-      "description": "The name of the extension."
+        "message": "탭/북마크용 사이드바",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "Arc 브라우저의 수직 탭을 모방한 Chrome 확장 프로그램입니다.",
-      "description": "The description of the extension."
+        "message": "Arc 브라우저의 수직 탭을 모방한 Chrome 확장 프로그램입니다.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "탭 또는 북마크 검색...",
-      "description": "Placeholder text for the search box."
+        "message": "탭 또는 북마크 검색...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "탭",
-      "description": "Header for the tabs section."
+        "message": "탭",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "북마크",
-      "description": "Header for the bookmarks section."
+        "message": "북마크",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "북마크 \"$bookmark_title$\"을(를) 영구적으로 삭제하시겠습니까?",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": { "bookmark_title": { "content": "$1" } }
+        "message": "북마크 \"$bookmark_title$\"을(를) 영구적으로 삭제하시겠습니까?",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1"
+            }
+        }
     },
     "deleteFolderConfirm": {
-      "message": "폴더 \"$folder_title$\"와(과) 그 안의 모든 콘텐츠를 영구적으로 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다!",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": { "folder_title": { "content": "$1" } }
+        "message": "폴더 \"$folder_title$\"와(과) 그 안의 모든 콘텐츠를 영구적으로 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다!",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1"
+            }
+        }
     },
     "addFolderPrompt": {
-      "message": "\"$parent_folder$\" 아래에 새 폴더의 이름을 입력하십시오:",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": { "parent_folder": { "content": "$1" } }
+        "message": "\"$parent_folder$\" 아래에 새 폴더의 이름을 입력하십시오:",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1"
+            }
+        }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "폴더 이름 편집:",
@@ -46,9 +58,18 @@
         "message": "북마크 URL 편집:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
-    "cancelButton": { "message": "취소", "description": "Label for the cancel button in dialogs." },
-    "deleteButton": { "message": "삭제", "description": "Label for the delete button in dialogs." },
-    "createButton": { "message": "만들기", "description": "Label for the create button in dialogs." },
+    "cancelButton": {
+        "message": "취소",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "삭제",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "만들기",
+        "description": "Label for the create button in dialogs."
+    },
     "saveButton": {
         "message": "저장",
         "description": "Label for the save button in dialogs."
@@ -114,16 +135,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "사이드바 열기",
-      "description": "Command to open the sidebar."
+        "message": "사이드바 열기",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "현재 탭의 오른쪽에 새 탭 만들기",
-      "description": "Command to create a new tab to the right."
+        "message": "현재 탭의 오른쪽에 새 탭 만들기",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "오른쪽에 새 탭 만들기:",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "오른쪽에 새 탭 만들기:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "탭 닫기",
@@ -188,5 +209,23 @@
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$개 탭, $BOOKMARK_COUNT$개 북마크",
+        "description": "검색 결과 수를 표시하는 메시지입니다.",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "결과를 찾을 수 없습니다",
+        "description": "검색 결과가 없을 때 표示되는 메시지입니다."
     }
 }

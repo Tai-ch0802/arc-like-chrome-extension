@@ -1,38 +1,50 @@
 {
     "extensionName": {
-      "message": "Bilah Sisi untuk Tab/Markah",
-      "description": "The name of the extension."
+        "message": "Bilah Sisi untuk Tab/Markah",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "Ekstensi Chrome yang meniru tab vertikal dari peramban Arc.",
-      "description": "The description of the extension."
+        "message": "Ekstensi Chrome yang meniru tab vertikal dari peramban Arc.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "Cari tab atau markah...",
-      "description": "Placeholder text for the search box."
+        "message": "Cari tab atau markah...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "Tab",
-      "description": "Header for the tabs section."
+        "message": "Tab",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "Markah",
-      "description": "Header for the bookmarks section."
+        "message": "Markah",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Apakah Anda yakin ingin menghapus markah \"$bookmark_title$\" secara permanen?",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": { "bookmark_title": { "content": "$1" } }
+        "message": "Apakah Anda yakin ingin menghapus markah \"$bookmark_title$\" secara permanen?",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1"
+            }
+        }
     },
     "deleteFolderConfirm": {
-      "message": "Apakah Anda yakin ingin menghapus folder \"$folder_title$\" dan semua isinya secara permanen?\n\nTindakan ini tidak dapat dibatalkan!",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": { "folder_title": { "content": "$1" } }
+        "message": "Apakah Anda yakin ingin menghapus folder \"$folder_title$\" dan semua isinya secara permanen?\n\nTindakan ini tidak dapat dibatalkan!",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1"
+            }
+        }
     },
     "addFolderPrompt": {
-      "message": "Silakan masukkan nama untuk folder baru di bawah \"$parent_folder$\":",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": { "parent_folder": { "content": "$1" } }
+        "message": "Silakan masukkan nama untuk folder baru di bawah \"$parent_folder$\":",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1"
+            }
+        }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "Edit Nama Folder:",
@@ -46,10 +58,22 @@
         "message": "Edit URL Markah:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
-    "cancelButton": { "message": "Batal", "description": "Label for the cancel button in dialogs." },
-    "deleteButton": { "message": "Hapus", "description": "Label for the delete button in dialogs." },
-    "createButton": { "message": "Buat", "description": "Label for the create button in dialogs." },
-    "saveButton": { "message": "Simpan", "description": "Label for the save button in dialogs." },
+    "cancelButton": {
+        "message": "Batal",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "Hapus",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "Buat",
+        "description": "Label for the create button in dialogs."
+    },
+    "saveButton": {
+        "message": "Simpan",
+        "description": "Label for the save button in dialogs."
+    },
     "closeButton": {
         "message": "Close",
         "description": "Label for the close button in dialogs."
@@ -111,16 +135,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "Buka bilah sisi",
-      "description": "Command to open the sidebar."
+        "message": "Buka bilah sisi",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "Buat tab baru di sebelah kanan tab saat ini",
-      "description": "Command to create a new tab to the right."
+        "message": "Buat tab baru di sebelah kanan tab saat ini",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "Buat tab baru di sebelah kanan:",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "Buat tab baru di sebelah kanan:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "Tutup Tab",
@@ -185,5 +209,23 @@
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark",
+        "description": "Pesan yang menampilkan jumlah hasil pencarian.",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "Tidak ada hasil ditemukan",
+        "description": "Pesan yang ditampilkan ketika pencarian tidak mengembalikan hasil."
     }
 }

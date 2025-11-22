@@ -1,38 +1,50 @@
 {
     "extensionName": {
-      "message": "Seitenleiste für Tabs/Lesezeichen",
-      "description": "The name of the extension."
+        "message": "Seitenleiste für Tabs/Lesezeichen",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
-      "description": "The description of the extension."
+        "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "Tabs oder Lesezeichen suchen...",
-      "description": "Placeholder text for the search box."
+        "message": "Tabs oder Lesezeichen suchen...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "Tabs",
-      "description": "Header for the tabs section."
+        "message": "Tabs",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "Lesezeichen",
-      "description": "Header for the bookmarks section."
+        "message": "Lesezeichen",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Sind Sie sicher, dass Sie das Lesezeichen \"$bookmark_title$\" dauerhaft löschen möchten?",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": { "bookmark_title": { "content": "$1" } }
+        "message": "Sind Sie sicher, dass Sie das Lesezeichen \"$bookmark_title$\" dauerhaft löschen möchten?",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1"
+            }
+        }
     },
     "deleteFolderConfirm": {
-      "message": "Sind Sie sicher, dass Sie den Ordner \"$folder_title$\" und seinen gesamten Inhalt dauerhaft löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": { "folder_title": { "content": "$1" } }
+        "message": "Sind Sie sicher, dass Sie den Ordner \"$folder_title$\" und seinen gesamten Inhalt dauerhaft löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1"
+            }
+        }
     },
     "addFolderPrompt": {
-      "message": "Bitte geben Sie den Namen für den neuen Ordner unter \"$parent_folder$\" ein:",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": { "parent_folder": { "content": "$1" } }
+        "message": "Bitte geben Sie den Namen für den neuen Ordner unter \"$parent_folder$\" ein:",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1"
+            }
+        }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "Ordnernamen bearbeiten:",
@@ -46,10 +58,22 @@
         "message": "Lesezeichen-URL bearbeiten:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
-    "cancelButton": { "message": "Abbrechen", "description": "Label for the cancel button in dialogs." },
-    "deleteButton": { "message": "Löschen", "description": "Label for the delete button in dialogs." },
-    "createButton": { "message": "Erstellen", "description": "Label for the create button in dialogs." },
-    "saveButton": { "message": "Speichern", "description": "Label for the save button in dialogs." },
+    "cancelButton": {
+        "message": "Abbrechen",
+        "description": "Label for the cancel button in dialogs."
+    },
+    "deleteButton": {
+        "message": "Löschen",
+        "description": "Label for the delete button in dialogs."
+    },
+    "createButton": {
+        "message": "Erstellen",
+        "description": "Label for the create button in dialogs."
+    },
+    "saveButton": {
+        "message": "Speichern",
+        "description": "Label for the save button in dialogs."
+    },
     "closeButton": {
         "message": "Close",
         "description": "Label for the close button in dialogs."
@@ -111,16 +135,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "Seitenleiste öffnen",
-      "description": "Command to open the sidebar."
+        "message": "Seitenleiste öffnen",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
-      "description": "Command to create a new tab to the right."
+        "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "Neuen Tab rechts erstellen:",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "Neuen Tab rechts erstellen:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "Tab schließen",
@@ -177,13 +201,31 @@
         "description": "Message displayed when a bookmark has no active linked tabs."
     },
     "duplicateBookmarkConfirm": {
-        "message": "Diese Seite ist bereits als Lesezeichen „$BOOKMARK_NAME$“ vorhanden.<br><br>Möchten Sie es erneut hinzufügen?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "message": "Diese Seite ist bereits als \"$BOOKMARK_NAME$\" gespeichert.<br><br>Möchten Sie sie erneut hinzufügen?",
+        "description": "Bestätigungsmeldung, die angezeigt wird, wenn versucht wird, ein Lesezeichen hinzuzufügen, das bereits existiert.",
         "placeholders": {
             "BOOKMARK_NAME": {
                 "content": "$1",
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$ Tab(s), $BOOKMARK_COUNT$ Lesezeichen",
+        "description": "Nachricht zur Anzeige der Anzahl der Suchergebnisse.",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "Keine Ergebnisse gefunden",
+        "description": "Nachricht, die angezeigt wird, wenn die Suche keine Ergebnisse liefert."
     }
 }
