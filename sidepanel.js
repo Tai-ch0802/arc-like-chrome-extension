@@ -21,7 +21,8 @@ async function updateTabList() {
         api.getTabsInCurrentWindow()
     ]);
     ui.renderTabsAndGroups(tabs, groups, { onAddToGroupClick: handleAddToGroupClick });
-    search.filterTabsAndGroups(ui.searchBox.value.toLowerCase().trim());
+    // 觸發搜尋以套用當前的過濾狀態
+    search.handleSearch();
     dragDrop.initializeTabSortable(updateTabList);
 }
 
@@ -30,7 +31,8 @@ async function refreshBookmarks() {
     if (tree[0] && tree[0].children) {
         ui.bookmarkListContainer.innerHTML = '';
         ui.renderBookmarks(tree[0].children, ui.bookmarkListContainer, '1', refreshBookmarks);
-        search.filterBookmarks(ui.searchBox.value.toLowerCase().trim());
+        // 觸發搜尋以套用當前的過濾狀態
+        search.handleSearch();
         dragDrop.initializeBookmarkSortable(refreshBookmarks, updateTabList);
     }
 }
@@ -60,6 +62,7 @@ async function initialize() {
     updateTabList(); console.log('updateTabList done');
     refreshBookmarks(); console.log('refreshBookmarks done');
     addEventListeners(); console.log('addEventListeners done');
+    initializeSearchUI(); console.log('initializeSearchUI done');
 }
 
 function addEventListeners() {
@@ -98,6 +101,31 @@ function addEventListeners() {
 
     chrome.bookmarks.onCreated.addListener(refreshBookmarks);
     chrome.bookmarks.onMoved.addListener(refreshBookmarks);
+}
+
+// --- 搜尋 UI 事件處理 ---
+
+function initializeSearchUI() {
+    // 監聽搜尋框輸入，顯示/隱藏清除按鈕
+    ui.searchBox.addEventListener('input', () => {
+        if (ui.searchBox.value.trim().length > 0) {
+            ui.clearSearchBtn.classList.remove('hidden');
+        } else {
+            ui.clearSearchBtn.classList.add('hidden');
+        }
+    });
+
+    // 清除按鈕事件
+    ui.clearSearchBtn.addEventListener('click', () => {
+        ui.searchBox.value = '';
+        ui.clearSearchBtn.classList.add('hidden');
+        search.handleSearch(); // 觸發搜尋以重置顯示
+    });
+
+    // 監聽搜尋結果更新事件
+    document.addEventListener('searchResultUpdated', (e) => {
+        ui.updateSearchResultCount(e.detail.tabCount, e.detail.bookmarkCount);
+    });
 }
 
 // --- 啟動 ---

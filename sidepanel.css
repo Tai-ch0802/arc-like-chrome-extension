@@ -26,6 +26,10 @@
 
     --modal-overlay-bg-color: rgba(30, 30, 46, 0.8);
     --modal-shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* 搜尋高亮顏色 */
+    --search-match-title: #ffff00;
+    --search-match-url: #ff6b9d;
 }
 
 /* 2. Google 風格主題 */
@@ -54,6 +58,10 @@
 
     --modal-overlay-bg-color: rgba(60, 64, 67, 0.8);
     --modal-shadow-color: rgba(60, 64, 67, 0.3);
+
+    /* 搜尋高亮顏色 */
+    --search-match-title: #fbbc04;
+    --search-match-url: #ea4335;
 }
 
 /* 3. Darcula (JetBrains) 風格主題 */
@@ -82,6 +90,10 @@
 
     --modal-overlay-bg-color: rgba(43, 43, 43, 0.8);
     --modal-shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* 搜尋高亮顏色 */
+    --search-match-title: #ffc66d;
+    --search-match-url: #cc7832;
 }
 
 /* 4. Geek Blue 風格主題 */
@@ -110,6 +122,10 @@
 
     --modal-overlay-bg-color: rgba(30, 30, 46, 0.8);
     --modal-shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* 搜尋高亮顏色 */
+    --search-match-title: #ffff00;
+    --search-match-url: #ff6b9d;
 }
 
 /* 5. Christmas 風格主題 */
@@ -124,13 +140,17 @@
 
     --element-bg-color: #344e41;
     --element-bg-hover-color: #3a5a40;
-    --element-bg-active-color: #a55353; /* Soft red background for active items */
+    --element-bg-active-color: #a55353;
+    /* Soft red background for active items */
 
     --border-color: #3a5a40;
-    --border-color-accent: #cb8b43; /* Soft gold for accent border */
+    --border-color-accent: #cb8b43;
+    /* Soft gold for accent border */
 
-    --accent-color: #cb8b43; /* Soft gold for active text */
-    --accent-color-hover: #dcb173; /* Brighter gold for hover */
+    --accent-color: #cb8b43;
+    /* Soft gold for active text */
+    --accent-color-hover: #dcb173;
+    /* Brighter gold for hover */
     --danger-color: #d96666;
     --danger-color-hover: #e07878;
     --info-color: #588da8;
@@ -138,6 +158,10 @@
 
     --modal-overlay-bg-color: rgba(42, 61, 50, 0.8);
     --modal-shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* 搜尋高亮顏色 */
+    --search-match-title: #f4d03f;
+    --search-match-url: #e74c3c;
 }
 
 
@@ -150,7 +174,8 @@ body {
     background-color: var(--main-bg-color);
     color: var(--text-color-primary);
     font-size: 14px;
-    position: relative; /* 為了定位搜尋框 */
+    position: relative;
+    /* 為了定位搜尋框 */
     min-height: 100vh;
     box-sizing: border-box;
 }
@@ -164,15 +189,30 @@ body {
     padding: 8px;
     background-color: var(--main-bg-color);
     z-index: 10;
-    display: flex; /* 使用 Flexbox */
-    align-items: center; /* 垂直置中 */
-    gap: 8px; /* 搜尋框和設定圖示之間的間距 */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 搜尋框與設定按鈕的橫向容器 */
+.search-top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
 }
 
 #search-box {
-    flex-grow: 1; /* 讓搜尋框佔據剩餘空間 */
+    flex-grow: 1;
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 32px 8px 12px;
+    /* 右側留空間給清除按鈕 */
     box-sizing: border-box;
     background-color: var(--element-bg-color);
     border: 1px solid var(--border-color);
@@ -190,17 +230,50 @@ body {
     color: var(--text-color-placeholder);
 }
 
+/* 清除按鈕 */
+#clear-search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-color-secondary);
+    font-size: 18px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+#clear-search-btn:hover {
+    color: var(--danger-color);
+}
+
+/* 搜尋結果計數 */
+#search-result-count {
+    font-size: 11px;
+    color: var(--text-color-secondary);
+    padding: 0 4px;
+    text-align: left;
+}
+
 /* --- 設定按鈕樣式 --- */
 #settings-toggle {
-    flex-shrink: 0; /* 防止設定圖示被壓縮 */
+    flex-shrink: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center; /* 確保 SVG 在按鈕內置中 */
-    width: 24px; /* 調整大小 */
-    height: 24px; /* 調整大小 */
-    padding: 4px; /* 增加點擊區域 */
-    border-radius: 4px; /* 輕微圓角 */
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
@@ -220,6 +293,24 @@ body {
 /* --- 通用隱藏 Class --- */
 .hidden {
     display: none !important;
+}
+
+/* --- 文字高亮樣式 --- */
+mark.title-match {
+    background-color: var(--search-match-title);
+    color: var(--text-color-inverted);
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+mark.url-match {
+    background-color: var(--search-match-url);
+    color: var(--text-color-inverted);
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-style: italic;
+    font-weight: 500;
 }
 
 
@@ -266,11 +357,13 @@ body {
 
 .tab-item.active {
     background-color: var(--element-bg-active-color);
-    border-left: 3px solid var(--accent-color); /* 亮綠色邊框 */
+    border-left: 3px solid var(--accent-color);
+    /* 亮綠色邊框 */
 }
 
 .tab-item.active .tab-title {
-    color: var(--accent-color); /* 亮綠色文字 */
+    color: var(--accent-color);
+    /* 亮綠色文字 */
 }
 
 .tab-favicon {
@@ -287,10 +380,32 @@ body {
 }
 
 .tab-title {
-    flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     transition: color 0.15s ease-in-out;
+}
+
+/* title 和 domain 的容器 */
+.tab-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+    /* 允許內容縮排 */
+    overflow: hidden;
+}
+
+/* 匹配的 domain 顯示 */
+.matched-domain {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-color-secondary);
+    margin-top: 1px;
+    /* 更緊密的間距 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .tab-actions {
@@ -361,10 +476,6 @@ body {
     margin-top: 6px;
 }
 
-.tab-group-header:hover {
-    /* background-color is now handled by JavaScript */
-}
-
 .tab-group-arrow {
     width: 16px;
     height: 16px;
@@ -381,12 +492,14 @@ body {
 }
 
 .tab-group-content {
-    padding-left: 20px; /* 群組內分頁的縮排 */
+    padding-left: 20px;
+    /* 群組內分頁的縮排 */
 }
 
 
 /* --- 書籤樣式 --- */
-.bookmark-item, .bookmark-folder {
+.bookmark-item,
+.bookmark-folder {
     display: flex;
     align-items: center;
     padding: 4px 8px;
@@ -396,9 +509,12 @@ body {
     text-overflow: ellipsis;
     border-left: 3px solid transparent;
     transition: background-color 0.15s ease-in-out;
-    color: inherit; /* 強制繼承父元素的顏色 (綠色) */
-    text-decoration: none; /* 移除連結底線 */
-    position: relative; /* 新增：為了定位刪除按鈕 */
+    color: inherit;
+    /* 強制繼承父元素的顏色 (綠色) */
+    text-decoration: none;
+    /* 移除連結底線 */
+    position: relative;
+    /* 新增：為了定位刪除按鈕 */
 }
 
 .bookmark-icon {
@@ -409,18 +525,31 @@ body {
 }
 
 .bookmark-title {
-    flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
+/* title 和 domain 的容器 */
+.bookmark-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+    /* 允許內容縮排 */
+    overflow: hidden;
+}
+
 .bookmark-actions {
-    flex-shrink: 0; /* 確保按鈕不會被壓縮 */
-    display: flex; /* 使用 Flexbox */
+    flex-shrink: 0;
+    /* 確保按鈕不會被壓縮 */
+    display: flex;
+    /* 使用 Flexbox */
     align-items: center;
-    gap: 0px; /* 設定按鈕之間的間距 */
-    opacity: 0; /* 預設隱藏整個容器 */
+    gap: 0px;
+    /* 設定按鈕之間的間距 */
+    opacity: 0;
+    /* 預設隱藏整個容器 */
     transition: opacity 0.2s ease;
     margin-left: auto;
     padding-left: 5px;
@@ -429,7 +558,8 @@ body {
 .bookmark-edit-btn img {
     width: 16px;
     height: 16px;
-    vertical-align: middle; /* 讓 SVG 圖示垂直置中 */
+    vertical-align: middle;
+    /* 讓 SVG 圖示垂直置中 */
 }
 
 
@@ -460,7 +590,8 @@ body {
 .bookmark-folder:hover .bookmark-close-btn,
 .bookmark-folder:hover .bookmark-edit-btn,
 .bookmark-folder:hover .add-folder-btn {
-    opacity: 1; /* 滑鼠懸停時顯示 */
+    opacity: 1;
+    /* 滑鼠懸停時顯示 */
 }
 
 .bookmark-close-btn:hover,
@@ -526,7 +657,8 @@ body {
 
 .modal-title {
     font-size: 16px;
-    color: var(--text-color-light); /* Lighter text for title */
+    color: var(--text-color-light);
+    /* Lighter text for title */
     margin: 0;
     font-weight: normal;
 }
@@ -535,7 +667,8 @@ body {
     width: 100%;
     padding: 8px 12px;
     box-sizing: border-box;
-    background-color: var(--main-bg-color); /* Darker background for input */
+    background-color: var(--main-bg-color);
+    /* Darker background for input */
     border: 1px solid var(--border-color);
     color: var(--text-color-light);
     font-family: inherit;
@@ -544,7 +677,8 @@ body {
 
 .modal-input:focus {
     outline: none;
-    border-color: var(--accent-color); /* Highlight color on focus */
+    border-color: var(--accent-color);
+    /* Highlight color on focus */
 }
 
 .modal-select {
@@ -556,10 +690,12 @@ body {
     color: var(--text-color-light);
     font-family: inherit;
     font-size: 14px;
-    appearance: none; /* Remove default browser styling */
+    appearance: none;
+    /* Remove default browser styling */
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Custom arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    /* Custom arrow */
     background-repeat: no-repeat;
     background-position: right 8px center;
     cursor: pointer;
@@ -700,6 +836,7 @@ body {
 .color-swatch.selected {
     border-color: var(--accent-color);
 }
+
 /* --- Linked Tabs Panel Styles --- */
 .linked-tabs-list {
     display: flex;
@@ -721,8 +858,10 @@ body {
 }
 
 .linked-tab-favicon {
-    height: 1em; /* Match the font-size */
-    width: 1em;  /* Match the font-size */
+    height: 1em;
+    /* Match the font-size */
+    width: 1em;
+    /* Match the font-size */
     margin-right: 12px;
     flex-shrink: 0;
 }

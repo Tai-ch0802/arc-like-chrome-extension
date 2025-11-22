@@ -1,53 +1,53 @@
 {
     "extensionName": {
-      "message": "Sidebar for Tabs/Bookmarks",
-      "description": "The name of the extension."
+        "message": "Sidebar for Tabs/Bookmarks",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-      "message": "A Chrome extension that mimics the vertical tabs of the Arc browser.",
-      "description": "The description of the extension."
+        "message": "A Chrome extension that mimics the vertical tabs of the Arc browser.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-      "message": "Search tabs or bookmarks...",
-      "description": "Placeholder text for the search box."
+        "message": "Search tabs or bookmarks...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-      "message": "Tabs",
-      "description": "Header for the tabs section."
+        "message": "Tabs",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-      "message": "Bookmarks",
-      "description": "Header for the bookmarks section."
+        "message": "Bookmarks",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-      "message": "Are you sure you want to permanently delete the bookmark \"$bookmark_title$\"",
-      "description": "Confirmation message for deleting a single bookmark.",
-      "placeholders": {
-        "bookmark_title": {
-          "content": "$1",
-          "example": "Google"
+        "message": "Are you sure you want to permanently delete the bookmark \"$bookmark_title$\"",
+        "description": "Confirmation message for deleting a single bookmark.",
+        "placeholders": {
+            "bookmark_title": {
+                "content": "$1",
+                "example": "Google"
+            }
         }
-      }
     },
     "deleteFolderConfirm": {
-      "message": "Are you sure you want to permanently delete the folder \"$folder_title$\" and all its contents?\n\nThis action cannot be undone!",
-      "description": "Confirmation message for deleting a bookmark folder.",
-      "placeholders": {
-        "folder_title": {
-          "content": "$1",
-          "example": "Work"
+        "message": "Are you sure you want to permanently delete the folder \"$folder_title$\" and all its contents?\n\nThis action cannot be undone!",
+        "description": "Confirmation message for deleting a bookmark folder.",
+        "placeholders": {
+            "folder_title": {
+                "content": "$1",
+                "example": "Work"
+            }
         }
-      }
     },
     "addFolderPrompt": {
-      "message": "Please enter the name for the new folder under \"$parent_folder$\"",
-      "description": "Prompt for adding a new bookmark folder.",
-      "placeholders": {
-        "parent_folder": {
-          "content": "$1",
-          "example": "Personal"
+        "message": "Please enter the name for the new folder under \"$parent_folder$\"",
+        "description": "Prompt for adding a new bookmark folder.",
+        "placeholders": {
+            "parent_folder": {
+                "content": "$1",
+                "example": "Personal"
+            }
         }
-      }
     },
     "editBookmarkFolderPromptForTitle": {
         "message": "Edit Folder Name:",
@@ -138,16 +138,16 @@
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-      "message": "Open the sidebar",
-      "description": "Command to open the sidebar."
+        "message": "Open the sidebar",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-      "message": "Create a new tab to the right of the current tab",
-      "description": "Command to create a new tab to the right."
+        "message": "Create a new tab to the right of the current tab",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-      "message": "Create new tab on the right:",
-      "description": "Description for the create new tab to the right shortcut in settings."
+        "message": "Create new tab on the right:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
         "message": "Close Tab",
@@ -212,5 +212,23 @@
                 "example": "Google"
             }
         }
+    },
+    "searchResultCount": {
+        "message": "$TAB_COUNT$ tab(s), $BOOKMARK_COUNT$ bookmark(s)",
+        "description": "Message displaying the count of search results.",
+        "placeholders": {
+            "TAB_COUNT": {
+                "content": "$1",
+                "example": "5"
+            },
+            "BOOKMARK_COUNT": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "searchNoResults": {
+        "message": "No results found",
+        "description": "Message displayed when search returns no results."
     }
 }

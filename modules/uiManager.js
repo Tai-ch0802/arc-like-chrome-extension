@@ -25,6 +25,8 @@ function hexToRgba(hex, alpha) {
 export const tabListContainer = document.getElementById('tab-list');
 export const bookmarkListContainer = document.getElementById('bookmark-list');
 export const searchBox = document.getElementById('search-box');
+export const clearSearchBtn = document.getElementById('clear-search-btn');
+export const searchResultCount = document.getElementById('search-result-count');
 
 // --- 渲染邏輯 ---
 export function createTabElement(tab, { onAddToGroupClick }) {
@@ -54,6 +56,12 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const title = document.createElement('span');
     title.className = 'tab-title';
     title.textContent = tab.title || 'Loading...';
+
+    // 創建 title 容器，用於包裹 title 和可能的 domain
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'tab-content-wrapper';
+    titleWrapper.appendChild(title);
+
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
@@ -94,7 +102,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     actionsContainer.appendChild(closeBtn);
 
     tabItem.appendChild(favicon);
-    tabItem.appendChild(title);
+    tabItem.appendChild(titleWrapper);  // 使用 titleWrapper 而不是直接 title
     tabItem.appendChild(actionsContainer);
     tabItem.addEventListener('click', () => {
         api.updateTab(tab.id, { active: true });
@@ -284,6 +292,11 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             title.className = 'bookmark-title';
             title.textContent = node.title;
 
+            // 創建 title 容器，用於包裹 title 和可能的 domain
+            const titleWrapper = document.createElement('div');
+            titleWrapper.className = 'bookmark-content-wrapper';
+            titleWrapper.appendChild(title);
+
             bookmarkItem.appendChild(icon);
 
             // --- Linked Tab Icon ---
@@ -291,7 +304,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
                 const linkedIcon = document.createElement('span');
                 linkedIcon.className = 'linked-tab-icon';
                 linkedIcon.style.marginRight = '8px'; // Add margin to separate from title
-                
+
                 // Get the accent color from the current theme
                 const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color').trim();
 
@@ -306,7 +319,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
                 bookmarkItem.appendChild(linkedIcon); // Append icon after main icon
             }
 
-            bookmarkItem.appendChild(title);
+            bookmarkItem.appendChild(titleWrapper);  // 使用 titleWrapper
 
 
             const actionsContainer = document.createElement('div');
@@ -582,4 +595,25 @@ export function initThemeSwitcher() {
     api.getStorage('sync', { theme: 'geek' }).then(data => {
         applyTheme(data.theme);
     });
+}
+
+// --- 搜尋結果計數更新 ---
+
+/**
+ * 更新搜尋結果計數顯示
+ * @param {number} tabCount - 可見分頁數量
+ * @param {number} bookmarkCount - 可見書籤數量
+ */
+export function updateSearchResultCount(tabCount, bookmarkCount) {
+    if (tabCount === 0 && bookmarkCount === 0) {
+        searchResultCount.textContent = api.getMessage('searchNoResults') || 'No results found';
+        searchResultCount.classList.remove('hidden');
+    } else if (searchBox.value.trim().length > 0) {
+        // 使用 i18n 訊息格式化文字
+        const message = api.getMessage('searchResultCount', [tabCount.toString(), bookmarkCount.toString()]);
+        searchResultCount.textContent = message || `${tabCount} tabs, ${bookmarkCount} bookmarks`;
+        searchResultCount.classList.remove('hidden');
+    } else {
+        searchResultCount.classList.add('hidden');
+    }
 }
