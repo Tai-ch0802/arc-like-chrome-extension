@@ -913,3 +913,20 @@ mark.url-match {
     color: var(--danger-color);
     font-weight: bold;
 }
+
+/* --- Virtual Scrolling Styles (Beta) --- */
+.virtual-scroll-container {
+    position: relative;
+    overflow-y: auto;
+    height: 100%;
+    will-change: transform;
+    /* Performance optimization */
+}
+
+.virtual-item {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    /* Height is set inline via JS */
+}

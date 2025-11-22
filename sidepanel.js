@@ -54,6 +54,7 @@ function adjustBodyPadding() {
 
 async function initialize() {
     await state.initLinkedTabs(); // Load linked tabs state first
+    await state.initVirtualScrolling(); // Load virtual scrolling state
     console.log('initialize() called'); // DEBUG
     applyStaticTranslations(); console.log('applyStaticTranslations done');
     search.initialize(); console.log('search.initialize done');
@@ -63,6 +64,11 @@ async function initialize() {
     refreshBookmarks(); console.log('refreshBookmarks done');
     addEventListeners(); console.log('addEventListeners done');
     initializeSearchUI(); console.log('initializeSearchUI done');
+
+    // Listen for refresh request from settings
+    document.addEventListener('refreshBookmarksRequired', () => {
+        refreshBookmarks();
+    });
 }
 
 function addEventListeners() {

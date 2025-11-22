@@ -213,9 +213,21 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Experimental Features",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Enable Virtual Scrolling (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Optimizes performance for large bookmark lists by rendering only visible items. May have minor visual glitches.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ tab(s), $BOOKMARK_COUNT$ bookmark(s)",
-        "description": "Message displaying the count of search results.",
+        "message": "$TAB_COUNT$ tabs, $BOOKMARK_COUNT$ bookmarks found",
+        "description": "Message showing the count of search results",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",
