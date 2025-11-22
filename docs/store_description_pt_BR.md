@@ -1,12 +1,20 @@
-Última Versão - 1.7.0
-✨ Novas Funcionalidades
-- Vinculação de Abas e Favoritos: Implementada uma funcionalidade ao estilo Arc para vincular favoritos a abas. Agora, clicar em um favorito ou arrastar uma aba para criar um favorito cria automaticamente um link. Um ícone de link aparece ao lado do favorito, que pode ser clicado para ver todas as abas vinculadas para troca rápida ou fechamento.
-- Novo Tema de Natal: Adicionado um tema de Natal suave e acolhedor nas configurações para celebrar a época festiva.
+當前最新版本 - 1.8.0
+✨ 新功能 (New Features)
+- **強大的搜尋增強**：
+    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
+    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
+    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
+    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
+    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
+    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
 
-🚀 Melhorias e Correções de Bugs
-- Proteção ao Arrastar para Favoritar: Ao arrastar uma aba para criar um favorito, o sistema agora verifica se já existe um favorito com a mesma URL e exibe um diálogo de confirmação para evitar duplicatas.
+🚀 改善與錯誤修復 (Improvements & Bug Fixes)
+- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
+- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
+- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
 
-Para mais notas de lançamento, por favor visite: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
 

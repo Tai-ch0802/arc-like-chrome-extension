@@ -1,12 +1,20 @@
-Phiên bản Mới nhất - 1.7.0
-✨ Tính năng Mới
-- Liên kết Tab-Bookmark: Đã triển khai tính năng kiểu Arc để liên kết bookmark với các tab. Bây giờ, việc nhấp vào một bookmark hoặc kéo một tab để tạo bookmark sẽ tự động tạo một liên kết. Một biểu tượng liên kết xuất hiện bên cạnh bookmark, có thể nhấp vào để xem tất cả các tab được liên kết để chuyển đổi hoặc đóng nhanh.
-- Chủ đề Giáng sinh Mới: Đã thêm một chủ đề Giáng sinh mềm mại và ấm áp trong cài đặt để chào mừng mùa lễ.
+當前最新版本 - 1.8.0
+✨ 新功能 (New Features)
+- **強大的搜尋增強**：
+    - **多關鍵字搜尋**：支援使用空白分隔多個關鍵字，讓搜尋更靈活（OR 邏輯）。
+    - **URL Domain 搜尋**：現在可以搜尋分頁和書籤的網址 Domain。
+    - **智慧顯示**：當搜尋匹配到 URL 時，會自動在標題下方顯示匹配的 Domain 資訊。
+    - **即時高亮**：搜尋結果中的關鍵字會被高亮顯示，並支援所有主題配色。
+    - **結果計數**：即時顯示搜尋到的分頁與書籤數量。
+    - **清除按鈕**：新增一鍵清除搜尋內容的按鈕。
 
-🚀 Cải tiến & Sửa lỗi
-- Bảo vệ Kéo-để-Bookmark: Khi kéo một tab để tạo bookmark, hệ thống bây giờ sẽ kiểm tra xem có bookmark nào có cùng URL đã tồn tại chưa và hiển thị hộp thoại xác nhận để ngăn chặn việc tạo bản sao.
+🚀 改善與錯誤修復 (Improvements & Bug Fixes)
+- **多語系支援**：為所有 14 種支援語言補齊了搜尋功能的翻譯。
+- **介面優化**：修正了搜尋結果中 Icon 與標題的對齊問題，並優化了 Domain 顯示的間距。
+- **效能優化**：加入 Debounce 機制，提升搜尋時的流暢度。
 
-Để biết thêm ghi chú phát hành, vui lòng truy cập: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+
+查看更多 release_note 請至：https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
 
 ----
 
