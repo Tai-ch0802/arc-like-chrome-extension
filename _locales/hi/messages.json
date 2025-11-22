@@ -211,7 +211,7 @@
         }
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ टैब, $BOOKMARK_COUNT$ बुकमार्क",
+        "message": "$TAB_COUNT$ टैब, $BOOKMARK_COUNT$ बुकमार्क मिले",
         "description": "खोज परिणामों की संख्या प्रदर्शित करने वाला संदेश।",
         "placeholders": {
             "TAB_COUNT": {
@@ -223,6 +223,18 @@
                 "example": "12"
             }
         }
+    },
+    "experimentalSectionHeader": {
+        "message": "प्रयोगात्मक सुविधाएँ",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "वर्चुअल स्क्रॉलिंग सक्षम करें (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "केवल दृश्यमान आइटम प्रस्तुत करके बड़े बुकमार्क सूचियों के लिए प्रदर्शन को अनुकूलित करता है। मामूली दृश्य समस्याएं हो सकती हैं।",
+        "description": "Description for the virtual scrolling toggle"
     },
     "searchNoResults": {
         "message": "कोई परिणाम नहीं मिला",

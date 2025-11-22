@@ -210,6 +210,18 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Funciones experimentales",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Habil itar desplazamiento virtual (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Optimiza el rendimiento para listas grandes de marcadores al renderizar solo elementos visibles. Puede tener pequeños problemas visuales.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
         "message": "$TAB_COUNT$ pestaña(s), $BOOKMARK_COUNT$ marcador(es)",
         "description": "Mensaje que muestra el recuento de resultados de búsqueda.",

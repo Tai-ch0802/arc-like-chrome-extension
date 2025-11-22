@@ -210,9 +210,21 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "ฟีเจอร์ทดลอง",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "เปิดใช้งานการเลื่อนแบบเสมือน (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "เพิ่มประสิทธิภาพสำหรับรายการบุ๊กมาร์กขนาดใหญ่โดยแสดงเฉพาะรายการที่มองเห็นได้ อาจมีปัญหาเล็กน้อยทางภาพ",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ แท็บ, $BOOKMARK_COUNT$ บุ๊กมาร์ก",
-        "description": "ข้อความแสดงจำนวนผลการค้นหา",
+        "message": "พบ $TAB_COUNT$ แท็บ, $BOOKMARK_COUNT$ บุ๊กมาร์ก",
+        "description": "Message showing the count of search results",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",

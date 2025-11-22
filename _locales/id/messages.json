@@ -211,7 +211,7 @@
         }
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark",
+        "message": "$TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark ditemukan",
         "description": "Pesan yang menampilkan jumlah hasil pencarian.",
         "placeholders": {
             "TAB_COUNT": {
@@ -223,6 +223,18 @@
                 "example": "12"
             }
         }
+    },
+    "experimentalSectionHeader": {
+        "message": "Fitur Eksperimental",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Aktifkan Pengguliran Virtual (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Mengoptimalkan kinerja untuk daftar bookmark besar dengan hanya merender item yang terlihat. Mungkin memiliki gangguan visual kecil.",
+        "description": "Description for the virtual scrolling toggle"
     },
     "searchNoResults": {
         "message": "Tidak ada hasil ditemukan",

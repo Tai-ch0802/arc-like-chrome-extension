@@ -211,8 +211,8 @@
         }
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ 個のタブ、$BOOKMARK_COUNT$ 個のブックマーク",
-        "description": "検索結果の数を表示するメッセージ。",
+        "message": "$TAB_COUNT$ 個のタブ、$BOOKMARK_COUNT$ 個のブックマークが見つかりました",
+        "description": "Message showing the count of search results",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",

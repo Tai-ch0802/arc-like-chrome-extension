@@ -211,7 +211,7 @@
         }
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ tab, $BOOKMARK_COUNT$ dấu trang",
+        "message": "Tìm thấy $TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark",
         "description": "Thông báo hiển thị số lượng kết quả tìm kiếm.",
         "placeholders": {
             "TAB_COUNT": {
@@ -223,6 +223,18 @@
                 "example": "12"
             }
         }
+    },
+    "experimentalSectionHeader": {
+        "message": "Tính năng thử nghiệm",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Bật cuộn ảo (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Tối ưu hóa hiệu suất cho danh sách bookmark lớn bằng cách chỉ hiển thị các mục có thể nhìn thấy. Có thể có một số lỗi hình ảnh nhỏ.",
+        "description": "Description for the virtual scrolling toggle"
     },
     "searchNoResults": {
         "message": "Không tìm thấy kết quả",

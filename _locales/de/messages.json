@@ -210,6 +210,18 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Experimentelle Funktionen",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Virtuelles Scrollen aktivieren (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Optimiert die Leistung für große Lesezeichenlisten durch Rendern nur sichtbarer Elemente. Kann kleinere visuelle Fehler aufweisen.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
         "message": "$TAB_COUNT$ Tab(s), $BOOKMARK_COUNT$ Lesezeichen",
         "description": "Nachricht zur Anzeige der Anzahl der Suchergebnisse.",

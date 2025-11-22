@@ -210,9 +210,21 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Fonctionnalités expérimentales",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Activer le défilement virtuel (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Optimise les performances pour les grandes listes de signets en ne rendant que les éléments visibles. Peut présenter de légers problèmes visuels.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ onglet(s), $BOOKMARK_COUNT$ favori(s)",
-        "description": "Message affichant le nombre de résultats de recherche.",
+        "message": "$TAB_COUNT$ onglets, $BOOKMARK_COUNT$ signets trouvés",
+        "description": "Message showing the count of search results",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",

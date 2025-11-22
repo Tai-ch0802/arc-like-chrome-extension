@@ -210,6 +210,18 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "实验性功能",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "启用虚拟滚动 (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "通过仅渲染可见项目来优化大型书签列表的性能。可能会有一些视觉小问题。",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
         "message": "$TAB_COUNT$ 个标签页、$BOOKMARK_COUNT$ 个书签",
         "description": "显示搜索结果计数的消息。",

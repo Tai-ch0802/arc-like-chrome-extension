@@ -210,9 +210,21 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Recursos Experimentais",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Ativar Rolagem Virtual (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Otimiza o desempenho para listas grandes de favoritos renderizando apenas itens visíveis. Pode ter pequenas falhas visuais.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ aba(s), $BOOKMARK_COUNT$ favorito(s)",
-        "description": "Mensagem exibindo a contagem de resultados da pesquisa.",
+        "message": "$TAB_COUNT$ abas, $BOOKMARK_COUNT$ favoritos encontrados",
+        "description": "Message showing the count of search results",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",

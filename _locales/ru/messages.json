@@ -210,9 +210,21 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Экспериментальные функции",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Включить виртуальную прокрутку (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Оптимизирует производительность для больших списков закладок, отображая только видимые элементы. Могут быть небольшие визуальные проблемы.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ вкладок, $BOOKMARK_COUNT$ закладок",
-        "description": "Сообщение, отображающее количество результатов поиска.",
+        "message": "$TAB_COUNT$ вкладок, $BOOKMARK_COUNT$ закладок найдено",
+        "description": "Message showing the count of search results",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",
