@@ -1,0 +1,6 @@
+// --- DOM 元素獲取與導出 ---
+export const tabListContainer = document.getElementById('tab-list');
+export const bookmarkListContainer = document.getElementById('bookmark-list');
+export const searchBox = document.getElementById('search-box');
+export const clearSearchBtn = document.getElementById('clear-search-btn');
+export const searchResultCount = document.getElementById('search-result-count');

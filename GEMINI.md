@@ -27,7 +27,17 @@ key_files:
   - file_path: sidepanel.js
     description: "[總指揮] 應用程式進入點與總協調者。負責初始化各模組、串連瀏覽器事件監聽（特別是同步書籤與分頁關聯狀態的生命週期事件）。"
   - file_path: modules/uiManager.js
-    description: "[渲染與互動] UI 模組。負責所有 DOM 操作、畫面渲染（包含書籤的關聯圖示與資訊面板），並處理如主題切換等 UI 互動事件。"
+    description: "[UI Facade] UI 模組的入口點。作為 Facade 模式，重新匯出 `modules/ui/` 下的所有子模組功能，保持對外接口一致。"
+  - file_path: modules/ui/elements.js
+    description: "[UI] DOM 元素集中管理。負責匯出所有主要 UI 容器與控制元件的 DOM 引用。"
+  - file_path: modules/ui/themeManager.js
+    description: "[UI] 主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
+  - file_path: modules/ui/searchUI.js
+    description: "[UI] 搜尋介面。負責搜尋結果計數顯示與無結果提示的 UI 更新。"
+  - file_path: modules/ui/tabRenderer.js
+    description: "[UI] 分頁渲染。負責分頁與分頁群組的 DOM 結構生成與事件綁定。"
+  - file_path: modules/ui/bookmarkRenderer.js
+    description: "[UI] 書籤渲染。負責書籤列表、資料夾結構以及連結分頁面板的渲染邏輯。"
   - file_path: modules/modalManager.js
     description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。"
   - file_path: modules/apiManager.js
