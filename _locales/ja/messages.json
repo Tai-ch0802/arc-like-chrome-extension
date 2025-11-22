@@ -210,6 +210,18 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "実験的な機能",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "仮想スクロールを有効にする (Beta)",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "表示されているアイテムのみをレンダリングすることで、大規模なブックマークリストのパフォーマンスを最適化します。軽微な視覚的な不具合が発生する可能性があります。",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
         "message": "$TAB_COUNT$ 個のタブ、$BOOKMARK_COUNT$ 個のブックマークが見つかりました",
         "description": "Message showing the count of search results",
