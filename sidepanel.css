@@ -351,7 +351,8 @@ mark.url-match {
     border-left: 3px solid transparent;
 }
 
-.tab-item:hover {
+.tab-item:hover,
+.tab-item.selected {
     background-color: var(--element-bg-hover-color);
 }
 
@@ -515,6 +516,11 @@ mark.url-match {
     /* 移除連結底線 */
     position: relative;
     /* 新增：為了定位刪除按鈕 */
+}
+
+.bookmark-item:hover,
+.bookmark-item.selected {
+    background-color: var(--element-bg-hover-color);
 }
 
 .bookmark-icon {
