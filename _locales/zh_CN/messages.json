@@ -215,7 +215,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "启用虚拟滚动 (Beta)",
+        "message": "启用虚拟滚动",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

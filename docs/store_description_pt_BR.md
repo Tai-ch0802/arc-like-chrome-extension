@@ -1,58 +1,53 @@
-Versão Atual - 1.8.0
-✨ Novos Recursos
-- **Melhorias Poderosas na Pesquisa**:
-    - **Pesquisa de Múltiplas Palavras-chave**: Suporta palavras-chave separadas por espaço para pesquisa flexível (lógica OU).
-    - **Pesquisa de Domínio de URL**: Agora pesquisa domínios de guias e favoritos.
-    - **Exibição Inteligente**: Exibe automaticamente informações de domínio correspondentes abaixo do título quando uma URL corresponde.
-    - **Destaque Instantâneo**: Palavras-chave nos resultados são destacadas, suportando todas as cores de tema.
-    - **Contagem de Resultados**: Exibe instantaneamente o número de guias e favoritos encontrados.
-    - **Botão Limpar**: Adicionado um botão para limpar o conteúdo da pesquisa com um clique.
+# Abas Verticais e Favoritos estilo Arc - Transforme o Chrome em uma Potência de Produtividade
 
-🚀 Melhorias e Correções de Bugs
-- **Suporte Multilíngue**: Traduções da função de pesquisa concluídas para todos os 14 idiomas suportados.
-- **Otimização de Interface**: Corrigido o alinhamento de ícones e títulos nos resultados da pesquisa e otimizado o espaçamento de exibição do domínio.
-- **Otimização de Desempenho**: Adicionado mecanismo Debounce para melhorar a fluidez da pesquisa.
+Cansado de se perder em dezenas de abas desorganizadas? Deseja a experiência elegante de abas verticais do navegador Arc, mas não pode sair do ecossistema Chrome?
+**Arc-like Vertical Tabs & Bookmarks** é a sua resposta definitiva! 🚀
 
-Veja mais notas de lançamento em: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Reimaginamos completamente o Chrome, introduzindo um painel lateral moderno que unifica **Abas Verticais**, **Grupos de Abas** e **Gerenciamento de Favoritos**. Diga adeus à tradicional barra de abas horizontal e recupere o controle do seu navegador. Experimente foco e eficiência como nunca antes.
 
-----
-Cansado de se perder em dezenas de abas desorganizadas? Desejando o gerenciamento de abas fluido e elegante do navegador Arc, mas não pode deixar o Chrome? Seu desejo foi concedido! 🚀
+---
 
-A Barra Lateral Estilo Arc transforma sua experiência no Chrome, introduzindo um painel lateral unificado para todas as suas abas, grupos de abas e favoritos. Diga adeus ao caos de alternar entre janelas e o gerenciador de favoritos. Recupere o controle do seu navegador e aumente significativamente sua produtividade e foco.
+## 🔥 Principais Recursos
 
-DESTAQUES PRINCIPAIS
+### 🔗 Inovação Exclusiva: Abas Vinculadas (Linked Tabs)
+Este é o nosso recurso mais poderoso! Quando você abre um favorito na barra lateral, criamos automaticamente um **"Link"**.
+- **Evite a Desordem de Abas**: Clique no ícone de link ao lado de um favorito para ver todas as abas abertas a partir dele, ajudando você a evitar a abertura de duplicatas e economizando recursos do sistema.
+- **Sincronização Bidirecional**: Quando uma aba é fechada, o status do favorito é atualizado automaticamente; quando um favorito é excluído, a aba vinculada é tratada de forma inteligente.
+- **Feedback Visual**: Um ícone de link refinado aparece ao lado dos favoritos, permitindo que você saiba rapidamente quais estão ativos no momento.
 
-🗂️ Espaço de Trabalho Unificado
-Gerencie perfeitamente todas as suas abas e favoritos em uma única interface. Um painel para governar todos, proporcionando clareza inigualável.
+### ⚡️ Desempenho Incrível: Rolagem Virtual
+Tem milhares de favoritos? Sem problemas!
+- **Latência Zero**: Mesmo com **10.000+** favoritos, a barra lateral permanece suave como seda.
+- **Otimizado para Memória**: Alimentado por um mecanismo de virtualização avançado que renderiza apenas itens visíveis, reduzindo significativamente o uso de memória.
 
-🤏 Arrastar e Soltar Intuitivo
-Arraste e solte livremente abas, grupos de abas nativos, favoritos e pastas para organizar seu espaço de trabalho exatamente como você deseja. Seu espaço, suas regras.
+### 🔍 Pesquisa de Nível Profissional
+Não apenas pesquise — encontre instantaneamente.
+- **Filtragem Multi-Palavra-Chave**: Suporta palavras-chave separadas por espaço (ex: "google docs trabalho") para segmentação precisa.
+- **Pesquisa de Domínio**: Digite um domínio (como `github.com`) para filtrar instantaneamente abas e favoritos de fontes específicas.
+- **Destaque Inteligente**: O destaque em tempo real das palavras-chave correspondentes mantém seu foco visual claro.
 
-✨ Arrastar para Favoritar
-A inspiração bateu? Apenas arraste uma aba e solte-a na área de favoritos para salvá-la permanentemente.
+### 🗂️ Espaço de Trabalho Unificado
+- **Abas Verticais**: Veja títulos de páginas completos, não mais compactados em ícones minúsculos.
+- **Suporte Nativo a Grupos**: Integra-se perfeitamente com Grupos de Abas do Chrome, sincronizando cores e nomes.
+- **Arrastar e Soltar**: Gerenciamento intuitivo — mova itens sem esforço entre abas, grupos e pastas de favoritos.
+- **Arrastar para Salvar**: Arraste uma aba para a área de favoritos para salvá-la instantaneamente; arraste um favorito para a área de abas para abri-lo.
 
-📂 Pastas que se Expandem ao Passar o Mouse
-Chega de cliques tediosos ao organizar. Simplesmente passe o mouse sobre uma pasta recolhida, e ela se expandirá magicamente para você.
+### 🎨 Design Premium
+- **Modo Foco**: Um tema escuro elegante com contraste cuidadosamente ajustado para reduzir o cansaço visual.
+- **Auto-Expandir**: Passe o mouse sobre as pastas enquanto arrasta itens para expandir automaticamente o caminho.
+- **Hover Inteligente**: Botões de ação aparecem apenas quando necessário, mantendo a interface limpa e livre de distrações.
 
-⚡️ Ações Inteligentes ao Passar o Mouse
-Uma interface limpa e sem distrações que revela elegantemente ações rápidas como fechar, editar ou excluir apenas quando você passa o mouse sobre um item.
+---
 
-🧠 Lembra da Sua Visualização
-A barra lateral lembra inteligentemente quais pastas de favoritos você expandiu. Toda vez que você a abre, é recebido com seu layout preferido.
+## ⌨️ Atalhos de Produtividade
+- **Cmd/Ctrl + I**: Alternar Barra Lateral
+- **Opt/Alt + T**: Criar nova aba ao lado da atual
 
-🎨 Integração Perfeita com Grupos de Abas
-Perfeitamente compatível com os grupos de abas nativos do Chrome! Nomes e cores dos grupos são lindamente renderizados e permanecem totalmente recolhíveis.
+---
 
-🔍 Busca Difusa Instantânea
-Enquanto você digita, realize uma busca difusa ultrarrápida em centenas de abas e favoritos. Encontre o que você precisa em um piscar de olhos.
+## Privacidade e Segurança
+Valorizamos sua privacidade. Esta extensão opera **completamente offline**. Seus favoritos, histórico de navegação e informações de abas **NUNCA** são enviados para nenhum servidor.
 
-💻 Tema Focado na Produtividade
-Desfrute de um tema escuro elegante de alto contraste com um toque de verde característico, projetado para longas horas de trabalho focado e leitura confortável.
+---
 
-⌨️ Atalhos de Produtividade
-- Alternar Barra Lateral: Cmd/Ctrl + I
-- Nova Aba à Direita: Opt/Alt + T
-
-Projetado para usuários avançados, desenvolvedores e qualquer pessoa que anseia por uma experiência de navegação livre de desordem, organizada e focada.
-
-Instale agora e eleve seu navegador Chrome a um nível totalmente novo! 🌟
+**Instale agora e atualize seu Chrome para uma besta de produtividade! 🌟**

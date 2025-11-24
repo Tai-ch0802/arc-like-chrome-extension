@@ -1,58 +1,53 @@
-Phiên bản mới nhất - 1.8.0
-✨ Tính năng mới
-- **Cải tiến tìm kiếm mạnh mẽ**:
-    - **Tìm kiếm nhiều từ khóa**: Hỗ trợ các từ khóa phân tách bằng dấu cách để tìm kiếm linh hoạt (logic HOẶC).
-    - **Tìm kiếm tên miền URL**: Bây giờ có thể tìm kiếm tên miền của các tab và dấu trang.
-    - **Hiển thị thông minh**: Tự động hiển thị thông tin tên miền phù hợp bên dưới tiêu đề khi URL khớp.
-    - **Làm nổi bật tức thì**: Các từ khóa trong kết quả tìm kiếm được làm nổi bật, hỗ trợ tất cả các màu chủ đề.
-    - **Đếm kết quả**: Hiển thị ngay lập tức số lượng tab và dấu trang được tìm thấy.
-    - **Nút Xóa**: Đã thêm nút để xóa nội dung tìm kiếm bằng một cú nhấp chuột.
+# Tab Dọc & Dấu trang kiểu Arc - Biến Chrome thành Cỗ máy Năng suất
 
-🚀 Cải tiến và sửa lỗi
-- **Hỗ trợ đa ngôn ngữ**: Hoàn thành bản dịch chức năng tìm kiếm cho tất cả 14 ngôn ngữ được hỗ trợ.
-- **Tối ưu hóa giao diện**: Đã sửa lỗi căn chỉnh biểu tượng và tiêu đề trong kết quả tìm kiếm và tối ưu hóa khoảng cách hiển thị tên miền.
-- **Tối ưu hóa hiệu suất**: Đã thêm cơ chế Debounce để cải thiện độ mượt mà của tìm kiếm.
+Bạn mệt mỏi vì bị lạc trong hàng chục tab lộn xộn? Khao khát trải nghiệm tab dọc mượt mà của trình duyệt Arc nhưng không thể rời khỏi hệ sinh thái Chrome?
+**Arc-like Vertical Tabs & Bookmarks** là câu trả lời cuối cùng của bạn! 🚀
 
-Xem thêm ghi chú phát hành tại: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Chúng tôi đã hoàn toàn tái hiện lại Chrome, giới thiệu một bảng điều khiển bên hiện đại thống nhất **Tab Dọc**, **Nhóm Tab** và **Quản lý Dấu trang**. Nói lời tạm biệt với thanh tab ngang truyền thống và giành lại quyền kiểm soát trình duyệt của bạn. Trải nghiệm sự tập trung và hiệu quả chưa từng có.
 
-----
-Bạn mệt mỏi vì bị lạc giữa hàng tá tab lộn xộn? Thèm muốn trải nghiệm quản lý tab mượt mà, thanh lịch của trình duyệt Arc nhưng không thể rời bỏ Chrome? Mong muốn của bạn đã thành hiện thực! 🚀
+---
 
-Thanh bên kiểu Arc biến đổi trải nghiệm Chrome của bạn, giới thiệu một bảng điều khiển bên thống nhất cho tất cả các tab, nhóm tab và dấu trang của bạn. Tạm biệt sự hỗn loạn của việc chuyển đổi giữa các cửa sổ và trình quản lý dấu trang. Lấy lại quyền kiểm soát trình duyệt của bạn và tăng đáng kể năng suất và sự tập trung của bạn.
+## 🔥 Tính năng Chính
 
-ĐIỂM NỔI BẬT
+### 🔗 Đổi mới Độc quyền: Tab Liên kết (Linked Tabs)
+Đây là tính năng mạnh mẽ nhất của chúng tôi! Khi bạn mở một dấu trang từ thanh bên, chúng tôi sẽ tự động tạo một **"Liên kết"**.
+- **Tránh lộn xộn tab**: Nhấp vào biểu tượng liên kết bên cạnh dấu trang để xem tất cả các tab được mở từ đó, giúp bạn tránh mở các bản sao và tiết kiệm tài nguyên hệ thống.
+- **Đồng bộ Hai chiều**: Khi một tab bị đóng, trạng thái dấu trang tự động cập nhật; khi một dấu trang bị xóa, tab được liên kết sẽ được xử lý thông minh.
+- **Phản hồi Trực quan**: Một biểu tượng liên kết tinh tế xuất hiện bên cạnh các dấu trang, cho bạn biết ngay lập tức cái nào đang hoạt động.
 
-🗂️ Không gian làm việc thống nhất
-Quản lý liền mạch tất cả các tab và dấu trang của bạn trong một giao diện duy nhất. Một bảng điều khiển để cai trị tất cả, mang lại sự rõ ràng vô song.
+### ⚡️ Hiệu suất Nhanh như chớp: Cuộn Ảo
+Có hàng ngàn dấu trang? Không vấn đề gì!
+- **Độ trễ Bằng không**: Ngay cả với **10.000+** dấu trang, thanh bên vẫn mượt mà như lụa.
+- **Tối ưu hóa Bộ nhớ**: Được hỗ trợ bởi công cụ ảo hóa tiên tiến chỉ hiển thị các mục hiển thị, giảm đáng kể việc sử dụng bộ nhớ.
 
-🤏 Kéo và thả trực quan
-Kéo và thả tự do các tab, nhóm tab gốc, dấu trang và thư mục để sắp xếp không gian làm việc của bạn chính xác theo cách bạn muốn. Không gian của bạn, quy tắc của bạn.
+### 🔍 Tìm kiếm Cấp Chuyên nghiệp
+Đừng chỉ tìm kiếm—hãy tìm thấy ngay lập tức.
+- **Lọc Đa Từ khóa**: Hỗ trợ các từ khóa phân tách bằng dấu cách (ví dụ: "google docs công việc") để nhắm mục tiêu chính xác.
+- **Tìm kiếm Tên miền**: Nhập tên miền (như `github.com`) để lọc ngay lập tức các tab và dấu trang từ các nguồn cụ thể.
+- **Làm nổi bật Thông minh**: Làm nổi bật thời gian thực các từ khóa phù hợp giữ cho tiêu điểm hình ảnh của bạn rõ ràng.
 
-✨ Kéo để đánh dấu trang
-Cảm hứng chợt đến? Chỉ cần kéo một tab và thả nó vào khu vực dấu trang để lưu vĩnh viễn.
+### 🗂️ Không gian làm việc Thống nhất
+- **Tab Dọc**: Xem tiêu đề trang đầy đủ, không còn bị nén thành các biểu tượng nhỏ.
+- **Hỗ trợ Nhóm Gốc**: Tích hợp hoàn hảo với Nhóm Tab Chrome, đồng bộ hóa màu sắc và tên.
+- **Kéo & Thả**: Quản lý trực quan—di chuyển các mục dễ dàng giữa các tab, nhóm và thư mục dấu trang.
+- **Kéo để Lưu**: Kéo một tab vào khu vực dấu trang để lưu ngay lập tức; kéo một dấu trang vào khu vực tab để mở nó.
 
-📂 Thư mục mở rộng khi di chuột qua
-Không còn những cú nhấp chuột tẻ nhạt khi sắp xếp. Chỉ cần di chuột một mục qua một thư mục đã thu gọn, và nó sẽ tự động mở rộng một cách kỳ diệu cho bạn.
+### 🎨 Thiết kế Cao cấp
+- **Chế độ Tập trung**: Chủ đề tối bóng bẩy với độ tương phản được điều chỉnh cẩn thận để giảm mỏi mắt.
+- **Tự động Mở rộng**: Di chuột qua các thư mục trong khi kéo các mục để tự động mở rộng đường dẫn.
+- **Di chuột Thông minh**: Các nút hành động chỉ xuất hiện khi cần thiết, giữ cho giao diện sạch sẽ và không bị phân tâm.
 
-⚡️ Hành động thông minh khi di chuột qua
-Một giao diện sạch sẽ, không gây xao lãng, hiển thị một cách thanh lịch các hành động nhanh như đóng, chỉnh sửa hoặc xóa chỉ khi bạn di chuột qua một mục.
+---
 
-🧠 Ghi nhớ chế độ xem của bạn
-Thanh bên ghi nhớ một cách thông minh những thư mục dấu trang nào bạn đã mở rộng. Mỗi khi bạn mở nó, bạn sẽ được chào đón bằng bố cục ưa thích của mình.
+## ⌨️ Phím tắt Năng suất
+- **Cmd/Ctrl + I**: Bật/tắt Thanh bên
+- **Opt/Alt + T**: Tạo tab mới bên cạnh tab hiện tại
 
-🎨 Tích hợp nhóm tab liền mạch
-Tương thích hoàn hảo với các nhóm tab gốc của Chrome! Tên và màu sắc của nhóm được hiển thị đẹp mắt và vẫn hoàn toàn có thể thu gọn.
+---
 
-🔍 Tìm kiếm mờ tức thì
-Khi bạn nhập, hãy thực hiện tìm kiếm mờ nhanh như chớp trên hàng trăm tab và dấu trang. Tìm thấy những gì bạn cần trong nháy mắt.
+## Quyền riêng tư & Bảo mật
+Chúng tôi coi trọng quyền riêng tư của bạn. Tiện ích mở rộng này hoạt động **hoàn toàn ngoại tuyến**. Dấu trang, lịch sử duyệt web và thông tin tab của bạn **KHÔNG BAO GIỜ** được tải lên bất kỳ máy chủ nào.
 
-💻 Chủ đề tập trung vào sự tập trung
-Tận hưởng một chủ đề tối đẹp mắt, có độ tương phản cao với điểm nhấn màu xanh lá cây đặc trưng, được thiết kế cho nhiều giờ làm việc tập trung và đọc thoải mái.
+---
 
-⌨️ Phím tắt năng suất
-- Chuyển đổi thanh bên: Cmd/Ctrl + I
-- Tab mới ở bên phải: Opt/Alt + T
-
-Được thiết kế cho người dùng thành thạo, nhà phát triển và bất kỳ ai khao khát trải nghiệm duyệt web không lộn xộn, có tổ chức và tập trung.
-
-Cài đặt ngay bây giờ và nâng tầm trình duyệt Chrome của bạn lên một cấp độ hoàn toàn mới! 🌟
+**Cài đặt ngay và nâng cấp Chrome của bạn thành một con quái vật năng suất! 🌟**

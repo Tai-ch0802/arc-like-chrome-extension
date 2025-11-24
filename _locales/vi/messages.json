@@ -229,7 +229,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "Bật cuộn ảo (Beta)",
+        "message": "Bật cuộn ảo",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

@@ -215,7 +215,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "Включить виртуальную прокрутку (Beta)",
+        "message": "Включить виртуальную прокрутку",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

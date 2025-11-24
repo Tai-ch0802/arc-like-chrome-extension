@@ -6,21 +6,39 @@ This is a Chrome extension project that aims to bring an Arc browser-like vertic
 
 ---
 
-## ⚡ Features
+## 🔥 Key Features
 
-* **Unified Management Interface**: Manage all your **tabs** and **bookmarks** in a single, clean sidebar.
-* **Powerful Interactions**:
-    * **Drag & Drop Sorting**: Freely reorder tabs, tab groups, bookmarks, and bookmark folders just the way you like.
-    * **Cross-Zone Dragging**: Quickly create a new bookmark by simply dragging a tab into any bookmark folder.
-    * **Hover-to-Open**: While dragging, hover over a collapsed folder for a second, and it will automatically expand, allowing you to drop items into deeply nested structures with ease.
-    * **Quick Actions**: Use hover-activated buttons to quickly close a tab, delete a bookmark, or create a new folder inside another.
-* **Smart State Persistence**: The expanded/collapsed state of your bookmark folders is remembered. Even after the list refreshes from an action like creating or deleting a bookmark, your view state is perfectly restored.
-* **Native Feature Integration**:
-    * **Tab Groups**: Flawlessly renders native Chrome Tab Groups, including their titles and colors, in a collapsible interface.
-    * **Favicons**: Automatically fetches and displays favicons for both tabs and bookmarks for easy identification.
-* **Instant Search & Filter**: Instantly filter through all visible tabs and bookmarks by simply typing a keyword.
-* **Custom Geek Theme**: Features a high-contrast dark theme with a hacker-green accent, designed for both style and readability.
-* **Keyboard Shortcut**: Toggle the sidebar with `Command+I` (Mac) or `Ctrl+I` (Windows).
+### 🔗 Exclusive Innovation: Linked Tabs
+This is our most powerful feature! When you open a bookmark from the sidebar, we automatically create a **"Link"**.
+- **Avoid Tab Clutter**: Click the link icon next to a bookmark to see all tabs opened from it, helping you avoid opening duplicates and saving system resources.
+- **Two-Way Sync**: When a tab is closed, the bookmark status updates automatically; when a bookmark is deleted, the linked tab is handled intelligently.
+- **Visual Feedback**: A refined link icon appears next to bookmarks, letting you know at a glance which ones are currently active.
+
+### ⚡️ Blazing Performance: Virtual Scrolling
+Have thousands of bookmarks? No problem!
+- **Zero Latency**: Even with **10,000+** bookmarks, the sidebar remains silky smooth.
+- **Memory Optimized**: Powered by an advanced virtualization engine that only renders visible items, significantly reducing memory usage.
+
+### 🔍 Professional Grade Search
+Don't just search—find instantly.
+- **Multi-Keyword Filtering**: Supports space-separated keywords (e.g., "google docs work") for precise targeting.
+- **Domain Search**: Type a domain (like `github.com`) to instantly filter tabs and bookmarks from specific sources.
+- **Smart Highlighting**: Real-time highlighting of matched keywords keeps your visual focus clear.
+
+### 🗂️ Unified Workspace
+- **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
+- **Native Group Support**: Perfectly integrates with Chrome Tab Groups, syncing colors and names.
+- **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
+- **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
+
+### 🎨 Premium Design
+- **Focus Mode**: A sleek dark theme with carefully tuned contrast to reduce eye strain.
+- **Auto-Expand**: Hover over folders while dragging items to automatically expand the path.
+- **Smart Hover**: Action buttons appear only when needed, keeping the interface clean and distraction-free.
+
+### ⌨️ Productivity Shortcuts
+- **Cmd/Ctrl + I**: Toggle Sidebar
+- **Opt/Alt + T**: Create new tab next to current one
 
 ---
 

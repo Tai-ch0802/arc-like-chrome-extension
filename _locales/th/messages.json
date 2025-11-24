@@ -215,7 +215,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "เปิดใช้งานการเลื่อนแบบเสมือน (Beta)",
+        "message": "เปิดใช้งานการเลื่อนแบบเสมือน",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

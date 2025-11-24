@@ -229,7 +229,7 @@
         "description": "設定中實驗性功能區塊的標題。"
     },
     "virtualScrollingSettingLabel": {
-        "message": "啟用虛擬滾動 (Beta)",
+        "message": "啟用虛擬滾動",
         "description": "虛擬滾動開關的標籤。"
     },
     "virtualScrollingSettingDesc": {

@@ -229,7 +229,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "वर्चुअल स्क्रॉलिंग सक्षम करें (Beta)",
+        "message": "वर्चुअल स्क्रॉलिंग सक्षम करें",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

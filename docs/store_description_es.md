@@ -1,58 +1,53 @@
-Versión Actual - 1.8.0
-✨ Nuevas Características
-- **Mejoras Potentes de Búsqueda**:
-    - **Búsqueda de Múltiples Palabras Clave**: Admite palabras clave separadas por espacios para una búsqueda flexible (lógica OR).
-    - **Búsqueda de Dominio URL**: Ahora busca en dominios de pestañas y marcadores.
-    - **Visualización Inteligente**: Muestra automáticamente la información del dominio coincidente debajo del título cuando coincide una URL.
-    - **Resaltado Instantáneo**: Las palabras clave en los resultados se resaltan, compatible con todos los colores de temas.
-    - **Contador de Resultados**: Muestra instantáneamente el número de pestañas y marcadores encontrados.
-    - **Botón Borrar**: Se agregó un botón para borrar el contenido de búsqueda con un clic.
+# Pestañas Verticales y Marcadores estilo Arc - Transforma Chrome en una Potencia de Productividad
 
-🚀 Mejoras y Corrección de Errores
-- **Soporte Multilingüe**: Traducciones de la función de búsqueda completadas para los 14 idiomas soportados.
-- **Optimización de Interfaz**: Se corrigió la alineación de iconos y títulos en los resultados de búsqueda y se optimizó el espaciado de visualización del dominio.
-- **Optimización de Rendimiento**: Se agregó mecanismo Debounce para mejorar la fluidez de la búsqueda.
+¿Cansado de perderte en docenas de pestañas desordenadas? ¿Anhelas la experiencia elegante de pestañas verticales del navegador Arc pero no puedes dejar el ecosistema de Chrome?
+¡**Arc-like Vertical Tabs & Bookmarks** es tu respuesta definitiva! 🚀
 
-Ver más notas de la versión en: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Hemos reinventado Chrome por completo, introduciendo un panel lateral moderno que unifica **Pestañas Verticales**, **Grupos de Pestañas** y **Gestión de Marcadores**. Di adiós a la tradicional barra de pestañas horizontal y recupera el control de tu navegador. Experimenta un enfoque y eficiencia como nunca antes.
 
-----
-¿Cansado de perderte entre docenas de pestañas desordenadas? ¿Anhelas la gestión de pestañas fluida y elegante del navegador Arc, pero no puedes dejar Chrome? ¡Tu deseo ha sido concedido! 🚀
+---
 
-La Barra Lateral Estilo Arc transforma tu experiencia en Chrome, introduciendo un panel lateral unificado para todas tus pestañas, grupos de pestañas y marcadores. Di adiós al caos de cambiar entre ventanas y el gestor de marcadores. Recupera el control de tu navegador y aumenta significativamente tu productividad y concentración.
+## 🔥 Características Principales
 
-CARACTERÍSTICAS PRINCIPALES
+### 🔗 Innovación Exclusiva: Pestañas Vinculadas (Linked Tabs)
+¡Esta es nuestra característica más potente! Cuando abres un marcador desde la barra lateral, creamos automáticamente un **"Enlace"**.
+- **Evita el desorden de pestañas**: Haz clic en el icono de enlace junto a un marcador para ver todas las pestañas abiertas desde él, ayudándote a evitar duplicados y ahorrar recursos del sistema.
+- **Sincronización Bidireccional**: Cuando se cierra una pestaña, el estado del marcador se actualiza automáticamente; cuando se elimina un marcador, la pestaña vinculada se maneja de manera inteligente.
+- **Retroalimentación Visual**: Un icono de enlace refinado aparece junto a los marcadores, permitiéndote saber de un vistazo cuáles están activos actualmente.
 
-🗂️ Espacio de Trabajo Unificado
-Gestiona sin problemas todas tus pestañas y marcadores en una única interfaz. Un panel para gobernarlos a todos, proporcionando una claridad inigualable.
+### ⚡️ Rendimiento Ultrarrápido: Desplazamiento Virtual
+¿Tienes miles de marcadores? ¡No hay problema!
+- **Cero Latencia**: Incluso con **10,000+** marcadores, la barra lateral permanece suave como la seda.
+- **Optimizado para Memoria**: Impulsado por un motor de virtualización avanzado que solo renderiza los elementos visibles, reduciendo significativamente el uso de memoria.
 
-🤏 Arrastrar y Soltar Intuitivo
-Arrastra y suelta libremente pestañas, grupos de pestañas nativos, marcadores y carpetas para organizar tu espacio de trabajo exactamente como quieras. Tu espacio, tus reglas.
+### 🔍 Búsqueda de Grado Profesional
+No solo busques, encuentra al instante.
+- **Filtrado Multi-Palabra Clave**: Soporta palabras clave separadas por espacios (ej. "google docs trabajo") para una precisión exacta.
+- **Búsqueda por Dominio**: Escribe un dominio (como `github.com`) para filtrar instantáneamente pestañas y marcadores de fuentes específicas.
+- **Resaltado Inteligente**: El resaltado en tiempo real de las palabras clave coincidentes mantiene tu enfoque visual claro.
 
-✨ Arrastrar para Marcar
-¿Llega la inspiración? Simplemente arrastra una pestaña y suéltala en el área de marcadores para guardarla permanentemente.
+### 🗂️ Espacio de Trabajo Unificado
+- **Pestañas Verticales**: Ve los títulos completos de las páginas, ya no comprimidos en iconos diminutos.
+- **Soporte Nativo de Grupos**: Se integra perfectamente con los Grupos de Pestañas de Chrome, sincronizando colores y nombres.
+- **Arrastrar y Soltar**: Gestión intuitiva: mueve elementos sin esfuerzo entre pestañas, grupos y carpetas de marcadores.
+- **Arrastrar para Guardar**: Arrastra una pestaña al área de marcadores para guardarla al instante; arrastra un marcador al área de pestañas para abrirlo.
 
-📂 Carpetas que se Expanden al Pasar el Ratón
-No más clics tediosos al organizar. Simplemente pasa el cursor sobre una carpeta contraída y se expandirá mágicamente para ti.
+### 🎨 Diseño Premium
+- **Modo Enfoque**: Un tema oscuro elegante con contraste cuidadosamente ajustado para reducir la fatiga visual.
+- **Auto-Expandir**: Pasa el cursor sobre las carpetas mientras arrastras elementos para expandir automáticamente la ruta.
+- **Hover Inteligente**: Los botones de acción aparecen solo cuando se necesitan, manteniendo la interfaz limpia y libre de distracciones.
 
-⚡️ Acciones Inteligentes al Pasar el Ratón
-Una interfaz limpia y sin distracciones que revela elegantemente acciones rápidas como cerrar, editar o eliminar solo cuando pasas el cursor sobre un elemento.
+---
 
-🧠 Recuerda Tu Vista
-La barra lateral recuerda de forma inteligente qué carpetas de marcadores has expandido. Cada vez que la abres, te recibe con tu diseño preferido.
+## ⌨️ Atajos de Productividad
+- **Cmd/Ctrl + I**: Alternar Barra Lateral
+- **Opt/Alt + T**: Crear nueva pestaña junto a la actual
 
-🎨 Integración Perfecta con Grupos de Pestañas
-¡Perfectamente compatible con los grupos de pestañas nativos de Chrome! Los nombres y colores de los grupos se representan maravillosamente y permanecen totalmente plegables.
+---
 
-🔍 Búsqueda Difusa Instantánea
-Mientras escribes, realiza una búsqueda difusa ultrarrápida entre cientos de pestañas y marcadores. Encuentra lo que necesitas en un abrir y cerrar de ojos.
+## Privacidad y Seguridad
+Valoramos tu privacidad. Esta extensión opera **completamente offline**. Tus marcadores, historial de navegación e información de pestañas **NUNCA** se suben a ningún servidor.
 
-💻 Tema Orientado a la Concentración
-Disfruta de un elegante tema oscuro de alto contraste con un característico acento verde, diseñado para largas horas de trabajo concentrado y lectura cómoda.
+---
 
-⌨️ Atajos de Productividad
-- Alternar Barra Lateral: Cmd/Ctrl + I
-- Nueva Pestaña a la Derecha: Opt/Alt + T
-
-Diseñado para usuarios avanzados, desarrolladores y cualquiera que anhele una experiencia de navegación sin desorden, organizada y enfocada.
-
-¡Instálalo ahora y eleva tu navegador Chrome a un nivel completamente nuevo! 🌟
+**¡Instala ahora y actualiza tu Chrome a una bestia de productividad! 🌟**

@@ -1,58 +1,53 @@
-Current Latest Version - 1.8.0
-✨ New Features
-- **Powerful Search Enhancements**:
-    - **Multi-keyword Search**: Supports space-separated keywords for flexible searching (OR logic).
-    - **URL Domain Search**: Now searches domains of tabs and bookmarks.
-    - **Smart Display**: Automatically displays matched domain info below the title when a URL matches.
-    - **Instant Highlighting**: Keywords in search results are highlighted, supporting all theme colors.
-    - **Result Count**: Instantly displays the number of found tabs and bookmarks.
-    - **Clear Button**: Added a button to clear search content with one click.
+# Arc-like Vertical Tabs & Bookmarks - Transform Chrome into a Productivity Powerhouse
 
-🚀 Improvements & Bug Fixes
-- **Multilingual Support**: Completed search function translations for all 14 supported languages.
-- **Interface Optimization**: Fixed icon and title alignment in search results and optimized domain display spacing.
-- **Performance Optimization**: Added Debounce mechanism to improve search fluidity.
+Tired of getting lost in dozens of cluttered tabs? Craving the sleek, vertical tab experience of the Arc browser but can't leave the Chrome ecosystem?
+**Arc-like Vertical Tabs & Bookmarks** is your ultimate answer! 🚀
 
-See more release notes at: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+We've completely reimagined Chrome, introducing a modern side panel that unifies **Vertical Tabs**, **Tab Groups**, and **Bookmark Management**. Say goodbye to the traditional horizontal tab bar and regain control of your browser. Experience focus and efficiency like never before.
 
-----
-Tired of getting lost in dozens of cluttered tabs? Craving the fluid, elegant tab management of the Arc browser, but can't leave Chrome? Your wish is granted! 🚀
+---
 
-The Arc-Style Sidebar transforms your Chrome experience, introducing a unified side panel for all your tabs, tab groups, and bookmarks. Say goodbye to the chaos of switching between windows and the bookmark manager. Reclaim control of your browser and significantly boost your productivity and focus.
+## 🔥 Key Features
 
-CORE HIGHLIGHTS
+### 🔗 Exclusive Innovation: Linked Tabs
+This is our most powerful feature! When you open a bookmark from the sidebar, we automatically create a **"Link"**.
+- **Avoid Tab Clutter**: Click the link icon next to a bookmark to see all tabs opened from it, helping you avoid opening duplicates and saving system resources.
+- **Two-Way Sync**: When a tab is closed, the bookmark status updates automatically; when a bookmark is deleted, the linked tab is handled intelligently.
+- **Visual Feedback**: A refined link icon appears next to bookmarks, letting you know at a glance which ones are currently active.
 
-🗂️ Unified Workspace
-Seamlessly manage all your tabs and bookmarks in a single interface. One panel to rule them all, providing unparalleled clarity.
+### ⚡️ Blazing Performance: Virtual Scrolling
+Have thousands of bookmarks? No problem!
+- **Zero Latency**: Even with **10,000+** bookmarks, the sidebar remains silky smooth.
+- **Memory Optimized**: Powered by an advanced virtualization engine that only renders visible items, significantly reducing memory usage.
 
-🤏 Intuitive Drag & Drop
-Freely drag and drop tabs, native tab groups, bookmarks, and folders to organize your workspace exactly how you want it. Your space, your rules.
+### 🔍 Professional Grade Search
+Don't just search—find instantly.
+- **Multi-Keyword Filtering**: Supports space-separated keywords (e.g., "google docs work") for precise targeting.
+- **Domain Search**: Type a domain (like `github.com`) to instantly filter tabs and bookmarks from specific sources.
+- **Smart Highlighting**: Real-time highlighting of matched keywords keeps your visual focus clear.
 
-✨ Drag-to-Bookmark
-Inspiration strikes? Just drag a tab and drop it into the bookmark area to save it permanently.
+### 🗂️ Unified Workspace
+- **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
+- **Native Group Support**: Perfectly integrates with Chrome Tab Groups, syncing colors and names.
+- **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
+- **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
 
-📂 Hover-to-Expand Folders
-No more tedious clicks when organizing. Simply hover an item over a collapsed folder, and it will magically expand for you.
+### 🎨 Premium Design
+- **Focus Mode**: A sleek dark theme with carefully tuned contrast to reduce eye strain.
+- **Auto-Expand**: Hover over folders while dragging items to automatically expand the path.
+- **Smart Hover**: Action buttons appear only when needed, keeping the interface clean and distraction-free.
 
-⚡️ Smart Hover Actions
-A clean, distraction-free interface that elegantly reveals quick actions like close, edit, or delete only when you hover over an item.
+---
 
-🧠 Remembers Your View
-The sidebar intelligently remembers which bookmark folders you've expanded. Every time you open it, you're greeted with your preferred layout.
+## ⌨️ Productivity Shortcuts
+- **Cmd/Ctrl + I**: Toggle Sidebar
+- **Opt/Alt + T**: Create new tab next to current one
 
-🎨 Seamless Tab Group Integration
-Perfectly compatible with Chrome's native tab groups! Group names and colors are beautifully rendered and remain fully collapsible.
+---
 
-🔍 Instant Fuzzy Search
-As you type, perform a lightning-fast fuzzy search across hundreds of tabs and bookmarks. Find what you need in the blink of an eye.
+## Privacy & Security
+We value your privacy. This extension operates **completely offline**. Your bookmarks, browsing history, and tab information are **NEVER** uploaded to any server.
 
-💻 Focus-Driven Theme
-Enjoy a sleek, high-contrast dark theme with a signature green accent, designed for long hours of focused work and comfortable reading.
+---
 
-⌨️ Productivity Shortcuts
-- Toggle Sidebar: Cmd/Ctrl + I
-- New Tab to the Right: Opt/Alt + T
-
-Designed for power users, developers, and anyone who craves a clutter-free, organized, and focused browsing experience.
-
-Install now and elevate your Chrome browser to a whole new level! 🌟
+**Install now and upgrade your Chrome to a productivity beast! 🌟**

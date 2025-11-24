@@ -215,7 +215,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "Activer le défilement virtuel (Beta)",
+        "message": "Activer le défilement virtuel",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

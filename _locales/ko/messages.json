@@ -215,7 +215,7 @@
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "가상 스크롤 활성화 (Beta)",
+        "message": "가상 스크롤 활성화",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {

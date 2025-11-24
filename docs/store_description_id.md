@@ -1,58 +1,53 @@
-Versi Terbaru - 1.8.0
-✨ Fitur Baru
-- **Peningkatan Pencarian yang Kuat**:
-    - **Pencarian Multi-kata kunci**: Mendukung kata kunci yang dipisahkan spasi untuk pencarian fleksibel (logika OR).
-    - **Pencarian Domain URL**: Sekarang mencari domain tab dan bookmark.
-    - **Tampilan Cerdas**: Secara otomatis menampilkan info domain yang cocok di bawah judul ketika URL cocok.
-    - **Sorotan Instan**: Kata kunci dalam hasil pencarian disorot, mendukung semua warna tema.
-    - **Hitungan Hasil**: Menampilkan jumlah tab dan bookmark yang ditemukan secara instan.
-    - **Tombol Hapus**: Menambahkan tombol untuk menghapus konten pencarian dengan satu klik.
+# Tab Vertikal & Bookmark ala Arc - Ubah Chrome Menjadi Pusat Produktivitas
 
-🚀 Perbaikan & Perbaikan Bug
-- **Dukungan Multibahasa**: Terjemahan fungsi pencarian selesai untuk semua 14 bahasa yang didukung.
-- **Optimalisasi Antarmuka**: Memperbaiki penyelarasan ikon dan judul dalam hasil pencarian dan mengoptimalkan jarak tampilan domain.
-- **Optimalisasi Kinerja**: Menambahkan mekanisme Debounce untuk meningkatkan kelancaran pencarian.
+Bosan tersesat dalam puluhan tab yang berantakan? Mendambakan pengalaman tab vertikal yang ramping dari browser Arc tetapi tidak bisa meninggalkan ekosistem Chrome?
+**Arc-like Vertical Tabs & Bookmarks** adalah jawaban utama Anda! 🚀
 
-Lihat catatan rilis selengkapnya di: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Kami telah sepenuhnya membayangkan kembali Chrome, memperkenalkan panel samping modern yang menyatukan **Tab Vertikal**, **Grup Tab**, dan **Manajemen Bookmark**. Ucapkan selamat tinggal pada bilah tab horizontal tradisional dan dapatkan kembali kendali atas browser Anda. Rasakan fokus dan efisiensi yang belum pernah ada sebelumnya.
 
-----
-Bosan tersesat di antara puluhan tab yang berantakan? Menginginkan manajemen tab yang lancar dan elegan seperti peramban Arc, tetapi tidak bisa meninggalkan Chrome? Keinginan Anda terkabul! 🚀
+---
 
-Bilah Sisi Gaya Arc mengubah pengalaman Chrome Anda, memperkenalkan panel samping terpadu untuk semua tab, grup tab, dan markah Anda. Ucapkan selamat tinggal pada kekacauan beralih antara jendela dan pengelola markah. Ambil kembali kendali peramban Anda dan tingkatkan produktivitas serta fokus Anda secara signifikan.
+## 🔥 Fitur Utama
 
-SOROTAN UTAMA
+### 🔗 Inovasi Eksklusif: Tab Tertaut (Linked Tabs)
+Ini adalah fitur kami yang paling kuat! Saat Anda membuka bookmark dari bilah samping, kami secara otomatis membuat **"Tautan"**.
+- **Hindari Kekacauan Tab**: Klik ikon tautan di sebelah bookmark untuk melihat semua tab yang dibuka darinya, membantu Anda menghindari membuka duplikat dan menghemat sumber daya sistem.
+- **Sinkronisasi Dua Arah**: Saat tab ditutup, status bookmark diperbarui secara otomatis; saat bookmark dihapus, tab yang tertaut ditangani dengan cerdas.
+- **Umpan Balik Visual**: Ikon tautan yang halus muncul di sebelah bookmark, memberi tahu Anda sekilas mana yang sedang aktif.
 
-🗂️ Ruang Kerja Terpadu
-Kelola semua tab dan markah Anda dengan lancar dalam satu antarmuka. Satu panel untuk mengatur semuanya, memberikan kejelasan yang tak tertandingi.
+### ⚡️ Performa Luar Biasa: Pengguliran Virtual
+Punya ribuan bookmark? Tidak masalah!
+- **Nol Latensi**: Bahkan dengan **10.000+** bookmark, bilah samping tetap mulus seperti sutra.
+- **Dioptimalkan Memori**: Didukung oleh mesin virtualisasi canggih yang hanya merender item yang terlihat, secara signifikan mengurangi penggunaan memori.
 
-🤏 Seret & Lepas Intuitif
-Seret dan lepas tab, grup tab asli, markah, dan folder dengan bebas untuk mengatur ruang kerja Anda persis seperti yang Anda inginkan. Ruang Anda, aturan Anda.
+### 🔍 Pencarian Tingkat Profesional
+Jangan hanya mencari—temukan secara instan.
+- **Penyaringan Multi-Kata Kunci**: Mendukung kata kunci yang dipisahkan spasi (mis. "google docs kerja") untuk penargetan yang tepat.
+- **Pencarian Domain**: Ketik domain (seperti `github.com`) untuk memfilter tab dan bookmark secara instan dari sumber tertentu.
+- **Penyorotan Cerdas**: Penyorotan waktu nyata dari kata kunci yang cocok menjaga fokus visual Anda tetap jelas.
 
-✨ Seret-untuk-Menandai
-Dapat inspirasi? Cukup seret tab dan lepaskan ke area markah untuk menyimpannya secara permanen.
+### 🗂️ Ruang Kerja Terpadu
+- **Tab Vertikal**: Lihat judul halaman lengkap, tidak lagi dipadatkan menjadi ikon kecil.
+- **Dukungan Grup Asli**: Terintegrasi sempurna dengan Grup Tab Chrome, menyinkronkan warna dan nama.
+- **Seret & Lepas**: Manajemen intuitif—pindahkan item dengan mudah antara tab, grup, dan folder bookmark.
+- **Seret untuk Menyimpan**: Seret tab ke area bookmark untuk menyimpannya secara instan; seret bookmark ke area tab untuk membukanya.
 
-📂 Folder yang Diperluas saat Melayang
-Tidak ada lagi klik yang membosankan saat mengatur. Cukup arahkan kursor item ke atas folder yang diciutkan, dan itu akan meluas secara ajaib untuk Anda.
+### 🎨 Desain Premium
+- **Mode Fokus**: Tema gelap yang ramping dengan kontras yang disetel dengan cermat untuk mengurangi ketegangan mata.
+- **Perluas Otomatis**: Arahkan kursor ke folder saat menyeret item untuk memperluas jalur secara otomatis.
+- **Arahkan Cerdas**: Tombol tindakan hanya muncul saat dibutuhkan, menjaga antarmuka tetap bersih dan bebas gangguan.
 
-⚡️ Tindakan Melayang Cerdas
-Antarmuka yang bersih dan bebas gangguan yang dengan elegan menampilkan tindakan cepat seperti tutup, edit, atau hapus hanya saat Anda mengarahkan kursor ke suatu item.
+---
 
-🧠 Mengingat Tampilan Anda
-Bilah sisi secara cerdas mengingat folder markah mana yang telah Anda luaskan. Setiap kali Anda membukanya, Anda akan disambut dengan tata letak pilihan Anda.
+## ⌨️ Pintasan Produktivitas
+- **Cmd/Ctrl + I**: Beralih Bilah Samping
+- **Opt/Alt + T**: Buat tab baru di sebelah yang sekarang
 
-🎨 Integrasi Grup Tab yang Mulus
-Sangat kompatibel dengan grup tab asli Chrome! Nama dan warna grup ditampilkan dengan indah dan tetap dapat diciutkan sepenuhnya.
+---
 
-🔍 Pencarian Kabur Instan
-Saat Anda mengetik, lakukan pencarian kabur secepat kilat di ratusan tab dan markah. Temukan apa yang Anda butuhkan dalam sekejap mata.
+## Privasi & Keamanan
+Kami menghargai privasi Anda. Ekstensi ini beroperasi **sepenuhnya offline**. Bookmark, riwayat penelusuran, dan informasi tab Anda **TIDAK PERNAH** diunggah ke server mana pun.
 
-💻 Tema yang Didorong oleh Fokus
-Nikmati tema gelap kontras tinggi yang ramping dengan aksen hijau khas, yang dirancang untuk berjam-jam kerja terfokus dan membaca yang nyaman.
+---
 
-⌨️ Pintasan Produktivitas
-- Alihkan Bilah Sisi: Cmd/Ctrl + I
-- Tab Baru di Kanan: Opt/Alt + T
-
-Dirancang untuk pengguna ahli, pengembang, dan siapa saja yang mendambakan pengalaman menjelajah yang bebas dari kekacauan, teratur, dan terfokus.
-
-Instal sekarang dan tingkatkan peramban Chrome Anda ke level yang sama sekali baru! 🌟
+**Instal sekarang dan tingkatkan Chrome Anda menjadi monster produktivitas! 🌟**

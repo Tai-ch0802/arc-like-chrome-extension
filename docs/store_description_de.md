@@ -1,58 +1,53 @@
-Aktuelle Version - 1.8.0
-✨ Neue Funktionen
-- **Leistungsstarke Sucherweiterungen**:
-    - **Mehrfach-Stichwortsuche**: Unterstützt durch Leerzeichen getrennte Stichwörter für flexible Suche (ODER-Logik).
-    - **URL-Domain-Suche**: Durchsucht jetzt Domains von Tabs und Lesezeichen.
-    - **Intelligente Anzeige**: Zeigt bei URL-Übereinstimmung automatisch die passende Domain unter dem Titel an.
-    - **Sofortige Hervorhebung**: Suchbegriffe werden in den Ergebnissen hervorgehoben, unterstützt alle Themenfarben.
-    - **Ergebniszähler**: Zeigt sofort die Anzahl der gefundenen Tabs und Lesezeichen an.
-    - **Löschen-Button**: Button zum Löschen des Suchinhalts mit einem Klick hinzugefügt.
+# Arc-ähnliche vertikale Tabs & Lesezeichen - Verwandeln Sie Chrome in ein Produktivitätskraftwerk
 
-🚀 Verbesserungen & Fehlerbehebungen
-- **Mehrsprachige Unterstützung**: Übersetzungen der Suchfunktion für alle 14 unterstützten Sprachen vervollständigt.
-- **Oberflächenoptimierung**: Ausrichtung von Icon und Titel in Suchergebnissen korrigiert und Domain-Anzeigeabstand optimiert.
-- **Leistungsoptimierung**: Debounce-Mechanismus für flüssigere Suche hinzugefügt.
+Sind Sie es leid, sich in Dutzenden von überladenen Tabs zu verlieren? Sehnen Sie sich nach dem eleganten, vertikalen Tab-Erlebnis des Arc-Browsers, können aber das Chrome-Ökosystem nicht verlassen?
+**Arc-like Vertical Tabs & Bookmarks** ist Ihre ultimative Antwort! 🚀
 
-Weitere Release-Notizen finden Sie unter: https://github.com/Tai-ch0802/arc-like-chrome-extension/releases
+Wir haben Chrome komplett neu konzipiert und eine moderne Seitenleiste eingeführt, die **vertikale Tabs**, **Tab-Gruppen** und **Lesezeichenverwaltung** vereint. Verabschieden Sie sich von der traditionellen horizontalen Tab-Leiste und gewinnen Sie die Kontrolle über Ihren Browser zurück. Erleben Sie Fokus und Effizienz wie nie zuvor.
 
-----
-Haben Sie es satt, sich in Dutzenden von unübersichtlichen Tabs zu verlieren? Sehnen Sie sich nach der flüssigen, eleganten Tab-Verwaltung des Arc-Browsers, können aber Chrome nicht verlassen? Ihr Wunsch wird erhört! 🚀
+---
 
-Die Arc-Style Sidebar transformiert Ihr Chrome-Erlebnis und führt ein einheitliches Seitenpanel für all Ihre Tabs, Tab-Gruppen und Lesezeichen ein. Verabschieden Sie sich vom Chaos des Wechsels zwischen Fenstern und dem Lesezeichen-Manager. Gewinnen Sie die Kontrolle über Ihren Browser zurück und steigern Sie Ihre Produktivität und Konzentration erheblich.
+## 🔥 Hauptmerkmale
 
-KERNFUNKTIONEN
+### 🔗 Exklusive Innovation: Verknüpfte Tabs (Linked Tabs)
+Dies ist unser leistungsstärkstes Feature! Wenn Sie ein Lesezeichen aus der Seitenleiste öffnen, erstellen wir automatisch einen **"Link"**.
+- **Tab-Chaos vermeiden**: Klicken Sie auf das Link-Symbol neben einem Lesezeichen, um alle darüber geöffneten Tabs anzuzeigen. So vermeiden Sie Duplikate und sparen Systemressourcen.
+- **Zwei-Wege-Synchronisation**: Wenn ein Tab geschlossen wird, aktualisiert sich der Lesezeichenstatus automatisch; wenn ein Lesezeichen gelöscht wird, wird der verknüpfte Tab intelligent behandelt.
+- **Visuelles Feedback**: Ein verfeinertes Link-Symbol erscheint neben Lesezeichen, sodass Sie auf einen Blick sehen, welche gerade aktiv sind.
 
-🗂️ Einheitlicher Arbeitsbereich
-Verwalten Sie nahtlos all Ihre Tabs und Lesezeichen in einer einzigen Oberfläche. Ein Panel, um sie alle zu beherrschen, für unübertroffene Klarheit.
+### ⚡️ Blitzschnelle Leistung: Virtuelles Scrollen
+Haben Sie Tausende von Lesezeichen? Kein Problem!
+- **Null Latenz**: Selbst mit **10.000+** Lesezeichen bleibt die Seitenleiste seidig weich.
+- **Speicheroptimiert**: Angetrieben von einer fortschrittlichen Virtualisierungs-Engine, die nur sichtbare Elemente rendert und den Speicherverbrauch erheblich reduziert.
 
-🤏 Intuitives Drag & Drop
-Ziehen und ablegen Sie Tabs, native Tab-Gruppen, Lesezeichen und Ordner frei, um Ihren Arbeitsbereich genau nach Ihren Wünschen zu organisieren. Ihr Bereich, Ihre Regeln.
+### 🔍 Suche auf Profi-Niveau
+Suchen Sie nicht nur – finden Sie sofort.
+- **Multi-Keyword-Filterung**: Unterstützt durch Leerzeichen getrennte Schlüsselwörter (z. B. "google docs arbeit") für präzises Targeting.
+- **Domain-Suche**: Geben Sie eine Domain ein (wie `github.com`), um Tabs und Lesezeichen von bestimmten Quellen sofort zu filtern.
+- **Intelligente Hervorhebung**: Echtzeit-Hervorhebung passender Schlüsselwörter hält Ihren visuellen Fokus klar.
 
-✨ Drag-to-Bookmark
-Ein Geistesblitz? Ziehen Sie einfach einen Tab und legen Sie ihn im Lesezeichenbereich ab, um ihn dauerhaft zu speichern.
+### 🗂️ Einheitlicher Arbeitsbereich
+- **Vertikale Tabs**: Sehen Sie vollständige Seitentitel, nicht mehr in winzige Symbole gepresst.
+- **Native Gruppenunterstützung**: Integriert sich perfekt in Chrome Tab-Gruppen und synchronisiert Farben und Namen.
+- **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichenordnern.
+- **Drag to Save**: Ziehen Sie einen Tab in den Lesezeichenbereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tabbereich, um es zu öffnen.
 
-📂 Hover-to-Expand Ordner
-Keine mühsamen Klicks mehr beim Organisieren. Fahren Sie einfach mit dem Mauszeiger über einen zugeklappten Ordner, und er wird sich magisch für Sie erweitern.
+### 🎨 Premium-Design
+- **Fokus-Modus**: Ein elegantes dunkles Design mit sorgfältig abgestimmtem Kontrast zur Reduzierung der Augenbelastung.
+- **Auto-Expand**: Bewegen Sie den Mauszeiger beim Ziehen von Elementen über Ordner, um den Pfad automatisch zu erweitern.
+- **Smart Hover**: Aktionsschaltflächen erscheinen nur bei Bedarf und halten die Oberfläche sauber und ablenkungsfrei.
 
-⚡️ Smarte Hover-Aktionen
-Eine saubere, ablenkungsfreie Oberfläche, die elegante Schnellaktionen wie Schließen, Bearbeiten oder Löschen nur dann anzeigt, wenn Sie mit dem Mauszeiger über ein Element fahren.
+---
 
-🧠 Erinnert sich an Ihre Ansicht
-Die Seitenleiste merkt sich intelligent, welche Lesezeichenordner Sie erweitert haben. Jedes Mal, wenn Sie sie öffnen, werden Sie mit Ihrem bevorzugten Layout begrüßt.
+## ⌨️ Produktivitäts-Shortcuts
+- **Cmd/Ctrl + I**: Seitenleiste umschalten
+- **Opt/Alt + T**: Neuen Tab neben dem aktuellen erstellen
 
-🎨 Nahtlose Tab-Gruppen-Integration
-Perfekt kompatibel mit den nativen Tab-Gruppen von Chrome! Gruppennamen und -farben werden wunderschön dargestellt und bleiben vollständig einklappbar.
+---
 
-🔍 Sofortige Fuzzy-Suche
-Führen Sie während der Eingabe eine blitzschnelle Fuzzy-Suche über Hunderte von Tabs und Lesezeichen durch. Finden Sie im Handumdrehen, was Sie brauchen.
+## Datenschutz & Sicherheit
+Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet **komplett offline**. Ihre Lesezeichen, der Browserverlauf und Tab-Informationen werden **NIEMALS** auf einen Server hochgeladen.
 
-💻 Fokusorientiertes Theme
-Genießen Sie ein schlankes, kontrastreiches dunkles Theme mit einem charakteristischen grünen Akzent, das für lange Stunden konzentrierter Arbeit und angenehmes Lesen konzipiert ist.
+---
 
-⌨️ Produktivitäts-Shortcuts
-- Seitenleiste umschalten: Cmd/Ctrl + I
-- Neuer Tab rechts: Opt/Alt + T
-
-Entwickelt für Power-User, Entwickler und alle, die sich ein aufgeräumtes, organisiertes und fokussiertes Browser-Erlebnis wünschen.
-
-Installieren Sie jetzt und heben Sie Ihren Chrome-Browser auf ein ganz neues Level! 🌟
+**Installieren Sie jetzt und rüsten Sie Ihren Chrome zu einem Produktivitätsmonster auf! 🌟**
