@@ -238,6 +238,14 @@
     },
     "searchNoResults": {
         "message": "Результаты не найдены",
-        "description": "Сообщение, отображаемое, когда поиск не возвращает результатов."
+        "description": "Message displayed when search returns no results."
+    },
+    "copyUrl": {
+        "message": "Копировать URL",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "URL скопирован!",
+        "description": "Feedback message after copying URL."
     }
 }

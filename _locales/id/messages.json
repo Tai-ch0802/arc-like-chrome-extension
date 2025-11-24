@@ -238,6 +238,14 @@
     },
     "searchNoResults": {
         "message": "Tidak ada hasil ditemukan",
-        "description": "Pesan yang ditampilkan ketika pencarian tidak mengembalikan hasil."
+        "description": "Message displayed when search returns no results."
+    },
+    "copyUrl": {
+        "message": "Salin URL",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "URL Disalin!",
+        "description": "Feedback message after copying URL."
     }
 }

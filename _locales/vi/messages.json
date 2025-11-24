@@ -238,6 +238,14 @@
     },
     "searchNoResults": {
         "message": "Không tìm thấy kết quả",
-        "description": "Thông báo hiển thị khi tìm kiếm không có kết quả."
+        "description": "Message displayed when search returns no results."
+    },
+    "copyUrl": {
+        "message": "Sao chép URL",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "Đã sao chép URL!",
+        "description": "Feedback message after copying URL."
     }
 }

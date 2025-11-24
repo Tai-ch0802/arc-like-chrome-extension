@@ -237,7 +237,15 @@
         }
     },
     "searchNoResults": {
-        "message": "結果が見つかりませんでした",
-        "description": "検索結果が見つからない場合に表示されるメッセージ。"
+        "message": "結果が見つかりません",
+        "description": "Message displayed when search returns no results."
+    },
+    "copyUrl": {
+        "message": "URLをコピー",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "URLをコピーしました！",
+        "description": "Feedback message after copying URL."
     }
 }

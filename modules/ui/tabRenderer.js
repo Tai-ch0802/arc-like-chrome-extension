@@ -104,6 +104,80 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         api.updateTab(tab.id, { active: true });
         api.updateWindow(tab.windowId, { focused: true });
     });
+
+    // Custom Context Menu
+    tabItem.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+
+        // Remove existing context menus
+        const existingMenu = document.querySelector('.custom-context-menu');
+        if (existingMenu) {
+            existingMenu.remove();
+        }
+
+        const menu = document.createElement('div');
+        menu.className = 'custom-context-menu';
+
+        // Position logic to prevent overflow
+        let x = e.clientX;
+        let y = e.clientY;
+
+        // Adjust if close to right edge
+        if (x + 150 > window.innerWidth) {
+            x = window.innerWidth - 160;
+        }
+
+        menu.style.left = `${x}px`;
+        menu.style.top = `${y}px`;
+
+        // Copy URL Option
+        const copyOption = document.createElement('div');
+        copyOption.className = 'context-menu-item';
+        copyOption.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>${api.getMessage('copyUrl')}</span>
+        `;
+
+        copyOption.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            try {
+                await navigator.clipboard.writeText(tab.url);
+
+                // Show feedback
+                const originalText = copyOption.querySelector('span').textContent;
+                copyOption.querySelector('span').textContent = api.getMessage('urlCopied');
+                copyOption.style.color = 'var(--accent-color)';
+
+                setTimeout(() => {
+                    menu.remove();
+                }, 800);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                menu.remove();
+            }
+        });
+
+        menu.appendChild(copyOption);
+        document.body.appendChild(menu);
+
+        // Close menu when clicking outside
+        const closeMenu = () => {
+            menu.remove();
+            document.removeEventListener('click', closeMenu);
+            document.removeEventListener('contextmenu', closeMenu); // Also close on right click elsewhere
+        };
+
+        // Use setTimeout to avoid immediate trigger
+        setTimeout(() => {
+            document.addEventListener('click', closeMenu);
+            document.addEventListener('contextmenu', (e) => {
+                if (!menu.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+        }, 0);
+    });
+
     return tabItem;
 }
 

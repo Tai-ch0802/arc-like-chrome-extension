@@ -239,5 +239,13 @@
     "searchNoResults": {
         "message": "Aucun résultat trouvé",
         "description": "Message affiché lorsque la recherche ne renvoie aucun résultat."
+    },
+    "copyUrl": {
+        "message": "Copier l'URL",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "URL copiée !",
+        "description": "Feedback message after copying URL."
     }
 }

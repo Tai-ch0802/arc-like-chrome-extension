@@ -239,5 +239,13 @@
     "searchNoResults": {
         "message": "未找到符合的結果",
         "description": "當搜尋沒有結果時顯示的訊息。"
+    },
+    "copyUrl": {
+        "message": "複製網址",
+        "description": "複製分頁網址的右鍵選單選項。"
+    },
+    "urlCopied": {
+        "message": "網址已複製！",
+        "description": "複製網址後的提示訊息。"
     }
 }

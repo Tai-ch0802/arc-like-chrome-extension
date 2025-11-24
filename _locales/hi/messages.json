@@ -239,5 +239,13 @@
     "searchNoResults": {
         "message": "कोई परिणाम नहीं मिला",
         "description": "खोज कोई परिणाम नहीं देती तो प्रदर्शित संदेश।"
+    },
+    "copyUrl": {
+        "message": "URL कॉपी करें",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "URL कॉपी किया गया!",
+        "description": "Feedback message after copying URL."
     }
 }

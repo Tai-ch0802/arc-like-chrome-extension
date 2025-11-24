@@ -238,6 +238,14 @@
     },
     "searchNoResults": {
         "message": "未找到结果",
-        "description": "当搜索没有结果时显示的消息。"
+        "description": "Message displayed when search returns no results."
+    },
+    "copyUrl": {
+        "message": "复制网址",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "网址已复制！",
+        "description": "Feedback message after copying URL."
     }
 }

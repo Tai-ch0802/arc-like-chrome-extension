@@ -239,5 +239,13 @@
     "searchNoResults": {
         "message": "ไม่พบผลลัพธ์",
         "description": "ข้อความที่แสดงเมื่อการค้นหาไม่พบผลลัพธ์"
+    },
+    "copyUrl": {
+        "message": "คัดลอก URL",
+        "description": "Context menu option to copy the tab URL."
+    },
+    "urlCopied": {
+        "message": "คัดลอก URL แล้ว!",
+        "description": "Feedback message after copying URL."
     }
 }
