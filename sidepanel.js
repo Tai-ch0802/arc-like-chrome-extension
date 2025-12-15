@@ -59,6 +59,8 @@ function applyStaticTranslations() {
 
 async function initialize() {
     await state.initLinkedTabs(); // Load linked tabs state first
+    state.loadBookmarkCache(); // Load cached bookmarks from localStorage
+    await state.buildBookmarkCache(); // Build fresh cache on startup
     console.log('initialize() called'); // DEBUG
     applyStaticTranslations(); console.log('applyStaticTranslations done');
     search.initialize(); console.log('search.initialize done');
@@ -105,16 +107,24 @@ function addEventListeners() {
 
     chrome.bookmarks.onRemoved.addListener((id) => {
         state.removeLinksByBookmarkId(id);
+        state.buildBookmarkCache(); // Rebuild cache on bookmark removal
         refreshBookmarks();
     });
 
     chrome.bookmarks.onChanged.addListener((id) => {
         //state.removeLinksByBookmarkId(id);
+        state.buildBookmarkCache(); // Rebuild cache on bookmark change
         refreshBookmarks();
     });
 
-    chrome.bookmarks.onCreated.addListener(refreshBookmarks);
-    chrome.bookmarks.onMoved.addListener(refreshBookmarks);
+    chrome.bookmarks.onCreated.addListener(() => {
+        state.buildBookmarkCache(); // Rebuild cache on bookmark creation
+        refreshBookmarks();
+    });
+    chrome.bookmarks.onMoved.addListener(() => {
+        state.buildBookmarkCache(); // Rebuild cache on bookmark move
+        refreshBookmarks();
+    });
 }
 
 // --- 搜尋 UI 事件處理 ---

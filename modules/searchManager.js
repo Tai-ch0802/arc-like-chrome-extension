@@ -126,17 +126,106 @@ function filterTabsAndGroups(keywords) {
     return visibleCount;
 }
 
-// 過濾書籤，回傳可見書籤數量 (Legacy Mode)
+// 過濾書籤，回傳可見書籤數量 (使用 Cache 進行搜尋)
 async function filterBookmarks(keywords) {
-    const visibleBookmarkNodes = new Set();
-    if (ui.bookmarkListContainer.children.length > 0) {
-        const topLevelItems = ui.bookmarkListContainer.querySelectorAll(':scope > .bookmark-item, :scope > .bookmark-folder');
-        for (const item of topLevelItems) {
-            calculateBookmarkVisibility(item, keywords, visibleBookmarkNodes);
+    // 如果沒有關鍵字，直接返回（不重新渲染）
+    // 書籤已經在 refreshBookmarks 中渲染好了
+    if (keywords.length === 0) {
+        return 0;
+    }
+
+    // 從 cache 中搜尋匹配的書籤
+    const cache = state.getBookmarkCache();
+    if (!cache || cache.length === 0) {
+        return 0;
+    }
+
+    // 找出所有匹配的書籤項目（只搜尋書籤，不搜尋資料夾名稱）
+    const matchingItems = cache.filter(item => {
+        if (item.type !== 'bookmark') return false;
+        const titleMatches = matchesAnyKeyword(item.title, keywords);
+        const urlMatches = matchesAnyKeyword(extractDomain(item.url), keywords);
+        // 記錄匹配類型
+        item._titleMatches = titleMatches;
+        item._urlMatches = urlMatches;
+        return titleMatches || urlMatches;
+    });
+
+    if (matchingItems.length === 0) {
+        // 清空書籤列表，顯示無結果
+        ui.bookmarkListContainer.innerHTML = '';
+        return 0;
+    }
+
+    // 收集所有需要顯示的節點 ID（匹配項目 + 所有祖先資料夾）
+    const visibleIds = new Set();
+    const cacheMap = new Map(cache.map(item => [item.id, item]));
+
+    for (const item of matchingItems) {
+        visibleIds.add(item.id);
+        // 遞迴向上收集所有祖先
+        let parentId = item.parentId;
+        while (parentId && cacheMap.has(parentId)) {
+            visibleIds.add(parentId);
+            const parent = cacheMap.get(parentId);
+            parentId = parent.parentId;
         }
     }
-    const count = applyBookmarkVisibility(keywords, visibleBookmarkNodes);
-    return count;
+
+    // 從 Chrome API 取得完整書籤樹，然後過濾
+    const tree = await api.getBookmarkTree();
+    if (!tree[0] || !tree[0].children) return 0;
+
+    // 過濾樹：只保留 visibleIds 中的節點
+    const filteredTree = filterTreeByIds(tree[0].children, visibleIds);
+
+    // 重新渲染過濾後的書籤樹（強制展開所有資料夾）
+    ui.bookmarkListContainer.innerHTML = '';
+    ui.renderBookmarks(filteredTree, ui.bookmarkListContainer, '1', () => {
+        document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
+    }, keywords, true); // forceExpandAll = true
+
+    // 確保所有資料夾視覺上是展開狀態
+    const allFolderContents = ui.bookmarkListContainer.querySelectorAll('.folder-content');
+    allFolderContents.forEach(content => {
+        content.style.display = 'block';
+        const folderIcon = content.previousElementSibling?.querySelector('.bookmark-icon');
+        if (folderIcon) folderIcon.textContent = '▼';
+    });
+
+    // 設定 URL 匹配的 dataset 以供 highlightMatches 使用
+    for (const item of matchingItems) {
+        if (item._urlMatches && !item._titleMatches) {
+            const domElement = ui.bookmarkListContainer.querySelector(`.bookmark-item[data-bookmark-id="${item.id}"]`);
+            if (domElement) {
+                domElement.dataset.urlMatch = 'true';
+                domElement.dataset.matchedDomain = extractDomain(item.url);
+            }
+        }
+    }
+
+    return matchingItems.length;
+}
+
+// 根據 ID 集合過濾樹狀結構
+function filterTreeByIds(nodes, visibleIds) {
+    const result = [];
+    for (const node of nodes) {
+        if (!visibleIds.has(node.id)) continue;
+
+        if (node.children) {
+            // 資料夾：遞迴過濾子節點
+            const filteredChildren = filterTreeByIds(node.children, visibleIds);
+            result.push({
+                ...node,
+                children: filteredChildren
+            });
+        } else {
+            // 書籤項目
+            result.push({ ...node });
+        }
+    }
+    return result;
 }
 
 // 遞迴計算書籤可見性

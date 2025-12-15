@@ -87,7 +87,8 @@ export async function showLinkedTabsPanel(bookmarkId) {
 
 
 // Legacy Renderer (Recursive DOM)
-function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback) {
+// forceExpandAll: when true, render all folders as expanded (for search mode)
+function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
     container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
         // ... (existing render logic, copy-pasted from original renderBookmarks)
@@ -283,9 +284,9 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             folderContent.style.display = isExpanded ? 'block' : 'none';
             container.appendChild(folderContent);
 
-            // Dynamic rendering: only render children when expanded
-            if (isExpanded && node.children) {
-                renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback);
+            // Dynamic rendering: only render children when expanded (or forceExpandAll)
+            if ((isExpanded || forceExpandAll) && node.children) {
+                renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
             }
 
             folderItem.addEventListener('click', (e) => {
@@ -298,7 +299,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                         state.addExpandedFolder(node.id);
                         // Dynamic rendering: render children on first expand
                         if (folderContent.children.length === 0 && node.children) {
-                            renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback);
+                            renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
                             // Dispatch event to reinitialize Sortable for new containers
                             setTimeout(() => {
                                 document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: node.id } }));
@@ -313,6 +314,6 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
     });
 }
 
-export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, filterKeywords = []) {
-    renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback);
+export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, filterKeywords = [], forceExpandAll = false) {
+    renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll);
 }

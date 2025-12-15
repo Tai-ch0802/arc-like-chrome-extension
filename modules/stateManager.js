@@ -109,3 +109,85 @@ export const getBookmarkIdByTabId = (tabId) => {
 export const getAllLinkedTabs = () => {
   return linkedTabs;
 };
+
+
+// --- Bookmark Search Cache ---
+
+const BOOKMARK_CACHE_KEY = 'arc_sidebar_bookmark_cache';
+let bookmarkCache = []; // In-memory cache: [{ id, title, url, parentId, type, path }, ...]
+
+/**
+ * Flattens a bookmark tree into a searchable array with path information.
+ * @param {Array} nodes - Bookmark tree nodes.
+ * @param {Array} pathStack - Current path stack (folder names).
+ * @returns {Array} Flat array of bookmark items.
+ */
+function flattenBookmarkTree(nodes, pathStack = []) {
+  let result = [];
+  for (const node of nodes) {
+    const currentPath = [...pathStack];
+    if (node.url) {
+      // Bookmark item
+      result.push({
+        id: node.id,
+        title: node.title || '',
+        url: node.url,
+        parentId: node.parentId,
+        type: 'bookmark',
+        path: currentPath
+      });
+    } else if (node.children) {
+      // Folder
+      result.push({
+        id: node.id,
+        title: node.title || '',
+        url: null,
+        parentId: node.parentId,
+        type: 'folder',
+        path: currentPath
+      });
+      // Recurse into children with updated path
+      const childPath = [...currentPath, node.title];
+      result = result.concat(flattenBookmarkTree(node.children, childPath));
+    }
+  }
+  return result;
+}
+
+/**
+ * Builds the bookmark cache from the Chrome bookmark tree and saves to localStorage.
+ */
+export async function buildBookmarkCache() {
+  try {
+    const tree = await chrome.bookmarks.getTree();
+    if (tree[0] && tree[0].children) {
+      bookmarkCache = flattenBookmarkTree(tree[0].children, []);
+      localStorage.setItem(BOOKMARK_CACHE_KEY, JSON.stringify(bookmarkCache));
+    }
+  } catch (error) {
+    console.error('[stateManager] Error building bookmark cache:', error);
+  }
+}
+
+/**
+ * Loads the bookmark cache from localStorage into memory.
+ */
+export function loadBookmarkCache() {
+  try {
+    const cached = localStorage.getItem(BOOKMARK_CACHE_KEY);
+    if (cached) {
+      bookmarkCache = JSON.parse(cached);
+    }
+  } catch (error) {
+    console.error('[stateManager] Error loading bookmark cache:', error);
+    bookmarkCache = [];
+  }
+}
+
+/**
+ * Returns the in-memory bookmark cache.
+ * @returns {Array} The flattened bookmark cache.
+ */
+export function getBookmarkCache() {
+  return bookmarkCache;
+}
