@@ -306,6 +306,9 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
 const ITEM_HEIGHT = 30; // Fixed height for virtual items
 
 function renderBookmarksVirtual(bookmarkNodes, container, parentId, refreshBookmarksCallback, filterKeywords = []) {
+    // Set parentId for drag-drop handling (required by handleBookmarkDrop)
+    container.dataset.parentId = parentId;
+
     // Flatten the tree
     const flatList = flattenBookmarkTree(bookmarkNodes, state.isFolderExpanded, filterKeywords);
 

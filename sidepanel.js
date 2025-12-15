@@ -10,7 +10,20 @@ import * as state from './modules/stateManager.js';
 async function handleAddToGroupClick(tabId) {
     const result = await modal.showCreateGroupDialog();
     if (result && result.title) {
-        await api.addTabToNewGroup(tabId, result.title, result.color);
+        let tabsToGroup = [tabId];
+        try {
+            const targetTab = await api.getTab(tabId);
+            if (targetTab && targetTab.splitViewId && targetTab.splitViewId > 0) {
+                const allTabs = await api.getTabsInCurrentWindow();
+                const peerTabs = allTabs.filter(t => t.splitViewId === targetTab.splitViewId);
+                tabsToGroup = peerTabs.map(t => t.id);
+            }
+        } catch (err) {
+            console.error('Error identifying split view tabs:', err);
+            // Fallback to single tab if something fails
+        }
+
+        await api.addTabToNewGroup(tabsToGroup, result.title, result.color);
         // The onUpdated and onCreated events from the Chrome API will automatically trigger updateTabList
     }
 }

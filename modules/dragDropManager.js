@@ -38,7 +38,11 @@ function initializeBookmarkSortable(refreshBookmarks, updateTabList) {
     bookmarkSortableInstances.forEach(instance => instance.destroy());
     bookmarkSortableInstances = [];
     const sortableOptions = {
-        group: 'shared-list',
+        group: {
+            name: 'shared-list',
+            pull: true,
+            put: true
+        },
         animation: 150,
         scroll: true,
         scrollSensitivity: 50,
@@ -76,21 +80,41 @@ async function handleDragAdd(evt, updateTabList) {
         from.appendChild(item);
         return;
     }
-    const tabIdToMove = parseInt(item.dataset.tabId, 10);
-    if (!tabIdToMove) return;
+
+    let tabIdsToMove = [];
+    if (item.classList.contains('tab-split-group')) {
+        const children = Array.from(item.querySelectorAll('.tab-item'));
+        tabIdsToMove = children.map(el => parseInt(el.dataset.tabId, 10)).filter(id => !isNaN(id));
+    } else {
+        const id = parseInt(item.dataset.tabId, 10);
+        if (id) tabIdsToMove.push(id);
+    }
+
+    if (tabIdsToMove.length === 0) return;
+
+    // When adding to a group or ungrouping, Chrome API handles the move internally.
+    // We should NOT call moveItem afterwards as it causes race conditions/crashes.
     if (to.classList.contains('tab-group-content')) {
         const header = to.previousElementSibling;
         const targetGroupId = parseInt(header.dataset.groupId, 10);
-        await api.groupTabs([tabIdToMove], targetGroupId);
+        await api.groupTabs(tabIdsToMove, targetGroupId);
+        // No moveItem call - groupTabs handles positioning
     } else if (to.id === 'tab-list') {
-        await api.ungroupTabs(tabIdToMove);
+        await api.ungroupTabs(tabIdsToMove);
+        // No moveItem call - ungroupTabs handles positioning
     }
-    await moveItem(item, newIndex, to);
 }
 
 async function moveItem(item, newIndex, container) {
-    const allDraggables = Array.from(container.closest('#tab-list').querySelectorAll('.tab-item, .tab-group-header'));
+    // Exclude tabs that are inside a split view because the split group itself is the draggable unit
+    // This prevents double-counting indices or finding a nested tab as the 'next' element
+    const allDraggables = Array.from(container.closest('#tab-list').querySelectorAll('.tab-item:not(.in-split-view), .tab-group-header, .tab-split-group'));
+
     const droppedItemElement = allDraggables.find(el => el === item);
+
+    // Safety check if something went wrong finding the element
+    if (!droppedItemElement) return;
+
     const actualNewIndex = allDraggables.indexOf(droppedItemElement);
     const targetElement = allDraggables[actualNewIndex + 1];
     let targetAbsoluteIndex = -1;
@@ -101,18 +125,34 @@ async function moveItem(item, newIndex, container) {
             targetAbsoluteIndex = tab.index;
         } else if (targetElement.classList.contains('tab-group-header')) {
             const targetGroupId = parseInt(targetElement.dataset.groupId, 10);
-            const tabsInGroup = await api.getTabsInCurrentWindow({ groupId: targetGroupId });
-            if (tabsInGroup.length > 0) {
-                targetAbsoluteIndex = Math.min(...tabsInGroup.map(t => t.index));
+            const tabsInGroup = await api.getTabsInCurrentWindow();
+            const filteredTabs = tabsInGroup.filter(t => t.groupId === targetGroupId);
+            if (filteredTabs.length > 0) {
+                targetAbsoluteIndex = Math.min(...filteredTabs.map(t => t.index));
+            }
+        } else if (targetElement.classList.contains('tab-split-group')) {
+            // If target is a split group, target the index of its first child tab
+            const firstChild = targetElement.querySelector('.tab-item');
+            if (firstChild) {
+                const targetTabId = parseInt(firstChild.dataset.tabId, 10);
+                const tab = await api.getTab(targetTabId);
+                targetAbsoluteIndex = tab.index;
             }
         }
     }
+
     if (item.classList.contains('tab-item')) {
         const tabIdToMove = parseInt(item.dataset.tabId, 10);
-        api.moveTab(tabIdToMove, targetAbsoluteIndex);
+        await api.moveTab(tabIdToMove, targetAbsoluteIndex);
     } else if (item.classList.contains('tab-group-header')) {
         const groupIdToMove = parseInt(item.dataset.groupId, 10);
-        api.moveTabGroup(groupIdToMove, targetAbsoluteIndex);
+        await api.moveTabGroup(groupIdToMove, targetAbsoluteIndex);
+    } else if (item.classList.contains('tab-split-group')) {
+        const children = Array.from(item.querySelectorAll('.tab-item'));
+        const tabIdsToMove = children.map(el => parseInt(el.dataset.tabId, 10)).filter(id => !isNaN(id));
+        if (tabIdsToMove.length > 0) {
+            await api.moveTab(tabIdsToMove, targetAbsoluteIndex);
+        }
     }
 }
 
@@ -123,7 +163,6 @@ async function handleBookmarkDrop(evt, refreshBookmarks, updateTabList) {
         const title = item.querySelector('.tab-title').textContent;
         const url = item.dataset.url;
         const parentId = to.dataset.parentId;
-
         if (title && url && parentId && tabId) {
             // Check for duplicate bookmark
             const existingBookmark = await api.searchBookmarksByUrl(url);
@@ -141,26 +180,22 @@ async function handleBookmarkDrop(evt, refreshBookmarks, updateTabList) {
                     return;
                 }
             }
-
             const newBookmark = await api.createBookmark({
                 parentId: parentId,
                 title: title,
                 url: url,
                 index: newIndex
             });
-
             // Add the link between the original tab and the new bookmark
             if (newBookmark) {
                 await state.addLinkedTab(newBookmark.id, tabId);
             }
-
             item.remove();
             refreshBookmarks(); // This will now show the linked icon
             updateTabList();
         }
         return;
     }
-
     const bookmarkId = item.dataset.bookmarkId;
     const newParentId = to.dataset.parentId;
     if (!bookmarkId || !newParentId) return;

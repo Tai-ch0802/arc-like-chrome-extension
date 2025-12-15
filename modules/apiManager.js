@@ -15,8 +15,10 @@ export const getTabGroupsInCurrentWindow = () => chrome.tabGroups.query({ window
 export const moveTabGroup = (groupId, index) => chrome.tabGroups.move(groupId, { index });
 export const updateTabGroup = (groupId, options) => chrome.tabGroups.update(groupId, options);
 
-export async function addTabToNewGroup(tabId, title, color) {
-    const groupId = await chrome.tabs.group({ tabIds: [tabId] });
+export async function addTabToNewGroup(tabIds, title, color) {
+    // tabIds can be a single number or an array of numbers
+    const ids = Array.isArray(tabIds) ? tabIds : [tabIds];
+    const groupId = await chrome.tabs.group({ tabIds: ids });
     await chrome.tabGroups.update(groupId, { title, color });
     return groupId;
 }

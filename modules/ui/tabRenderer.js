@@ -186,6 +186,36 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     const groupsMap = new Map(groups.map(group => [group.id, group]));
     const renderedTabIds = new Set();
 
+    // Helper to render split groups
+    const renderSplitOrTab = (tab, contextTabs, container) => {
+        if (renderedTabIds.has(tab.id)) return;
+
+        if (tab.splitViewId && tab.splitViewId > 0) {
+            // Find all tabs in the same split view context
+            const splitTabs = contextTabs.filter(t => t.splitViewId === tab.splitViewId);
+
+            if (splitTabs.length > 1) {
+                const splitGroup = document.createElement('div');
+                splitGroup.className = 'tab-split-group';
+
+                splitTabs.forEach(splitTab => {
+                    // Ensure we don't duplicate if something weird happens, though renderedTabIds check at top handles main loop
+                    const tabElement = createTabElement(splitTab, { onAddToGroupClick });
+                    tabElement.classList.add('in-split-view');
+                    splitGroup.appendChild(tabElement);
+                    renderedTabIds.add(splitTab.id);
+                });
+                container.appendChild(splitGroup);
+                return;
+            }
+        }
+
+        // Fallback to normal rendering if not split view or only 1 tab in split
+        const tabElement = createTabElement(tab, { onAddToGroupClick });
+        container.appendChild(tabElement);
+        renderedTabIds.add(tab.id);
+    };
+
     for (const tab of tabs) {
         if (renderedTabIds.has(tab.id)) {
             continue;
@@ -233,9 +263,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
             const tabsInThisGroup = tabs.filter(t => t.groupId === group.id);
             for (const groupTab of tabsInThisGroup) {
-                const tabElement = createTabElement(groupTab, { onAddToGroupClick });
-                groupContent.appendChild(tabElement);
-                renderedTabIds.add(groupTab.id);
+                renderSplitOrTab(groupTab, tabsInThisGroup, groupContent);
             }
             tabListContainer.appendChild(groupContent);
 
@@ -248,9 +276,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 }
             });
         } else {
-            const tabElement = createTabElement(tab, { onAddToGroupClick });
-            tabListContainer.appendChild(tabElement);
-            renderedTabIds.add(tab.id);
+            renderSplitOrTab(tab, tabs, tabListContainer);
         }
     }
 }

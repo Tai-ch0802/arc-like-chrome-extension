@@ -967,3 +967,36 @@ mark.url-match {
     stroke: currentColor;
     fill: none;
 }
+
+/* --- Split View Styles --- */
+.tab-split-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* Ensure it aligns with other items */
+    position: relative;
+    border-left: 3px solid transparent;
+    /* Align with tab-item's border */
+}
+
+.tab-item.in-split-view {
+    flex: 1;
+    min-width: 0;
+    /* Allow text to truncate */
+    border-left: none;
+    /* Reset main active border */
+    border-right: 1px solid var(--border-color);
+    margin: 0;
+}
+
+.tab-item.in-split-view:last-child {
+    border-right: none;
+}
+
+/* Active state for split view needs to be subtle or handled differently */
+.tab-item.in-split-view.active {
+    background-color: var(--element-bg-active-color);
+    /* We can't use the left border because it's inside the flex group */
+    /* Add a bottom border or inner shadow? */
+    box-shadow: inset 0 -2px 0 var(--accent-color);
+}
