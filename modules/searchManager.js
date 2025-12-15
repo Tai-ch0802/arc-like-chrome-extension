@@ -1,7 +1,6 @@
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
-import { flattenBookmarkTree } from './utils/virtualScrollUtils.js';
 
 // Debounce 工具函式：延遲執行，避免頻繁觸發
 function debounce(func, wait) {
@@ -127,45 +126,17 @@ function filterTabsAndGroups(keywords) {
     return visibleCount;
 }
 
-// 過濾書籤，回傳可見書籤數量
+// 過濾書籤，回傳可見書籤數量 (Legacy Mode)
 async function filterBookmarks(keywords) {
-    if (state.isVirtualScrollingEnabled()) {
-        try {
-            const bookmarkTree = await api.getBookmarkTree();
-            const rootNodes = bookmarkTree[0].children; // 通常根節點是 '0'，其子節點才是 '1' (書籤列) 和 '2' (其他書籤)
-
-            // 在這裡我們需要傳遞 keywords 給 renderBookmarks，讓它去處理 flatten 和 render
-            // 但是 renderBookmarks 需要 bookmarkNodes
-            // 我們可以先 flatten 來計算數量，然後傳遞原始 nodes 給 renderBookmarks (它會再次 flatten)
-            // 或者優化一點，直接在這裡 flatten，然後傳給 renderBookmarks?
-            // 但 renderBookmarks 的簽章是 (nodes, container, parentId, callback, keywords)
-            // 如果我們傳遞了 keywords，它會自己 flatten。
-
-            // 為了計算數量，我們必須在這裡 flatten 一次
-            const flatList = flattenBookmarkTree(rootNodes, state.isFolderExpanded, keywords);
-            const count = flatList.filter(item => item.node.url).length;
-
-            // 呼叫 UI 渲染
-            // 注意：這裡我們傳遞 rootNodes，並帶上 keywords
-            ui.renderBookmarks(rootNodes, ui.bookmarkListContainer, 'root', ui.refreshBookmarks, keywords);
-
-            return count;
-        } catch (error) {
-            console.error('Error filtering bookmarks in virtual mode:', error);
-            return 0;
+    const visibleBookmarkNodes = new Set();
+    if (ui.bookmarkListContainer.children.length > 0) {
+        const topLevelItems = ui.bookmarkListContainer.querySelectorAll(':scope > .bookmark-item, :scope > .bookmark-folder');
+        for (const item of topLevelItems) {
+            calculateBookmarkVisibility(item, keywords, visibleBookmarkNodes);
         }
-    } else {
-        // Legacy Mode
-        const visibleBookmarkNodes = new Set();
-        if (ui.bookmarkListContainer.children.length > 0) {
-            const topLevelItems = ui.bookmarkListContainer.querySelectorAll(':scope > .bookmark-item, :scope > .bookmark-folder');
-            for (const item of topLevelItems) {
-                calculateBookmarkVisibility(item, keywords, visibleBookmarkNodes);
-            }
-        }
-        const count = applyBookmarkVisibility(keywords, visibleBookmarkNodes);
-        return count;
     }
+    const count = applyBookmarkVisibility(keywords, visibleBookmarkNodes);
+    return count;
 }
 
 // 遞迴計算書籤可見性

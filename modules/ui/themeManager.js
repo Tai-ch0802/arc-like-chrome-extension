@@ -69,16 +69,6 @@ export function initThemeSwitcher() {
                 </div>
             </div>
             <div class="settings-section">
-                <h4 class="settings-section-header">${api.getMessage('experimentalSectionHeader')}</h4>
-                <div class="setting-item">
-                    <label class="setting-label">
-                        <input type="checkbox" id="virtual-scrolling-checkbox" ${state.isVirtualScrollingEnabled() ? 'checked' : ''}>
-                        <span>${api.getMessage('virtualScrollingSettingLabel')}</span>
-                    </label>
-                    <p class="setting-description">${api.getMessage('virtualScrollingSettingDesc')}</p>
-                </div>
-            </div>
-            <div class="settings-section">
                 <h4 class="settings-section-header">${api.getMessage('shortcutSectionHeader')}</h4>
                 <p>${api.getMessage('shortcutExplanation')}</p>
                 <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
@@ -105,20 +95,6 @@ export function initThemeSwitcher() {
                         const newTheme = event.target.value;
                         applyTheme(newTheme);
                         api.setStorage('sync', { theme: newTheme });
-                    });
-                }
-
-                const virtualScrollingCheckbox = modalContentElement.querySelector('#virtual-scrolling-checkbox');
-                if (virtualScrollingCheckbox) {
-                    virtualScrollingCheckbox.addEventListener('change', async (event) => {
-                        const enabled = event.target.checked;
-                        await state.setVirtualScrollingEnabled(enabled);
-                        // Refresh bookmarks to apply the new rendering mode
-                        // We need to import refreshBookmarks from uiManager, but uiManager imports themeManager (circular?)
-                        // uiManager imports themeManager. themeManager imports uiManager? No, themeManager imports apiManager.
-                        // We need a way to trigger refresh.
-                        // Dispatching a custom event is a safe way.
-                        document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
                     });
                 }
 

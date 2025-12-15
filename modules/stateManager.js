@@ -109,20 +109,3 @@ export const getBookmarkIdByTabId = (tabId) => {
 export const getAllLinkedTabs = () => {
   return linkedTabs;
 };
-
-// Feature Toggle for Virtual Scrolling (Beta)
-let isVirtualScrolling = false;
-
-export async function initVirtualScrolling() {
-  const result = await getStorage('sync', { virtualScrolling: false });
-  isVirtualScrolling = result.virtualScrolling;
-}
-
-export function isVirtualScrollingEnabled() {
-  return isVirtualScrolling;
-}
-
-export async function setVirtualScrollingEnabled(enabled) {
-  isVirtualScrolling = enabled;
-  await setStorage('sync', { virtualScrolling: enabled });
-}

@@ -59,7 +59,6 @@ function applyStaticTranslations() {
 
 async function initialize() {
     await state.initLinkedTabs(); // Load linked tabs state first
-    await state.initVirtualScrolling(); // Load virtual scrolling state
     console.log('initialize() called'); // DEBUG
     applyStaticTranslations(); console.log('applyStaticTranslations done');
     search.initialize(); console.log('search.initialize done');

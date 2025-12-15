@@ -48,8 +48,6 @@ key_files:
     description: "[功能] 拖曳排序模組。封裝 SortableJS 的所有邏輯，處理分頁與書籤的拖曳事件，並在拖曳分頁成為書籤時建立關聯。"
   - file_path: modules/searchManager.js
     description: "[功能] 搜尋過濾模組。負責處理搜尋框的輸入與列表的即時過濾邏輯。"
-  - file_path: modules/utils/virtualScrollUtils.js
-    description: "[工具] 虛擬滾動工具。負責將書籤樹扁平化為可視列表，支援搜尋過濾並保留階層結構。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

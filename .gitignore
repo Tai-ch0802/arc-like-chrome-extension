@@ -4,5 +4,4 @@ arc-sidebar-v*
 node_modules/
 RELEASE_NOTE.md
 tmp/
-.gemini/
 jest-storage

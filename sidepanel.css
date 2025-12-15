@@ -914,23 +914,6 @@ mark.url-match {
     font-weight: bold;
 }
 
-/* --- Virtual Scrolling Styles (Beta) --- */
-.virtual-scroll-container {
-    position: relative;
-    overflow-y: auto;
-    height: 100%;
-    will-change: transform;
-    /* Performance optimization */
-}
-
-.virtual-item {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
-    /* Height is set inline via JS */
-}
-
 /* --- Custom Context Menu --- */
 .custom-context-menu {
     position: fixed;
@@ -999,4 +982,48 @@ mark.url-match {
     /* We can't use the left border because it's inside the flex group */
     /* Add a bottom border or inner shadow? */
     box-shadow: inset 0 -2px 0 var(--accent-color);
+}
+
+/* --- Drag-Drop Target Styles --- */
+.bookmark-folder.drop-target,
+.bookmark-folder.drop-into {
+    background-color: var(--element-bg-active-color);
+    border-left: 3px solid var(--accent-color);
+    transition: background-color 0.15s ease, border-left 0.15s ease;
+}
+
+/* Drop indicator line for "before" position */
+.bookmark-item.drop-before,
+.bookmark-folder.drop-before {
+    position: relative;
+}
+
+.bookmark-item.drop-before::before,
+.bookmark-folder.drop-before::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+    z-index: 10;
+}
+
+/* Drop indicator line for "after" position */
+.bookmark-item.drop-after,
+.bookmark-folder.drop-after {
+    position: relative;
+}
+
+.bookmark-item.drop-after::after,
+.bookmark-folder.drop-after::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+    z-index: 10;
 }
