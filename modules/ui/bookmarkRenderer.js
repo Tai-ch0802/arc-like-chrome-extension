@@ -279,22 +279,36 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
 
             const folderContent = document.createElement('div');
             folderContent.className = 'folder-content';
+            folderContent.dataset.parentId = node.id;
             folderContent.style.display = isExpanded ? 'block' : 'none';
             container.appendChild(folderContent);
+
+            // Dynamic rendering: only render children when expanded
+            if (isExpanded && node.children) {
+                renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback);
+            }
 
             folderItem.addEventListener('click', (e) => {
                 if (e.target.tagName !== 'BUTTON') {
                     const isNowExpanded = folderContent.style.display === 'none';
                     folderContent.style.display = isNowExpanded ? 'block' : 'none';
                     icon.textContent = isNowExpanded ? '▼' : '▶';
+
                     if (isNowExpanded) {
                         state.addExpandedFolder(node.id);
+                        // Dynamic rendering: render children on first expand
+                        if (folderContent.children.length === 0 && node.children) {
+                            renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback);
+                            // Dispatch event to reinitialize Sortable for new containers
+                            setTimeout(() => {
+                                document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: node.id } }));
+                            }, 50);
+                        }
                     } else {
                         state.removeExpandedFolder(node.id);
                     }
                 }
             });
-            renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback);
         }
     });
 }

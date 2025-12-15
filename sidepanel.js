@@ -72,6 +72,11 @@ async function initialize() {
     document.addEventListener('refreshBookmarksRequired', () => {
         refreshBookmarks();
     });
+
+    // Listen for folder expansion to reinitialize Sortable for dynamically rendered content
+    document.addEventListener('folderExpanded', () => {
+        dragDrop.initializeBookmarkSortable(refreshBookmarks, updateTabList);
+    });
 }
 
 function addEventListeners() {

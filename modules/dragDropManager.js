@@ -10,6 +10,11 @@ let folderOpenTimer = null;
 function initialize(refreshBookmarks, updateTabList) {
     initializeTabSortable(updateTabList);
     initializeBookmarkSortable(refreshBookmarks, updateTabList);
+
+    // Listen for folder expansion to reinitialize Sortable for new containers
+    document.addEventListener('folderExpanded', () => {
+        initializeBookmarkSortable(refreshBookmarks, updateTabList);
+    });
 }
 
 function initializeTabSortable(updateTabList) {
@@ -47,20 +52,31 @@ function initializeBookmarkSortable(refreshBookmarks, updateTabList) {
         scroll: true,
         scrollSensitivity: 50,
         scrollSpeed: 15,
+        // Only allow dragging .bookmark-item and .bookmark-folder, not .folder-content
+        draggable: '.bookmark-item, .bookmark-folder',
         onEnd: (evt) => handleBookmarkDrop(evt, refreshBookmarks, updateTabList),
         onAdd: (evt) => handleBookmarkDrop(evt, refreshBookmarks, updateTabList),
         onDragOver: function (evt) {
             clearTimeout(folderOpenTimer);
             const { related } = evt;
-            const isCollapsedFolder = related.classList.contains('bookmark-folder') && related.querySelector('.bookmark-icon').textContent === '▶';
-            if (isCollapsedFolder) {
-                folderOpenTimer = setTimeout(() => {
-                    related.click();
-                }, 1000);
+            if (related && related.classList) {
+                const isCollapsedFolder = related.classList.contains('bookmark-folder') &&
+                    related.querySelector('.bookmark-icon')?.textContent === '▶';
+                if (isCollapsedFolder) {
+                    folderOpenTimer = setTimeout(() => {
+                        related.click();
+                    }, 1000);
+                }
             }
         },
     };
-    const sortableContainers = [ui.bookmarkListContainer, ...document.querySelectorAll('.folder-content')];
+
+    // Only initialize Sortable on containers that have children
+    // Empty .folder-content should not get Sortable until they're populated
+    const folderContents = Array.from(document.querySelectorAll('.folder-content'))
+        .filter(container => container.children.length > 0);
+    const sortableContainers = [ui.bookmarkListContainer, ...folderContents];
+
     sortableContainers.forEach(container => {
         bookmarkSortableInstances.push(new Sortable(container, sortableOptions));
     });
