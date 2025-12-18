@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "URL Disalin!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "Jendela Lain",
+        "description": "Header for the other windows section."
     }
 }

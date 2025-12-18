@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "URL 복사됨!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "다른 창",
+        "description": "Header for the other windows section."
     }
 }

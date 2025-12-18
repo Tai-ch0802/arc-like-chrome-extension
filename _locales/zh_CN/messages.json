@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "网址已复制！",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "其他窗口",
+        "description": "Header for the other windows section."
     }
 }

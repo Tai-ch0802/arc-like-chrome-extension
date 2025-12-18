@@ -250,5 +250,9 @@
     "urlCopied": {
         "message": "URL Copied!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "Other Windows",
+        "description": "Header for the other windows section."
     }
 }

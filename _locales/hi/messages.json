@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "URL कॉपी किया गया!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "अन्य विंडो",
+        "description": "Header for the other windows section."
     }
 }
