@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "Đã sao chép URL!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "Cửa sổ khác",
+        "description": "Header for the other windows section."
     }
 }

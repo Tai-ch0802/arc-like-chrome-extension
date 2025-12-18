@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "URL скопирован!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "Другие окна",
+        "description": "Header for the other windows section."
     }
 }

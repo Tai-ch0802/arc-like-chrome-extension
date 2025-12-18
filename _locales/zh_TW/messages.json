@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "網址已複製！",
         "description": "複製網址後的提示訊息。"
+    },
+    "otherWindowsHeader": {
+        "message": "其他視窗",
+        "description": "Header for the other windows section."
     }
 }

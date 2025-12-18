@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "คัดลอก URL แล้ว!",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "หน้าต่างอื่น",
+        "description": "Header for the other windows section."
     }
 }

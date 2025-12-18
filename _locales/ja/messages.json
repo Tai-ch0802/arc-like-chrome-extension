@@ -247,5 +247,9 @@
     "urlCopied": {
         "message": "URLをコピーしました！",
         "description": "Feedback message after copying URL."
+    },
+    "otherWindowsHeader": {
+        "message": "他のウィンドウ",
+        "description": "Header for the other windows section."
     }
 }
