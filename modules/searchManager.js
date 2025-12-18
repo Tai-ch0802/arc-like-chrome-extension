@@ -24,6 +24,7 @@ async function handleSearch() {
 
     // 過濾分頁和書籤
     const tabCount = filterTabsAndGroups(keywords);
+    const otherWindowsTabCount = filterOtherWindowsTabs(keywords);
     const bookmarkCount = await filterBookmarks(keywords);
 
     // 高亮匹配文字
@@ -33,9 +34,9 @@ async function handleSearch() {
         clearHighlights();
     }
 
-    // 發送結果計數事件
+    // 發送結果計數事件 (include other windows tabs in count)
     const event = new CustomEvent('searchResultUpdated', {
-        detail: { tabCount, bookmarkCount }
+        detail: { tabCount: tabCount + otherWindowsTabCount, bookmarkCount }
     });
     document.dispatchEvent(event);
 }
@@ -124,6 +125,85 @@ function filterTabsAndGroups(keywords) {
     });
 
     return visibleCount;
+}
+
+// 過濾其他視窗的分頁（與 filterTabsAndGroups 相同邏輯）
+function filterOtherWindowsTabs(keywords) {
+    const list = document.getElementById('other-windows-list');
+    if (!list) return 0;
+
+    const folders = list.querySelectorAll('.bookmark-folder');
+    let totalCount = 0;
+
+    folders.forEach(folder => {
+        const content = folder.nextElementSibling;
+        if (!content || !content.classList.contains('folder-content')) return;
+
+        const tabs = content.querySelectorAll('.tab-item');
+        let windowCount = 0;
+
+        tabs.forEach(item => {
+            const title = item.querySelector('.tab-title')?.textContent || '';
+            const url = item.dataset.url || '';
+            const domain = extractDomain(url);
+            const titleMatches = matchesAnyKeyword(title, keywords);
+            const urlMatches = matchesAnyKeyword(domain, keywords);
+            const matches = titleMatches || urlMatches;
+
+            item.classList.toggle('hidden', !matches);
+
+            if (urlMatches && !titleMatches) {
+                item.dataset.urlMatch = 'true';
+                item.dataset.matchedDomain = domain;
+            } else {
+                delete item.dataset.urlMatch;
+                delete item.dataset.matchedDomain;
+            }
+
+            if (matches) windowCount++;
+        });
+
+        // Expand/collapse tab groups (same logic as filterTabsAndGroups)
+        const groupHeaders = content.querySelectorAll('.tab-group-header');
+        groupHeaders.forEach(header => {
+            const groupContent = header.nextElementSibling;
+            if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
+
+            const visibleTabsInGroup = groupContent.querySelectorAll('.tab-item:not(.hidden)');
+            const titleElement = header.querySelector('.tab-group-title');
+            const title = titleElement ? titleElement.textContent : '';
+            const groupTitleMatches = matchesAnyKeyword(title, keywords);
+            const hasVisibleChildren = visibleTabsInGroup.length > 0;
+
+            header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
+
+            if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
+                groupContent.style.display = 'block';
+                header.querySelector('.tab-group-arrow').textContent = '▼';
+            } else if (keywords.length === 0) {
+                const isCollapsed = header.dataset.collapsed === 'true';
+                groupContent.style.display = isCollapsed ? 'none' : 'block';
+                header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
+            }
+        });
+
+        totalCount += windowCount;
+        const visible = windowCount > 0 || keywords.length === 0;
+        folder.classList.toggle('hidden', !visible);
+        content.classList.toggle('hidden', !visible);
+
+        // 展開/收合
+        const icon = folder.querySelector('.bookmark-icon');
+        if (windowCount > 0 && keywords.length > 0) {
+            content.style.display = 'block';
+            if (icon) icon.textContent = '▼';
+        } else if (keywords.length === 0) {
+            content.style.display = 'none';
+            if (icon) icon.textContent = '▶';
+        }
+    });
+
+    return totalCount;
 }
 
 // 過濾書籤，回傳可見書籤數量 (使用 Cache 進行搜尋)
@@ -326,8 +406,8 @@ function applyBookmarkVisibility(keywords, visibleItems) {
 
 // 高亮匹配的文字
 function highlightMatches(keywords) {
-    // 高亮分頁標題
-    const tabItems = document.querySelectorAll('#tab-list .tab-item:not(.hidden)');
+    // 高亮分頁標題（包含其他視窗）
+    const tabItems = document.querySelectorAll('#tab-list .tab-item:not(.hidden), #other-windows-list .tab-item:not(.hidden)');
     tabItems.forEach(item => {
         const titleElement = item.querySelector('.tab-title');
         const isUrlMatch = item.dataset.urlMatch === 'true';
@@ -430,15 +510,15 @@ function escapeRegExp(string) {
 
 // 清除所有高亮
 function clearHighlights() {
-    // 清除分頁高亮
-    const tabTitles = document.querySelectorAll('#tab-list .tab-title[data-original-text]');
+    // 清除分頁高亮（包含其他視窗）
+    const tabTitles = document.querySelectorAll('#tab-list .tab-title[data-original-text], #other-windows-list .tab-title[data-original-text]');
     tabTitles.forEach(element => {
         element.textContent = element.dataset.originalText;
         delete element.dataset.originalText;
     });
 
-    // 清除分頁的 domain 顯示
-    const tabDomains = document.querySelectorAll('#tab-list .matched-domain');
+    // 清除分頁的 domain 顯示（包含其他視窗）
+    const tabDomains = document.querySelectorAll('#tab-list .matched-domain, #other-windows-list .matched-domain');
     tabDomains.forEach(element => element.remove());
 
     // 清除書籤高亮
