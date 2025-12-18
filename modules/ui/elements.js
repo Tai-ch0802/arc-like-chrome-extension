@@ -4,3 +4,4 @@ export const bookmarkListContainer = document.getElementById('bookmark-list');
 export const searchBox = document.getElementById('search-box');
 export const clearSearchBtn = document.getElementById('clear-search-btn');
 export const searchResultCount = document.getElementById('search-result-count');
+export const otherWindowsList = document.getElementById('other-windows-list');
