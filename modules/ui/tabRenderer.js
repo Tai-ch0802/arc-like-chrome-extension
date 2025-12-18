@@ -1,5 +1,5 @@
 import * as api from '../apiManager.js';
-import { tabListContainer } from './elements.js';
+import { tabListContainer, otherWindowsList } from './elements.js';
 
 const GROUP_COLORS = {
     grey: '#5f6368',
@@ -279,4 +279,163 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             renderSplitOrTab(tab, tabs, tabListContainer);
         }
     }
+}
+
+// Create a simple tab element for other windows (without group actions)
+function createOtherWindowTabElement(tab) {
+    const tabItem = document.createElement('div');
+    tabItem.className = 'tab-item';
+    tabItem.dataset.tabId = tab.id;
+    tabItem.dataset.url = tab.url;
+
+    let urlPreview = tab.url;
+    if (urlPreview && urlPreview.length > 300) {
+        urlPreview = urlPreview.substring(0, 300) + '...';
+    }
+    tabItem.title = `${tab.title}\n${urlPreview}`;
+
+    const favicon = document.createElement('img');
+    favicon.className = 'tab-favicon';
+    if (tab.favIconUrl && tab.favIconUrl.startsWith('http')) {
+        favicon.src = tab.favIconUrl;
+    } else {
+        favicon.src = 'icons/fallback-favicon.svg';
+    }
+    favicon.onerror = () => {
+        favicon.src = 'icons/fallback-favicon.svg';
+    };
+
+    const title = document.createElement('span');
+    title.className = 'tab-title';
+    title.textContent = tab.title || 'Loading...';
+
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'tab-content-wrapper';
+    titleWrapper.appendChild(title);
+
+    tabItem.appendChild(favicon);
+    tabItem.appendChild(titleWrapper);
+
+    // Click to focus the tab and its window
+    tabItem.addEventListener('click', () => {
+        api.updateTab(tab.id, { active: true });
+        api.updateWindow(tab.windowId, { focused: true });
+    });
+
+    return tabItem;
+}
+
+export function renderOtherWindowsSection(otherWindows, currentWindowId, allGroups = []) {
+    if (!otherWindowsList) return;
+
+    // Filter out current window and windows with no tabs
+    const windowsToShow = otherWindows.filter(w => w.id !== currentWindowId && w.tabs && w.tabs.length > 0);
+
+    otherWindowsList.innerHTML = '';
+
+    if (windowsToShow.length === 0) return;
+
+    windowsToShow.forEach((window, index) => {
+        // Use bookmark-folder style
+        const folderItem = document.createElement('div');
+        folderItem.className = 'bookmark-folder';
+        folderItem.dataset.windowId = window.id;
+        folderItem.title = `Window ${index + 1}`;
+
+        const icon = document.createElement('span');
+        icon.className = 'bookmark-icon';
+        icon.textContent = '▶';
+
+        const title = document.createElement('span');
+        title.className = 'bookmark-title';
+        title.textContent = `Window ${index + 1} (${window.tabs.length})`;
+
+        folderItem.appendChild(icon);
+        folderItem.appendChild(title);
+
+        const folderContent = document.createElement('div');
+        folderContent.className = 'folder-content';
+        folderContent.style.display = 'none';
+
+        // Get groups for this window
+        const windowGroups = allGroups.filter(g => g.windowId === window.id);
+        const groupsMap = new Map(windowGroups.map(group => [group.id, group]));
+        const renderedTabIds = new Set();
+
+        // Render tabs with group support
+        for (const tab of window.tabs) {
+            if (renderedTabIds.has(tab.id)) continue;
+
+            if (tab.groupId > 0) {
+                const group = groupsMap.get(tab.groupId);
+                if (!group) continue;
+
+                const groupHeader = document.createElement('div');
+                groupHeader.className = 'tab-group-header';
+                groupHeader.dataset.collapsed = group.collapsed;
+                groupHeader.dataset.groupId = group.id;
+                groupHeader.title = group.title;
+
+                const arrow = document.createElement('span');
+                arrow.className = 'tab-group-arrow';
+                arrow.textContent = group.collapsed ? '▶' : '▼';
+
+                const colorDot = document.createElement('div');
+                colorDot.className = 'tab-group-color-dot';
+                const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
+                colorDot.style.backgroundColor = groupColorHex;
+
+                const groupTitle = document.createElement('span');
+                groupTitle.className = 'tab-group-title';
+                groupTitle.textContent = group.title;
+
+                groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
+                groupHeader.addEventListener('mouseenter', () => {
+                    groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.35);
+                });
+                groupHeader.addEventListener('mouseleave', () => {
+                    groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
+                });
+
+                groupHeader.appendChild(arrow);
+                groupHeader.appendChild(colorDot);
+                groupHeader.appendChild(groupTitle);
+                folderContent.appendChild(groupHeader);
+
+                const groupContent = document.createElement('div');
+                groupContent.className = 'tab-group-content';
+                groupContent.style.display = group.collapsed ? 'none' : 'block';
+
+                const tabsInThisGroup = window.tabs.filter(t => t.groupId === group.id);
+                for (const groupTab of tabsInThisGroup) {
+                    if (renderedTabIds.has(groupTab.id)) continue;
+                    const tabElement = createOtherWindowTabElement(groupTab);
+                    groupContent.appendChild(tabElement);
+                    renderedTabIds.add(groupTab.id);
+                }
+                folderContent.appendChild(groupContent);
+
+                groupHeader.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isCollapsed = groupContent.style.display === 'none';
+                    groupContent.style.display = isCollapsed ? 'block' : 'none';
+                    arrow.textContent = isCollapsed ? '▼' : '▶';
+                });
+            } else {
+                const tabElement = createOtherWindowTabElement(tab);
+                folderContent.appendChild(tabElement);
+                renderedTabIds.add(tab.id);
+            }
+        }
+
+        // Toggle collapse on click
+        folderItem.addEventListener('click', () => {
+            const isExpanded = folderContent.style.display !== 'none';
+            folderContent.style.display = isExpanded ? 'none' : 'block';
+            icon.textContent = isExpanded ? '▶' : '▼';
+        });
+
+        otherWindowsList.appendChild(folderItem);
+        otherWindowsList.appendChild(folderContent);
+    });
 }

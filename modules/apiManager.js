@@ -12,6 +12,7 @@ export const createTab = (options) => chrome.tabs.create(options);
 
 // Wrappers for chrome.tabGroups API
 export const getTabGroupsInCurrentWindow = () => chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT });
+export const getAllTabGroups = () => chrome.tabGroups.query({});
 export const moveTabGroup = (groupId, index) => chrome.tabGroups.move(groupId, { index });
 export const updateTabGroup = (groupId, options) => chrome.tabGroups.update(groupId, options);
 
@@ -56,6 +57,8 @@ export async function searchBookmarksByUrl(url) {
 
 // Wrappers for chrome.windows API
 export const updateWindow = (windowId, options) => chrome.windows.update(windowId, options);
+export const getCurrentWindow = () => chrome.windows.getCurrent();
+export const getAllWindowsWithTabs = () => chrome.windows.getAll({ populate: true });
 
 // Wrappers for chrome.i18n API
 export const getMessage = (key, substitutions) => chrome.i18n.getMessage(key, substitutions);

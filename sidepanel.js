@@ -29,11 +29,15 @@ async function handleAddToGroupClick(tabId) {
 }
 
 async function updateTabList() {
-    const [groups, tabs] = await Promise.all([
+    const [groups, tabs, currentWindow, allWindows, allGroups] = await Promise.all([
         api.getTabGroupsInCurrentWindow(),
-        api.getTabsInCurrentWindow()
+        api.getTabsInCurrentWindow(),
+        api.getCurrentWindow(),
+        api.getAllWindowsWithTabs(),
+        api.getAllTabGroups()
     ]);
     ui.renderTabsAndGroups(tabs, groups, { onAddToGroupClick: handleAddToGroupClick });
+    ui.renderOtherWindowsSection(allWindows, currentWindow.id, allGroups);
     // 觸發搜尋以套用當前的過濾狀態
     search.handleSearch();
     dragDrop.initializeTabSortable(updateTabList);
@@ -61,14 +65,13 @@ async function initialize() {
     await state.initLinkedTabs(); // Load linked tabs state first
     state.loadBookmarkCache(); // Load cached bookmarks from localStorage
     await state.buildBookmarkCache(); // Build fresh cache on startup
-    console.log('initialize() called'); // DEBUG
-    applyStaticTranslations(); console.log('applyStaticTranslations done');
-    search.initialize(); console.log('search.initialize done');
-    ui.initThemeSwitcher(); console.log('ui.initThemeSwitcher done'); // 初始化主題切換器
-    updateTabList(); console.log('updateTabList done');
-    refreshBookmarks(); console.log('refreshBookmarks done');
-    addEventListeners(); console.log('addEventListeners done');
-    initializeSearchUI(); console.log('initializeSearchUI done');
+    applyStaticTranslations();
+    search.initialize();
+    ui.initThemeSwitcher(); // 初始化主題切換器
+    updateTabList();
+    refreshBookmarks();
+    addEventListeners();
+    initializeSearchUI();
 
     // Listen for refresh request from settings
     document.addEventListener('refreshBookmarksRequired', () => {
@@ -104,6 +107,10 @@ function addEventListeners() {
     chrome.tabGroups.onUpdated.addListener(updateTabList);
     chrome.tabGroups.onRemoved.addListener(updateTabList);
     chrome.tabGroups.onMoved.addListener(updateTabList);
+
+    // Window events for other windows section
+    chrome.windows.onCreated.addListener(updateTabList);
+    chrome.windows.onRemoved.addListener(updateTabList);
 
     chrome.bookmarks.onRemoved.addListener((id) => {
         state.removeLinksByBookmarkId(id);
