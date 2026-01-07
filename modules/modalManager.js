@@ -6,7 +6,7 @@ function createModal(content) {
 
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
-    
+
     // Don't use innerHTML for content that includes a form, to ensure proper event handling
     if (typeof content === 'string') {
         modalContent.innerHTML = content;
@@ -170,7 +170,7 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
     });
 }
 
-export function showCustomDialog({ title, content, closeButtonText = api.getMessage("closeButton") || 'Close', onOpen = () => {} }) {
+export function showCustomDialog({ title, content, closeButtonText = api.getMessage("closeButton") || 'Close', onOpen = () => { } }) {
     return new Promise((resolve) => {
         const dialogContent = document.createElement('div');
 
@@ -233,7 +233,7 @@ export function showAddToBookmarkDialog({ name, url }) {
             nodes.forEach(node => {
                 if (node.children) { // It's a folder
                     const folderItem = document.createElement('div');
-                    folderItem.className = 'bookmark-folder'; // Reuse style
+                    folderItem.className = 'bookmark-folder';
                     folderItem.dataset.bookmarkId = node.id;
                     folderItem.title = node.title;
 
@@ -275,7 +275,7 @@ export function showAddToBookmarkDialog({ name, url }) {
         }
 
         renderFolders(rootFolders, treeContainer, '');
-        
+
         const firstFolder = treeContainer.querySelector('.bookmark-folder');
         if (firstFolder) {
             firstFolder.classList.add('selected');

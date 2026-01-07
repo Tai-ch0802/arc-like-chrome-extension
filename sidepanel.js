@@ -67,7 +67,7 @@ async function initialize() {
     await state.buildBookmarkCache(); // Build fresh cache on startup
     applyStaticTranslations();
     search.initialize();
-    ui.initThemeSwitcher(); // 初始化主題切換器
+    ui.initThemeSwitcher();
     updateTabList();
     refreshBookmarks();
     addEventListeners();

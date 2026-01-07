@@ -17,11 +17,9 @@ export function applyTheme(themeName) {
  */
 export function initThemeSwitcher() {
     const settingsToggle = document.getElementById('settings-toggle');
-    console.log('settingsToggle element:', settingsToggle); // DEBUG
 
     // 點擊設定圖示，彈出設定對話框
     settingsToggle.addEventListener('click', async () => {
-        console.log('Settings toggle clicked!'); // DEBUG
         const currentTheme = document.body.dataset.theme || 'geek';
 
         const themeOptions = [
@@ -47,9 +45,7 @@ export function initThemeSwitcher() {
         let newTabRightShortcut = 'N/A';
         try {
             const commands = await chrome.commands.getAll();
-            console.log('All commands:', commands); // DEBUG
             const toggleCommand = commands.find(cmd => cmd.name === '_execute_action');
-            console.log('Toggle command:', toggleCommand); // DEBUG
             if (toggleCommand && toggleCommand.shortcut) {
                 currentShortcut = toggleCommand.shortcut;
             }
@@ -83,7 +79,7 @@ export function initThemeSwitcher() {
             </div>
         `;
 
-        console.log('Calling showCustomDialog...'); // DEBUG
+
         await modal.showCustomDialog({
             title: api.getMessage('settingsTitle'),
             content: content,
