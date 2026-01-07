@@ -130,9 +130,22 @@ function filterTabsAndGroups(keywords) {
 async function filterBookmarks(keywords) {
     // 如果沒有關鍵字，直接返回（不重新渲染）
     // 書籤已經在 refreshBookmarks 中渲染好了
+    // 如果沒有關鍵字，檢查是否需要重置視圖
     if (keywords.length === 0) {
+        if (isFiltering) {
+            // 從過濾狀態變為無過濾狀態（使用者清除了搜尋）
+            isFiltering = false;
+            // 請求完整重新渲染以恢復書籤樹的原始狀態
+            document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
+        }
+        // 無論是否剛剛重置，如果是空字串，我們都不進行過濾渲染，直接回傳 0
+        // (如果是剛重置，refreshBookmarks 會處理重新渲染)
+        // (如果是初始化，預設就是完整視圖)
         return 0;
     }
+
+    // 標記目前正在進行過濾
+    isFiltering = true;
 
     // 從 cache 中搜尋匹配的書籤
     const cache = state.getBookmarkCache();
@@ -455,6 +468,8 @@ function clearHighlights() {
 
 // 鍵盤導航相關變數
 let selectedIndex = -1;
+// Search state to track if we are currently showing filtered results
+let isFiltering = false;
 
 // 取得所有可見的導航項目（分頁和書籤）
 function getAllVisibleItems() {
