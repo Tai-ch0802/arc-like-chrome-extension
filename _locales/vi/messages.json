@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "Cửa sổ khác",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "Hộp thoại này sẽ đóng sau 5 giây...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }

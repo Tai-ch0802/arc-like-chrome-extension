@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "หน้าต่างอื่น",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "กล่องข้อความนี้จะปิดในอีก 5 วินาที...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }

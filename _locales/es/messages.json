@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "Otras ventanas",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "Este diálogo se cerrará en 5 segundos...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }

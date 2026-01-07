@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "其他窗口",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "此对话框将在 5 秒后关闭...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }

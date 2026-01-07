@@ -14,7 +14,7 @@ const GROUP_COLORS = {
     orange: '#ffab70'
 };
 
-export async function showLinkedTabsPanel(bookmarkId) {
+export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
         api.getBookmark(bookmarkId),
         api.getTabGroupsInCurrentWindow()
@@ -24,12 +24,24 @@ export async function showLinkedTabsPanel(bookmarkId) {
 
     const groupMap = new Map(allGroups.map(g => [g.id, g]));
     const linkedTabIds = state.getLinkedTabsByBookmarkId(bookmarkId);
+    // Fetch tab info; if getTab fails (tab closed), catch returns null, then we filter out nulls.
     const linkedTabs = (await Promise.all(linkedTabIds.map(id => api.getTab(id).catch(() => null)))).filter(Boolean);
 
     let contentHtml = '<div class="linked-tabs-list">';
+    let shouldAutoClose = false;
 
+    // Check if we have stale tabs (IDs existed in state but tabs are gone)
+    // or if the list is just empty.
     if (linkedTabs.length === 0) {
         contentHtml += `<p>${api.getMessage('noLinkedTabs')}</p>`;
+
+        // If we had IDs in state but no actual tabs found, it means they were stale.
+        // We should clean up and auto-close.
+        if (linkedTabIds.length > 0) {
+            shouldAutoClose = true;
+            await state.removeLinksByBookmarkId(bookmarkId);
+            contentHtml += `<p class="auto-close-warning" style="margin-top: 10px; color: var(--accent-color); font-size: 0.9em;">${api.getMessage('autoCloseDialog')}</p>`;
+        }
     } else {
         for (const tab of linkedTabs) {
             const group = tab.groupId ? groupMap.get(tab.groupId) : null;
@@ -54,6 +66,13 @@ export async function showLinkedTabsPanel(bookmarkId) {
         onOpen: (modalContentElement) => {
             const listElement = modalContentElement.querySelector('.linked-tabs-list');
             const closeBtn = modalContentElement.querySelector('#closeButton');
+
+            if (shouldAutoClose) {
+                setTimeout(() => {
+                    if (closeBtn) closeBtn.click();
+                    if (refreshBookmarksCallback) refreshBookmarksCallback();
+                }, 5000);
+            }
 
             modalContentElement.querySelectorAll('.linked-tab-item').forEach(item => {
                 item.addEventListener('click', async (e) => {
@@ -86,12 +105,10 @@ export async function showLinkedTabsPanel(bookmarkId) {
 }
 
 
-// Legacy Renderer (Recursive DOM)
 // forceExpandAll: when true, render all folders as expanded (for search mode)
 function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
     container.dataset.parentId = parentId;
     bookmarkNodes.forEach(node => {
-        // ... (existing render logic, copy-pasted from original renderBookmarks)
         if (node.url) {
             const linkedTabIds = state.getLinkedTabsByBookmarkId(node.id);
 
@@ -140,7 +157,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                 linkedIcon.title = api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
                 linkedIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    showLinkedTabsPanel(node.id);
+                    showLinkedTabsPanel(node.id, refreshBookmarksCallback);
                 });
                 bookmarkItem.appendChild(linkedIcon);
             }

@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "अन्य विंडो",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "यह संवाद 5 सेकंड में बंद हो जाएगा...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }

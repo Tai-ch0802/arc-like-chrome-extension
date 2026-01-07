@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "Jendela Lain",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "Dialog ini akan tertutup dalam 5 detik...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }

@@ -251,5 +251,9 @@
     "otherWindowsHeader": {
         "message": "다른 창",
         "description": "Header for the other windows section."
+    },
+    "autoCloseDialog": {
+        "message": "이 대화 상자는 5초 후에 닫힙니다...",
+        "description": "Message displayed when an auto-closing dialog is shown."
     }
 }
