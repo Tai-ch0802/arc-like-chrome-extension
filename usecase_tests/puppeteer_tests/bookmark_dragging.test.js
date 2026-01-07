@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, expandBookmarksBar } = require('./setup');
 
 describe('Bookmark Dragging Use Case', () => {
     let browser;
@@ -26,6 +26,7 @@ describe('Bookmark Dragging Use Case', () => {
         testBookmarkId = bookmark.id;
 
         await page.reload();
+        await expandBookmarksBar(page);
         await page.waitForSelector(`.bookmark-folder[data-bookmark-id="${testFolderId1}"]`);
         await page.waitForSelector(`.bookmark-folder[data-bookmark-id="${testFolderId2}"]`);
     });

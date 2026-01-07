@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, expandBookmarksBar } = require('./setup');
 
 describe('Modify Bookmark Folder Use Case', () => {
     let browser;
@@ -28,6 +28,7 @@ describe('Modify Bookmark Folder Use Case', () => {
         }, initialFolderName);
         testFolderId = folder.id;
         await page.reload();
+        await expandBookmarksBar(page);
         await page.waitForSelector(`.bookmark-folder[data-bookmark-id="${testFolderId}"]`);
     });
 

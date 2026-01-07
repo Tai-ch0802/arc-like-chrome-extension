@@ -34,4 +34,24 @@ async function teardownBrowser(browser) {
     await browser.close();
 }
 
-module.exports = { setupBrowser, teardownBrowser };
+/**
+ * Expands the Bookmarks Bar folder (id="1") if it's collapsed.
+ * Required because dynamic rendering only shows children when folder is expanded.
+ */
+async function expandBookmarksBar(page) {
+    const bookmarksBarSelector = '.bookmark-folder[data-bookmark-id="1"]';
+    await page.waitForSelector(bookmarksBarSelector);
+    const isCollapsed = await page.$eval(bookmarksBarSelector, el =>
+        el.querySelector('.bookmark-icon').textContent.includes('▶')
+    );
+    if (isCollapsed) {
+        await page.click(bookmarksBarSelector);
+        await page.waitForFunction(
+            s => document.querySelector(s).querySelector('.bookmark-icon').textContent.includes('▼'),
+            {},
+            bookmarksBarSelector
+        );
+    }
+}
+
+module.exports = { setupBrowser, teardownBrowser, expandBookmarksBar };

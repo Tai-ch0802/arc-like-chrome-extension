@@ -63,7 +63,7 @@ describe('Tab to Bookmark Use Case', () => {
     test('should trigger SortableJS drop event to create a bookmark', async () => {
         const tabSelector = '.tab-item';
         await page.waitForSelector(tabSelector);
-        
+
         const tabTitle = await page.$eval(tabSelector, el => el.querySelector('.tab-title').textContent);
         const tabUrl = await page.$eval(tabSelector, el => el.dataset.url);
 
@@ -86,14 +86,24 @@ describe('Tab to Bookmark Use Case', () => {
         const dropTargetSelector = `.bookmark-folder[data-bookmark-id="${targetFolderId}"] + .folder-content`;
         await page.waitForSelector(dropTargetSelector);
 
+        // Wait for Sortable to be initialized on the drop target
+        await page.waitForFunction(
+            (selector) => {
+                const el = document.querySelector(selector);
+                return el && typeof Sortable !== 'undefined' && Sortable.get(el);
+            },
+            { timeout: 5000 },
+            dropTargetSelector
+        );
+
         // Directly trigger the SortableJS onAdd event
-        await page.evaluate((dropSelector) => {
+        const dropResult = await page.evaluate((dropSelector) => {
             const dropElement = document.querySelector(dropSelector);
             const tabElement = document.querySelector('.tab-item');
 
             // Find the Sortable instance for the drop target
             const sortableInstance = Sortable.get(dropElement);
-            if (sortableInstance) {
+            if (sortableInstance && tabElement) {
                 const evt = {
                     item: tabElement,
                     to: dropElement,
@@ -101,8 +111,14 @@ describe('Tab to Bookmark Use Case', () => {
                     newIndex: 0
                 };
                 sortableInstance.options.onAdd(evt);
+                return { success: true };
             }
+            return { success: false, hasSortable: !!sortableInstance, hasTab: !!tabElement };
         }, dropTargetSelector);
+
+        if (!dropResult.success) {
+            throw new Error(`Drop event failed: ${JSON.stringify(dropResult)}`);
+        }
 
         await page.waitForFunction(
             (folderId, title) => {
@@ -127,7 +143,7 @@ describe('Tab to Bookmark Use Case', () => {
 
         expect(newBookmark).toBeDefined();
         expect(newBookmark.url).toBe(tabUrl);
-        if(newBookmark) createdBookmarkIds.push(newBookmark.id);
+        if (newBookmark) createdBookmarkIds.push(newBookmark.id);
 
     }, 60000);
 });

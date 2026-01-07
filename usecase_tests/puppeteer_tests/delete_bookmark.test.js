@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, expandBookmarksBar } = require('./setup');
 
 describe('Delete Bookmark Use Case', () => {
     let browser;
@@ -27,6 +27,7 @@ describe('Delete Bookmark Use Case', () => {
         });
         testBookmarkId = bookmark.id;
         await page.reload();
+        await expandBookmarksBar(page);
         await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`);
     });
 
@@ -60,7 +61,7 @@ describe('Delete Bookmark Use Case', () => {
                 button.style.opacity = '1';
                 // Ensure parent is also visible
                 let parent = button.parentElement;
-                while(parent) {
+                while (parent) {
                     parent.style.display = 'flex'; // or 'block'
                     parent.style.opacity = '1';
                     parent.style.visibility = 'visible';

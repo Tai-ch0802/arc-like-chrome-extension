@@ -71,10 +71,9 @@ function initializeBookmarkSortable(refreshBookmarks, updateTabList) {
         },
     };
 
-    // Only initialize Sortable on containers that have children
-    // Empty .folder-content should not get Sortable until they're populated
-    const folderContents = Array.from(document.querySelectorAll('.folder-content'))
-        .filter(container => container.children.length > 0);
+    // Initialize Sortable on all folder-content containers, including empty ones,
+    // so users can drag items into empty folders.
+    const folderContents = Array.from(document.querySelectorAll('.folder-content'));
     const sortableContainers = [ui.bookmarkListContainer, ...folderContents];
 
     sortableContainers.forEach(container => {
