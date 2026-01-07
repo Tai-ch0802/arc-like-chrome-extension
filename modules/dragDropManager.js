@@ -34,7 +34,8 @@ function initializeTabSortable(updateTabList) {
         onAdd: (evt) => handleDragAdd(evt, updateTabList),
     };
     tabSortableInstances.push(new Sortable(ui.tabListContainer, sortableOptions));
-    document.querySelectorAll('.tab-group-content').forEach(groupContent => {
+    // Only initialize Sortable on tab groups within the main tab list
+    ui.tabListContainer.querySelectorAll('.tab-group-content').forEach(groupContent => {
         tabSortableInstances.push(new Sortable(groupContent, sortableOptions));
     });
 }
@@ -71,9 +72,9 @@ function initializeBookmarkSortable(refreshBookmarks, updateTabList) {
         },
     };
 
-    // Initialize Sortable on all folder-content containers, including empty ones,
-    // so users can drag items into empty folders.
-    const folderContents = Array.from(document.querySelectorAll('.folder-content'));
+    // Initialize Sortable on all folder-content containers within the bookmark section only.
+    // This excludes Other Windows section which should be read-only.
+    const folderContents = Array.from(ui.bookmarkListContainer.querySelectorAll('.folder-content'));
     const sortableContainers = [ui.bookmarkListContainer, ...folderContents];
 
     sortableContainers.forEach(container => {
