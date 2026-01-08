@@ -15,11 +15,14 @@ Este é o nosso recurso mais poderoso! Quando você abre um favorito na barra la
 - **Sincronização Bidirecional**: Quando uma aba é fechada, o status do favorito é atualizado automaticamente; quando um favorito é excluído, a aba vinculada é tratada de forma inteligente.
 - **Feedback Visual**: Um ícone de link refinado aparece ao lado dos favoritos, permitindo que você saiba rapidamente quais estão ativos no momento.
 
-### ⚡️ Desempenho Incrível: Rolagem Virtual
-Tem milhares de favoritos? Sem problemas!
-- **Latência Zero**: Mesmo com **10.000+** favoritos, a barra lateral permanece suave como seda.
-- **Otimizado para Memória**: Alimentado por um mecanismo de virtualização avançado que renderiza apenas itens visíveis, reduzindo significativamente o uso de memória.
+### ⚡️ Smart Rendering
+Have thousands of bookmarks? No problem!
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
 
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 ### 🔍 Pesquisa de Nível Profissional
 Não apenas pesquise — encontre instantaneamente.
 - **Filtragem Multi-Palavra-Chave**: Suporta palavras-chave separadas por espaço (ex: "google docs trabalho") para segmentação precisa.
@@ -29,6 +32,7 @@ Não apenas pesquise — encontre instantaneamente.
 ### 🗂️ Espaço de Trabalho Unificado
 - **Abas Verticais**: Veja títulos de páginas completos, não mais compactados em ícones minúsculos.
 - **Suporte Nativo a Grupos**: Integra-se perfeitamente com Grupos de Abas do Chrome, sincronizando cores e nomes.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 - **Arrastar e Soltar**: Gerenciamento intuitivo — mova itens sem esforço entre abas, grupos e pastas de favoritos.
 - **Arrastar para Salvar**: Arraste uma aba para a área de favoritos para salvá-la instantaneamente; arraste um favorito para a área de abas para abri-lo.
 
@@ -51,3 +55,9 @@ Valorizamos sua privacidade. Esta extensão opera **completamente offline**. Seu
 ---
 
 **Instale agora e atualize seu Chrome para uma besta de produtividade! 🌟**
+
+---
+
+## Código Aberto e Comunidade
+Este é um projeto de código aberto. Se você estiver interessado em contribuir, visite nosso repositório no GitHub:
+https://github.com/Tai-ch0802/arc-like-chrome-extension

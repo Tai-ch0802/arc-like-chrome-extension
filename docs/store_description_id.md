@@ -15,11 +15,14 @@ Ini adalah fitur kami yang paling kuat! Saat Anda membuka bookmark dari bilah sa
 - **Sinkronisasi Dua Arah**: Saat tab ditutup, status bookmark diperbarui secara otomatis; saat bookmark dihapus, tab yang tertaut ditangani dengan cerdas.
 - **Umpan Balik Visual**: Ikon tautan yang halus muncul di sebelah bookmark, memberi tahu Anda sekilas mana yang sedang aktif.
 
-### ⚡️ Performa Luar Biasa: Pengguliran Virtual
-Punya ribuan bookmark? Tidak masalah!
-- **Nol Latensi**: Bahkan dengan **10.000+** bookmark, bilah samping tetap mulus seperti sutra.
-- **Dioptimalkan Memori**: Didukung oleh mesin virtualisasi canggih yang hanya merender item yang terlihat, secara signifikan mengurangi penggunaan memori.
+### ⚡️ Smart Rendering
+Have thousands of bookmarks? No problem!
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
 
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 ### 🔍 Pencarian Tingkat Profesional
 Jangan hanya mencari—temukan secara instan.
 - **Penyaringan Multi-Kata Kunci**: Mendukung kata kunci yang dipisahkan spasi (mis. "google docs kerja") untuk penargetan yang tepat.
@@ -29,6 +32,7 @@ Jangan hanya mencari—temukan secara instan.
 ### 🗂️ Ruang Kerja Terpadu
 - **Tab Vertikal**: Lihat judul halaman lengkap, tidak lagi dipadatkan menjadi ikon kecil.
 - **Dukungan Grup Asli**: Terintegrasi sempurna dengan Grup Tab Chrome, menyinkronkan warna dan nama.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 - **Seret & Lepas**: Manajemen intuitif—pindahkan item dengan mudah antara tab, grup, dan folder bookmark.
 - **Seret untuk Menyimpan**: Seret tab ke area bookmark untuk menyimpannya secara instan; seret bookmark ke area tab untuk membukanya.
 
@@ -51,3 +55,9 @@ Kami menghargai privasi Anda. Ekstensi ini beroperasi **sepenuhnya offline**. Bo
 ---
 
 **Instal sekarang dan tingkatkan Chrome Anda menjadi monster produktivitas! 🌟**
+
+---
+
+## Open Source & Komunitas
+Ini adalah proyek open source. Jika Anda tertarik untuk berkontribusi, silakan kunjungi repositori GitHub kami:
+https://github.com/Tai-ch0802/arc-like-chrome-extension

@@ -15,11 +15,14 @@ Chúng tôi đã hoàn toàn tái hiện lại Chrome, giới thiệu một bả
 - **Đồng bộ Hai chiều**: Khi một tab bị đóng, trạng thái dấu trang tự động cập nhật; khi một dấu trang bị xóa, tab được liên kết sẽ được xử lý thông minh.
 - **Phản hồi Trực quan**: Một biểu tượng liên kết tinh tế xuất hiện bên cạnh các dấu trang, cho bạn biết ngay lập tức cái nào đang hoạt động.
 
-### ⚡️ Hiệu suất Nhanh như chớp: Cuộn Ảo
-Có hàng ngàn dấu trang? Không vấn đề gì!
-- **Độ trễ Bằng không**: Ngay cả với **10.000+** dấu trang, thanh bên vẫn mượt mà như lụa.
-- **Tối ưu hóa Bộ nhớ**: Được hỗ trợ bởi công cụ ảo hóa tiên tiến chỉ hiển thị các mục hiển thị, giảm đáng kể việc sử dụng bộ nhớ.
+### ⚡️ Smart Rendering
+Have thousands of bookmarks? No problem!
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
 
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 ### 🔍 Tìm kiếm Cấp Chuyên nghiệp
 Đừng chỉ tìm kiếm—hãy tìm thấy ngay lập tức.
 - **Lọc Đa Từ khóa**: Hỗ trợ các từ khóa phân tách bằng dấu cách (ví dụ: "google docs công việc") để nhắm mục tiêu chính xác.
@@ -31,6 +34,7 @@ Có hàng ngàn dấu trang? Không vấn đề gì!
 - **Hỗ trợ Nhóm Gốc**: Tích hợp hoàn hảo với Nhóm Tab Chrome, đồng bộ hóa màu sắc và tên.
 - **Kéo & Thả**: Quản lý trực quan—di chuyển các mục dễ dàng giữa các tab, nhóm và thư mục dấu trang.
 - **Kéo để Lưu**: Kéo một tab vào khu vực dấu trang để lưu ngay lập tức; kéo một dấu trang vào khu vực tab để mở nó.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 
 ### 🎨 Thiết kế Cao cấp
 - **Chế độ Tập trung**: Chủ đề tối bóng bẩy với độ tương phản được điều chỉnh cẩn thận để giảm mỏi mắt.
@@ -51,3 +55,9 @@ Chúng tôi coi trọng quyền riêng tư của bạn. Tiện ích mở rộng 
 ---
 
 **Cài đặt ngay và nâng cấp Chrome của bạn thành một con quái vật năng suất! 🌟**
+
+---
+
+## Mã nguồn mở & Cộng đồng
+Đây là một dự án mã nguồn mở. Nếu bạn quan tâm đến việc đóng góp, vui lòng truy cập kho lưu trữ GitHub của chúng tôi:
+https://github.com/Tai-ch0802/arc-like-chrome-extension

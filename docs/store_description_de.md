@@ -15,11 +15,14 @@ Dies ist unser leistungsstärkstes Feature! Wenn Sie ein Lesezeichen aus der Sei
 - **Zwei-Wege-Synchronisation**: Wenn ein Tab geschlossen wird, aktualisiert sich der Lesezeichenstatus automatisch; wenn ein Lesezeichen gelöscht wird, wird der verknüpfte Tab intelligent behandelt.
 - **Visuelles Feedback**: Ein verfeinertes Link-Symbol erscheint neben Lesezeichen, sodass Sie auf einen Blick sehen, welche gerade aktiv sind.
 
-### ⚡️ Blitzschnelle Leistung: Virtuelles Scrollen
+### ⚡️ Intelligentes Rendern (Smart Rendering)
 Haben Sie Tausende von Lesezeichen? Kein Problem!
-- **Null Latenz**: Selbst mit **10.000+** Lesezeichen bleibt die Seitenleiste seidig weich.
-- **Speicheroptimiert**: Angetrieben von einer fortschrittlichen Virtualisierungs-Engine, die nur sichtbare Elemente rendert und den Speicherverbrauch erheblich reduziert.
+- **Dynamisches Rendern**: Wechsel von virtuellem Scrollen zu einem effizienten dynamischen Rendering-Mechanismus für reibungslose Leistung und bessere Kompatibilität.
+- **Reibungsloses Erlebnis**: Navigieren Sie mühelos und ohne Verzögerung durch große Lesezeichenbibliotheken.
 
+### 🪟 Fensterübergreifende Verwaltung (Cross-Window Management)
+- **Fensterübersicht**: Sehen Sie Tabs aus allen geöffneten Chrome-Fenstern direkt in der Seitenleiste.
+- **Globale Suche**: Suchergebnisse umfassen Tabs aus allen Fenstern für eine sofortige Navigation.
 ### 🔍 Suche auf Profi-Niveau
 Suchen Sie nicht nur – finden Sie sofort.
 - **Multi-Keyword-Filterung**: Unterstützt durch Leerzeichen getrennte Schlüsselwörter (z. B. "google docs arbeit") für präzises Targeting.
@@ -29,6 +32,7 @@ Suchen Sie nicht nur – finden Sie sofort.
 ### 🗂️ Einheitlicher Arbeitsbereich
 - **Vertikale Tabs**: Sehen Sie vollständige Seitentitel, nicht mehr in winzige Symbole gepresst.
 - **Native Gruppenunterstützung**: Integriert sich perfekt in Chrome Tab-Gruppen und synchronisiert Farben und Namen.
+- **Benutzerdefinierte Fensterbenennung**: Weisen Sie Ihren Fenstern eigene Namen zu (z. B. 'Arbeit', 'Persönlich').
 - **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichenordnern.
 - **Drag to Save**: Ziehen Sie einen Tab in den Lesezeichenbereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tabbereich, um es zu öffnen.
 
@@ -51,3 +55,9 @@ Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet **komplett offline*
 ---
 
 **Installieren Sie jetzt und rüsten Sie Ihren Chrome zu einem Produktivitätsmonster auf! 🌟**
+
+---
+
+## Open Source & Community
+Dies ist ein Open-Source-Projekt. Wenn Sie daran interessiert sind, einen Beitrag zu leisten, besuchen Sie bitte unser GitHub-Repository:
+https://github.com/Tai-ch0802/arc-like-chrome-extension

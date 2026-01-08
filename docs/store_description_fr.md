@@ -15,11 +15,14 @@ C'est notre fonctionnalité la plus puissante ! Lorsque vous ouvrez un favori de
 - **Synchronisation Bidirectionnelle** : Lorsqu'un onglet est fermé, le statut du favori se met à jour automatiquement ; lorsqu'un favori est supprimé, l'onglet lié est géré intelligemment.
 - **Retour Visuel** : Une icône de lien raffinée apparaît à côté des favoris, vous permettant de savoir en un coup d'œil lesquels sont actuellement actifs.
 
-### ⚡️ Performance Éclatante : Défilement Virtuel
-Vous avez des milliers de favoris ? Pas de problème !
-- **Zéro Latence** : Même avec **10 000+** favoris, la barre latérale reste soyeuse et fluide.
-- **Optimisé pour la Mémoire** : Propulsé par un moteur de virtualisation avancé qui ne rend que les éléments visibles, réduisant considérablement l'utilisation de la mémoire.
+### ⚡️ Smart Rendering
+Have thousands of bookmarks? No problem!
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
 
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 ### 🔍 Recherche de Niveau Professionnel
 Ne cherchez pas seulement — trouvez instantanément.
 - **Filtrage Multi-Mots-Clés** : Prend en charge les mots-clés séparés par des espaces (ex. "google docs travail") pour un ciblage précis.
@@ -29,6 +32,7 @@ Ne cherchez pas seulement — trouvez instantanément.
 ### 🗂️ Espace de Travail Unifié
 - **Onglets Verticaux** : Affichez les titres complets des pages, qui ne sont plus compressés en minuscules icônes.
 - **Support Natif des Groupes** : S'intègre parfaitement aux Groupes d'Onglets Chrome, synchronisant les couleurs et les noms.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 - **Glisser-Déposer** : Gestion intuitive — déplacez les éléments sans effort entre les onglets, les groupes et les dossiers de favoris.
 - **Glisser pour Sauvegarder** : Faites glisser un onglet dans la zone des favoris pour le sauvegarder instantanément ; faites glisser un favori dans la zone des onglets pour l'ouvrir.
 
@@ -51,3 +55,9 @@ Nous tenons à votre vie privée. Cette extension fonctionne **complètement hor
 ---
 
 **Installez maintenant et transformez votre Chrome en une bête de productivité ! 🌟**
+
+---
+
+## Open Source et Communauté
+Ceci est un projet open source. Si vous êtes intéressé à contribuer, veuillez visiter notre dépôt GitHub :
+https://github.com/Tai-ch0802/arc-like-chrome-extension

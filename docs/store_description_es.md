@@ -15,11 +15,14 @@ Hemos reinventado Chrome por completo, introduciendo un panel lateral moderno qu
 - **Sincronización Bidireccional**: Cuando se cierra una pestaña, el estado del marcador se actualiza automáticamente; cuando se elimina un marcador, la pestaña vinculada se maneja de manera inteligente.
 - **Retroalimentación Visual**: Un icono de enlace refinado aparece junto a los marcadores, permitiéndote saber de un vistazo cuáles están activos actualmente.
 
-### ⚡️ Rendimiento Ultrarrápido: Desplazamiento Virtual
+### ⚡️ Renderizado Inteligente (Smart Rendering)
 ¿Tienes miles de marcadores? ¡No hay problema!
-- **Cero Latencia**: Incluso con **10,000+** marcadores, la barra lateral permanece suave como la seda.
-- **Optimizado para Memoria**: Impulsado por un motor de virtualización avanzado que solo renderiza los elementos visibles, reduciendo significativamente el uso de memoria.
+- **Renderizado Dinámico**: Cambiamos del desplazamiento virtual a un mecanismo de renderizado dinámico eficiente, asegurando un rendimiento fluido con mejor compatibilidad.
+- **Experiencia Fluida**: Navega a través de grandes bibliotecas de marcadores sin esfuerzo y sin retrasos.
 
+### 🪟 Gestión entre Ventanas (Cross-Window Management)
+- **Visión General de Ventanas**: Vea pestañas de todas las ventanas abiertas de Chrome directamente en la barra lateral.
+- **Búsqueda Global**: Los resultados de búsqueda incluyen pestañas de todas las ventanas para una navegación instantánea.
 ### 🔍 Búsqueda de Grado Profesional
 No solo busques, encuentra al instante.
 - **Filtrado Multi-Palabra Clave**: Soporta palabras clave separadas por espacios (ej. "google docs trabajo") para una precisión exacta.
@@ -29,6 +32,7 @@ No solo busques, encuentra al instante.
 ### 🗂️ Espacio de Trabajo Unificado
 - **Pestañas Verticales**: Ve los títulos completos de las páginas, ya no comprimidos en iconos diminutos.
 - **Soporte Nativo de Grupos**: Se integra perfectamente con los Grupos de Pestañas de Chrome, sincronizando colores y nombres.
+- **Nombrado de Ventanas Personalizado**: Asigna nombres personalizados a tus ventanas (ej. 'Trabajo', 'Personal').
 - **Arrastrar y Soltar**: Gestión intuitiva: mueve elementos sin esfuerzo entre pestañas, grupos y carpetas de marcadores.
 - **Arrastrar para Guardar**: Arrastra una pestaña al área de marcadores para guardarla al instante; arrastra un marcador al área de pestañas para abrirlo.
 
@@ -51,3 +55,9 @@ Valoramos tu privacidad. Esta extensión opera **completamente offline**. Tus ma
 ---
 
 **¡Instala ahora y actualiza tu Chrome a una bestia de productividad! 🌟**
+
+---
+
+## Código Abierto y Comunidad
+Este es un proyecto de código abierto. Si estás interesado en contribuir, por favor visita nuestro repositorio en GitHub:
+https://github.com/Tai-ch0802/arc-like-chrome-extension

@@ -14,10 +14,14 @@ This is our most powerful feature! When you open a bookmark from the sidebar, we
 - **Two-Way Sync**: When a tab is closed, the bookmark status updates automatically; when a bookmark is deleted, the linked tab is handled intelligently.
 - **Visual Feedback**: A refined link icon appears next to bookmarks, letting you know at a glance which ones are currently active.
 
-### ⚡️ Blazing Performance: Virtual Scrolling
+### ⚡️ Smart Rendering
 Have thousands of bookmarks? No problem!
-- **Zero Latency**: Even with **10,000+** bookmarks, the sidebar remains silky smooth.
-- **Memory Optimized**: Powered by an advanced virtualization engine that only renders visible items, significantly reducing memory usage.
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
+
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 
 ### 🔍 Professional Grade Search
 Don't just search—find instantly.
@@ -28,6 +32,7 @@ Don't just search—find instantly.
 ### 🗂️ Unified Workspace
 - **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
 - **Native Group Support**: Perfectly integrates with Chrome Tab Groups, syncing colors and names.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 - **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
 - **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
 
@@ -107,6 +112,16 @@ For future automated testing, we have chosen **Puppeteer** as our End-to-End (E2
 *   **Puppeteer**: A Node.js library that provides a high-level API to control Chromium or Chrome over the DevTools Protocol. It allows us to write scripts to simulate various user actions in the browser, such as clicks, input, navigation, etc., and capture screenshots or retrieve page content for verification.
 *   **Installation**: Puppeteer has been installed in the project via `npm install puppeteer`.
 *   **Future Outlook**: In the future, the descriptive test cases in `usecase_tests/` will be gradually converted into executable Puppeteer scripts to achieve automated testing and continuous integration.
+
+---
+
+## 👥 Contributors
+
+Special thanks to all contributors who help make this project better:
+
+<a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Tai-ch0802/arc-like-chrome-extension" />
+</a>
 
 ---
 

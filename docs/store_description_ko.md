@@ -15,11 +15,14 @@
 - **양방향 동기화**: 탭이 닫히면 북마크 상태가 자동으로 업데이트됩니다. 북마크가 삭제되면 연결된 탭이 지능적으로 처리됩니다.
 - **시각적 피드백**: 북마크 옆에 세련된 링크 아이콘이 나타나 현재 활성화된 북마크를 한눈에 알 수 있습니다.
 
-### ⚡️ 놀라운 성능: 가상 스크롤 (Virtual Scrolling)
-수천 개의 북마크가 있나요? 문제없습니다!
-- **제로 레이턴시**: **10,000+** 개의 북마크가 있어도 사이드바는 비단처럼 부드럽게 유지됩니다.
-- **메모리 최적화**: 보이는 항목만 렌더링하는 고급 가상화 엔진으로 구동되어 메모리 사용량을 크게 줄입니다.
+### ⚡️ Smart Rendering
+Have thousands of bookmarks? No problem!
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
 
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 ### 🔍 전문가급 검색
 그저 검색하지 말고, 즉시 찾으세요.
 - **다중 키워드 필터링**: 정확한 타겟팅을 위해 공백으로 구분된 키워드(예: "google docs 업무")를 지원합니다.
@@ -31,6 +34,7 @@
 - **네이티브 그룹 지원**: Chrome 탭 그룹과 완벽하게 통합되어 색상과 이름을 동기화합니다.
 - **드래그 앤 드롭**: 직관적인 관리—탭, 그룹, 북마크 폴더 간에 항목을 쉽게 이동하세요.
 - **드래그하여 저장**: 탭을 북마크 영역으로 드래그하여 즉시 저장하고, 북마크를 탭 영역으로 드래그하여 엽니다.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 
 ### 🎨 프리미엄 디자인
 - **집중 모드**: 눈의 피로를 줄이기 위해 세심하게 조정된 대비를 갖춘 세련된 다크 테마.
@@ -51,3 +55,9 @@
 ---
 
 **지금 설치하고 Chrome을 생산성 괴물로 업그레이드하세요! 🌟**
+
+---
+
+## 오픈 소스 및 커뮤니티
+이 프로젝트는 오픈 소스입니다. 기여에 관심이 있으시면 GitHub 저장소를 방문해 주세요:
+https://github.com/Tai-ch0802/arc-like-chrome-extension
