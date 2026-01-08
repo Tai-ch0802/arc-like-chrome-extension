@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "Это окно закроется через 5 секунд...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "Переименовать окно",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "Переименовать окно",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "Введите новое имя окна:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

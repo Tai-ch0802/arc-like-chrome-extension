@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "このダイアログは5秒後に閉じます...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "ウィンドウの名前を変更",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "ウィンドウの名前を変更",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "新しいウィンドウ名を入力してください:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

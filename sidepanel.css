@@ -500,7 +500,8 @@ mark.url-match {
 
 /* --- 書籤樣式 --- */
 .bookmark-item,
-.bookmark-folder {
+.bookmark-folder,
+.window-folder {
     display: flex;
     align-items: center;
     padding: 4px 8px;
@@ -523,14 +524,16 @@ mark.url-match {
     background-color: var(--element-bg-hover-color);
 }
 
-.bookmark-icon {
+.bookmark-icon,
+.window-icon {
     width: 16px;
     height: 16px;
     margin-right: 12px;
     flex-shrink: 0;
 }
 
-.bookmark-title {
+.bookmark-title,
+.window-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1028,3 +1031,33 @@ mark.url-match {
     z-index: 10;
 }
 
+
+/* Window Renaming Button - Show on Hover */
+/* Window Renaming Button */
+.window-edit-btn {
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    color: var(--text-color-secondary);
+    transition: color 0.2s ease, opacity 0.2s ease-in-out;
+    padding: 0;
+
+    /* Default Hidden */
+    opacity: 0;
+    pointer-events: none;
+}
+
+.window-edit-btn:hover {
+    font-weight: bold;
+    color: var(--warning-color);
+}
+
+.window-folder:hover .window-edit-btn {
+    opacity: 1;
+    pointer-events: auto;
+}

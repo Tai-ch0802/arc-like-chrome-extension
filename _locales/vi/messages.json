@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "Hộp thoại này sẽ đóng sau 5 giây...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "Đổi tên cửa sổ",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "Đổi tên cửa sổ",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "Nhập tên cửa sổ mới:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

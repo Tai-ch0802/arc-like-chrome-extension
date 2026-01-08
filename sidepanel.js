@@ -62,7 +62,11 @@ function applyStaticTranslations() {
 }
 
 async function initialize() {
-    await state.initLinkedTabs(); // Load linked tabs state first
+    await Promise.all([
+        state.initLinkedTabs(), // Load linked tabs state first
+        state.initWindowNames() // Load window names
+    ]);
+    await state.pruneWindowNames(); // Prune stale window names on startup
     state.loadBookmarkCache(); // Load cached bookmarks from localStorage
     await state.buildBookmarkCache(); // Build fresh cache on startup
     applyStaticTranslations();
@@ -110,7 +114,10 @@ function addEventListeners() {
 
     // Window events for other windows section
     chrome.windows.onCreated.addListener(updateTabList);
-    chrome.windows.onRemoved.addListener(updateTabList);
+    chrome.windows.onRemoved.addListener(async (windowId) => {
+        await state.removeWindowName(windowId);
+        updateTabList();
+    });
 
     chrome.bookmarks.onRemoved.addListener((id) => {
         state.removeLinksByBookmarkId(id);

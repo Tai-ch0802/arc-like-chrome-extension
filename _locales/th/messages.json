@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "กล่องข้อความนี้จะปิดในอีก 5 วินาที...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "เปลี่ยนชื่อหน้าต่าง",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "เปลี่ยนชื่อหน้าต่าง",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "ป้อนชื่อหน้าต่างใหม่:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

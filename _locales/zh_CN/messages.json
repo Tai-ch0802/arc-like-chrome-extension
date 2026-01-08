@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "此对话框将在 5 秒后关闭...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "重命名窗口",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "重命名窗口",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "输入新窗口名称：",
+        "description": "Prompt message in the rename window dialog."
     }
 }

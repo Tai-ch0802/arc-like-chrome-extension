@@ -64,7 +64,7 @@ describe('Other Windows Use Case', () => {
         await page.waitForSelector('#other-windows-list');
 
         // Find the folder representing the second window
-        const otherWindowFolderSelector = '#other-windows-list .bookmark-folder';
+        const otherWindowFolderSelector = '#other-windows-list .window-folder';
         await page.waitForSelector(otherWindowFolderSelector);
 
         // Click to expand the folder
@@ -88,7 +88,7 @@ describe('Other Windows Use Case', () => {
 
     test('should NOT allow dragging tabs from Other Windows', async () => {
         // Expand the folder
-        const otherWindowFolderSelector = '#other-windows-list .bookmark-folder';
+        const otherWindowFolderSelector = '#other-windows-list .window-folder';
         await page.waitForSelector(otherWindowFolderSelector);
         await page.click(otherWindowFolderSelector);
         await new Promise(r => setTimeout(r, 300));

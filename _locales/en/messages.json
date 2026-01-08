@@ -258,5 +258,17 @@
     "autoCloseDialog": {
         "message": "This dialog will close in 5 seconds...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "Rename Window",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "Rename Window",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "Enter new window name:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "Dialog ini akan tertutup dalam 5 detik...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "Ganti Nama Jendela",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "Ganti Nama Jendela",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "Masukkan nama jendela baru:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "यह संवाद 5 सेकंड में बंद हो जाएगा...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "विंडो का नाम बदलें",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "विंडो का नाम बदलें",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "नया विंडो नाम दर्ज करें:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

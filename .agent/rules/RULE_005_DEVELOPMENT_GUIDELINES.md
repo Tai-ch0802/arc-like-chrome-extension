@@ -1,4 +1,5 @@
 ---
+trigger: always_on
 description: 開發準則與脈絡工程
 ---
 
@@ -37,3 +38,10 @@ description: 開發準則與脈絡工程
 ## 偏好語言
 
 與 AI 助手互動時，偏好使用**繁體中文 (zh-TW)**。
+
+
+## 1. Code Reusability & DRY Principle
+- **No Redundant Icons**: Avoid hardcoding duplicate SVG strings or icon definitions in multiple files. Centralize all icons in `modules/icons.js` (or a similar shared module) and import them where needed. This ensures consistency and makes updates easier.
+
+## 2. UI/UX Consistency
+- **Hover Effects**: Interactive elements like edit buttons should typically be revealed on hover to reduce visual clutter, unless they are primary actions.

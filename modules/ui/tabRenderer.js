@@ -1,4 +1,6 @@
 import * as api from '../apiManager.js';
+import * as state from '../stateManager.js';
+import { EDIT_ICON_SVG } from '../icons.js';
 import { tabListContainer, otherWindowsList } from './elements.js';
 
 const GROUP_COLORS = {
@@ -338,20 +340,65 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
     windowsToShow.forEach((window, index) => {
         // Use bookmark-folder style
         const folderItem = document.createElement('div');
-        folderItem.className = 'bookmark-folder';
+        folderItem.className = 'window-folder';
         folderItem.dataset.windowId = window.id;
         folderItem.title = `Window ${index + 1}`;
 
         const icon = document.createElement('span');
-        icon.className = 'bookmark-icon';
+        icon.className = 'window-icon';
         icon.textContent = '▶';
 
+        const customName = state.getWindowName(window.id);
+        const titleText = customName || `Window ${index + 1} (${window.tabs.length})`;
+
         const title = document.createElement('span');
-        title.className = 'bookmark-title';
-        title.textContent = `Window ${index + 1} (${window.tabs.length})`;
+        title.className = 'window-title';
+        title.textContent = titleText;
+        title.style.flex = '1'; // Take remaining space
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'window-edit-btn';
+        editBtn.innerHTML = EDIT_ICON_SVG;
+        editBtn.style.marginLeft = '4px';
+        editBtn.title = api.getMessage('renameWindow') || 'Rename Window';
+
+        editBtn.onclick = async (e) => {
+            e.stopPropagation();
+            const modal = await import('../modalManager.js');
+            const newName = await modal.showPrompt({
+                title: api.getMessage('renameWindowDialogTitle') || 'Rename Window',
+                confirmButtonText: api.getMessage('saveButton') || 'Save',
+                defaultValue: customName || ''
+            });
+
+            if (newName !== null) {
+                await state.setWindowName(window.id, newName);
+                // Trigger re-render. Since we don't have direct access to `updateTabList` here, 
+                // we might need to rely on the fact that `updateTabList` calls this. 
+                // However, state change won't auto-trigger update.
+                // We can manually update the title text node here for immediate feedback, 
+                // or dispatch an event.
+                // The cleanest way is to just dispatch a tab update event or similar that triggers `updateTabList` in `sidepanel.js`?
+                // Or simpler: just update the text content here because `updateTabList` is usually triggered by chrome events.
+                // But changing name doesn't trigger chrome events.
+                // Let's dispatch a custom event.
+                document.dispatchEvent(new CustomEvent('refreshBookmarksRequired')); // This refreshes bookmarks, but maybe we need one valid for tabs?
+                // `sidepanel.js` listens to `refreshBookmarksRequired`. 
+                // We don't have a `refreshTabsRequired`.
+                // Let's manually update DOM here for generic feel.
+                title.textContent = newName || `Window ${index + 1} (${window.tabs.length})`;
+            }
+        };
+
+        editBtn.addEventListener('mouseenter', () => editBtn.style.opacity = '1');
+        editBtn.addEventListener('mouseleave', () => editBtn.style.opacity = '0.6');
+
+        folderItem.style.display = 'flex';
+        folderItem.style.alignItems = 'center';
 
         folderItem.appendChild(icon);
         folderItem.appendChild(title);
+        folderItem.appendChild(editBtn);
 
         const folderContent = document.createElement('div');
         folderContent.className = 'folder-content';

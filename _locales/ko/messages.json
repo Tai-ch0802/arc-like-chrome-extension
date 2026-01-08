@@ -255,5 +255,17 @@
     "autoCloseDialog": {
         "message": "이 대화 상자는 5초 후에 닫힙니다...",
         "description": "Message displayed when an auto-closing dialog is shown."
+    },
+    "renameWindow": {
+        "message": "창 이름 바꾸기",
+        "description": "Tooltip for the rename window button."
+    },
+    "renameWindowDialogTitle": {
+        "message": "창 이름 바꾸기",
+        "description": "Title of the dialog to rename a window."
+    },
+    "enterWindowName": {
+        "message": "새 창 이름 입력:",
+        "description": "Prompt message in the rename window dialog."
     }
 }

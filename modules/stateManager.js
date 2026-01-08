@@ -1,4 +1,4 @@
-import { getStorage, setStorage } from './apiManager.js';
+import { getStorage, setStorage, getAllWindows } from './apiManager.js';
 
 // --- UI State Management Module ---
 
@@ -12,6 +12,82 @@ export const removeExpandedFolder = (folderId) => expandedBookmarkFolders.delete
 
 export const clearExpandedFolders = () => expandedBookmarkFolders.clear();
 
+
+// --- Window Naming State ---
+
+const WINDOW_NAMES_STORAGE_KEY = 'windowNames';
+let windowNames = {}; // In-memory cache of { windowId: "Custom Name" }
+
+/**
+ * Loads the window names mapping from chrome.storage.local into the in-memory cache.
+ */
+export async function initWindowNames() {
+  const result = await getStorage('local', [WINDOW_NAMES_STORAGE_KEY]);
+  windowNames = result[WINDOW_NAMES_STORAGE_KEY] || {};
+}
+
+/**
+ * Saves the in-memory window names mapping to chrome.storage.local.
+ * @private
+ */
+function _saveWindowNames() {
+  return setStorage('local', { [WINDOW_NAMES_STORAGE_KEY]: windowNames });
+}
+
+/**
+ * Gets the custom name for a specific window.
+ * @param {number} windowId
+ * @returns {string|undefined}
+ */
+export function getWindowName(windowId) {
+  return windowNames[windowId];
+}
+
+/**
+ * Sets the custom name for a specific window.
+ * @param {number} windowId
+ * @param {string} name
+ */
+export async function setWindowName(windowId, name) {
+  if (name && name.trim().length > 0) {
+    windowNames[windowId] = name.trim();
+  } else {
+    delete windowNames[windowId];
+  }
+  await _saveWindowNames();
+}
+
+/**
+ * Removes the custom name for a specific window.
+ * @param {number} windowId
+ */
+export async function removeWindowName(windowId) {
+  if (windowNames[windowId]) {
+    delete windowNames[windowId];
+    await _saveWindowNames();
+  }
+}
+
+/**
+ * Prunes window names that correspond to non-existent windows.
+ */
+export async function pruneWindowNames() {
+  const allWindows = await getAllWindows();
+  const activeWindowIds = new Set(allWindows.map(w => w.id.toString()));
+
+  let changed = false;
+  Object.keys(windowNames).forEach(storedId => {
+    if (!activeWindowIds.has(storedId.toString())) {
+      delete windowNames[storedId];
+      changed = true;
+    }
+  });
+
+  if (changed) {
+    await _saveWindowNames();
+    console.log('Pruned stale window names');
+  }
+}
 
 // --- Bookmark-Tab Linking State ---
 

@@ -59,6 +59,7 @@ export async function searchBookmarksByUrl(url) {
 export const updateWindow = (windowId, options) => chrome.windows.update(windowId, options);
 export const getCurrentWindow = () => chrome.windows.getCurrent();
 export const getAllWindowsWithTabs = () => chrome.windows.getAll({ populate: true });
+export const getAllWindows = () => chrome.windows.getAll({ populate: false });
 
 // Wrappers for chrome.i18n API
 export const getMessage = (key, substitutions) => chrome.i18n.getMessage(key, substitutions);
