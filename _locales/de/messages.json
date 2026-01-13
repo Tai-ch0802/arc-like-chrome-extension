@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "Neuen Fensternamen eingeben:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "Die Erkennung von geteilten Ansichts-Tabs ist fehlgeschlagen. Möchten Sie trotzdem eine Gruppe für diesen einzelnen Tab erstellen?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Ja",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }

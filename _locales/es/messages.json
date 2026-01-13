@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "Ingrese el nuevo nombre de la ventana:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "Error al detectar las pestañas de vista dividida. ¿Desea continuar con la creación de un grupo para esta única pestaña?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Sí",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }

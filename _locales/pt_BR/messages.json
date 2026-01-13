@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "Digite o novo nome da janela:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "Falha ao detectar as guias de visualização dividida. Deseja prosseguir com a criação de um grupo para esta única guia?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Sim",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }

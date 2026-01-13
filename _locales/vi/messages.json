@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "Nhập tên cửa sổ mới:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "Không phát hiện được các tab xem chia đôi. Bạn có muốn tiếp tục tạo nhóm cho tab đơn này không?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Có",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }

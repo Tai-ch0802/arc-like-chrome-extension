@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "輸入新的視窗名稱：",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "無法偵測分割畫面的分頁。您是否仍要為這個分頁建立群組？",
+        "description": "分割畫面分頁偵測失敗時的錯誤訊息。"
+    },
+    "yesButton": {
+        "message": "是",
+        "description": "確認對話框中「是」按鈕的文字。"
     }
 }

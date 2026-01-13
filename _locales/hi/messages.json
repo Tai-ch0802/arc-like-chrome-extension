@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "नया विंडो नाम दर्ज करें:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "विभाजित दृश्य टैब का पता लगाने में विफल। क्या आप इस एकल टैब के लिए एक समूह बनाने के साथ आगे बढ़ना चाहते हैं?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "हाँ",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }

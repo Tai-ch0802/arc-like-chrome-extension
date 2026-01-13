@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "新しいウィンドウ名を入力してください:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "分割表示タブの検出に失敗しました。この単一のタブでグループを作成しますか？",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "はい",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }

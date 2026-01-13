@@ -267,5 +267,13 @@
     "enterWindowName": {
         "message": "Entrez le nouveau nom de la fenêtre :",
         "description": "Prompt message in the rename window dialog."
+    },
+    "splitViewDetectionError": {
+        "message": "La détection des onglets en vue fractionnée a échoué. Voulez-vous continuer en créant un groupe pour cet onglet unique ?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Oui",
+        "description": "Label for the yes button in confirmation dialogs."
     }
 }
