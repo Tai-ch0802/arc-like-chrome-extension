@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "Nhập tên cửa sổ mới:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "Tìm kiếm tab và dấu trang",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Xóa tìm kiếm",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Cài đặt",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

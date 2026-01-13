@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "नया विंडो नाम दर्ज करें:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "टैब और बुकमार्क खोजें",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "खोज साफ़ करें",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "सेटिंग",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "新しいウィンドウ名を入力してください:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "タブとブックマークを検索",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "検索をクリア",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "設定",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

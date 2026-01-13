@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "새 창 이름 입력:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "탭 및 북마크 검색",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "검색 지우기",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "설정",
+        "description": "Accessibility label for the settings toggle button."
     }
 }
