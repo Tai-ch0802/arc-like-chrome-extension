@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "ป้อนชื่อหน้าต่างใหม่:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "ค้นหาแท็บและบุ๊กมาร์ก",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "ล้างการค้นหา",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "การตั้งค่า",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "输入新窗口名称：",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "搜索标签页和书签",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "清除搜索",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "设置",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

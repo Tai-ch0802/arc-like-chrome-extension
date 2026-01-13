@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "Neuen Fensternamen eingeben:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "Tabs und Lesezeichen suchen",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Suche löschen",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Einstellungen",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

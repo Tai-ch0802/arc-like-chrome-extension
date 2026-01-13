@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "Введите новое имя окна:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "Поиск вкладок и закладок",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Очистить поиск",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Настройки",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

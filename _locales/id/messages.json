@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "Masukkan nama jendela baru:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "Cari tab dan bookmark",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Hapus pencarian",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Pengaturan",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

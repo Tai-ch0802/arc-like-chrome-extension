@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "Entrez le nouveau nom de la fenêtre :",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "Rechercher des onglets et des favoris",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Effacer la recherche",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Paramètres",
+        "description": "Accessibility label for the settings toggle button."
     }
 }
