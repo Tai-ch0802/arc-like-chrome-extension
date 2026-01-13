@@ -45,3 +45,6 @@ description: 開發準則與脈絡工程
 
 ## 2. UI/UX Consistency
 - **Hover Effects**: Interactive elements like edit buttons should typically be revealed on hover to reduce visual clutter, unless they are primary actions.
+
+## 3. Consistency Maintenance
+- **AGENTS.md Synchronization**: `AGENTS.md` in the root directory acts as the master context. Any changes to development guidelines, architecture, or project structure in this `rules` directory **MUST** be reflected in `AGENTS.md` to maintain strong consistency.
