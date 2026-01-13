@@ -270,5 +270,17 @@
     "enterWindowName": {
         "message": "Enter new window name:",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "Search tabs and bookmarks",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Clear search",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Settings",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

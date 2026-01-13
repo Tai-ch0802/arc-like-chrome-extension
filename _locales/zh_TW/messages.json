@@ -267,5 +267,17 @@
     "enterWindowName": {
         "message": "輸入新的視窗名稱：",
         "description": "Prompt message in the rename window dialog."
+    },
+    "searchAriaLabel": {
+        "message": "搜尋分頁與書籤",
+        "description": "搜尋輸入框的無障礙標籤。"
+    },
+    "clearSearchAriaLabel": {
+        "message": "清除搜尋",
+        "description": "清除搜尋按鈕的無障礙標籤。"
+    },
+    "settingsAriaLabel": {
+        "message": "設定",
+        "description": "設定切換按鈕的無障礙標籤。"
     }
 }
