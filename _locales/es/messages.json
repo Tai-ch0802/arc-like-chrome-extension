@@ -275,5 +275,17 @@
     "yesButton": {
         "message": "Sí",
         "description": "Label for the yes button in confirmation dialogs."
+    },
+    "searchAriaLabel": {
+        "message": "Buscar pestañas y marcadores",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Borrar búsqueda",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Configuración",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

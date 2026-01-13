@@ -275,5 +275,17 @@
     "yesButton": {
         "message": "是",
         "description": "確認對話框中「是」按鈕的文字。"
+    },
+    "searchAriaLabel": {
+        "message": "搜尋分頁與書籤",
+        "description": "搜尋輸入框的無障礙標籤。"
+    },
+    "clearSearchAriaLabel": {
+        "message": "清除搜尋",
+        "description": "清除搜尋按鈕的無障礙標籤。"
+    },
+    "settingsAriaLabel": {
+        "message": "設定",
+        "description": "設定切換按鈕的無障礙標籤。"
     }
 }

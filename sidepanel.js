@@ -66,6 +66,20 @@ async function refreshBookmarks() {
 function applyStaticTranslations() {
     document.title = api.getMessage("extensionName");
     ui.searchBox.placeholder = api.getMessage("searchPlaceholder");
+
+    // Apply accessible labels and titles
+    ui.searchBox.setAttribute('aria-label', api.getMessage("searchAriaLabel"));
+
+    const clearSearchLabel = api.getMessage("clearSearchAriaLabel");
+    ui.clearSearchBtn.setAttribute('aria-label', clearSearchLabel);
+    ui.clearSearchBtn.title = clearSearchLabel;
+
+    const settingsToggle = document.getElementById('settings-toggle');
+    if (settingsToggle) {
+        const settingsLabel = api.getMessage("settingsAriaLabel");
+        settingsToggle.setAttribute('aria-label', settingsLabel);
+        settingsToggle.title = settingsLabel;
+    }
 }
 
 async function initialize() {

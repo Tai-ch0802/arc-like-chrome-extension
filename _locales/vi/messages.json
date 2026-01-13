@@ -275,5 +275,17 @@
     "yesButton": {
         "message": "Có",
         "description": "Label for the yes button in confirmation dialogs."
+    },
+    "searchAriaLabel": {
+        "message": "Tìm kiếm tab và dấu trang",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Xóa tìm kiếm",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Cài đặt",
+        "description": "Accessibility label for the settings toggle button."
     }
 }

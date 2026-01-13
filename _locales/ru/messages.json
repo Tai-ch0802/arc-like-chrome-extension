@@ -275,5 +275,17 @@
     "yesButton": {
         "message": "Да",
         "description": "Label for the yes button in confirmation dialogs."
+    },
+    "searchAriaLabel": {
+        "message": "Поиск вкладок и закладок",
+        "description": "Accessibility label for the search input box."
+    },
+    "clearSearchAriaLabel": {
+        "message": "Очистить поиск",
+        "description": "Accessibility label for the clear search button."
+    },
+    "settingsAriaLabel": {
+        "message": "Настройки",
+        "description": "Accessibility label for the settings toggle button."
     }
 }
