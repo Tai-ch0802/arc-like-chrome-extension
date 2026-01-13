@@ -271,6 +271,14 @@
         "message": "Enter new window name:",
         "description": "Prompt message in the rename window dialog."
     },
+    "splitViewDetectionError": {
+        "message": "Failed to detect split view tabs. Do you want to proceed with creating a group for this single tab?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Yes",
+        "description": "Label for the yes button in confirmation dialogs."
+    },
     "searchAriaLabel": {
         "message": "Search tabs and bookmarks",
         "description": "Accessibility label for the search input box."

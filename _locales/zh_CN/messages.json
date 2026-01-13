@@ -268,6 +268,14 @@
         "message": "输入新窗口名称：",
         "description": "Prompt message in the rename window dialog."
     },
+    "splitViewDetectionError": {
+        "message": "未能检测到分屏视图选项卡。您想继续为这个单一选项卡创建一个组吗？",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "是",
+        "description": "Label for the yes button in confirmation dialogs."
+    },
     "searchAriaLabel": {
         "message": "搜索标签页和书签",
         "description": "Accessibility label for the search input box."

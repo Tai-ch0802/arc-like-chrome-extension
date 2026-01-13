@@ -268,6 +268,14 @@
         "message": "ป้อนชื่อหน้าต่างใหม่:",
         "description": "Prompt message in the rename window dialog."
     },
+    "splitViewDetectionError": {
+        "message": "ตรวจไม่พบแท็บมุมมองแยก คุณต้องการสร้างกลุ่มสำหรับแท็บเดี่ยวนี้หรือไม่",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "ใช่",
+        "description": "Label for the yes button in confirmation dialogs."
+    },
     "searchAriaLabel": {
         "message": "ค้นหาแท็บและบุ๊กมาร์ก",
         "description": "Accessibility label for the search input box."

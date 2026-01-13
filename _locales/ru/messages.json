@@ -268,6 +268,14 @@
         "message": "Введите новое имя окна:",
         "description": "Prompt message in the rename window dialog."
     },
+    "splitViewDetectionError": {
+        "message": "Не удалось обнаружить вкладки с разделенным видом. Вы хотите продолжить создание группы для этой одной вкладки?",
+        "description": "Error message when split view tab detection fails."
+    },
+    "yesButton": {
+        "message": "Да",
+        "description": "Label for the yes button in confirmation dialogs."
+    },
     "searchAriaLabel": {
         "message": "Поиск вкладок и закладок",
         "description": "Accessibility label for the search input box."
