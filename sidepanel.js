@@ -20,7 +20,13 @@ async function handleAddToGroupClick(tabId) {
             }
         } catch (err) {
             console.error('Error identifying split view tabs:', err);
-            // Fallback to single tab if something fails
+            const confirm = await modal.showConfirm({
+                title: 'Failed to detect split view tabs. Do you want to proceed with creating a group for this single tab?',
+                confirmButtonText: 'Yes',
+            });
+            if (!confirm) {
+                return; // User cancelled
+            }
         }
 
         await api.addTabToNewGroup(tabsToGroup, result.title, result.color);
