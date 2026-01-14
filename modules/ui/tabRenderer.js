@@ -58,7 +58,9 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
-    closeBtn.title = api.getMessage("closeTab") || "Close Tab";
+    const closeTabLabel = api.getMessage("closeTab") || "Close Tab";
+    closeBtn.title = closeTabLabel;
+    closeBtn.setAttribute('aria-label', closeTabLabel);
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         api.removeTab(tab.id);
@@ -67,7 +69,9 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToGroupBtn = document.createElement('button');
     addToGroupBtn.className = 'add-to-group-btn';
     addToGroupBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>`;
-    addToGroupBtn.title = api.getMessage("addToGroup") || "Add tab to new group";
+    const addToGroupLabel = api.getMessage("addToGroup") || "Add tab to new group";
+    addToGroupBtn.title = addToGroupLabel;
+    addToGroupBtn.setAttribute('aria-label', addToGroupLabel);
     addToGroupBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         onAddToGroupClick(tab.id);
@@ -76,7 +80,9 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
     addToBookmarkBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
-    addToBookmarkBtn.title = api.getMessage("addBookmark") || "Add to bookmarks";
+    const addToBookmarkLabel = api.getMessage("addBookmark") || "Add to bookmarks";
+    addToBookmarkBtn.title = addToBookmarkLabel;
+    addToBookmarkBtn.setAttribute('aria-label', addToBookmarkLabel);
     addToBookmarkBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         // Note: Circular dependency if we import modalManager directly here if modalManager imports uiManager.
@@ -360,7 +366,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         editBtn.className = 'window-edit-btn';
         editBtn.innerHTML = EDIT_ICON_SVG;
         editBtn.style.marginLeft = '4px';
-        editBtn.title = api.getMessage('renameWindow') || 'Rename Window';
+        const renameWindowLabel = api.getMessage('renameWindow') || 'Rename Window';
+        editBtn.title = renameWindowLabel;
+        editBtn.setAttribute('aria-label', renameWindowLabel);
 
         editBtn.onclick = async (e) => {
             e.stopPropagation();
