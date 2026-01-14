@@ -205,6 +205,8 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     }
 
     const renderedTabIds = new Set();
+    // Use DocumentFragment to batch DOM updates
+    const fragment = document.createDocumentFragment();
 
     // Helper to render split groups
     const renderSplitOrTab = (tab, contextTabs, container) => {
@@ -275,7 +277,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             groupHeader.appendChild(arrow);
             groupHeader.appendChild(colorDot);
             groupHeader.appendChild(title);
-            tabListContainer.appendChild(groupHeader);
+            fragment.appendChild(groupHeader);
 
             const groupContent = document.createElement('div');
             groupContent.className = 'tab-group-content';
@@ -287,7 +289,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             for (const groupTab of tabsInThisGroup) {
                 renderSplitOrTab(groupTab, tabsInThisGroup, groupContent);
             }
-            tabListContainer.appendChild(groupContent);
+            fragment.appendChild(groupContent);
 
             groupHeader.addEventListener('click', (e) => {
                 if (e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
@@ -298,9 +300,10 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 }
             });
         } else {
-            renderSplitOrTab(tab, tabs, tabListContainer);
+            renderSplitOrTab(tab, tabs, fragment);
         }
     }
+    tabListContainer.appendChild(fragment);
 }
 
 // Create a simple tab element for other windows (without group actions)
@@ -365,6 +368,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         }
         groupsByWindow.get(g.windowId).push(g);
     }
+
+    // Use DocumentFragment to batch DOM updates
+    const fragment = document.createDocumentFragment();
 
     windowsToShow.forEach((window, index) => {
         // Use bookmark-folder style
@@ -527,7 +533,8 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
             icon.textContent = isExpanded ? '▶' : '▼';
         });
 
-        otherWindowsList.appendChild(folderItem);
-        otherWindowsList.appendChild(folderContent);
+        fragment.appendChild(folderItem);
+        fragment.appendChild(folderContent);
     });
+    otherWindowsList.appendChild(fragment);
 }
