@@ -419,6 +419,14 @@ function applyBookmarkVisibility(keywords, visibleItems) {
 
 // 高亮匹配的文字
 function highlightMatches(keywords) {
+    // 預先編譯所有正則表達式，避免在迴圈中重複編譯
+    const regexes = keywords
+        .filter(k => k.length > 0)
+        .map(keyword => ({
+            regex: new RegExp(`(${escapeRegExp(keyword)})`, 'gi'),
+            keyword: keyword // 雖然這裡可能不再需要，但保留以防萬一
+        }));
+
     // 高亮分頁標題（包含其他視窗）
     const tabItems = document.querySelectorAll('#tab-list .tab-item:not(.hidden), #other-windows-list .tab-item:not(.hidden)');
     tabItems.forEach(item => {
@@ -428,7 +436,7 @@ function highlightMatches(keywords) {
 
         if (titleElement) {
             const originalTitle = titleElement.textContent;
-            const highlightedTitle = highlightText(originalTitle, keywords, 'title');
+            const highlightedTitle = highlightText(originalTitle, regexes, 'title');
 
             // 只在有高亮時才更新 DOM
             if (highlightedTitle !== originalTitle) {
@@ -447,7 +455,7 @@ function highlightMatches(keywords) {
                 // 建立 domain 顯示元素
                 const domainElement = document.createElement('div');
                 domainElement.className = 'matched-domain';
-                const highlightedDomain = highlightText(matchedDomain, keywords, 'url');
+                const highlightedDomain = highlightText(matchedDomain, regexes, 'url');
                 domainElement.innerHTML = highlightedDomain + '...';
 
                 // 附加到 titleWrapper
@@ -468,7 +476,7 @@ function highlightMatches(keywords) {
 
         if (titleElement) {
             const originalTitle = titleElement.textContent;
-            const highlightedTitle = highlightText(originalTitle, keywords, 'title');
+            const highlightedTitle = highlightText(originalTitle, regexes, 'title');
 
             if (highlightedTitle !== originalTitle) {
                 titleElement.innerHTML = highlightedTitle;
@@ -486,7 +494,7 @@ function highlightMatches(keywords) {
                 // 建立 domain 顯示元素
                 const domainElement = document.createElement('div');
                 domainElement.className = 'matched-domain';
-                const highlightedDomain = highlightText(matchedDomain, keywords, 'url');
+                const highlightedDomain = highlightText(matchedDomain, regexes, 'url');
                 domainElement.innerHTML = highlightedDomain + '...';
 
                 // 附加到 bookmark-content-wrapper
@@ -500,15 +508,11 @@ function highlightMatches(keywords) {
 }
 
 // 高亮文字工具函式
-function highlightText(text, keywords, type) {
+function highlightText(text, regexes, type) {
     let result = text;
 
-    // 為每個關鍵字加上高亮
-    keywords.forEach(keyword => {
-        if (keyword.length === 0) return;
-
-        // 使用正則表達式進行大小寫不敏感的替換
-        const regex = new RegExp(`(${escapeRegExp(keyword)})`, 'gi');
+    // 使用預先編譯的正則表達式
+    regexes.forEach(({ regex }) => {
         const markClass = type === 'url' ? 'url-match' : 'title-match';
         result = result.replace(regex, `<mark class="${markClass}">$1</mark>`);
     });

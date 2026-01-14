@@ -107,4 +107,52 @@ describe.skip('Performance Benchmark', () => {
         expect(result.tabsTime).toBeGreaterThan(0);
         expect(result.otherWindowsTime).toBeGreaterThan(0);
     });
+
+    test('Measure handleSearch highlighting performance with large dataset', async () => {
+        const NUM_TABS = 2000;
+        const SEARCH_KEYWORD = "Tab";
+
+        const result = await page.evaluate(async (numTabs, searchKeyword) => {
+            // Setup: Generate tabs
+            const tabs = Array.from({ length: numTabs }, (_, i) => ({
+                id: i,
+                windowId: 1,
+                groupId: -1,
+                title: `Tab ${i} - This is a long title to simulate real world scenarios`,
+                url: `https://example.com/page/${i}`,
+                favIconUrl: '',
+                active: false
+            }));
+
+            // Setup: Render tabs
+            const tabRenderer = await import('./modules/ui/tabRenderer.js');
+            const searchManager = await import('./modules/searchManager.js');
+            // Ensure UI elements exist (searchBox is in sidepanel.html usually, but here we might need to mock or ensure it's there)
+            // The setupBrowser loads the extension, so sidepanel.html is loaded.
+
+            // Render tabs
+            tabRenderer.renderTabsAndGroups(tabs, [], { onAddToGroupClick: () => {} });
+
+            // Set search box value because handleSearch reads it
+            const searchBox = document.getElementById('search-box');
+            if (searchBox) {
+                searchBox.value = searchKeyword;
+            }
+
+            const start = performance.now();
+            await searchManager.handleSearch();
+            const end = performance.now();
+
+            return {
+                executionTime: end - start,
+                tabCount: tabs.length
+            };
+        }, NUM_TABS, SEARCH_KEYWORD);
+
+        console.log(`Benchmark Results (Search):`);
+        console.log(`  Total Tabs: ${result.tabCount}`);
+        console.log(`  handleSearch execution time: ${result.executionTime.toFixed(2)} ms`);
+
+        expect(result.executionTime).toBeGreaterThan(0);
+    });
 });
