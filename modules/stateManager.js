@@ -93,6 +93,7 @@ export async function pruneWindowNames() {
 
 const LINKED_TABS_STORAGE_KEY = 'linkedTabs';
 let linkedTabs = {}; // In-memory cache of { bookmarkId: [tabId1, tabId2, ...] }
+let tabToBookmarkMap = {}; // In-memory reverse map of { tabId: bookmarkId } for quick lookups.
 
 /**
  * Loads the linked tabs mapping from chrome.storage.local into the in-memory cache.
@@ -100,6 +101,20 @@ let linkedTabs = {}; // In-memory cache of { bookmarkId: [tabId1, tabId2, ...] }
 export async function initLinkedTabs() {
   const result = await getStorage('local', [LINKED_TABS_STORAGE_KEY]);
   linkedTabs = result[LINKED_TABS_STORAGE_KEY] || {};
+  _buildTabToBookmarkMap();
+}
+
+/**
+ * Builds the reverse mapping from tab IDs to bookmark IDs for quick lookups.
+ * @private
+ */
+function _buildTabToBookmarkMap() {
+  tabToBookmarkMap = {};
+  for (const bookmarkId in linkedTabs) {
+    for (const tabId of linkedTabs[bookmarkId]) {
+      tabToBookmarkMap[tabId] = bookmarkId;
+    }
+  }
 }
 
 /**
@@ -122,6 +137,7 @@ export async function addLinkedTab(bookmarkId, tabId) {
   // Avoid adding duplicates
   if (!linkedTabs[bookmarkId].includes(tabId)) {
     linkedTabs[bookmarkId].push(tabId);
+    tabToBookmarkMap[tabId] = bookmarkId; // Update reverse map
     await _saveLinkedTabs();
   }
 }
@@ -135,6 +151,7 @@ export async function removeLinkedTabByTabId(tabId) {
   const bookmarkId = getBookmarkIdByTabId(tabId);
   if (bookmarkId) {
     linkedTabs[bookmarkId] = linkedTabs[bookmarkId].filter(t => t !== tabId);
+    delete tabToBookmarkMap[tabId]; // Update reverse map
     if (linkedTabs[bookmarkId].length === 0) {
       delete linkedTabs[bookmarkId];
     }
@@ -150,6 +167,10 @@ export async function removeLinkedTabByTabId(tabId) {
  */
 export async function removeLinksByBookmarkId(bookmarkId) {
   if (linkedTabs[bookmarkId]) {
+    // Update reverse map before deleting
+    for (const tabId of linkedTabs[bookmarkId]) {
+      delete tabToBookmarkMap[tabId];
+    }
     delete linkedTabs[bookmarkId];
     await _saveLinkedTabs();
   }
@@ -165,17 +186,12 @@ export const getLinkedTabsByBookmarkId = (bookmarkId) => {
 };
 
 /**
- * Finds the bookmark ID associated with a given tab ID.
+ * Finds the bookmark ID associated with a given tab ID using the reverse map.
  * @param {number} tabId - The ID of the tab.
  * @returns {string|null} The bookmark ID, or null if not found.
  */
 export const getBookmarkIdByTabId = (tabId) => {
-  for (const bookmarkId in linkedTabs) {
-    if (linkedTabs[bookmarkId].includes(tabId)) {
-      return bookmarkId;
-    }
-  }
-  return null;
+  return tabToBookmarkMap[tabId] || null;
 };
 
 /**
