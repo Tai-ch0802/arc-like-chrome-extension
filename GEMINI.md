@@ -102,6 +102,13 @@ release_note_guidelines: |
   語言應以繁體中文為主。
   產出的 `RELEASE_NOTE.md` 檔案僅為臨時預覽用途，應被加入 `.gitignore` 中，不進入版控。
 
+# PR Review 指南
+pr_review_guidelines: |
+  請遵循 `.agent/rules/RULE_006_PR_REVIEW_GUIDELINES.md` 規範。
+  - 使用 `gh` CLI 進行 Review。
+  - 語言使用繁體中文 (zh-TW)。
+  - 必須在結尾附上 `created by antigravity agent` 簽名。
+
 # 開發準則
 - 在做任何改動時，需要留意是否可能影響其他的檔案。並且時刻留意此次的改動項目，必要時在 GEMINI.md 上調整專案 key_files 的描述及調整。
 

@@ -141,9 +141,11 @@ async function moveItem(item, newIndex, container) {
             targetAbsoluteIndex = tab.index;
         } else if (targetElement.classList.contains('tab-group-header')) {
             const targetGroupId = parseInt(targetElement.dataset.groupId, 10);
-            const tabsInGroup = await api.getTabsInGroup(targetGroupId);
-            if (tabsInGroup.length > 0) {
-                targetAbsoluteIndex = Math.min(...tabsInGroup.map(t => t.index));
+            if (!isNaN(targetGroupId)) {
+                const tabsInGroup = await api.getTabsInGroup(targetGroupId);
+                if (tabsInGroup.length > 0) {
+                    targetAbsoluteIndex = Math.min(...tabsInGroup.map(t => t.index));
+                }
             }
         } else if (targetElement.classList.contains('tab-split-group')) {
             // If target is a split group, target the index of its first child tab
@@ -170,6 +172,7 @@ async function moveItem(item, newIndex, container) {
         }
     }
 }
+
 
 async function handleBookmarkDrop(evt, refreshBookmarks, updateTabList) {
     const { item, to, newIndex } = evt;
