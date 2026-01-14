@@ -9,6 +9,7 @@ export const getTab = (tabId) => chrome.tabs.get(tabId);
 export const removeTab = (tabId) => chrome.tabs.remove(tabId);
 export const updateTab = (tabId, options) => chrome.tabs.update(tabId, options);
 export const createTab = (options) => chrome.tabs.create(options);
+export const getTabsInGroup = (groupId) => chrome.tabs.query({ groupId });
 
 // Wrappers for chrome.tabGroups API
 export const getTabGroupsInCurrentWindow = () => chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT });
