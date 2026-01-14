@@ -18,6 +18,7 @@ Detailed behavioral rules are defined in `.agent/rules/`. Agents **MUST** consul
 - **[Build & Deploy](.agent/rules/RULE_003_BUILD_AND_DEPLOY.md)**: Instructions for `make`, previewing in Chrome, and packaging.
 - **[Commit & Release](.agent/rules/RULE_004_COMMIT_AND_RELEASE.md)**: Conventional Commits (English Subject, Traditional Chinese Body) and Release Note styles.
 - **[Development Guidelines](.agent/rules/RULE_005_DEVELOPMENT_GUIDELINES.md)**: Impact analysis, Context Engineering (`.gemini/NOTE_*.md`), and coding standards.
+- **[PR Review Guidelines](.agent/rules/RULE_006_PR_REVIEW_GUIDELINES.md)**: Standard procedure for PR reviews (zh-TW, gh CLI, signature).
 
 ## Core Interaction Principles
 1. **Language**: Traditional Chinese (zh-TW) for conversation and commit bodies. English for commit subjects and code comments.
