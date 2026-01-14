@@ -192,6 +192,18 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
+
+    // Optimization: Pre-group tabs by groupId
+    const tabsByGroup = new Map();
+    for (const tab of tabs) {
+        if (tab.groupId > 0) {
+            if (!tabsByGroup.has(tab.groupId)) {
+                tabsByGroup.set(tab.groupId, []);
+            }
+            tabsByGroup.get(tab.groupId).push(tab);
+        }
+    }
+
     const renderedTabIds = new Set();
 
     // Helper to render split groups
@@ -269,7 +281,9 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             groupContent.className = 'tab-group-content';
             groupContent.style.display = group.collapsed ? 'none' : 'block';
 
-            const tabsInThisGroup = tabs.filter(t => t.groupId === group.id);
+            // Optimization: Use pre-grouped tabs
+            const tabsInThisGroup = tabsByGroup.get(group.id) || [];
+
             for (const groupTab of tabsInThisGroup) {
                 renderSplitOrTab(groupTab, tabsInThisGroup, groupContent);
             }
@@ -343,6 +357,15 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
     if (windowsToShow.length === 0) return;
 
+    // Optimization: Pre-group all groups by windowId
+    const groupsByWindow = new Map();
+    for (const g of allGroups) {
+        if (!groupsByWindow.has(g.windowId)) {
+            groupsByWindow.set(g.windowId, []);
+        }
+        groupsByWindow.get(g.windowId).push(g);
+    }
+
     windowsToShow.forEach((window, index) => {
         // Use bookmark-folder style
         const folderItem = document.createElement('div');
@@ -413,8 +436,20 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         folderContent.style.display = 'none';
 
         // Get groups for this window
-        const windowGroups = allGroups.filter(g => g.windowId === window.id);
+        const windowGroups = groupsByWindow.get(window.id) || [];
         const groupsMap = new Map(windowGroups.map(group => [group.id, group]));
+
+        // Optimization: Pre-group tabs for this window
+        const tabsByGroup = new Map();
+        for (const t of window.tabs) {
+            if (t.groupId > 0) {
+                if (!tabsByGroup.has(t.groupId)) {
+                    tabsByGroup.set(t.groupId, []);
+                }
+                tabsByGroup.get(t.groupId).push(t);
+            }
+        }
+
         const renderedTabIds = new Set();
 
         // Render tabs with group support
@@ -461,7 +496,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                 groupContent.className = 'tab-group-content';
                 groupContent.style.display = group.collapsed ? 'none' : 'block';
 
-                const tabsInThisGroup = window.tabs.filter(t => t.groupId === group.id);
+                // Optimization: Use pre-grouped tabs
+                const tabsInThisGroup = tabsByGroup.get(group.id) || [];
+
                 for (const groupTab of tabsInThisGroup) {
                     if (renderedTabIds.has(groupTab.id)) continue;
                     const tabElement = createOtherWindowTabElement(groupTab);
