@@ -68,7 +68,7 @@ describe('Other Windows Use Case', () => {
         await page.waitForSelector(otherWindowFolderSelector);
 
         // Click to expand the folder
-        await page.click(otherWindowFolderSelector);
+        await page.$eval(otherWindowFolderSelector, el => el.click());
         await new Promise(r => setTimeout(r, 300)); // Wait for expansion animation
 
         // Verify tabs are visible inside the folder-content
@@ -90,7 +90,7 @@ describe('Other Windows Use Case', () => {
         // Expand the folder
         const otherWindowFolderSelector = '#other-windows-list .window-folder';
         await page.waitForSelector(otherWindowFolderSelector);
-        await page.click(otherWindowFolderSelector);
+        await page.$eval(otherWindowFolderSelector, el => el.click());
         await new Promise(r => setTimeout(r, 300));
 
         // Get a tab item from Other Windows

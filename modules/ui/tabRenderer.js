@@ -27,7 +27,9 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.className = 'tab-item';
     if (tab.active) {
         tabItem.classList.add('active');
+        tabItem.setAttribute('aria-selected', 'true');
     }
+    tabItem.tabIndex = 0; // Make tab focusable
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
 
@@ -108,9 +110,17 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.appendChild(favicon);
     tabItem.appendChild(titleWrapper);  // 使用 titleWrapper 而不是直接 title
     tabItem.appendChild(actionsContainer);
-    tabItem.addEventListener('click', () => {
+    const activateTab = () => {
         api.updateTab(tab.id, { active: true });
         api.updateWindow(tab.windowId, { focused: true });
+    };
+
+    tabItem.addEventListener('click', activateTab);
+    tabItem.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activateTab();
+        }
     });
 
     // Custom Context Menu
@@ -310,6 +320,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 function createOtherWindowTabElement(tab) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
+    tabItem.tabIndex = 0;
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
 
@@ -342,9 +353,17 @@ function createOtherWindowTabElement(tab) {
     tabItem.appendChild(titleWrapper);
 
     // Click to focus the tab and its window
-    tabItem.addEventListener('click', () => {
+    const activateTab = () => {
         api.updateTab(tab.id, { active: true });
         api.updateWindow(tab.windowId, { focused: true });
+    };
+
+    tabItem.addEventListener('click', activateTab);
+    tabItem.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activateTab();
+        }
     });
 
     return tabItem;
@@ -376,6 +395,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         // Use bookmark-folder style
         const folderItem = document.createElement('div');
         folderItem.className = 'window-folder';
+        folderItem.tabIndex = 0;
+        folderItem.setAttribute('role', 'button');
+        folderItem.setAttribute('aria-expanded', 'false');
         folderItem.dataset.windowId = window.id;
         folderItem.title = `Window ${index + 1}`;
 
@@ -527,10 +549,19 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         }
 
         // Toggle collapse on click
-        folderItem.addEventListener('click', () => {
+        const toggleCollapse = () => {
             const isExpanded = folderContent.style.display !== 'none';
             folderContent.style.display = isExpanded ? 'none' : 'block';
             icon.textContent = isExpanded ? '▶' : '▼';
+            folderItem.setAttribute('aria-expanded', !isExpanded);
+        };
+
+        folderItem.addEventListener('click', toggleCollapse);
+        folderItem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleCollapse();
+            }
         });
 
         fragment.appendChild(folderItem);
