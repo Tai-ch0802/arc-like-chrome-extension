@@ -206,6 +206,9 @@ function filterOtherWindowsTabs(keywords) {
     return totalCount;
 }
 
+// Search state to track if we are currently showing filtered results
+let isFiltering = false;
+
 // 過濾書籤，回傳可見書籤數量 (使用 Cache 進行搜尋)
 async function filterBookmarks(keywords) {
     // 如果沒有關鍵字，直接返回（不重新渲染）
@@ -550,64 +553,14 @@ function clearHighlights() {
     bookmarkDomains.forEach(element => element.remove());
 }
 
-// 鍵盤導航相關變數
-let selectedIndex = -1;
-// Search state to track if we are currently showing filtered results
-let isFiltering = false;
-
-// 取得所有可見的導航項目（分頁和書籤）
-function getAllVisibleItems() {
-    const visibleTabs = Array.from(document.querySelectorAll('#tab-list .tab-item:not(.hidden)'));
-    const visibleBookmarks = Array.from(ui.bookmarkListContainer.querySelectorAll('.bookmark-item:not(.hidden)'));
-    return [...visibleTabs, ...visibleBookmarks];
-}
-
-// 更新選取狀態
-function updateSelection(items) {
-    // 清除舊的選取
-    document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-
-    if (selectedIndex >= 0 && selectedIndex < items.length) {
-        const selectedItem = items[selectedIndex];
-        selectedItem.classList.add('selected');
-        selectedItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
-}
-
-// 處理鍵盤導航
-function handleKeyNavigation(e) {
-    const items = getAllVisibleItems();
-    if (items.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        selectedIndex++;
-        if (selectedIndex >= items.length) selectedIndex = 0; // 循環到第一個
-        updateSelection(items);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        selectedIndex--;
-        if (selectedIndex < 0) selectedIndex = items.length - 1; // 循環到最後一個
-        updateSelection(items);
-    } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (selectedIndex >= 0 && selectedIndex < items.length) {
-            items[selectedIndex].click();
-        }
-    }
-}
 
 // 使用 debounce 包裝的搜尋函式
 const debouncedSearch = debounce(() => {
     handleSearch();
-    // 搜尋後重置選取狀態
-    selectedIndex = -1;
-    updateSelection([]);
 }, 300);
 
 function initialize() {
     ui.searchBox.addEventListener('input', debouncedSearch);
-    ui.searchBox.addEventListener('keydown', handleKeyNavigation);
 }
 
 export { initialize, handleSearch, filterTabsAndGroups, filterBookmarks };

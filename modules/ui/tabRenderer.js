@@ -60,6 +60,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
+    closeBtn.tabIndex = -1;
     const closeTabLabel = api.getMessage("closeTab") || "Close Tab";
     closeBtn.title = closeTabLabel;
     closeBtn.setAttribute('aria-label', closeTabLabel);
@@ -71,6 +72,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToGroupBtn = document.createElement('button');
     addToGroupBtn.className = 'add-to-group-btn';
     addToGroupBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>`;
+    addToGroupBtn.tabIndex = -1;
     const addToGroupLabel = api.getMessage("addToGroup") || "Add tab to new group";
     addToGroupBtn.title = addToGroupLabel;
     addToGroupBtn.setAttribute('aria-label', addToGroupLabel);
@@ -82,6 +84,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
     addToBookmarkBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
+    addToBookmarkBtn.tabIndex = -1;
     const addToBookmarkLabel = api.getMessage("addBookmark") || "Add to bookmarks";
     addToBookmarkBtn.title = addToBookmarkLabel;
     addToBookmarkBtn.setAttribute('aria-label', addToBookmarkLabel);
@@ -261,6 +264,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
             const groupHeader = document.createElement('div');
             groupHeader.className = 'tab-group-header';
+            groupHeader.tabIndex = 0;
             groupHeader.dataset.collapsed = group.collapsed;
             groupHeader.dataset.groupId = group.id;
             groupHeader.title = group.title;
@@ -309,6 +313,14 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                     groupContent.style.display = isCollapsed ? 'block' : 'none';
                     arrow.textContent = isCollapsed ? '▼' : '▶';
                     api.updateTabGroup(group.id, { collapsed: !isCollapsed });
+                }
+            });
+
+            groupHeader.addEventListener('keydown', (e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    groupHeader.click();
                 }
             });
         } else {
@@ -398,7 +410,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
     windowsToShow.forEach((window, index) => {
         // Use bookmark-folder style
         const folderItem = document.createElement('div');
-        folderItem.className = 'window-folder';
+        folderItem.className = 'window-folder'; // Changed from bookmark-folder to window-folder
         folderItem.tabIndex = 0;
         folderItem.setAttribute('role', 'button');
         folderItem.setAttribute('aria-expanded', 'false');
@@ -421,6 +433,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         editBtn.className = 'window-edit-btn';
         editBtn.innerHTML = EDIT_ICON_SVG;
         editBtn.style.marginLeft = '4px';
+        editBtn.tabIndex = -1;
         const renameWindowLabel = api.getMessage('renameWindow') || 'Rename Window';
         editBtn.title = renameWindowLabel;
         editBtn.setAttribute('aria-label', renameWindowLabel);
