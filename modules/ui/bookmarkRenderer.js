@@ -185,7 +185,9 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     confirmButtonText: api.getMessage("saveButton")
                 });
                 if (result && (result.title !== node.title || result.url !== node.url)) {
-                    api.updateBookmark(node.id, { title: result.title, url: result.url }).then(refreshBookmarksCallback);
+                    api.updateBookmark(node.id, { title: result.title, url: result.url })
+                        .then(refreshBookmarksCallback)
+                        .catch(console.error);
                 }
             });
 
@@ -202,7 +204,9 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     confirmButtonClass: 'danger'
                 });
                 if (confirm) {
-                    api.removeBookmark(node.id).then(refreshBookmarksCallback);
+                    api.removeBookmark(node.id)
+                        .then(refreshBookmarksCallback)
+                        .catch(console.error);
                 }
             });
 
@@ -259,7 +263,9 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     confirmButtonText: api.getMessage("saveButton")
                 });
                 if (newTitle && newTitle !== node.title) {
-                    api.updateBookmark(node.id, { title: newTitle }).then(refreshBookmarksCallback);
+                    api.updateBookmark(node.id, { title: newTitle })
+                        .then(refreshBookmarksCallback)
+                        .catch(console.error);
                 }
             });
 
@@ -277,7 +283,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     api.createBookmark({ parentId: node.id, title: newFolderName }).then(() => {
                         state.addExpandedFolder(node.id);
                         refreshBookmarksCallback();
-                    });
+                    }).catch(console.error);
                 }
             });
 
@@ -296,7 +302,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     api.removeBookmarkTree(node.id).then(() => {
                         state.removeExpandedFolder(node.id);
                         refreshBookmarksCallback();
-                    });
+                    }).catch(console.error);
                 }
             });
 

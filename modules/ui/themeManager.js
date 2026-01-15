@@ -113,5 +113,5 @@ export function initThemeSwitcher() {
     // 從存儲中加載並應用主題 (首次載入時)
     api.getStorage('sync', { theme: 'geek' }).then(data => {
         applyTheme(data.theme);
-    });
+    }).catch(console.error);
 }
