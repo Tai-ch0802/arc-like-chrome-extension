@@ -27,7 +27,9 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.className = 'tab-item';
     if (tab.active) {
         tabItem.classList.add('active');
+        tabItem.setAttribute('aria-selected', 'true');
     }
+    tabItem.tabIndex = 0; // Make tab focusable
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
 
@@ -58,6 +60,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
+    closeBtn.tabIndex = -1;
     const closeTabLabel = api.getMessage("closeTab") || "Close Tab";
     closeBtn.title = closeTabLabel;
     closeBtn.setAttribute('aria-label', closeTabLabel);
@@ -69,6 +72,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToGroupBtn = document.createElement('button');
     addToGroupBtn.className = 'add-to-group-btn';
     addToGroupBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>`;
+    addToGroupBtn.tabIndex = -1;
     const addToGroupLabel = api.getMessage("addToGroup") || "Add tab to new group";
     addToGroupBtn.title = addToGroupLabel;
     addToGroupBtn.setAttribute('aria-label', addToGroupLabel);
@@ -80,6 +84,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
     addToBookmarkBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
+    addToBookmarkBtn.tabIndex = -1;
     const addToBookmarkLabel = api.getMessage("addBookmark") || "Add to bookmarks";
     addToBookmarkBtn.title = addToBookmarkLabel;
     addToBookmarkBtn.setAttribute('aria-label', addToBookmarkLabel);
@@ -108,9 +113,19 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.appendChild(favicon);
     tabItem.appendChild(titleWrapper);  // 使用 titleWrapper 而不是直接 title
     tabItem.appendChild(actionsContainer);
-    tabItem.addEventListener('click', () => {
+    const activateTab = () => {
         api.updateTab(tab.id, { active: true });
         api.updateWindow(tab.windowId, { focused: true });
+    };
+
+    tabItem.addEventListener('click', activateTab);
+    tabItem.addEventListener('keydown', (e) => {
+        if (e.target !== e.currentTarget) return;
+
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activateTab();
+        }
     });
 
     // Custom Context Menu
@@ -249,6 +264,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
             const groupHeader = document.createElement('div');
             groupHeader.className = 'tab-group-header';
+            groupHeader.tabIndex = 0;
             groupHeader.dataset.collapsed = group.collapsed;
             groupHeader.dataset.groupId = group.id;
             groupHeader.title = group.title;
@@ -299,6 +315,14 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                     api.updateTabGroup(group.id, { collapsed: !isCollapsed });
                 }
             });
+
+            groupHeader.addEventListener('keydown', (e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    groupHeader.click();
+                }
+            });
         } else {
             renderSplitOrTab(tab, tabs, fragment);
         }
@@ -310,6 +334,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 function createOtherWindowTabElement(tab) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
+    tabItem.tabIndex = 0;
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
 
@@ -342,9 +367,19 @@ function createOtherWindowTabElement(tab) {
     tabItem.appendChild(titleWrapper);
 
     // Click to focus the tab and its window
-    tabItem.addEventListener('click', () => {
+    const activateTab = () => {
         api.updateTab(tab.id, { active: true });
         api.updateWindow(tab.windowId, { focused: true });
+    };
+
+    tabItem.addEventListener('click', activateTab);
+    tabItem.addEventListener('keydown', (e) => {
+        if (e.target !== e.currentTarget) return;
+
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activateTab();
+        }
     });
 
     return tabItem;
@@ -375,7 +410,10 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
     windowsToShow.forEach((window, index) => {
         // Use bookmark-folder style
         const folderItem = document.createElement('div');
-        folderItem.className = 'window-folder';
+        folderItem.className = 'window-folder'; // Changed from bookmark-folder to window-folder
+        folderItem.tabIndex = 0;
+        folderItem.setAttribute('role', 'button');
+        folderItem.setAttribute('aria-expanded', 'false');
         folderItem.dataset.windowId = window.id;
         folderItem.title = `Window ${index + 1}`;
 
@@ -395,6 +433,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         editBtn.className = 'window-edit-btn';
         editBtn.innerHTML = EDIT_ICON_SVG;
         editBtn.style.marginLeft = '4px';
+        editBtn.tabIndex = -1;
         const renameWindowLabel = api.getMessage('renameWindow') || 'Rename Window';
         editBtn.title = renameWindowLabel;
         editBtn.setAttribute('aria-label', renameWindowLabel);
@@ -527,10 +566,21 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         }
 
         // Toggle collapse on click
-        folderItem.addEventListener('click', () => {
+        const toggleCollapse = () => {
             const isExpanded = folderContent.style.display !== 'none';
             folderContent.style.display = isExpanded ? 'none' : 'block';
             icon.textContent = isExpanded ? '▶' : '▼';
+            folderItem.setAttribute('aria-expanded', !isExpanded);
+        };
+
+        folderItem.addEventListener('click', toggleCollapse);
+        folderItem.addEventListener('keydown', (e) => {
+            if (e.target !== e.currentTarget) return;
+
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleCollapse();
+            }
         });
 
         fragment.appendChild(folderItem);

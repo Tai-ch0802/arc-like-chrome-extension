@@ -43,6 +43,12 @@ No solo busques, encuentra al instante.
 
 ---
 
+## ⌨️ Navegación Completa con Teclado
+- **Experiencia Nativa**: Usa las teclas `Flecha Arriba`/`Flecha Abajo` para navegar sin problemas entre pestañas y marcadores.
+- **Micro-Interacciones**: Usa `Flecha Izquierda`/`Flecha Derecha` para navegar y activar botones internos (como Cerrar, Añadir a Grupo).
+- **Integración de Búsqueda**: Presiona `Arriba` en la parte superior de la lista para enfocar la barra de búsqueda; presiona `Abajo` en la barra de búsqueda para saltar a los resultados.
+- **Consejo de Enfoque**: Una vez abierta la barra lateral, simplemente presiona cualquier tecla de flecha para tomar el foco automáticamente y comenzar a navegar.
+
 ## ⌨️ Atajos de Productividad
 - **Cmd/Ctrl + I**: Alternar Barra Lateral
 - **Opt/Alt + T**: Crear nueva pestaña junto a la actual

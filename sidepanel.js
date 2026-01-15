@@ -4,6 +4,7 @@ import * as search from './modules/searchManager.js';
 import * as dragDrop from './modules/dragDropManager.js';
 import * as modal from './modules/modalManager.js';
 import * as state from './modules/stateManager.js';
+import * as keyboard from './modules/keyboardManager.js';
 
 // --- 主要協調器 ---
 
@@ -93,10 +94,12 @@ async function initialize() {
     applyStaticTranslations();
     search.initialize();
     ui.initThemeSwitcher();
-    updateTabList();
+    await updateTabList();
+
     refreshBookmarks();
     addEventListeners();
     initializeSearchUI();
+    keyboard.initialize();
 
     // Listen for refresh request from settings
     document.addEventListener('refreshBookmarksRequired', () => {

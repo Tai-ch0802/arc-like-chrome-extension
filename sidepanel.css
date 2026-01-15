@@ -422,7 +422,8 @@ mark.url-match {
     padding-left: 5px;
 }
 
-.tab-item:hover .tab-actions {
+.tab-item:hover .tab-actions,
+.tab-item:focus-within .tab-actions {
     opacity: 1;
 }
 
@@ -575,7 +576,9 @@ mark.url-match {
 
 
 .bookmark-item:hover .bookmark-actions,
-.bookmark-folder:hover .bookmark-actions {
+.bookmark-folder:hover .bookmark-actions,
+.bookmark-item:focus-within .bookmark-actions,
+.bookmark-folder:focus-within .bookmark-actions {
     opacity: 1;
 }
 
@@ -600,7 +603,12 @@ mark.url-match {
 .bookmark-item:hover .bookmark-edit-btn,
 .bookmark-folder:hover .bookmark-close-btn,
 .bookmark-folder:hover .bookmark-edit-btn,
-.bookmark-folder:hover .add-folder-btn {
+.bookmark-folder:hover .add-folder-btn,
+.bookmark-item:focus-within .bookmark-close-btn,
+.bookmark-item:focus-within .bookmark-edit-btn,
+.bookmark-folder:focus-within .bookmark-close-btn,
+.bookmark-folder:focus-within .bookmark-edit-btn,
+.bookmark-folder:focus-within .add-folder-btn {
     opacity: 1;
     /* 滑鼠懸停時顯示 */
 }

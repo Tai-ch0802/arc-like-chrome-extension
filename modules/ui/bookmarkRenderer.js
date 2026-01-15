@@ -115,6 +115,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
 
             const bookmarkItem = document.createElement('div');
             bookmarkItem.className = 'bookmark-item';
+            bookmarkItem.tabIndex = 0;
             bookmarkItem.dataset.bookmarkId = node.id;
 
             let urlPreview = node.url;
@@ -171,6 +172,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             const editBtn = document.createElement('button');
             editBtn.className = 'bookmark-edit-btn';
             editBtn.innerHTML = EDIT_ICON_SVG;
+            editBtn.tabIndex = -1;
             editBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -183,13 +185,16 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     confirmButtonText: api.getMessage("saveButton")
                 });
                 if (result && (result.title !== node.title || result.url !== node.url)) {
-                    api.updateBookmark(node.id, { title: result.title, url: result.url }).then(refreshBookmarksCallback);
+                    api.updateBookmark(node.id, { title: result.title, url: result.url })
+                        .then(refreshBookmarksCallback)
+                        .catch(console.error);
                 }
             });
 
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
+            closeBtn.tabIndex = -1;
             closeBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -199,7 +204,9 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     confirmButtonClass: 'danger'
                 });
                 if (confirm) {
-                    api.removeBookmark(node.id).then(refreshBookmarksCallback);
+                    api.removeBookmark(node.id)
+                        .then(refreshBookmarksCallback)
+                        .catch(console.error);
                 }
             });
 
@@ -216,11 +223,20 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                 await state.addLinkedTab(node.id, newTab.id);
                 refreshBookmarksCallback();
             });
+
+            bookmarkItem.addEventListener('keydown', (e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    bookmarkItem.click();
+                }
+            });
             container.appendChild(bookmarkItem);
 
         } else if (node.children) {
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
+            folderItem.tabIndex = 0;
             folderItem.dataset.bookmarkId = node.id;
             folderItem.title = node.title;
 
@@ -238,6 +254,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             const editBtn = document.createElement('button');
             editBtn.className = 'bookmark-edit-btn';
             editBtn.innerHTML = EDIT_ICON_SVG;
+            editBtn.tabIndex = -1;
             editBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const newTitle = await modal.showPrompt({
@@ -246,13 +263,16 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     confirmButtonText: api.getMessage("saveButton")
                 });
                 if (newTitle && newTitle !== node.title) {
-                    api.updateBookmark(node.id, { title: newTitle }).then(refreshBookmarksCallback);
+                    api.updateBookmark(node.id, { title: newTitle })
+                        .then(refreshBookmarksCallback)
+                        .catch(console.error);
                 }
             });
 
             const addFolderBtn = document.createElement('button');
             addFolderBtn.className = 'add-folder-btn';
             addFolderBtn.textContent = '+';
+            addFolderBtn.tabIndex = -1;
             addFolderBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const newFolderName = await modal.showPrompt({
@@ -263,13 +283,14 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     api.createBookmark({ parentId: node.id, title: newFolderName }).then(() => {
                         state.addExpandedFolder(node.id);
                         refreshBookmarksCallback();
-                    });
+                    }).catch(console.error);
                 }
             });
 
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
+            closeBtn.tabIndex = -1;
             closeBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const confirm = await modal.showConfirm({
@@ -281,7 +302,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     api.removeBookmarkTree(node.id).then(() => {
                         state.removeExpandedFolder(node.id);
                         refreshBookmarksCallback();
-                    });
+                    }).catch(console.error);
                 }
             });
 
@@ -326,6 +347,14 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     } else {
                         state.removeExpandedFolder(node.id);
                     }
+                }
+            });
+
+            folderItem.addEventListener('keydown', (e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    folderItem.click();
                 }
             });
         }
