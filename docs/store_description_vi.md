@@ -43,6 +43,12 @@ Have thousands of bookmarks? No problem!
 
 ---
 
+## ⌨️ Điều hướng Bàn phím Đầy đủ
+- **Trải nghiệm Gốc**: Sử dụng các phím `Mũi tên Lên`/`Mũi tên Xuống` để điều hướng mượt mà giữa các tab và dấu trang.
+- **Tương tác Vi mô**: Sử dụng `Mũi tên Trái`/`Mũi tên Phải` để điều hướng và kích hoạt các nút bên trong (như Đóng, Thêm vào Nhóm).
+- **Tích hợp Tìm kiếm**: Nhấn `Lên` ở đầu danh sách để tập trung vào thanh tìm kiếm; nhấn `Xuống` trong thanh tìm kiếm để chuyển đến kết quả.
+- **Mẹo lấy nét**: Khi thanh bên đã mở, chỉ cần nhấn bất kỳ phím mũi tên nào để tự động lấy nét và bắt đầu điều hướng.
+
 ## ⌨️ Phím tắt Năng suất
 - **Cmd/Ctrl + I**: Bật/tắt Thanh bên
 - **Opt/Alt + T**: Tạo tab mới bên cạnh tab hiện tại

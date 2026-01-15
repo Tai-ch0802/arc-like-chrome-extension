@@ -43,6 +43,12 @@ Ne cherchez pas seulement — trouvez instantanément.
 
 ---
 
+## ⌨️ Navigation Complète au Clavier
+- **Expérience Native** : Utilisez les touches `Flèche Haut`/`Flèche Bas` pour naviguer de manière fluide entre les onglets et les favoris.
+- **Micro-Interactions** : Utilisez `Flèche Gauche`/`Flèche Droite` pour naviguer et déclencher les boutons internes (comme Fermer, Ajouter au Groupe).
+- **Intégration de la Recherche** : Appuyez sur `Haut` en haut de la liste pour cibler la barre de recherche ; appuyez sur `Bas` dans la barre de recherche pour passer aux résultats.
+- **Astuce de Focus** : Une fois la barre latérale ouverte, appuyez simplement sur n'importe quelle flèche pour prendre automatiquement le focus et commencer à naviguer.
+
 ## ⌨️ Raccourcis de Productivité
 - **Cmd/Ctrl + I** : Basculer la Barre Latérale
 - **Opt/Alt + T** : Créer un nouvel onglet à côté de l'actuel

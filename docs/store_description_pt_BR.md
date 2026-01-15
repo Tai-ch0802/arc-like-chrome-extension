@@ -43,6 +43,12 @@ Não apenas pesquise — encontre instantaneamente.
 
 ---
 
+## ⌨️ Navegação Completa por Teclado
+- **Experiência Nativa**: Use as teclas `Seta para Cima`/`Seta para Baixo` para navegar perfeitamente entre abas e favoritos.
+- **Microinterações**: Use `Seta para Esquerda`/`Seta para Direita` para navegar e acionar botões internos (como Fechar, Adicionar ao Grupo).
+- **Integração de Pesquisa**: Pressione `Cima` no topo da lista para focar na barra de pesquisa; pressione `Baixo` na barra de pesquisa para pular para os resultados.
+- **Dica de Foco**: Assim que a barra lateral estiver aberta, basta pressionar qualquer tecla de seta para obter o foco automaticamente e começar a navegar.
+
 ## ⌨️ Atalhos de Produtividade
 - **Cmd/Ctrl + I**: Alternar Barra Lateral
 - **Opt/Alt + T**: Criar nova aba ao lado da atual

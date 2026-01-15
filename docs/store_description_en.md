@@ -43,7 +43,13 @@ Don't just search—find instantly.
 
 ---
 
-## ⌨️ Productivity Shortcuts
+## ⌨️ Full Keyboard Navigation
+- **Native Experience**: Use `Arrow Up`/`Arrow Down` keys to navigate seamlessly between tabs and bookmarks.
+- **Micro-Interactions**: Use `Arrow Left`/`Arrow Right` to navigate and trigger internal buttons (like Close, Add to Group).
+- **Search Integration**: Press `Up` at the top of the list to focus the search bar; press `Down` in the search bar to jump to results.
+- **Focus Tip**: Once the sidebar is open, simply press any arrow key to automatically grab focus and start navigating.
+
+## ⚡️ Shortcuts
 - **Cmd/Ctrl + I**: Toggle Sidebar
 - **Opt/Alt + T**: Create new tab next to current one
 

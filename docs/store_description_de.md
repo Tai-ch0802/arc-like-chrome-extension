@@ -43,6 +43,12 @@ Suchen Sie nicht nur – finden Sie sofort.
 
 ---
 
+## ⌨️ Vollständige Tastaturnavigation
+- **Native Erfahrung**: Verwenden Sie die Pfeiltasten `Pfeil nach oben`/`Pfeil nach unten`, um nahtlos zwischen Tabs und Lesezeichen zu navigieren.
+- **Mikrointeraktionen**: Verwenden Sie `Pfeil nach links`/`Pfeil nach rechts`, um interne Schaltflächen (wie Schließen, Zu Gruppe hinzufügen) anzusteuern und auszulösen.
+- **Suchintegration**: Drücken Sie oben in der Liste `Pfeil nach oben`, um das Suchfeld zu fokussieren; drücken Sie im Suchfeld `Pfeil nach unten`, um zu den Ergebnissen zu springen.
+- **Fokus-Tipp**: Sobald die Seitenleiste geöffnet ist, drücken Sie einfach eine beliebige Pfeiltaste, um automatisch den Fokus zu erhalten und mit der Navigation zu beginnen.
+
 ## ⌨️ Produktivitäts-Shortcuts
 - **Cmd/Ctrl + I**: Seitenleiste umschalten
 - **Opt/Alt + T**: Neuen Tab neben dem aktuellen erstellen

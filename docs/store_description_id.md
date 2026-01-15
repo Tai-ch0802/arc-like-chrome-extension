@@ -43,6 +43,12 @@ Jangan hanya mencari—temukan secara instan.
 
 ---
 
+## ⌨️ Navigasi Keyboard Lengkap
+- **Pengalaman Asli**: Gunakan tombol `Panah Atas`/`Panah Bawah` untuk menavigasi dengan mulus antara tab dan bookmark.
+- **Interaksi Mikro**: Gunakan `Panah Kiri`/`Panah Kanan` untuk menavigasi dan memicu tombol internal (seperti Tutup, Tambahkan ke Grup).
+- **Integrasi Pencarian**: Tekan `Atas` di bagian atas daftar untuk memfokuskan bilah pencarian; tekan `Bawah` di bilah pencarian untuk melompat ke hasil.
+- **Tip Fokus**: Setelah bilah samping terbuka, cukup tekan tombol panah apa saja untuk mengambil fokus secara otomatis dan mulai menavigasi.
+
 ## ⌨️ Pintasan Produktivitas
 - **Cmd/Ctrl + I**: Beralih Bilah Samping
 - **Opt/Alt + T**: Buat tab baru di sebelah yang sekarang
