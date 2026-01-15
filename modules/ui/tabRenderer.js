@@ -117,6 +117,8 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 
     tabItem.addEventListener('click', activateTab);
     tabItem.addEventListener('keydown', (e) => {
+        if (e.target !== e.currentTarget) return;
+
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             activateTab();
@@ -360,6 +362,8 @@ function createOtherWindowTabElement(tab) {
 
     tabItem.addEventListener('click', activateTab);
     tabItem.addEventListener('keydown', (e) => {
+        if (e.target !== e.currentTarget) return;
+
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             activateTab();
@@ -558,6 +562,8 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
         folderItem.addEventListener('click', toggleCollapse);
         folderItem.addEventListener('keydown', (e) => {
+            if (e.target !== e.currentTarget) return;
+
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 toggleCollapse();

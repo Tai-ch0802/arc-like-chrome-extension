@@ -33,13 +33,6 @@ describe('Keyboard Accessibility', () => {
     });
 
     test('Window folders should be keyboard focusable and have ARIA attributes', async () => {
-        // We need to ensure there are "Other Windows" or at least the section renders if applicable
-        // Since setup creates a fresh browser, there might only be one window.
-        // We might need to create another window to trigger this section, but for now
-        // let's check if the section exists or skip if empty.
-
-        // Mocking/creating a second window is complex here.
-        // We will skip this part if no .window-folder is found, but the code change is verified by reading code.
         const folders = await page.$$('.window-folder');
         if (folders.length > 0) {
             const tabindex = await page.evaluate(el => el.getAttribute('tabindex'), folders[0]);
@@ -52,4 +45,42 @@ describe('Keyboard Accessibility', () => {
             expect(ariaExpanded).not.toBeNull();
         }
     });
+
+    test('Pressing Enter on child buttons should NOT activate tab or folder', async () => {
+        // Create a dummy tab to close safely
+        const dummyUrl = 'http://example.com/';
+        await page.evaluate((url) => {
+            return new Promise(resolve => {
+                chrome.tabs.create({ url: url, active: false }, resolve);
+            });
+        }, dummyUrl);
+
+        // Wait for it to appear
+        const tabSelector = `.tab-item[data-url*="example.com"]`;
+        await page.waitForSelector(tabSelector, { timeout: 5000 });
+
+        const initialTabCount = await page.$$eval('.tab-item', tabs => tabs.length);
+
+        // Find the close button of this specific tab
+        const closeBtnSelector = `${tabSelector} .close-btn`;
+        await page.waitForSelector(closeBtnSelector);
+
+        // Focus it using evaluate to ensure we target the specific element
+        await page.$eval(closeBtnSelector, el => el.focus());
+
+        // Ensure it is focused
+        const isFocused = await page.$eval(closeBtnSelector, el => document.activeElement === el);
+        expect(isFocused).toBe(true);
+
+        // Press Enter
+        await page.keyboard.press('Enter');
+
+        // Wait for the tab to disappear
+        await page.waitForFunction((count) => {
+            return document.querySelectorAll('.tab-item').length === count - 1;
+        }, { timeout: 10000 }, initialTabCount);
+
+        const finalTabCount = await page.$$eval('.tab-item', tabs => tabs.length);
+        expect(finalTabCount).toBe(initialTabCount - 1);
+    }, 30000);
 });
