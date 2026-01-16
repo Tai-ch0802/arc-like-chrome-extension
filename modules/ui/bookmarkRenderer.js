@@ -155,11 +155,26 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 linkedIcon.style.marginRight = '8px';
                 const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color').trim();
                 linkedIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accentColor || 'currentColor'}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`;
+                const linkedTabsLabel = api.getMessage('linkedTabsIcon') + ' - ' + api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
                 linkedIcon.title = api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
-                linkedIcon.addEventListener('click', (e) => {
+                linkedIcon.setAttribute('aria-label', linkedTabsLabel);
+                linkedIcon.setAttribute('role', 'button');
+                linkedIcon.setAttribute('tabindex', '0');
+
+                const openLinkedTabs = (e) => {
                     e.stopPropagation();
                     showLinkedTabsPanel(node.id, refreshBookmarksCallback);
+                };
+
+                linkedIcon.addEventListener('click', openLinkedTabs);
+                linkedIcon.addEventListener('keydown', (e) => {
+                    if (e.target !== e.currentTarget) return;
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openLinkedTabs(e);
+                    }
                 });
+
                 bookmarkItem.appendChild(linkedIcon);
             }
 
@@ -172,6 +187,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             editBtn.className = 'bookmark-edit-btn';
             editBtn.innerHTML = EDIT_ICON_SVG;
             editBtn.tabIndex = -1;
+            editBtn.setAttribute('aria-label', api.getMessage('editBookmark'));
             editBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -194,6 +210,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
             closeBtn.tabIndex = -1;
+            closeBtn.setAttribute('aria-label', api.getMessage('deleteBookmark'));
             closeBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -256,6 +273,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             editBtn.className = 'bookmark-edit-btn';
             editBtn.innerHTML = EDIT_ICON_SVG;
             editBtn.tabIndex = -1;
+            editBtn.setAttribute('aria-label', api.getMessage('editFolder'));
             editBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const newTitle = await modal.showPrompt({
@@ -274,6 +292,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             addFolderBtn.className = 'add-folder-btn';
             addFolderBtn.textContent = '+';
             addFolderBtn.tabIndex = -1;
+            addFolderBtn.setAttribute('aria-label', api.getMessage('addFolder'));
             addFolderBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const newFolderName = await modal.showPrompt({
@@ -292,6 +311,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             closeBtn.className = 'bookmark-close-btn';
             closeBtn.textContent = '×';
             closeBtn.tabIndex = -1;
+            closeBtn.setAttribute('aria-label', api.getMessage('deleteFolder'));
             closeBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const confirm = await modal.showConfirm({
