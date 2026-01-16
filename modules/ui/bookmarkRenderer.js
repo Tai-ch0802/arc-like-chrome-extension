@@ -106,7 +106,7 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
 }
 
 
-function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, filterKeywords = [], forceExpandAll = false) {
+function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
     const fragment = document.createDocumentFragment();
     container.dataset.parentId = parentId;
 
@@ -321,7 +321,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             folderContent.style.display = isExpanded ? 'block' : 'none';
 
             if (isExpanded && node.children) {
-                renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, filterKeywords, forceExpandAll);
+                renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
             }
 
             folderItem.addEventListener('click', (e) => {
@@ -335,7 +335,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 if (isNowExpanded) {
                     state.addExpandedFolder(node.id);
                     if (folderContent.children.length === 0 && node.children) {
-                        renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, filterKeywords, forceExpandAll);
+                        renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
                         setTimeout(() => {
                             document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: node.id } }));
                         }, 50);
