@@ -265,6 +265,8 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             const groupHeader = document.createElement('div');
             groupHeader.className = 'tab-group-header';
             groupHeader.tabIndex = 0;
+            groupHeader.setAttribute('role', 'button');
+            groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
             groupHeader.dataset.collapsed = group.collapsed;
             groupHeader.dataset.groupId = group.id;
             groupHeader.title = group.title;
@@ -310,9 +312,11 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             groupHeader.addEventListener('click', (e) => {
                 if (e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
                     const isCollapsed = groupContent.style.display === 'none';
+                    const newCollapsedState = !isCollapsed;
                     groupContent.style.display = isCollapsed ? 'block' : 'none';
                     arrow.textContent = isCollapsed ? '▼' : '▶';
-                    api.updateTabGroup(group.id, { collapsed: !isCollapsed });
+                    groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
+                    api.updateTabGroup(group.id, { collapsed: newCollapsedState });
                 }
             });
 
@@ -507,6 +511,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
                 const groupHeader = document.createElement('div');
                 groupHeader.className = 'tab-group-header';
+                groupHeader.tabIndex = 0;
+                groupHeader.setAttribute('role', 'button');
+                groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
                 groupHeader.dataset.collapsed = group.collapsed;
                 groupHeader.dataset.groupId = group.id;
                 groupHeader.title = group.title;
@@ -557,6 +564,16 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                     const isCollapsed = groupContent.style.display === 'none';
                     groupContent.style.display = isCollapsed ? 'block' : 'none';
                     arrow.textContent = isCollapsed ? '▼' : '▶';
+                    groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
+                });
+
+                groupHeader.addEventListener('keydown', (e) => {
+                    if (e.target !== e.currentTarget) return;
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        groupHeader.click();
+                    }
                 });
             } else {
                 const tabElement = createOtherWindowTabElement(tab);
