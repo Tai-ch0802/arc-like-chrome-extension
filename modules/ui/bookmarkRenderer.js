@@ -106,11 +106,12 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
 }
 
 
-// forceExpandAll: when true, render all folders as expanded (for search mode)
-function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
+function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, filterKeywords = [], forceExpandAll = false) {
+    const fragment = document.createDocumentFragment();
     container.dataset.parentId = parentId;
+
     bookmarkNodes.forEach(node => {
-        if (node.url) {
+        if (node.url) { // It's a bookmark
             const linkedTabIds = state.getLinkedTabsByBookmarkId(node.id);
 
             const bookmarkItem = document.createElement('div');
@@ -136,10 +137,8 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             } else {
                 icon.src = 'icons/fallback-favicon.svg';
             }
+            icon.onerror = () => { icon.src = 'icons/fallback-favicon.svg'; };
 
-            icon.onerror = () => {
-                icon.src = 'icons/fallback-favicon.svg';
-            };
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
@@ -215,9 +214,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             bookmarkItem.appendChild(actionsContainer);
 
             bookmarkItem.addEventListener('click', async (e) => {
-                if (e.target.closest('.bookmark-actions') || e.target.closest('.linked-tab-icon')) {
-                    return;
-                }
+                if (e.target.closest('.bookmark-actions') || e.target.closest('.linked-tab-icon')) return;
                 e.preventDefault();
                 const newTab = await api.createTab({ url: node.url, active: true });
                 await state.addLinkedTab(node.id, newTab.id);
@@ -231,14 +228,15 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     bookmarkItem.click();
                 }
             });
-            container.appendChild(bookmarkItem);
 
-        } else if (node.children) {
+            fragment.appendChild(bookmarkItem);
+
+        } else if (node.children) { // It's a folder
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
             folderItem.tabIndex = 0;
             folderItem.setAttribute('role', 'button');
-            const isExpanded = state.isFolderExpanded(node.id);
+            const isExpanded = forceExpandAll || state.isFolderExpanded(node.id);
             folderItem.setAttribute('aria-expanded', isExpanded.toString());
             folderItem.dataset.bookmarkId = node.id;
             folderItem.title = node.title;
@@ -246,6 +244,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
             icon.textContent = isExpanded ? '▼' : '▶';
+
             const title = document.createElement('span');
             title.className = 'bookmark-title';
             title.textContent = node.title;
@@ -309,47 +308,40 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             });
 
             actionsContainer.appendChild(editBtn);
-            if (!node.url) {
-                actionsContainer.appendChild(addFolderBtn);
-            }
+            actionsContainer.appendChild(addFolderBtn);
             actionsContainer.appendChild(closeBtn);
 
             folderItem.appendChild(icon);
             folderItem.appendChild(title);
             folderItem.appendChild(actionsContainer);
-            container.appendChild(folderItem);
 
             const folderContent = document.createElement('div');
             folderContent.className = 'folder-content';
             folderContent.dataset.parentId = node.id;
             folderContent.style.display = isExpanded ? 'block' : 'none';
-            container.appendChild(folderContent);
 
-            // Dynamic rendering: only render children when expanded (or forceExpandAll)
-            if ((isExpanded || forceExpandAll) && node.children) {
-                renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
+            if (isExpanded && node.children) {
+                renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, filterKeywords, forceExpandAll);
             }
 
             folderItem.addEventListener('click', (e) => {
-                if (e.target.tagName !== 'BUTTON') {
-                    const isNowExpanded = folderContent.style.display === 'none';
-                    folderContent.style.display = isNowExpanded ? 'block' : 'none';
-                    icon.textContent = isNowExpanded ? '▼' : '▶';
-                    folderItem.setAttribute('aria-expanded', isNowExpanded.toString());
+                if (e.target.closest('.bookmark-actions')) return;
 
-                    if (isNowExpanded) {
-                        state.addExpandedFolder(node.id);
-                        // Dynamic rendering: render children on first expand
-                        if (folderContent.children.length === 0 && node.children) {
-                            renderBookmarksLegacy(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
-                            // Dispatch event to reinitialize Sortable for new containers
-                            setTimeout(() => {
-                                document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: node.id } }));
-                            }, 50);
-                        }
-                    } else {
-                        state.removeExpandedFolder(node.id);
+                const isNowExpanded = !JSON.parse(folderItem.getAttribute('aria-expanded'));
+                folderItem.setAttribute('aria-expanded', isNowExpanded.toString());
+                icon.textContent = isNowExpanded ? '▼' : '▶';
+                folderContent.style.display = isNowExpanded ? 'block' : 'none';
+
+                if (isNowExpanded) {
+                    state.addExpandedFolder(node.id);
+                    if (folderContent.children.length === 0 && node.children) {
+                        renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, filterKeywords, forceExpandAll);
+                        setTimeout(() => {
+                            document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: node.id } }));
+                        }, 50);
                     }
+                } else {
+                    state.removeExpandedFolder(node.id);
                 }
             });
 
@@ -360,10 +352,13 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     folderItem.click();
                 }
             });
+
+            fragment.appendChild(folderItem);
+            fragment.appendChild(folderContent);
         }
     });
+
+    container.appendChild(fragment);
 }
 
-export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, filterKeywords = [], forceExpandAll = false) {
-    renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll);
-}
+export { renderBookmarks };
