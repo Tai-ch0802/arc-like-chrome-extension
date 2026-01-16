@@ -237,10 +237,12 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
             const folderItem = document.createElement('div');
             folderItem.className = 'bookmark-folder';
             folderItem.tabIndex = 0;
+            folderItem.setAttribute('role', 'button');
+            const isExpanded = state.isFolderExpanded(node.id);
+            folderItem.setAttribute('aria-expanded', isExpanded.toString());
             folderItem.dataset.bookmarkId = node.id;
             folderItem.title = node.title;
 
-            const isExpanded = state.isFolderExpanded(node.id);
             const icon = document.createElement('span');
             icon.className = 'bookmark-icon';
             icon.textContent = isExpanded ? '▼' : '▶';
@@ -333,6 +335,7 @@ function renderBookmarksLegacy(bookmarkNodes, container, parentId, refreshBookma
                     const isNowExpanded = folderContent.style.display === 'none';
                     folderContent.style.display = isNowExpanded ? 'block' : 'none';
                     icon.textContent = isNowExpanded ? '▼' : '▶';
+                    folderItem.setAttribute('aria-expanded', isNowExpanded.toString());
 
                     if (isNowExpanded) {
                         state.addExpandedFolder(node.id);
