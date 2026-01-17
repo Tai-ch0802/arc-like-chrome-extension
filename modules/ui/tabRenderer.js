@@ -140,6 +140,8 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 
         const menu = document.createElement('div');
         menu.className = 'custom-context-menu';
+        menu.setAttribute('role', 'menu');
+        menu.tabIndex = -1;
 
         // Position logic to prevent overflow
         let x = e.clientX;
@@ -156,13 +158,14 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         // Copy URL Option
         const copyOption = document.createElement('div');
         copyOption.className = 'context-menu-item';
+        copyOption.setAttribute('role', 'menuitem');
+        copyOption.tabIndex = 0;
         copyOption.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             <span>${api.getMessage('copyUrl')}</span>
         `;
 
-        copyOption.addEventListener('click', async (e) => {
-            e.stopPropagation();
+        const triggerCopy = async () => {
             try {
                 await navigator.clipboard.writeText(tab.url);
 
@@ -178,10 +181,30 @@ export function createTabElement(tab, { onAddToGroupClick }) {
                 console.error('Failed to copy: ', err);
                 menu.remove();
             }
+        };
+
+        copyOption.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            await triggerCopy();
+        });
+
+        copyOption.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                await triggerCopy();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                e.stopPropagation();
+                menu.remove();
+            }
         });
 
         menu.appendChild(copyOption);
         document.body.appendChild(menu);
+
+        // Focus the first item
+        copyOption.focus();
 
         // Close menu when clicking outside
         const closeMenu = () => {
