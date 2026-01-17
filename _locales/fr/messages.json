@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "Paramètres",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "Modifier le favori",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "Supprimer le favori",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "Modifier le nom du dossier",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "Ajouter un nouveau dossier",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "Supprimer le dossier",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "Onglets liés",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

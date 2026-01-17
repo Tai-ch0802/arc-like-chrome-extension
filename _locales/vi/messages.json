@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "Cài đặt",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "Chỉnh sửa dấu trang",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "Xóa dấu trang",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "Chỉnh sửa tên thư mục",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "Thêm thư mục mới",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "Xóa thư mục",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "Các tab được liên kết",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "सेटिंग",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "बुकमार्क संपादित करें",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "बुकमार्क हटाएं",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "फ़ोल्डर का नाम संपादित करें",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "नया फ़ोल्डर जोड़ें",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "फ़ोल्डर हटाएं",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "लिंक किए गए टैब",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

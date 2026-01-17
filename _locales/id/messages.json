@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "Pengaturan",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "Edit bookmark",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "Hapus bookmark",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "Edit nama folder",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "Tambah folder baru",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "Hapus folder",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "Tab tertaut",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

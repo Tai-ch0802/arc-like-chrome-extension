@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "设置",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "编辑书签",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "删除书签",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "编辑文件夹名称",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "新建文件夹",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "删除文件夹",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "已链接的标签页",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

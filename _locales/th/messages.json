@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "การตั้งค่า",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "แก้ไขบุ๊กมาร์ก",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "ลบบุ๊กมาร์ก",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "แก้ไขชื่อโฟลเดอร์",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "เพิ่มโฟลเดอร์ใหม่",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "ลบโฟลเดอร์",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "แท็บที่เชื่อมโยง",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

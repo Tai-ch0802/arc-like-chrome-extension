@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "設定",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "ブックマークを編集",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "ブックマークを削除",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "フォルダ名を編集",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "新しいフォルダを追加",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "フォルダを削除",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "リンクされたタブ",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }

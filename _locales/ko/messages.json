@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "설정",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "북마크 편집",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "북마크 삭제",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "폴더 이름 편집",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "새 폴더 추가",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "폴더 삭제",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "연결된 탭",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }
