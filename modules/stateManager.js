@@ -214,10 +214,8 @@ let bookmarkCache = []; // In-memory cache: [{ id, title, url, parentId, type, p
  * @param {Array} pathStack - Current path stack (folder names).
  * @returns {Array} Flat array of bookmark items.
  */
-function flattenBookmarkTree(nodes, pathStack = []) {
-  let result = [];
+function flattenBookmarkTree(nodes, pathStack = [], result = []) {
   for (const node of nodes) {
-    const currentPath = [...pathStack];
     if (node.url) {
       // Bookmark item
       result.push({
@@ -226,7 +224,7 @@ function flattenBookmarkTree(nodes, pathStack = []) {
         url: node.url,
         parentId: node.parentId,
         type: 'bookmark',
-        path: currentPath
+        path: [...pathStack]
       });
     } else if (node.children) {
       // Folder
@@ -236,11 +234,12 @@ function flattenBookmarkTree(nodes, pathStack = []) {
         url: null,
         parentId: node.parentId,
         type: 'folder',
-        path: currentPath
+        path: [...pathStack]
       });
       // Recurse into children with updated path
-      const childPath = [...currentPath, node.title];
-      result = result.concat(flattenBookmarkTree(node.children, childPath));
+      pathStack.push(node.title);
+      flattenBookmarkTree(node.children, pathStack, result);
+      pathStack.pop();
     }
   }
   return result;
@@ -253,7 +252,7 @@ export async function buildBookmarkCache() {
   try {
     const tree = await chrome.bookmarks.getTree();
     if (tree[0] && tree[0].children) {
-      bookmarkCache = flattenBookmarkTree(tree[0].children, []);
+      bookmarkCache = flattenBookmarkTree(tree[0].children, [], []);
       localStorage.setItem(BOOKMARK_CACHE_KEY, JSON.stringify(bookmarkCache));
     }
   } catch (error) {
