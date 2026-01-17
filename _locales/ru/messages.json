@@ -287,5 +287,29 @@
     "settingsAriaLabel": {
         "message": "Настройки",
         "description": "Accessibility label for the settings toggle button."
+    },
+    "editBookmark": {
+        "message": "Редактировать закладку",
+        "description": "Accessibility label for the edit bookmark button."
+    },
+    "deleteBookmark": {
+        "message": "Удалить закладку",
+        "description": "Accessibility label for the delete bookmark button."
+    },
+    "editFolder": {
+        "message": "Редактировать имя папки",
+        "description": "Accessibility label for the edit folder button."
+    },
+    "addFolder": {
+        "message": "Добавить новую папку",
+        "description": "Accessibility label for the add folder button."
+    },
+    "deleteFolder": {
+        "message": "Удалить папку",
+        "description": "Accessibility label for the delete folder button."
+    },
+    "linkedTabsIcon": {
+        "message": "Связанные вкладки",
+        "description": "Accessibility label for the linked tabs icon."
     }
 }
