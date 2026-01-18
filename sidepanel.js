@@ -6,6 +6,18 @@ import * as modal from './modules/modalManager.js';
 import * as state from './modules/stateManager.js';
 import * as keyboard from './modules/keyboardManager.js';
 
+// --- 輔助函式 ---
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // --- 主要協調器 ---
 
 async function handleAddToGroupClick(tabId) {
@@ -114,21 +126,28 @@ async function initialize() {
 
 function addEventListeners() {
     // --- 事件監聽 ---
+    // Debounced functions to prevent excessive calls during rapid events
+    const debouncedUpdateTabList = debounce(updateTabList, 250);
+    const debouncedRefreshBookmarks = debounce(refreshBookmarks, 250);
+    const debouncedBuildBookmarkCache = debounce(state.buildBookmarkCache, 250);
+
     chrome.tabs.onCreated.addListener(updateTabList);
     chrome.tabs.onActivated.addListener(updateTabList);
     chrome.tabs.onMoved.addListener(updateTabList);
     chrome.tabs.onAttached.addListener(updateTabList);
     chrome.tabs.onDetached.addListener(updateTabList);
 
+    // onRemoved can fire rapidly when closing multiple tabs
     chrome.tabs.onRemoved.addListener(async (tabId) => {
         await state.removeLinkedTabByTabId(tabId);
-        updateTabList();
-        refreshBookmarks(); // Refresh bookmarks to update icon state
+        debouncedUpdateTabList();
+        debouncedRefreshBookmarks(); // Refresh bookmarks to update icon state
     });
 
+    // onUpdated fires frequently during page loads (title, favicon, loading status changes)
     chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-        updateTabList();
-        refreshBookmarks(); // Refresh bookmarks to update icon state
+        debouncedUpdateTabList();
+        debouncedRefreshBookmarks(); // Refresh bookmarks to update icon state
     });
 
     chrome.tabGroups.onCreated.addListener(updateTabList);
@@ -143,25 +162,26 @@ function addEventListeners() {
         updateTabList();
     });
 
+    // Bookmark events - use debounced versions as they can fire rapidly during import/batch operations
     chrome.bookmarks.onRemoved.addListener((id) => {
         state.removeLinksByBookmarkId(id);
-        state.buildBookmarkCache(); // Rebuild cache on bookmark removal
-        refreshBookmarks();
+        debouncedBuildBookmarkCache(); // Rebuild cache on bookmark removal
+        debouncedRefreshBookmarks();
     });
 
     chrome.bookmarks.onChanged.addListener((id) => {
         //state.removeLinksByBookmarkId(id);
-        state.buildBookmarkCache(); // Rebuild cache on bookmark change
-        refreshBookmarks();
+        debouncedBuildBookmarkCache(); // Rebuild cache on bookmark change
+        debouncedRefreshBookmarks();
     });
 
     chrome.bookmarks.onCreated.addListener(() => {
-        state.buildBookmarkCache(); // Rebuild cache on bookmark creation
-        refreshBookmarks();
+        debouncedBuildBookmarkCache(); // Rebuild cache on bookmark creation
+        debouncedRefreshBookmarks();
     });
     chrome.bookmarks.onMoved.addListener(() => {
-        state.buildBookmarkCache(); // Rebuild cache on bookmark move
-        refreshBookmarks();
+        debouncedBuildBookmarkCache(); // Rebuild cache on bookmark move
+        debouncedRefreshBookmarks();
     });
 }
 
