@@ -33,6 +33,11 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
 
+    // Scroll focused item into view for keyboard navigation
+    tabItem.addEventListener('focus', () => {
+        tabItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+
     let urlPreview = tab.url;
     if (urlPreview && urlPreview.length > 300) {
         urlPreview = urlPreview.substring(0, 300) + '...';
@@ -118,20 +123,8 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         api.updateWindow(tab.windowId, { focused: true });
     };
 
-    tabItem.addEventListener('click', activateTab);
-    tabItem.addEventListener('keydown', (e) => {
-        if (e.target !== e.currentTarget) return;
-
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            activateTab();
-        }
-    });
-
-    // Custom Context Menu
-    tabItem.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-
+    // Context menu creation function (shared by mouse and keyboard)
+    const showContextMenu = (x, y) => {
         // Remove existing context menus
         const existingMenu = document.querySelector('.custom-context-menu');
         if (existingMenu) {
@@ -142,10 +135,6 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         menu.className = 'custom-context-menu';
         menu.setAttribute('role', 'menu');
         menu.tabIndex = -1;
-
-        // Position logic to prevent overflow
-        let x = e.clientX;
-        let y = e.clientY;
 
         // Adjust if close to right edge
         if (x + 150 > window.innerWidth) {
@@ -189,14 +178,14 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         });
 
         copyOption.addEventListener('keydown', async (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === 'Enter') {
                 e.preventDefault();
                 e.stopPropagation();
                 await triggerCopy();
-            } else if (e.key === 'Escape') {
+            } else if (e.key === 'Escape' || e.key === ' ') {
                 e.preventDefault();
                 e.stopPropagation();
-                menu.remove();
+                closeMenu();
             }
         });
 
@@ -206,22 +195,52 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         // Focus the first item
         copyOption.focus();
 
-        // Close menu when clicking outside
-        const closeMenu = () => {
+        // Close menu and restore focus
+        function closeMenu() {
             menu.remove();
             document.removeEventListener('click', closeMenu);
-            document.removeEventListener('contextmenu', closeMenu); // Also close on right click elsewhere
-        };
+            document.removeEventListener('contextmenu', handleContextMenuClose);
+            // Restore focus to the original tab item
+            tabItem.focus();
+        }
+
+        function handleContextMenuClose(e) {
+            if (!menu.contains(e.target)) {
+                closeMenu();
+            }
+        }
 
         // Use setTimeout to avoid immediate trigger
         setTimeout(() => {
             document.addEventListener('click', closeMenu);
-            document.addEventListener('contextmenu', (e) => {
-                if (!menu.contains(e.target)) {
-                    closeMenu();
-                }
-            });
+            document.addEventListener('contextmenu', handleContextMenuClose);
         }, 0);
+    };
+
+    tabItem.addEventListener('click', activateTab);
+    tabItem.addEventListener('keydown', (e) => {
+        if (e.target !== e.currentTarget) return;
+
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            activateTab();
+        } else if (e.key === ' ') {
+            e.preventDefault();
+            // Toggle context menu via keyboard
+            const existingMenu = document.querySelector('.custom-context-menu');
+            if (existingMenu) {
+                existingMenu.remove();
+            } else {
+                const rect = tabItem.getBoundingClientRect();
+                showContextMenu(rect.left + 20, rect.bottom);
+            }
+        }
+    });
+
+    // Custom Context Menu (mouse right-click)
+    tabItem.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        showContextMenu(e.clientX, e.clientY);
     });
 
     return tabItem;
