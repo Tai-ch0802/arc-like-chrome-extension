@@ -51,7 +51,7 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
 
             contentHtml += `
                 <div class="linked-tab-item" data-tab-id="${tab.id}" data-window-id="${tab.windowId}" title="Switch to this tab">
-                    <img src="${faviconUrl}" class="linked-tab-favicon" />
+                    <img src="${faviconUrl}" alt="" class="linked-tab-favicon" />
                     <span class="linked-tab-title">${tab.title}</span>
                     ${groupName}
                     <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}">&times;</button>
@@ -127,6 +127,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
 
             const icon = document.createElement('img');
             icon.className = 'bookmark-icon';
+            icon.alt = "";
             if (node.url && (node.url.startsWith('http') || node.url.startsWith('https'))) {
                 try {
                     const domain = new URL(node.url).hostname;
@@ -154,7 +155,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 linkedIcon.className = 'linked-tab-icon';
                 linkedIcon.style.marginRight = '8px';
                 const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color').trim();
-                linkedIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accentColor || 'currentColor'}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`;
+                linkedIcon.innerHTML = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${accentColor || 'currentColor'}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`;
                 const linkedTabsLabel = api.getMessage('linkedTabsIcon') + ' - ' + api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
                 linkedIcon.title = api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
                 linkedIcon.setAttribute('aria-label', linkedTabsLabel);

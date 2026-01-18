@@ -45,6 +45,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.title = `${tab.title}\n${urlPreview}`;
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';
+    favicon.alt = "";
     if (tab.favIconUrl && tab.favIconUrl.startsWith('http')) {
         favicon.src = tab.favIconUrl;
     } else {
@@ -76,7 +77,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 
     const addToGroupBtn = document.createElement('button');
     addToGroupBtn.className = 'add-to-group-btn';
-    addToGroupBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>`;
+    addToGroupBtn.innerHTML = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>`;
     addToGroupBtn.tabIndex = -1;
     const addToGroupLabel = api.getMessage("addToGroup") || "Add tab to new group";
     addToGroupBtn.title = addToGroupLabel;
@@ -88,7 +89,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
-    addToBookmarkBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
+    addToBookmarkBtn.innerHTML = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
     addToBookmarkBtn.tabIndex = -1;
     const addToBookmarkLabel = api.getMessage("addBookmark") || "Add to bookmarks";
     addToBookmarkBtn.title = addToBookmarkLabel;
@@ -150,7 +151,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         copyOption.setAttribute('role', 'menuitem');
         copyOption.tabIndex = 0;
         copyOption.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             <span>${api.getMessage('copyUrl')}</span>
         `;
 
@@ -392,6 +393,7 @@ function createOtherWindowTabElement(tab) {
 
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';
+    favicon.alt = "";
     if (tab.favIconUrl && tab.favIconUrl.startsWith('http')) {
         favicon.src = tab.favIconUrl;
     } else {
