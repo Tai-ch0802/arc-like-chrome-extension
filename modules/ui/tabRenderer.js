@@ -43,6 +43,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         urlPreview = urlPreview.substring(0, 300) + '...';
     }
     tabItem.title = `${tab.title}\n${urlPreview}`;
+    tabItem.setAttribute('aria-label', tab.title);
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';
     favicon.alt = "";
@@ -381,6 +382,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 function createOtherWindowTabElement(tab) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
+    tabItem.setAttribute('role', 'button');
     tabItem.tabIndex = 0;
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
@@ -390,6 +392,7 @@ function createOtherWindowTabElement(tab) {
         urlPreview = urlPreview.substring(0, 300) + '...';
     }
     tabItem.title = `${tab.title}\n${urlPreview}`;
+    tabItem.setAttribute('aria-label', tab.title);
 
     const favicon = document.createElement('img');
     favicon.className = 'tab-favicon';

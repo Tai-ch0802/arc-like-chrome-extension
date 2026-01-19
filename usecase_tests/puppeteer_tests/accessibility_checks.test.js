@@ -81,4 +81,13 @@ describe('Accessibility Checks', () => {
 
         expect(missingAltBookmarks).toBe(0);
     }, 30000);
+
+    test('Tabs should have aria-label', async () => {
+        await page.waitForSelector('.tab-item');
+        const missingAriaLabel = await page.evaluate(() => {
+            const tabs = Array.from(document.querySelectorAll('.tab-item'));
+            return tabs.filter(t => !t.hasAttribute('aria-label') || t.getAttribute('aria-label') === '').length;
+        });
+        expect(missingAriaLabel).toBe(0);
+    });
 });

@@ -1071,3 +1071,16 @@ mark.url-match {
     opacity: 1;
     pointer-events: auto;
 }
+
+/* --- Accessibility Improvements --- */
+.tab-item:focus-visible,
+.bookmark-item:focus-visible,
+.bookmark-folder:focus-visible,
+.window-folder:focus-visible,
+.linked-tab-item:focus-visible,
+.tab-group-header:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+    background-color: var(--element-bg-active-color);
+    z-index: 10;
+}
