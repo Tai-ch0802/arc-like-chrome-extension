@@ -100,9 +100,9 @@ async function initialize() {
         state.initLinkedTabs(), // Load linked tabs state first
         state.initWindowNames() // Load window names
     ]);
-    state.pruneWindowNames(); // Prune stale window names on startup (non-blocking)
+    state.pruneWindowNames().catch(console.error); // Prune stale window names on startup (non-blocking)
     state.loadBookmarkCache(); // Load cached bookmarks from localStorage
-    await state.buildBookmarkCache(); // Build fresh cache on startup
+    state.buildBookmarkCache().catch(console.error); // Build fresh cache on startup (non-blocking)
     applyStaticTranslations();
     search.initialize();
     ui.initThemeSwitcher();
