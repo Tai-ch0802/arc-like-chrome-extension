@@ -188,6 +188,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             editBtn.innerHTML = EDIT_ICON_SVG;
             editBtn.tabIndex = -1;
             editBtn.setAttribute('aria-label', api.getMessage('editBookmark'));
+            editBtn.title = api.getMessage('editBookmark');
             editBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -211,6 +212,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             closeBtn.textContent = '×';
             closeBtn.tabIndex = -1;
             closeBtn.setAttribute('aria-label', api.getMessage('deleteBookmark'));
+            closeBtn.title = api.getMessage('deleteBookmark');
             closeBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -243,6 +245,14 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     bookmarkItem.click();
+                } else if (e.key === 'F2') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    editBtn.click();
+                } else if (e.key === 'Delete') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeBtn.click();
                 }
             });
 
@@ -274,6 +284,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             editBtn.innerHTML = EDIT_ICON_SVG;
             editBtn.tabIndex = -1;
             editBtn.setAttribute('aria-label', api.getMessage('editFolder'));
+            editBtn.title = api.getMessage('editFolder');
             editBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const newTitle = await modal.showPrompt({
@@ -293,6 +304,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             addFolderBtn.textContent = '+';
             addFolderBtn.tabIndex = -1;
             addFolderBtn.setAttribute('aria-label', api.getMessage('addFolder'));
+            addFolderBtn.title = api.getMessage('addFolder');
             addFolderBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const newFolderName = await modal.showPrompt({
@@ -312,6 +324,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             closeBtn.textContent = '×';
             closeBtn.tabIndex = -1;
             closeBtn.setAttribute('aria-label', api.getMessage('deleteFolder'));
+            closeBtn.title = api.getMessage('deleteFolder');
             closeBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 const confirm = await modal.showConfirm({
@@ -370,6 +383,14 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     folderItem.click();
+                } else if (e.key === 'F2') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    editBtn.click();
+                } else if (e.key === 'Delete') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeBtn.click();
                 }
             });
 

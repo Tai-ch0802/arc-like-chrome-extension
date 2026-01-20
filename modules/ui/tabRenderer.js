@@ -227,6 +227,10 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         if (e.key === 'Enter') {
             e.preventDefault();
             activateTab();
+        } else if (e.key === 'Delete') {
+            e.preventDefault();
+            e.stopPropagation();
+            closeBtn.click();
         } else if (e.key === ' ') {
             e.preventDefault();
             // Toggle context menu via keyboard
