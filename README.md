@@ -1,129 +1,161 @@
-# Arc-Style Chrome Sidebar (書籤/分頁側邊欄)
+# Arc-Style Chrome Sidebar
 
-這是一個 Chrome 擴充功能專案，旨在透過側邊欄介面，在 Chrome 瀏覽器中提供類似 Arc 瀏覽器的垂直分頁管理體驗，整合了分頁、群組與書籤的全功能管理面板。
-
-![專案截圖](screenshot.png)
+[English](.github/readme/README.en.md) | [繁體中文](.github/readme/README.zh_TW.md) | [简体中文](.github/readme/README.zh_CN.md) | [日本語](.github/readme/README.ja.md) | [한국어](.github/readme/README.ko.md) | [Deutsch](.github/readme/README.de.md) | [Español](.github/readme/README.es.md) | [Français](.github/readme/README.fr.md) | [हिन्दी](.github/readme/README.hi.md) | [Bahasa Indonesia](.github/readme/README.id.md) | [Português (Brasil)](.github/readme/README.pt_BR.md) | [Русский](.github/readme/README.ru.md) | [ไทย](.github/readme/README.th.md) | [Tiếng Việt](.github/readme/README.vi.md)
 
 ---
 
-## 🔥 核心亮點 (Key Features)
+[![Version](https://img.shields.io/chrome-web-store/v/beoonblekmppafnjppedgpgfngghebji?style=flat-square&logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji)
+[![Rating](https://img.shields.io/chrome-web-store/rating/beoonblekmppafnjppedgpgfngghebji?style=flat-square)](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji)
+[![Users](https://img.shields.io/chrome-web-store/users/beoonblekmppafnjppedgpgfngghebji?style=flat-square)](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji)
+[![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](LICENSE)
 
-### 🔗 獨家創新：Linked Tabs (分頁與書籤的完美同步)
-這是我們最強大的功能！當您從側邊欄打開書籤時，我們會自動建立 **「連結 (Link)」**。
-- **避免太多重複分頁**：再次點擊該書籤的 link 圖示，會顯示已透過該書籤開啟的分頁，避免無腦新增大量相同分頁造成效能上損耗。
-- **雙向同步**：分頁關閉時，書籤狀態自動更新；書籤刪除時，關聯分頁智慧處理。
-- **視覺回饋**：書籤旁會顯示精緻的連結圖示，讓您一眼掌握哪些書籤正在使用中。
+This is a Chrome extension project that aims to bring an Arc browser-like vertical sidebar experience to Google Chrome, providing a unified and powerful panel for managing tabs and bookmarks.
 
-### ⚡️ 智慧渲染 (Smart Rendering)
-書籤多到爆炸？別擔心！
-- **動態渲染技術**：採用高效的 Dynamic Rendering 機制，棄用傳統的 Virtual Scrolling，在保持效能的同時大幅提升相容性。
-- **流暢體驗**：即使擁有大量書籤，側邊欄依然反應靈敏。
-
-### 🪟 跨視窗管理 (Cross-Window Management)
-- **總覽所有視窗**：不只是當前視窗，您可以在側邊欄下方看到所有開啟中的 Chrome 視窗與分頁。
-- **跨視窗搜尋**：搜尋功能全面支援跨視窗檢索，快速切換到任何已開啟的分頁。
-
-### 🔍 專業級搜尋 (Advanced Search)
-不只是搜尋，是「瞬間找到」。
-- **多關鍵字過濾**：支援空白分隔 (例如：「google docs work」)，精準定位目標。
-- **Domain 搜尋**：直接輸入網域 (如 `github.com`)，快速篩選特定來源的分頁與書籤。
-- **智慧高亮**：即時標示匹配關鍵字，視覺焦點一目了然。
-
-### 🗂️ 統一工作空間 (Unified Workspace)
-- **垂直分頁**：讓標題完整顯示，不再被壓縮成小圖示。
-- **原生群組支援**：完美整合 Chrome 分頁群組 (Tab Groups)，顏色、名稱同步顯示。
-- **自訂視窗命名**：可為每個視窗設定專屬名稱（如「工作」、「娛樂」），多視窗管理更清晰。
-- **拖曳管理**：直覺的 Drag & Drop，輕鬆在分頁、群組、書籤資料夾之間移動項目。
-- **拖曳即存**：將分頁拖入書籤區，立即收藏；將書籤拖入分頁區，立即開啟。
-
-### 🎨 極致美學 (Premium Design)
-- **專注模式**：深色主題搭配精心調校的對比度，減少眼睛疲勞。
-- **自動展開**：拖曳時懸停於資料夾上方，自動為您展開路徑。
-- **智慧懸停**：操作按鈕僅在需要時出現，保持介面乾淨清爽。
-
-### ⌨️ 全面鍵盤導覽 (Full Keyboard Navigation)
-- **原生級體驗**：使用 `↑` `↓` 方向鍵在分頁與書籤間流暢移動。
-- **細節操作**：使用 `←` `→` 方向鍵可直接操作項目內的按鈕（如關閉、加入群組）。
-- **搜尋整合**：在列表頂端按 `↑` 可直接聚焦搜尋框；在搜尋框按 `↓` 可直接進入結果列表。
-- **焦點小撇步**：若開啟側邊欄後無法立即操作，試著按一下方向鍵，或點擊任一分頁以取得焦點。
-
-### ⚡️ 快捷鍵 (Shortcuts)
-- **Cmd/Ctrl + I**：快速開關側邊欄
-- **Opt/Alt + T**：在當前分頁旁新增分頁
+## 🚀 New Release v1.11.0 update! 
+[![Demo Video](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
 
 ---
 
-## 🚀 安裝與開發
+## 🔥 Key Features
 
-### 方式一：從 Chrome 線上應用程式商店安裝 (推薦)
+### 🔗 Exclusive Innovation: Linked Tabs
+This is our most powerful feature! When you open a bookmark from the sidebar, we automatically create a **"Link"**.
+- **Avoid Tab Clutter**: Click the link icon next to a bookmark to see all tabs opened from it, helping you avoid opening duplicates and saving system resources.
+- **Two-Way Sync**: When a tab is closed, the bookmark status updates automatically; when a bookmark is deleted, the linked tab is handled intelligently.
+- **Visual Feedback**: A refined link icon appears next to bookmarks, letting you know at a glance which ones are currently active.
 
-你可以直接透過官方商店連結安裝，享受自動更新帶來的好處：
+### ⚡️ Smart Rendering
+Have thousands of bookmarks? No problem!
+- **Dynamic Rendering**: Switched from Virtual Scrolling to an efficient Dynamic Rendering mechanism, ensuring smooth performance with better compatibility.
+- **Smooth Experience**: Navigate through large bookmark libraries effortlessly without lag.
 
-[**點此前往 Chrome 線上應用程式商店安裝**](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji?utm_source=item-share-cb)
+### 🪟 Cross-Window Management
+- **Window Overview**: View tabs from all open Chrome windows directly in the sidebar, not just the current one.
+- **Global Search**: Search results include tabs from all windows, allowing for instant navigation across your entire session.
 
-### 方式二：從原始碼手動安裝 (開發者用)
+### 🔍 Professional Grade Search
+Don't just search—find instantly.
+- **Multi-Keyword Filtering**: Supports space-separated keywords (e.g., "google docs work") for precise targeting.
+- **Domain Search**: Type a domain (like `github.com`) to instantly filter tabs and bookmarks from specific sources.
+- **Smart Highlighting**: Real-time highlighting of matched keywords keeps your visual focus clear.
 
-**1. 環境準備**
+### 🗂️ Unified Workspace
+- **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
+- **Native Group Support**: Perfectly integrates with Chrome Tab Groups, syncing colors and names.
+- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
+- **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
+- **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
 
-在開始之前，請確保你的電腦已安裝 [Node.js](https://nodejs.org/) (內含 npm)。
+### 🎨 Premium Design
+- **Focus Mode**: A sleek dark theme with carefully tuned contrast to reduce eye strain.
+- **Auto-Expand**: Hover over folders while dragging items to automatically expand the path.
+- **Smart Hover**: Action buttons appear only when needed, keeping the interface clean and distraction-free.
 
-**2. 安裝步驟**
+## ⌨️ Full Keyboard Navigation
+- **Native Experience**: Use `Arrow Up`/`Arrow Down` keys to navigate seamlessly between tabs and bookmarks.
+- **Micro-Interactions**: Use `Arrow Left`/`Arrow Right` to navigate and trigger internal buttons (like Close, Add to Group).
+- **Search Integration**: Press `Up` at the top of the list to focus the search bar; press `Down` in the search bar to jump to results.
+- **Focus Tip**: Once the sidebar is open, simply press any arrow key to automatically grab focus and start navigating.
 
-1.  將本專案 Clone 或下載至本機。
+### ⌨️ Productivity Shortcuts
+- **Cmd/Ctrl + I**: Toggle Sidebar
+- **Opt/Alt + T**: Create new tab next to current one
+
+---
+
+## 🆚 Why Choose This Extension?
+
+| Feature | This Extension | Native Chrome | Traditional Sidebars |
+| :--- | :---: | :---: | :---: |
+| **Vertical Tabs** | ✅ Full Title | ❌ Compressed | ✅ |
+| **Tab Groups** | ✅ Native Sync | ✅ | ⚠️ Partial |
+| **Bookmarks Integration** | ✅ Unified Panel | ❌ Separate Manager | ❌ Separate |
+| **Linked Tabs** | ✅ Indync | ❌ | ❌ |
+| **Cross-Window Search** | ✅ | ❌ | ⚠️ Varies |
+| **Performance** | ⚡️ Dynamic Rendering | N/A | 🐢 Virtual Scroll |
+
+---
+
+## 🚀 Installation & Development
+
+### Option 1: Install from the Chrome Web Store (Recommended)
+
+You can install the extension directly from the official store to receive automatic updates:
+
+[**Click here to install from the Chrome Web Store**](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji?utm_source=item-share-cb)
+
+### Option 2: Manual Installation from Source (for Developers)
+
+**1. Prerequisites**
+
+Before you begin, ensure you have [Node.js](https://nodejs.org/) (which includes npm) installed on your system.
+
+**2. Setup Steps**
+
+1.  Clone or download this project to your local machine.
     ```bash
     git clone https://github.com/Tai-ch0802/arc-like-chrome-extension.git
     ```
-2.  進入專案目錄，並安裝所需的開發套件：
+2.  Navigate into the project directory and install the required development dependencies:
     ```bash
     cd arc-like-chrome-extension
     npm install
     ```
-3.  開啟 Chrome 瀏覽器，前往 `chrome://extensions`。
-4.  啟用右上角的「開發人員模式」。
-5.  點擊「載入未封裝項目」，並選擇本專案的根目錄資料夾。
+3.  Open the Chrome browser and navigate to `chrome://extensions`.
+4.  Enable "Developer mode" in the top right corner.
+5.  Click "Load unpacked" and select the project's root directory.
 
 ---
 
-## 🛠️ 建置指令
+## 🛠️ Build Commands
 
-本專案使用 `Makefile` 來自動化建置流程。
+This project uses a `Makefile` to automate the build process.
 
-*   **開發模式**: `make` 或 `make package`
+*   **Development Mode**: `make` or `make package`
 
-    此指令會建立一個未經壓縮的開發版本，所有原始碼保持原樣，方便在 Chrome 開發者工具中進行偵錯。打包後的檔案為 `arc-sidebar-v<版本號>-dev.zip`。
+    This command creates an unminified development build. All source code remains as-is, making it easy to debug in Chrome's developer tools. The packaged file will be `arc-sidebar-v<version>-dev.zip`.
 
-*   **生產模式**: `make release`
+*   **Production Mode**: `make release`
 
-    此指令會執行生產環境的建置流程，包含以下步驟：
-    1.  使用 `esbuild` 將所有 JavaScript 模組合併並壓縮成單一檔案。
-    2.  壓縮 CSS 檔案。
-    3.  打包成一個適合上傳到 Chrome 線上應用程式商店的 `.zip` 檔案。
+    This command runs the production build process, which includes the following steps:
+    1.  Bundles and minifies all JavaScript modules into a single file using `esbuild`.
+    2.  Minifies the CSS file.
+    3.  Packages the output into a `.zip` file suitable for uploading to the Chrome Web Store.
 
 ---
 
-## 🧪 測試 (Testing)
+## 🧪 Testing
 
-為了確保專案的品質與功能的穩定性，我們採用 use case test 的方式來驗證每次的改動。
+To ensure the quality and stability of the project's features, we adopt a use case testing approach to validate every change.
 
 ### Use Case Tests
 
-*   **目的**: 每個 use case test 旨在清晰地定義特定功能的預期行為和操作流程。它們以描述性文字呈現，詳細說明了測試步驟、前置條件、預期結果及驗證方法。
-*   **位置**: 所有的 use case test 檔案都儲存於專案根目錄下的 `usecase_tests/` 資料夾中。
-*   **執行與驗證**: 這些測試目前主要透過手動方式執行。開發者需根據測試檔案中的步驟，在實際運行的 Chrome 擴充功能中模擬使用者操作，並觀察結果是否符合預期。
+*   **Purpose**: Each use case test clearly defines the expected behavior and operational flow of a specific feature. They are presented in descriptive text, detailing the test steps, preconditions, expected results, and verification methods.
+*   **Location**: All use case test files are stored in the `usecase_tests/` folder at the project root.
+*   **Execution & Verification**: These tests are currently primarily executed manually. Developers need to simulate user operations in the running Chrome extension according to the steps in the test files and observe whether the results meet expectations.
 
-### 自動化測試框架 (Automated Testing Framework)
+### Automated Testing Framework
 
-為了未來實現自動化測試，我們選用了 **Puppeteer** 作為端對端 (End-to-End, E2E) 測試框架。
+For future automated testing, we have chosen **Puppeteer** as our End-to-End (E2E) testing framework.
 
-*   **Puppeteer**: 是一個 Node.js 函式庫，提供高階 API 來透過 DevTools 協定控制 Chromium 或 Chrome。它允許我們編寫腳本來模擬使用者在瀏覽器中的各種操作，例如點擊、輸入、導航等，並截圖或獲取頁面內容進行驗證。
-*   **安裝**: Puppeteer 已透過 `npm install puppeteer` 安裝於專案中。
-*   **未來展望**: 未來將會把 `usecase_tests/` 中的描述性測試案例逐步轉換為可執行的 Puppeteer 腳本，以實現自動化測試與持續整合。
+*   **Puppeteer**: A Node.js library that provides a high-level API to control Chromium or Chrome over the DevTools Protocol. It allows us to write scripts to simulate various user actions in the browser, such as clicks, input, navigation, etc., and capture screenshots or retrieve page content for verification.
+*   **Installation**: Puppeteer has been installed in the project via `npm install puppeteer`.
+*   **Future Outlook**: In the future, the descriptive test cases in `usecase_tests/` will be gradually converted into executable Puppeteer scripts to achieve automated testing and continuous integration.
 
 ---
 
-## 👥 貢獻者 (Contributors)
+## 🔒 Privacy & FAQ
 
-感謝所有參與此專案的貢獻者，讓這個擴充功能變得更好：
+We value your privacy. This extension operates entirely locally and does not collect or transmit your personal data.
+
+For more details, please see our [Privacy Policy](PRIVACY_POLICY.md).
+
+---
+
+## 👥 Contributors
+
+Special thanks to all contributors who help make this project better:
 
 <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Tai-ch0802/arc-like-chrome-extension" />
@@ -131,4 +163,4 @@
 
 ---
 
-本專案採用 MIT 授權。
+This project is licensed under the MIT License.

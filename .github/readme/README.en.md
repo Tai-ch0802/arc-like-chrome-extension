@@ -2,7 +2,16 @@
 
 This is a Chrome extension project that aims to bring an Arc browser-like vertical sidebar experience to Google Chrome, providing a unified and powerful panel for managing tabs and bookmarks.
 
-![Project Screenshot](screenshot.png)
+---
+
+[![Version](https://img.shields.io/chrome-web-store/v/beoonblekmppafnjppedgpgfngghebji?style=flat-square&logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji)
+[![Rating](https://img.shields.io/chrome-web-store/rating/beoonblekmppafnjppedgpgfngghebji?style=flat-square)](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji)
+[![Users](https://img.shields.io/chrome-web-store/users/beoonblekmppafnjppedgpgfngghebji?style=flat-square)](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji)
+[![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
+
+## 🚀 New Release v1.11.0 update!
+[![Demo Video](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
 
 ---
 
@@ -50,6 +59,19 @@ Don't just search—find instantly.
 ### ⌨️ Productivity Shortcuts
 - **Cmd/Ctrl + I**: Toggle Sidebar
 - **Opt/Alt + T**: Create new tab next to current one
+
+---
+
+## 🆚 Why Choose This Extension?
+
+| Feature | This Extension | Native Chrome | Traditional Sidebars |
+| :--- | :---: | :---: | :---: |
+| **Vertical Tabs** | ✅ Full Title | ❌ Compressed | ✅ |
+| **Tab Groups** | ✅ Native Sync | ✅ | ⚠️ Partial |
+| **Bookmarks Integration** | ✅ Unified Panel | ❌ Separate Manager | ❌ Separate |
+| **Linked Tabs** | ✅ Perfectly Sync | ❌ | ❌ |
+| **Cross-Window Search** | ✅ | ❌ | ⚠️ Varies |
+| **Performance** | ⚡️ Dynamic Rendering | N/A | 🐢 Virtual Scroll |
 
 ---
 
@@ -128,6 +150,14 @@ Special thanks to all contributors who help make this project better:
 <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Tai-ch0802/arc-like-chrome-extension" />
 </a>
+
+---
+
+## 🔒 Privacy & FAQ
+
+We value your privacy. This extension operates entirely locally and does not collect or transmit your personal data.
+
+For more details, please see our [Privacy Policy](../../PRIVACY_POLICY.md).
 
 ---
 
