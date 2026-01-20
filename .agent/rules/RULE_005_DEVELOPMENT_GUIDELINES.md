@@ -17,7 +17,7 @@ description: 開發準則與脈絡工程
 
 ## Context Engineering (脈絡工程)
 
-在一個開發 session 結束時，應將當次所有變動內容進行摘要，並儲存至 `.gemini/NOTE_YYYYMMDD.md` 檔案中，以作為未來開發的脈絡參考。
+在一個開發 session 結束時，應將當次所有變動內容進行摘要，並儲存至 `.agent/notes/NOTE_YYYYMMDD.md` 檔案中，以作為未來開發的脈絡參考。
 
 ### 摘要模板
 

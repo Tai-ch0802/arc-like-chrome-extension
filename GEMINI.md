@@ -113,4 +113,4 @@ pr_review_guidelines: |
 - 在做任何改動時，需要留意是否可能影響其他的檔案。並且時刻留意此次的改動項目，必要時在 GEMINI.md 上調整專案 key_files 的描述及調整。
 
 # Context Engineering
-- 在一個開發 session 結束時，應將當次所有變動內容進行摘要，並儲存至 `.gemini/NOTE_YYYYMMDD.md` 檔案中，以作為未來開發的脈絡參考。
+- 在一個開發 session 結束時，應將當次所有變動內容進行摘要，並儲存至 `.agent/notes/NOTE_YYYYMMDD.md` 檔案中，以作為未來開發的脈絡參考。

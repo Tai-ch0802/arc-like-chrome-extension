@@ -17,10 +17,10 @@ Detailed behavioral rules are defined in `.agent/rules/`. Agents **MUST** consul
 - **[Architecture](.agent/rules/RULE_002_ARCHITECTURE.md)**: File responsibilities, module roles (e.g., `sidepanel.js` as Controller), and design patterns.
 - **[Build & Deploy](.agent/rules/RULE_003_BUILD_AND_DEPLOY.md)**: Instructions for `make`, previewing in Chrome, and packaging.
 - **[Commit & Release](.agent/rules/RULE_004_COMMIT_AND_RELEASE.md)**: Conventional Commits (English Subject, Traditional Chinese Body) and Release Note styles.
-- **[Development Guidelines](.agent/rules/RULE_005_DEVELOPMENT_GUIDELINES.md)**: Impact analysis, Context Engineering (`.gemini/NOTE_*.md`), and coding standards.
+- **[Development Guidelines](.agent/rules/RULE_005_DEVELOPMENT_GUIDELINES.md)**: Impact analysis, Context Engineering (`.agent/notes/NOTE_*.md`), and coding standards.
 - **[PR Review Guidelines](.agent/rules/RULE_006_PR_REVIEW_GUIDELINES.md)**: Standard procedure for PR reviews (zh-TW, gh CLI, signature).
 
 ## Core Interaction Principles
 1. **Language**: Traditional Chinese (zh-TW) for conversation and commit bodies. English for commit subjects and code comments.
-2. **Context**: Always update `.gemini/NOTE_YYYYMMDD.md` at the end of a session.
+2. **Context**: Always update `.agent/notes/NOTE_YYYYMMDD.md` at the end of a session.
 3. **Consistency**: Ensure `AGENTS.md` and `.agent/rules` remain synchronized.
