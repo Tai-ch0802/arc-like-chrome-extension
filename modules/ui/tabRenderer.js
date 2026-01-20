@@ -30,6 +30,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
         tabItem.setAttribute('aria-selected', 'true');
     }
     tabItem.tabIndex = 0; // Make tab focusable
+    tabItem.setAttribute('role', 'button');
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
 
