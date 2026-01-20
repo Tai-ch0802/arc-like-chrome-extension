@@ -314,5 +314,17 @@
     "linkedTabsIcon": {
         "message": "Linked tabs",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "About",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "This project is open source. You are welcome to join the development! Star us on GitHub!",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "View on GitHub",
+        "description": "Link text to the GitHub repository."
     }
 }

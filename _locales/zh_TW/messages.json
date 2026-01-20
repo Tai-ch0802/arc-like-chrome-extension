@@ -311,5 +311,17 @@
     "linkedTabsIcon": {
         "message": "已連結的分頁",
         "description": "已連結分頁圖示的無障礙標籤。"
+    },
+    "aboutSectionHeader": {
+        "message": "關於",
+        "description": "設定中關於區塊的標題。"
+    },
+    "aboutText": {
+        "message": "本專案已開源，歡迎加入開發！給我們一顆星星吧！",
+        "description": "描述專案開源性質的文字。"
+    },
+    "githubLinkText": {
+        "message": "前往 GitHub 查看",
+        "description": "前往 GitHub 儲存庫的連結文字。"
     }
 }

@@ -30,6 +30,10 @@
     /* 搜尋高亮顏色 */
     --search-match-title: #ffff00;
     --search-match-url: #ff6b9d;
+
+    /* 連結顏色 */
+    --link-color: #89b4fa;
+    --link-color-hover: #b4befe;
 }
 
 /* 2. Google 風格主題 */
@@ -62,7 +66,12 @@
     /* 搜尋高亮顏色 */
     --search-match-title: #fbbc04;
     --search-match-url: #ea4335;
+
+    /* 連結顏色 */
+    --link-color: #1a73e8;
+    --link-color-hover: #1765cc;
 }
+
 
 /* 3. Darcula (JetBrains) 風格主題 */
 [data-theme='darcula'] {
@@ -94,7 +103,12 @@
     /* 搜尋高亮顏色 */
     --search-match-title: #ffc66d;
     --search-match-url: #cc7832;
+
+    /* 連結顏色 */
+    --link-color: #6d9cbe;
+    --link-color-hover: #89b4fa;
 }
+
 
 /* 4. Geek Blue 風格主題 */
 [data-theme='geek-blue'] {
@@ -126,6 +140,10 @@
     /* 搜尋高亮顏色 */
     --search-match-title: #ffff00;
     --search-match-url: #ff6b9d;
+
+    /* 連結顏色 */
+    --link-color: #89b4fa;
+    --link-color-hover: #b4befe;
 }
 
 /* 5. Christmas 風格主題 */
@@ -162,7 +180,13 @@
     /* 搜尋高亮顏色 */
     --search-match-title: #f4d03f;
     --search-match-url: #e74c3c;
+
+    /* 連結顏色 */
+    --link-color: #d96666;
+    /* Soft Red for links in Christmas theme */
+    --link-color-hover: #e07878;
 }
+
 
 
 
@@ -794,6 +818,21 @@ mark.url-match {
     padding: 5px;
     background-color: var(--main-bg-color);
     border-radius: 2px;
+}
+
+.modal-link-button {
+    color: var(--link-color, var(--accent-color));
+    /* Fallback to accent color */
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.modal-link-button:hover {
+    color: var(--link-color-hover, var(--accent-color-hover));
+    text-decoration: underline;
 }
 
 /* Style for folders inside the dialog */

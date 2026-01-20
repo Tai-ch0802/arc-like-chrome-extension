@@ -77,6 +77,11 @@ export function initThemeSwitcher() {
                 <p>${api.getMessage('sidePanelPositionExplanation')}</p>
                 <button id="open-appearance-settings-button" class="modal-button">${api.getMessage('sidePanelPositionLinkText')}</button>
             </div>
+            <div class="settings-section">
+                <h4 class="settings-section-header">${api.getMessage('aboutSectionHeader')}</h4>
+                <p>${api.getMessage('aboutText')}</p>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" class="modal-link-button">${api.getMessage('githubLinkText')}</a>
+            </div>
         `;
 
 
