@@ -23,6 +23,9 @@ graph TD
     TR -->|Bind Event| CM[contextMenuManager.js]
     OWR -->|Bind Event| CM
     
+    TR -->|Import| GC[groupColors.js]
+    OWR -->|Import| GC
+    
     CM -->|Action| API[apiManager.js]
     TR -->|Render| DOM
     OWR -->|Render| DOM
@@ -48,9 +51,17 @@ graph TD
         *   `showContextMenu(x, y, data)`: 顯示選單。
         *   `handleAction(action, context)`: 執行對應動作。
 
+### 2.4 Group Colors (`modules/ui/groupColors.js`)
+*   **New Module**:
+    *   目的：集中管理 Tab Group 的顏色常數與相關工具函式，避免在多個 Renderer 重複定義。
+    *   Exports:
+        *   `GROUP_COLORS`: 群組顏色對應表 (grey, blue, red, yellow, green, pink, purple, cyan, orange)。
+        *   `hexToRgba(hex, alpha)`: 將 HEX 顏色轉換為 RGBA 格式。
+
 ## 3. Data Design
 ### 3.1 Dependencies
 *   `contextMenuManager` 需引用 `apiManager` 執行 `closeTab`, `addToGroup` 等動作。
+*   `tabRenderer` 與 `otherWindowRenderer` 需引用 `groupColors` 取得 `GROUP_COLORS` 與 `hexToRgba`。
 *   `uiManager` 作為 Facade，需匯出新的 Renderer 函式。
 
 ## 4. Interface Design (API)

@@ -41,6 +41,10 @@
 ### 3.3 Facade Update
 *   **FR-07**: `modules/uiManager.js` 需更新 import 路徑，確保對 `sidepanel.js` 的接口 (`ui.renderOtherWindowsSection`) 保持不變。
 
+### 3.4 Extract Shared Constants (DRY)
+*   **FR-08**: 建立 `modules/ui/groupColors.js`，集中管理 `GROUP_COLORS` 常數與 `hexToRgba` 工具函式。
+*   **FR-09**: `tabRenderer.js` 與 `otherWindowRenderer.js` 應 import 共享模組，避免程式碼重複。
+
 ## 4. User Experience (UI/UX)
 *   **No Change**: 使用者體驗應與重構前完全一致（Pixel-perfect maintain）。
 

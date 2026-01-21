@@ -6,25 +6,8 @@ import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import { EDIT_ICON_SVG } from '../icons.js';
 import { otherWindowsList } from './elements.js';
+import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 
-const GROUP_COLORS = {
-    grey: '#5f6368',
-    blue: '#8ab4f8',
-    red: '#f28b82',
-    yellow: '#fdd663',
-    green: '#81c995',
-    pink: '#ff8bcb',
-    purple: '#c58af9',
-    cyan: '#78d9ec',
-    orange: '#ffab70'
-};
-
-function hexToRgba(hex, alpha) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
 
 /**
  * Create a simple tab element for other windows (without group actions)
