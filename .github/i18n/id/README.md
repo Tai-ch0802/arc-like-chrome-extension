@@ -29,7 +29,7 @@ Kami menyambut kontribusi dari komunitas! Baik Anda memperbaiki bug, meningkatka
 
 Kami menggunakan alur kerja **Spec-Driven Development (SDD)** dan bersifat **ramah AI**. Lihat panduan kontribusi kami untuk memulai:
 
-👉 **[Baca Panduan Kontribusi Kami](../../CONTRIBUTING.md)**
+👉 **[Baca Panduan Kontribusi Kami](./CONTRIBUTING.md)**
 
 ---
 

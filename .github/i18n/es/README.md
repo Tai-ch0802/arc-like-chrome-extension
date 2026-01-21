@@ -29,7 +29,7 @@ Este es un proyecto de extensión de Chrome que tiene como objetivo llevar una e
 
 Utilizamos un flujo de trabajo **Desarrollo basado en especificaciones (SDD)** y somos **compatibles con IA**. Consulta nuestra guía de contribución para empezar:
 
-👉 **[Lee nuestras directrices de contribución](../../CONTRIBUTING.md)**
+👉 **[Lee nuestras directrices de contribución](./CONTRIBUTING.md)**
 
 ---
 

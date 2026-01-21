@@ -29,7 +29,7 @@ Agradecemos as contribuições da comunidade! Se você estiver corrigindo um bug
 
 Utilizamos um fluxo de trabalho de **Desenvolvimento Orientado por Especificações (SDD)** e somos **amigáveis à IA**. Confira nosso guia de contribuição para começar:
 
-👉 **[Leia nossas diretrizes de contribuição](../../CONTRIBUTING.md)**
+👉 **[Leia nossas diretrizes de contribuição](./CONTRIBUTING.md)**
 
 ---
 

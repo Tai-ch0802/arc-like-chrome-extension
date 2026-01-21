@@ -29,7 +29,7 @@ Chúng tôi luôn chào đón các đóng góp từ cộng đồng! Dù bạn đ
 
 Chúng tôi sử dụng quy trình làm việc **Phát triển dựa trên đặc tả (SDD)** và **thân thiện với AI**. Hãy xem hướng dẫn đóng góp của chúng tôi để bắt đầu:
 
-👉 **[Đọc Hướng dẫn đóng góp của chúng tôi](../../CONTRIBUTING.md)**
+👉 **[Đọc Hướng dẫn đóng góp của chúng tôi](./CONTRIBUTING.md)**
 
 ---
 
