@@ -1,6 +1,6 @@
 # Sidebar Chrome bergaya Arc
 
-[English](README.en.md) | [繁體中文](README.zh_TW.md) | [简体中文](README.zh_CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [हिन्दी](README.hi.md) | [Bahasa Indonesia](README.id.md) | [Português (Brasil)](README.pt_BR.md) | [Русский](README.ru.md) | [ไทย](README.th.md) | [Tiếng Việt](README.vi.md)
+[English](../en/README.md) | [繁體中文](../zh_TW/README.md) | [简体中文](../zh_CN/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [हिन्दी](../hi/README.md) | [Bahasa Indonesia](../id/README.md) | [Português (Brasil)](../pt_BR/README.md) | [Русский](../ru/README.md) | [ไทย](../th/README.md) | [Tiếng Việt](../vi/README.md)
 
 ---
 

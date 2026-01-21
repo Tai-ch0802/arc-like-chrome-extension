@@ -1,6 +1,6 @@
 # Arc-Style Chrome Sidebar
 
-[English](.github/readme/README.en.md) | [繁體中文](.github/readme/README.zh_TW.md) | [简体中文](.github/readme/README.zh_CN.md) | [日本語](.github/readme/README.ja.md) | [한국어](.github/readme/README.ko.md) | [Deutsch](.github/readme/README.de.md) | [Español](.github/readme/README.es.md) | [Français](.github/readme/README.fr.md) | [हिन्दी](.github/readme/README.hi.md) | [Bahasa Indonesia](.github/readme/README.id.md) | [Português (Brasil)](.github/readme/README.pt_BR.md) | [Русский](.github/readme/README.ru.md) | [ไทย](.github/readme/README.th.md) | [Tiếng Việt](.github/readme/README.vi.md)
+[English](../en/README.md) | [繁體中文](../zh_TW/README.md) | [简体中文](../zh_CN/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [हिन्दी](../hi/README.md) | [Bahasa Indonesia](../id/README.md) | [Português (Brasil)](../pt_BR/README.md) | [Русский](../ru/README.md) | [ไทย](../th/README.md) | [Tiếng Việt](../vi/README.md)
 
 ---
 
