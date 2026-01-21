@@ -13,6 +13,7 @@ description: "Spec-Driven Development (SDD): A structured workflow (Requirement 
 2.  **Traceability**: 每個需求都可追溯到設計與實作
 3.  **Acceptance-Driven**: 每個需求都有可驗證的驗收條件
 4.  **Version Control**: 規格文件有版本控制，變更需走流程
+5.  **Living Documentation**: 程式碼變更必須同步更新規格，保持一致性
 
 ## 核心流程 (Core Workflow)
 
@@ -20,7 +21,7 @@ description: "Spec-Driven Development (SDD): A structured workflow (Requirement 
 
 ### Phase 1: Product Requirement (PRD)
 *   **目標**: 定義 "做什麼" (What) 和 "為什麼做" (Why)。
-*   **檔案位置**: `/docs/specs/{type}/{prefix}_{desc}/PRD_spec.md`
+*   **檔案位置**: `/docs/specs/{type}/{ID-PREFIX}_{desc}/PRD_spec.md`
 *   **參考技能**: `prd` (詳見 `.agent/skills/prd/SKILL.md`)
 *   **快速指南**: `sdd/references/requirements.md`
 *   **關鍵內容**:
@@ -32,7 +33,7 @@ description: "Spec-Driven Development (SDD): A structured workflow (Requirement 
 
 ### Phase 2: System Analysis (SA)
 *   **目標**: 定義 "如何做" (How)。將業務需求轉化為技術規格。
-*   **檔案位置**: `/docs/specs/{type}/{prefix}_{desc}/SA_spec.md`
+*   **檔案位置**: `/docs/specs/{type}/{ID-PREFIX}_{desc}/SA_spec.md`
 *   **參考技能**: `sa` (詳見 `.agent/skills/sa/SKILL.md`)
 *   **快速指南**: `sdd/references/design.md`
 *   **關鍵內容**:
@@ -48,20 +49,37 @@ description: "Spec-Driven Development (SDD): A structured workflow (Requirement 
 *   **前置條件**: PRD 和 SA 都必須進入 **Approved/Frozen** 狀態
 *   **行動**:
     *   依據 `SA_spec.md` 進行 Coding
+    *   **Sync**: 若實作發現設計需調整，**必須**先更新 SA/PRD
     *   對照 `PRD_spec.md` 的 Acceptance Criteria 進行驗收
+
+## 命名規範 (Naming Convention)
+
+目錄名稱格式：`{ID_PREFIX}_{short-description}`
+
+`ID_PREFIX` 分為三種類型：
+
+1.  **ISSUE (標準)**: 對應 GitHub Issue ID。
+    *   範例: `ISSUE-123_tab-groups`
+    *   用途: 一般功能開發與 Bug 修復。
+2.  **PR (外部貢獻)**: 對應 Pull Request ID (若無 Issue)。
+    *   範例: `PR-456_typo-fix`
+    *   用途: 外部貢獻者直接提交的 PR。
+3.  **BASE (基底/歷史)**: 專案初始化或回溯補全的規格。
+    *   範例: `BASE-001_initial-architecture`
+    *   用途: 處理無對應 Issue 的歷史債務或基礎架構文件。
 
 ## 目錄結構範例
 
 ```text
 /docs/specs/
   ├── feature/
-  │    └── 001_tab-groups/
-  │         ├── PRD_spec.md   <-- v1.0, Frozen
-  │         └── SA_spec.md    <-- v1.0, Frozen
+  │    └── ISSUE-101_tab-groups/   <-- Standard Flow
+  │         ├── PRD_spec.md
+  │         └── SA_spec.md
   └── fix/
-       └── 002_sync-bug/
-            ├── PRD_spec.md   <-- v1.1, Approved
-            └── SA_spec.md    <-- v1.0, Approved
+       └── BASE-002_sync-bug/      <-- Legacy/Baseline
+            ├── PRD_spec.md
+            └── SA_spec.md
 ```
 
 ## Agent 操作指引
