@@ -79,15 +79,16 @@ describe.skip('Performance Benchmark', () => {
             }
 
             const tabRenderer = await import('./modules/ui/tabRenderer.js');
+            const otherWindowRenderer = await import('./modules/ui/otherWindowRenderer.js');
 
             // Measure renderTabsAndGroups
             const startTabs = performance.now();
-            tabRenderer.renderTabsAndGroups(currentTabs, currentGroups, { onAddToGroupClick: () => {} });
+            tabRenderer.renderTabsAndGroups(currentTabs, currentGroups, { onAddToGroupClick: () => { } });
             const endTabs = performance.now();
 
             // Measure renderOtherWindowsSection
             const startOther = performance.now();
-            tabRenderer.renderOtherWindowsSection(otherWindows, currentWindowId, allGroups);
+            otherWindowRenderer.renderOtherWindowsSection(otherWindows, currentWindowId, allGroups);
             const endOther = performance.now();
 
             return {
