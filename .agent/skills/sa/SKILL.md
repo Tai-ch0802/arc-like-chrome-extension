@@ -13,6 +13,7 @@ description: "Methodologies for System Analysis (SA), focusing on technical arch
 2.  **資料建模 (Data Modeling)**: 設計資料庫 Schema、資料結構與存儲方案。
 3.  **介面設計 (Interface Design)**: 定義 API 規格、函數簽名 (Function Signatures) 與互動協議。
 4.  **流程邏輯 (Process Logic)**: 透過圖表 (Flowchart, Sequence Diagram) 釐清複雜的業務邏輯。
+5.  **測試策略 (Testing Strategy)**: **[Critical]** 分析變更對現有測試的影響，並定義測試計畫。
 
 ## SA 產出物 (Artifacts)
 
@@ -28,8 +29,12 @@ description: "Methodologies for System Analysis (SA), focusing on technical arch
 2.  **Model**:
     *   **Data**: 設計 JSON 物件或 DB Table。
     *   **Process**: 繪製 Mermaid Sequence Diagram。
-3.  **Design**: 填寫 `system_design_doc.md` 模板。
-4.  **Review**: 請 User 確認技術方案是否符合專案架構規範。
+3.  **Validate Tests**: 
+    *   搜尋與變更模組相關的所有測試檔案 (grep/find)。
+    *   分析測試代碼是否依賴將被更改的內部實作 (Internal Imports) 或 DOM 結構。
+    *   在 SA 文件中明確列出 *必須修改的測試檔案* 與 *必須保留的 DOM 結構*。
+4.  **Design**: 填寫 `system_design_doc.md` 模板。
+5.  **Review**: 請 User 確認技術方案是否符合專案架構規範。
 
 ## 常用工具
 
@@ -42,3 +47,4 @@ description: "Methodologies for System Analysis (SA), focusing on technical arch
 *   [ ] 資料結構是否具備擴充性？
 *   [ ] 是否符合現有的程式碼風格與架構模式？
 *   [ ] 是否評估了性能影響 (Performance Impact)？
+*   [ ] **[Must]** 是否已識別所有受影響的測試案例，並規劃了與程式碼變更同步的測試修正？
