@@ -106,6 +106,10 @@
         "message": "Weihnachten",
         "description": "Name for the Christmas theme option."
     },
+    "themeOptionCustom": {
+        "message": "Benutzerdefiniert...",
+        "description": "Name for the custom theme option."
+    },
     "shortcutSectionHeader": {
         "message": "Tastenkombinationen-Einstellungen",
         "description": "Header for the keyboard shortcut section in settings."
@@ -311,5 +315,190 @@
     "linkedTabsIcon": {
         "message": "Verknüpfte Tabs",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "githubLinkText": {
+        "message": "Auf GitHub ansehen",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme-Anpassung",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme-Anpassung",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Farbeinstellungen",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Haupt-Hintergrundfarbe:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primäre Textfarbe:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Akzentfarbe:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element-Hintergrundfarbe:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element-Hover-Farbe:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Randfarbe:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Hintergrundbild",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Hintergrundbild-URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Hintergrund-Deckkraft:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Einstellungen speichern",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Auf Standard zurücksetzen",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live-Vorschau",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Suchen...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "Dies ist ein Beispiel-Tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Ein weiterer Tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "Dies ist ein Lesezeichen",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Einstellungen gespeichert!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Sind Sie sicher, dass Sie das Thema auf die Standardwerte zurücksetzen möchten? Dadurch werden Ihre benutzerdefinierten Farben und Ihr Hintergrund gelöscht.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Die Einstellungen wurden auf die Standardwerte zurückgesetzt.",
+        "description": "Alert message when settings have been reset."
+    }
+,
+    "githubLinkText": {
+        "message": "View on GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme Customization",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme Customization",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Color Settings",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Main Background Color:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primary Text Color:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Accent Color:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element Background Color:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element Hover Color:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Border Color:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Background Image",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Background Image URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Background Opacity:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Save Settings",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Reset to Default",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live Preview",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Search...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "This is a sample tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Another tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "This is a bookmark",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Settings saved!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Are you sure you want to reset the theme to its default values? This will clear your custom colors and background.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Settings have been reset to default.",
+        "description": "Alert message when settings have been reset."
     }
 }

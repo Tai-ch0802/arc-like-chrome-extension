@@ -1,26 +1,26 @@
 {
     "extensionName": {
-        "message": "탭/북마크용 사이드바",
+        "message": "Seitenleiste für Tabs/Lesezeichen",
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "Arc 브라우저의 수직 탭을 모방한 Chrome 확장 프로그램입니다.",
+        "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
         "description": "The description of the extension."
     },
     "searchPlaceholder": {
-        "message": "탭 또는 북마크 검색...",
+        "message": "Tabs oder Lesezeichen suchen...",
         "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-        "message": "탭",
+        "message": "Tabs",
         "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-        "message": "북마크",
+        "message": "Lesezeichen",
         "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-        "message": "북마크 \"$bookmark_title$\"을(를) 영구적으로 삭제하시겠습니까?",
+        "message": "Sind Sie sicher, dass Sie das Lesezeichen \"$bookmark_title$\" dauerhaft löschen möchten?",
         "description": "Confirmation message for deleting a single bookmark.",
         "placeholders": {
             "bookmark_title": {
@@ -29,7 +29,7 @@
         }
     },
     "deleteFolderConfirm": {
-        "message": "폴더 \"$folder_title$\"와(과) 그 안의 모든 콘텐츠를 영구적으로 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다!",
+        "message": "Sind Sie sicher, dass Sie den Ordner \"$folder_title$\" und seinen gesamten Inhalt dauerhaft löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
         "description": "Confirmation message for deleting a bookmark folder.",
         "placeholders": {
             "folder_title": {
@@ -38,7 +38,7 @@
         }
     },
     "addFolderPrompt": {
-        "message": "\"$parent_folder$\" 아래에 새 폴더의 이름을 입력하십시오:",
+        "message": "Bitte geben Sie den Namen für den neuen Ordner unter \"$parent_folder$\" ein:",
         "description": "Prompt for adding a new bookmark folder.",
         "placeholders": {
             "parent_folder": {
@@ -47,31 +47,31 @@
         }
     },
     "editBookmarkFolderPromptForTitle": {
-        "message": "폴더 이름 편집:",
+        "message": "Ordnernamen bearbeiten:",
         "description": "Prompt for the user to input or edit the name of a bookmark folder."
     },
     "editBookmarkPromptForTitle": {
-        "message": "북마크 이름 편집:",
+        "message": "Lesezeichennamen bearbeiten:",
         "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
     },
     "editBookmarkPromptForUrl": {
-        "message": "북마크 URL 편집:",
+        "message": "Lesezeichen-URL bearbeiten:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
     "cancelButton": {
-        "message": "취소",
+        "message": "Abbrechen",
         "description": "Label for the cancel button in dialogs."
     },
     "deleteButton": {
-        "message": "삭제",
+        "message": "Löschen",
         "description": "Label for the delete button in dialogs."
     },
     "createButton": {
-        "message": "만들기",
+        "message": "Erstellen",
         "description": "Label for the create button in dialogs."
     },
     "saveButton": {
-        "message": "저장",
+        "message": "Speichern",
         "description": "Label for the save button in dialogs."
     },
     "closeButton": {
@@ -99,91 +99,95 @@
         "description": "Name for the Darcula (JetBrains) theme option."
     },
     "themeOptionGeekBlue": {
-        "message": "긱 블루",
-        "description": "Name for the 긱 블루 theme option."
+        "message": "Geek Blau",
+        "description": "Name for the Geek Blau theme option."
     },
     "themeOptionChristmas": {
-        "message": "크리스마스",
+        "message": "Weihnachten",
         "description": "Name for the Christmas theme option."
     },
+    "themeOptionCustom": {
+        "message": "Benutzerdefiniert...",
+        "description": "Name for the custom theme option."
+    },
     "shortcutSectionHeader": {
-        "message": "키보드 단축키 설정",
+        "message": "Tastenkombinationen-Einstellungen",
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Chrome의 관리 페이지에서 확장 프로그램의 단축키를 사용자 지정할 수 있습니다.",
+        "message": "Sie können die Tastenkombinationen der Erweiterung auf der Verwaltungsseite von Chrome anpassen.",
         "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "확장 프로그램 단축키 관리",
+        "message": "Tastenkombinationen für Erweiterungen verwalten",
         "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
-        "message": "현재 단축키:",
+        "message": "Aktuelle Tastenkombination:",
         "description": "Label for displaying the current shortcut."
     },
     "sidePanelPositionSectionHeader": {
-        "message": "사이드 패널 위치",
+        "message": "Seitenpanel-Position",
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Chrome에는 사이드 패널 위치에 대한 기본 제공 설정이 있습니다. 여기에서 패널이 브라우저의 왼쪽 또는 오른쪽에 표시되는지 조정할 수 있습니다.",
+        "message": "Chrome hat eine integrierte Einstellung für die Position der Seitenleiste. Hier können Sie anpassen, ob das Panel auf der linken oder rechten Seite des Browsers erscheint.",
         "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Chrome 사이드 패널 위치 변경",
+        "message": "Position der Chrome-Seitenleiste ändern",
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-        "message": "사이드바 열기",
+        "message": "Seitenleiste öffnen",
         "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-        "message": "현재 탭의 오른쪽에 새 탭 만들기",
+        "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
         "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-        "message": "오른쪽에 새 탭 만들기:",
+        "message": "Neuen Tab rechts erstellen:",
         "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
-        "message": "탭 닫기",
+        "message": "Tab schließen",
         "description": "Tooltip for the close button on a tab."
     },
     "addBookmark": {
-        "message": "북마크에 추가",
+        "message": "Zu Lesezeichen hinzufügen",
         "description": "Tooltip for the add-to-bookmark button on a tab."
     },
     "addBookmarkDialogTitle": {
-        "message": "북마크 추가",
+        "message": "Lesezeichen hinzufügen",
         "description": "Title for the new dialog."
     },
     "addToGroup": {
-        "message": "새 그룹에 탭 추가",
+        "message": "Tab zu neuer Gruppe hinzufügen",
         "description": "Tooltip for the add to group button on a tab."
     },
     "createGroupDialogTitle": {
-        "message": "새 그룹 만들기",
+        "message": "Neue Gruppe erstellen",
         "description": "Title for the create new group dialog."
     },
     "groupNameInputPlaceholder": {
-        "message": "그룹 이름 입력...",
+        "message": "Gruppennamen eingeben...",
         "description": "Placeholder for the group name input in the create group dialog."
     },
     "createGroupButton": {
-        "message": "그룹 만들기",
+        "message": "Gruppe erstellen",
         "description": "Label for the create button in the create group dialog."
     },
     "bookmarksBar": {
-        "message": "북마크바",
+        "message": "Lesezeichenleiste",
         "description": "The name for the root bookmark folder."
     },
     "addButton": {
-        "message": "추가",
+        "message": "Hinzufügen",
         "description": "The confirm button text in the new dialog."
     },
     "linkedTabsTooltip": {
-        "message": "이 북마크는 $COUNT$개의 탭에 연결되어 있습니다. 자세한 내용을 보려면 클릭하세요.",
+        "message": "Dieses Lesezeichen ist mit $COUNT$ Tab(s) verknüpft. Klicken für Details.",
         "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
         "placeholders": {
             "COUNT": {
@@ -193,16 +197,16 @@
         }
     },
     "linkedTabsPanelTitle": {
-        "message": "연결된 탭:",
+        "message": "Verknüpfte Tabs für",
         "description": "Title for the panel that shows tabs linked to a bookmark."
     },
     "noLinkedTabs": {
-        "message": "이 북마크에 연결된 탭이 없습니다.",
+        "message": "Keine verknüpften Tabs für dieses Lesezeichen gefunden.",
         "description": "Message displayed when a bookmark has no active linked tabs."
     },
     "duplicateBookmarkConfirm": {
-        "message": "이 페이지는 이미 '$BOOKMARK_NAME$'(으)로 북마크에 추가되었습니다.<br><br>다시 추가하시겠습니까?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "message": "Diese Seite ist bereits als \"$BOOKMARK_NAME$\" gespeichert.<br><br>Möchten Sie sie erneut hinzufügen?",
+        "description": "Bestätigungsmeldung, die angezeigt wird, wenn versucht wird, ein Lesezeichen hinzuzufügen, das bereits existiert.",
         "placeholders": {
             "BOOKMARK_NAME": {
                 "content": "$1",
@@ -211,20 +215,20 @@
         }
     },
     "experimentalSectionHeader": {
-        "message": "실험적 기능",
+        "message": "Experimentelle Funktionen",
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "가상 스크롤 활성화",
+        "message": "Virtuelles Scrollen aktivieren",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {
-        "message": "표시되는 항목만 렌더링하여 대규모 북마크 목록의 성능을 최적화합니다. 약간의 시각적 문제가 발생할 수 있습니다.",
+        "message": "Optimiert die Leistung für große Lesezeichenlisten durch Rendern nur sichtbarer Elemente. Kann kleinere visuelle Fehler aufweisen.",
         "description": "Description for the virtual scrolling toggle"
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$개 탭, $BOOKMARK_COUNT$개 북마크",
-        "description": "검색 결과 수를 표시하는 메시지입니다.",
+        "message": "$TAB_COUNT$ Tab(s), $BOOKMARK_COUNT$ Lesezeichen",
+        "description": "Nachricht zur Anzeige der Anzahl der Suchergebnisse.",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",
@@ -237,79 +241,264 @@
         }
     },
     "searchNoResults": {
-        "message": "검색 결과 없음",
-        "description": "Message displayed when search returns no results."
+        "message": "Keine Ergebnisse gefunden",
+        "description": "Nachricht, die angezeigt wird, wenn die Suche keine Ergebnisse liefert."
     },
     "copyUrl": {
-        "message": "URL 복사",
+        "message": "URL kopieren",
         "description": "Context menu option to copy the tab URL."
     },
     "urlCopied": {
-        "message": "URL 복사됨!",
+        "message": "URL kopiert!",
         "description": "Feedback message after copying URL."
     },
     "otherWindowsHeader": {
-        "message": "다른 창",
+        "message": "Andere Fenster",
         "description": "Header for the other windows section."
     },
     "autoCloseDialog": {
-        "message": "이 대화 상자는 5초 후에 닫힙니다...",
+        "message": "Dieser Dialog wird sich in 5 Sekunden schließen...",
         "description": "Message displayed when an auto-closing dialog is shown."
     },
     "renameWindow": {
-        "message": "창 이름 바꾸기",
+        "message": "Fenster umbenennen",
         "description": "Tooltip for the rename window button."
     },
     "renameWindowDialogTitle": {
-        "message": "창 이름 바꾸기",
+        "message": "Fenster umbenennen",
         "description": "Title of the dialog to rename a window."
     },
     "enterWindowName": {
-        "message": "새 창 이름 입력:",
+        "message": "Neuen Fensternamen eingeben:",
         "description": "Prompt message in the rename window dialog."
     },
     "splitViewDetectionError": {
-        "message": "분할 보기 탭을 감지하지 못했습니다. 이 단일 탭에 대한 그룹을 계속 만들까요?",
+        "message": "Die Erkennung von geteilten Ansichts-Tabs ist fehlgeschlagen. Möchten Sie trotzdem eine Gruppe für diesen einzelnen Tab erstellen?",
         "description": "Error message when split view tab detection fails."
     },
     "yesButton": {
-        "message": "예",
+        "message": "Ja",
         "description": "Label for the yes button in confirmation dialogs."
     },
     "searchAriaLabel": {
-        "message": "탭 및 북마크 검색",
+        "message": "Tabs und Lesezeichen suchen",
         "description": "Accessibility label for the search input box."
     },
     "clearSearchAriaLabel": {
-        "message": "검색 지우기",
+        "message": "Suche löschen",
         "description": "Accessibility label for the clear search button."
     },
     "settingsAriaLabel": {
-        "message": "설정",
+        "message": "Einstellungen",
         "description": "Accessibility label for the settings toggle button."
     },
     "editBookmark": {
-        "message": "북마크 편집",
+        "message": "Lesezeichen bearbeiten",
         "description": "Accessibility label for the edit bookmark button."
     },
     "deleteBookmark": {
-        "message": "북마크 삭제",
+        "message": "Lesezeichen löschen",
         "description": "Accessibility label for the delete bookmark button."
     },
     "editFolder": {
-        "message": "폴더 이름 편집",
+        "message": "Ordnernamen bearbeiten",
         "description": "Accessibility label for the edit folder button."
     },
     "addFolder": {
-        "message": "새 폴더 추가",
+        "message": "Neuen Ordner hinzufügen",
         "description": "Accessibility label for the add folder button."
     },
     "deleteFolder": {
-        "message": "폴더 삭제",
+        "message": "Ordner löschen",
         "description": "Accessibility label for the delete folder button."
     },
     "linkedTabsIcon": {
-        "message": "연결된 탭",
+        "message": "Verknüpfte Tabs",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "githubLinkText": {
+        "message": "Auf GitHub ansehen",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme-Anpassung",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme-Anpassung",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Farbeinstellungen",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Haupt-Hintergrundfarbe:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primäre Textfarbe:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Akzentfarbe:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element-Hintergrundfarbe:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element-Hover-Farbe:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Randfarbe:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Hintergrundbild",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Hintergrundbild-URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Hintergrund-Deckkraft:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Einstellungen speichern",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Auf Standard zurücksetzen",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live-Vorschau",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Suchen...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "Dies ist ein Beispiel-Tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Ein weiterer Tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "Dies ist ein Lesezeichen",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Einstellungen gespeichert!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Sind Sie sicher, dass Sie das Thema auf die Standardwerte zurücksetzen möchten? Dadurch werden Ihre benutzerdefinierten Farben und Ihr Hintergrund gelöscht.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Die Einstellungen wurden auf die Standardwerte zurückgesetzt.",
+        "description": "Alert message when settings have been reset."
+    }
+,
+    "githubLinkText": {
+        "message": "View on GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme Customization",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme Customization",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Color Settings",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Main Background Color:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primary Text Color:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Accent Color:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element Background Color:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element Hover Color:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Border Color:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Background Image",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Background Image URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Background Opacity:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Save Settings",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Reset to Default",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live Preview",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Search...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "This is a sample tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Another tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "This is a bookmark",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Settings saved!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Are you sure you want to reset the theme to its default values? This will clear your custom colors and background.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Settings have been reset to default.",
+        "description": "Alert message when settings have been reset."
     }
 }

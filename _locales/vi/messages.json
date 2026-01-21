@@ -1,26 +1,26 @@
 {
     "extensionName": {
-        "message": "Thanh bên cho Tab/Dấu trang",
+        "message": "Seitenleiste für Tabs/Lesezeichen",
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "Một tiện ích mở rộng của Chrome mô phỏng các tab dọc của trình duyệt Arc.",
+        "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
         "description": "The description of the extension."
     },
     "searchPlaceholder": {
-        "message": "Tìm kiếm tab hoặc dấu trang...",
+        "message": "Tabs oder Lesezeichen suchen...",
         "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-        "message": "Tab",
+        "message": "Tabs",
         "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-        "message": "Dấu trang",
+        "message": "Lesezeichen",
         "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-        "message": "Bạn có chắc chắn muốn xóa vĩnh viễn dấu trang \"$bookmark_title$\"",
+        "message": "Sind Sie sicher, dass Sie das Lesezeichen \"$bookmark_title$\" dauerhaft löschen möchten?",
         "description": "Confirmation message for deleting a single bookmark.",
         "placeholders": {
             "bookmark_title": {
@@ -29,7 +29,7 @@
         }
     },
     "deleteFolderConfirm": {
-        "message": "Bạn có chắc chắn muốn xóa vĩnh viễn thư mục \"$folder_title$\" và tất cả nội dung của nó không?\n\nHành động này không thể hoàn tác!",
+        "message": "Sind Sie sicher, dass Sie den Ordner \"$folder_title$\" und seinen gesamten Inhalt dauerhaft löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
         "description": "Confirmation message for deleting a bookmark folder.",
         "placeholders": {
             "folder_title": {
@@ -38,7 +38,7 @@
         }
     },
     "addFolderPrompt": {
-        "message": "Vui lòng nhập tên cho thư mục mới trong \"$parent_folder$\"",
+        "message": "Bitte geben Sie den Namen für den neuen Ordner unter \"$parent_folder$\" ein:",
         "description": "Prompt for adding a new bookmark folder.",
         "placeholders": {
             "parent_folder": {
@@ -47,31 +47,31 @@
         }
     },
     "editBookmarkFolderPromptForTitle": {
-        "message": "Chỉnh sửa Tên Thư mục:",
+        "message": "Ordnernamen bearbeiten:",
         "description": "Prompt for the user to input or edit the name of a bookmark folder."
     },
     "editBookmarkPromptForTitle": {
-        "message": "Chỉnh sửa Tên Dấu trang:",
+        "message": "Lesezeichennamen bearbeiten:",
         "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
     },
     "editBookmarkPromptForUrl": {
-        "message": "Chỉnh sửa URL Dấu trang:",
+        "message": "Lesezeichen-URL bearbeiten:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
     "cancelButton": {
-        "message": "Hủy",
+        "message": "Abbrechen",
         "description": "Label for the cancel button in dialogs."
     },
     "deleteButton": {
-        "message": "Xóa",
+        "message": "Löschen",
         "description": "Label for the delete button in dialogs."
     },
     "createButton": {
-        "message": "Tạo",
+        "message": "Erstellen",
         "description": "Label for the create button in dialogs."
     },
     "saveButton": {
-        "message": "Lưu",
+        "message": "Speichern",
         "description": "Label for the save button in dialogs."
     },
     "closeButton": {
@@ -99,91 +99,95 @@
         "description": "Name for the Darcula (JetBrains) theme option."
     },
     "themeOptionGeekBlue": {
-        "message": "Geek Xanh",
-        "description": "Name for the Geek Xanh theme option."
+        "message": "Geek Blau",
+        "description": "Name for the Geek Blau theme option."
     },
     "themeOptionChristmas": {
-        "message": "Giáng Sinh",
+        "message": "Weihnachten",
         "description": "Name for the Christmas theme option."
     },
+    "themeOptionCustom": {
+        "message": "Benutzerdefiniert...",
+        "description": "Name for the custom theme option."
+    },
     "shortcutSectionHeader": {
-        "message": "Cài đặt phím tắt",
+        "message": "Tastenkombinationen-Einstellungen",
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Bạn có thể tùy chỉnh các phím tắt của tiện ích trên trang quản lý của Chrome.",
+        "message": "Sie können die Tastenkombinationen der Erweiterung auf der Verwaltungsseite von Chrome anpassen.",
         "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Quản lý Phím tắt Tiện ích",
+        "message": "Tastenkombinationen für Erweiterungen verwalten",
         "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
-        "message": "Phím tắt hiện tại:",
+        "message": "Aktuelle Tastenkombination:",
         "description": "Label for displaying the current shortcut."
     },
     "sidePanelPositionSectionHeader": {
-        "message": "Vị trí bảng điều khiển bên",
+        "message": "Seitenpanel-Position",
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Chrome có một cài đặt tích hợp cho vị trí của thanh bên. Bạn có thể điều chỉnh xem thanh bên xuất hiện ở bên trái hay bên phải của trình duyệt tại đây.",
+        "message": "Chrome hat eine integrierte Einstellung für die Position der Seitenleiste. Hier können Sie anpassen, ob das Panel auf der linken oder rechten Seite des Browsers erscheint.",
         "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Thay đổi Vị trí Thanh bên của Chrome",
+        "message": "Position der Chrome-Seitenleiste ändern",
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-        "message": "Mở thanh bên",
+        "message": "Seitenleiste öffnen",
         "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-        "message": "Tạo tab mới ở bên phải tab hiện tại",
+        "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
         "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-        "message": "Tạo tab mới ở bên phải:",
+        "message": "Neuen Tab rechts erstellen:",
         "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
-        "message": "Đóng tab",
+        "message": "Tab schließen",
         "description": "Tooltip for the close button on a tab."
     },
     "addBookmark": {
-        "message": "Thêm vào dấu trang",
+        "message": "Zu Lesezeichen hinzufügen",
         "description": "Tooltip for the add-to-bookmark button on a tab."
     },
     "addBookmarkDialogTitle": {
-        "message": "Thêm dấu trang",
+        "message": "Lesezeichen hinzufügen",
         "description": "Title for the new dialog."
     },
     "addToGroup": {
-        "message": "Thêm tab vào nhóm mới",
+        "message": "Tab zu neuer Gruppe hinzufügen",
         "description": "Tooltip for the add to group button on a tab."
     },
     "createGroupDialogTitle": {
-        "message": "Tạo nhóm mới",
+        "message": "Neue Gruppe erstellen",
         "description": "Title for the create new group dialog."
     },
     "groupNameInputPlaceholder": {
-        "message": "Nhập tên nhóm...",
+        "message": "Gruppennamen eingeben...",
         "description": "Placeholder for the group name input in the create group dialog."
     },
     "createGroupButton": {
-        "message": "Tạo nhóm",
+        "message": "Gruppe erstellen",
         "description": "Label for the create button in the create group dialog."
     },
     "bookmarksBar": {
-        "message": "Thanh dấu trang",
+        "message": "Lesezeichenleiste",
         "description": "The name for the root bookmark folder."
     },
     "addButton": {
-        "message": "Thêm",
+        "message": "Hinzufügen",
         "description": "The confirm button text in the new dialog."
     },
     "linkedTabsTooltip": {
-        "message": "Dấu trang này được liên kết với $COUNT$ tab. Nhấp để xem chi tiết.",
+        "message": "Dieses Lesezeichen ist mit $COUNT$ Tab(s) verknüpft. Klicken für Details.",
         "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
         "placeholders": {
             "COUNT": {
@@ -193,16 +197,16 @@
         }
     },
     "linkedTabsPanelTitle": {
-        "message": "Các tab được liên kết cho",
+        "message": "Verknüpfte Tabs für",
         "description": "Title for the panel that shows tabs linked to a bookmark."
     },
     "noLinkedTabs": {
-        "message": "Không tìm thấy tab nào được liên kết cho dấu trang này.",
+        "message": "Keine verknüpften Tabs für dieses Lesezeichen gefunden.",
         "description": "Message displayed when a bookmark has no active linked tabs."
     },
     "duplicateBookmarkConfirm": {
-        "message": "Trang này đã được đánh dấu là \"$BOOKMARK_NAME$\".<br><br>Bạn có muốn thêm lại không?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "message": "Diese Seite ist bereits als \"$BOOKMARK_NAME$\" gespeichert.<br><br>Möchten Sie sie erneut hinzufügen?",
+        "description": "Bestätigungsmeldung, die angezeigt wird, wenn versucht wird, ein Lesezeichen hinzuzufügen, das bereits existiert.",
         "placeholders": {
             "BOOKMARK_NAME": {
                 "content": "$1",
@@ -210,9 +214,21 @@
             }
         }
     },
+    "experimentalSectionHeader": {
+        "message": "Experimentelle Funktionen",
+        "description": "Header for the experimental features section in settings"
+    },
+    "virtualScrollingSettingLabel": {
+        "message": "Virtuelles Scrollen aktivieren",
+        "description": "Label for the virtual scrolling toggle"
+    },
+    "virtualScrollingSettingDesc": {
+        "message": "Optimiert die Leistung für große Lesezeichenlisten durch Rendern nur sichtbarer Elemente. Kann kleinere visuelle Fehler aufweisen.",
+        "description": "Description for the virtual scrolling toggle"
+    },
     "searchResultCount": {
-        "message": "Tìm thấy $TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark",
-        "description": "Thông báo hiển thị số lượng kết quả tìm kiếm.",
+        "message": "$TAB_COUNT$ Tab(s), $BOOKMARK_COUNT$ Lesezeichen",
+        "description": "Nachricht zur Anzeige der Anzahl der Suchergebnisse.",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",
@@ -224,92 +240,265 @@
             }
         }
     },
-    "experimentalSectionHeader": {
-        "message": "Tính năng thử nghiệm",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "Bật cuộn ảo",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "Tối ưu hóa hiệu suất cho danh sách bookmark lớn bằng cách chỉ hiển thị các mục có thể nhìn thấy. Có thể có một số lỗi hình ảnh nhỏ.",
-        "description": "Description for the virtual scrolling toggle"
-    },
     "searchNoResults": {
-        "message": "Không tìm thấy kết quả",
-        "description": "Message displayed when search returns no results."
+        "message": "Keine Ergebnisse gefunden",
+        "description": "Nachricht, die angezeigt wird, wenn die Suche keine Ergebnisse liefert."
     },
     "copyUrl": {
-        "message": "Sao chép URL",
+        "message": "URL kopieren",
         "description": "Context menu option to copy the tab URL."
     },
     "urlCopied": {
-        "message": "Đã sao chép URL!",
+        "message": "URL kopiert!",
         "description": "Feedback message after copying URL."
     },
     "otherWindowsHeader": {
-        "message": "Cửa sổ khác",
+        "message": "Andere Fenster",
         "description": "Header for the other windows section."
     },
     "autoCloseDialog": {
-        "message": "Hộp thoại này sẽ đóng sau 5 giây...",
+        "message": "Dieser Dialog wird sich in 5 Sekunden schließen...",
         "description": "Message displayed when an auto-closing dialog is shown."
     },
     "renameWindow": {
-        "message": "Đổi tên cửa sổ",
+        "message": "Fenster umbenennen",
         "description": "Tooltip for the rename window button."
     },
     "renameWindowDialogTitle": {
-        "message": "Đổi tên cửa sổ",
+        "message": "Fenster umbenennen",
         "description": "Title of the dialog to rename a window."
     },
     "enterWindowName": {
-        "message": "Nhập tên cửa sổ mới:",
+        "message": "Neuen Fensternamen eingeben:",
         "description": "Prompt message in the rename window dialog."
     },
     "splitViewDetectionError": {
-        "message": "Không phát hiện được các tab xem chia đôi. Bạn có muốn tiếp tục tạo nhóm cho tab đơn này không?",
+        "message": "Die Erkennung von geteilten Ansichts-Tabs ist fehlgeschlagen. Möchten Sie trotzdem eine Gruppe für diesen einzelnen Tab erstellen?",
         "description": "Error message when split view tab detection fails."
     },
     "yesButton": {
-        "message": "Có",
+        "message": "Ja",
         "description": "Label for the yes button in confirmation dialogs."
     },
     "searchAriaLabel": {
-        "message": "Tìm kiếm tab và dấu trang",
+        "message": "Tabs und Lesezeichen suchen",
         "description": "Accessibility label for the search input box."
     },
     "clearSearchAriaLabel": {
-        "message": "Xóa tìm kiếm",
+        "message": "Suche löschen",
         "description": "Accessibility label for the clear search button."
     },
     "settingsAriaLabel": {
-        "message": "Cài đặt",
+        "message": "Einstellungen",
         "description": "Accessibility label for the settings toggle button."
     },
     "editBookmark": {
-        "message": "Chỉnh sửa dấu trang",
+        "message": "Lesezeichen bearbeiten",
         "description": "Accessibility label for the edit bookmark button."
     },
     "deleteBookmark": {
-        "message": "Xóa dấu trang",
+        "message": "Lesezeichen löschen",
         "description": "Accessibility label for the delete bookmark button."
     },
     "editFolder": {
-        "message": "Chỉnh sửa tên thư mục",
+        "message": "Ordnernamen bearbeiten",
         "description": "Accessibility label for the edit folder button."
     },
     "addFolder": {
-        "message": "Thêm thư mục mới",
+        "message": "Neuen Ordner hinzufügen",
         "description": "Accessibility label for the add folder button."
     },
     "deleteFolder": {
-        "message": "Xóa thư mục",
+        "message": "Ordner löschen",
         "description": "Accessibility label for the delete folder button."
     },
     "linkedTabsIcon": {
-        "message": "Các tab được liên kết",
+        "message": "Verknüpfte Tabs",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "githubLinkText": {
+        "message": "Auf GitHub ansehen",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme-Anpassung",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme-Anpassung",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Farbeinstellungen",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Haupt-Hintergrundfarbe:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primäre Textfarbe:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Akzentfarbe:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element-Hintergrundfarbe:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element-Hover-Farbe:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Randfarbe:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Hintergrundbild",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Hintergrundbild-URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Hintergrund-Deckkraft:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Einstellungen speichern",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Auf Standard zurücksetzen",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live-Vorschau",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Suchen...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "Dies ist ein Beispiel-Tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Ein weiterer Tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "Dies ist ein Lesezeichen",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Einstellungen gespeichert!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Sind Sie sicher, dass Sie das Thema auf die Standardwerte zurücksetzen möchten? Dadurch werden Ihre benutzerdefinierten Farben und Ihr Hintergrund gelöscht.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Die Einstellungen wurden auf die Standardwerte zurückgesetzt.",
+        "description": "Alert message when settings have been reset."
+    }
+,
+    "githubLinkText": {
+        "message": "View on GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme Customization",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme Customization",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Color Settings",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Main Background Color:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primary Text Color:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Accent Color:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element Background Color:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element Hover Color:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Border Color:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Background Image",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Background Image URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Background Opacity:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Save Settings",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Reset to Default",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live Preview",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Search...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "This is a sample tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Another tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "This is a bookmark",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Settings saved!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Are you sure you want to reset the theme to its default values? This will clear your custom colors and background.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Settings have been reset to default.",
+        "description": "Alert message when settings have been reset."
     }
 }

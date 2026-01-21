@@ -1,27 +1,27 @@
 {
     "extensionName": {
-        "message": "标签页/书签侧边栏",
-        "description": "扩展程序的名称。"
+        "message": "Seitenleiste für Tabs/Lesezeichen",
+        "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "一个模仿 Arc 浏览器垂直标签页的 Chrome 扩展程序。",
-        "description": "扩展程序的描述。"
+        "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
+        "description": "The description of the extension."
     },
     "searchPlaceholder": {
-        "message": "搜索标签页或书签...",
-        "description": "搜索框的占位符文本。"
+        "message": "Tabs oder Lesezeichen suchen...",
+        "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-        "message": "标签页",
-        "description": "标签页部分的标题。"
+        "message": "Tabs",
+        "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-        "message": "书签",
-        "description": "书签部分的标题。"
+        "message": "Lesezeichen",
+        "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-        "message": "您确定要永久删除书签“$bookmark_title$”吗？",
-        "description": "删除单个书签的确认信息。",
+        "message": "Sind Sie sicher, dass Sie das Lesezeichen \"$bookmark_title$\" dauerhaft löschen möchten?",
+        "description": "Confirmation message for deleting a single bookmark.",
         "placeholders": {
             "bookmark_title": {
                 "content": "$1"
@@ -29,8 +29,8 @@
         }
     },
     "deleteFolderConfirm": {
-        "message": "您确定要永久删除文件夹“$folder_title$”及其所有内容吗？\n\n此操作无法撤销！",
-        "description": "删除书签文件夹的确认信息。",
+        "message": "Sind Sie sicher, dass Sie den Ordner \"$folder_title$\" und seinen gesamten Inhalt dauerhaft löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
+        "description": "Confirmation message for deleting a bookmark folder.",
         "placeholders": {
             "folder_title": {
                 "content": "$1"
@@ -38,8 +38,8 @@
         }
     },
     "addFolderPrompt": {
-        "message": "请输入要在“$parent_folder$”下创建的新文件夹的名称：",
-        "description": "添加新书签文件夹的提示信息。",
+        "message": "Bitte geben Sie den Namen für den neuen Ordner unter \"$parent_folder$\" ein:",
+        "description": "Prompt for adding a new bookmark folder.",
         "placeholders": {
             "parent_folder": {
                 "content": "$1"
@@ -47,143 +47,147 @@
         }
     },
     "editBookmarkFolderPromptForTitle": {
-        "message": "编辑文件夹名称：",
-        "description": "提示用户输入或编辑书签文件夹的名称。"
+        "message": "Ordnernamen bearbeiten:",
+        "description": "Prompt for the user to input or edit the name of a bookmark folder."
     },
     "editBookmarkPromptForTitle": {
-        "message": "编辑书签名称：",
-        "description": "提示用户输入或编辑特定书签的标题或名称。"
+        "message": "Lesezeichennamen bearbeiten:",
+        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
     },
     "editBookmarkPromptForUrl": {
-        "message": "编辑书签网址：",
-        "description": "提示用户输入或编辑特定书签的网址（URL）。"
+        "message": "Lesezeichen-URL bearbeiten:",
+        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
     "cancelButton": {
-        "message": "取消",
-        "description": "对话框中“取消”按钮的文本。"
+        "message": "Abbrechen",
+        "description": "Label for the cancel button in dialogs."
     },
     "deleteButton": {
-        "message": "删除",
-        "description": "对话框中“删除”按钮的文本。"
+        "message": "Löschen",
+        "description": "Label for the delete button in dialogs."
     },
     "createButton": {
-        "message": "创建",
-        "description": "对话框中“创建”按钮的文本。"
+        "message": "Erstellen",
+        "description": "Label for the create button in dialogs."
     },
     "saveButton": {
-        "message": "保存",
-        "description": "对话框中“保存”按钮的文本。"
+        "message": "Speichern",
+        "description": "Label for the save button in dialogs."
     },
     "closeButton": {
-        "message": "关闭",
-        "description": "对话框中“关闭”按钮的文本。"
+        "message": "Close",
+        "description": "Label for the close button in dialogs."
     },
     "settingsTitle": {
-        "message": "设置",
-        "description": "设置对话框的标题。"
+        "message": "Settings",
+        "description": "Title for the settings dialog."
     },
     "themeSectionHeader": {
-        "message": "外观",
-        "description": "设置中外观部分的标题。"
+        "message": "Appearance",
+        "description": "Header for the theme/appearance section in settings."
     },
     "themeOptionGeek": {
-        "message": "Geek (默认)",
-        "description": "Geek 主题选项的名称。"
+        "message": "Geek (Default)",
+        "description": "Name for the Geek theme option."
     },
     "themeOptionGoogle": {
         "message": "Google",
-        "description": "Google 主题选项的名称。"
+        "description": "Name for the Google theme option."
     },
     "themeOptionDarcula": {
         "message": "Darcula (JetBrains)",
-        "description": "Darcula (JetBrains) 主题选项的名称。"
+        "description": "Name for the Darcula (JetBrains) theme option."
     },
     "themeOptionGeekBlue": {
-        "message": "Geek Blue",
-        "description": "Geek Blue 主题选项的名称。"
+        "message": "Geek Blau",
+        "description": "Name for the Geek Blau theme option."
     },
     "themeOptionChristmas": {
-        "message": "圣诞节",
-        "description": "圣诞节主题选项的名称。"
+        "message": "Weihnachten",
+        "description": "Name for the Christmas theme option."
+    },
+    "themeOptionCustom": {
+        "message": "Benutzerdefiniert...",
+        "description": "Name for the custom theme option."
     },
     "shortcutSectionHeader": {
-        "message": "快捷键设置",
-        "description": "设置中快捷键部分的标题。"
+        "message": "Tastenkombinationen-Einstellungen",
+        "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "您可以在 Chrome 的管理页面中自定义扩展程序的快捷键。",
-        "description": "关于如何设置扩展程序快捷键的简短说明。"
+        "message": "Sie können die Tastenkombinationen der Erweiterung auf der Verwaltungsseite von Chrome anpassen.",
+        "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "管理扩展程序快捷键",
-        "description": "前往 Chrome 快捷键管理页面的链接文本。"
+        "message": "Tastenkombinationen für Erweiterungen verwalten",
+        "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
-        "message": "当前快捷键：",
-        "description": "显示当前快捷键的标签。"
+        "message": "Aktuelle Tastenkombination:",
+        "description": "Label for displaying the current shortcut."
     },
     "sidePanelPositionSectionHeader": {
-        "message": "侧边面板位置",
-        "description": "设置中侧边面板位置部分的标题。"
+        "message": "Seitenpanel-Position",
+        "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Chrome 已内置侧边栏位置设定。您可在此调整面板要显示在浏览器的左侧或右侧。",
-        "description": "解释如何设置 Chrome 内置的侧边面板位置。"
+        "message": "Chrome hat eine integrierte Einstellung für die Position der Seitenleiste. Hier können Sie anpassen, ob das Panel auf der linken oder rechten Seite des Browsers erscheint.",
+        "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "更改 Chrome 侧边栏位置",
-        "description": "前往 Chrome 侧边栏位置设置的链接文本。"
+        "message": "Position der Chrome-Seitenleiste ändern",
+        "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-        "message": "打开侧边栏",
-        "description": "打开侧边栏的命令。"
+        "message": "Seitenleiste öffnen",
+        "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-        "message": "在当前标签页右侧新建一个标签页",
-        "description": "在当前标签页右侧新建一个标签页的命令。"
+        "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
+        "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-        "message": "在右侧新建标签页：",
-        "description": "在设置中，“在右侧新建标签页”快捷键的说明。"
+        "message": "Neuen Tab rechts erstellen:",
+        "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
-        "message": "关闭标签页",
-        "description": "标签页上关闭按钮的提示文本。"
+        "message": "Tab schließen",
+        "description": "Tooltip for the close button on a tab."
     },
     "addBookmark": {
-        "message": "添加到书签",
-        "description": "标签页上添加到书签按钮的提示文本。"
+        "message": "Zu Lesezeichen hinzufügen",
+        "description": "Tooltip for the add-to-bookmark button on a tab."
     },
     "addBookmarkDialogTitle": {
-        "message": "添加书签",
-        "description": "添加书签对话框的标题。"
+        "message": "Lesezeichen hinzufügen",
+        "description": "Title for the new dialog."
     },
     "addToGroup": {
-        "message": "将标签页添加到新组",
-        "description": "标签页上“添加到组”按钮的工具提示文本。"
+        "message": "Tab zu neuer Gruppe hinzufügen",
+        "description": "Tooltip for the add to group button on a tab."
     },
     "createGroupDialogTitle": {
-        "message": "创建新组",
-        "description": "创建新组对话框的标题。"
+        "message": "Neue Gruppe erstellen",
+        "description": "Title for the create new group dialog."
     },
     "groupNameInputPlaceholder": {
-        "message": "输入组名...",
-        "description": "创建新组对话框中组名输入的占位符。"
+        "message": "Gruppennamen eingeben...",
+        "description": "Placeholder for the group name input in the create group dialog."
     },
     "createGroupButton": {
-        "message": "创建组",
-        "description": "创建新组对话框中“创建”按钮的标签。"
+        "message": "Gruppe erstellen",
+        "description": "Label for the create button in the create group dialog."
     },
     "bookmarksBar": {
-        "message": "书签栏",
-        "description": "根书签文件夹的名称。"
+        "message": "Lesezeichenleiste",
+        "description": "The name for the root bookmark folder."
     },
     "addButton": {
-        "message": "添加",
-        "description": "添加书签对话框中的确认按钮文本。"
+        "message": "Hinzufügen",
+        "description": "The confirm button text in the new dialog."
     },
     "linkedTabsTooltip": {
-        "message": "此书签已链接 $COUNT$ 个标签页。点击查看详情。",
+        "message": "Dieses Lesezeichen ist mit $COUNT$ Tab(s) verknüpft. Klicken für Details.",
         "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
         "placeholders": {
             "COUNT": {
@@ -193,16 +197,16 @@
         }
     },
     "linkedTabsPanelTitle": {
-        "message": "已链接的标签页：",
+        "message": "Verknüpfte Tabs für",
         "description": "Title for the panel that shows tabs linked to a bookmark."
     },
     "noLinkedTabs": {
-        "message": "此书签当前没有已链接的标签页。",
+        "message": "Keine verknüpften Tabs für dieses Lesezeichen gefunden.",
         "description": "Message displayed when a bookmark has no active linked tabs."
     },
     "duplicateBookmarkConfirm": {
-        "message": "此页面已存在于书签“$BOOKMARK_NAME$”中。<br><br>您确定要重复添加吗？",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "message": "Diese Seite ist bereits als \"$BOOKMARK_NAME$\" gespeichert.<br><br>Möchten Sie sie erneut hinzufügen?",
+        "description": "Bestätigungsmeldung, die angezeigt wird, wenn versucht wird, ein Lesezeichen hinzuzufügen, das bereits existiert.",
         "placeholders": {
             "BOOKMARK_NAME": {
                 "content": "$1",
@@ -211,20 +215,20 @@
         }
     },
     "experimentalSectionHeader": {
-        "message": "实验性功能",
+        "message": "Experimentelle Funktionen",
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "启用虚拟滚动",
+        "message": "Virtuelles Scrollen aktivieren",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {
-        "message": "通过仅渲染可见项目来优化大型书签列表的性能。可能会有一些视觉小问题。",
+        "message": "Optimiert die Leistung für große Lesezeichenlisten durch Rendern nur sichtbarer Elemente. Kann kleinere visuelle Fehler aufweisen.",
         "description": "Description for the virtual scrolling toggle"
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ 个标签页、$BOOKMARK_COUNT$ 个书签",
-        "description": "显示搜索结果计数的消息。",
+        "message": "$TAB_COUNT$ Tab(s), $BOOKMARK_COUNT$ Lesezeichen",
+        "description": "Nachricht zur Anzeige der Anzahl der Suchergebnisse.",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",
@@ -237,79 +241,264 @@
         }
     },
     "searchNoResults": {
-        "message": "未找到结果",
-        "description": "Message displayed when search returns no results."
+        "message": "Keine Ergebnisse gefunden",
+        "description": "Nachricht, die angezeigt wird, wenn die Suche keine Ergebnisse liefert."
     },
     "copyUrl": {
-        "message": "复制网址",
+        "message": "URL kopieren",
         "description": "Context menu option to copy the tab URL."
     },
     "urlCopied": {
-        "message": "网址已复制！",
+        "message": "URL kopiert!",
         "description": "Feedback message after copying URL."
     },
     "otherWindowsHeader": {
-        "message": "其他窗口",
+        "message": "Andere Fenster",
         "description": "Header for the other windows section."
     },
     "autoCloseDialog": {
-        "message": "此对话框将在 5 秒后关闭...",
+        "message": "Dieser Dialog wird sich in 5 Sekunden schließen...",
         "description": "Message displayed when an auto-closing dialog is shown."
     },
     "renameWindow": {
-        "message": "重命名窗口",
+        "message": "Fenster umbenennen",
         "description": "Tooltip for the rename window button."
     },
     "renameWindowDialogTitle": {
-        "message": "重命名窗口",
+        "message": "Fenster umbenennen",
         "description": "Title of the dialog to rename a window."
     },
     "enterWindowName": {
-        "message": "输入新窗口名称：",
+        "message": "Neuen Fensternamen eingeben:",
         "description": "Prompt message in the rename window dialog."
     },
     "splitViewDetectionError": {
-        "message": "未能检测到分屏视图选项卡。您想继续为这个单一选项卡创建一个组吗？",
+        "message": "Die Erkennung von geteilten Ansichts-Tabs ist fehlgeschlagen. Möchten Sie trotzdem eine Gruppe für diesen einzelnen Tab erstellen?",
         "description": "Error message when split view tab detection fails."
     },
     "yesButton": {
-        "message": "是",
+        "message": "Ja",
         "description": "Label for the yes button in confirmation dialogs."
     },
     "searchAriaLabel": {
-        "message": "搜索标签页和书签",
+        "message": "Tabs und Lesezeichen suchen",
         "description": "Accessibility label for the search input box."
     },
     "clearSearchAriaLabel": {
-        "message": "清除搜索",
+        "message": "Suche löschen",
         "description": "Accessibility label for the clear search button."
     },
     "settingsAriaLabel": {
-        "message": "设置",
+        "message": "Einstellungen",
         "description": "Accessibility label for the settings toggle button."
     },
     "editBookmark": {
-        "message": "编辑书签",
+        "message": "Lesezeichen bearbeiten",
         "description": "Accessibility label for the edit bookmark button."
     },
     "deleteBookmark": {
-        "message": "删除书签",
+        "message": "Lesezeichen löschen",
         "description": "Accessibility label for the delete bookmark button."
     },
     "editFolder": {
-        "message": "编辑文件夹名称",
+        "message": "Ordnernamen bearbeiten",
         "description": "Accessibility label for the edit folder button."
     },
     "addFolder": {
-        "message": "新建文件夹",
+        "message": "Neuen Ordner hinzufügen",
         "description": "Accessibility label for the add folder button."
     },
     "deleteFolder": {
-        "message": "删除文件夹",
+        "message": "Ordner löschen",
         "description": "Accessibility label for the delete folder button."
     },
     "linkedTabsIcon": {
-        "message": "已链接的标签页",
+        "message": "Verknüpfte Tabs",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "githubLinkText": {
+        "message": "Auf GitHub ansehen",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme-Anpassung",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme-Anpassung",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Farbeinstellungen",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Haupt-Hintergrundfarbe:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primäre Textfarbe:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Akzentfarbe:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element-Hintergrundfarbe:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element-Hover-Farbe:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Randfarbe:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Hintergrundbild",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Hintergrundbild-URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Hintergrund-Deckkraft:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Einstellungen speichern",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Auf Standard zurücksetzen",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live-Vorschau",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Suchen...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "Dies ist ein Beispiel-Tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Ein weiterer Tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "Dies ist ein Lesezeichen",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Einstellungen gespeichert!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Sind Sie sicher, dass Sie das Thema auf die Standardwerte zurücksetzen möchten? Dadurch werden Ihre benutzerdefinierten Farben und Ihr Hintergrund gelöscht.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Die Einstellungen wurden auf die Standardwerte zurückgesetzt.",
+        "description": "Alert message when settings have been reset."
+    }
+,
+    "githubLinkText": {
+        "message": "View on GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme Customization",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme Customization",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Color Settings",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Main Background Color:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primary Text Color:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Accent Color:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element Background Color:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element Hover Color:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Border Color:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Background Image",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Background Image URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Background Opacity:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Save Settings",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Reset to Default",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live Preview",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Search...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "This is a sample tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Another tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "This is a bookmark",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Settings saved!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Are you sure you want to reset the theme to its default values? This will clear your custom colors and background.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Settings have been reset to default.",
+        "description": "Alert message when settings have been reset."
     }
 }

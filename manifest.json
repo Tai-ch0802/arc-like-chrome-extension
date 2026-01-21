@@ -41,5 +41,6 @@
       },
       "description": "__MSG_commandCreateNewTabRight__"
     }
-  }
+  },
+  "options_page": "options.html"
 }

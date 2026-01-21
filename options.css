@@ -1,0 +1,140 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+}
+
+.settings {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview {
+    flex: 1;
+}
+
+.color-picker-group, .background-image-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.color-picker-group label, .background-image-group label {
+    width: 150px;
+}
+
+input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    width: calc(100% - 160px);
+    padding: 5px;
+}
+input[type="range"] {
+    width: calc(100% - 160px);
+}
+
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#reset-button {
+    background-color: #dc3545;
+}
+
+#reset-button:hover {
+    background-color: #c82333;
+}
+
+#sidepanel-preview {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: transparent; /* Use transparent to show the pseudo-element background */
+    color: var(--text-color-primary, #a0e8a0);
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 0;
+}
+
+#sidepanel-preview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--main-bg-color, #1e1e2e);
+    opacity: var(--background-opacity, 1);
+    z-index: -1;
+    border-radius: 8px; /* Match the parent's border-radius */
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.preview-search input {
+    width: 95%;
+    padding: 8px;
+    background-color: var(--element-bg-color, #282a36);
+    border: 1px solid var(--border-color, #45475a);
+    color: var(--text-color-primary, #a0e8a0);
+    border-radius: 4px;
+}
+
+.preview-tab-list, .preview-bookmark-list {
+    margin-top: 15px;
+}
+
+.preview-tab-item, .preview-bookmark-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.preview-tab-item.active {
+    background-color: var(--element-bg-active-color, #44475a);
+    color: var(--accent-color, #00ff41);
+}
+
+.preview-tab-item:not(.active):hover {
+    background-color: var(--element-bg-hover-color, #383a4a);
+}
+
+.preview-favicon {
+    width: 16px;
+    height: 16px;
+    background-color: #ccc;
+    margin-right: 10px;
+    border-radius: 2px;
+}

@@ -1,26 +1,26 @@
 {
     "extensionName": {
-        "message": "Barre latérale pour Onglets/Favoris",
+        "message": "Seitenleiste für Tabs/Lesezeichen",
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "Une extension Chrome qui imite les onglets verticaux du navigateur Arc.",
+        "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
         "description": "The description of the extension."
     },
     "searchPlaceholder": {
-        "message": "Rechercher des onglets ou des favoris...",
+        "message": "Tabs oder Lesezeichen suchen...",
         "description": "Placeholder text for the search box."
     },
     "tabsHeader": {
-        "message": "Onglets",
+        "message": "Tabs",
         "description": "Header for the tabs section."
     },
     "bookmarksHeader": {
-        "message": "Favoris",
+        "message": "Lesezeichen",
         "description": "Header for the bookmarks section."
     },
     "deleteBookmarkConfirm": {
-        "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"",
+        "message": "Sind Sie sicher, dass Sie das Lesezeichen \"$bookmark_title$\" dauerhaft löschen möchten?",
         "description": "Confirmation message for deleting a single bookmark.",
         "placeholders": {
             "bookmark_title": {
@@ -29,7 +29,7 @@
         }
     },
     "deleteFolderConfirm": {
-        "message": "Êtes-vous sûr de vouloir supprimer définitivement le dossier \"$folder_title$\" et tout son contenu ?\n\nCette action est irréversible !",
+        "message": "Sind Sie sicher, dass Sie den Ordner \"$folder_title$\" und seinen gesamten Inhalt dauerhaft löschen möchten?\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
         "description": "Confirmation message for deleting a bookmark folder.",
         "placeholders": {
             "folder_title": {
@@ -38,7 +38,7 @@
         }
     },
     "addFolderPrompt": {
-        "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\"",
+        "message": "Bitte geben Sie den Namen für den neuen Ordner unter \"$parent_folder$\" ein:",
         "description": "Prompt for adding a new bookmark folder.",
         "placeholders": {
             "parent_folder": {
@@ -47,31 +47,31 @@
         }
     },
     "editBookmarkFolderPromptForTitle": {
-        "message": "Modifier le nom du dossier :",
+        "message": "Ordnernamen bearbeiten:",
         "description": "Prompt for the user to input or edit the name of a bookmark folder."
     },
     "editBookmarkPromptForTitle": {
-        "message": "Modifier le nom du favori :",
+        "message": "Lesezeichennamen bearbeiten:",
         "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
     },
     "editBookmarkPromptForUrl": {
-        "message": "Modifier l'URL du favori :",
+        "message": "Lesezeichen-URL bearbeiten:",
         "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
     },
     "cancelButton": {
-        "message": "Annuler",
+        "message": "Abbrechen",
         "description": "Label for the cancel button in dialogs."
     },
     "deleteButton": {
-        "message": "Supprimer",
+        "message": "Löschen",
         "description": "Label for the delete button in dialogs."
     },
     "createButton": {
-        "message": "Créer",
+        "message": "Erstellen",
         "description": "Label for the create button in dialogs."
     },
     "saveButton": {
-        "message": "Enregistrer",
+        "message": "Speichern",
         "description": "Label for the save button in dialogs."
     },
     "closeButton": {
@@ -99,91 +99,95 @@
         "description": "Name for the Darcula (JetBrains) theme option."
     },
     "themeOptionGeekBlue": {
-        "message": "Geek Bleu",
-        "description": "Name for the Geek Bleu theme option."
+        "message": "Geek Blau",
+        "description": "Name for the Geek Blau theme option."
     },
     "themeOptionChristmas": {
-        "message": "Noël",
+        "message": "Weihnachten",
         "description": "Name for the Christmas theme option."
     },
+    "themeOptionCustom": {
+        "message": "Benutzerdefiniert...",
+        "description": "Name for the custom theme option."
+    },
     "shortcutSectionHeader": {
-        "message": "Paramètres des raccourcis clavier",
+        "message": "Tastenkombinationen-Einstellungen",
         "description": "Header for the keyboard shortcut section in settings."
     },
     "shortcutExplanation": {
-        "message": "Vous pouvez personnaliser les raccourcis de l'extension sur la page de gestion de Chrome.",
+        "message": "Sie können die Tastenkombinationen der Erweiterung auf der Verwaltungsseite von Chrome anpassen.",
         "description": "Explanation text for how to set the extension's keyboard shortcuts."
     },
     "shortcutLinkText": {
-        "message": "Gérer les raccourcis de l'extension",
+        "message": "Tastenkombinationen für Erweiterungen verwalten",
         "description": "Link text to Chrome's shortcut management page."
     },
     "currentShortcutLabel": {
-        "message": "Raccourci actuel :",
+        "message": "Aktuelle Tastenkombination:",
         "description": "Label for displaying the current shortcut."
     },
     "sidePanelPositionSectionHeader": {
-        "message": "Position du panneau latéral",
+        "message": "Seitenpanel-Position",
         "description": "Header for the side panel position section in settings."
     },
     "sidePanelPositionExplanation": {
-        "message": "Chrome dispose d'un paramètre intégré pour la position du panneau latéral. Vous pouvez ajuster ici si le panneau apparaît sur le côté gauche ou droit du navigateur.",
+        "message": "Chrome hat eine integrierte Einstellung für die Position der Seitenleiste. Hier können Sie anpassen, ob das Panel auf der linken oder rechten Seite des Browsers erscheint.",
         "description": "Explanation text for how to set Chrome's built-in side panel position."
     },
     "sidePanelPositionLinkText": {
-        "message": "Modifier la position du panneau latéral de Chrome",
+        "message": "Position der Chrome-Seitenleiste ändern",
         "description": "Link text to Chrome's side panel position setting."
     },
     "commandOpenSidePanel": {
-        "message": "Ouvrir la barre latérale",
+        "message": "Seitenleiste öffnen",
         "description": "Command to open the sidebar."
     },
     "commandCreateNewTabRight": {
-        "message": "Créer un nouvel onglet à droite de l'onglet actuel",
+        "message": "Neuen Tab rechts vom aktuellen Tab erstellen",
         "description": "Command to create a new tab to the right."
     },
     "settingsShortcutCreateTabRight": {
-        "message": "Créer un nouvel onglet à droite :",
+        "message": "Neuen Tab rechts erstellen:",
         "description": "Description for the create new tab to the right shortcut in settings."
     },
     "closeTab": {
-        "message": "Fermer l'onglet",
+        "message": "Tab schließen",
         "description": "Tooltip for the close button on a tab."
     },
     "addBookmark": {
-        "message": "Ajouter aux favoris",
+        "message": "Zu Lesezeichen hinzufügen",
         "description": "Tooltip for the add-to-bookmark button on a tab."
     },
     "addBookmarkDialogTitle": {
-        "message": "Ajouter un favori",
+        "message": "Lesezeichen hinzufügen",
         "description": "Title for the new dialog."
     },
     "addToGroup": {
-        "message": "Ajouter l'onglet à un nouveau groupe",
+        "message": "Tab zu neuer Gruppe hinzufügen",
         "description": "Tooltip for the add to group button on a tab."
     },
     "createGroupDialogTitle": {
-        "message": "Créer un nouveau groupe",
+        "message": "Neue Gruppe erstellen",
         "description": "Title for the create new group dialog."
     },
     "groupNameInputPlaceholder": {
-        "message": "Saisir le nom du groupe...",
+        "message": "Gruppennamen eingeben...",
         "description": "Placeholder for the group name input in the create group dialog."
     },
     "createGroupButton": {
-        "message": "Créer un groupe",
+        "message": "Gruppe erstellen",
         "description": "Label for the create button in the create group dialog."
     },
     "bookmarksBar": {
-        "message": "Barre de favoris",
+        "message": "Lesezeichenleiste",
         "description": "The name for the root bookmark folder."
     },
     "addButton": {
-        "message": "Ajouter",
+        "message": "Hinzufügen",
         "description": "The confirm button text in the new dialog."
     },
     "linkedTabsTooltip": {
-        "message": "Ce favori est lié à $COUNT$ onglet(s). Cliquez pour voir les détails.",
+        "message": "Dieses Lesezeichen ist mit $COUNT$ Tab(s) verknüpft. Klicken für Details.",
         "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
         "placeholders": {
             "COUNT": {
@@ -193,16 +197,16 @@
         }
     },
     "linkedTabsPanelTitle": {
-        "message": "Onglets liés pour",
+        "message": "Verknüpfte Tabs für",
         "description": "Title for the panel that shows tabs linked to a bookmark."
     },
     "noLinkedTabs": {
-        "message": "Aucun onglet lié trouvé pour ce favori.",
+        "message": "Keine verknüpften Tabs für dieses Lesezeichen gefunden.",
         "description": "Message displayed when a bookmark has no active linked tabs."
     },
     "duplicateBookmarkConfirm": {
-        "message": "Cette page est déjà dans les favoris sous le nom « $BOOKMARK_NAME$ ».<br><br>Voulez-vous l'ajouter à nouveau ?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+        "message": "Diese Seite ist bereits als \"$BOOKMARK_NAME$\" gespeichert.<br><br>Möchten Sie sie erneut hinzufügen?",
+        "description": "Bestätigungsmeldung, die angezeigt wird, wenn versucht wird, ein Lesezeichen hinzuzufügen, das bereits existiert.",
         "placeholders": {
             "BOOKMARK_NAME": {
                 "content": "$1",
@@ -211,20 +215,20 @@
         }
     },
     "experimentalSectionHeader": {
-        "message": "Fonctionnalités expérimentales",
+        "message": "Experimentelle Funktionen",
         "description": "Header for the experimental features section in settings"
     },
     "virtualScrollingSettingLabel": {
-        "message": "Activer le défilement virtuel",
+        "message": "Virtuelles Scrollen aktivieren",
         "description": "Label for the virtual scrolling toggle"
     },
     "virtualScrollingSettingDesc": {
-        "message": "Optimise les performances pour les grandes listes de signets en ne rendant que les éléments visibles. Peut présenter de légers problèmes visuels.",
+        "message": "Optimiert die Leistung für große Lesezeichenlisten durch Rendern nur sichtbarer Elemente. Kann kleinere visuelle Fehler aufweisen.",
         "description": "Description for the virtual scrolling toggle"
     },
     "searchResultCount": {
-        "message": "$TAB_COUNT$ onglets, $BOOKMARK_COUNT$ signets trouvés",
-        "description": "Message showing the count of search results",
+        "message": "$TAB_COUNT$ Tab(s), $BOOKMARK_COUNT$ Lesezeichen",
+        "description": "Nachricht zur Anzeige der Anzahl der Suchergebnisse.",
         "placeholders": {
             "TAB_COUNT": {
                 "content": "$1",
@@ -237,79 +241,264 @@
         }
     },
     "searchNoResults": {
-        "message": "Aucun résultat trouvé",
-        "description": "Message affiché lorsque la recherche ne renvoie aucun résultat."
+        "message": "Keine Ergebnisse gefunden",
+        "description": "Nachricht, die angezeigt wird, wenn die Suche keine Ergebnisse liefert."
     },
     "copyUrl": {
-        "message": "Copier l'URL",
+        "message": "URL kopieren",
         "description": "Context menu option to copy the tab URL."
     },
     "urlCopied": {
-        "message": "URL copiée !",
+        "message": "URL kopiert!",
         "description": "Feedback message after copying URL."
     },
     "otherWindowsHeader": {
-        "message": "Autres fenêtres",
+        "message": "Andere Fenster",
         "description": "Header for the other windows section."
     },
     "autoCloseDialog": {
-        "message": "Cette boîte de dialogue se fermera dans 5 secondes...",
+        "message": "Dieser Dialog wird sich in 5 Sekunden schließen...",
         "description": "Message displayed when an auto-closing dialog is shown."
     },
     "renameWindow": {
-        "message": "Renommer la fenêtre",
+        "message": "Fenster umbenennen",
         "description": "Tooltip for the rename window button."
     },
     "renameWindowDialogTitle": {
-        "message": "Renommer la fenêtre",
+        "message": "Fenster umbenennen",
         "description": "Title of the dialog to rename a window."
     },
     "enterWindowName": {
-        "message": "Entrez le nouveau nom de la fenêtre :",
+        "message": "Neuen Fensternamen eingeben:",
         "description": "Prompt message in the rename window dialog."
     },
     "splitViewDetectionError": {
-        "message": "La détection des onglets en vue fractionnée a échoué. Voulez-vous continuer en créant un groupe pour cet onglet unique ?",
+        "message": "Die Erkennung von geteilten Ansichts-Tabs ist fehlgeschlagen. Möchten Sie trotzdem eine Gruppe für diesen einzelnen Tab erstellen?",
         "description": "Error message when split view tab detection fails."
     },
     "yesButton": {
-        "message": "Oui",
+        "message": "Ja",
         "description": "Label for the yes button in confirmation dialogs."
     },
     "searchAriaLabel": {
-        "message": "Rechercher des onglets et des favoris",
+        "message": "Tabs und Lesezeichen suchen",
         "description": "Accessibility label for the search input box."
     },
     "clearSearchAriaLabel": {
-        "message": "Effacer la recherche",
+        "message": "Suche löschen",
         "description": "Accessibility label for the clear search button."
     },
     "settingsAriaLabel": {
-        "message": "Paramètres",
+        "message": "Einstellungen",
         "description": "Accessibility label for the settings toggle button."
     },
     "editBookmark": {
-        "message": "Modifier le favori",
+        "message": "Lesezeichen bearbeiten",
         "description": "Accessibility label for the edit bookmark button."
     },
     "deleteBookmark": {
-        "message": "Supprimer le favori",
+        "message": "Lesezeichen löschen",
         "description": "Accessibility label for the delete bookmark button."
     },
     "editFolder": {
-        "message": "Modifier le nom du dossier",
+        "message": "Ordnernamen bearbeiten",
         "description": "Accessibility label for the edit folder button."
     },
     "addFolder": {
-        "message": "Ajouter un nouveau dossier",
+        "message": "Neuen Ordner hinzufügen",
         "description": "Accessibility label for the add folder button."
     },
     "deleteFolder": {
-        "message": "Supprimer le dossier",
+        "message": "Ordner löschen",
         "description": "Accessibility label for the delete folder button."
     },
     "linkedTabsIcon": {
-        "message": "Onglets liés",
+        "message": "Verknüpfte Tabs",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "githubLinkText": {
+        "message": "Auf GitHub ansehen",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme-Anpassung",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme-Anpassung",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Farbeinstellungen",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Haupt-Hintergrundfarbe:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primäre Textfarbe:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Akzentfarbe:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element-Hintergrundfarbe:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element-Hover-Farbe:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Randfarbe:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Hintergrundbild",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Hintergrundbild-URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Hintergrund-Deckkraft:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Einstellungen speichern",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Auf Standard zurücksetzen",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live-Vorschau",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Suchen...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "Dies ist ein Beispiel-Tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Ein weiterer Tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "Dies ist ein Lesezeichen",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Einstellungen gespeichert!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Sind Sie sicher, dass Sie das Thema auf die Standardwerte zurücksetzen möchten? Dadurch werden Ihre benutzerdefinierten Farben und Ihr Hintergrund gelöscht.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Die Einstellungen wurden auf die Standardwerte zurückgesetzt.",
+        "description": "Alert message when settings have been reset."
+    }
+,
+    "githubLinkText": {
+        "message": "View on GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "optionsTitle": {
+        "message": "Theme Customization",
+        "description": "Title for the options page."
+    },
+    "optionsHeader": {
+        "message": "Theme Customization",
+        "description": "Main header on the options page."
+    },
+    "colorSettingsHeader": {
+        "message": "Color Settings",
+        "description": "Header for the color settings section."
+    },
+    "mainBgColorLabel": {
+        "message": "Main Background Color:",
+        "description": "Label for the main background color picker."
+    },
+    "primaryTextColorLabel": {
+        "message": "Primary Text Color:",
+        "description": "Label for the primary text color picker."
+    },
+    "accentColorLabel": {
+        "message": "Accent Color:",
+        "description": "Label for the accent color picker."
+    },
+    "elementBgColorLabel": {
+        "message": "Element Background Color:",
+        "description": "Label for the element background color picker."
+    },
+    "elementBgHoverColorLabel": {
+        "message": "Element Hover Color:",
+        "description": "Label for the element background hover color picker."
+    },
+    "borderColorLabel": {
+        "message": "Border Color:",
+        "description": "Label for the border color picker."
+    },
+    "backgroundImageHeader": {
+        "message": "Background Image",
+        "description": "Header for the background image section."
+    },
+    "backgroundImageUrlLabel": {
+        "message": "Background Image URL:",
+        "description": "Label for the background image URL input."
+    },
+    "backgroundOpacityLabel": {
+        "message": "Background Opacity:",
+        "description": "Label for the background opacity slider."
+    },
+    "saveButtonLabel": {
+        "message": "Save Settings",
+        "description": "Label for the save button."
+    },
+    "resetButtonLabel": {
+        "message": "Reset to Default",
+        "description": "Label for the reset button."
+    },
+    "previewHeader": {
+        "message": "Live Preview",
+        "description": "Header for the live preview section."
+    },
+    "previewSearchPlaceholder": {
+        "message": "Search...",
+        "description": "Placeholder text for the search input in the preview."
+    },
+    "previewTab1": {
+        "message": "This is a sample tab",
+        "description": "Text for the first sample tab in the preview."
+    },
+    "previewTab2": {
+        "message": "Another tab",
+        "description": "Text for the second sample tab in the preview."
+    },
+    "previewBookmark1": {
+        "message": "This is a bookmark",
+        "description": "Text for the sample bookmark in the preview."
+    },
+    "settingsSavedAlert": {
+        "message": "Settings saved!",
+        "description": "Alert message when settings are saved successfully."
+    },
+    "resetConfirm": {
+        "message": "Are you sure you want to reset the theme to its default values? This will clear your custom colors and background.",
+        "description": "Confirmation message for resetting the theme."
+    },
+    "settingsResetAlert": {
+        "message": "Settings have been reset to default.",
+        "description": "Alert message when settings have been reset."
     }
 }

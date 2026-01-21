@@ -4,9 +4,61 @@ import * as state from '../stateManager.js';
 
 /**
  * 應用指定的主題到文檔的 body 上。
- * @param {string} themeName - 要應用的主題名稱 (e.g., 'geek', 'google')。
+ * 如果主題是 'custom'，則會從存儲中加載自訂主題樣式。
+ * @param {string} themeName - 要應用的主題名稱 (e.g., 'geek', 'google', 'custom')。
  */
 export function applyTheme(themeName) {
+    // 清除先前可能已應用的自訂樣式和內聯樣式
+    const existingStyle = document.getElementById('custom-theme-style');
+    if (existingStyle) {
+        existingStyle.remove();
+    }
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundColor = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundPosition = '';
+    document.body.style.backgroundRepeat = '';
+    document.body.style.backgroundAttachment = '';
+
+
+    if (themeName === 'custom') {
+        api.getStorage('sync', { customTheme: {} }).then(data => {
+            const customTheme = data.customTheme;
+            if (customTheme && Object.keys(customTheme).length > 0) {
+                const style = document.createElement('style');
+                style.id = 'custom-theme-style';
+
+                let cssText = ':root {';
+                for (const [key, value] of Object.entries(customTheme)) {
+                    if (key.startsWith('--')) {
+                        cssText += `${key}: ${value};`;
+                    }
+                }
+                cssText += '}';
+
+                style.textContent = cssText;
+                document.head.appendChild(style);
+
+                // 處理背景圖片
+                const bodyStyle = document.body.style;
+                const bgUrl = customTheme['background-image-url'];
+                const opacity = customTheme['background-opacity'];
+                const bgColor = customTheme['--main-bg-color'] || '#1e1e2e';
+
+                if (bgUrl) {
+                     bodyStyle.setProperty('background-image', `url('${bgUrl}')`, 'important');
+                     bodyStyle.setProperty('background-size', 'cover', 'important');
+                     bodyStyle.setProperty('background-position', 'center', 'important');
+                     bodyStyle.setProperty('background-repeat', 'no-repeat', 'important');
+                     bodyStyle.setProperty('background-attachment', 'fixed', 'important');
+                } else {
+                    bodyStyle.backgroundImage = 'none';
+                }
+                // Always set background color for opacity layer or solid color
+                 bodyStyle.backgroundColor = bgColor;
+            }
+        });
+    }
     document.body.dataset.theme = themeName;
 }
 
@@ -27,7 +79,8 @@ export function initThemeSwitcher() {
             { value: 'google', labelKey: 'themeOptionGoogle' },
             { value: 'darcula', labelKey: 'themeOptionDarcula' },
             { value: 'geek-blue', labelKey: 'themeOptionGeekBlue' },
-            { value: 'christmas', labelKey: 'themeOptionChristmas' }
+            { value: 'christmas', labelKey: 'themeOptionChristmas' },
+            { value: 'custom', labelKey: 'themeOptionCustom' }
         ];
 
         const themeSelectHtml = `
@@ -94,8 +147,12 @@ export function initThemeSwitcher() {
                 if (themeSelectDropdown) {
                     themeSelectDropdown.addEventListener('change', (event) => {
                         const newTheme = event.target.value;
-                        applyTheme(newTheme);
-                        api.setStorage('sync', { theme: newTheme });
+                        if (newTheme === 'custom') {
+                            chrome.runtime.openOptionsPage();
+                        } else {
+                            applyTheme(newTheme);
+                            api.setStorage('sync', { theme: newTheme });
+                        }
                     });
                 }
 

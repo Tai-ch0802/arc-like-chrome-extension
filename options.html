@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="optionsTitle"></title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <h1 data-i18n="optionsHeader"></h1>
+
+    <div class="container">
+        <div class="settings">
+            <h2 data-i18n="colorSettingsHeader"></h2>
+            <div class="color-picker-group">
+                <label for="main-bg-color" data-i18n="mainBgColorLabel"></label>
+                <input type="color" id="main-bg-color" data-css-var="--main-bg-color">
+            </div>
+            <div class="color-picker-group">
+                <label for="text-color-primary" data-i18n="primaryTextColorLabel"></label>
+                <input type="color" id="text-color-primary" data-css-var="--text-color-primary">
+            </div>
+            <div class="color-picker-group">
+                <label for="accent-color" data-i18n="accentColorLabel"></label>
+                <input type="color" id="accent-color" data-css-var="--accent-color">
+            </div>
+             <div class="color-picker-group">
+                <label for="element-bg-color" data-i18n="elementBgColorLabel"></label>
+                <input type="color" id="element-bg-color" data-css-var="--element-bg-color">
+            </div>
+            <div class="color-picker-group">
+                <label for="element-bg-hover-color" data-i18n="elementBgHoverColorLabel"></label>
+                <input type="color" id="element-bg-hover-color" data-css-var="--element-bg-hover-color">
+            </div>
+            <div class="color-picker-group">
+                <label for="border-color" data-i18n="borderColorLabel"></label>
+                <input type="color" id="border-color" data-css-var="--border-color">
+            </div>
+
+            <h2 data-i18n="backgroundImageHeader"></h2>
+            <div class="background-image-group">
+                <label for="background-image-url" data-i18n="backgroundImageUrlLabel"></label>
+                <input type="text" id="background-image-url" data-i18n-placeholder="backgroundImageUrlPlaceholder">
+            </div>
+            <div class="background-image-group">
+                 <label for="background-opacity" data-i18n="backgroundOpacityLabel"></label>
+                <input type="range" id="background-opacity" min="0" max="1" step="0.1" value="1">
+            </div>
+
+            <button id="save-button" data-i18n="saveButtonLabel"></button>
+            <button id="reset-button" data-i18n="resetButtonLabel"></button>
+        </div>
+
+        <div class="preview">
+            <h2 data-i18n="previewHeader"></h2>
+            <div id="sidepanel-preview">
+                <div class="preview-search">
+                    <input type="text" data-i18n-placeholder="previewSearchPlaceholder">
+                </div>
+                <div class="preview-tab-list">
+                    <div class="preview-tab-item active">
+                        <div class="preview-favicon"></div>
+                        <div class="preview-tab-title" data-i18n="previewTab1"></div>
+                    </div>
+                    <div class="preview-tab-item">
+                        <div class="preview-favicon"></div>
+                        <div class="preview-tab-title" data-i18n="previewTab2"></div>
+                    </div>
+                </div>
+                 <div class="preview-bookmark-list">
+                    <div class="preview-bookmark-item">
+                        <div class="preview-favicon"></div>
+                        <div class="preview-bookmark-title" data-i18n="previewBookmark1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
