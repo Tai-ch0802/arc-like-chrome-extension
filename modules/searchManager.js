@@ -29,7 +29,14 @@ async function handleSearch() {
 
     // 高亮匹配文字
     if (keywords.length > 0) {
-        highlightMatches(keywords);
+        // 預先編譯所有正則表達式，避免在迴圈中重複編譯
+        const regexes = keywords
+            .filter(k => k.length > 0)
+            .map(keyword => ({
+                regex: new RegExp(`(${escapeRegExp(keyword)})`, 'gi'),
+                keyword: keyword // 雖然這裡可能不再需要，但保留以防萬一
+            }));
+        highlightMatches(regexes);
     } else {
         clearHighlights();
     }
@@ -421,14 +428,7 @@ function applyBookmarkVisibility(keywords, visibleItems) {
 }
 
 // 高亮匹配的文字
-function highlightMatches(keywords) {
-    // 預先編譯所有正則表達式，避免在迴圈中重複編譯
-    const regexes = keywords
-        .filter(k => k.length > 0)
-        .map(keyword => ({
-            regex: new RegExp(`(${escapeRegExp(keyword)})`, 'gi'),
-            keyword: keyword // 雖然這裡可能不再需要，但保留以防萬一
-        }));
+function highlightMatches(regexes) {
 
     // 高亮分頁標題（包含其他視窗）
     const tabItems = document.querySelectorAll('#tab-list .tab-item:not(.hidden), #other-windows-list .tab-item:not(.hidden)');
