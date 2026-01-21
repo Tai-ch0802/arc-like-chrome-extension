@@ -1,13 +1,23 @@
 import * as api from './apiManager.js';
 
+/**
+ * 追蹤目前開啟的 Modal 相關資訊，用於 Focus 管理
+ * @type {{ overlay: HTMLElement, modalContent: HTMLElement, previousActiveElement: HTMLElement, cleanup: Function } | null}
+ */
+let currentModal = null;
+
 function createModal(content) {
+    // 記錄開啟前的焦點元素，以便關閉後還原
+    const previousActiveElement = document.activeElement;
+
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
 
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
+    // 確保 modalContent 可以被聚焦 (若是點擊 overlay 背景，我們希望 focus 回到內容)
+    modalContent.tabIndex = -1;
 
-    // Don't use innerHTML for content that includes a form, to ensure proper event handling
     if (typeof content === 'string') {
         modalContent.innerHTML = content;
     } else {
@@ -17,12 +27,104 @@ function createModal(content) {
     overlay.appendChild(modalContent);
     document.body.appendChild(overlay);
 
+    // 定義 Focus Trap 邏輯
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            // 嘗試尋找並點擊取消/關閉按鈕，或觸發 Overlay 點擊
+            // 優先尋找明確的取消按鈕
+            const cancelBtn = modalContent.querySelector('.cancel-btn, #closeButton');
+            if (cancelBtn) {
+                cancelBtn.click();
+            } else {
+                // 若無取消按鈕，則模擬點擊 Overlay (通常綁定有關閉邏輯)
+                overlay.click();
+            }
+            return;
+        }
+
+        if (e.key === 'Tab') {
+            const focusableElements = modalContent.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else { // Tab
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        }
+        // Arrow Key Navigation (Global)
+        // Only handle if not on a text input/textarea (to preserve caret movement)
+        else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+            const activeTag = document.activeElement.tagName.toLowerCase();
+            const isTextInput = (activeTag === 'input' && ['text', 'password', 'search', 'email', 'number', 'url', 'tel'].includes(document.activeElement.type)) || activeTag === 'textarea';
+
+            if (!isTextInput) {
+                e.preventDefault();
+                const focusableElements = Array.from(modalContent.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                ));
+
+                if (focusableElements.length === 0) return;
+
+                const currentIndex = focusableElements.indexOf(document.activeElement);
+                let nextIndex = currentIndex;
+
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextIndex = currentIndex + 1;
+                    if (nextIndex >= focusableElements.length) nextIndex = 0; // Loop (optional, but good for arrows)
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    nextIndex = currentIndex - 1;
+                    if (nextIndex < 0) nextIndex = focusableElements.length - 1; // Loop
+                }
+
+                if (nextIndex >= 0 && nextIndex < focusableElements.length) {
+                    focusableElements[nextIndex].focus();
+                }
+            }
+        }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    // 保存目前的 Modal 狀態
+    currentModal = {
+        overlay,
+        modalContent,
+        previousActiveElement,
+        cleanup: () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            currentModal = null;
+        }
+    };
+
     return { overlay, modalContent };
 }
 
 function removeModal(overlay) {
     if (overlay) {
         overlay.remove();
+    }
+
+    // 執行清理並還原焦點
+    if (currentModal && currentModal.overlay === overlay) {
+        const { previousActiveElement } = currentModal;
+        currentModal.cleanup();
+        if (previousActiveElement && document.body.contains(previousActiveElement)) {
+            previousActiveElement.focus();
+        }
     }
 }
 
@@ -38,8 +140,10 @@ export function showConfirm({ title, confirmButtonText = 'Confirm', confirmButto
 
         const { overlay, modalContent } = createModal(content);
 
+        // 設定初始焦點
         const confirmBtn = modalContent.querySelector('.confirm-btn');
         const cancelBtn = modalContent.querySelector('.cancel-btn');
+        cancelBtn.focus(); // 預設聚焦在取消按鈕，避免誤主操作
 
         const cleanupAndResolve = (value) => {
             removeModal(overlay);
@@ -139,10 +243,10 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
         form.appendChild(buttons);
 
         const { overlay, modalContent } = createModal(form);
-        const firstInput = modalContent.querySelector('input');
+        const firstInput = modalContent.querySelector('input, select');
         if (firstInput) {
             firstInput.focus();
-            firstInput.select();
+            if (firstInput.select) firstInput.select();
         }
 
         const cleanupAndResolve = (value) => {
@@ -187,6 +291,13 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
         onOpen(modalContent); // 在內容被添加到 DOM 後執行 onOpen 回呼函式
 
         const closeBtn = modalContent.querySelector('#closeButton');
+        // 如果內容中沒有可聚焦元素，預設聚焦在關閉按鈕
+        const contentFocusable = modalContent.querySelector('.modal-custom-content input, .modal-custom-content button');
+        if (contentFocusable) {
+            contentFocusable.focus();
+        } else {
+            closeBtn.focus();
+        }
 
         const cleanupAndResolve = () => {
             removeModal(overlay);
@@ -236,6 +347,8 @@ export function showAddToBookmarkDialog({ name, url }) {
                     folderItem.className = 'bookmark-folder';
                     folderItem.dataset.bookmarkId = node.id;
                     folderItem.title = node.title;
+                    folderItem.tabIndex = 0; // Make focusable
+                    folderItem.setAttribute('role', 'button'); // Accessibility role
 
                     const icon = document.createElement('span');
                     icon.className = 'bookmark-icon';
@@ -250,7 +363,7 @@ export function showAddToBookmarkDialog({ name, url }) {
 
                     const newPath = path ? `${path} / ${title.textContent}` : title.textContent;
 
-                    folderItem.addEventListener('click', () => {
+                    const selectFolder = () => {
                         selectedFolder = { id: node.id, path: newPath };
                         locationPathDiv.textContent = newPath;
                         if (selectedFolderElement) {
@@ -258,6 +371,30 @@ export function showAddToBookmarkDialog({ name, url }) {
                         }
                         folderItem.classList.add('selected');
                         selectedFolderElement = folderItem;
+                    };
+
+                    folderItem.addEventListener('click', selectFolder);
+                    folderItem.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            selectFolder();
+                        }
+                        // Vertical Navigation for Folder Tree
+                        else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            e.stopPropagation(); // Stop bubbling to global handler
+                            const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
+                            const index = allFolders.indexOf(folderItem);
+                            const next = allFolders[index + 1] || allFolders[0];
+                            if (next) next.focus();
+                        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
+                            const index = allFolders.indexOf(folderItem);
+                            const prev = allFolders[index - 1] || allFolders[allFolders.length - 1];
+                            if (prev) prev.focus();
+                        }
                     });
 
                     container.appendChild(folderItem);
@@ -337,13 +474,19 @@ export function showCreateGroupDialog() {
         let selectedColor = 'grey'; // Default color
 
         const colorSwatches = Object.entries(GROUP_COLORS).map(([colorName, colorHex]) => `
-            <div class="color-swatch ${colorName === selectedColor ? 'selected' : ''}" data-color="${colorName}" style="background-color: ${colorHex};"></div>
+            <div class="color-swatch ${colorName === selectedColor ? 'selected' : ''}" 
+                 data-color="${colorName}" 
+                 style="background-color: ${colorHex};"
+                 tabindex="0"
+                 role="radio"
+                 aria-checked="${colorName === selectedColor}"
+                 aria-label="${colorName}"></div>
         `).join('');
 
         form.innerHTML = `
             <h3 class="modal-title">${api.getMessage("createGroupDialogTitle") || "Create New Group"}</h3>
             <input type="text" class="modal-input" placeholder="${api.getMessage("groupNameInputPlaceholder") || "Enter group name..."}">
-            <div class="color-swatches-container">${colorSwatches}</div>
+            <div class="color-swatches-container" role="radiogroup">${colorSwatches}</div>
             <div class="modal-buttons">
                 <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
                 <button type="submit" class="modal-button confirm-btn primary">${api.getMessage("createGroupButton") || 'Create Group'}</button>
@@ -356,14 +499,52 @@ export function showCreateGroupDialog() {
         input.focus();
 
         const swatchesContainer = modalContent.querySelector('.color-swatches-container');
+
+        // Helper to update selection
+        const selectSwatch = (target) => {
+            const previouslySelected = swatchesContainer.querySelector('.selected');
+            if (previouslySelected) {
+                previouslySelected.classList.remove('selected');
+                previouslySelected.setAttribute('aria-checked', 'false');
+            }
+            target.classList.add('selected');
+            target.setAttribute('aria-checked', 'true');
+            selectedColor = target.dataset.color;
+        }
+
         swatchesContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('color-swatch')) {
-                const previouslySelected = swatchesContainer.querySelector('.selected');
-                if (previouslySelected) {
-                    previouslySelected.classList.remove('selected');
+                selectSwatch(e.target);
+            }
+        });
+
+        // Add Keyboard support for swatches
+        swatchesContainer.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('color-swatch')) {
+                e.preventDefault();
+                selectSwatch(e.target);
+            }
+
+            // Grid Navigation for Swatches
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) && e.target.classList.contains('color-swatch')) {
+                e.preventDefault();
+                e.stopPropagation(); // Stop global handler
+
+                const allSwatches = Array.from(swatchesContainer.querySelectorAll('.color-swatch'));
+                const index = allSwatches.indexOf(e.target);
+                let nextIndex = index;
+
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextIndex = index + 1;
+                    if (nextIndex >= allSwatches.length) nextIndex = 0;
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    nextIndex = index - 1;
+                    if (nextIndex < 0) nextIndex = allSwatches.length - 1;
                 }
-                e.target.classList.add('selected');
-                selectedColor = e.target.dataset.color;
+
+                if (nextIndex >= 0 && nextIndex < allSwatches.length) {
+                    allSwatches[nextIndex].focus();
+                }
             }
         });
 
