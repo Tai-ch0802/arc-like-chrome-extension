@@ -79,15 +79,16 @@ describe.skip('Performance Benchmark', () => {
             }
 
             const tabRenderer = await import('./modules/ui/tabRenderer.js');
+            const otherWindowRenderer = await import('./modules/ui/otherWindowRenderer.js');
 
             // Measure renderTabsAndGroups
             const startTabs = performance.now();
-            tabRenderer.renderTabsAndGroups(currentTabs, currentGroups, { onAddToGroupClick: () => {} });
+            tabRenderer.renderTabsAndGroups(currentTabs, currentGroups, { onAddToGroupClick: () => { } });
             const endTabs = performance.now();
 
             // Measure renderOtherWindowsSection
             const startOther = performance.now();
-            tabRenderer.renderOtherWindowsSection(otherWindows, currentWindowId, allGroups);
+            otherWindowRenderer.renderOtherWindowsSection(otherWindows, currentWindowId, allGroups);
             const endOther = performance.now();
 
             return {
@@ -131,7 +132,7 @@ describe.skip('Performance Benchmark', () => {
             // The setupBrowser loads the extension, so sidepanel.html is loaded.
 
             // Render tabs
-            tabRenderer.renderTabsAndGroups(tabs, [], { onAddToGroupClick: () => {} });
+            tabRenderer.renderTabsAndGroups(tabs, [], { onAddToGroupClick: () => { } });
 
             // Set search box value because handleSearch reads it
             const searchBox = document.getElementById('search-box');
