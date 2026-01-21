@@ -30,12 +30,8 @@ async function handleSearch() {
     // 高亮匹配文字
     if (keywords.length > 0) {
         // 預先編譯所有正則表達式，避免在迴圈中重複編譯
-        const regexes = keywords
-            .filter(k => k.length > 0)
-            .map(keyword => ({
-                regex: new RegExp(`(${escapeRegExp(keyword)})`, 'gi'),
-                keyword: keyword // 雖然這裡可能不再需要，但保留以防萬一
-            }));
+        // keywords 已在上方被 filter(k => k.length > 0) 過濾，此處無需重複過濾
+        const regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
         highlightMatches(regexes);
     } else {
         clearHighlights();
@@ -515,7 +511,7 @@ function highlightText(text, regexes, type) {
     let result = text;
 
     // 使用預先編譯的正則表達式
-    regexes.forEach(({ regex }) => {
+    regexes.forEach(regex => {
         const markClass = type === 'url' ? 'url-match' : 'title-match';
         result = result.replace(regex, `<mark class="${markClass}">$1</mark>`);
     });
