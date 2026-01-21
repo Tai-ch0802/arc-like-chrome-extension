@@ -1,0 +1,1 @@
+i18n/en/CODE_OF_CONDUCT.md

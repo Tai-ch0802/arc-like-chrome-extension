@@ -9,11 +9,10 @@ This skill updates the project's documentation when new features are added or ex
 
 ## Files to Update
 
-1.  **READMEs** (`.github/readme/`):
-    *   `README.en.md` (English - **Source**)
-    *   `README.zh_TW.md`, `README.zh_CN.md`, etc. (13 other languages)
-2.  **Root README**:
-    *   `README.md` (Should strictly match `.github/readme/README.en.md`)
+1.  **Documentation Structure** (`.github/i18n/`):
+    *   **En (Source)**: `.github/i18n/en/{README,CONTRIBUTING,etc}.md`
+    *   **Translations**: `.github/i18n/{lang_code}/{filename}.md`
+    *   **Root**: Files in root should be Symlinks to `i18n/en/`.
 3.  **Store Descriptions** (`docs/chrome-web-store/`):
     *   `store_description_*.md` (14 languages)
 
@@ -23,15 +22,16 @@ This skill updates the project's documentation when new features are added or ex
 *   Identify the source content (usually in English from a Spec file).
 *   Determine the insertion point.
 
-### 2. Update English README
-*   Edit `.github/readme/README.en.md`.
+### 2. Update English Source
+*   Edit `.github/i18n/en/README.md` (or other target file).
 *   Insert the new content.
 
-### 3. Update Root README
-*   Copy the content of `.github/readme/README.en.md` to `README.md` (or simply ensure they are synced).
+### 3. Sync Root (Symlinks)
+*   Ensure root files (`README.md`, `CONTRIBUTING.md`) are valid symlinks pointing to `i18n/en/`.
+*   *(No content copy needed if using symlinks)*
 
-### 4. Update Multilingual READMEs
-*   **Iterate**: For each `README.*.md` in `.github/readme/` (excluding `en`):
+### 4. Update Multilingual Docs
+*   **Iterate**: For each language folder in `.github/i18n/` (excluding `en`):
     1.  Translate the new content into the target language.
     2.  Insert at the corresponding location.
 
