@@ -2,9 +2,11 @@
 
 | Attribute | Details |
 | :--- | :--- |
-| **Status** | Draft / Review / Approved |
+| **Version** | v1.0 |
+| **Status** | Draft / Review / Approved / Frozen |
 | **Author** | [Name] |
 | **Reviewers** | [Names] |
+| **Created** | YYYY-MM-DD |
 | **Last Updated** | YYYY-MM-DD |
 
 ## 1. Introduction
@@ -33,7 +35,26 @@
 ### 3.2 Feature B
 ...
 
-## 4. User Experience (UI/UX)
+## 4. Acceptance Criteria
+> **[Critical]** 每個 Functional Requirement 必須有對應的 Acceptance Criteria，使用 Given-When-Then 格式。
+
+### AC for FR-01
+```gherkin
+Given 使用者已登入系統
+When 使用者點擊「備份」按鈕
+Then 系統應在 3 秒內完成備份
+And 顯示「備份成功」提示訊息
+```
+
+### AC for FR-02
+```gherkin
+Given [前置條件]
+When [使用者操作]
+Then [預期結果]
+And [額外驗證點]
+```
+
+## 5. User Experience (UI/UX)
 描述介面流程或附上設計連結。
 
 ```mermaid
@@ -43,14 +64,22 @@ graph LR
     B -->|驗證失敗| D[錯誤提示]
 ```
 
-## 5. Non-Functional Requirements
+## 6. Non-Functional Requirements
 *   **Security**: e.g., 密碼存儲需加密。
 *   **Performance**: e.g., API 響應 < 200ms。
 *   **Compatibility**: e.g., 支援 iOS 15+, Android 10+。
 
-## 6. Analytics & Tracking
+## 7. Analytics & Tracking
 *   Track Event: `button_click` {source: "home"}
 *   Track Event: `api_error` {code: 500}
 
-## 7. Out of Scope
+## 8. Out of Scope
 *   不支援 IE 瀏覽器。
+
+---
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| v1.0 | YYYY-MM-DD | [Name] | Initial draft |
