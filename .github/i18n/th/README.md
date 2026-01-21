@@ -1,6 +1,6 @@
 # แถบข้าง Chrome สไตล์ Arc
 
-[English](../en/README.md) | [繁體中文](../zh_TW/README.md) | [简体中文](../zh_CN/README.md) | [日本語](../ja/README.md) | [한국어](../ko/README.md) | [Deutsch](../de/README.md) | [Español](../es/README.md) | [Français](../fr/README.md) | [हिन्दी](../hi/README.md) | [Bahasa Indonesia](../id/README.md) | [Português (Brasil)](../pt_BR/README.md) | [Русский](../ru/README.md) | [ไทย](../th/README.md) | [Tiếng Việt](../vi/README.md)
+[English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
 ---
 
