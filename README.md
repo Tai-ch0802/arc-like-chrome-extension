@@ -15,6 +15,22 @@ This is a Chrome extension project that aims to bring an Arc browser-like vertic
 ## 🚀 New Release v1.11.0 update! 
 [![Demo Video](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
 
+### ⚡️ Features
+- **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
+- **Tab Groups**: Perfectly integrates with Chrome Tab Groups, syncing colors and names.
+- **Bookmarks Integration**: Unified panel for managing tabs and bookmarks.
+- **Linked Tabs**: Automatically creates a "Link" when opening a bookmark, avoiding duplicates.
+- **Cross-Window Search**: Search tabs and bookmarks across all open windows.
+- **Dynamic Rendering**: Efficient rendering for large bookmark libraries.
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Whether you're fixing a bug, improving documentation, or proposing a new feature, your help is appreciated.
+
+We have a **Spec-Driven Development (SDD)** workflow and are **AI-friendly**. Check out our contributing guide to get started:
+
+👉 **[Read our Contributing Guidelines](CONTRIBUTING.md)**
+
 ---
 
 ## 🔥 Key Features
@@ -135,13 +151,10 @@ To ensure the quality and stability of the project's features, we adopt a use ca
 *   **Location**: All use case test files are stored in the `usecase_tests/` folder at the project root.
 *   **Execution & Verification**: These tests are currently primarily executed manually. Developers need to simulate user operations in the running Chrome extension according to the steps in the test files and observe whether the results meet expectations.
 
-### Automated Testing Framework
+### Automated Testing
 
-For future automated testing, we have chosen **Puppeteer** as our End-to-End (E2E) testing framework.
+For future automated testing, we have chosen **Puppeteer** as our End-to-End (E2E) testing framework. This allows us to write scripts to simulate various user actions in the browser and verify functionality.
 
-*   **Puppeteer**: A Node.js library that provides a high-level API to control Chromium or Chrome over the DevTools Protocol. It allows us to write scripts to simulate various user actions in the browser, such as clicks, input, navigation, etc., and capture screenshots or retrieve page content for verification.
-*   **Installation**: Puppeteer has been installed in the project via `npm install puppeteer`.
-*   **Future Outlook**: In the future, the descriptive test cases in `usecase_tests/` will be gradually converted into executable Puppeteer scripts to achieve automated testing and continuous integration.
 
 ---
 
@@ -161,6 +174,6 @@ Special thanks to all contributors who help make this project better:
   <img src="https://contrib.rocks/image?repo=Tai-ch0802/arc-like-chrome-extension" />
 </a>
 
----
+## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

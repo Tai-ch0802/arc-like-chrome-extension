@@ -1,6 +1,6 @@
-# Arc-Style Chrome Sidebar
+# Sidebar im Arc-Stil für Chrome
 
-Dies ist ein Chrome-Erweiterungsprojekt, das darauf abzielt, eine Arc-Browser-ähnliche vertikale Seitenleisten-Erfahrung in Google Chrome zu bringen und ein einheitliches und leistungsstarkes Panel für die Verwaltung von Tabs und Lesezeichen bereitzustellen.
+[English](README.en.md) | [繁體中文](README.zh_TW.md) | [简体中文](README.zh_CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [हिन्दी](README.hi.md) | [Bahasa Indonesia](README.id.md) | [Português (Brasil)](README.pt_BR.md) | [Русский](README.ru.md) | [ไทย](README.th.md) | [Tiếng Việt](README.vi.md)
 
 ---
 
@@ -10,50 +10,68 @@ Dies ist ein Chrome-Erweiterungsprojekt, das darauf abzielt, eine Arc-Browser-ä
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
+Dies ist ein Chrome-Erweiterungsprojekt, das darauf abzielt, eine vertikale Seitenleiste im Stil des Arc-Browsers in Google Chrome zu integrieren und ein einheitliches, leistungsstarkes Panel für die Verwaltung von Tabs und Lesezeichen bereitzustellen.
+
 ## 🚀 Neues Release v1.11.0 Update!
 [![Demo Video](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
 
+### ⚡️ Features
+- **Vertikale Tabs**: Vollständige Seitentitel anzeigen, nicht mehr zu winzigen Symbolen komprimiert.
+- **Tab-Gruppen**: Integriert sich perfekt in Chrome-Tab-Gruppen und synchronisiert Farben und Namen.
+- **Lesezeichen-Integration**: Einheitliches Panel für die Verwaltung von Tabs und Lesezeichen.
+- **Verknüpfte Tabs**: Erstellt beim Öffnen eines Lesezeichens automatisch einen „Link“, um Duplikate zu vermeiden.
+- **Fensterübergreifende Suche**: Suche in Tabs und Lesezeichen über alle geöffneten Fenster hinweg.
+- **Dynamisches Rendering**: Effizientes Rendering für große Lesezeichen-Bibliotheken.
+
+## 🤝 Mitwirken
+
+Wir freuen uns über Beiträge aus der Community! Egal, ob Sie einen Fehler beheben, die Dokumentation verbessern oder eine neue Funktion vorschlagen – Ihre Hilfe ist willkommen.
+
+Wir nutzen einen **Spec-Driven Development (SDD)** Workflow und sind **KI-freundlich**. Schauen Sie in unseren Leitfaden für Mitwirkende, um loszulegen:
+
+👉 **[Lesen Sie unseren Leitfaden für Mitwirkende](../../CONTRIBUTING.md)**
+
 ---
 
-## 🔥 Hauptfunktionen
+## 🔥 Hauptmerkmale
 
-### 🔗 Exklusive Innovation: Verknüpfte Tabs
-Dies ist unsere leistungsstärkste Funktion! Wenn Sie ein Lesezeichen aus der Seitenleiste öffnen, erstellen wir automatisch eine **„Verknüpfung"**.
-- **Tab-Chaos vermeiden**: Klicken Sie auf das Verknüpfungssymbol neben einem Lesezeichen, um alle davon geöffneten Tabs zu sehen, damit Sie keine Duplikate öffnen und Systemressourcen sparen.
-- **Zwei-Wege-Synchronisation**: Wenn ein Tab geschlossen wird, wird der Lesezeichen-Status automatisch aktualisiert; wenn ein Lesezeichen gelöscht wird, wird der verknüpfte Tab intelligent behandelt.
-- **Visuelles Feedback**: Ein raffiniertes Verknüpfungssymbol erscheint neben Lesezeichen und zeigt Ihnen auf einen Blick, welche gerade aktiv sind.
+### 🔗 Exklusive Innovation: Verknüpfte Tabs (Linked Tabs)
+Dies ist unser leistungsstärkstes Feature! Wenn Sie ein Lesezeichen in der Seitenleiste öffnen, erstellen wir automatisch einen **„Link“**.
+- **Tab-Chaos vermeiden**: Klicken Sie auf das Link-Symbol neben einem Lesezeichen, um alle davon geöffneten Tabs zu sehen. Dies hilft Ihnen, Duplikate zu vermeiden und Systemressourcen zu sparen.
+- **Zwei-Wege-Sync**: Wenn ein Tab geschlossen wird, aktualisiert sich der Lesezeichen-Status automatisch; wenn ein Lesezeichen gelöscht wird, wird der verknüpfte Tab intelligent behandelt.
+- **Visuelles Feedback**: Ein raffiniertes Link-Symbol erscheint neben den Lesezeichen, sodass Sie auf einen Blick sehen, welche gerade aktiv sind.
 
-### ⚡️ Intelligente Darstellung
-Haben Sie Tausende von Lesezeichen? Kein Problem!
-- **Dynamische Darstellung**: Von Virtual Scrolling auf einen effizienten dynamischen Rendering-Mechanismus umgestellt, der eine reibungslose Leistung bei besserer Kompatibilität gewährleistet.
-- **Flüssige Erfahrung**: Navigieren Sie mühelos durch große Lesezeichen-Bibliotheken ohne Verzögerung.
+### ⚡️ Smart Rendering
+Tausende von Lesezeichen? Kein Problem!
+- **Dynamisches Rendering**: Umstellung von Virtual Scrolling auf einen effizienten Dynamic Rendering Mechanismus, der flüssige Performance bei besserer Kompatibilität bietet.
+- **Reibungslose Erfahrung**: Navigieren Sie mühelos und ohne Verzögerungen durch große Lesezeichen-Bibliotheken.
 
-### 🪟 Fensterübergreifende Verwaltung
-- **Fensterübersicht**: Sehen Sie Tabs aus allen geöffneten Chrome-Fenstern direkt in der Seitenleiste, nicht nur aus dem aktuellen.
-- **Globale Suche**: Suchergebnisse umfassen Tabs aus allen Fenstern und ermöglichen eine sofortige Navigation durch Ihre gesamte Sitzung.
+### 🪟 Fensterübergreifendes Management
+- **Fenster-Übersicht**: Zeigen Sie Tabs aus allen geöffneten Chrome-Fenstern direkt in der Seitenleiste an, nicht nur aus dem aktuellen.
+- **Globale Suche**: Suchergebnisse enthalten Tabs aus allen Fenstern, was eine sofortige Navigation durch Ihre gesamte Sitzung ermöglicht.
 
 ### 🔍 Suche auf Profi-Niveau
 Nicht nur suchen – sofort finden.
-- **Multi-Keyword-Filterung**: Unterstützt durch Leerzeichen getrennte Schlüsselwörter (z.B. „google docs arbeit") für präzise Zielerfassung.
-- **Domain-Suche**: Geben Sie eine Domain ein (wie `github.com`), um Tabs und Lesezeichen aus bestimmten Quellen sofort zu filtern.
-- **Intelligente Hervorhebung**: Echtzeit-Hervorhebung übereinstimmender Schlüsselwörter hält Ihren visuellen Fokus klar.
+- **Multi-Keyword-Filterung**: Unterstützt durch Leerzeichen getrennte Keywords (z. B. „google docs arbeit“) für präzises Targeting.
+- **Domain-Suche**: Geben Sie eine Domain ein (wie `github.com`), um Tabs und Lesezeichen von bestimmten Quellen sofort zu filtern.
+- **Smart Highlighting**: Echtzeit-Highlighting von passenden Keywords hält Ihren visuellen Fokus klar.
 
-### 🗂️ Einheitlicher Arbeitsbereich
-- **Vertikale Tabs**: Sehen Sie vollständige Seitentitel, nicht mehr in winzige Icons komprimiert.
-- **Native Gruppenunterstützung**: Perfekte Integration mit Chrome Tab-Gruppen, Farben und Namen synchronisiert.
-- **Benutzerdefinierte Fensternamen**: Weisen Sie Ihren Fenstern benutzerdefinierte Namen zu (z.B. „Arbeit", „Persönlich") für klareren Kontext.
-- **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichen-Ordnern.
-- **Ziehen zum Speichern**: Ziehen Sie einen Tab in den Lesezeichen-Bereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tab-Bereich, um es zu öffnen.
+### 🗂️ Einheitlicher Workspace
+- **Vertikale Tabs**: Vollständige Seitentitel anzeigen, ohne Komprimierung.
+- **Native Gruppen-Unterstützung**: Perfekte Integration in Chrome-Tab-Gruppen.
+- **Benutzerdefinierte Fensternamen**: Weisen Sie Ihren Fenstern benutzerdefinierte Namen zu (z. B. „Arbeit“, „Privat“) für mehr Klarheit.
+- **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichenordnern.
+- **Ziehen zum Speichern**: Ziehen Sie einen Tab in den Lesezeichenbereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tab-Bereich, um es zu öffnen.
 
 ### 🎨 Premium-Design
-- **Fokus-Modus**: Ein elegantes dunkles Thema mit sorgfältig abgestimmtem Kontrast zur Reduzierung der Augenbelastung.
-- **Auto-Aufklappen**: Bewegen Sie Elemente über Ordner, um den Pfad automatisch zu öffnen.
-- **Intelligentes Hovern**: Aktionsschaltflächen erscheinen nur bei Bedarf und halten die Oberfläche sauber und ablenkungsfrei.
+- **Fokus-Modus**: Ein schnittiges dunkles Design mit sorgfältig abgestimmtem Kontrast zur Schonung der Augen.
+- **Automatisches Aufklappen**: Bewegen Sie den Mauszeiger beim Ziehen von Elementen über einen Ordner, um den Pfad automatisch aufzuklappen.
+- **Smart Hover**: Aktionsschaltflächen erscheinen nur bei Bedarf, um die Benutzeroberfläche sauber und ablenkungsfrei zu halten.
 
 ## ⌨️ Vollständige Tastaturnavigation
-- **Native Erfahrung**: Verwenden Sie `Pfeil nach oben`/`Pfeil nach unten`, um nahtlos zwischen Tabs und Lesezeichen zu navigieren.
-- **Mikrointeraktionen**: Verwenden Sie `Pfeil links`/`Pfeil rechts`, um interne Schaltflächen zu navigieren und auszulösen (wie Schließen, Zur Gruppe hinzufügen).
-- **Such-Integration**: Drücken Sie `Nach oben` am Anfang der Liste, um die Suchleiste zu fokussieren; drücken Sie `Nach unten` in der Suchleiste, um zu den Ergebnissen zu springen.
+- **Native Erfahrung**: Verwenden Sie die Tasten `Pfeil auf`/`Pfeil ab`, um nahtlos zwischen Tabs und Lesezeichen zu navigieren.
+- **Mikro-Interaktionen**: Verwenden Sie `Pfeil links`/`Pfeil rechts` zum Navigieren und zum Auslösen interner Schaltflächen (wie Schließen, Zu Gruppe hinzufügen).
+- **Such-Integration**: Drücken Sie am Anfang der Liste `Pfeil auf`, um die Suchleiste zu fokussieren; drücken Sie in der Suchleiste `Pfeil ab`, um zu den Ergebnissen zu springen.
 - **Fokus-Tipp**: Sobald die Seitenleiste geöffnet ist, drücken Sie einfach eine beliebige Pfeiltaste, um automatisch den Fokus zu erhalten und mit der Navigation zu beginnen.
 
 ### ⌨️ Produktivitäts-Shortcuts
@@ -64,14 +82,14 @@ Nicht nur suchen – sofort finden.
 
 ## 🆚 Warum diese Erweiterung wählen?
 
-| Funktion | Diese Erweiterung | Standard-Chrome | Herkömmliche Seitenleisten |
+| Feature | Diese Erweiterung | Standard-Chrome | Traditionelle Seitenleisten |
 | :--- | :---: | :---: | :---: |
 | **Vertikale Tabs** | ✅ Voller Titel | ❌ Komprimiert | ✅ |
-| **Tab-Gruppen** | ✅ Native Synchronisation | ✅ | ⚠️ Teilweise |
+| **Tab-Gruppen** | ✅ Native Sync | ✅ | ⚠️ Teilweise |
 | **Lesezeichen-Integration** | ✅ Einheitliches Panel | ❌ Separater Manager | ❌ Separat |
-| **Verknüpfte Tabs** | ✅ Perfekte Synch. | ❌ | ❌ |
+| **Verknüpfte Tabs** | ✅ Synchronisiert | ❌ | ❌ |
 | **Fensterübergreifende Suche** | ✅ | ❌ | ⚠️ Variiert |
-| **Leistung** | ⚡️ Dynamisches Rendering | N/A | 🐢 Virtuelles Scrollen |
+| **Performance** | ⚡️ Dynamisches Rendering | N/A | 🐢 Virtual Scroll |
 
 ---
 
@@ -81,17 +99,17 @@ Nicht nur suchen – sofort finden.
 
 Sie können die Erweiterung direkt aus dem offiziellen Store installieren, um automatische Updates zu erhalten:
 
-[**Klicken Sie hier, um aus dem Chrome Web Store zu installieren**](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji?utm_source=item-share-cb)
+[**Hier klicken, um aus dem Chrome Web Store zu installieren**](https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji?utm_source=item-share-cb)
 
 ### Option 2: Manuelle Installation aus dem Quellcode (für Entwickler)
 
 **1. Voraussetzungen**
 
-Bevor Sie beginnen, stellen Sie sicher, dass [Node.js](https://nodejs.org/) (das npm enthält) auf Ihrem System installiert ist.
+Stellen Sie sicher, dass [Node.js](https://nodejs.org/) (einschließlich npm) auf Ihrem System installiert ist.
 
-**2. Einrichtungsschritte**
+**2. Setup-Schritte**
 
-1.  Klonen oder laden Sie dieses Projekt auf Ihren lokalen Computer herunter.
+1.  Klonen oder laden Sie dieses Projekt auf Ihren lokalen Rechner herunter.
     ```bash
     git clone https://github.com/Tai-ch0802/arc-like-chrome-extension.git
     ```
@@ -100,9 +118,9 @@ Bevor Sie beginnen, stellen Sie sicher, dass [Node.js](https://nodejs.org/) (das
     cd arc-like-chrome-extension
     npm install
     ```
-3.  Öffnen Sie den Chrome-Browser und navigieren Sie zu `chrome://extensions`.
-4.  Aktivieren Sie „Entwicklermodus" in der oberen rechten Ecke.
-5.  Klicken Sie auf „Entpackte Erweiterung laden" und wählen Sie das Stammverzeichnis des Projekts.
+3.  Öffnen Sie den Chrome-Browser und rufen Sie `chrome://extensions` auf.
+4.  Aktivieren Sie oben rechts den „Entwicklermodus“.
+5.  Klicken Sie auf „Entpackte Erweiterung laden“ und wählen Sie das Stammverzeichnis des Projekts aus.
 
 ---
 
@@ -112,53 +130,49 @@ Dieses Projekt verwendet ein `Makefile`, um den Build-Prozess zu automatisieren.
 
 *   **Entwicklungsmodus**: `make` oder `make package`
 
-    Dieser Befehl erstellt einen nicht-minifizierten Entwicklungs-Build. Der gesamte Quellcode bleibt unverändert, was das Debuggen in Chrome DevTools erleichtert. Die gepackte Datei wird `arc-sidebar-v<version>-dev.zip` sein.
+    Dieser Befehl erstellt einen unkomprimierten Entwicklungs-Build. Der Quellcode bleibt unverändert, was das Debuggen in den Chrome-Entwicklertools erleichtert. Die gepackte Datei ist `arc-sidebar-v<version>-dev.zip`.
 
 *   **Produktionsmodus**: `make release`
 
-    Dieser Befehl führt den Produktions-Build-Prozess aus, der die folgenden Schritte umfasst:
-    1.  Bündelt und minifiziert alle JavaScript-Module in eine einzige Datei mit `esbuild`.
-    2.  Minifiziert die CSS-Datei.
-    3.  Verpackt die Ausgabe in eine `.zip`-Datei, die zum Hochladen in den Chrome Web Store geeignet ist.
+    Dieser Befehl führt den Produktions-Build-Prozess aus, der folgende Schritte umfasst:
+    1.  Bündelt und minimiert alle JavaScript-Module mit `esbuild` in einer einzigen Datei.
+    2.  Minimiert die CSS-Datei.
+    3.  Packt die Ausgabe in eine `.zip`-Datei, die für den Upload in den Chrome Web Store geeignet ist.
 
 ---
 
-## 🧪 Testen
+## 🧪 Tests
 
-Um die Qualität und Stabilität der Projektfunktionen sicherzustellen, verwenden wir einen Use-Case-Testing-Ansatz zur Validierung jeder Änderung.
+Um die Qualität und Stabilität der Funktionen des Projekts zu gewährleisten, setzen wir auf einen Use-Case-Test-Ansatz, um jede Änderung zu validieren.
 
-### Use-Case-Tests
+### Use Case Tests
 
-*   **Zweck**: Jeder Use-Case-Test definiert klar das erwartete Verhalten und den Betriebsablauf einer bestimmten Funktion. Sie werden in beschreibendem Text präsentiert und beschreiben die Testschritte, Vorbedingungen, erwarteten Ergebnisse und Überprüfungsmethoden.
-*   **Speicherort**: Alle Use-Case-Test-Dateien werden im Ordner `usecase_tests/` im Projektstamm gespeichert.
-*   **Ausführung & Überprüfung**: Diese Tests werden derzeit hauptsächlich manuell durchgeführt. Entwickler müssen Benutzeraktionen in der laufenden Chrome-Erweiterung gemäß den Schritten in den Testdateien simulieren und beobachten, ob die Ergebnisse den Erwartungen entsprechen.
+*   **Zweck**: Jeder Use-Case-Test definiert klar das erwartete Verhalten und den Ablauf einer bestimmten Funktion. Sie werden in beschreibender Textform präsentiert und enthalten Testschritte, Voraussetzungen, erwartete Ergebnisse und Verifizierungsmethoden.
+*   **Ort**: Alle Use-Case-Testdateien sind im Ordner `usecase_tests/` im Projektstamm gespeichert.
+*   **Ausführung & Verifizierung**: Diese Tests werden derzeit primär manuell durchgeführt. Entwickler müssen Benutzeraktionen in der laufenden Chrome-Erweiterung gemäß den Schritten in den Testdateien simulieren und beobachten, ob die Ergebnisse den Erwartungen entsprechen.
 
-### Automatisiertes Test-Framework
+### Automatisierte Tests
 
-Für zukünftige automatisierte Tests haben wir **Puppeteer** als unser End-to-End (E2E) Test-Framework gewählt.
-
-*   **Puppeteer**: Eine Node.js-Bibliothek, die eine High-Level-API zur Steuerung von Chromium oder Chrome über das DevTools-Protokoll bereitstellt. Sie ermöglicht es uns, Skripte zu schreiben, die verschiedene Benutzeraktionen im Browser simulieren, wie Klicks, Eingaben, Navigation usw., und Screenshots aufzunehmen oder Seiteninhalte zur Überprüfung abzurufen.
-*   **Installation**: Puppeteer wurde im Projekt über `npm install puppeteer` installiert.
-*   **Zukunftsaussichten**: In Zukunft werden die beschreibenden Testfälle in `usecase_tests/` schrittweise in ausführbare Puppeteer-Skripte umgewandelt, um automatisiertes Testen und kontinuierliche Integration zu erreichen.
-
----
-
-## 👥 Mitwirkende
-
-Besonderer Dank an alle Mitwirkenden, die helfen, dieses Projekt besser zu machen:
-
-<a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Tai-ch0802/arc-like-chrome-extension" />
-</a>
+Für zukünftige automatisierte Tests haben wir uns für **Puppeteer** als unser End-to-End (E2E) Test-Framework entschieden. Dies ermöglicht es uns, Skripte zu schreiben, die verschiedene Benutzeraktionen im Browser simulieren und die Funktionalität verifizieren.
 
 ---
 
 ## 🔒 Datenschutz & FAQ
 
-Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet vollständig lokal und sammelt oder überträgt keine Ihrer persönlichen Daten.
+Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet vollständig lokal und sammelt oder überträgt keine personenbezogenen Daten.
 
-Weitere Einzelheiten finden Sie in unserer [Datenschutzerklärung](../../PRIVACY_POLICY.md).
+Weitere Details finden Sie in unserer [Datenschutzerklärung](../../PRIVACY_POLICY.md).
 
 ---
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+## 👥 Mitwirkende
+
+Ein besonderer Dank geht an alle Mitwirkenden, die helfen, dieses Projekt zu verbessern:
+
+<a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Tai-ch0802/arc-like-chrome-extension" />
+</a>
+
+## 📜 Lizenz
+
+Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe die [LICENSE](../../LICENSE) Datei für Details.

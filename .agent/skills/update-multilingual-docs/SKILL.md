@@ -1,42 +1,46 @@
 ---
 name: update-multilingual-docs
-description: "Updates documentation (READMEs and store descriptions) across multiple languages."
+description: "Updates documentation (README and store descriptions) across multiple languages."
 ---
 
 # Update Multilingual Documentation
 
-This skill updates the project's documentation when new features are added or existing features are modified. It ensures consistency across `README.md`, `README.en.md`, and all 14 `docs/store_description_*.md` files.
+This skill updates the project's documentation when new features are added or existing features are modified.
 
 ## Files to Update
 
-1.  **READMEs**:
-    *   `README.md` (Traditional Chinese - Primary)
-    *   `README.en.md` (English)
-2.  **Store Descriptions**:
-    *   `docs/store_description_*.md` (14 languages: de, en, es, fr, hi, id, ja, ko, pt_BR, ru, th, vi, zh_CN, zh_TW)
+1.  **READMEs** (`.github/readme/`):
+    *   `README.en.md` (English - **Source**)
+    *   `README.zh_TW.md`, `README.zh_CN.md`, etc. (13 other languages)
+2.  **Root README**:
+    *   `README.md` (Should strictly match `.github/readme/README.en.md`)
+3.  **Store Descriptions** (`docs/chrome-web-store/`):
+    *   `store_description_*.md` (14 languages)
 
 ## Procedure
 
 ### 1. Analyze the Change
-*   Identify the source content (usually in English from a Spec file or `README.en.md`).
-*   Determine the insertion point (e.g., "Before the Shortcuts section", "After Key Features").
+*   Identify the source content (usually in English from a Spec file).
+*   Determine the insertion point.
 
-### 2. Update READMEs
-*   **English (`README.en.md`)**: Insert the English content.
-*   **Traditional Chinese (`README.md`)**: Translate the content to Traditional Chinese and insert.
-    *   *Note*: Ensure specific terms (like "Linked Tabs") are translated consistently with existing usage.
+### 2. Update English README
+*   Edit `.github/readme/README.en.md`.
+*   Insert the new content.
 
-### 3. Update Store Descriptions
-*   **Source**: Use `docs/store_description_en.md` as the baseline.
-*   **Iterate**: For each language file in `docs/`:
-    1.  Read the file to check existing structure.
-    2.  Translate the new content into the target language.
-        *   Use the agent's internal translation capabilities.
-        *   Maintain the same formatting (headers, bullet points, bold text).
-    3.  Insert the translated content at the corresponding location.
-    4.  **Verification**: ensure emojis headers (like `⌨️`) are consistent.
+### 3. Update Root README
+*   Copy the content of `.github/readme/README.en.md` to `README.md` (or simply ensure they are synced).
 
-### 4. Verification
+### 4. Update Multilingual READMEs
+*   **Iterate**: For each `README.*.md` in `.github/readme/` (excluding `en`):
+    1.  Translate the new content into the target language.
+    2.  Insert at the corresponding location.
+
+### 5. Update Store Descriptions
+*   **Source**: Use `docs/chrome-web-store/store_description_en.md` as the baseline.
+*   **Iterate**: For each language file in `docs/chrome-web-store/`:
+    1.  Translate and insert the new content.
+    2.  **Verification**: ensure emojis headers (like `⌨️`) are consistent.
+
+### 6. Verification
 *   Check that all files have been modified.
 *   Run a `grep` check to ensure headers are present in all files.
-    *   Example: `grep "## <New Header>" docs/store_description_*.md`
