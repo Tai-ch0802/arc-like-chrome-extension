@@ -1,19 +1,27 @@
 import * as api from '../apiManager.js';
 import * as modal from '../modalManager.js';
 import * as state from '../stateManager.js';
+import * as customTheme from './customThemeManager.js';
 
 /**
  * 應用指定的主題到文檔的 body 上。
- * @param {string} themeName - 要應用的主題名稱 (e.g., 'geek', 'google')。
+ * @param {string} themeName - 要應用的主題名稱 (e.g., 'geek', 'google', 'custom')。
  */
 export function applyTheme(themeName) {
-    document.body.dataset.theme = themeName;
+    if (themeName === 'custom') {
+        // For custom theme, remove data-theme attribute and let CSS variables take over
+        delete document.body.dataset.theme;
+    } else {
+        // For predefined themes, clear any custom CSS variables and set data-theme
+        customTheme.clearCustomColors();
+        document.body.dataset.theme = themeName;
+    }
 }
 
 /**
  * 初始化主題切換器。
  * - 從存儲中加載並應用保存的主題。
- * - 為設定面板和主題選項添加事件監聽器。
+ * - 為設定面板和主題選項添加事件監聯器。
  */
 export function initThemeSwitcher() {
     const settingsToggle = document.getElementById('settings-toggle');
@@ -21,24 +29,30 @@ export function initThemeSwitcher() {
     // 點擊設定圖示，彈出設定對話框
     settingsToggle.addEventListener('click', async () => {
         const currentTheme = document.body.dataset.theme || 'geek';
+        const storedData = await api.getStorage('sync', { theme: 'geek' });
+        const selectedTheme = storedData.theme || 'geek';
 
         const themeOptions = [
             { value: 'geek', labelKey: 'themeOptionGeek' },
             { value: 'google', labelKey: 'themeOptionGoogle' },
             { value: 'darcula', labelKey: 'themeOptionDarcula' },
             { value: 'geek-blue', labelKey: 'themeOptionGeekBlue' },
-            { value: 'christmas', labelKey: 'themeOptionChristmas' }
+            { value: 'christmas', labelKey: 'themeOptionChristmas' },
+            { value: 'custom', labelKey: 'themeOptionCustom' }
         ];
 
         const themeSelectHtml = `
             <select id="theme-select-dropdown" class="modal-select">
                 ${themeOptions.map(option => `
-                    <option value="${option.value}" ${currentTheme === option.value ? 'selected' : ''}>
-                        ${api.getMessage(option.labelKey)}
+                    <option value="${option.value}" ${selectedTheme === option.value ? 'selected' : ''}>
+                        ${api.getMessage(option.labelKey) || option.value}
                     </option>
                 `).join('')}
             </select>
         `;
+
+        // Get custom theme panel HTML
+        const customThemePanelHtml = await customTheme.getCustomThemePanelHtml();
 
         // Fetch current shortcut
         let currentShortcut = 'N/A';
@@ -62,6 +76,9 @@ export function initThemeSwitcher() {
                 <h4 class="settings-section-header">${api.getMessage('themeSectionHeader')}</h4>
                 <div class="theme-options">
                     ${themeSelectHtml}
+                </div>
+                <div id="custom-theme-container" class="${selectedTheme === 'custom' ? '' : 'hidden'}">
+                    ${customThemePanelHtml}
                 </div>
             </div>
             <div class="settings-section">
@@ -91,12 +108,31 @@ export function initThemeSwitcher() {
             onOpen: (modalContentElement) => {
                 // 在對話框內容被添加到 DOM 後，綁定事件監聽器
                 const themeSelectDropdown = modalContentElement.querySelector('#theme-select-dropdown');
+                const customThemeContainer = modalContentElement.querySelector('#custom-theme-container');
+
                 if (themeSelectDropdown) {
-                    themeSelectDropdown.addEventListener('change', (event) => {
+                    themeSelectDropdown.addEventListener('change', async (event) => {
                         const newTheme = event.target.value;
-                        applyTheme(newTheme);
+
+                        if (newTheme === 'custom') {
+                            // Show custom theme panel
+                            customThemeContainer.classList.remove('hidden');
+                            // Load and apply custom theme
+                            await customTheme.loadAndApplyCustomTheme();
+                        } else {
+                            // Hide custom theme panel
+                            customThemeContainer.classList.add('hidden');
+                            // Apply predefined theme
+                            applyTheme(newTheme);
+                        }
+
                         api.setStorage('sync', { theme: newTheme });
                     });
+                }
+
+                // Setup custom theme panel handlers
+                if (customThemeContainer) {
+                    customTheme.setupCustomThemePanel(customThemeContainer);
                 }
 
                 const openShortcutsButton = modalContentElement.querySelector('#open-shortcuts-button');
@@ -116,7 +152,17 @@ export function initThemeSwitcher() {
     });
 
     // 從存儲中加載並應用主題 (首次載入時)
-    api.getStorage('sync', { theme: 'geek' }).then(data => {
-        applyTheme(data.theme);
+    api.getStorage('sync', { theme: 'geek' }).then(async (data) => {
+        if (data.theme === 'custom') {
+            // Load and apply custom theme
+            const applied = await customTheme.loadAndApplyCustomTheme();
+            if (!applied) {
+                // Fallback to geek if no custom theme saved
+                applyTheme('geek');
+                api.setStorage('sync', { theme: 'geek' });
+            }
+        } else {
+            applyTheme(data.theme);
+        }
     }).catch(console.error);
 }

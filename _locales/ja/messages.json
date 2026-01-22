@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "リンクされたタブ",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "詳細",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "このプロジェクトはオープンソースです。開発への参加を歓迎します！GitHubでスターをお願いします！",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "GitHubで見る",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "カスタム",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "背景色",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "アクセントカラー",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "テキストカラー",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "テーマを書き出す",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "テーマを読み込む",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "デフォルトに戻す",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "コントラストが不足しています。色は自動的に調整されます。",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "テーマファイルの形式が正しくありません",
+        "description": "Error message when importing an invalid theme file."
     }
 }

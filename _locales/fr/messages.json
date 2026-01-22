@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "Onglets liés",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "À propos",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "Ce projet est open source. Vous êtes invités à rejoindre le développement ! Donnez-nous une étoile sur GitHub !",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "Voir sur GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "Personnalisé",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "Couleur de fond",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "Couleur d'accent",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "Couleur du texte",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "Exporter le thème",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "Importer le thème",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "Réinitialiser par défaut",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "Contraste faible détecté. Les couleurs seront ajustées automatiquement.",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "Format de fichier de thème invalide",
+        "description": "Error message when importing an invalid theme file."
     }
 }

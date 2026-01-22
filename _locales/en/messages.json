@@ -326,5 +326,41 @@
     "githubLinkText": {
         "message": "View on GitHub",
         "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "Custom",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "Main Background",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "Accent Color",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "Primary Text",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "Export Theme",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "Import Theme",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "Reset to Default",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "Low contrast detected. Colors will be auto-adjusted.",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "Invalid theme file format",
+        "description": "Error message when importing an invalid theme file."
     }
 }

@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "연결된 탭",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "정보",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "이 프로젝트는 오픈 소스입니다. 개발에 참여하는 것을 환영합니다! GitHub에서 스타를 눌러주세요!",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "GitHub에서 보기",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "사용자 정의",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "기본 배경색",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "강조색",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "기본 텍스트 색상",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "테마 내보내기",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "테마 가져오기",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "기본값으로 재설정",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "낮은 대비가 감지되었습니다. 색상이 자동으로 조정됩니다.",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "잘못된 테마 파일 형식",
+        "description": "Error message when importing an invalid theme file."
     }
 }

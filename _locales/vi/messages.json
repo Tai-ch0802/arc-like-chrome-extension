@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "Các tab được liên kết",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "Giới thiệu",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "Dự án này là mã nguồn mở. Bạn được chào đón tham gia phát triển! Hãy cho chúng tôi một ngôi sao trên GitHub!",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "Xem trên GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "Tùy chỉnh",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "Màu nền chính",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "Màu nhấn",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "Màu văn bản chính",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "Xuất chủ đề",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "Nhập chủ đề",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "Đặt lại về mặc định",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "Phát hiện độ tương phản thấp. Màu sắc sẽ được tự động điều chỉnh.",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "Định dạng tệp chủ đề không hợp lệ",
+        "description": "Error message when importing an invalid theme file."
     }
 }

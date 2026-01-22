@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "Pestañas vinculadas",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "Acerca de",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "Este proyecto es de código abierto. ¡Eres bienvenido a unirte al desarrollo! ¡Puntúanos en GitHub!",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "Ver en GitHub",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "Personalizado",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "Color de fondo",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "Color de acento",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "Color de texto",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "Exportar tema",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "Importar tema",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "Restablecer por defecto",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "Contraste bajo detectado. Los colores se ajustarán automáticamente.",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "Formato de archivo de tema inválido",
+        "description": "Error message when importing an invalid theme file."
     }
 }

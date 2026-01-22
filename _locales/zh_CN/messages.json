@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "已链接的标签页",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "关于",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "本项目已开源，欢迎加入开发！请在 GitHub 上给我们一颗星星！",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "在 GitHub 上查看",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "自定义",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "主背景色",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "强调色",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "主要文字色",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "导出主题",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "导入主题",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "重置为默认",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "检测到对比度不足，颜色将自动调整。",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "无效的主题文件格式",
+        "description": "Error message when importing an invalid theme file."
     }
 }

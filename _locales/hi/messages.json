@@ -311,5 +311,53 @@
     "linkedTabsIcon": {
         "message": "लिंक किए गए टैब",
         "description": "Accessibility label for the linked tabs icon."
+    },
+    "aboutSectionHeader": {
+        "message": "के बारे में",
+        "description": "Header for the about section in settings."
+    },
+    "aboutText": {
+        "message": "यह प्रोजेक्ट ओपन सोर्स है। विकास में शामिल होने के लिए आपका स्वागत है! हमें GitHub पर एक स्टार दें!",
+        "description": "Text describing the open source nature of the project."
+    },
+    "githubLinkText": {
+        "message": "GitHub पर देखें",
+        "description": "Link text to the GitHub repository."
+    },
+    "themeOptionCustom": {
+        "message": "कस्टम",
+        "description": "Name for the Custom theme option."
+    },
+    "labelMainBgColor": {
+        "message": "मुख्य पृष्ठभूमि का रंग",
+        "description": "Label for the main background color picker."
+    },
+    "labelAccentColor": {
+        "message": "एक्सेंट रंग",
+        "description": "Label for the accent color picker."
+    },
+    "labelPrimaryTextColor": {
+        "message": "मुख्य टेक्स्ट रंग",
+        "description": "Label for the primary text color picker."
+    },
+    "buttonExportTheme": {
+        "message": "थीम निर्यात करें",
+        "description": "Text for the export theme button."
+    },
+    "buttonImportTheme": {
+        "message": "थीम आयात करें",
+        "description": "Text for the import theme button."
+    },
+    "buttonResetTheme": {
+        "message": "डिफ़ॉल्ट पर रीसेट करें",
+        "description": "Text for the reset theme button."
+    },
+    "warningLowContrast": {
+        "message": "कम कंट्रास्ट का पता चला। रंग स्वचालित रूप से समायोजित किए जाएंगे।",
+        "description": "Warning message when text and background contrast is insufficient."
+    },
+    "errorInvalidThemeFile": {
+        "message": "अमान्य थीम फ़ाइल स्वरूप",
+        "description": "Error message when importing an invalid theme file."
     }
 }
