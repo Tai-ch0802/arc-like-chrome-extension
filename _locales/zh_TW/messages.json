@@ -323,5 +323,41 @@
     "githubLinkText": {
         "message": "前往 GitHub 查看",
         "description": "前往 GitHub 儲存庫的連結文字。"
+    },
+    "themeOptionCustom": {
+        "message": "自訂",
+        "description": "自訂主題選項的名稱。"
+    },
+    "labelMainBgColor": {
+        "message": "主背景色",
+        "description": "主背景色選擇器的標籤。"
+    },
+    "labelAccentColor": {
+        "message": "強調色",
+        "description": "強調色選擇器的標籤。"
+    },
+    "labelPrimaryTextColor": {
+        "message": "主要文字色",
+        "description": "主要文字色選擇器的標籤。"
+    },
+    "buttonExportTheme": {
+        "message": "匯出主題",
+        "description": "匯出主題按鈕的文字。"
+    },
+    "buttonImportTheme": {
+        "message": "載入主題",
+        "description": "載入主題按鈕的文字。"
+    },
+    "buttonResetTheme": {
+        "message": "重設為預設",
+        "description": "重設主題按鈕的文字。"
+    },
+    "warningLowContrast": {
+        "message": "偵測到對比度不足，顏色將自動調整。",
+        "description": "當文字與背景對比度不足時顯示的警告訊息。"
+    },
+    "errorInvalidThemeFile": {
+        "message": "無效的主題檔案格式",
+        "description": "當匯入主題檔案格式錯誤時顯示的錯誤訊息。"
     }
 }
