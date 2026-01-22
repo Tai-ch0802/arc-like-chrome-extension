@@ -359,5 +359,9 @@
     "errorInvalidThemeFile": {
         "message": "テーマファイルの形式が正しくありません",
         "description": "Error message when importing an invalid theme file."
+    },
+    "searchSearching": {
+        "message": "検索中...",
+        "description": "Status text shown while search is in progress."
     }
 }

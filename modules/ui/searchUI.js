@@ -2,6 +2,22 @@ import * as api from '../apiManager.js';
 import { searchBox, searchResultCount, noSearchResults, contentContainer } from './elements.js';
 
 /**
+ * 設定搜尋載入狀態
+ * @param {boolean} isLoading - 是否正在搜尋中
+ */
+export function setSearchLoading(isLoading) {
+    if (isLoading) {
+        // Hide content and empty state, show loading message
+        if (contentContainer) contentContainer.classList.add('hidden');
+        if (noSearchResults) noSearchResults.classList.add('hidden');
+
+        const loadingText = api.getMessage('searchSearching') || 'Searching...';
+        searchResultCount.textContent = loadingText;
+        searchResultCount.classList.remove('hidden');
+    }
+}
+
+/**
  * 更新搜尋結果計數顯示
  * @param {number} tabCount - 可見分頁數量
  * @param {number} bookmarkCount - 可見書籤數量

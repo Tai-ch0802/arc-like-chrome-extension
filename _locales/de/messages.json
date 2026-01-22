@@ -359,5 +359,9 @@
     "errorInvalidThemeFile": {
         "message": "Ungültiges Thema-Dateiformat",
         "description": "Error message when importing an invalid theme file."
+    },
+    "searchSearching": {
+        "message": "Suchen...",
+        "description": "Status text shown while search is in progress."
     }
 }

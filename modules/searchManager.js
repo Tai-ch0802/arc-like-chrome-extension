@@ -556,7 +556,12 @@ const debouncedSearch = debounce(() => {
 }, 300);
 
 function initialize() {
-    ui.searchBox.addEventListener('input', debouncedSearch);
+    ui.searchBox.addEventListener('input', () => {
+        if (ui.searchBox.value.trim().length > 0) {
+            ui.setSearchLoading(true);
+        }
+        debouncedSearch();
+    });
 }
 
 export { initialize, handleSearch, filterTabsAndGroups, filterBookmarks };
