@@ -5,7 +5,7 @@ import * as dragDrop from './modules/dragDropManager.js';
 import * as modal from './modules/modalManager.js';
 import * as state from './modules/stateManager.js';
 import * as keyboard from './modules/keyboardManager.js';
-
+import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 // --- 輔助函式 ---
 function debounce(func, wait) {
     let timeout;
@@ -104,6 +104,13 @@ async function initialize() {
     state.loadBookmarkCache(); // Load cached bookmarks from localStorage
     state.buildBookmarkCache().catch(console.error); // Build fresh cache on startup (non-blocking)
     applyStaticTranslations();
+
+    // Inject centralized icons
+    const noResultsIconContainer = document.querySelector('.no-results-icon');
+    if (noResultsIconContainer) {
+        noResultsIconContainer.innerHTML = SEARCH_NO_RESULTS_ICON_SVG;
+    }
+
     search.initialize();
     ui.initThemeSwitcher();
     await updateTabList();

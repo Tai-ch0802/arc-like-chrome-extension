@@ -287,6 +287,39 @@ body {
     text-align: left;
 }
 
+/* No Search Results State */
+#no-search-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-color-secondary);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.no-results-icon {
+    margin-bottom: 16px;
+    color: var(--text-color-placeholder);
+    opacity: 0.5;
+}
+
+.no-results-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.no-results-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* --- 設定按鈕樣式 --- */
 #settings-toggle {
     flex-shrink: 0;
