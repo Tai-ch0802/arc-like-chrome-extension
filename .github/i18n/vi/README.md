@@ -31,6 +31,8 @@ Chúng tôi sử dụng quy trình làm việc **Phát triển dựa trên đặ
 
 👉 **[Đọc Hướng dẫn đóng góp của chúng tôi](./CONTRIBUTING.md)**
 
+Để biết ví dụ thực tế về quy trình phát triển, vui lòng tham khảo [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Các tính năng chính

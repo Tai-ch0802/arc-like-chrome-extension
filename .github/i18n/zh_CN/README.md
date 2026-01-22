@@ -31,6 +31,8 @@
 
 👉 **[阅读我们的贡献指南](./CONTRIBUTING.md)**
 
+关于开发流程的实际范例，请参考 [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30)。
+
 ---
 
 ## 🔥 关键功能

@@ -31,6 +31,8 @@
 
 👉 **[コントリビューティングガイドを読む](./CONTRIBUTING.md)**
 
+開発プロセスの具体的な例については、[Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30) を参照してください。
+
 ---
 
 ## 🔥 主な機能

@@ -31,6 +31,8 @@ Utilizamos um fluxo de trabalho de **Desenvolvimento Orientado por Especificaç�
 
 👉 **[Leia nossas diretrizes de contribuição](./CONTRIBUTING.md)**
 
+Para um exemplo prático do processo de desenvolvimento, consulte a [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Principais Recursos

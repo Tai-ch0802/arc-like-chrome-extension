@@ -31,6 +31,8 @@ Utilizamos un flujo de trabajo **Desarrollo basado en especificaciones (SDD)** y
 
 👉 **[Lee nuestras directrices de contribución](./CONTRIBUTING.md)**
 
+Para un ejemplo práctico del proceso de desarrollo, consulte el [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Características principales

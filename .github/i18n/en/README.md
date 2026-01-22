@@ -31,6 +31,8 @@ We have a **Spec-Driven Development (SDD)** workflow and are **AI-friendly**. Ch
 
 👉 **[Read our Contributing Guidelines](CONTRIBUTING.md)**
 
+For a practical example of the development process, please refer to [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Key Features

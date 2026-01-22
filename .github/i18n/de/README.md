@@ -31,6 +31,8 @@ Wir nutzen einen **Spec-Driven Development (SDD)** Workflow und sind **KI-freund
 
 👉 **[Lesen Sie unseren Leitfaden für Mitwirkende](./CONTRIBUTING.md)**
 
+Ein praktisches Beispiel für den Entwicklungsprozess finden Sie in [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Hauptmerkmale

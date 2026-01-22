@@ -31,6 +31,8 @@ Kami menggunakan alur kerja **Spec-Driven Development (SDD)** dan bersifat **ram
 
 👉 **[Baca Panduan Kontribusi Kami](./CONTRIBUTING.md)**
 
+Untuk contoh praktis proses pengembangan, silakan merujuk ke [Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Fitur Utama

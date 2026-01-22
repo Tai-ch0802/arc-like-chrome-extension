@@ -31,6 +31,8 @@ Nous utilisons un flux de travail **Développement piloté par les spécificatio
 
 👉 **[Lire nos directives de contribution](./CONTRIBUTING.md)**
 
+Pour un exemple pratique du processus de développement, veuillez vous référer à l'[Issue #30](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/30).
+
 ---
 
 ## 🔥 Caractéristiques principales
