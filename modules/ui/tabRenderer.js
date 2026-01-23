@@ -157,16 +157,25 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     const renderedTabIds = new Set();
     // Use DocumentFragment to batch DOM updates
     const fragment = document.createDocumentFragment();
+    const splitTabsMap = new Map();
+    for (const tab of tabs) {
+        if (tab.splitViewId && tab.splitViewId > 0) {
+            if (!splitTabsMap.has(tab.splitViewId)) {
+                splitTabsMap.set(tab.splitViewId, []);
+            }
+            splitTabsMap.get(tab.splitViewId).push(tab);
+        }
+    }
 
     // Helper to render split groups
-    const renderSplitOrTab = (tab, contextTabs, container) => {
+    const renderSplitOrTab = (tab, container) => {
         if (renderedTabIds.has(tab.id)) return;
 
         if (tab.splitViewId && tab.splitViewId > 0) {
             // Find all tabs in the same split view context
-            const splitTabs = contextTabs.filter(t => t.splitViewId === tab.splitViewId);
+            const splitTabs = splitTabsMap.get(tab.splitViewId);
 
-            if (splitTabs.length > 1) {
+            if (splitTabs && splitTabs.length > 1) {
                 const splitGroup = document.createElement('div');
                 splitGroup.className = 'tab-split-group';
 
@@ -239,7 +248,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             const tabsInThisGroup = tabsByGroup.get(group.id) || [];
 
             for (const groupTab of tabsInThisGroup) {
-                renderSplitOrTab(groupTab, tabsInThisGroup, groupContent);
+                renderSplitOrTab(groupTab, groupContent);
             }
             fragment.appendChild(groupContent);
 
@@ -262,7 +271,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 }
             });
         } else {
-            renderSplitOrTab(tab, tabs, fragment);
+            renderSplitOrTab(tab, fragment);
         }
     }
     tabListContainer.appendChild(fragment);
