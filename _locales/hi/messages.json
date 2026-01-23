@@ -361,7 +361,7 @@
         "description": "Error message when importing an invalid theme file."
     },
     "searchSearching": {
-        "message": "Searching...",
+        "message": "खोज रहा है...",
         "description": "Status text shown while search is in progress."
     }
 }

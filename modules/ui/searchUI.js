@@ -19,6 +19,8 @@ export function setSearchLoading(isLoading) {
 
 /**
  * 更新搜尋結果計數顯示
+ * Note: This function implicitly resets the loading state set by setSearchLoading(true)
+ * by updating searchResultCount with actual results.
  * @param {number} tabCount - 可見分頁數量
  * @param {number} bookmarkCount - 可見書籤數量
  */
