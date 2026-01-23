@@ -359,5 +359,9 @@
     "errorInvalidThemeFile": {
         "message": "Định dạng tệp chủ đề không hợp lệ",
         "description": "Error message when importing an invalid theme file."
+    },
+    "searchSearching": {
+        "message": "Đang tìm kiếm...",
+        "description": "Status text shown while search is in progress."
     }
 }

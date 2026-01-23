@@ -359,5 +359,9 @@
     "errorInvalidThemeFile": {
         "message": "잘못된 테마 파일 형식",
         "description": "Error message when importing an invalid theme file."
+    },
+    "searchSearching": {
+        "message": "검색 중...",
+        "description": "Status text shown while search is in progress."
     }
 }

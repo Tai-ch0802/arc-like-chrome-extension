@@ -362,5 +362,9 @@
     "errorInvalidThemeFile": {
         "message": "Invalid theme file format",
         "description": "Error message when importing an invalid theme file."
+    },
+    "searchSearching": {
+        "message": "Searching...",
+        "description": "Status text shown while search is in progress."
     }
 }

@@ -359,5 +359,9 @@
     "errorInvalidThemeFile": {
         "message": "無效的主題檔案格式",
         "description": "當匯入主題檔案格式錯誤時顯示的錯誤訊息。"
+    },
+    "searchSearching": {
+        "message": "搜尋中...",
+        "description": "Status text shown while search is in progress."
     }
 }

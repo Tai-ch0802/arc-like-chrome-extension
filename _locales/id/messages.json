@@ -359,5 +359,9 @@
     "errorInvalidThemeFile": {
         "message": "Format file tema tidak valid",
         "description": "Error message when importing an invalid theme file."
+    },
+    "searchSearching": {
+        "message": "Mencari...",
+        "description": "Status text shown while search is in progress."
     }
 }
