@@ -542,6 +542,12 @@ mark.url-match {
     cursor: pointer;
     border-radius: 2px;
     margin-top: 6px;
+    background-color: var(--group-bg-color);
+    transition: background-color 0.2s ease;
+}
+
+.tab-group-header:hover {
+    background-color: var(--group-bg-hover-color);
 }
 
 .tab-group-arrow {

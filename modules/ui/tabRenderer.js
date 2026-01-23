@@ -4,6 +4,146 @@ import { tabListContainer } from './elements.js';
 import { showContextMenu } from './contextMenuManager.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 
+let currentAddToGroupCallback = null;
+let listenersInitialized = false;
+let tabsCache = new Map();
+
+function initTabListeners(container) {
+    if (listenersInitialized) return;
+    listenersInitialized = true;
+
+    // Helper to find tab data from cache
+    const getTabFromElement = (element) => {
+        const tabItem = element.closest('.tab-item');
+        if (!tabItem) return null;
+        const tabId = parseInt(tabItem.dataset.tabId);
+        return tabsCache.get(tabId);
+    };
+
+    // Helper to find group data
+    const getGroupData = (element) => {
+        const header = element.closest('.tab-group-header');
+        if (!header) return null;
+        return {
+            id: parseInt(header.dataset.groupId),
+            collapsed: header.dataset.collapsed === 'true',
+            element: header
+        };
+    };
+
+    // --- Click Delegation ---
+    container.addEventListener('click', async (e) => {
+        // Handle Button Clicks
+        const button = e.target.closest('button');
+        if (button) {
+            e.stopPropagation();
+            const action = button.dataset.action;
+            const tab = getTabFromElement(button);
+
+            if (!tab) return;
+
+            if (action === 'close') {
+                api.removeTab(tab.id);
+            } else if (action === 'add-to-group') {
+                if (currentAddToGroupCallback) {
+                    currentAddToGroupCallback(tab.id);
+                }
+            } else if (action === 'add-to-bookmark') {
+                 const modal = await import('../modalManager.js');
+                 const result = await modal.showAddToBookmarkDialog({
+                     name: tab.title,
+                     url: tab.url
+                 });
+                 if (result) {
+                     await api.createBookmark(result);
+                 }
+            }
+            return;
+        }
+
+        // Handle Group Header Click
+        const groupData = getGroupData(e.target);
+        if (groupData) {
+            const header = groupData.element;
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.tab-group-arrow');
+
+            const newCollapsedState = !groupData.collapsed;
+            content.style.display = newCollapsedState ? 'none' : 'block';
+            arrow.textContent = newCollapsedState ? '▶' : '▼';
+            header.setAttribute('aria-expanded', (!newCollapsedState).toString());
+            header.dataset.collapsed = newCollapsedState ? 'true' : 'false';
+
+            api.updateTabGroup(groupData.id, { collapsed: newCollapsedState });
+            return;
+        }
+
+        // Handle Tab Click (Activation)
+        const tab = getTabFromElement(e.target);
+        if (tab) {
+             api.updateTab(tab.id, { active: true });
+             api.updateWindow(tab.windowId, { focused: true });
+        }
+    });
+
+    // --- Keydown Delegation ---
+    container.addEventListener('keydown', (e) => {
+        const tabItem = e.target.closest('.tab-item');
+        const groupHeader = e.target.closest('.tab-group-header');
+
+        if (tabItem) {
+            // Prevent handling if focus is on a button inside the tab
+            if (e.target.tagName === 'BUTTON') return;
+
+            const tab = getTabFromElement(tabItem);
+            if (!tab) return;
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                api.updateTab(tab.id, { active: true });
+                api.updateWindow(tab.windowId, { focused: true });
+            } else if (e.key === 'Delete') {
+                e.preventDefault();
+                e.stopPropagation();
+                api.removeTab(tab.id);
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                const existingMenu = document.querySelector('.custom-context-menu');
+                if (existingMenu) {
+                    existingMenu.remove();
+                } else {
+                    const rect = tabItem.getBoundingClientRect();
+                    showContextMenu(rect.left + 20, rect.bottom, tab, tabItem);
+                }
+            }
+        } else if (groupHeader) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                groupHeader.click();
+            }
+        }
+    });
+
+    // --- Context Menu Delegation ---
+    container.addEventListener('contextmenu', (e) => {
+        const tab = getTabFromElement(e.target);
+        const tabItem = e.target.closest('.tab-item');
+        if (tab && tabItem) {
+            e.preventDefault();
+            showContextMenu(e.clientX, e.clientY, tab, tabItem);
+        }
+    });
+
+    // --- Focus In (scrolling) ---
+    container.addEventListener('focusin', (e) => {
+         const tabItem = e.target.closest('.tab-item');
+         if (tabItem) {
+             setTimeout(() => {
+                 tabItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+             }, 0);
+         }
+    });
+}
 
 export function createTabElement(tab, { onAddToGroupClick }) {
     const tabItem = document.createElement('div');
@@ -16,11 +156,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.setAttribute('role', 'button');
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
-
-    // Scroll focused item into view for keyboard navigation
-    tabItem.addEventListener('focus', () => {
-        tabItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    });
+    tabItem.dataset.windowId = tab.windowId;
 
     let urlPreview = tab.url;
     if (urlPreview && urlPreview.length > 300) {
@@ -52,44 +188,28 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     closeBtn.className = 'close-btn';
     closeBtn.textContent = '×';
     closeBtn.tabIndex = -1;
+    closeBtn.dataset.action = 'close';
     const closeTabLabel = api.getMessage("closeTab") || "Close Tab";
     closeBtn.title = closeTabLabel;
     closeBtn.setAttribute('aria-label', closeTabLabel);
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        api.removeTab(tab.id);
-    });
 
     const addToGroupBtn = document.createElement('button');
     addToGroupBtn.className = 'add-to-group-btn';
     addToGroupBtn.innerHTML = ADD_TO_GROUP_ICON_SVG;
     addToGroupBtn.tabIndex = -1;
+    addToGroupBtn.dataset.action = 'add-to-group';
     const addToGroupLabel = api.getMessage("addToGroup") || "Add tab to new group";
     addToGroupBtn.title = addToGroupLabel;
     addToGroupBtn.setAttribute('aria-label', addToGroupLabel);
-    addToGroupBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        onAddToGroupClick(tab.id);
-    });
 
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
     addToBookmarkBtn.innerHTML = BOOKMARK_ICON_SVG;
     addToBookmarkBtn.tabIndex = -1;
+    addToBookmarkBtn.dataset.action = 'add-to-bookmark';
     const addToBookmarkLabel = api.getMessage("addBookmark") || "Add to bookmarks";
     addToBookmarkBtn.title = addToBookmarkLabel;
     addToBookmarkBtn.setAttribute('aria-label', addToBookmarkLabel);
-    addToBookmarkBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const modal = await import('../modalManager.js');
-        const result = await modal.showAddToBookmarkDialog({
-            name: tab.title,
-            url: tab.url
-        });
-        if (result) {
-            await api.createBookmark(result);
-        }
-    });
 
     const actionsContainer = document.createElement('div');
     actionsContainer.className = 'tab-actions';
@@ -101,45 +221,18 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.appendChild(titleWrapper);
     tabItem.appendChild(actionsContainer);
 
-    const activateTab = () => {
-        api.updateTab(tab.id, { active: true });
-        api.updateWindow(tab.windowId, { focused: true });
-    };
-
-    tabItem.addEventListener('click', activateTab);
-    tabItem.addEventListener('keydown', (e) => {
-        if (e.target !== e.currentTarget) return;
-
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            activateTab();
-        } else if (e.key === 'Delete') {
-            e.preventDefault();
-            e.stopPropagation();
-            closeBtn.click();
-        } else if (e.key === ' ') {
-            e.preventDefault();
-            // Toggle context menu via keyboard
-            const existingMenu = document.querySelector('.custom-context-menu');
-            if (existingMenu) {
-                existingMenu.remove();
-            } else {
-                const rect = tabItem.getBoundingClientRect();
-                showContextMenu(rect.left + 20, rect.bottom, tab, tabItem);
-            }
-        }
-    });
-
-    // Custom Context Menu (mouse right-click)
-    tabItem.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        showContextMenu(e.clientX, e.clientY, tab, tabItem);
-    });
-
     return tabItem;
 }
 
 export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
+    if (!listenersInitialized) {
+        initTabListeners(tabListContainer);
+    }
+    currentAddToGroupCallback = onAddToGroupClick;
+
+    // Update cache with full tab objects
+    tabsCache = new Map(tabs.map(t => [t.id, t]));
+
     tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
 
@@ -201,7 +294,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             groupHeader.tabIndex = 0;
             groupHeader.setAttribute('role', 'button');
             groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
-            groupHeader.dataset.collapsed = group.collapsed;
+            groupHeader.dataset.collapsed = group.collapsed ? 'true' : 'false';
             groupHeader.dataset.groupId = group.id;
             groupHeader.title = group.title;
 
@@ -218,13 +311,9 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             title.className = 'tab-group-title';
             title.textContent = group.title;
 
-            groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
-            groupHeader.addEventListener('mouseenter', () => {
-                groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.35);
-            });
-            groupHeader.addEventListener('mouseleave', () => {
-                groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
-            });
+            // Use hexToRgba
+            groupHeader.style.setProperty('--group-bg-color', hexToRgba(groupColorHex, 0.2));
+            groupHeader.style.setProperty('--group-bg-hover-color', hexToRgba(groupColorHex, 0.35));
 
             groupHeader.appendChild(arrow);
             groupHeader.appendChild(colorDot);
@@ -243,24 +332,6 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             }
             fragment.appendChild(groupContent);
 
-            groupHeader.addEventListener('click', (e) => {
-                if (e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
-                    const isCollapsed = groupContent.style.display === 'none';
-                    const newCollapsedState = !isCollapsed;
-                    groupContent.style.display = isCollapsed ? 'block' : 'none';
-                    arrow.textContent = isCollapsed ? '▼' : '▶';
-                    groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
-                    api.updateTabGroup(group.id, { collapsed: newCollapsedState });
-                }
-            });
-
-            groupHeader.addEventListener('keydown', (e) => {
-                if (e.target !== e.currentTarget) return;
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    groupHeader.click();
-                }
-            });
         } else {
             renderSplitOrTab(tab, tabs, fragment);
         }
