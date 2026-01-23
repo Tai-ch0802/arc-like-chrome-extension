@@ -44,6 +44,7 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
             contentHtml += `<p class="auto-close-warning" style="margin-top: 10px; color: var(--accent-color); font-size: 0.9em;">${api.getMessage('autoCloseDialog')}</p>`;
         }
     } else {
+        const closeTabLabel = api.getMessage('closeTab') || 'Close Tab';
         for (const tab of linkedTabs) {
             const group = tab.groupId ? groupMap.get(tab.groupId) : null;
             const groupName = group ? `<span class="linked-tab-group" style="color: ${GROUP_COLORS[group.color] || '#5f6368'};">${group.title}</span>` : '';
@@ -54,7 +55,7 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
                     <img src="${faviconUrl}" alt="" class="linked-tab-favicon" />
                     <span class="linked-tab-title">${tab.title}</span>
                     ${groupName}
-                    <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}">&times;</button>
+                    <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}" aria-label="${closeTabLabel}" title="${closeTabLabel}">&times;</button>
                 </div>
             `;
         }
