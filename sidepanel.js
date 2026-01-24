@@ -56,7 +56,7 @@ async function updateTabList() {
         api.getAllWindowsWithTabs(),
         api.getAllTabGroups()
     ]);
-    ui.renderTabsAndGroups(tabs, groups, { onAddToGroupClick: handleAddToGroupClick });
+    ui.renderTabsAndGroups(tabs, groups);
     ui.renderOtherWindowsSection(allWindows, currentWindow.id, allGroups);
     // 觸發搜尋以套用當前的過濾狀態
     search.handleSearch();
@@ -113,6 +113,7 @@ async function initialize() {
 
     search.initialize();
     ui.initThemeSwitcher();
+    ui.initializeTabListeners({ onAddToGroupClick: handleAddToGroupClick });
     await updateTabList();
 
     refreshBookmarks();

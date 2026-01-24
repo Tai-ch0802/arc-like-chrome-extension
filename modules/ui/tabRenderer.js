@@ -4,8 +4,155 @@ import { tabListContainer } from './elements.js';
 import { showContextMenu } from './contextMenuManager.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 
+let tabsCache = new Map();
+let tabCallbacks = {};
 
-export function createTabElement(tab, { onAddToGroupClick }) {
+export function initializeTabListeners(callbacks) {
+    tabCallbacks = callbacks;
+
+    // Delegated Click Listener
+    tabListContainer.addEventListener('click', async (e) => {
+        const target = e.target;
+
+        // 1. Close Button
+        const closeBtn = target.closest('.close-btn');
+        if (closeBtn) {
+            e.stopPropagation();
+            const tabItem = closeBtn.closest('.tab-item');
+            if (tabItem) {
+                const tabId = parseInt(tabItem.dataset.tabId, 10);
+                api.removeTab(tabId);
+            }
+            return;
+        }
+
+        // 2. Add to Group Button
+        const addToGroupBtn = target.closest('.add-to-group-btn');
+        if (addToGroupBtn) {
+            e.stopPropagation();
+            const tabItem = addToGroupBtn.closest('.tab-item');
+            if (tabItem && tabCallbacks.onAddToGroupClick) {
+                const tabId = parseInt(tabItem.dataset.tabId, 10);
+                tabCallbacks.onAddToGroupClick(tabId);
+            }
+            return;
+        }
+
+        // 3. Add to Bookmark Button
+        const addToBookmarkBtn = target.closest('.add-to-bookmark-btn');
+        if (addToBookmarkBtn) {
+            e.stopPropagation();
+            const tabItem = addToBookmarkBtn.closest('.tab-item');
+            if (tabItem) {
+                const tabId = parseInt(tabItem.dataset.tabId, 10);
+                const tab = tabsCache.get(tabId);
+                if (tab) {
+                    const modal = await import('../modalManager.js');
+                    const result = await modal.showAddToBookmarkDialog({
+                        name: tab.title,
+                        url: tab.url
+                    });
+                    if (result) {
+                        await api.createBookmark(result);
+                    }
+                }
+            }
+            return;
+        }
+
+        // 4. Group Header Toggle
+        const groupHeader = target.closest('.tab-group-header');
+        if (groupHeader) {
+            const groupId = parseInt(groupHeader.dataset.groupId, 10);
+            const content = groupHeader.nextElementSibling;
+            const arrow = groupHeader.querySelector('.tab-group-arrow');
+
+            if (content && content.classList.contains('tab-group-content')) {
+                const isCollapsed = content.style.display === 'none';
+                // Toggle state
+                const newCollapsedState = !isCollapsed;
+                content.style.display = isCollapsed ? 'block' : 'none';
+                if (arrow) arrow.textContent = isCollapsed ? '▼' : '▶';
+                groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
+
+                // Update via API
+                api.updateTabGroup(groupId, { collapsed: newCollapsedState });
+            }
+            return;
+        }
+
+        // 5. Tab Activation (Tab Item)
+        const tabItem = target.closest('.tab-item');
+        if (tabItem) {
+            // Ignore if we clicked inside actions container but missed buttons
+             if (target.closest('.tab-actions')) return;
+
+            const tabId = parseInt(tabItem.dataset.tabId, 10);
+            const tab = tabsCache.get(tabId);
+            if (tab) {
+                api.updateTab(tab.id, { active: true });
+                api.updateWindow(tab.windowId, { focused: true });
+            }
+            return;
+        }
+    });
+
+    // Delegated Keydown Listener
+    tabListContainer.addEventListener('keydown', (e) => {
+        const target = e.target;
+
+        // Tab Item Keydown
+        if (target.classList.contains('tab-item')) {
+            const tabId = parseInt(target.dataset.tabId, 10);
+            const tab = tabsCache.get(tabId);
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                 if (tab) {
+                    api.updateTab(tab.id, { active: true });
+                    api.updateWindow(tab.windowId, { focused: true });
+                }
+            } else if (e.key === 'Delete') {
+                e.preventDefault();
+                e.stopPropagation();
+                api.removeTab(tabId);
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                // Context Menu
+                const existingMenu = document.querySelector('.custom-context-menu');
+                if (existingMenu) {
+                    existingMenu.remove();
+                } else if (tab) {
+                    const rect = target.getBoundingClientRect();
+                    showContextMenu(rect.left + 20, rect.bottom, tab, target);
+                }
+            }
+        }
+        // Group Header Keydown
+        else if (target.classList.contains('tab-group-header')) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                target.click(); // Trigger the click handler
+            }
+        }
+    });
+
+    // Delegated Context Menu Listener
+    tabListContainer.addEventListener('contextmenu', (e) => {
+        const tabItem = e.target.closest('.tab-item');
+        if (tabItem) {
+            e.preventDefault();
+            const tabId = parseInt(tabItem.dataset.tabId, 10);
+            const tab = tabsCache.get(tabId);
+            if (tab) {
+                 showContextMenu(e.clientX, e.clientY, tab, tabItem);
+            }
+        }
+    });
+}
+
+
+export function createTabElement(tab) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
     if (tab.active) {
@@ -55,10 +202,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const closeTabLabel = api.getMessage("closeTab") || "Close Tab";
     closeBtn.title = closeTabLabel;
     closeBtn.setAttribute('aria-label', closeTabLabel);
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        api.removeTab(tab.id);
-    });
+    closeBtn.dataset.action = 'close';
 
     const addToGroupBtn = document.createElement('button');
     addToGroupBtn.className = 'add-to-group-btn';
@@ -67,10 +211,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToGroupLabel = api.getMessage("addToGroup") || "Add tab to new group";
     addToGroupBtn.title = addToGroupLabel;
     addToGroupBtn.setAttribute('aria-label', addToGroupLabel);
-    addToGroupBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        onAddToGroupClick(tab.id);
-    });
+    addToGroupBtn.dataset.action = 'add-group';
 
     const addToBookmarkBtn = document.createElement('button');
     addToBookmarkBtn.className = 'add-to-bookmark-btn';
@@ -79,17 +220,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     const addToBookmarkLabel = api.getMessage("addBookmark") || "Add to bookmarks";
     addToBookmarkBtn.title = addToBookmarkLabel;
     addToBookmarkBtn.setAttribute('aria-label', addToBookmarkLabel);
-    addToBookmarkBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const modal = await import('../modalManager.js');
-        const result = await modal.showAddToBookmarkDialog({
-            name: tab.title,
-            url: tab.url
-        });
-        if (result) {
-            await api.createBookmark(result);
-        }
-    });
+    addToBookmarkBtn.dataset.action = 'bookmark';
 
     const actionsContainer = document.createElement('div');
     actionsContainer.className = 'tab-actions';
@@ -101,51 +232,24 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.appendChild(titleWrapper);
     tabItem.appendChild(actionsContainer);
 
-    const activateTab = () => {
-        api.updateTab(tab.id, { active: true });
-        api.updateWindow(tab.windowId, { focused: true });
-    };
-
-    tabItem.addEventListener('click', activateTab);
-    tabItem.addEventListener('keydown', (e) => {
-        if (e.target !== e.currentTarget) return;
-
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            activateTab();
-        } else if (e.key === 'Delete') {
-            e.preventDefault();
-            e.stopPropagation();
-            closeBtn.click();
-        } else if (e.key === ' ') {
-            e.preventDefault();
-            // Toggle context menu via keyboard
-            const existingMenu = document.querySelector('.custom-context-menu');
-            if (existingMenu) {
-                existingMenu.remove();
-            } else {
-                const rect = tabItem.getBoundingClientRect();
-                showContextMenu(rect.left + 20, rect.bottom, tab, tabItem);
-            }
-        }
-    });
-
-    // Custom Context Menu (mouse right-click)
-    tabItem.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        showContextMenu(e.clientX, e.clientY, tab, tabItem);
-    });
+    // Note: Event listeners are now handled via delegation in initializeTabListeners
 
     return tabItem;
 }
 
-export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
+export function renderTabsAndGroups(tabs, groups) {
+    // Clear previous cache
+    tabsCache.clear();
+
     tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
 
     // Optimization: Pre-group tabs by groupId
     const tabsByGroup = new Map();
     for (const tab of tabs) {
+        // Cache tab for delegated events
+        tabsCache.set(tab.id, tab);
+
         if (tab.groupId > 0) {
             if (!tabsByGroup.has(tab.groupId)) {
                 tabsByGroup.set(tab.groupId, []);
@@ -180,7 +284,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 splitGroup.className = 'tab-split-group';
 
                 splitTabs.forEach(splitTab => {
-                    const tabElement = createTabElement(splitTab, { onAddToGroupClick });
+                    const tabElement = createTabElement(splitTab);
                     tabElement.classList.add('in-split-view');
                     splitGroup.appendChild(tabElement);
                     renderedTabIds.add(splitTab.id);
@@ -191,7 +295,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
         }
 
         // Fallback to normal rendering if not split view or only 1 tab in split
-        const tabElement = createTabElement(tab, { onAddToGroupClick });
+        const tabElement = createTabElement(tab);
         container.appendChild(tabElement);
         renderedTabIds.add(tab.id);
     };
@@ -252,24 +356,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             }
             fragment.appendChild(groupContent);
 
-            groupHeader.addEventListener('click', (e) => {
-                if (e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
-                    const isCollapsed = groupContent.style.display === 'none';
-                    const newCollapsedState = !isCollapsed;
-                    groupContent.style.display = isCollapsed ? 'block' : 'none';
-                    arrow.textContent = isCollapsed ? '▼' : '▶';
-                    groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
-                    api.updateTabGroup(group.id, { collapsed: newCollapsedState });
-                }
-            });
-
-            groupHeader.addEventListener('keydown', (e) => {
-                if (e.target !== e.currentTarget) return;
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    groupHeader.click();
-                }
-            });
+            // Note: Event listeners for header click/keydown are now handled via delegation
         } else {
             renderSplitOrTab(tab, fragment);
         }
