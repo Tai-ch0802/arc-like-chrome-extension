@@ -2,18 +2,7 @@ import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
 import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG } from '../icons.js';
-
-const GROUP_COLORS = {
-    grey: '#5f6368',
-    blue: '#8ab4f8',
-    red: '#f28b82',
-    yellow: '#fdd663',
-    green: '#81c995',
-    pink: '#ff8bcb',
-    purple: '#c58af9',
-    cyan: '#78d9ec',
-    orange: '#ffab70'
-};
+import { GROUP_COLORS } from './groupColors.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -127,6 +116,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             const bookmarkItem = document.createElement('div');
             bookmarkItem.className = 'bookmark-item';
             bookmarkItem.tabIndex = 0;
+            bookmarkItem.setAttribute('role', 'button');
             bookmarkItem.dataset.bookmarkId = node.id;
 
             let urlPreview = node.url;

@@ -1,4 +1,6 @@
 import * as api from './apiManager.js';
+import { escapeHtml } from './utils/textUtils.js';
+import { GROUP_COLORS } from './ui/groupColors.js';
 
 /**
  * 追蹤目前開啟的 Modal 相關資訊，用於 Focus 管理
@@ -131,10 +133,10 @@ function removeModal(overlay) {
 export function showConfirm({ title, confirmButtonText = 'Confirm', confirmButtonClass = 'primary' }) {
     return new Promise((resolve) => {
         const content = `
-            <h3 class="modal-title">${title}</h3>
+            <h3 class="modal-title">${escapeHtml(title)}</h3>
             <div class="modal-buttons">
                 <button class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
-                <button class="modal-button confirm-btn ${confirmButtonClass}">${confirmButtonText}</button>
+                <button class="modal-button confirm-btn ${confirmButtonClass}">${escapeHtml(confirmButtonText)}</button>
             </div>
         `;
 
@@ -165,11 +167,11 @@ export function showPrompt({ title, confirmButtonText = 'Confirm', defaultValue 
         const form = document.createElement('form');
         form.noValidate = true;
         form.innerHTML = `
-            <h3 class="modal-title">${title}</h3>
-            <input type="text" class="modal-input" value="${defaultValue}">
+            <h3 class="modal-title">${escapeHtml(title)}</h3>
+            <input type="text" class="modal-input" value="${escapeHtml(defaultValue)}">
             <div class="modal-buttons">
                 <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
-                <button type="submit" class="modal-button confirm-btn primary">${confirmButtonText}</button>
+                <button type="submit" class="modal-button confirm-btn primary">${escapeHtml(confirmButtonText)}</button>
             </div>
         `;
 
@@ -279,10 +281,10 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
         const dialogContent = document.createElement('div');
 
         dialogContent.innerHTML = `
-            <h3 class="modal-title">${title}</h3>
+            <h3 class="modal-title">${escapeHtml(title)}</h3>
             <div class="modal-custom-content">${content}</div>
             <div class="modal-buttons">
-                <button class="modal-button" id="closeButton">${closeButtonText}</button>
+                <button class="modal-button" id="closeButton">${escapeHtml(closeButtonText)}</button>
             </div>
         `;
 
@@ -327,9 +329,9 @@ export function showAddToBookmarkDialog({ name, url }) {
 
         form.innerHTML = `
             <h3 class="modal-title">${api.getMessage("addBookmarkDialogTitle") || "Add Bookmark"}</h3>
-            <input type="text" name="title" class="modal-input" value="${name}">
-            <input type="text" name="url" class="modal-input" value="${url}">
-            <div class="modal-location-path">${selectedFolder.path}</div>
+            <input type="text" name="title" class="modal-input" value="${escapeHtml(name)}">
+            <input type="text" name="url" class="modal-input" value="${escapeHtml(url)}">
+            <div class="modal-location-path">${escapeHtml(selectedFolder.path)}</div>
             <div class="modal-bookmark-tree"></div>
             <div class="modal-buttons">
                 <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
@@ -453,17 +455,6 @@ export function showAddToBookmarkDialog({ name, url }) {
     });
 }
 
-const GROUP_COLORS = {
-    grey: '#5f6368',
-    blue: '#8ab4f8',
-    red: '#f28b82',
-    yellow: '#fdd663',
-    green: '#81c995',
-    pink: '#ff8bcb',
-    purple: '#c58af9',
-    cyan: '#78d9ec',
-    orange: '#ffab70'
-};
 
 export function showCreateGroupDialog() {
     return new Promise((resolve) => {
