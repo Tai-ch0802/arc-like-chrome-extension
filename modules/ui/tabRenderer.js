@@ -4,13 +4,45 @@ import { tabListContainer } from './elements.js';
 import { showContextMenu } from './contextMenuManager.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 
+/**
+ * Module-level state for event delegation.
+ * These are intentionally module-scoped to persist across renders.
+ */
+
+/** @type {Function|null} Callback for adding a tab to a group, set during renderTabsAndGroups */
 let currentAddToGroupCallback = null;
+
+/** @type {boolean} Flag to ensure event listeners are only initialized once */
 let listenersInitialized = false;
+
+/** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for event delegation handlers */
 let tabsCache = new Map();
+
+/** @type {AbortController|null} Controller to abort event listeners when resetting */
+let listenerAbortController = null;
+
+/**
+ * Resets the tab list listeners and module state.
+ * Useful for testing, hot-reload, or when the container element is replaced.
+ * @returns {void}
+ */
+export function resetTabListeners() {
+    if (listenerAbortController) {
+        listenerAbortController.abort();
+        listenerAbortController = null;
+    }
+    listenersInitialized = false;
+    currentAddToGroupCallback = null;
+    tabsCache = new Map();
+}
 
 function initTabListeners(container) {
     if (listenersInitialized) return;
     listenersInitialized = true;
+
+    // Create AbortController for cleanup support
+    listenerAbortController = new AbortController();
+    const { signal } = listenerAbortController;
 
     // Helper to find tab data from cache
     const getTabFromElement = (element) => {
@@ -49,14 +81,14 @@ function initTabListeners(container) {
                     currentAddToGroupCallback(tab.id);
                 }
             } else if (action === 'add-to-bookmark') {
-                 const modal = await import('../modalManager.js');
-                 const result = await modal.showAddToBookmarkDialog({
-                     name: tab.title,
-                     url: tab.url
-                 });
-                 if (result) {
-                     await api.createBookmark(result);
-                 }
+                const modal = await import('../modalManager.js');
+                const result = await modal.showAddToBookmarkDialog({
+                    name: tab.title,
+                    url: tab.url
+                });
+                if (result) {
+                    await api.createBookmark(result);
+                }
             }
             return;
         }
@@ -81,10 +113,10 @@ function initTabListeners(container) {
         // Handle Tab Click (Activation)
         const tab = getTabFromElement(e.target);
         if (tab) {
-             api.updateTab(tab.id, { active: true });
-             api.updateWindow(tab.windowId, { focused: true });
+            api.updateTab(tab.id, { active: true });
+            api.updateWindow(tab.windowId, { focused: true });
         }
-    });
+    }, { signal });
 
     // --- Keydown Delegation ---
     container.addEventListener('keydown', (e) => {
@@ -122,7 +154,7 @@ function initTabListeners(container) {
                 groupHeader.click();
             }
         }
-    });
+    }, { signal });
 
     // --- Context Menu Delegation ---
     container.addEventListener('contextmenu', (e) => {
@@ -132,17 +164,17 @@ function initTabListeners(container) {
             e.preventDefault();
             showContextMenu(e.clientX, e.clientY, tab, tabItem);
         }
-    });
+    }, { signal });
 
     // --- Focus In (scrolling) ---
     container.addEventListener('focusin', (e) => {
-         const tabItem = e.target.closest('.tab-item');
-         if (tabItem) {
-             setTimeout(() => {
-                 tabItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-             }, 0);
-         }
-    });
+        const tabItem = e.target.closest('.tab-item');
+        if (tabItem) {
+            setTimeout(() => {
+                tabItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }, 0);
+        }
+    }, { signal });
 }
 
 export function createTabElement(tab, { onAddToGroupClick }) {
