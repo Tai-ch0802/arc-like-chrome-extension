@@ -738,6 +738,9 @@ mark.url-match {
     align-items: center;
     z-index: 1000;
     backdrop-filter: blur(2px);
+    /* Prevent scroll-through to background */
+    overflow: auto;
+    overscroll-behavior: contain;
 }
 
 .modal-content {
@@ -750,6 +753,38 @@ mark.url-match {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    /* Limit height and allow scrolling for all modals by default */
+    max-height: 85vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* 
+   Smart Scrolling for Custom Dialogs (e.g. Settings):
+   Force a fixed height and disable outer scrolling to enable inner scrolling 
+   with Sticky Header/Footer.
+*/
+.modal-content:has(.modal-custom-content) {
+    overflow-y: hidden;
+    /* Use a fixed height so flexbox children can calculate their own height */
+    height: 85vh;
+    max-height: 85vh;
+}
+
+.modal-custom-content {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    /* Crucial for nested flex scrolling */
+    padding-right: 8px;
+    /* Space for scrollbar */
+    overscroll-behavior: contain;
+}
+
+/* Ensure header and footer don't shrink */
+.modal-title,
+.modal-buttons {
+    flex-shrink: 0;
 }
 
 .modal-title {

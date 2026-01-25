@@ -29,6 +29,9 @@ function createModal(content) {
     overlay.appendChild(modalContent);
     document.body.appendChild(overlay);
 
+    // Lock body scroll to prevent scroll-through
+    document.body.style.overflow = 'hidden';
+
     // 定義 Focus Trap 邏輯
     const handleKeyDown = (e) => {
         if (e.key === 'Escape') {
@@ -128,6 +131,9 @@ function removeModal(overlay) {
             previousActiveElement.focus();
         }
     }
+
+    // Unlock body scroll
+    document.body.style.overflow = '';
 }
 
 export function showConfirm({ title, confirmButtonText = 'Confirm', confirmButtonClass = 'primary' }) {
@@ -278,27 +284,40 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
 
 export function showCustomDialog({ title, content, closeButtonText = api.getMessage("closeButton") || 'Close', onOpen = () => { } }) {
     return new Promise((resolve) => {
-        const dialogContent = document.createElement('div');
+        // Create elements directly to avoid intermediate wrapper div
+        const titleEl = document.createElement('h3');
+        titleEl.className = 'modal-title';
+        titleEl.textContent = title;
 
-        dialogContent.innerHTML = `
-            <h3 class="modal-title">${escapeHtml(title)}</h3>
-            <div class="modal-custom-content">${content}</div>
-            <div class="modal-buttons">
-                <button class="modal-button" id="closeButton">${escapeHtml(closeButtonText)}</button>
-            </div>
-        `;
+        const customContentEl = document.createElement('div');
+        customContentEl.className = 'modal-custom-content';
+        customContentEl.innerHTML = content;
 
-        const { overlay, modalContent } = createModal(dialogContent);
+        const buttonsEl = document.createElement('div');
+        buttonsEl.className = 'modal-buttons';
+
+        const closeBtnEl = document.createElement('button');
+        closeBtnEl.className = 'modal-button';
+        closeBtnEl.id = 'closeButton';
+        closeBtnEl.textContent = closeButtonText;
+        buttonsEl.appendChild(closeBtnEl);
+
+        // Create a DocumentFragment to hold all elements
+        const fragment = document.createDocumentFragment();
+        fragment.appendChild(titleEl);
+        fragment.appendChild(customContentEl);
+        fragment.appendChild(buttonsEl);
+
+        const { overlay, modalContent } = createModal(fragment);
 
         onOpen(modalContent); // 在內容被添加到 DOM 後執行 onOpen 回呼函式
 
-        const closeBtn = modalContent.querySelector('#closeButton');
         // 如果內容中沒有可聚焦元素，預設聚焦在關閉按鈕
         const contentFocusable = modalContent.querySelector('.modal-custom-content input, .modal-custom-content button');
         if (contentFocusable) {
             contentFocusable.focus();
         } else {
-            closeBtn.focus();
+            closeBtnEl.focus();
         }
 
         const cleanupAndResolve = () => {
@@ -306,7 +325,7 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
             resolve();
         };
 
-        closeBtn.onclick = () => cleanupAndResolve();
+        closeBtnEl.onclick = () => cleanupAndResolve();
         overlay.onclick = (e) => {
             if (e.target === overlay) {
                 cleanupAndResolve();
