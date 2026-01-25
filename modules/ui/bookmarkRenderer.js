@@ -108,8 +108,17 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
 
 
 function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
-    const fragment = document.createDocumentFragment();
     container.dataset.parentId = parentId;
+
+    if (bookmarkNodes.length === 0) {
+        const emptyMsg = document.createElement('div');
+        emptyMsg.className = 'empty-folder-message';
+        emptyMsg.textContent = api.getMessage("emptyFolder") || '(Empty)';
+        container.appendChild(emptyMsg);
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
 
     bookmarkNodes.forEach(node => {
         if (node.url) { // It's a bookmark

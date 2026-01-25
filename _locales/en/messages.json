@@ -366,5 +366,9 @@
     "searchSearching": {
         "message": "Searching...",
         "description": "Status text shown while search is in progress."
+    },
+    "emptyFolder": {
+        "message": "(Empty)",
+        "description": "Text shown when a folder has no bookmarks"
     }
 }

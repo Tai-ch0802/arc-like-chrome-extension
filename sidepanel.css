@@ -1236,3 +1236,10 @@ mark.url-match {
 #theme-file-input {
     display: none;
 }
+
+.empty-folder-message {
+    font-style: italic;
+    color: var(--text-color-secondary);
+    padding: 4px 8px 4px 28px;
+    font-size: 13px;
+}

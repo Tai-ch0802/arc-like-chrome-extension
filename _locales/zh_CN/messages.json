@@ -363,5 +363,9 @@
     "searchSearching": {
         "message": "搜索中...",
         "description": "Status text shown while search is in progress."
+    },
+    "emptyFolder": {
+        "message": "(空)",
+        "description": "Text shown when a folder has no bookmarks"
     }
 }
