@@ -44,6 +44,9 @@ describe('Window Renaming Feature', () => {
         const folderSelector = `.window-folder[data-window-id="${secondWindowId}"]`;
         await page.waitForSelector(folderSelector);
 
+        // Scroll to element to ensure it's rendered (due to content-visibility: auto)
+        await page.$eval(folderSelector, el => el.scrollIntoView());
+
         // 3. Find and click the edit button
         // Need to hover first because the button is hidden and has pointer-events: none
         await page.hover(folderSelector);
@@ -82,6 +85,9 @@ describe('Window Renaming Feature', () => {
         await page.reload();
         const folderSelector = `.window-folder[data-window-id="${tempWindowId}"]`;
         await page.waitForSelector(folderSelector);
+
+        // Scroll to element
+        await page.$eval(folderSelector, el => el.scrollIntoView());
 
         // 3. Rename it
         await page.hover(folderSelector);

@@ -63,9 +63,10 @@ describe('Other Windows Use Case', () => {
         // Wait for the Other Windows section to be present
         await page.waitForSelector('#other-windows-list');
 
-        // Find the folder representing the second window
+        // Click to expand the folder
         const otherWindowFolderSelector = '#other-windows-list .window-folder';
-        await page.waitForSelector(otherWindowFolderSelector);
+        await page.waitForSelector(otherWindowFolderSelector, { visible: false });
+        await page.$eval(otherWindowFolderSelector, el => el.scrollIntoView());
 
         // Click to expand the folder
         await page.$eval(otherWindowFolderSelector, el => el.click());
@@ -99,14 +100,16 @@ describe('Other Windows Use Case', () => {
     test('should NOT allow dragging tabs from Other Windows', async () => {
         // Expand the folder
         const otherWindowFolderSelector = '#other-windows-list .window-folder';
-        await page.waitForSelector(otherWindowFolderSelector);
+        await page.waitForSelector(otherWindowFolderSelector, { visible: false });
+        await page.$eval(otherWindowFolderSelector, el => el.scrollIntoView());
         await page.$eval(otherWindowFolderSelector, el => el.click());
         await new Promise(r => setTimeout(r, 300));
 
         // Get a tab item from Other Windows
         const folderContentSelector = '#other-windows-list .folder-content';
         const tabItemSelector = `${folderContentSelector} .tab-item`;
-        await page.waitForSelector(tabItemSelector);
+        await page.waitForSelector(tabItemSelector, { visible: false });
+        await page.$eval(tabItemSelector, el => el.scrollIntoView());
 
         // Check that Sortable is NOT initialized on the folder content
         const hasSortable = await page.$eval(folderContentSelector, el => {

@@ -401,6 +401,14 @@ mark.url-match {
     display: flex;
     flex-direction: column;
     gap: 1px;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
+}
+
+#bookmark-list,
+#other-windows-list {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
 }
 
 .tab-item {

@@ -34,6 +34,7 @@ export const updateBookmark = (id, changes) => chrome.bookmarks.update(id, chang
 export const moveBookmark = (id, destination) => chrome.bookmarks.move(id, destination);
 export const removeBookmark = (id) => new Promise(resolve => chrome.bookmarks.remove(id, resolve));
 export const removeBookmarkTree = (id) => new Promise(resolve => chrome.bookmarks.removeTree(id, resolve));
+export const getSubTree = (id) => new Promise(resolve => chrome.bookmarks.getSubTree(id, resolve));
 
 export async function searchBookmarksByUrl(url) {
     const results = await new Promise(resolve => chrome.bookmarks.search({ url }, resolve));
