@@ -363,5 +363,9 @@
     "searchSearching": {
         "message": "Buscando...",
         "description": "Status text shown while search is in progress."
+    },
+    "emptyFolder": {
+        "message": "(Vacío)",
+        "description": "Text shown when a folder has no bookmarks"
     }
 }

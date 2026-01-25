@@ -363,5 +363,9 @@
     "searchSearching": {
         "message": "Mencari...",
         "description": "Status text shown while search is in progress."
+    },
+    "emptyFolder": {
+        "message": "(Kosong)",
+        "description": "Text shown when a folder has no bookmarks"
     }
 }

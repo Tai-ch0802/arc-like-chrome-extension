@@ -55,19 +55,22 @@ describe('Empty Folder State', () => {
         const messageSelector = `${folderContentSelector} .empty-folder-message`;
         await page.waitForSelector(messageSelector, { timeout: 2000 });
 
+        const expectedMessage = await page.evaluate(() => {
+            return chrome.i18n.getMessage("emptyFolder") || '(Empty)';
+        });
         const messageText = await page.$eval(messageSelector, el => el.textContent);
-        expect(messageText).toBe('(Empty)');
+        expect(messageText).toBe(expectedMessage);
 
         // Cleanup
-         await page.evaluate(async (title) => {
+        await page.evaluate(async (title) => {
             return new Promise((resolve) => {
-                 chrome.bookmarks.search({ title: title }, (results) => {
-                     if (results.length > 0) {
-                         chrome.bookmarks.removeTree(results[0].id, resolve);
-                     } else {
-                         resolve();
-                     }
-                 });
+                chrome.bookmarks.search({ title: title }, (results) => {
+                    if (results.length > 0) {
+                        chrome.bookmarks.removeTree(results[0].id, resolve);
+                    } else {
+                        resolve();
+                    }
+                });
             });
         }, folderTitle);
     }, 20000);

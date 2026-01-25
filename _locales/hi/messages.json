@@ -363,5 +363,9 @@
     "searchSearching": {
         "message": "खोज रहा है...",
         "description": "Status text shown while search is in progress."
+    },
+    "emptyFolder": {
+        "message": "(खाली)",
+        "description": "Text shown when a folder has no bookmarks"
     }
 }
