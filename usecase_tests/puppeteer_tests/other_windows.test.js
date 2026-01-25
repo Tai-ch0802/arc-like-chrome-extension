@@ -69,19 +69,29 @@ describe('Other Windows Use Case', () => {
 
         // Click to expand the folder
         await page.$eval(otherWindowFolderSelector, el => el.click());
-        await new Promise(r => setTimeout(r, 300)); // Wait for expansion animation
+        await new Promise(r => setTimeout(r, 500)); // Wait for expansion animation
 
-        // Verify tabs are visible inside the folder-content
+        // Verify tabs are visible inside the folder-content with retry logic
         const folderContentSelector = '#other-windows-list .folder-content';
-        const tabItems = await page.$$eval(`${folderContentSelector} .tab-item`, items => items.map(el => ({
-            title: el.querySelector('.tab-title')?.textContent || '',
-            url: el.dataset.url || ''
-        })));
+
+        // Poll for both tabs to appear (max 10 seconds)
+        let tabItems = [];
+        let exampleTab, googleTab;
+        const maxAttempts = 20;
+        for (let i = 0; i < maxAttempts; i++) {
+            tabItems = await page.$$eval(`${folderContentSelector} .tab-item`, items => items.map(el => ({
+                title: el.querySelector('.tab-title')?.textContent || '',
+                url: el.dataset.url || ''
+            })));
+
+            exampleTab = tabItems.find(t => t.url.includes('example.com'));
+            googleTab = tabItems.find(t => t.url.includes('google.com'));
+
+            if (exampleTab && googleTab) break;
+            await new Promise(r => setTimeout(r, 500));
+        }
 
         // We created two tabs: example.com and google.com
-        const exampleTab = tabItems.find(t => t.url.includes('example.com'));
-        const googleTab = tabItems.find(t => t.url.includes('google.com'));
-
         expect(exampleTab).toBeDefined();
         expect(googleTab).toBeDefined();
     }, 60000);
