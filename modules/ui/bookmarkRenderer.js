@@ -96,7 +96,226 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
 }
 
 
-function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
+// --- Event Delegation State ---
+let listenersInitialized = false;
+let listenerAbortController = null;
+let bookmarkContainer = null;
+/** @type {Function|null} Callback for refreshing bookmarks */
+let currentRefreshCallback = null;
+/** @type {Function|null} Callback to expand all folders (state) */
+let currentForceExpandAll = false;
+
+// Shared data access helpers for delegation
+const getBookmarkItem = (el) => el.closest('.bookmark-item');
+const getFolderItem = (el) => el.closest('.bookmark-folder');
+const getLinkedIcon = (el) => el.closest('.linked-tab-icon');
+const getActionBtn = (el) => el.closest('.bookmark-actions button');
+
+/**
+ * Resets bookmark listeners. Useful for re-initialization or cleanup.
+ */
+export function resetBookmarkListeners() {
+    if (listenerAbortController) {
+        listenerAbortController.abort();
+        listenerAbortController = null;
+    }
+    listenersInitialized = false;
+    currentRefreshCallback = null;
+    bookmarkContainer = null;
+}
+
+/**
+ * Initializes event listeners on the container using delegation.
+ */
+function initBookmarkListeners(container) {
+    if (listenersInitialized) return;
+    listenersInitialized = true;
+    bookmarkContainer = container;
+    listenerAbortController = new AbortController();
+    const { signal } = listenerAbortController;
+
+    const handleRefresh = () => {
+        if (currentRefreshCallback) currentRefreshCallback();
+    };
+
+    container.addEventListener('click', async (e) => {
+        // 1. Handle Action Buttons (Edit, Delete, Add Folder)
+        const btn = getActionBtn(e.target);
+        if (btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const action = btn.dataset.action;
+            const item = btn.closest('.bookmark-item, .bookmark-folder');
+            const id = item.dataset.bookmarkId;
+
+            if (action === 'edit-bookmark') {
+                try {
+                    const node = await api.getBookmark(id);
+                    if (!node) return;
+                    const result = await modal.showFormDialog({
+                        title: api.getMessage("editBookmarkPromptForTitle"),
+                        fields: [
+                            { name: 'title', label: 'Name', defaultValue: node.title },
+                            { name: 'url', label: 'URL', defaultValue: node.url }
+                        ],
+                        confirmButtonText: api.getMessage("saveButton")
+                    });
+                    if (result && (result.title !== node.title || result.url !== node.url)) {
+                        await api.updateBookmark(id, { title: result.title, url: result.url });
+                        handleRefresh();
+                    }
+                } catch (err) { console.error(err); }
+            } else if (action === 'delete-bookmark') {
+                try {
+                    const node = await api.getBookmark(id);
+                    const confirm = await modal.showConfirm({
+                        title: api.getMessage("deleteBookmarkConfirm", node ? node.title : ''),
+                        confirmButtonText: api.getMessage("deleteButton"),
+                        confirmButtonClass: 'danger'
+                    });
+                    if (confirm) {
+                        await api.removeBookmark(id);
+                        handleRefresh();
+                    }
+                } catch (err) { console.error(err); }
+            } else if (action === 'edit-folder') {
+                try {
+                    const node = await api.getBookmark(id);
+                    const newTitle = await modal.showPrompt({
+                        title: api.getMessage("editBookmarkFolderPromptForTitle"),
+                        defaultValue: node ? node.title : '',
+                        confirmButtonText: api.getMessage("saveButton")
+                    });
+                    if (newTitle && newTitle !== node.title) {
+                        await api.updateBookmark(id, { title: newTitle });
+                        handleRefresh();
+                    }
+                } catch (err) { console.error(err); }
+            } else if (action === 'add-folder') {
+                const node = await api.getBookmark(id);
+                const newFolderName = await modal.showPrompt({
+                    title: api.getMessage("addFolderPrompt", node ? node.title : ''),
+                    confirmButtonText: api.getMessage("createButton")
+                });
+                if (newFolderName) {
+                    await api.createBookmark({ parentId: id, title: newFolderName });
+                    state.addExpandedFolder(id);
+                    handleRefresh();
+                }
+            } else if (action === 'delete-folder') {
+                const node = await api.getBookmark(id);
+                const confirm = await modal.showConfirm({
+                    title: api.getMessage("deleteFolderConfirm", node ? node.title : ''),
+                    confirmButtonText: api.getMessage("deleteButton"),
+                    confirmButtonClass: 'danger'
+                });
+                if (confirm) {
+                    await api.removeBookmarkTree(id);
+                    state.removeExpandedFolder(id);
+                    handleRefresh();
+                }
+            }
+            return;
+        }
+
+        // 2. Handle Linked Tab Icon
+        const linkedIcon = getLinkedIcon(e.target);
+        if (linkedIcon) {
+            e.stopPropagation();
+            const item = linkedIcon.closest('.bookmark-item');
+            showLinkedTabsPanel(item.dataset.bookmarkId, currentRefreshCallback);
+            return;
+        }
+
+        // 3. Handle Bookmark Item Click (Open Tab)
+        const bookmarkItem = getBookmarkItem(e.target);
+        if (bookmarkItem) {
+            e.preventDefault();
+            const id = bookmarkItem.dataset.bookmarkId;
+            const node = await api.getBookmark(id);
+            if (node && node.url) {
+                const newTab = await api.createTab({ url: node.url, active: true });
+                await state.addLinkedTab(id, newTab.id);
+                handleRefresh();
+            }
+            return;
+        }
+
+        // 4. Handle Folder Click (Expand/Collapse)
+        const folderItem = getFolderItem(e.target);
+        if (folderItem) {
+            const id = folderItem.dataset.bookmarkId;
+            const isNowExpanded = !JSON.parse(folderItem.getAttribute('aria-expanded'));
+            folderItem.setAttribute('aria-expanded', isNowExpanded.toString());
+
+            const icon = folderItem.querySelector('.bookmark-icon');
+            const content = folderItem.nextElementSibling; // folder-content
+
+            if (icon) icon.textContent = isNowExpanded ? '▼' : '▶';
+            if (content) {
+                content.style.display = isNowExpanded ? 'block' : 'none';
+
+                if (isNowExpanded) {
+                    state.addExpandedFolder(id);
+                    // Lazy Load / Render children if empty
+                    if (content.children.length === 0) {
+                        try {
+                            // 使用 getSubTree 來獲取包含 children 的節點
+                            const subtree = await api.getSubTree(id);
+                            if (subtree && subtree[0] && subtree[0].children) {
+                                renderBookmarks(subtree[0].children, content, id, currentRefreshCallback, currentForceExpandAll);
+                            }
+                        } catch (err) {
+                            console.error('Failed to load bookmark subtree:', err);
+                        }
+
+                        setTimeout(() => {
+                            document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: id } }));
+                        }, 50);
+                    }
+                } else {
+                    state.removeExpandedFolder(id);
+                }
+            }
+        }
+    }, { signal });
+
+    // Keydown Delegation
+    container.addEventListener('keydown', (e) => {
+        const item = e.target.closest('.bookmark-item, .bookmark-folder, .linked-tab-icon');
+        if (!item) return;
+
+        // Skip if focus is on an action button inside
+        if (e.target.tagName === 'BUTTON' && !e.target.classList.contains('linked-tab-icon')) return;
+
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            item.click();
+        } else if (e.key === 'F2') { // Rename shortcut
+            e.preventDefault();
+            e.stopPropagation();
+            const editBtn = item.querySelector('.bookmark-edit-btn');
+            if (editBtn) editBtn.click();
+        } else if (e.key === 'Delete') { // Delete shortcut
+            e.preventDefault();
+            e.stopPropagation();
+            const closeBtn = item.querySelector('.bookmark-close-btn');
+            if (closeBtn) closeBtn.click();
+        }
+    }, { signal });
+}
+
+
+export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
+    if (!listenersInitialized && container.id === 'bookmark-list') {
+        initBookmarkListeners(container);
+    }
+    // Only update callback if it's the root render
+    if (parentId === '1' || container.id === 'bookmark-list') {
+        currentRefreshCallback = refreshBookmarksCallback;
+        currentForceExpandAll = forceExpandAll;
+    }
+
     container.dataset.parentId = parentId;
 
     if (bookmarkNodes.length === 0) {
@@ -160,21 +379,6 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 linkedIcon.setAttribute('aria-label', linkedTabsLabel);
                 linkedIcon.setAttribute('role', 'button');
                 linkedIcon.setAttribute('tabindex', '0');
-
-                const openLinkedTabs = (e) => {
-                    e.stopPropagation();
-                    showLinkedTabsPanel(node.id, refreshBookmarksCallback);
-                };
-
-                linkedIcon.addEventListener('click', openLinkedTabs);
-                linkedIcon.addEventListener('keydown', (e) => {
-                    if (e.target !== e.currentTarget) return;
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openLinkedTabs(e);
-                    }
-                });
-
                 bookmarkItem.appendChild(linkedIcon);
             }
 
@@ -189,23 +393,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             editBtn.tabIndex = -1;
             editBtn.setAttribute('aria-label', api.getMessage('editBookmark'));
             editBtn.title = api.getMessage('editBookmark');
-            editBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const result = await modal.showFormDialog({
-                    title: api.getMessage("editBookmarkPromptForTitle"),
-                    fields: [
-                        { name: 'title', label: 'Name', defaultValue: node.title },
-                        { name: 'url', label: 'URL', defaultValue: node.url }
-                    ],
-                    confirmButtonText: api.getMessage("saveButton")
-                });
-                if (result && (result.title !== node.title || result.url !== node.url)) {
-                    api.updateBookmark(node.id, { title: result.title, url: result.url })
-                        .then(refreshBookmarksCallback)
-                        .catch(console.error);
-                }
-            });
+            editBtn.dataset.action = 'edit-bookmark';
 
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
@@ -213,48 +401,11 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             closeBtn.tabIndex = -1;
             closeBtn.setAttribute('aria-label', api.getMessage('deleteBookmark'));
             closeBtn.title = api.getMessage('deleteBookmark');
-            closeBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const confirm = await modal.showConfirm({
-                    title: api.getMessage("deleteBookmarkConfirm", node.title),
-                    confirmButtonText: api.getMessage("deleteButton"),
-                    confirmButtonClass: 'danger'
-                });
-                if (confirm) {
-                    api.removeBookmark(node.id)
-                        .then(refreshBookmarksCallback)
-                        .catch(console.error);
-                }
-            });
+            closeBtn.dataset.action = 'delete-bookmark';
 
             actionsContainer.appendChild(editBtn);
             actionsContainer.appendChild(closeBtn);
             bookmarkItem.appendChild(actionsContainer);
-
-            bookmarkItem.addEventListener('click', async (e) => {
-                if (e.target.closest('.bookmark-actions') || e.target.closest('.linked-tab-icon')) return;
-                e.preventDefault();
-                const newTab = await api.createTab({ url: node.url, active: true });
-                await state.addLinkedTab(node.id, newTab.id);
-                refreshBookmarksCallback();
-            });
-
-            bookmarkItem.addEventListener('keydown', (e) => {
-                if (e.target !== e.currentTarget) return;
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    bookmarkItem.click();
-                } else if (e.key === 'F2') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    editBtn.click();
-                } else if (e.key === 'Delete') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeBtn.click();
-                }
-            });
 
             fragment.appendChild(bookmarkItem);
 
@@ -285,19 +436,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             editBtn.tabIndex = -1;
             editBtn.setAttribute('aria-label', api.getMessage('editFolder'));
             editBtn.title = api.getMessage('editFolder');
-            editBtn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const newTitle = await modal.showPrompt({
-                    title: api.getMessage("editBookmarkFolderPromptForTitle"),
-                    defaultValue: node.title,
-                    confirmButtonText: api.getMessage("saveButton")
-                });
-                if (newTitle && newTitle !== node.title) {
-                    api.updateBookmark(node.id, { title: newTitle })
-                        .then(refreshBookmarksCallback)
-                        .catch(console.error);
-                }
-            });
+            editBtn.dataset.action = 'edit-folder';
 
             const addFolderBtn = document.createElement('button');
             addFolderBtn.className = 'add-folder-btn';
@@ -305,19 +444,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             addFolderBtn.tabIndex = -1;
             addFolderBtn.setAttribute('aria-label', api.getMessage('addFolder'));
             addFolderBtn.title = api.getMessage('addFolder');
-            addFolderBtn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const newFolderName = await modal.showPrompt({
-                    title: api.getMessage("addFolderPrompt", node.title),
-                    confirmButtonText: api.getMessage("createButton")
-                });
-                if (newFolderName) {
-                    api.createBookmark({ parentId: node.id, title: newFolderName }).then(() => {
-                        state.addExpandedFolder(node.id);
-                        refreshBookmarksCallback();
-                    }).catch(console.error);
-                }
-            });
+            addFolderBtn.dataset.action = 'add-folder';
 
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
@@ -325,20 +452,7 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
             closeBtn.tabIndex = -1;
             closeBtn.setAttribute('aria-label', api.getMessage('deleteFolder'));
             closeBtn.title = api.getMessage('deleteFolder');
-            closeBtn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const confirm = await modal.showConfirm({
-                    title: api.getMessage("deleteFolderConfirm", node.title),
-                    confirmButtonText: api.getMessage("deleteButton"),
-                    confirmButtonClass: 'danger'
-                });
-                if (confirm) {
-                    api.removeBookmarkTree(node.id).then(() => {
-                        state.removeExpandedFolder(node.id);
-                        refreshBookmarksCallback();
-                    }).catch(console.error);
-                }
-            });
+            closeBtn.dataset.action = 'delete-folder';
 
             actionsContainer.appendChild(editBtn);
             actionsContainer.appendChild(addFolderBtn);
@@ -357,43 +471,6 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
                 renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
             }
 
-            folderItem.addEventListener('click', (e) => {
-                if (e.target.closest('.bookmark-actions')) return;
-
-                const isNowExpanded = !JSON.parse(folderItem.getAttribute('aria-expanded'));
-                folderItem.setAttribute('aria-expanded', isNowExpanded.toString());
-                icon.textContent = isNowExpanded ? '▼' : '▶';
-                folderContent.style.display = isNowExpanded ? 'block' : 'none';
-
-                if (isNowExpanded) {
-                    state.addExpandedFolder(node.id);
-                    if (folderContent.children.length === 0 && node.children) {
-                        renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
-                        setTimeout(() => {
-                            document.dispatchEvent(new CustomEvent('folderExpanded', { detail: { folderId: node.id } }));
-                        }, 50);
-                    }
-                } else {
-                    state.removeExpandedFolder(node.id);
-                }
-            });
-
-            folderItem.addEventListener('keydown', (e) => {
-                if (e.target !== e.currentTarget) return;
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    folderItem.click();
-                } else if (e.key === 'F2') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    editBtn.click();
-                } else if (e.key === 'Delete') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeBtn.click();
-                }
-            });
-
             fragment.appendChild(folderItem);
             fragment.appendChild(folderContent);
         }
@@ -401,5 +478,3 @@ function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCal
 
     container.appendChild(fragment);
 }
-
-export { renderBookmarks };
