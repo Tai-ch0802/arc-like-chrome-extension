@@ -208,6 +208,7 @@ function initializeSearchUI() {
     ui.clearSearchBtn.addEventListener('click', () => {
         ui.searchBox.value = '';
         ui.clearSearchBtn.classList.add('hidden');
+        ui.searchBox.focus();
         search.handleSearch(); // 觸發搜尋以重置顯示
     });
 
