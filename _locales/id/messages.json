@@ -367,5 +367,69 @@
     "emptyFolder": {
         "message": "(Kosong)",
         "description": "Text shown when a folder has no bookmarks"
+    },
+    "bgImageSectionHeader": {
+        "message": "Gambar Latar",
+        "description": "Header for background image section"
+    },
+    "labelBgSource": {
+        "message": "Sumber",
+        "description": "Label for background source"
+    },
+    "optionUpload": {
+        "message": "Unggah",
+        "description": "Upload option"
+    },
+    "optionUrl": {
+        "message": "URL",
+        "description": "URL option"
+    },
+    "buttonUploadImage": {
+        "message": "Pilih Gambar...",
+        "description": "Button to upload image"
+    },
+    "buttonApply": {
+        "message": "Terapkan",
+        "description": "Apply button"
+    },
+    "labelOpacity": {
+        "message": "Opasitas",
+        "description": "Opacity label"
+    },
+    "labelBlur": {
+        "message": "Blur",
+        "description": "Blur label"
+    },
+    "labelPositionX": {
+        "message": "Horizontal",
+        "description": "Horizontal position label"
+    },
+    "labelPositionY": {
+        "message": "Vertikal",
+        "description": "Vertical position label"
+    },
+    "buttonRemoveImage": {
+        "message": "Hapus Gambar",
+        "description": "Button to remove background image"
+    },
+    "labelProcessing": {
+        "message": "Memproses...",
+        "description": "Processing status"
+    },
+    "labelSuccess": {
+        "message": "Selesai!",
+        "description": "Success status"
+    },
+    "errorImageProcessing": {
+        "message": "Gagal memproses gambar.",
+        "description": "Error message for image processing"
+    },
+    "labelImageApplied": {
+        "message": "Gambar latar diterapkan",
+        "description": "Status text when background image is active"
+    },
+    "labelAdvancedSettings": {
+        "message": "Sesuaikan Pengaturan",
+        "description": "Label for collapsible settings section"
     }
 }

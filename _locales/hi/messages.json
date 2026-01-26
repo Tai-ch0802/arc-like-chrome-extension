@@ -367,5 +367,69 @@
     "emptyFolder": {
         "message": "(खाली)",
         "description": "Text shown when a folder has no bookmarks"
+    },
+    "bgImageSectionHeader": {
+        "message": "पृष्ठभूमि की छवि",
+        "description": "Header for background image section"
+    },
+    "labelBgSource": {
+        "message": "स्रोत",
+        "description": "Label for background source"
+    },
+    "optionUpload": {
+        "message": "अपलोड करें",
+        "description": "Upload option"
+    },
+    "optionUrl": {
+        "message": "यूआरएल",
+        "description": "URL option"
+    },
+    "buttonUploadImage": {
+        "message": "छवि चुनें...",
+        "description": "Button to upload image"
+    },
+    "buttonApply": {
+        "message": "लागू करें",
+        "description": "Apply button"
+    },
+    "labelOpacity": {
+        "message": "अपारदर्शिता",
+        "description": "Opacity label"
+    },
+    "labelBlur": {
+        "message": "धुंधला",
+        "description": "Blur label"
+    },
+    "labelPositionX": {
+        "message": "क्षैतिज",
+        "description": "Horizontal position label"
+    },
+    "labelPositionY": {
+        "message": "ऊर्ध्वाधर",
+        "description": "Vertical position label"
+    },
+    "buttonRemoveImage": {
+        "message": "छवि हटाएं",
+        "description": "Button to remove background image"
+    },
+    "labelProcessing": {
+        "message": "प्रसंस्करण...",
+        "description": "Processing status"
+    },
+    "labelSuccess": {
+        "message": "हो गया!",
+        "description": "Success status"
+    },
+    "errorImageProcessing": {
+        "message": "छवि संसाधित करने में विफल।",
+        "description": "Error message for image processing"
+    },
+    "labelImageApplied": {
+        "message": "पृष्ठभूमि छवि लागू की गई",
+        "description": "Status text when background image is active"
+    },
+    "labelAdvancedSettings": {
+        "message": "सेटिंग्स समायोजित करें",
+        "description": "Label for collapsible settings section"
     }
 }

@@ -367,5 +367,69 @@
     "emptyFolder": {
         "message": "(Vacío)",
         "description": "Text shown when a folder has no bookmarks"
+    },
+    "bgImageSectionHeader": {
+        "message": "Imagen de fondo",
+        "description": "Header for background image section"
+    },
+    "labelBgSource": {
+        "message": "Fuente",
+        "description": "Label for background source"
+    },
+    "optionUpload": {
+        "message": "Subir",
+        "description": "Upload option"
+    },
+    "optionUrl": {
+        "message": "URL",
+        "description": "URL option"
+    },
+    "buttonUploadImage": {
+        "message": "Seleccionar imagen...",
+        "description": "Button to upload image"
+    },
+    "buttonApply": {
+        "message": "Aplicar",
+        "description": "Apply button"
+    },
+    "labelOpacity": {
+        "message": "Opacidad",
+        "description": "Opacity label"
+    },
+    "labelBlur": {
+        "message": "Desenfocar",
+        "description": "Blur label"
+    },
+    "labelPositionX": {
+        "message": "Horizontal",
+        "description": "Horizontal position label"
+    },
+    "labelPositionY": {
+        "message": "Vertical",
+        "description": "Vertical position label"
+    },
+    "buttonRemoveImage": {
+        "message": "Quitar imagen",
+        "description": "Button to remove background image"
+    },
+    "labelProcessing": {
+        "message": "Procesando...",
+        "description": "Processing status"
+    },
+    "labelSuccess": {
+        "message": "¡Hecho!",
+        "description": "Success status"
+    },
+    "errorImageProcessing": {
+        "message": "Error al procesar la imagen.",
+        "description": "Error message for image processing"
+    },
+    "labelImageApplied": {
+        "message": "Imagen de fondo aplicada",
+        "description": "Status text when background image is active"
+    },
+    "labelAdvancedSettings": {
+        "message": "Ajustar configuración",
+        "description": "Label for collapsible settings section"
     }
 }
