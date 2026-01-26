@@ -1254,7 +1254,9 @@ mark.url-match {
 .bookmark-folder:focus-visible,
 .window-folder:focus-visible,
 .linked-tab-item:focus-visible,
-.tab-group-header:focus-visible {
+.tab-group-header:focus-visible,
+#settings-toggle:focus-visible,
+#clear-search-btn:focus-visible {
     outline: 2px solid var(--accent-color);
     outline-offset: -2px;
     background-color: var(--element-bg-active-color);
