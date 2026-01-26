@@ -36,6 +36,14 @@ export function resetTabListeners() {
     tabsCache = new Map();
 }
 
+/**
+ * Returns the current cache of tab objects.
+ * @returns {Map<number, chrome.tabs.Tab>}
+ */
+export function getTabCache() {
+    return tabsCache;
+}
+
 function initTabListeners(container) {
     if (listenersInitialized) return;
     listenersInitialized = true;

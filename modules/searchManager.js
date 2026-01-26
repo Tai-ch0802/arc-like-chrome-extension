@@ -1,6 +1,7 @@
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
+import { getTabCache } from './ui/tabRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
 // Debounce 工具函式：延遲執行，避免頻繁觸發
@@ -83,10 +84,26 @@ function filterTabsAndGroups(keywords) {
     const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
     let visibleCount = 0;
 
+    // Optimization: Use cache to avoid DOM reads
+    const tabsCache = getTabCache();
+    // Optimization: Track group visibility to avoid querying DOM in group loop
+    const groupVisibility = new Map();
+
     tabItems.forEach(item => {
-        const titleElement = item.querySelector('.tab-title');
-        const title = titleElement.textContent;
-        const url = item.dataset.url || '';
+        const tabId = parseInt(item.dataset.tabId);
+        const tab = tabsCache.get(tabId);
+
+        let title, url;
+        if (tab) {
+            title = tab.title;
+            url = tab.url;
+        } else {
+            // Fallback to DOM if not in cache
+            const titleElement = item.querySelector('.tab-title');
+            title = titleElement.textContent;
+            url = item.dataset.url || '';
+        }
+
         const domain = extractDomain(url);
 
         // OR 邏輯：標題或 domain 匹配任一關鍵字即可
@@ -105,16 +122,28 @@ function filterTabsAndGroups(keywords) {
             delete item.dataset.matchedDomain;
         }
 
-        if (matches) visibleCount++;
+        if (matches) {
+            visibleCount++;
+            if (tab && tab.groupId > 0) {
+                groupVisibility.set(tab.groupId, (groupVisibility.get(tab.groupId) || 0) + 1);
+            }
+        }
     });
 
     groupHeaders.forEach(header => {
         const content = header.nextElementSibling;
-        const visibleTabsInGroup = content.querySelectorAll('.tab-item:not(.hidden)');
+        // Optimization: Use computed group visibility
+        const groupId = parseInt(header.dataset.groupId);
+        // Fallback to DOM query if group logic relies on something not in cache?
+        // No, groupVisibility should be accurate for tabs processed above.
+        // However, we must ensure 'content' exists and structure is correct.
+
+        const visibleTabsCount = groupVisibility.get(groupId) || 0;
+
         const titleElement = header.querySelector('.tab-group-title');
         const title = titleElement ? titleElement.textContent : '';
         const groupTitleMatches = matchesAnyKeyword(title, keywords);
-        const hasVisibleChildren = visibleTabsInGroup.length > 0;
+        const hasVisibleChildren = visibleTabsCount > 0;
 
         header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
 
