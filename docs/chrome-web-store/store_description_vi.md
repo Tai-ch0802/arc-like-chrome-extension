@@ -36,22 +36,26 @@ Have thousands of bookmarks? No problem!
 - **Kéo để Lưu**: Kéo một tab vào khu vực dấu trang để lưu ngay lập tức; kéo một dấu trang vào khu vực tab để mở nó.
 - **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 
-### 🎨 Thiết kế Cao cấp
-- **Chế độ Tập trung**: Chủ đề tối bóng bẩy với độ tương phản được điều chỉnh cẩn thận để giảm mỏi mắt.
-- **Tự động Mở rộng**: Di chuột qua các thư mục trong khi kéo các mục để tự động mở rộng đường dẫn.
-- **Di chuột Thông minh**: Các nút hành động chỉ xuất hiện khi cần thiết, giữ cho giao diện sạch sẽ và không bị phân tâm.
+### 🎨 Thiết kế Cao cấp & Tùy chỉnh
+- **Hình nền tùy chỉnh**: Cá nhân hóa không gian làm việc của bạn! Tải lên hình ảnh của riêng bạn hoặc sử dụng URL. Tinh chỉnh với độ **mờ** và độ **nhòe** có thể điều chỉnh để có vẻ ngoài hoàn hảo.
+- **Giao diện cài đặt mới**: Tận hưởng bảng cài đặt hiện đại và ngăn nắp với bố cục **Accordion** mới, giúp việc cấu hình thanh bên của bạn trở nên dễ dàng hơn bao giờ hết.
+- **Màu chủ đề tùy chỉnh**: Vượt qua các cài đặt có sẵn. Giờ đây bạn có toàn quyền kiểm soát màu nền chính, màu nhấn và màu văn bản.
+- **Chế độ tập trung**: Chủ đề tối bóng bẩy với độ tương phản được tinh chỉnh kỹ lưỡng để giảm mỏi mắt.
+- **Tự động mở rộng**: Di chuột qua các thư mục trong khi kéo các mục để tự động mở rộng đường dẫn.
+- **Tương tác thông minh**: Các nút hành động chỉ xuất hiện khi cần thiết, giữ cho giao diện luôn sạch sẽ và không gây xao nhãng.
 
 ---
 
-## ⌨️ Điều hướng Bàn phím Đầy đủ
-- **Trải nghiệm Gốc**: Sử dụng các phím `Mũi tên Lên`/`Mũi tên Xuống` để điều hướng mượt mà giữa các tab và dấu trang.
-- **Tương tác Vi mô**: Sử dụng `Mũi tên Trái`/`Mũi tên Phải` để điều hướng và kích hoạt các nút bên trong (như Đóng, Thêm vào Nhóm).
-- **Tích hợp Tìm kiếm**: Nhấn `Lên` ở đầu danh sách để tập trung vào thanh tìm kiếm; nhấn `Xuống` trong thanh tìm kiếm để chuyển đến kết quả.
-- **Mẹo lấy nét**: Khi thanh bên đã mở, chỉ cần nhấn bất kỳ phím mũi tên nào để tự động lấy nét và bắt đầu điều hướng.
-
-## ⌨️ Phím tắt Năng suất
-- **Cmd/Ctrl + I**: Bật/tắt Thanh bên
-- **Opt/Alt + T**: Tạo tab mới bên cạnh tab hiện tại
+## ⌨️ Điều hướng Bàn phím Đầy đủ & Phím tắt
+- **Trải nghiệm mượt mà**: Sử dụng các phím `Mũi tên Lên`/`Xuống` để điều hướng liền mạch giữa các tab và dấu trang.
+- **Tương tác vi mô**: Sử dụng `Trái`/`Phải` để điều hướng và kích hoạt các nút bên trong (như Đóng, Thêm vào Nhóm).
+- **Phím tắt hiệu suất**:
+    - `F2`: Đổi tên bất kỳ tab hoặc dấu trang nào ngay lập tức.
+    - `Delete`: Xóa nhanh các mục không mong muốn.
+    - `Cmd/Ctrl + I`: Bật/Tắt thanh bên.
+    - `Opt/Alt + T`: Tạo tab mới bên cạnh tab hiện tại.
+- **Tích hợp tìm kiếm**: Nhấn `Lên` ở đầu danh sách để tập trung vào thanh tìm kiếm; nhấn `Xuống` trong thanh tìm kiếm để nhảy đến kết quả.
+- **Mẹo lấy nét**: Sau khi thanh bên được mở, chỉ cần nhấn bất kỳ phím mũi tên nào để tự động lấy nét và bắt đầu điều hướng.
 
 ---
 

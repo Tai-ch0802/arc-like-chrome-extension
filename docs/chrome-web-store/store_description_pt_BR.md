@@ -36,22 +36,26 @@ Não apenas pesquise — encontre instantaneamente.
 - **Arrastar e Soltar**: Gerenciamento intuitivo — mova itens sem esforço entre abas, grupos e pastas de favoritos.
 - **Arrastar para Salvar**: Arraste uma aba para a área de favoritos para salvá-la instantaneamente; arraste um favorito para a área de abas para abri-lo.
 
-### 🎨 Design Premium
-- **Modo Foco**: Um tema escuro elegante com contraste cuidadosamente ajustado para reduzir o cansaço visual.
-- **Auto-Expandir**: Passe o mouse sobre as pastas enquanto arrasta itens para expandir automaticamente o caminho.
-- **Hover Inteligente**: Botões de ação aparecem apenas quando necessário, mantendo a interface limpa e livre de distrações.
+### 🎨 Design Premium e Personalização
+- **Imagem de Fundo Personalizada**: Personalize seu espaço de trabalho! Faça upload de sua própria imagem ou use uma URL. Ajuste a **opacidade** e o **desfoque** para o visual perfeito.
+- **Interface de Configurações Renovada**: Desfrute de um painel de configurações moderno e organizado com um novo **layout de acordeão**, facilitando a configuração da sua barra lateral.
+- **Cores de Tema Personalizadas**: Vá além das predefinições. Agora você tem controle total sobre o fundo principal, cores de destaque e de texto.
+- **Modo Foco**: Um tema escuro elegante com contraste cuidadosamente ajustado para reduzir a fadiga ocular.
+- **Expansão Automática**: Passe o mouse sobre as pastas enquanto arrasta itens para expandir automaticamente o caminho.
+- **Hover Inteligente**: Os botões de ação aparecem apenas quando necessário, mantendo a interface limpa e sem distrações.
 
 ---
 
-## ⌨️ Navegação Completa por Teclado
-- **Experiência Nativa**: Use as teclas `Seta para Cima`/`Seta para Baixo` para navegar perfeitamente entre abas e favoritos.
-- **Microinterações**: Use `Seta para Esquerda`/`Seta para Direita` para navegar e acionar botões internos (como Fechar, Adicionar ao Grupo).
-- **Integração de Pesquisa**: Pressione `Cima` no topo da lista para focar na barra de pesquisa; pressione `Baixo` na barra de pesquisa para pular para os resultados.
-- **Dica de Foco**: Assim que a barra lateral estiver aberta, basta pressionar qualquer tecla de seta para obter o foco automaticamente e começar a navegar.
-
-## ⌨️ Atalhos de Produtividade
-- **Cmd/Ctrl + I**: Alternar Barra Lateral
-- **Opt/Alt + T**: Criar nova aba ao lado da atual
+## ⌨️ Navegação Completa pelo Teclado e Atalhos
+- **Experiência Nativa**: Use as teclas `Seta para Cima`/`Baixo` para navegar perfeitamente entre abas e favoritos.
+- **Micro-interações**: Use `Esquerda`/`Direita` para navegar e acionar botões internos (como Fechar, Adicionar ao Grupo).
+- **Atalhos de Produtividade**:
+    - `F2`: Renomeie instantaneamente qualquer aba ou favorito.
+    - `Delete`: Remova rapidamente itens indesejados.
+    - `Cmd/Ctrl + I`: Alternar Barra Lateral.
+    - `Opt/Alt + T`: Criar uma nova aba ao lado da atual.
+- **Integração de Busca**: Pressione `Cima` no topo da lista para focar na barra de busca; pressione `Baixo` na barra de busca para saltar para os resultados.
+- **Dica de Foco**: Assim que a barra lateral for aberta, basta pressionar qualquer tecla de seta para obter o foco automaticamente e começar a navegar.
 
 ---
 

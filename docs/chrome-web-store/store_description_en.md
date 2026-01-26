@@ -36,22 +36,27 @@ Don't just search—find instantly.
 - **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
 - **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
 
-### 🎨 Premium Design
+### 🎨 Premium Design & Customization
+- **Custom Background Image**: Personalize your workspace! Upload your own image or use a URL. Fine-tune it with adjustable **opacity** and **blur** for the perfect look.
+- **Revamped Settings UI**: Enjoy a modern, organized settings panel with a new **Accordion layout**, making it easier than ever to configure your sidebar.
+- **Custom Theme Colors**: Go beyond presets. You now have full control over the main background, accent, and text colors.
 - **Focus Mode**: A sleek dark theme with carefully tuned contrast to reduce eye strain.
 - **Auto-Expand**: Hover over folders while dragging items to automatically expand the path.
 - **Smart Hover**: Action buttons appear only when needed, keeping the interface clean and distraction-free.
 
 ---
 
-## ⌨️ Full Keyboard Navigation
+## ⌨️ Full Keyboard Navigation & Shortcuts
 - **Native Experience**: Use `Arrow Up`/`Arrow Down` keys to navigate seamlessly between tabs and bookmarks.
 - **Micro-Interactions**: Use `Arrow Left`/`Arrow Right` to navigate and trigger internal buttons (like Close, Add to Group).
+- **Productivity Shortcuts**:
+    - `F2`: Instantly rename any tab or bookmark.
+    - `Delete`: Quickly remove unwanted items.
+    - `Cmd/Ctrl + I`: Toggle Sidebar.
+    - `Opt/Alt + T`: Create a new tab next to the current one.
 - **Search Integration**: Press `Up` at the top of the list to focus the search bar; press `Down` in the search bar to jump to results.
 - **Focus Tip**: Once the sidebar is open, simply press any arrow key to automatically grab focus and start navigating.
 
-## ⚡️ Shortcuts
-- **Cmd/Ctrl + I**: Toggle Sidebar
-- **Opt/Alt + T**: Create new tab next to current one
 
 ---
 

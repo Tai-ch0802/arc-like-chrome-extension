@@ -12,16 +12,20 @@
 
 Ini adalah proyek ekstensi Chrome yang bertujuan untuk menghadirkan pengalaman sidebar vertikal seperti browser Arc ke Google Chrome, menyediakan panel yang terpadu dan kuat untuk mengelola tab dan bookmark.
 
-## 🚀 Pembaruan Rilis Baru v1.11.0!
-[![Video Demo](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 Pembaruan Rilis Baru v1.12.0! 
+[![Video Demo](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
 ### ⚡️ Fitur
+- **Gambar Latar Kustom**: Atur latar belakang bilah sisi Anda sendiri melalui unggahan atau URL, dengan opasitas dan blur yang dapat disesuaikan.
+- **UI Pengaturan Baru**: Pengalaman yang lebih bersih dan teratur dengan tata letak akordeon lipat yang baru.
+- **Warna Tema Kustom**: Kontrol penuh atas warna latar belakang utama, aksen, dan teks.
 - **Tab Vertikal**: Lihat judul halaman lengkap, tidak lagi terkompresi menjadi ikon kecil.
-- **Grup Tab**: Terintegrasi sempurna dengan Grup Tab Chrome, menyinkronkan warna dan nama.
-- **Integrasi Bookmark**: Panel terpadu untuk mengelola tab dan bookmark.
-- **Tab Terkait**: Secara otomatis membuat "Tautan" saat membuka bookmark, membantu menghindari pembukaan ganda.
-- **Pencarian Antar Jendela**: Cari tab dan bookmark di semua jendela Chrome yang terbuka.
-- **Rendering Dinamis**: Rendering efisien untuk pustaka bookmark yang besar.
+- **Grup Tab**: Terintegrasi sempurna dengan Grup Tab Chrome, sinkronisasi warna dan nama.
+- **Integrasi Markah**: Panel terpadu untuk mengelola tab dan markah.
+- **Tab Tertaut**: Secara otomatis membuat "Tautan" saat membuka markah, menghindari duplikasi.
+- **Manajemen Antar-Jendela**: Kelola tab di semua jendela yang terbuka dengan pencarian global.
+- **Perenderan Dinamis**: Menangani ribuan markah secara efisien dengan performa yang lancar.
+- **Pintasan Aksesibilitas**: Tindakan cepat dengan `F2` untuk mengganti nama dan `Delete` untuk menghapus item.
 
 ## 🤝 Berkontribusi
 

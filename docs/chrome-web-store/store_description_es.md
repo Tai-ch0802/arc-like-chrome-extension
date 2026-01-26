@@ -36,22 +36,26 @@ No solo busques, encuentra al instante.
 - **Arrastrar y Soltar**: Gestión intuitiva: mueve elementos sin esfuerzo entre pestañas, grupos y carpetas de marcadores.
 - **Arrastrar para Guardar**: Arrastra una pestaña al área de marcadores para guardarla al instante; arrastra un marcador al área de pestañas para abrirlo.
 
-### 🎨 Diseño Premium
-- **Modo Enfoque**: Un tema oscuro elegante con contraste cuidadosamente ajustado para reducir la fatiga visual.
-- **Auto-Expandir**: Pasa el cursor sobre las carpetas mientras arrastras elementos para expandir automáticamente la ruta.
-- **Hover Inteligente**: Los botones de acción aparecen solo cuando se necesitan, manteniendo la interfaz limpia y libre de distracciones.
+### 🎨 Diseño Premium y Personalización
+- **Imagen de fondo personalizada**: ¡Personaliza su espacio de trabajo! Sube su propia imagen o usa una URL. Ajusta la **opacidad** y el **desenfoque** para lograr el aspecto perfecto.
+- **Interfaz de ajustes renovada**: Disfruta de un panel de ajustes moderno y organizado con un nuevo **diseño de acordeón**, facilitando la configuración de su barra lateral.
+- **Colores de tema personalizados**: Ve más allá de los ajustes preestablecidos. Ahora tienes control total sobre los colores de fondo, acento y texto.
+- **Modo enfoque**: Un elegante tema oscuro con contraste cuidadosamente ajustado para reducir la fatiga visual.
+- **Auto-expansión**: Pasa el ratón sobre las carpetas mientras arrastras elementos para expandir automáticamente la ruta.
+- **Interacción inteligente**: Los botones de acción aparecen solo cuando son necesarios, manteniendo la interfaz limpia y sin distracciones.
 
 ---
 
-## ⌨️ Navegación Completa con Teclado
-- **Experiencia Nativa**: Usa las teclas `Flecha Arriba`/`Flecha Abajo` para navegar sin problemas entre pestañas y marcadores.
-- **Micro-Interacciones**: Usa `Flecha Izquierda`/`Flecha Derecha` para navegar y activar botones internos (como Cerrar, Añadir a Grupo).
-- **Integración de Búsqueda**: Presiona `Arriba` en la parte superior de la lista para enfocar la barra de búsqueda; presiona `Abajo` en la barra de búsqueda para saltar a los resultados.
-- **Consejo de Enfoque**: Una vez abierta la barra lateral, simplemente presiona cualquier tecla de flecha para tomar el foco automáticamente y comenzar a navegar.
-
-## ⌨️ Atajos de Productividad
-- **Cmd/Ctrl + I**: Alternar Barra Lateral
-- **Opt/Alt + T**: Crear nueva pestaña junto a la actual
+## ⌨️ Navegación completa por teclado y atajos
+- **Experiencia nativa**: Usa las teclas `Flecha Arriba`/`Abajo` para navegar sin problemas entre pestañas y marcadores.
+- **Micro-interacciones**: Usa `Izquierda`/`Derecha` para navegar y activar botones internos (como cerrar o añadir a grupo).
+- **Atajos de productividad**:
+    - `F2`: Renombrar instantáneamente cualquier pestaña o marcador.
+    - `Suprimir`: Eliminar rápidamente elementos no deseados.
+    - `Cmd/Ctrl + I`: Alternar la barra lateral.
+    - `Opt/Alt + T`: Crear una nueva pestaña junto a la actual.
+- **Integración con la búsqueda**: Pulsa `Arriba` al inicio de la lista para enfocar la barra de búsqueda; pulsa `Abajo` en la barra de búsqueda para saltar a los resultados.
+- **Consejo de enfoque**: Una vez abierta la barra lateral, pulsa cualquier tecla de flecha para obtener el foco automáticamente y empezar a navegar.
 
 ---
 

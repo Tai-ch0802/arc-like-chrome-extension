@@ -12,16 +12,20 @@
 
 Dies ist ein Chrome-Erweiterungsprojekt, das darauf abzielt, eine vertikale Seitenleiste im Stil des Arc-Browsers in Google Chrome zu integrieren und ein einheitliches, leistungsstarkes Panel für die Verwaltung von Tabs und Lesezeichen bereitzustellen.
 
-## 🚀 Neues Release v1.11.0 Update!
-[![Demo Video](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 Neues Update v1.12.0!
+[![Demo-Video](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
-### ⚡️ Features
-- **Vertikale Tabs**: Vollständige Seitentitel anzeigen, nicht mehr zu winzigen Symbolen komprimiert.
-- **Tab-Gruppen**: Integriert sich perfekt in Chrome-Tab-Gruppen und synchronisiert Farben und Namen.
-- **Lesezeichen-Integration**: Einheitliches Panel für die Verwaltung von Tabs und Lesezeichen.
-- **Verknüpfte Tabs**: Erstellt beim Öffnen eines Lesezeichens automatisch einen „Link“, um Duplikate zu vermeiden.
-- **Fensterübergreifende Suche**: Suche in Tabs und Lesezeichen über alle geöffneten Fenster hinweg.
-- **Dynamisches Rendering**: Effizientes Rendering für große Lesezeichen-Bibliotheken.
+### ⚡️ Funktionen
+- **Benutzerdefiniertes Hintergrundbild**: Legen Sie Ihren eigenen Hintergrund für die Sidebar fest (Upload oder URL), inkl. Deckkraft und Unschärfe.
+- **Überarbeitetes Einstellungs-UI**: Ein übersichtlicheres Erlebnis mit einem neuen ausklappbaren Akkordeon-Layout.
+- **Eigene Themenfarben**: Volle Kontrolle über Hintergrund-, Akzent- und Textfarben.
+- **Vertikale Tabs**: Vollständige Seitentitel sehen, nicht mehr zu winzigen Icons komprimiert.
+- **Tab-Gruppen**: Integriert sich perfekt in Chrome-Tab-Gruppen, synchronisiert Farben und Namen.
+- **Lesezeichen-Integration**: Einheitliches Panel zur Verwaltung von Tabs und Lesezeichen.
+- **Verknüpfte Tabs**: Erstellt automatisch eine „Verknüpfung“, wenn ein Lesezeichen geöffnet wird, um Dubletten zu vermeiden.
+- **Fensterübergreifende Verwaltung**: Tabs über alle Fenster hinweg verwalten mit globaler Suche.
+- **Dynamisches Rendering**: Verarbeitet tausende Lesezeichen effizient mit flüssiger Performance.
+- **Barrierefreiheit**: Schnelle Aktionen mit `F2` zum Umbenennen und `Entf` zum Löschen.
 
 ## 🤝 Mitwirken
 

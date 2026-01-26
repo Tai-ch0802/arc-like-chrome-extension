@@ -12,16 +12,20 @@
 
 Este es un proyecto de extensión de Chrome que tiene como objetivo llevar una experiencia de barra lateral vertical similar al navegador Arc a Google Chrome, proporcionando un panel unificado y potente para gestionar pestañas y marcadores.
 
-## 🚀 ¡Actualización de la nueva versión v1.11.0!
-[![Vídeo de demostración](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 ¡Nueva actualización v1.12.0! 
+[![Video de demostración](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
-### ⚡️ Características
-- **Pestañas verticales**: Visualiza los títulos de página completos, sin que se compriman en iconos minúsculos.
-- **Grupos de pestañas**: Se integra perfectamente con los grupos de pestañas de Chrome, sincronizando colores y nombres.
-- **Integración de marcadores**: Panel unificado para la gestión de pestañas y marcadores.
-- **Pestañas vinculadas**: Crea automáticamente un "Enlace" al abrir un marcador, evitando duplicados.
-- **Búsqueda en varias ventanas**: Busca pestañas y marcadores en todas las ventanas abiertas.
-- **Renderizado dinámico**: Renderizado eficiente para grandes bibliotecas de marcadores.
+### ⚡️ Funciones
+- **Imagen de fondo personalizada**: Sube tu propia imagen o usa una URL, con ajustes de opacidad y desenfoque.
+- **Interfaz de ajustes renovada**: Una experiencia más limpia con un nuevo diseño de acordeón desplegable.
+- **Colores de tema personalizados**: Control total sobre los colores de fondo, de acento y de texto.
+- **Pestañas verticales**: Mira los títulos completos, sin comprimirse en iconos diminutos.
+- **Grupos de pestañas**: Se integra perfectamente con los grupos de Chrome, sincronizando colores y nombres.
+- **Integración de marcadores**: Panel unificado para gestionar pestañas y marcadores.
+- **Pestañas vinculadas**: Crea automáticamente un "vínculo" al abrir un marcador para evitar duplicados.
+- **Gestión entre ventanas**: Gestiona pestañas de todas las ventanas abiertas con búsqueda global.
+- **Renderizado dinámico**: Maneja miles de marcadores eficientemente con un rendimiento fluido.
+- **Atajos de accesibilidad**: Acciones rápidas con `F2` para renombrar y `Suprimir` para eliminar.
 
 ## 🤝 Contribuir
 

@@ -36,22 +36,26 @@ Jangan hanya mencari—temukan secara instan.
 - **Seret & Lepas**: Manajemen intuitif—pindahkan item dengan mudah antara tab, grup, dan folder bookmark.
 - **Seret untuk Menyimpan**: Seret tab ke area bookmark untuk menyimpannya secara instan; seret bookmark ke area tab untuk membukanya.
 
-### 🎨 Desain Premium
-- **Mode Fokus**: Tema gelap yang ramping dengan kontras yang disetel dengan cermat untuk mengurangi ketegangan mata.
-- **Perluas Otomatis**: Arahkan kursor ke folder saat menyeret item untuk memperluas jalur secara otomatis.
-- **Arahkan Cerdas**: Tombol tindakan hanya muncul saat dibutuhkan, menjaga antarmuka tetap bersih dan bebas gangguan.
+### 🎨 Desain Premium & Kustomisasi
+- **Gambar Latar Kustom**: Personalisasi ruang kerja Anda! Unggah gambar sendiri atau gunakan URL. Atur dengan **opasitas** dan **blur** yang dapat disesuaikan untuk tampilan sempurna.
+- **UI Pengaturan Baru**: Nikmati panel pengaturan modern dan teratur dengan tata letak **Akordeon** yang baru, memudahkan konfigurasi bilah sisi Anda.
+- **Warna Tema Kustom**: Melampaui prasetel yang ada. Anda kini memiliki kontrol penuh atas warna latar belakang utama, aksen, dan teks.
+- **Mode Fokus**: Tema gelap yang apik dengan kontras yang disetel dengan hati-hati untuk mengurangi ketegangan mata.
+- **Ekspansi Otomatis**: Arahkan kursor ke folder saat menyeret item untuk memperluas jalur secara otomatis.
+- **Hover Cerdas**: Tombol tindakan hanya muncul saat dibutuhkan, menjaga antarmuka tetap bersih dan bebas gangguan.
 
 ---
 
-## ⌨️ Navigasi Keyboard Lengkap
-- **Pengalaman Asli**: Gunakan tombol `Panah Atas`/`Panah Bawah` untuk menavigasi dengan mulus antara tab dan bookmark.
-- **Interaksi Mikro**: Gunakan `Panah Kiri`/`Panah Kanan` untuk menavigasi dan memicu tombol internal (seperti Tutup, Tambahkan ke Grup).
+## ⌨️ Navigasi Keyboard Lengkap & Pintasan
+- **Pengalaman Native**: Gunakan tombol `Panah Atas`/`Bawah` untuk menavigasi secara mulus antara tab dan markah.
+- **Mikro-Interaksi**: Gunakan `Kiri`/`Kanan` untuk menavigasi dan memicu tombol internal (seperti Tutup, Tambah ke Grup).
+- **Pintasan Produktivitas**:
+    - `F2`: Ubah nama tab atau markah secara instan.
+    - `Delete`: Hapus item yang tidak diinginkan dengan cepat.
+    - `Cmd/Ctrl + I`: Buka/Tutup Bilah Sisi.
+    - `Opt/Alt + T`: Buat tab baru di samping tab saat ini.
 - **Integrasi Pencarian**: Tekan `Atas` di bagian atas daftar untuk memfokuskan bilah pencarian; tekan `Bawah` di bilah pencarian untuk melompat ke hasil.
-- **Tip Fokus**: Setelah bilah samping terbuka, cukup tekan tombol panah apa saja untuk mengambil fokus secara otomatis dan mulai menavigasi.
-
-## ⌨️ Pintasan Produktivitas
-- **Cmd/Ctrl + I**: Beralih Bilah Samping
-- **Opt/Alt + T**: Buat tab baru di sebelah yang sekarang
+- **Tip Fokus**: Setelah bilah sisi terbuka, cukup tekan tombol panah apa saja untuk mengambil fokus secara otomatis dan mulai menavigasi.
 
 ---
 

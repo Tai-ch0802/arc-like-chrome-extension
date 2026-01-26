@@ -36,22 +36,26 @@ Suchen Sie nicht nur – finden Sie sofort.
 - **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichenordnern.
 - **Drag to Save**: Ziehen Sie einen Tab in den Lesezeichenbereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tabbereich, um es zu öffnen.
 
-### 🎨 Premium-Design
-- **Fokus-Modus**: Ein elegantes dunkles Design mit sorgfältig abgestimmtem Kontrast zur Reduzierung der Augenbelastung.
-- **Auto-Expand**: Bewegen Sie den Mauszeiger beim Ziehen von Elementen über Ordner, um den Pfad automatisch zu erweitern.
-- **Smart Hover**: Aktionsschaltflächen erscheinen nur bei Bedarf und halten die Oberfläche sauber und ablenkungsfrei.
+### 🎨 Premium-Design & Anpassung
+- **Benutzerdefiniertes Hintergrundbild**: Personalisieren Sie Ihren Arbeitsbereich! Laden Sie Ihr eigenes Bild hoch oder verwenden Sie eine URL. Passen Sie die **Deckkraft** und **Unschärfe** für den perfekten Look an.
+- **Überarbeitetes Einstellungs-UI**: Genießen Sie ein modernes, organisiertes Einstellungs-Panel mit einem neuen **Akkordeon-Layout**, das die Konfiguration Ihrer Sidebar einfacher denn je macht.
+- **Eigene Themenfarben**: Gehen Sie über Voreinstellungen hinaus. Sie haben jetzt die volle Kontrolle über Hintergrund-, Akzent- und Textfarben.
+- **Fokus-Modus**: Ein elegantes dunkles Design mit sorgfältig abgestimmtem Kontrast zur Entlastung der Augen.
+- **Automatisches Erweitern**: Bewegen Sie den Mauszeiger beim Ziehen von Elementen über Ordner, um den Pfad automatisch zu erweitern.
+- **Smart Hover**: Aktionstasten erscheinen nur bei Bedarf, was die Benutzeroberfläche sauber und ablenkungsfrei hält.
 
 ---
 
-## ⌨️ Vollständige Tastaturnavigation
-- **Native Erfahrung**: Verwenden Sie die Pfeiltasten `Pfeil nach oben`/`Pfeil nach unten`, um nahtlos zwischen Tabs und Lesezeichen zu navigieren.
-- **Mikrointeraktionen**: Verwenden Sie `Pfeil nach links`/`Pfeil nach rechts`, um interne Schaltflächen (wie Schließen, Zu Gruppe hinzufügen) anzusteuern und auszulösen.
-- **Suchintegration**: Drücken Sie oben in der Liste `Pfeil nach oben`, um das Suchfeld zu fokussieren; drücken Sie im Suchfeld `Pfeil nach unten`, um zu den Ergebnissen zu springen.
-- **Fokus-Tipp**: Sobald die Seitenleiste geöffnet ist, drücken Sie einfach eine beliebige Pfeiltaste, um automatisch den Fokus zu erhalten und mit der Navigation zu beginnen.
-
-## ⌨️ Produktivitäts-Shortcuts
-- **Cmd/Ctrl + I**: Seitenleiste umschalten
-- **Opt/Alt + T**: Neuen Tab neben dem aktuellen erstellen
+## ⌨️ Volle Tastaturnavigation & Shortcuts
+- **Native Erfahrung**: Nutzen Sie `Pfeiltaste oben`/`unten`, um nahtlos zwischen Tabs und Lesezeichen zu navigieren.
+- **Mikro-Interaktionen**: Nutzen Sie `Links`/`Rechts`, um zu navigieren und interne Schaltflächen (wie Schließen, Zu Gruppe hinzufügen) auszulösen.
+- **Produktivitäts-Shortcuts**:
+    - `F2`: Jedes Tab oder Lesezeichen sofort umbenennen.
+    - `Entf`: Unerwünschte Elemente schnell entfernen.
+    - `Cmd/Ctrl + I`: Sidebar umschalten.
+    - `Opt/Alt + T`: Neues Tab neben dem aktuellen erstellen.
+- **Such-Integration**: Drücken Sie `Oben` am Anfang der Liste, um die Suchleiste zu fokussieren; drücken Sie `Unten` in der Suchleiste, um zu den Ergebnissen zu springen.
+- **Fokus-Tipp**: Sobald die Sidebar geöffnet ist, drücken Sie einfach eine beliebige Pfeiltaste, um automatisch den Fokus zu erhalten und mit der Navigation zu beginnen.
 
 ---
 

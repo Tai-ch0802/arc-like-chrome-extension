@@ -12,16 +12,20 @@
 
 C'est un projet d'extension Chrome qui vise à apporter une expérience de barre latérale verticale de type navigateur Arc à Google Chrome, offrant un panneau unifié et puissant pour la gestion des onglets et des signets.
 
-## 🚀 Nouvelle version v1.11.0 mise à jour !
-[![Vidéo de démonstration](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 Mise à jour v1.12.0 !
+[![Vidéo de démonstration](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
 ### ⚡️ Fonctionnalités
-- **Onglets verticaux** : Affichage des titres de page complets, plus compressés en de minuscules icônes.
-- **Groupes d'onglets** : S'intègre parfaitement aux groupes d'onglets Chrome, synchronisant les couleurs et les noms.
-- **Intégration des signets** : Panneau unifié pour la gestion des onglets et des signets.
-- **Onglets liés** : Crée automatiquement un "Lien" lors de l'ouverture d'un signet, évitant les doublons.
-- **Recherche multi-fenêtres** : Recherche d'onglets et de signets dans toutes les fenêtres ouvertes.
-- **Rendu dynamique** : Rendu efficace pour les grandes bibliothèques de signets.
+- **Image d'arrière-plan personnalisée** : Définissez votre propre fond (upload ou URL), avec opacité et flou réglables.
+- **Interface de paramètres repensée** : Une expérience plus fluide avec un nouveau design en accordéon pliable.
+- **Couleurs de thème personnalisées** : Contrôle total sur l'arrière-plan, la couleur d'accent et le texte.
+- **Onglets verticaux** : Affichez les titres complets des pages, sans qu'ils soient réduits à de petites icônes.
+- **Groupes d'onglets** : S'intègre parfaitement aux groupes d'onglets Chrome, synchronisant couleurs et noms.
+- **Intégration des favoris** : Panneau unifié pour gérer les onglets et les favoris.
+- **Onglets liés** : Crée automatiquement un "lien" lors de l'ouverture d'un favori pour éviter les doublons.
+- **Gestion inter-fenêtres** : Gérez les onglets de toutes les fenêtres ouvertes avec une recherche globale.
+- **Rendu dynamique** : Gère efficacement des milliers de favoris avec des performances fluides.
+- **Raccourcis d'accessibilité** : Actions rapides avec `F2` pour renommer et `Suppr` pour supprimer.
 
 ## 🤝 Contribuer
 

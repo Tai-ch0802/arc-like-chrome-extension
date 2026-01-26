@@ -12,16 +12,20 @@
 
 Đây là một dự án tiện ích mở rộng Chrome nhằm mang lại trải nghiệm thanh bên dọc giống trình duyệt Arc cho Google Chrome, cung cấp một bảng điều khiển thống nhất và mạnh mẽ để quản lý các tab và dấu trang (bookmarks).
 
-## 🚀 Cập nhật phiên bản mới v1.11.0!
-[![Video mô tả](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 Cập nhật phiên bản mới v1.12.0! 
+[![Video Demo](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
 ### ⚡️ Tính năng
+- **Hình nền tùy chỉnh**: Thiết lập hình nền thanh bên bằng cách tải lên hoặc sử dụng URL, với độ mờ và độ nhòe có thể điều chỉnh.
+- **Giao diện cài đặt mới**: Trải nghiệm sạch sẽ, ngăn nắp hơn với bố cục Accordion có thể thu gọn.
+- **Màu chủ đề tùy chỉnh**: Kiểm soát hoàn toàn màu nền chính, màu nhấn và màu văn bản.
 - **Tab dọc**: Xem tiêu đề trang đầy đủ, không còn bị nén thành các biểu tượng nhỏ xíu.
-- **Nhóm tab**: Tích hợp hoàn hảo với các Nhóm tab của Chrome, đồng bộ hóa màu sắc và tên.
-- **Tích hợp dấu trang**: Bảng điều khiển thống nhất để quản lý cả tab và dấu trang.
-- **Tab liên kết**: Tự động tạo một "Liên kết" khi mở một dấu trang, giúp tránh mở lặp lại.
-- **Tìm kiếm đa cửa sổ**: Tìm kiếm tab và dấu trang trên tất cả các cửa sổ Chrome đang mở.
-- **Kết xuất động**: Kết xuất (rendering) hiệu quả cho các thư viện dấu trang lớn.
+- **Nhóm Tab**: Tích hợp hoàn hảo với Nhóm Tab của Chrome, đồng bộ hóa màu sắc và tên.
+- **Tích hợp Dấu trang**: Bảng điều khiển thống nhất để quản lý cả tab và dấu trang.
+- **Tab được liên kết**: Tự động tạo "Liên kết" khi mở dấu trang để tránh trùng lặp.
+- **Quản lý đa cửa sổ**: Quản lý tab trên tất cả các cửa sổ đang mở với chức năng tìm kiếm toàn cục.
+- **Dynamic Rendering**: Xử lý hàng ngàn dấu trang một cách hiệu quả với hiệu suất mượt mà.
+- **Phím tắt hỗ trợ**: Các thao tác nhanh với `F2` để đổi tên và `Delete` để xóa mục.
 
 ## 🤝 Tham gia đóng góp
 

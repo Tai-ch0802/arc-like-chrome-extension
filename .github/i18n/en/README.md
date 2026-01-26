@@ -12,16 +12,20 @@
 
 This is a Chrome extension project that aims to bring an Arc browser-like vertical sidebar experience to Google Chrome, providing a unified and powerful panel for managing tabs and bookmarks.
 
-## 🚀 New Release v1.11.0 update! 
-[![Demo Video](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 New Release v1.12.0 update! 
+[![Demo Video](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
 ### ⚡️ Features
+- **Custom Background Image**: Set your own sidebar background via upload or URL, with adjustable opacity and blur.
+- **Revamped Settings UI**: A cleaner, organized experience with a new collapsible accordion layout.
+- **Custom Theme Colors**: Full control over main background, accent, and text colors.
 - **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
 - **Tab Groups**: Perfectly integrates with Chrome Tab Groups, syncing colors and names.
 - **Bookmarks Integration**: Unified panel for managing tabs and bookmarks.
 - **Linked Tabs**: Automatically creates a "Link" when opening a bookmark, avoiding duplicates.
-- **Cross-Window Search**: Search tabs and bookmarks across all open windows.
-- **Dynamic Rendering**: Efficient rendering for large bookmark libraries.
+- **Cross-Window Management**: Manage tabs across all open windows with global search.
+- **Dynamic Rendering**: Efficiently handles thousands of bookmarks with smooth performance.
+- **Accessibility Shortcuts**: Quick actions with `F2` for renaming and `Delete` for removing items.
 
 ## 🤝 Contributing
 

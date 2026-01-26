@@ -12,16 +12,20 @@
 
 Este é um projeto de extensão para o Chrome que visa trazer uma experiência de barra lateral vertical ao estilo do navegador Arc para o Google Chrome, fornecendo um painel unificado e poderoso para gerenciar abas e favoritos.
 
-## 🚀 Nova versão v1.11.0 atualizada!
-[![Vídeo de demonstração](http://img.youtube.com/vi/Ld4lyaZatWo/0.jpg)](https://www.youtube.com/watch?v=Ld4lyaZatWo)
+## 🚀 Nova atualização v1.12.0! 
+[![Vídeo de Demonstração](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
 
-### ⚡️ Recursos
-- **Abas verticais**: Veja os títulos completos das páginas, sem que fiquem comprimidos em ícones minúsculos.
-- **Grupos de abas**: Integra-se perfeitamente aos grupos de abas do Chrome, sincronizando cores e nomes.
-- **Integração de favoritos**: Painel unificado para gerenciar abas e favoritos.
-- **Abas vinculadas**: Cria automaticamente um "Link" ao abrir um favorito, evitando duplicatas.
-- **Busca entre janelas**: Pesquise abas e favoritos em todas as janelas abertas.
-- **Renderização dinâmica**: Renderização eficiente para grandes bibliotecas de favoritos.
+### ⚡️ Funcionalidades
+- **Imagem de Fundo Personalizada**: Defina seu próprio fundo via upload ou URL, com ajuste de opacidade e desfoque.
+- **Interface de Configurações Renovada**: Uma experiência mais limpa com um novo layout de acordeão colapsável.
+- **Cores de Tema Personalizadas**: Controle total sobre o fundo principal, cor de destaque e cores de texto.
+- **Abas Verticais**: Veja títulos completos de páginas, sem serem comprimidos em ícones minúsculos.
+- **Grupos de Abas**: Integra-se perfeitamente aos Grupos de Abas do Chrome, sincronizando cores e nomes.
+- **Integração de Favoritos**: Painel unificado para gerenciar abas e favoritos.
+- **Abas Vinculadas**: Cria automaticamente um "Vínculo" ao abrir um favorito, evitando duplicatas.
+- **Gerenciamento entre Janelas**: Gerencie abas de todas as janelas abertas com busca global.
+- **Renderização Dinâmica**: Lida de forma eficiente com milhares de favoritos com desempenho fluido.
+- **Atalhos de Acessibilidade**: Ações rápidas com `F2` para renomear e `Delete` para remover itens.
 
 ## 🤝 Contribuindo
 

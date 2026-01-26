@@ -36,22 +36,26 @@ Ne cherchez pas seulement — trouvez instantanément.
 - **Glisser-Déposer** : Gestion intuitive — déplacez les éléments sans effort entre les onglets, les groupes et les dossiers de favoris.
 - **Glisser pour Sauvegarder** : Faites glisser un onglet dans la zone des favoris pour le sauvegarder instantanément ; faites glisser un favori dans la zone des onglets pour l'ouvrir.
 
-### 🎨 Design Premium
+### 🎨 Design Premium & Personnalisation
+- **Image d'arrière-plan personnalisée** : Personnalisez votre espace de travail ! Téléchargez votre propre image ou utilisez une URL. Ajustez l'**opacité** et le **flou** pour un rendu parfait.
+- **Interface de paramètres repensée** : Profitez d'un panneau de paramètres moderne et organisé avec un nouveau **design en accordéon**, rendant la configuration plus intuitive que jamais.
+- **Couleurs de thème personnalisées** : Allez au-delà des préréglages. Vous avez désormais un contrôle total sur l'arrière-plan, la couleur d'accent et le texte.
 - **Mode Focus** : Un thème sombre élégant avec un contraste soigneusement ajusté pour réduire la fatigue oculaire.
-- **Auto-Expansion** : Survolez les dossiers tout en faisant glisser des éléments pour développer automatiquement le chemin.
-- **Survol Intelligent** : Les boutons d'action n'apparaissent que lorsque nécessaire, gardant l'interface propre et sans distraction.
+- **Auto-expansion** : Survolez les dossiers tout en faisant glisser des éléments pour développer automatiquement le chemin.
+- **Survol intelligent** : Les boutons d'action n'apparaissent que lorsque nécessaire, gardant l'interface propre et sans distraction.
 
 ---
 
-## ⌨️ Navigation Complète au Clavier
-- **Expérience Native** : Utilisez les touches `Flèche Haut`/`Flèche Bas` pour naviguer de manière fluide entre les onglets et les favoris.
-- **Micro-Interactions** : Utilisez `Flèche Gauche`/`Flèche Droite` pour naviguer et déclencher les boutons internes (comme Fermer, Ajouter au Groupe).
-- **Intégration de la Recherche** : Appuyez sur `Haut` en haut de la liste pour cibler la barre de recherche ; appuyez sur `Bas` dans la barre de recherche pour passer aux résultats.
-- **Astuce de Focus** : Une fois la barre latérale ouverte, appuyez simplement sur n'importe quelle flèche pour prendre automatiquement le focus et commencer à naviguer.
-
-## ⌨️ Raccourcis de Productivité
-- **Cmd/Ctrl + I** : Basculer la Barre Latérale
-- **Opt/Alt + T** : Créer un nouvel onglet à côté de l'actuel
+## ⌨️ Navigation clavier complète & Raccourcis
+- **Expérience native** : Utilisez les touches `Flèche Haut`/`Bas` pour naviguer de manière fluide entre les onglets et les favoris.
+- **Micro-interactions** : Utilisez `Gauche`/`Droite` pour naviguer et déclencher les boutons internes (comme Fermer, Ajouter au groupe).
+- **Raccourcis de productivité** :
+    - `F2` : Renommer instantanément n'importe quel onglet ou favori.
+    - `Suppr` : Supprimer rapidement les éléments indésirables.
+    - `Cmd/Ctrl + I` : Afficher/Masquer la barre latérale.
+    - `Opt/Alt + T` : Créer un nouvel onglet à côté de l'onglet actuel.
+- **Intégration de la recherche** : Appuyez sur `Haut` en haut de la liste pour focaliser la barre de recherche ; appuyez sur `Bas` dans la barre de recherche pour accéder aux résultats.
+- **Astuce focus** : Une fois la barre latérale ouverte, appuyez simplement sur n'importe quelle touche fléchée pour prendre le focus automatiquement et commencer la navigation.
 
 ---
 
