@@ -272,8 +272,11 @@ async function filterBookmarks(keywords) {
         }
     }
 
-    // 從 Chrome API 取得完整書籤樹，然後過濾
-    const tree = await api.getBookmarkTree();
+    // 從快取或 Chrome API 取得完整書籤樹，然後過濾
+    let tree = state.getBookmarkTreeFromCache();
+    if (!tree) {
+        tree = await api.getBookmarkTree();
+    }
     if (!tree[0] || !tree[0].children) return 0;
 
     // 過濾樹：只保留 visibleIds 中的節點

@@ -207,6 +207,7 @@ export const getAllLinkedTabs = () => {
 
 const BOOKMARK_CACHE_KEY = 'arc_sidebar_bookmark_cache';
 let bookmarkCache = []; // In-memory cache: [{ id, title, url, parentId, type, path }, ...]
+let bookmarkTreeCache = null; // In-memory cache of the full tree structure
 
 /**
  * Flattens a bookmark tree into a searchable array with path information.
@@ -252,6 +253,7 @@ export async function buildBookmarkCache() {
   try {
     const tree = await chrome.bookmarks.getTree();
     if (tree[0] && tree[0].children) {
+      bookmarkTreeCache = tree;
       bookmarkCache = flattenBookmarkTree(tree[0].children, [], []);
       localStorage.setItem(BOOKMARK_CACHE_KEY, JSON.stringify(bookmarkCache));
     }
@@ -281,4 +283,12 @@ export function loadBookmarkCache() {
  */
 export function getBookmarkCache() {
   return bookmarkCache;
+}
+
+/**
+ * Returns the in-memory bookmark tree cache.
+ * @returns {Array|null} The bookmark tree structure.
+ */
+export function getBookmarkTreeFromCache() {
+  return bookmarkTreeCache;
 }
