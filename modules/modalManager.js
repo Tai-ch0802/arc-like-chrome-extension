@@ -291,7 +291,11 @@ export function showCustomDialog({ title, content, closeButtonText = api.getMess
 
         const customContentEl = document.createElement('div');
         customContentEl.className = 'modal-custom-content';
-        customContentEl.innerHTML = content;
+        if (content instanceof Node) {
+            customContentEl.appendChild(content);
+        } else {
+            customContentEl.innerHTML = content;
+        }
 
         const buttonsEl = document.createElement('div');
         buttonsEl.className = 'modal-buttons';
