@@ -423,5 +423,13 @@
     "errorImageProcessing": {
         "message": "圖片處理失敗。",
         "description": "圖片處理錯誤訊息"
+    },
+    "labelImageApplied": {
+        "message": "已套用背景圖片",
+        "description": "背景圖片啟用時的狀態文字"
+    },
+    "labelAdvancedSettings": {
+        "message": "調整設定",
+        "description": "可折疊設定區塊的標籤"
     }
 }

@@ -426,5 +426,13 @@
     "errorImageProcessing": {
         "message": "Failed to process image.",
         "description": "Error message for image processing"
+    },
+    "labelImageApplied": {
+        "message": "Background image applied",
+        "description": "Status text when background image is active"
+    },
+    "labelAdvancedSettings": {
+        "message": "Adjust Settings",
+        "description": "Label for collapsible settings section"
     }
 }

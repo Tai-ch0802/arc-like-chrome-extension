@@ -1454,3 +1454,200 @@ mark.url-match {
 .modal-button.full-width {
     width: 100%;
 }
+
+/* --- Background Image Status --- */
+.bg-image-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--element-bg-color);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-color-secondary);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--text-color-secondary);
+}
+
+.status-dot.active {
+    background-color: #22c55e;
+    /* Green */
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+}
+
+/* --- Collapsible Section --- */
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--element-bg-color);
+    color: var(--text-color-primary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.collapsible-header:hover {
+    background-color: var(--element-bg-hover-color);
+}
+
+.collapsible-header .chevron-icon {
+    transition: transform 0.2s ease;
+}
+
+.collapsible-header.expanded .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease-out, opacity 0.2s ease;
+    opacity: 0;
+}
+
+.collapsible-content.expanded {
+    max-height: 400px;
+    opacity: 1;
+    padding-top: 12px;
+}
+
+/* --- Settings Groups --- */
+.settings-group {
+    padding: 12px;
+    background-color: var(--element-bg-color);
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.settings-group:last-child {
+    margin-bottom: 0;
+}
+
+/* --- Position Controls (side by side) --- */
+.position-controls {
+    display: flex;
+    gap: 16px;
+}
+
+.position-controls .control-group {
+    flex: 1;
+}
+
+.control-group.compact {
+    gap: 4px;
+}
+
+.toggle-group.small .toggle-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+/* --- Danger Outline Button --- */
+.modal-button.danger-outline {
+    background-color: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    margin-top: 12px;
+}
+
+.modal-button.danger-outline:hover {
+    background-color: var(--danger-color);
+    color: var(--text-color-inverted);
+}
+
+/* --- Remove button spacing --- */
+#btn-remove-bg {
+    margin-top: 16px;
+}
+
+/* ===========================================
+   Settings Modal Accordion Styles
+   =========================================== */
+
+.settings-section.collapsible {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.settings-section.collapsible:last-child {
+    margin-bottom: 0;
+}
+
+.settings-section-header.collapsible-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    background-color: var(--element-bg-color);
+    color: var(--text-color-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-align: left;
+}
+
+.settings-section-header.collapsible-toggle:hover {
+    background-color: var(--element-bg-hover-color);
+}
+
+.settings-section-header.collapsible-toggle .chevron-icon {
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+
+.settings-section-header.collapsible-toggle.expanded .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.settings-section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.2s ease, padding 0.2s ease;
+    padding: 0 16px;
+    background-color: var(--main-bg-color);
+}
+
+.settings-section-content.expanded {
+    max-height: 1000px;
+    /* Large enough to fit content */
+    opacity: 1;
+    padding: 16px;
+}
+
+/* Spacing for content inside sections */
+.settings-section-content p {
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--text-color-secondary);
+    line-height: 1.5;
+}
+
+.settings-section-content p:last-child {
+    margin-bottom: 0;
+}
+
+.settings-section-content .modal-button {
+    margin-top: 8px;
+}
+
+/* Theme options spacing */
+.settings-section-content .theme-options {
+    margin-bottom: 12px;
+}

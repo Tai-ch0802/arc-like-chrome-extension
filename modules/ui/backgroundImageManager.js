@@ -223,8 +223,21 @@ export function createBackgroundPanelHtml(config) {
     const cfg = config || DEFAULT_CONFIG;
     const isUpload = cfg.storageType === 'file';
 
+    // Chevron icon for collapsible section
+    const chevronIcon = `<svg class="chevron-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+
     return `
         <div class="bg-image-panel">
+            <!-- Image Status (shown when image exists) -->
+            ${cfg.hasImage ? `
+                <div class="bg-image-status">
+                    <span class="status-dot active"></span>
+                    <span>${api.getMessage('labelImageApplied') || 'Background image applied'}</span>
+                </div>
+            ` : ''}
+
             <!-- Source Toggle -->
             <div class="control-group">
                 <label>${api.getMessage('labelBgSource') || 'Source'}</label>
@@ -250,37 +263,54 @@ export function createBackgroundPanelHtml(config) {
                 </div>
             </div>
 
-            <!-- Controls (shown only when image exists) -->
+            <!-- Collapsible Settings Section (shown only when image exists) -->
             <div id="bg-controls" class="${cfg.hasImage ? '' : 'hidden'}">
-                <div class="control-group">
-                    <label>${api.getMessage('labelOpacity') || 'Opacity'}: <span id="opacity-value">${cfg.opacity}</span></label>
-                    <input type="range" id="bg-opacity" min="0.1" max="1" step="0.1" value="${cfg.opacity}" />
-                </div>
+                <!-- Collapsible Header -->
+                <button class="collapsible-header" id="bg-settings-toggle" aria-expanded="false">
+                    ${chevronIcon}
+                    <span>${api.getMessage('labelAdvancedSettings') || 'Adjust Settings'}</span>
+                </button>
 
-                <div class="control-group">
-                    <label>${api.getMessage('labelBlur') || 'Blur'}: <span id="blur-value">${cfg.blur}px</span></label>
-                    <input type="range" id="bg-blur" min="0" max="20" step="1" value="${cfg.blur}" />
-                </div>
+                <!-- Collapsible Content -->
+                <div class="collapsible-content" id="bg-settings-content">
+                    <!-- Sliders Group -->
+                    <div class="settings-group">
+                        <div class="control-group">
+                            <label>${api.getMessage('labelOpacity') || 'Opacity'}: <span id="opacity-value">${cfg.opacity}</span></label>
+                            <input type="range" id="bg-opacity" min="0.1" max="1" step="0.1" value="${cfg.opacity}" />
+                        </div>
 
-                <div class="control-group">
-                    <label>${api.getMessage('labelPositionX') || 'Horizontal'}</label>
-                    <div class="toggle-group" id="bg-pos-x">
-                        <button class="toggle-btn ${cfg.positionX === 'left' ? 'active' : ''}" data-value="left">L</button>
-                        <button class="toggle-btn ${cfg.positionX === 'center' ? 'active' : ''}" data-value="center">C</button>
-                        <button class="toggle-btn ${cfg.positionX === 'right' ? 'active' : ''}" data-value="right">R</button>
+                        <div class="control-group">
+                            <label>${api.getMessage('labelBlur') || 'Blur'}: <span id="blur-value">${cfg.blur}px</span></label>
+                            <input type="range" id="bg-blur" min="0" max="20" step="1" value="${cfg.blur}" />
+                        </div>
+                    </div>
+
+                    <!-- Position Group -->
+                    <div class="settings-group">
+                        <div class="position-controls">
+                            <div class="control-group compact">
+                                <label>${api.getMessage('labelPositionX') || 'Horizontal'}</label>
+                                <div class="toggle-group small" id="bg-pos-x">
+                                    <button class="toggle-btn ${cfg.positionX === 'left' ? 'active' : ''}" data-value="left">L</button>
+                                    <button class="toggle-btn ${cfg.positionX === 'center' ? 'active' : ''}" data-value="center">C</button>
+                                    <button class="toggle-btn ${cfg.positionX === 'right' ? 'active' : ''}" data-value="right">R</button>
+                                </div>
+                            </div>
+                            <div class="control-group compact">
+                                <label>${api.getMessage('labelPositionY') || 'Vertical'}</label>
+                                <div class="toggle-group small" id="bg-pos-y">
+                                    <button class="toggle-btn ${cfg.positionY === 'top' ? 'active' : ''}" data-value="top">T</button>
+                                    <button class="toggle-btn ${cfg.positionY === 'center' ? 'active' : ''}" data-value="center">C</button>
+                                    <button class="toggle-btn ${cfg.positionY === 'bottom' ? 'active' : ''}" data-value="bottom">B</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="control-group">
-                    <label>${api.getMessage('labelPositionY') || 'Vertical'}</label>
-                    <div class="toggle-group" id="bg-pos-y">
-                        <button class="toggle-btn ${cfg.positionY === 'top' ? 'active' : ''}" data-value="top">T</button>
-                        <button class="toggle-btn ${cfg.positionY === 'center' ? 'active' : ''}" data-value="center">C</button>
-                        <button class="toggle-btn ${cfg.positionY === 'bottom' ? 'active' : ''}" data-value="bottom">B</button>
-                    </div>
-                </div>
-
-                <button id="btn-remove-bg" class="modal-button danger full-width">
+                <!-- Remove Button (always visible but with proper spacing) -->
+                <button id="btn-remove-bg" class="modal-button danger-outline full-width">
                     ${api.getMessage('buttonRemoveImage') || 'Remove Image'}
                 </button>
             </div>
@@ -305,6 +335,18 @@ export function setupBackgroundPanelHandlers(container) {
                 container.querySelector('#bg-upload-section').classList.toggle('hidden', !isUpload);
                 container.querySelector('#bg-url-section').classList.toggle('hidden', isUpload);
             }
+        });
+    }
+
+    // Collapsible settings toggle
+    const settingsToggle = container.querySelector('#bg-settings-toggle');
+    const settingsContent = container.querySelector('#bg-settings-content');
+    if (settingsToggle && settingsContent) {
+        settingsToggle.addEventListener('click', () => {
+            const isExpanded = settingsToggle.getAttribute('aria-expanded') === 'true';
+            settingsToggle.setAttribute('aria-expanded', !isExpanded);
+            settingsToggle.classList.toggle('expanded', !isExpanded);
+            settingsContent.classList.toggle('expanded', !isExpanded);
         });
     }
 

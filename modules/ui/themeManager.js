@@ -76,37 +76,75 @@ export function initThemeSwitcher() {
             console.error('Failed to get commands:', error);
         }
 
+        // Chevron icon for collapsible sections
+        const chevronIcon = `<svg class="chevron-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+
         const content = `
-            <div class="settings-section">
-                <h4 class="settings-section-header">${api.getMessage('themeSectionHeader')}</h4>
-                <div class="theme-options">
-                    ${themeSelectHtml}
+            <!-- Theme Section (default expanded) -->
+            <div class="settings-section collapsible" data-expanded="true">
+                <button class="settings-section-header collapsible-toggle expanded" aria-expanded="true">
+                    ${chevronIcon}
+                    <span>${api.getMessage('themeSectionHeader')}</span>
+                </button>
+                <div class="settings-section-content expanded">
+                    <div class="theme-options">
+                        ${themeSelectHtml}
+                    </div>
+                    <div id="custom-theme-container" class="${selectedTheme === 'custom' ? '' : 'hidden'}">
+                        ${customThemePanelHtml}
+                    </div>
                 </div>
-                <div id="custom-theme-container" class="${selectedTheme === 'custom' ? '' : 'hidden'}">
-                    ${customThemePanelHtml}
+            </div>
+
+            <!-- Background Image Section -->
+            <div class="settings-section collapsible">
+                <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                    ${chevronIcon}
+                    <span>${api.getMessage('bgImageSectionHeader') || 'Background Image'}</span>
+                </button>
+                <div class="settings-section-content">
+                    ${bgImagePanelHtml}
                 </div>
             </div>
-            <div class="settings-section">
-                <h4 class="settings-section-header">${api.getMessage('bgImageSectionHeader') || 'Background Image'}</h4>
-                ${bgImagePanelHtml}
+
+            <!-- Shortcuts Section -->
+            <div class="settings-section collapsible">
+                <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                    ${chevronIcon}
+                    <span>${api.getMessage('shortcutSectionHeader')}</span>
+                </button>
+                <div class="settings-section-content">
+                    <p>${api.getMessage('shortcutExplanation')}</p>
+                    <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
+                    <p>${api.getMessage('settingsShortcutCreateTabRight')} <span id="create-new-tab-right-shortcut">${newTabRightShortcut}</span></p>
+                    <button id="open-shortcuts-button" class="modal-button">${api.getMessage('shortcutLinkText')}</button>
+                </div>
             </div>
-            <div class="settings-section">
-                <h4 class="settings-section-header">${api.getMessage('shortcutSectionHeader')}</h4>
-                <p>${api.getMessage('shortcutExplanation')}</p>
-                <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
-                <p>${api.getMessage('settingsShortcutCreateTabRight')} <span
-           id="create-new-tab-right-shortcut">${newTabRightShortcut}</span></p>
-                <button id="open-shortcuts-button" class="modal-button">${api.getMessage('shortcutLinkText')}</button>
+
+            <!-- Side Panel Position Section -->
+            <div class="settings-section collapsible">
+                <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                    ${chevronIcon}
+                    <span>${api.getMessage('sidePanelPositionSectionHeader')}</span>
+                </button>
+                <div class="settings-section-content">
+                    <p>${api.getMessage('sidePanelPositionExplanation')}</p>
+                    <button id="open-appearance-settings-button" class="modal-button">${api.getMessage('sidePanelPositionLinkText')}</button>
+                </div>
             </div>
-            <div class="settings-section">
-                <h4 class="settings-section-header">${api.getMessage('sidePanelPositionSectionHeader')}</h4>
-                <p>${api.getMessage('sidePanelPositionExplanation')}</p>
-                <button id="open-appearance-settings-button" class="modal-button">${api.getMessage('sidePanelPositionLinkText')}</button>
-            </div>
-            <div class="settings-section">
-                <h4 class="settings-section-header">${api.getMessage('aboutSectionHeader')}</h4>
-                <p>${api.getMessage('aboutText')}</p>
-                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" class="modal-link-button">${api.getMessage('githubLinkText')}</a>
+
+            <!-- About Section -->
+            <div class="settings-section collapsible">
+                <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                    ${chevronIcon}
+                    <span>${api.getMessage('aboutSectionHeader')}</span>
+                </button>
+                <div class="settings-section-content">
+                    <p>${api.getMessage('aboutText')}</p>
+                    <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" class="modal-link-button">${api.getMessage('githubLinkText')}</a>
+                </div>
             </div>
         `;
 
@@ -162,6 +200,21 @@ export function initThemeSwitcher() {
                         chrome.runtime.sendMessage({ action: 'openAppearanceSettingsPage' });
                     });
                 }
+
+                // Setup collapsible section toggles
+                const collapsibleToggles = modalContentElement.querySelectorAll('.collapsible-toggle');
+                collapsibleToggles.forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                        const content = toggle.nextElementSibling;
+
+                        toggle.setAttribute('aria-expanded', !isExpanded);
+                        toggle.classList.toggle('expanded', !isExpanded);
+                        if (content) {
+                            content.classList.toggle('expanded', !isExpanded);
+                        }
+                    });
+                });
             }
         });
     });
