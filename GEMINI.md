@@ -34,6 +34,10 @@ key_files:
     description: "[UI] 主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
   - file_path: modules/ui/customThemeManager.js
     description: "[UI] 自訂主題管理。負責顏色選擇器面板 UI、使用者自訂配色儲存與載入、以及 JSON 匯出匯入功能。"
+  - file_path: modules/ui/backgroundImageManager.js
+    description: "[UI] 背景圖片管理。負責背景圖片面板 UI、圖片儲存與載入，以及套用 CSS 背景變數。"
+  - file_path: modules/utils/imageUtils.js
+    description: "[工具] 圖片處理工具。提供圖片壓縮、WebP 轉換、縮放與 URL 抓取功能。"
   - file_path: modules/utils/textUtils.js
     description: "[工具] 文字工具函式庫。提供安全處理 HTML 的工具函式，如 `escapeHtml` 以防止 XSS 攻擊。"
   - file_path: modules/utils/colorUtils.js
