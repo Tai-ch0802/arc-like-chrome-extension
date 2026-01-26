@@ -2,6 +2,7 @@ import * as api from '../apiManager.js';
 import * as modal from '../modalManager.js';
 import * as state from '../stateManager.js';
 import * as customTheme from './customThemeManager.js';
+import * as bgImage from './backgroundImageManager.js';
 
 /**
  * 應用指定的主題到文檔的 body 上。
@@ -54,6 +55,10 @@ export function initThemeSwitcher() {
         // Get custom theme panel HTML
         const customThemePanelHtml = await customTheme.getCustomThemePanelHtml();
 
+        // Get background image panel HTML
+        const bgConfig = await bgImage.loadBackgroundConfig();
+        const bgImagePanelHtml = bgImage.createBackgroundPanelHtml(bgConfig);
+
         // Fetch current shortcut
         let currentShortcut = 'N/A';
         let newTabRightShortcut = 'N/A';
@@ -80,6 +85,10 @@ export function initThemeSwitcher() {
                 <div id="custom-theme-container" class="${selectedTheme === 'custom' ? '' : 'hidden'}">
                     ${customThemePanelHtml}
                 </div>
+            </div>
+            <div class="settings-section">
+                <h4 class="settings-section-header">${api.getMessage('bgImageSectionHeader') || 'Background Image'}</h4>
+                ${bgImagePanelHtml}
             </div>
             <div class="settings-section">
                 <h4 class="settings-section-header">${api.getMessage('shortcutSectionHeader')}</h4>
@@ -135,6 +144,12 @@ export function initThemeSwitcher() {
                     customTheme.setupCustomThemePanel(customThemeContainer);
                 }
 
+                // Setup background image panel handlers
+                const bgImagePanel = modalContentElement.querySelector('.bg-image-panel');
+                if (bgImagePanel) {
+                    bgImage.setupBackgroundPanelHandlers(bgImagePanel.parentElement);
+                }
+
                 const openShortcutsButton = modalContentElement.querySelector('#open-shortcuts-button');
                 if (openShortcutsButton) {
                     openShortcutsButton.addEventListener('click', () => {
@@ -165,4 +180,7 @@ export function initThemeSwitcher() {
             applyTheme(data.theme);
         }
     }).catch(console.error);
+
+    // Load and apply background image (runs in parallel with theme)
+    bgImage.loadAndApplyBackgroundImage().catch(console.error);
 }

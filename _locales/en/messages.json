@@ -370,5 +370,61 @@
     "emptyFolder": {
         "message": "(Empty)",
         "description": "Text shown when a folder has no bookmarks"
+    },
+    "bgImageSectionHeader": {
+        "message": "Background Image",
+        "description": "Header for background image section"
+    },
+    "labelBgSource": {
+        "message": "Source",
+        "description": "Label for background source"
+    },
+    "optionUpload": {
+        "message": "Upload",
+        "description": "Upload option"
+    },
+    "optionUrl": {
+        "message": "URL",
+        "description": "URL option"
+    },
+    "buttonUploadImage": {
+        "message": "Choose Image...",
+        "description": "Button to upload image"
+    },
+    "buttonApply": {
+        "message": "Apply",
+        "description": "Apply button"
+    },
+    "labelOpacity": {
+        "message": "Opacity",
+        "description": "Opacity label"
+    },
+    "labelBlur": {
+        "message": "Blur",
+        "description": "Blur label"
+    },
+    "labelPositionX": {
+        "message": "Horizontal",
+        "description": "Horizontal position label"
+    },
+    "labelPositionY": {
+        "message": "Vertical",
+        "description": "Vertical position label"
+    },
+    "buttonRemoveImage": {
+        "message": "Remove Image",
+        "description": "Button to remove background image"
+    },
+    "labelProcessing": {
+        "message": "Processing...",
+        "description": "Processing status"
+    },
+    "labelSuccess": {
+        "message": "Done!",
+        "description": "Success status"
+    },
+    "errorImageProcessing": {
+        "message": "Failed to process image.",
+        "description": "Error message for image processing"
     }
 }

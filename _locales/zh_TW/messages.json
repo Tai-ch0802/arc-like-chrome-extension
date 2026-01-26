@@ -366,6 +366,62 @@
     },
     "emptyFolder": {
         "message": "(空)",
-        "description": "Text shown when a folder has no bookmarks"
+        "description": "資料夾為空時顯示的文字"
+    },
+    "bgImageSectionHeader": {
+        "message": "背景圖片",
+        "description": "背景圖片區塊標題"
+    },
+    "labelBgSource": {
+        "message": "來源",
+        "description": "背景來源標籤"
+    },
+    "optionUpload": {
+        "message": "上傳",
+        "description": "上傳選項"
+    },
+    "optionUrl": {
+        "message": "網址",
+        "description": "網址選項"
+    },
+    "buttonUploadImage": {
+        "message": "選擇圖片...",
+        "description": "上傳圖片按鈕"
+    },
+    "buttonApply": {
+        "message": "套用",
+        "description": "套用按鈕"
+    },
+    "labelOpacity": {
+        "message": "不透明度",
+        "description": "不透明度標籤"
+    },
+    "labelBlur": {
+        "message": "模糊",
+        "description": "模糊標籤"
+    },
+    "labelPositionX": {
+        "message": "水平位置",
+        "description": "水平位置標籤"
+    },
+    "labelPositionY": {
+        "message": "垂直位置",
+        "description": "垂直位置標籤"
+    },
+    "buttonRemoveImage": {
+        "message": "移除圖片",
+        "description": "移除背景圖片按鈕"
+    },
+    "labelProcessing": {
+        "message": "處理中...",
+        "description": "處理狀態"
+    },
+    "labelSuccess": {
+        "message": "完成！",
+        "description": "成功狀態"
+    },
+    "errorImageProcessing": {
+        "message": "圖片處理失敗。",
+        "description": "圖片處理錯誤訊息"
     }
 }
