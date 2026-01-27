@@ -1,7 +1,7 @@
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
-import { getTabCache } from './ui/tabRenderer.js';
+import { getTabCache, getTabElementsCache } from './ui/tabRenderer.js';
 import { getOtherTabCache } from './ui/otherWindowRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
@@ -81,7 +81,8 @@ function extractDomain(url) {
 
 // 過濾分頁和群組，回傳可見分頁數量
 function filterTabsAndGroups(keywords) {
-    const tabItems = document.querySelectorAll('#tab-list .tab-item');
+    // Optimization: Use DOM element cache to avoid repeated querySelectorAll and DOM reads
+    const tabElements = getTabElementsCache();
     const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
     let visibleCount = 0;
 
@@ -90,8 +91,8 @@ function filterTabsAndGroups(keywords) {
     // Optimization: Track group visibility to avoid querying DOM in group loop
     const groupVisibility = new Map();
 
-    tabItems.forEach(item => {
-        const tabId = parseInt(item.dataset.tabId);
+    for (const [tabId, item] of tabElements) {
+        // Direct cache access using ID from map key
         const tab = tabsCache.get(tabId);
 
         let title, url, groupId;
@@ -100,9 +101,9 @@ function filterTabsAndGroups(keywords) {
             url = tab.url;
             groupId = tab.groupId;
         } else {
-            // Fallback to DOM if not in cache
+            // Fallback to DOM if not in cache (should be rare)
             const titleElement = item.querySelector('.tab-title');
-            title = titleElement.textContent;
+            title = titleElement ? titleElement.textContent : '';
             url = item.dataset.url || '';
             // Try to get groupId from dataset (added in tabRenderer)
             if (item.dataset.groupId) {
@@ -134,7 +135,7 @@ function filterTabsAndGroups(keywords) {
                 groupVisibility.set(groupId, (groupVisibility.get(groupId) || 0) + 1);
             }
         }
-    });
+    }
 
     groupHeaders.forEach(header => {
         const content = header.nextElementSibling;
