@@ -197,6 +197,9 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
     tabItem.dataset.windowId = tab.windowId;
+    if (tab.groupId > 0) {
+        tabItem.dataset.groupId = tab.groupId;
+    }
 
     let urlPreview = tab.url;
     if (urlPreview && urlPreview.length > 300) {

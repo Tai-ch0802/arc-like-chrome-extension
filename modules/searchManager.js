@@ -93,15 +93,20 @@ function filterTabsAndGroups(keywords) {
         const tabId = parseInt(item.dataset.tabId);
         const tab = tabsCache.get(tabId);
 
-        let title, url;
+        let title, url, groupId;
         if (tab) {
             title = tab.title;
             url = tab.url;
+            groupId = tab.groupId;
         } else {
             // Fallback to DOM if not in cache
             const titleElement = item.querySelector('.tab-title');
             title = titleElement.textContent;
             url = item.dataset.url || '';
+            // Try to get groupId from dataset (added in tabRenderer)
+            if (item.dataset.groupId) {
+                groupId = parseInt(item.dataset.groupId);
+            }
         }
 
         const domain = extractDomain(url);
@@ -124,8 +129,8 @@ function filterTabsAndGroups(keywords) {
 
         if (matches) {
             visibleCount++;
-            if (tab && tab.groupId > 0) {
-                groupVisibility.set(tab.groupId, (groupVisibility.get(tab.groupId) || 0) + 1);
+            if (groupId > 0) {
+                groupVisibility.set(groupId, (groupVisibility.get(groupId) || 0) + 1);
             }
         }
     });
@@ -161,6 +166,7 @@ function filterTabsAndGroups(keywords) {
 }
 
 // 過濾其他視窗的分頁（與 filterTabsAndGroups 相同邏輯）
+// TODO: Optimize this function to use caching like filterTabsAndGroups
 function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
