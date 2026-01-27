@@ -174,23 +174,10 @@ function filterOtherWindowsTabs(keywords) {
     const folders = list.querySelectorAll('.window-folder');
     let totalCount = 0;
 
-    // Optimization: Use cache for other windows tabs
+    // Optimization: Use cache to avoid DOM reads for title/url lookup.
+    // We still iterate DOM to toggle 'hidden' class and track group visibility.
     const otherTabsCache = getOtherTabCache();
     const groupVisibility = new Map();
-
-    // Iterate through all tabs in other windows DOM to toggle visibility
-    // We assume the DOM structure: .window-folder -> .folder-content -> (.tab-group-header + .tab-group-content + .tab-item)
-    // Actually renderOtherWindowsSection structure is complexities:
-    // .window-folder
-    // .folder-content
-    //   -> .tab-group-header / .tab-group-content
-    //   -> .tab-item
-
-    // To optimize, we still need to iterate DOM elements to toggle 'hidden' class,
-    // but we use cache to check matching condition instead of reading textContent.
-
-    // However, since tabs are scattered across window folders and groups, simple iteration might be tricky if we want to avoid querySelectorAll on whole list.
-    // Let's stick to traversing the DOM structure but use dataset.tabId to lookup cache.
 
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
@@ -210,15 +197,13 @@ function filterOtherWindowsTabs(keywords) {
                 url = tab.url;
                 groupId = tab.groupId;
             } else {
-                // Fallback
+                // Fallback to DOM if not in cache
                 const titleElement = item.querySelector('.tab-title');
                 title = titleElement ? titleElement.textContent : '';
                 url = item.dataset.url || '';
-                // renderOtherWindowsSection doesn't explicitly set dataset.groupId on tab items if they are inside a group container?
-                // Checking logic: It appends tab to groupContent. 
-                // We can't easily get groupId from tab dataset if not set.
-                // But for search, we need to know if a group has visible children.
-                // Let's rely on traversing up for groupId or just counting per group header in loop below.
+                if (item.dataset.groupId) {
+                    groupId = parseInt(item.dataset.groupId);
+                }
             }
 
             const domain = extractDomain(url);

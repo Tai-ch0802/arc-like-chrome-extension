@@ -32,6 +32,9 @@ function createOtherWindowTabElement(tab) {
     tabItem.tabIndex = 0;
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
+    if (tab.groupId > 0) {
+        tabItem.dataset.groupId = tab.groupId;
+    }
 
     let urlPreview = tab.url;
     if (urlPreview && urlPreview.length > 300) {
