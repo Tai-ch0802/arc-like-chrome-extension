@@ -2,6 +2,7 @@ import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
 import { getTabCache } from './ui/tabRenderer.js';
+import { getOtherTabCache } from './ui/otherWindowRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
 // Debounce 工具函式：延遲執行，避免頻繁觸發
@@ -166,24 +167,60 @@ function filterTabsAndGroups(keywords) {
 }
 
 // 過濾其他視窗的分頁（與 filterTabsAndGroups 相同邏輯）
-// TODO: Optimize this function to use caching like filterTabsAndGroups
 function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
-    const folders = list.querySelectorAll('.bookmark-folder');
+    const folders = list.querySelectorAll('.window-folder');
     let totalCount = 0;
+
+    // Optimization: Use cache for other windows tabs
+    const otherTabsCache = getOtherTabCache();
+    const groupVisibility = new Map();
+
+    // Iterate through all tabs in other windows DOM to toggle visibility
+    // We assume the DOM structure: .window-folder -> .folder-content -> (.tab-group-header + .tab-group-content + .tab-item)
+    // Actually renderOtherWindowsSection structure is complexities:
+    // .window-folder
+    // .folder-content
+    //   -> .tab-group-header / .tab-group-content
+    //   -> .tab-item
+
+    // To optimize, we still need to iterate DOM elements to toggle 'hidden' class,
+    // but we use cache to check matching condition instead of reading textContent.
+
+    // However, since tabs are scattered across window folders and groups, simple iteration might be tricky if we want to avoid querySelectorAll on whole list.
+    // Let's stick to traversing the DOM structure but use dataset.tabId to lookup cache.
 
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
         if (!content || !content.classList.contains('folder-content')) return;
 
+        // Get all tab items in this window folder (including inside groups)
         const tabs = content.querySelectorAll('.tab-item');
         let windowCount = 0;
 
         tabs.forEach(item => {
-            const title = item.querySelector('.tab-title')?.textContent || '';
-            const url = item.dataset.url || '';
+            const tabId = parseInt(item.dataset.tabId);
+            const tab = otherTabsCache.get(tabId);
+
+            let title, url, groupId;
+            if (tab) {
+                title = tab.title;
+                url = tab.url;
+                groupId = tab.groupId;
+            } else {
+                // Fallback
+                const titleElement = item.querySelector('.tab-title');
+                title = titleElement ? titleElement.textContent : '';
+                url = item.dataset.url || '';
+                // renderOtherWindowsSection doesn't explicitly set dataset.groupId on tab items if they are inside a group container?
+                // Checking logic: It appends tab to groupContent. 
+                // We can't easily get groupId from tab dataset if not set.
+                // But for search, we need to know if a group has visible children.
+                // Let's rely on traversing up for groupId or just counting per group header in loop below.
+            }
+
             const domain = extractDomain(url);
             const titleMatches = matchesAnyKeyword(title, keywords);
             const urlMatches = matchesAnyKeyword(domain, keywords);
@@ -199,20 +236,35 @@ function filterOtherWindowsTabs(keywords) {
                 delete item.dataset.matchedDomain;
             }
 
-            if (matches) windowCount++;
+            if (matches) {
+                windowCount++;
+                // If this tab is inside a group, we need to mark that group as having visible children.
+                // In otherWindowRenderer, tabs in group are inside .tab-group-content.
+                // Detailed check:
+                const groupContent = item.closest('.tab-group-content');
+                if (groupContent) {
+                    const groupHeader = groupContent.previousElementSibling;
+                    if (groupHeader && groupHeader.dataset.groupId) {
+                        const gId = parseInt(groupHeader.dataset.groupId);
+                        groupVisibility.set(gId, (groupVisibility.get(gId) || 0) + 1);
+                    }
+                }
+            }
         });
 
-        // Expand/collapse tab groups (same logic as filterTabsAndGroups)
+        // Expand/collapse tab groups
         const groupHeaders = content.querySelectorAll('.tab-group-header');
         groupHeaders.forEach(header => {
             const groupContent = header.nextElementSibling;
             if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
 
-            const visibleTabsInGroup = groupContent.querySelectorAll('.tab-item:not(.hidden)');
+            const groupId = parseInt(header.dataset.groupId);
+            const visibleTabsCount = groupVisibility.get(groupId) || 0;
+
             const titleElement = header.querySelector('.tab-group-title');
             const title = titleElement ? titleElement.textContent : '';
             const groupTitleMatches = matchesAnyKeyword(title, keywords);
-            const hasVisibleChildren = visibleTabsInGroup.length > 0;
+            const hasVisibleChildren = visibleTabsCount > 0;
 
             header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
 
@@ -232,7 +284,7 @@ function filterOtherWindowsTabs(keywords) {
         content.classList.toggle('hidden', !visible);
 
         // 展開/收合
-        const icon = folder.querySelector('.bookmark-icon');
+        const icon = folder.querySelector('.window-icon'); // Note: changed from .bookmark-icon to .window-icon based on renderer
         if (windowCount > 0 && keywords.length > 0) {
             content.style.display = 'block';
             if (icon) icon.textContent = '▼';
