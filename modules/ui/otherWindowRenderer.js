@@ -8,6 +8,17 @@ import { EDIT_ICON_SVG } from '../icons.js';
 import { otherWindowsList } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 
+/** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for other windows */
+let otherTabsCache = new Map();
+
+/**
+ * Returns the current cache of tab objects for other windows.
+ * @returns {Map<number, chrome.tabs.Tab>}
+ */
+export function getOtherTabCache() {
+    return otherTabsCache;
+}
+
 
 /**
  * Create a simple tab element for other windows (without group actions)
@@ -21,6 +32,9 @@ function createOtherWindowTabElement(tab) {
     tabItem.tabIndex = 0;
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
+    if (tab.groupId > 0) {
+        tabItem.dataset.groupId = tab.groupId;
+    }
 
     let urlPreview = tab.url;
     if (urlPreview && urlPreview.length > 300) {
@@ -95,6 +109,14 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         }
         groupsByWindow.get(g.windowId).push(g);
     }
+
+    // Reset and rebuild cache
+    otherTabsCache.clear();
+    windowsToShow.forEach(window => {
+        window.tabs.forEach(tab => {
+            otherTabsCache.set(tab.id, tab);
+        });
+    });
 
     // Use DocumentFragment to batch DOM updates
     const fragment = document.createDocumentFragment();

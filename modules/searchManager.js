@@ -1,6 +1,8 @@
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
+import { getTabCache } from './ui/tabRenderer.js';
+import { getOtherTabCache } from './ui/otherWindowRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
 // Debounce 工具函式：延遲執行，避免頻繁觸發
@@ -83,10 +85,31 @@ function filterTabsAndGroups(keywords) {
     const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
     let visibleCount = 0;
 
+    // Optimization: Use cache to avoid DOM reads
+    const tabsCache = getTabCache();
+    // Optimization: Track group visibility to avoid querying DOM in group loop
+    const groupVisibility = new Map();
+
     tabItems.forEach(item => {
-        const titleElement = item.querySelector('.tab-title');
-        const title = titleElement.textContent;
-        const url = item.dataset.url || '';
+        const tabId = parseInt(item.dataset.tabId);
+        const tab = tabsCache.get(tabId);
+
+        let title, url, groupId;
+        if (tab) {
+            title = tab.title;
+            url = tab.url;
+            groupId = tab.groupId;
+        } else {
+            // Fallback to DOM if not in cache
+            const titleElement = item.querySelector('.tab-title');
+            title = titleElement.textContent;
+            url = item.dataset.url || '';
+            // Try to get groupId from dataset (added in tabRenderer)
+            if (item.dataset.groupId) {
+                groupId = parseInt(item.dataset.groupId);
+            }
+        }
+
         const domain = extractDomain(url);
 
         // OR 邏輯：標題或 domain 匹配任一關鍵字即可
@@ -105,16 +128,28 @@ function filterTabsAndGroups(keywords) {
             delete item.dataset.matchedDomain;
         }
 
-        if (matches) visibleCount++;
+        if (matches) {
+            visibleCount++;
+            if (groupId > 0) {
+                groupVisibility.set(groupId, (groupVisibility.get(groupId) || 0) + 1);
+            }
+        }
     });
 
     groupHeaders.forEach(header => {
         const content = header.nextElementSibling;
-        const visibleTabsInGroup = content.querySelectorAll('.tab-item:not(.hidden)');
+        // Optimization: Use computed group visibility
+        const groupId = parseInt(header.dataset.groupId);
+        // Fallback to DOM query if group logic relies on something not in cache?
+        // No, groupVisibility should be accurate for tabs processed above.
+        // However, we must ensure 'content' exists and structure is correct.
+
+        const visibleTabsCount = groupVisibility.get(groupId) || 0;
+
         const titleElement = header.querySelector('.tab-group-title');
         const title = titleElement ? titleElement.textContent : '';
         const groupTitleMatches = matchesAnyKeyword(title, keywords);
-        const hasVisibleChildren = visibleTabsInGroup.length > 0;
+        const hasVisibleChildren = visibleTabsCount > 0;
 
         header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
 
@@ -136,19 +171,41 @@ function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
-    const folders = list.querySelectorAll('.bookmark-folder');
+    const folders = list.querySelectorAll('.window-folder');
     let totalCount = 0;
+
+    // Optimization: Use cache to avoid DOM reads for title/url lookup.
+    // We still iterate DOM to toggle 'hidden' class and track group visibility.
+    const otherTabsCache = getOtherTabCache();
+    const groupVisibility = new Map();
 
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
         if (!content || !content.classList.contains('folder-content')) return;
 
+        // Get all tab items in this window folder (including inside groups)
         const tabs = content.querySelectorAll('.tab-item');
         let windowCount = 0;
 
         tabs.forEach(item => {
-            const title = item.querySelector('.tab-title')?.textContent || '';
-            const url = item.dataset.url || '';
+            const tabId = parseInt(item.dataset.tabId);
+            const tab = otherTabsCache.get(tabId);
+
+            let title, url, groupId;
+            if (tab) {
+                title = tab.title;
+                url = tab.url;
+                groupId = tab.groupId;
+            } else {
+                // Fallback to DOM if not in cache
+                const titleElement = item.querySelector('.tab-title');
+                title = titleElement ? titleElement.textContent : '';
+                url = item.dataset.url || '';
+                if (item.dataset.groupId) {
+                    groupId = parseInt(item.dataset.groupId);
+                }
+            }
+
             const domain = extractDomain(url);
             const titleMatches = matchesAnyKeyword(title, keywords);
             const urlMatches = matchesAnyKeyword(domain, keywords);
@@ -164,20 +221,35 @@ function filterOtherWindowsTabs(keywords) {
                 delete item.dataset.matchedDomain;
             }
 
-            if (matches) windowCount++;
+            if (matches) {
+                windowCount++;
+                // If this tab is inside a group, we need to mark that group as having visible children.
+                // In otherWindowRenderer, tabs in group are inside .tab-group-content.
+                // Detailed check:
+                const groupContent = item.closest('.tab-group-content');
+                if (groupContent) {
+                    const groupHeader = groupContent.previousElementSibling;
+                    if (groupHeader && groupHeader.dataset.groupId) {
+                        const gId = parseInt(groupHeader.dataset.groupId);
+                        groupVisibility.set(gId, (groupVisibility.get(gId) || 0) + 1);
+                    }
+                }
+            }
         });
 
-        // Expand/collapse tab groups (same logic as filterTabsAndGroups)
+        // Expand/collapse tab groups
         const groupHeaders = content.querySelectorAll('.tab-group-header');
         groupHeaders.forEach(header => {
             const groupContent = header.nextElementSibling;
             if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
 
-            const visibleTabsInGroup = groupContent.querySelectorAll('.tab-item:not(.hidden)');
+            const groupId = parseInt(header.dataset.groupId);
+            const visibleTabsCount = groupVisibility.get(groupId) || 0;
+
             const titleElement = header.querySelector('.tab-group-title');
             const title = titleElement ? titleElement.textContent : '';
             const groupTitleMatches = matchesAnyKeyword(title, keywords);
-            const hasVisibleChildren = visibleTabsInGroup.length > 0;
+            const hasVisibleChildren = visibleTabsCount > 0;
 
             header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
 
@@ -197,7 +269,7 @@ function filterOtherWindowsTabs(keywords) {
         content.classList.toggle('hidden', !visible);
 
         // 展開/收合
-        const icon = folder.querySelector('.bookmark-icon');
+        const icon = folder.querySelector('.window-icon'); // Note: changed from .bookmark-icon to .window-icon based on renderer
         if (windowCount > 0 && keywords.length > 0) {
             content.style.display = 'block';
             if (icon) icon.textContent = '▼';
