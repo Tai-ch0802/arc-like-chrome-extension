@@ -292,17 +292,17 @@ export function createBackgroundPanelHtml(config) {
                             <div class="control-group compact">
                                 <label>${api.getMessage('labelPositionX') || 'Horizontal'}</label>
                                 <div class="toggle-group small" id="bg-pos-x">
-                                    <button class="toggle-btn ${cfg.positionX === 'left' ? 'active' : ''}" data-value="left">L</button>
-                                    <button class="toggle-btn ${cfg.positionX === 'center' ? 'active' : ''}" data-value="center">C</button>
-                                    <button class="toggle-btn ${cfg.positionX === 'right' ? 'active' : ''}" data-value="right">R</button>
+                                    <button class="toggle-btn ${cfg.positionX === 'left' ? 'active' : ''}" data-value="left" aria-label="${api.getMessage('alignLeft') || 'Align Left'}" title="${api.getMessage('alignLeft') || 'Align Left'}">L</button>
+                                    <button class="toggle-btn ${cfg.positionX === 'center' ? 'active' : ''}" data-value="center" aria-label="${api.getMessage('alignCenter') || 'Align Center'}" title="${api.getMessage('alignCenter') || 'Align Center'}">C</button>
+                                    <button class="toggle-btn ${cfg.positionX === 'right' ? 'active' : ''}" data-value="right" aria-label="${api.getMessage('alignRight') || 'Align Right'}" title="${api.getMessage('alignRight') || 'Align Right'}">R</button>
                                 </div>
                             </div>
                             <div class="control-group compact">
                                 <label>${api.getMessage('labelPositionY') || 'Vertical'}</label>
                                 <div class="toggle-group small" id="bg-pos-y">
-                                    <button class="toggle-btn ${cfg.positionY === 'top' ? 'active' : ''}" data-value="top">T</button>
-                                    <button class="toggle-btn ${cfg.positionY === 'center' ? 'active' : ''}" data-value="center">C</button>
-                                    <button class="toggle-btn ${cfg.positionY === 'bottom' ? 'active' : ''}" data-value="bottom">B</button>
+                                    <button class="toggle-btn ${cfg.positionY === 'top' ? 'active' : ''}" data-value="top" aria-label="${api.getMessage('alignTop') || 'Align Top'}" title="${api.getMessage('alignTop') || 'Align Top'}">T</button>
+                                    <button class="toggle-btn ${cfg.positionY === 'center' ? 'active' : ''}" data-value="center" aria-label="${api.getMessage('alignCenter') || 'Align Center'}" title="${api.getMessage('alignCenter') || 'Align Center'}">C</button>
+                                    <button class="toggle-btn ${cfg.positionY === 'bottom' ? 'active' : ''}" data-value="bottom" aria-label="${api.getMessage('alignBottom') || 'Align Bottom'}" title="${api.getMessage('alignBottom') || 'Align Bottom'}">B</button>
                                 </div>
                             </div>
                         </div>

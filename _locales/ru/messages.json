@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "Настроить параметры",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "По левому краю",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "По центру",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "По правому краю",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "По верхнему краю",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "По нижнему краю",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

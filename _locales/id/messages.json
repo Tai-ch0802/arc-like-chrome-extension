@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "Sesuaikan Pengaturan",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "Ratakan Kiri",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "Ratakan Tengah",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "Ratakan Kanan",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "Ratakan Atas",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "Ratakan Bawah",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

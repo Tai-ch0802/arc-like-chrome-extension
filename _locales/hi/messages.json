@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "सेटिंग्स समायोजित करें",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "बाईं ओर संरेखित करें",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "बीच में संरेखित करें",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "दाईं ओर संरेखित करें",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "ऊपर संरेखित करें",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "नीचे संरेखित करें",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

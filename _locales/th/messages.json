@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "ปรับการตั้งค่า",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "จัดชิดซ้าย",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "จัดกึ่งกลาง",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "จัดชิดขวา",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "จัดชิดด้านบน",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "จัดชิดด้านล่าง",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

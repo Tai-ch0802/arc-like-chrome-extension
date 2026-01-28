@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "Điều chỉnh cài đặt",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "Căn lề trái",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "Căn giữa",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "Căn lề phải",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "Căn trên",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "Căn dưới",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

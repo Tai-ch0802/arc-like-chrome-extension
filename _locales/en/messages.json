@@ -434,5 +434,25 @@
     "labelAdvancedSettings": {
         "message": "Adjust Settings",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "Align Left",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "Align Center",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "Align Right",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "Align Top",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "Align Bottom",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }
