@@ -1,7 +1,7 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
-import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG } from '../icons.js';
+import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
@@ -321,7 +321,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
     if (bookmarkNodes.length === 0) {
         const emptyMsg = document.createElement('div');
         emptyMsg.className = 'empty-folder-message';
-        emptyMsg.textContent = api.getMessage("emptyFolder") || '(Empty)';
+        emptyMsg.innerHTML = `${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>`;
         container.appendChild(emptyMsg);
         return;
     }

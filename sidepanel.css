@@ -1331,10 +1331,21 @@ mark.url-match {
 }
 
 .empty-folder-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-style: italic;
     color: var(--text-color-secondary);
-    padding: 4px 8px 4px 28px;
+    padding: 8px 8px 8px 28px;
     font-size: 13px;
+    opacity: 0.8;
+}
+
+.empty-folder-message svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    opacity: 0.7;
 }
 
 /* ===========================================
