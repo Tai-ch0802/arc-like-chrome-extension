@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "설정 조정",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "왼쪽 정렬",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "가운데 정렬",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "오른쪽 정렬",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "위쪽 정렬",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "아래쪽 정렬",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

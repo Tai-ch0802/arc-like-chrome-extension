@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "設定を調整",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "左揃え",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "中央揃え",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "右揃え",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "上揃え",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "下揃え",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

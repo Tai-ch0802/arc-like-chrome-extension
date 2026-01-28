@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "调整设置",
         "description": "Label for collapsible settings section"
+    },
+    "alignLeft": {
+        "message": "左对齐",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "居中对齐",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "右对齐",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "顶部对齐",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "底部对齐",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }

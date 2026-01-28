@@ -431,5 +431,25 @@
     "labelAdvancedSettings": {
         "message": "調整設定",
         "description": "可折疊設定區塊的標籤"
+    },
+    "alignLeft": {
+        "message": "靠左對齊",
+        "description": "Tooltip for aligning background image to the left"
+    },
+    "alignCenter": {
+        "message": "置中對齊",
+        "description": "Tooltip for aligning background image to the center"
+    },
+    "alignRight": {
+        "message": "靠右對齊",
+        "description": "Tooltip for aligning background image to the right"
+    },
+    "alignTop": {
+        "message": "靠上對齊",
+        "description": "Tooltip for aligning background image to the top"
+    },
+    "alignBottom": {
+        "message": "靠下對齊",
+        "description": "Tooltip for aligning background image to the bottom"
     }
 }
