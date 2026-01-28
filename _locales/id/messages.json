@@ -433,23 +433,23 @@
         "description": "Label for collapsible settings section"
     },
     "alignLeft": {
-        "message": "Align Left",
+        "message": "Ratakan Kiri",
         "description": "Tooltip for aligning background image to the left"
     },
     "alignCenter": {
-        "message": "Align Center",
+        "message": "Ratakan Tengah",
         "description": "Tooltip for aligning background image to the center"
     },
     "alignRight": {
-        "message": "Align Right",
+        "message": "Ratakan Kanan",
         "description": "Tooltip for aligning background image to the right"
     },
     "alignTop": {
-        "message": "Align Top",
+        "message": "Ratakan Atas",
         "description": "Tooltip for aligning background image to the top"
     },
     "alignBottom": {
-        "message": "Align Bottom",
+        "message": "Ratakan Bawah",
         "description": "Tooltip for aligning background image to the bottom"
     }
 }

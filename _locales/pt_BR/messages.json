@@ -433,23 +433,23 @@
         "description": "Label for collapsible settings section"
     },
     "alignLeft": {
-        "message": "Align Left",
+        "message": "Alinhar à Esquerda",
         "description": "Tooltip for aligning background image to the left"
     },
     "alignCenter": {
-        "message": "Align Center",
+        "message": "Alinhar ao Centro",
         "description": "Tooltip for aligning background image to the center"
     },
     "alignRight": {
-        "message": "Align Right",
+        "message": "Alinhar à Direita",
         "description": "Tooltip for aligning background image to the right"
     },
     "alignTop": {
-        "message": "Align Top",
+        "message": "Alinhar ao Topo",
         "description": "Tooltip for aligning background image to the top"
     },
     "alignBottom": {
-        "message": "Align Bottom",
+        "message": "Alinhar à Base",
         "description": "Tooltip for aligning background image to the bottom"
     }
 }

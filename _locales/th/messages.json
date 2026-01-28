@@ -433,23 +433,23 @@
         "description": "Label for collapsible settings section"
     },
     "alignLeft": {
-        "message": "Align Left",
+        "message": "จัดชิดซ้าย",
         "description": "Tooltip for aligning background image to the left"
     },
     "alignCenter": {
-        "message": "Align Center",
+        "message": "จัดกึ่งกลาง",
         "description": "Tooltip for aligning background image to the center"
     },
     "alignRight": {
-        "message": "Align Right",
+        "message": "จัดชิดขวา",
         "description": "Tooltip for aligning background image to the right"
     },
     "alignTop": {
-        "message": "Align Top",
+        "message": "จัดชิดด้านบน",
         "description": "Tooltip for aligning background image to the top"
     },
     "alignBottom": {
-        "message": "Align Bottom",
+        "message": "จัดชิดด้านล่าง",
         "description": "Tooltip for aligning background image to the bottom"
     }
 }

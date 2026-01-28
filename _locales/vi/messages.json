@@ -433,23 +433,23 @@
         "description": "Label for collapsible settings section"
     },
     "alignLeft": {
-        "message": "Align Left",
+        "message": "Căn lề trái",
         "description": "Tooltip for aligning background image to the left"
     },
     "alignCenter": {
-        "message": "Align Center",
+        "message": "Căn giữa",
         "description": "Tooltip for aligning background image to the center"
     },
     "alignRight": {
-        "message": "Align Right",
+        "message": "Căn lề phải",
         "description": "Tooltip for aligning background image to the right"
     },
     "alignTop": {
-        "message": "Align Top",
+        "message": "Căn trên",
         "description": "Tooltip for aligning background image to the top"
     },
     "alignBottom": {
-        "message": "Align Bottom",
+        "message": "Căn dưới",
         "description": "Tooltip for aligning background image to the bottom"
     }
 }

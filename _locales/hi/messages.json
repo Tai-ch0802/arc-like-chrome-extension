@@ -433,23 +433,23 @@
         "description": "Label for collapsible settings section"
     },
     "alignLeft": {
-        "message": "Align Left",
+        "message": "बाईं ओर संरेखित करें",
         "description": "Tooltip for aligning background image to the left"
     },
     "alignCenter": {
-        "message": "Align Center",
+        "message": "बीच में संरेखित करें",
         "description": "Tooltip for aligning background image to the center"
     },
     "alignRight": {
-        "message": "Align Right",
+        "message": "दाईं ओर संरेखित करें",
         "description": "Tooltip for aligning background image to the right"
     },
     "alignTop": {
-        "message": "Align Top",
+        "message": "ऊपर संरेखित करें",
         "description": "Tooltip for aligning background image to the top"
     },
     "alignBottom": {
-        "message": "Align Bottom",
+        "message": "नीचे संरेखित करें",
         "description": "Tooltip for aligning background image to the bottom"
     }
 }
