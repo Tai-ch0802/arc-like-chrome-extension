@@ -18,6 +18,12 @@ let listenersInitialized = false;
 /** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for event delegation handlers */
 let tabsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of tab DOM elements for performance optimization */
+let tabElementsCache = new Map();
+
+/** @type {Map<number, HTMLElement>} Cache of group header DOM elements for performance optimization */
+let groupHeaderElementsCache = new Map();
+
 /** @type {AbortController|null} Controller to abort event listeners when resetting */
 let listenerAbortController = null;
 
@@ -34,6 +40,8 @@ export function resetTabListeners() {
     listenersInitialized = false;
     currentAddToGroupCallback = null;
     tabsCache = new Map();
+    tabElementsCache = new Map();
+    groupHeaderElementsCache = new Map();
 }
 
 /**
@@ -42,6 +50,22 @@ export function resetTabListeners() {
  */
 export function getTabCache() {
     return tabsCache;
+}
+
+/**
+ * Returns the current cache of tab DOM elements.
+ * @returns {Map<number, HTMLElement>}
+ */
+export function getTabElementsCache() {
+    return tabElementsCache;
+}
+
+/**
+ * Returns the current cache of group header DOM elements.
+ * @returns {Map<number, HTMLElement>}
+ */
+export function getGroupHeaderElementsCache() {
+    return groupHeaderElementsCache;
 }
 
 function initTabListeners(container) {
@@ -275,6 +299,8 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
     // Update cache with full tab objects
     tabsCache = new Map(tabs.map(t => [t.id, t]));
+    tabElementsCache.clear();
+    groupHeaderElementsCache.clear();
 
     tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
@@ -320,6 +346,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                     tabElement.classList.add('in-split-view');
                     splitGroup.appendChild(tabElement);
                     renderedTabIds.add(splitTab.id);
+                    tabElementsCache.set(splitTab.id, tabElement);
                 });
                 container.appendChild(splitGroup);
                 return;
@@ -330,6 +357,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
         const tabElement = createTabElement(tab, { onAddToGroupClick });
         container.appendChild(tabElement);
         renderedTabIds.add(tab.id);
+        tabElementsCache.set(tab.id, tabElement);
     };
 
     for (const tab of tabs) {
@@ -370,6 +398,9 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             groupHeader.appendChild(arrow);
             groupHeader.appendChild(colorDot);
             groupHeader.appendChild(title);
+
+            groupHeaderElementsCache.set(group.id, groupHeader);
+
             fragment.appendChild(groupHeader);
 
             const groupContent = document.createElement('div');

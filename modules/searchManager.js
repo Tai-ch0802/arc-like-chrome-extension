@@ -1,7 +1,7 @@
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
-import { getTabCache } from './ui/tabRenderer.js';
+import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from './ui/tabRenderer.js';
 import { getOtherTabCache } from './ui/otherWindowRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
@@ -81,8 +81,11 @@ function extractDomain(url) {
 
 // 過濾分頁和群組，回傳可見分頁數量
 function filterTabsAndGroups(keywords) {
-    const tabItems = document.querySelectorAll('#tab-list .tab-item');
-    const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
+    // Optimization: Use DOM element cache to avoid repeated querySelectorAll and DOM reads
+    const tabElements = getTabElementsCache();
+    // Optimization: Use DOM element cache for group headers
+    const groupHeaderElements = getGroupHeaderElementsCache();
+
     let visibleCount = 0;
 
     // Optimization: Use cache to avoid DOM reads
@@ -90,8 +93,8 @@ function filterTabsAndGroups(keywords) {
     // Optimization: Track group visibility to avoid querying DOM in group loop
     const groupVisibility = new Map();
 
-    tabItems.forEach(item => {
-        const tabId = parseInt(item.dataset.tabId);
+    for (const [tabId, item] of tabElements) {
+        // Direct cache access using ID from map key
         const tab = tabsCache.get(tabId);
 
         let title, url, groupId;
@@ -100,9 +103,9 @@ function filterTabsAndGroups(keywords) {
             url = tab.url;
             groupId = tab.groupId;
         } else {
-            // Fallback to DOM if not in cache
+            // Fallback to DOM if not in cache (should be rare)
             const titleElement = item.querySelector('.tab-title');
-            title = titleElement.textContent;
+            title = titleElement ? titleElement.textContent : '';
             url = item.dataset.url || '';
             // Try to get groupId from dataset (added in tabRenderer)
             if (item.dataset.groupId) {
@@ -134,16 +137,12 @@ function filterTabsAndGroups(keywords) {
                 groupVisibility.set(groupId, (groupVisibility.get(groupId) || 0) + 1);
             }
         }
-    });
+    }
 
-    groupHeaders.forEach(header => {
+    for (const [groupId, header] of groupHeaderElements) {
         const content = header.nextElementSibling;
-        // Optimization: Use computed group visibility
-        const groupId = parseInt(header.dataset.groupId);
-        // Fallback to DOM query if group logic relies on something not in cache?
-        // No, groupVisibility should be accurate for tabs processed above.
-        // However, we must ensure 'content' exists and structure is correct.
 
+        // Group ID is available from map key
         const visibleTabsCount = groupVisibility.get(groupId) || 0;
 
         const titleElement = header.querySelector('.tab-group-title');
@@ -161,7 +160,7 @@ function filterTabsAndGroups(keywords) {
             content.style.display = isCollapsed ? 'none' : 'block';
             header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
         }
-    });
+    }
 
     return visibleCount;
 }
