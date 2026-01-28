@@ -21,6 +21,9 @@ let tabsCache = new Map();
 /** @type {Map<number, HTMLElement>} Cache of tab DOM elements for performance optimization */
 let tabElementsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of group header DOM elements for performance optimization */
+let groupHeaderElementsCache = new Map();
+
 /** @type {AbortController|null} Controller to abort event listeners when resetting */
 let listenerAbortController = null;
 
@@ -38,6 +41,7 @@ export function resetTabListeners() {
     currentAddToGroupCallback = null;
     tabsCache = new Map();
     tabElementsCache = new Map();
+    groupHeaderElementsCache = new Map();
 }
 
 /**
@@ -54,6 +58,14 @@ export function getTabCache() {
  */
 export function getTabElementsCache() {
     return tabElementsCache;
+}
+
+/**
+ * Returns the current cache of group header DOM elements.
+ * @returns {Map<number, HTMLElement>}
+ */
+export function getGroupHeaderElementsCache() {
+    return groupHeaderElementsCache;
 }
 
 function initTabListeners(container) {
@@ -288,6 +300,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     // Update cache with full tab objects
     tabsCache = new Map(tabs.map(t => [t.id, t]));
     tabElementsCache.clear();
+    groupHeaderElementsCache.clear();
 
     tabListContainer.innerHTML = '';
     const groupsMap = new Map(groups.map(group => [group.id, group]));
@@ -385,6 +398,9 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             groupHeader.appendChild(arrow);
             groupHeader.appendChild(colorDot);
             groupHeader.appendChild(title);
+
+            groupHeaderElementsCache.set(group.id, groupHeader);
+
             fragment.appendChild(groupHeader);
 
             const groupContent = document.createElement('div');

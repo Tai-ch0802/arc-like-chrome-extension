@@ -1,7 +1,7 @@
 import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
-import { getTabCache, getTabElementsCache } from './ui/tabRenderer.js';
+import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from './ui/tabRenderer.js';
 import { getOtherTabCache } from './ui/otherWindowRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
@@ -83,7 +83,9 @@ function extractDomain(url) {
 function filterTabsAndGroups(keywords) {
     // Optimization: Use DOM element cache to avoid repeated querySelectorAll and DOM reads
     const tabElements = getTabElementsCache();
-    const groupHeaders = document.querySelectorAll('#tab-list .tab-group-header');
+    // Optimization: Use DOM element cache for group headers
+    const groupHeaderElements = getGroupHeaderElementsCache();
+
     let visibleCount = 0;
 
     // Optimization: Use cache to avoid DOM reads
@@ -137,14 +139,10 @@ function filterTabsAndGroups(keywords) {
         }
     }
 
-    groupHeaders.forEach(header => {
+    for (const [groupId, header] of groupHeaderElements) {
         const content = header.nextElementSibling;
-        // Optimization: Use computed group visibility
-        const groupId = parseInt(header.dataset.groupId);
-        // Fallback to DOM query if group logic relies on something not in cache?
-        // No, groupVisibility should be accurate for tabs processed above.
-        // However, we must ensure 'content' exists and structure is correct.
 
+        // Group ID is available from map key
         const visibleTabsCount = groupVisibility.get(groupId) || 0;
 
         const titleElement = header.querySelector('.tab-group-title');
@@ -162,7 +160,7 @@ function filterTabsAndGroups(keywords) {
             content.style.display = isCollapsed ? 'none' : 'block';
             header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
         }
-    });
+    }
 
     return visibleCount;
 }
