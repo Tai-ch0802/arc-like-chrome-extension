@@ -81,7 +81,10 @@ describe.skip('Performance Benchmark', () => {
             const tabRenderer = await import('./modules/ui/tabRenderer.js');
             const otherWindowRenderer = await import('./modules/ui/otherWindowRenderer.js');
 
-            // Measure renderTabsAndGroups
+            // Warmup render (Initial Render)
+            tabRenderer.renderTabsAndGroups(currentTabs, currentGroups, { onAddToGroupClick: () => { } });
+
+            // Measure renderTabsAndGroups (Re-render)
             const startTabs = performance.now();
             tabRenderer.renderTabsAndGroups(currentTabs, currentGroups, { onAddToGroupClick: () => { } });
             const endTabs = performance.now();

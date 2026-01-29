@@ -209,6 +209,79 @@ function initTabListeners(container) {
     }, { signal });
 }
 
+function updateTabElement(tabItem, tab) {
+    const isActive = tab.active;
+    const hasActiveClass = tabItem.classList.contains('active');
+    if (isActive && !hasActiveClass) {
+        tabItem.classList.add('active');
+        tabItem.setAttribute('aria-selected', 'true');
+    } else if (!isActive && hasActiveClass) {
+        tabItem.classList.remove('active');
+        tabItem.removeAttribute('aria-selected');
+    }
+
+    if (tabItem.dataset.url !== tab.url) tabItem.dataset.url = tab.url;
+    if (tabItem.dataset.windowId != tab.windowId) tabItem.dataset.windowId = tab.windowId;
+
+    const currentGroupId = tabItem.dataset.groupId ? parseInt(tabItem.dataset.groupId) : -1;
+    const newGroupId = tab.groupId > 0 ? tab.groupId : -1;
+    if (currentGroupId !== newGroupId) {
+        if (newGroupId > 0) tabItem.dataset.groupId = newGroupId;
+        else delete tabItem.dataset.groupId;
+    }
+
+    let urlPreview = tab.url;
+    if (urlPreview && urlPreview.length > 300) {
+        urlPreview = urlPreview.substring(0, 300) + '...';
+    }
+    const newTitleTooltip = `${tab.title}\n${urlPreview}`;
+    if (tabItem.title !== newTitleTooltip) {
+        tabItem.title = newTitleTooltip;
+        tabItem.setAttribute('aria-label', tab.title);
+    }
+
+    const titleSpan = tabItem.querySelector('.tab-title');
+    if (titleSpan && titleSpan.textContent !== tab.title) {
+        titleSpan.textContent = tab.title || 'Loading...';
+        delete titleSpan.dataset.originalText;
+    }
+
+    const favicon = tabItem.querySelector('.tab-favicon');
+    if (favicon) {
+        const newSrc = (tab.favIconUrl && tab.favIconUrl.startsWith('http')) ? tab.favIconUrl : 'icons/fallback-favicon.svg';
+        if (!favicon.src.includes(newSrc) && newSrc !== 'icons/fallback-favicon.svg') {
+            favicon.src = newSrc;
+        }
+    }
+}
+
+function updateGroupHeaderElement(header, group) {
+    const isCollapsed = group.collapsed;
+    const wasCollapsed = header.dataset.collapsed === 'true';
+
+    if (isCollapsed !== wasCollapsed) {
+        header.setAttribute('aria-expanded', (!isCollapsed).toString());
+        header.dataset.collapsed = isCollapsed ? 'true' : 'false';
+        const arrow = header.querySelector('.tab-group-arrow');
+        if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
+    }
+
+    if (header.title !== group.title) header.title = group.title;
+
+    const titleSpan = header.querySelector('.tab-group-title');
+    if (titleSpan && titleSpan.textContent !== group.title) {
+        titleSpan.textContent = group.title;
+    }
+
+    const colorDot = header.querySelector('.tab-group-color-dot');
+    const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
+    if (colorDot) {
+        colorDot.style.backgroundColor = groupColorHex;
+        header.style.setProperty('--group-bg-color', hexToRgba(groupColorHex, 0.2));
+        header.style.setProperty('--group-bg-hover-color', hexToRgba(groupColorHex, 0.35));
+    }
+}
+
 export function createTabElement(tab, { onAddToGroupClick }) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
@@ -299,10 +372,11 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
     // Update cache with full tab objects
     tabsCache = new Map(tabs.map(t => [t.id, t]));
-    tabElementsCache.clear();
-    groupHeaderElementsCache.clear();
 
-    tabListContainer.innerHTML = '';
+    // New caches for this render cycle
+    const newTabElementsCache = new Map();
+    const newGroupHeaderElementsCache = new Map();
+
     const groupsMap = new Map(groups.map(group => [group.id, group]));
 
     // Optimization: Pre-group tabs by groupId
@@ -329,6 +403,18 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
         }
     }
 
+    // Helper to get or create tab element
+    const getOrCreateTabElement = (tab) => {
+        let tabElement = tabElementsCache.get(tab.id);
+        if (tabElement) {
+            updateTabElement(tabElement, tab);
+        } else {
+            tabElement = createTabElement(tab, { onAddToGroupClick });
+        }
+        newTabElementsCache.set(tab.id, tabElement);
+        return tabElement;
+    };
+
     // Helper to render split groups
     const renderSplitOrTab = (tab, container) => {
         if (renderedTabIds.has(tab.id)) return;
@@ -342,11 +428,10 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 splitGroup.className = 'tab-split-group';
 
                 splitTabs.forEach(splitTab => {
-                    const tabElement = createTabElement(splitTab, { onAddToGroupClick });
+                    const tabElement = getOrCreateTabElement(splitTab);
                     tabElement.classList.add('in-split-view');
                     splitGroup.appendChild(tabElement);
                     renderedTabIds.add(splitTab.id);
-                    tabElementsCache.set(splitTab.id, tabElement);
                 });
                 container.appendChild(splitGroup);
                 return;
@@ -354,10 +439,10 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
         }
 
         // Fallback to normal rendering if not split view or only 1 tab in split
-        const tabElement = createTabElement(tab, { onAddToGroupClick });
+        const tabElement = getOrCreateTabElement(tab);
+        tabElement.classList.remove('in-split-view'); // Ensure it's clean if it was in split before
         container.appendChild(tabElement);
         renderedTabIds.add(tab.id);
-        tabElementsCache.set(tab.id, tabElement);
     };
 
     for (const tab of tabs) {
@@ -369,38 +454,33 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             const group = groupsMap.get(tab.groupId);
             if (!group) continue;
 
-            const groupHeader = document.createElement('div');
-            groupHeader.className = 'tab-group-header';
-            groupHeader.tabIndex = 0;
-            groupHeader.setAttribute('role', 'button');
-            groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
-            groupHeader.dataset.collapsed = group.collapsed ? 'true' : 'false';
-            groupHeader.dataset.groupId = group.id;
-            groupHeader.title = group.title;
+            let groupHeader = groupHeaderElementsCache.get(group.id);
+            if (groupHeader) {
+                updateGroupHeaderElement(groupHeader, group);
+            } else {
+                groupHeader = document.createElement('div');
+                groupHeader.className = 'tab-group-header';
+                groupHeader.tabIndex = 0;
+                groupHeader.setAttribute('role', 'button');
 
-            const arrow = document.createElement('span');
-            arrow.className = 'tab-group-arrow';
-            arrow.textContent = group.collapsed ? '▶' : '▼';
+                const arrow = document.createElement('span');
+                arrow.className = 'tab-group-arrow';
 
-            const colorDot = document.createElement('div');
-            colorDot.className = 'tab-group-color-dot';
-            const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
-            colorDot.style.backgroundColor = groupColorHex;
+                const colorDot = document.createElement('div');
+                colorDot.className = 'tab-group-color-dot';
 
-            const title = document.createElement('span');
-            title.className = 'tab-group-title';
-            title.textContent = group.title;
+                const title = document.createElement('span');
+                title.className = 'tab-group-title';
 
-            // Use hexToRgba
-            groupHeader.style.setProperty('--group-bg-color', hexToRgba(groupColorHex, 0.2));
-            groupHeader.style.setProperty('--group-bg-hover-color', hexToRgba(groupColorHex, 0.35));
+                groupHeader.appendChild(arrow);
+                groupHeader.appendChild(colorDot);
+                groupHeader.appendChild(title);
 
-            groupHeader.appendChild(arrow);
-            groupHeader.appendChild(colorDot);
-            groupHeader.appendChild(title);
+                updateGroupHeaderElement(groupHeader, group);
+            }
 
-            groupHeaderElementsCache.set(group.id, groupHeader);
-
+            groupHeader.dataset.groupId = group.id; // Ensure ID is set
+            newGroupHeaderElementsCache.set(group.id, groupHeader);
             fragment.appendChild(groupHeader);
 
             const groupContent = document.createElement('div');
@@ -419,5 +499,12 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             renderSplitOrTab(tab, fragment);
         }
     }
+
+    // Clear the container to remove any elements that were not reused (deleted tabs)
+    tabListContainer.innerHTML = '';
     tabListContainer.appendChild(fragment);
+
+    // Update caches
+    tabElementsCache = newTabElementsCache;
+    groupHeaderElementsCache = newGroupHeaderElementsCache;
 }
