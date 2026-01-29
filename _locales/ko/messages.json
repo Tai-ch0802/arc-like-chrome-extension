@@ -365,7 +365,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(비어 있음)",
+        "message": "폴더가 비어 있습니다",
         "description": "Text shown when a folder has no bookmarks"
     },
     "bgImageSectionHeader": {
