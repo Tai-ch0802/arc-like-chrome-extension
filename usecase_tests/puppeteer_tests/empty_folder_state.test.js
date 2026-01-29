@@ -13,7 +13,7 @@ describe('Empty Folder State', () => {
         await teardownBrowser(browser);
     });
 
-    it('should display "(Empty)" message when an empty folder is expanded', async () => {
+    it('should display "Folder is empty" message when an empty folder is expanded', async () => {
         // 1. Create a new empty folder
         const folderTitle = 'Empty Test Folder';
 
@@ -56,7 +56,7 @@ describe('Empty Folder State', () => {
         await page.waitForSelector(messageSelector, { timeout: 2000 });
 
         const expectedMessage = await page.evaluate(() => {
-            return chrome.i18n.getMessage("emptyFolder") || '(Empty)';
+            return chrome.i18n.getMessage("emptyFolder") || 'Folder is empty';
         });
         // Select the span to get the exact text, ignoring the icon
         const messageText = await page.$eval(`${messageSelector} span`, el => el.textContent);
