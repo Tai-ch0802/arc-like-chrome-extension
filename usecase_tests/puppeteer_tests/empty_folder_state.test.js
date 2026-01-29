@@ -58,7 +58,8 @@ describe('Empty Folder State', () => {
         const expectedMessage = await page.evaluate(() => {
             return chrome.i18n.getMessage("emptyFolder") || '(Empty)';
         });
-        const messageText = await page.$eval(messageSelector, el => el.textContent);
+        // Select the span to get the exact text, ignoring the icon
+        const messageText = await page.$eval(`${messageSelector} span`, el => el.textContent);
         expect(messageText).toBe(expectedMessage);
 
         // Cleanup
