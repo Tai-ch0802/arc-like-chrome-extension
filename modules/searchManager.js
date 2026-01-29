@@ -568,12 +568,16 @@ function highlightMatches(regexes) {
         const matchedDomain = item.dataset.matchedDomain;
 
         if (titleElement) {
-            const originalTitle = titleElement.textContent;
+            // Check if we already have original text stored (to avoid double escaping or loss of original)
+            // If it's already highlighted, we should start from original text
+            const originalTitle = titleElement.dataset.originalText || titleElement.textContent;
             const highlightedTitle = highlightText(originalTitle, regexes, 'title');
 
             if (highlightedTitle !== originalTitle) {
                 titleElement.innerHTML = highlightedTitle;
-                titleElement.dataset.originalText = originalTitle;
+                if (!titleElement.dataset.originalText) {
+                    titleElement.dataset.originalText = originalTitle;
+                }
             }
 
             // 如果是 URL 匹配，顯示 domain

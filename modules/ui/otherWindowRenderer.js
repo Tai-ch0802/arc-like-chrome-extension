@@ -30,6 +30,15 @@ export function getOtherTabElementsCache() {
     return otherTabElementsCache;
 }
 
+/**
+ * Resets the other window caches.
+ * Useful for testing, hot-reload, or when the container element is replaced.
+ * @returns {void}
+ */
+export function resetOtherWindowCaches() {
+    otherTabsCache = new Map();
+    otherTabElementsCache = new Map();
+}
 
 /**
  * Create a simple tab element for other windows (without group actions)
