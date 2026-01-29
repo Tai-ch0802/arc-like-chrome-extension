@@ -368,7 +368,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(Empty)",
+        "message": "Folder is empty",
         "description": "Text shown when a folder has no bookmarks"
     },
     "bgImageSectionHeader": {

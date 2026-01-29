@@ -365,7 +365,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(Vacío)",
+        "message": "La carpeta está vacía",
         "description": "Text shown when a folder has no bookmarks"
     },
     "bgImageSectionHeader": {

@@ -365,7 +365,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(Vazio)",
+        "message": "A pasta está vazia",
         "description": "Text shown when a folder has no bookmarks"
     },
     "bgImageSectionHeader": {

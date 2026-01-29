@@ -365,7 +365,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(空)",
+        "message": "資料夾為空",
         "description": "資料夾為空時顯示的文字"
     },
     "bgImageSectionHeader": {

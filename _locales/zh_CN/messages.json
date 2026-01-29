@@ -365,7 +365,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(空)",
+        "message": "文件夹为空",
         "description": "Text shown when a folder has no bookmarks"
     },
     "bgImageSectionHeader": {

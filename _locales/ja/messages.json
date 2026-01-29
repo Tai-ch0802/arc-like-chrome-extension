@@ -365,7 +365,7 @@
         "description": "Status text shown while search is in progress."
     },
     "emptyFolder": {
-        "message": "(空)",
+        "message": "フォルダは空です",
         "description": "Text shown when a folder has no bookmarks"
     },
     "bgImageSectionHeader": {

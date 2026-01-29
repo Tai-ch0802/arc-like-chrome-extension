@@ -12,7 +12,7 @@ describe('Tab to Bookmark Use Case', () => {
         const setup = await setupBrowser();
         browser = setup.browser;
         page = setup.page;
-    });
+    }, 30000); // Increased timeout for CI environment
 
     afterAll(async () => {
         await teardownBrowser(browser);
