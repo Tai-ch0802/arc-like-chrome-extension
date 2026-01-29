@@ -2,7 +2,7 @@ import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
 import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from './ui/tabRenderer.js';
-import { getOtherTabCache } from './ui/otherWindowRenderer.js';
+import { getOtherTabCache, getOtherTabElementsCache } from './ui/otherWindowRenderer.js';
 import { escapeHtml } from './utils/textUtils.js';
 
 // Debounce 工具函式：延遲執行，避免頻繁觸發
@@ -502,20 +502,31 @@ function applyBookmarkVisibility(keywords, visibleItems) {
 function highlightMatches(regexes) {
 
     // 高亮分頁標題（包含其他視窗）
-    const tabItems = document.querySelectorAll('#tab-list .tab-item:not(.hidden), #other-windows-list .tab-item:not(.hidden)');
-    tabItems.forEach(item => {
+    // Optimization: Iterate over cached elements instead of querySelectorAll
+    const tabElements = getTabElementsCache();
+    const otherTabElements = getOtherTabElementsCache();
+
+    const highlightTabItem = (item) => {
+        // Skip hidden items
+        if (item.classList.contains('hidden')) return;
+
         const titleElement = item.querySelector('.tab-title');
         const isUrlMatch = item.dataset.urlMatch === 'true';
         const matchedDomain = item.dataset.matchedDomain;
 
         if (titleElement) {
-            const originalTitle = titleElement.textContent;
+            // Check if we already have original text stored (to avoid double escaping or loss of original)
+            // If it's already highlighted, we should start from original text
+            const originalTitle = titleElement.dataset.originalText || titleElement.textContent;
+
             const highlightedTitle = highlightText(originalTitle, regexes, 'title');
 
             // 只在有高亮時才更新 DOM
             if (highlightedTitle !== originalTitle) {
                 titleElement.innerHTML = highlightedTitle;
-                titleElement.dataset.originalText = originalTitle;
+                if (!titleElement.dataset.originalText) {
+                    titleElement.dataset.originalText = originalTitle;
+                }
             }
 
             // 如果是 URL 匹配，顯示 domain
@@ -539,7 +550,15 @@ function highlightMatches(regexes) {
                 }
             }
         }
-    });
+    };
+
+    for (const item of tabElements.values()) {
+        highlightTabItem(item);
+    }
+
+    for (const item of otherTabElements.values()) {
+        highlightTabItem(item);
+    }
 
     // 高亮書籤標題
     const bookmarkItems = ui.bookmarkListContainer.querySelectorAll('.bookmark-item:not(.hidden), .bookmark-folder:not(.hidden)');
@@ -549,12 +568,16 @@ function highlightMatches(regexes) {
         const matchedDomain = item.dataset.matchedDomain;
 
         if (titleElement) {
-            const originalTitle = titleElement.textContent;
+            // Check if we already have original text stored (to avoid double escaping or loss of original)
+            // If it's already highlighted, we should start from original text
+            const originalTitle = titleElement.dataset.originalText || titleElement.textContent;
             const highlightedTitle = highlightText(originalTitle, regexes, 'title');
 
             if (highlightedTitle !== originalTitle) {
                 titleElement.innerHTML = highlightedTitle;
-                titleElement.dataset.originalText = originalTitle;
+                if (!titleElement.dataset.originalText) {
+                    titleElement.dataset.originalText = originalTitle;
+                }
             }
 
             // 如果是 URL 匹配，顯示 domain
@@ -635,15 +658,30 @@ function escapeRegExp(string) {
 // 清除所有高亮
 function clearHighlights() {
     // 清除分頁高亮（包含其他視窗）
-    const tabTitles = document.querySelectorAll('#tab-list .tab-title[data-original-text], #other-windows-list .tab-title[data-original-text]');
-    tabTitles.forEach(element => {
-        element.textContent = element.dataset.originalText;
-        delete element.dataset.originalText;
-    });
+    // Optimization: Use caches to clear highlights
+    const tabElements = getTabElementsCache();
+    const otherTabElements = getOtherTabElementsCache();
 
-    // 清除分頁的 domain 顯示（包含其他視窗）
-    const tabDomains = document.querySelectorAll('#tab-list .matched-domain, #other-windows-list .matched-domain');
-    tabDomains.forEach(element => element.remove());
+    const clearTabItem = (item) => {
+        const titleElement = item.querySelector('.tab-title');
+        if (titleElement && titleElement.dataset.originalText) {
+            titleElement.textContent = titleElement.dataset.originalText;
+            delete titleElement.dataset.originalText;
+        }
+
+        const domainElement = item.querySelector('.matched-domain');
+        if (domainElement) {
+            domainElement.remove();
+        }
+    };
+
+    for (const item of tabElements.values()) {
+        clearTabItem(item);
+    }
+
+    for (const item of otherTabElements.values()) {
+        clearTabItem(item);
+    }
 
     // 清除書籤高亮
     const bookmarkTitles = ui.bookmarkListContainer.querySelectorAll('.bookmark-title[data-original-text]');

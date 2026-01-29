@@ -11,6 +11,9 @@ import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 /** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for other windows */
 let otherTabsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of tab DOM elements for other windows */
+let otherTabElementsCache = new Map();
+
 /**
  * Returns the current cache of tab objects for other windows.
  * @returns {Map<number, chrome.tabs.Tab>}
@@ -19,6 +22,23 @@ export function getOtherTabCache() {
     return otherTabsCache;
 }
 
+/**
+ * Returns the current cache of tab DOM elements for other windows.
+ * @returns {Map<number, HTMLElement>}
+ */
+export function getOtherTabElementsCache() {
+    return otherTabElementsCache;
+}
+
+/**
+ * Resets the other window caches.
+ * Useful for testing, hot-reload, or when the container element is replaced.
+ * @returns {void}
+ */
+export function resetOtherWindowCaches() {
+    otherTabsCache = new Map();
+    otherTabElementsCache = new Map();
+}
 
 /**
  * Create a simple tab element for other windows (without group actions)
@@ -112,6 +132,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
     // Reset and rebuild cache
     otherTabsCache.clear();
+    otherTabElementsCache.clear();
     windowsToShow.forEach(window => {
         window.tabs.forEach(tab => {
             otherTabsCache.set(tab.id, tab);
@@ -251,6 +272,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                 for (const groupTab of tabsInThisGroup) {
                     if (renderedTabIds.has(groupTab.id)) continue;
                     const tabElement = createOtherWindowTabElement(groupTab);
+                    otherTabElementsCache.set(groupTab.id, tabElement);
                     groupContent.appendChild(tabElement);
                     renderedTabIds.add(groupTab.id);
                 }
@@ -274,6 +296,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                 });
             } else {
                 const tabElement = createOtherWindowTabElement(tab);
+                otherTabElementsCache.set(tab.id, tabElement);
                 folderContent.appendChild(tabElement);
                 renderedTabIds.add(tab.id);
             }
