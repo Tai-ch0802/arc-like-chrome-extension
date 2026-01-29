@@ -441,7 +441,7 @@ mark.url-match {
     align-items: center;
     padding: 6px 12px;
     border-radius: 0;
-    cursor: pointer;
+    cursor: grab;
     transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
     white-space: nowrap;
     overflow: hidden;
@@ -453,6 +453,10 @@ mark.url-match {
 .tab-item:hover,
 .tab-item.selected {
     background-color: var(--element-bg-hover-color);
+}
+
+.tab-item:active {
+    cursor: grabbing;
 }
 
 .tab-item.active {
@@ -572,7 +576,7 @@ mark.url-match {
     display: flex;
     align-items: center;
     padding: 4px 8px;
-    cursor: pointer;
+    cursor: grab;
     border-radius: 2px;
     margin-top: 6px;
     background-color: var(--group-bg-color);
@@ -611,7 +615,7 @@ mark.url-match {
     display: flex;
     align-items: center;
     padding: 4px 8px;
-    cursor: pointer;
+    cursor: grab;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -623,6 +627,24 @@ mark.url-match {
     /* 移除連結底線 */
     position: relative;
     /* 新增：為了定位刪除按鈕 */
+}
+
+.bookmark-item:active,
+.bookmark-folder:active {
+    cursor: grabbing;
+}
+
+/* Ensure Other Windows items are not grab-able */
+.window-folder,
+#other-windows-list .tab-item {
+    cursor: pointer !important;
+}
+
+/* --- SortableJS Drag Cursor --- */
+.sortable-chosen,
+.sortable-ghost,
+.sortable-drag {
+    cursor: grabbing !important;
 }
 
 .bookmark-item:hover,
