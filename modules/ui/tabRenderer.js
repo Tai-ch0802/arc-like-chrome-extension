@@ -1,5 +1,5 @@
 import * as api from '../apiManager.js';
-import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG } from '../icons.js';
+import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG, CLOSE_ICON_SVG } from '../icons.js';
 import { tabListContainer } from './elements.js';
 import { showContextMenu } from './contextMenuManager.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
@@ -331,7 +331,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
-    closeBtn.textContent = '×';
+    closeBtn.innerHTML = CLOSE_ICON_SVG;
     closeBtn.tabIndex = -1;
     closeBtn.dataset.action = 'close';
     const closeTabLabel = api.getMessage("closeTab") || "Close Tab";

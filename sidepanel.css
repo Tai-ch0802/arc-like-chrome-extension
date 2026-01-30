@@ -1690,3 +1690,14 @@ mark.url-match {
 .settings-section-content .theme-options {
     margin-bottom: 12px;
 }
+/* --- Icon Sizes for SVG replacements --- */
+.close-btn svg,
+.bookmark-close-btn svg,
+.add-folder-btn svg,
+#clear-search-btn svg,
+.linked-tab-close-btn svg {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    pointer-events: none;
+}

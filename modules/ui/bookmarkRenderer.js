@@ -1,7 +1,7 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
-import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
+import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, CLOSE_ICON_SVG, ADD_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
@@ -44,7 +44,7 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
                     <img src="${faviconUrl}" alt="" class="linked-tab-favicon" />
                     <span class="linked-tab-title">${tab.title}</span>
                     ${groupName}
-                    <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}" aria-label="${closeTabLabel}" title="${closeTabLabel}">&times;</button>
+                    <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}" aria-label="${closeTabLabel}" title="${closeTabLabel}">${CLOSE_ICON_SVG}</button>
                 </div>
             `;
         }
@@ -397,7 +397,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
-            closeBtn.textContent = '×';
+            closeBtn.innerHTML = CLOSE_ICON_SVG;
             closeBtn.tabIndex = -1;
             closeBtn.setAttribute('aria-label', api.getMessage('deleteBookmark'));
             closeBtn.title = api.getMessage('deleteBookmark');
@@ -440,7 +440,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             const addFolderBtn = document.createElement('button');
             addFolderBtn.className = 'add-folder-btn';
-            addFolderBtn.textContent = '+';
+            addFolderBtn.innerHTML = ADD_ICON_SVG;
             addFolderBtn.tabIndex = -1;
             addFolderBtn.setAttribute('aria-label', api.getMessage('addFolder'));
             addFolderBtn.title = api.getMessage('addFolder');
@@ -448,7 +448,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             const closeBtn = document.createElement('button');
             closeBtn.className = 'bookmark-close-btn';
-            closeBtn.textContent = '×';
+            closeBtn.innerHTML = CLOSE_ICON_SVG;
             closeBtn.tabIndex = -1;
             closeBtn.setAttribute('aria-label', api.getMessage('deleteFolder'));
             closeBtn.title = api.getMessage('deleteFolder');
