@@ -587,6 +587,10 @@ mark.url-match {
     background-color: var(--group-bg-hover-color);
 }
 
+.tab-group-header:active {
+    cursor: grabbing;
+}
+
 .tab-group-arrow {
     width: 16px;
     height: 16px;
