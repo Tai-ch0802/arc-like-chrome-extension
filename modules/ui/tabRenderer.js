@@ -221,7 +221,7 @@ function updateTabElement(tabItem, tab) {
     }
 
     if (tabItem.dataset.url !== tab.url) tabItem.dataset.url = tab.url;
-    if (tabItem.dataset.windowId != tab.windowId) tabItem.dataset.windowId = tab.windowId;
+    if (tabItem.dataset.windowId !== String(tab.windowId)) tabItem.dataset.windowId = tab.windowId;
 
     const currentGroupId = tabItem.dataset.groupId ? parseInt(tabItem.dataset.groupId) : -1;
     const newGroupId = tab.groupId > 0 ? tab.groupId : -1;
@@ -249,7 +249,8 @@ function updateTabElement(tabItem, tab) {
     const favicon = tabItem.querySelector('.tab-favicon');
     if (favicon) {
         const newSrc = (tab.favIconUrl && tab.favIconUrl.startsWith('http')) ? tab.favIconUrl : 'icons/fallback-favicon.svg';
-        if (!favicon.src.includes(newSrc) && newSrc !== 'icons/fallback-favicon.svg') {
+        const currentSrc = favicon.getAttribute('src');
+        if (currentSrc !== newSrc && !currentSrc?.endsWith(newSrc)) {
             favicon.src = newSrc;
         }
     }
