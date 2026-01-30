@@ -24,6 +24,9 @@ let tabElementsCache = new Map();
 /** @type {Map<number, HTMLElement>} Cache of group header DOM elements for performance optimization */
 let groupHeaderElementsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of group content container DOM elements for performance optimization */
+let groupContentElementsCache = new Map();
+
 /** @type {AbortController|null} Controller to abort event listeners when resetting */
 let listenerAbortController = null;
 
@@ -42,6 +45,7 @@ export function resetTabListeners() {
     tabsCache = new Map();
     tabElementsCache = new Map();
     groupHeaderElementsCache = new Map();
+    groupContentElementsCache = new Map();
 }
 
 /**
@@ -377,6 +381,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     // New caches for this render cycle
     const newTabElementsCache = new Map();
     const newGroupHeaderElementsCache = new Map();
+    const newGroupContentElementsCache = new Map();
 
     const groupsMap = new Map(groups.map(group => [group.id, group]));
 
@@ -484,9 +489,17 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             newGroupHeaderElementsCache.set(group.id, groupHeader);
             fragment.appendChild(groupHeader);
 
-            const groupContent = document.createElement('div');
-            groupContent.className = 'tab-group-content';
+            // Get or create groupContent container
+            let groupContent = groupContentElementsCache.get(group.id);
+            if (groupContent) {
+                // Reuse existing container - clear its children
+                groupContent.innerHTML = '';
+            } else {
+                groupContent = document.createElement('div');
+                groupContent.className = 'tab-group-content';
+            }
             groupContent.style.display = group.collapsed ? 'none' : 'block';
+            newGroupContentElementsCache.set(group.id, groupContent);
 
             // Optimization: Use pre-grouped tabs
             const tabsInThisGroup = tabsByGroup.get(group.id) || [];
@@ -508,4 +521,5 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     // Update caches
     tabElementsCache = newTabElementsCache;
     groupHeaderElementsCache = newGroupHeaderElementsCache;
+    groupContentElementsCache = newGroupContentElementsCache;
 }
