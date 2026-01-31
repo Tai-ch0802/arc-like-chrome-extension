@@ -404,22 +404,6 @@ export function showAddToBookmarkDialog({ name, url }) {
                             e.preventDefault();
                             selectFolder();
                         }
-                        // Vertical Navigation for Folder Tree
-                        else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                            e.preventDefault();
-                            e.stopPropagation(); // Stop bubbling to global handler
-                            const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
-                            const index = allFolders.indexOf(folderItem);
-                            const next = allFolders[index + 1] || allFolders[0];
-                            if (next) next.focus();
-                        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
-                            const index = allFolders.indexOf(folderItem);
-                            const prev = allFolders[index - 1] || allFolders[allFolders.length - 1];
-                            if (prev) prev.focus();
-                        }
                     });
 
                     container.appendChild(folderItem);
@@ -437,6 +421,35 @@ export function showAddToBookmarkDialog({ name, url }) {
         }
 
         renderFolders(rootFolders, treeContainer, '');
+
+        // Optimize: Cache the folder list for keyboard navigation instead of querying on every keypress
+        const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
+
+        treeContainer.addEventListener('keydown', (e) => {
+            if (['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
+                // Only handle if focus is on a folder (or bubbling up from one)
+                if (e.target.classList.contains('bookmark-folder')) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Stop bubbling to global handler
+
+                    const index = allFolders.indexOf(e.target);
+                    if (index !== -1) {
+                        let nextIndex = index;
+                        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                            nextIndex = index + 1;
+                            if (nextIndex >= allFolders.length) nextIndex = 0;
+                        } else {
+                            nextIndex = index - 1;
+                            if (nextIndex < 0) nextIndex = allFolders.length - 1;
+                        }
+
+                        if (allFolders[nextIndex]) {
+                            allFolders[nextIndex].focus();
+                        }
+                    }
+                }
+            }
+        });
 
         const firstFolder = treeContainer.querySelector('.bookmark-folder');
         if (firstFolder) {
