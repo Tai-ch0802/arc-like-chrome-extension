@@ -422,17 +422,20 @@ export function showAddToBookmarkDialog({ name, url }) {
 
         renderFolders(rootFolders, treeContainer, '');
 
-        // Optimize: Cache the folder list for keyboard navigation instead of querying on every keypress
+        // Optimize: Cache the folder list for keyboard navigation instead of querying on every keypress.
+        // Note: This assumes all folders are rendered synchronously by renderFolders.
+        // If lazy loading is ever added, this cache would need to be refreshed.
         const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
 
         treeContainer.addEventListener('keydown', (e) => {
             if (['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
-                // Only handle if focus is on a folder (or bubbling up from one)
-                if (e.target.classList.contains('bookmark-folder')) {
+                // Use closest() for robustness in case folder has child elements
+                const targetFolder = e.target.closest('.bookmark-folder');
+                if (targetFolder) {
                     e.preventDefault();
                     e.stopPropagation(); // Stop bubbling to global handler
 
-                    const index = allFolders.indexOf(e.target);
+                    const index = allFolders.indexOf(targetFolder);
                     if (index !== -1) {
                         let nextIndex = index;
                         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
