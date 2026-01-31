@@ -22,67 +22,69 @@ describe('Bookmark Cache Performance Benchmark', () => {
 
     test('Measure buildBookmarkCache and loadBookmarkCache performance', async () => {
         const result = await page.evaluate(async () => {
-             // Mock chrome.storage.local.set/get to verify usage
-             let setCalled = false;
-             // Capture original methods
-             // Note: in puppeteer context, we might need to be careful not to break other things if they run in parallel
+            // Mock chrome.storage.local.set/get to verify usage
+            let setCalled = false;
+            let getCalled = false;
 
-             // Spy on set
-             const originalSet = chrome.storage.local.set;
-             const setSpy = (items, callback) => {
-                 setCalled = true;
-                 console.log('SPY: chrome.storage.local.set called');
-                 if (originalSet) originalSet.call(chrome.storage.local, items, callback);
-                 else if (callback) callback();
-             };
+            // Spy on set - support both Promise and callback API
+            const originalSet = chrome.storage.local.set.bind(chrome.storage.local);
+            const setSpy = (items, callback) => {
+                setCalled = true;
+                console.log('SPY: chrome.storage.local.set called');
+                // Support Promise API (no callback) and callback API
+                const result = originalSet(items, callback);
+                return result; // Return promise if no callback provided
+            };
 
-             try {
-                 chrome.storage.local.set = setSpy;
-             } catch (e) {
-                 console.log('Cannot overwrite chrome.storage.local.set directly, trying defineProperty');
-                 Object.defineProperty(chrome.storage.local, 'set', {
-                     value: setSpy,
-                     writable: true
-                 });
-             }
+            try {
+                chrome.storage.local.set = setSpy;
+            } catch (e) {
+                console.log('Cannot overwrite chrome.storage.local.set directly, trying defineProperty');
+                Object.defineProperty(chrome.storage.local, 'set', {
+                    value: setSpy,
+                    writable: true,
+                    configurable: true
+                });
+            }
 
-             // Spy on get
-             let getCalled = false;
-             const originalGet = chrome.storage.local.get;
-             const getSpy = (keys, callback) => {
-                 getCalled = true;
-                 console.log('SPY: chrome.storage.local.get called');
-                 if (originalGet) originalGet.call(chrome.storage.local, keys, callback);
-                 else if (callback) callback({});
-             };
+            // Spy on get - support both Promise and callback API
+            const originalGet = chrome.storage.local.get.bind(chrome.storage.local);
+            const getSpy = (keys, callback) => {
+                getCalled = true;
+                console.log('SPY: chrome.storage.local.get called');
+                // Support Promise API (no callback) and callback API
+                const result = originalGet(keys, callback);
+                return result; // Return promise if no callback provided
+            };
 
-             try {
-                 chrome.storage.local.get = getSpy;
-             } catch (e) {
-                 Object.defineProperty(chrome.storage.local, 'get', {
-                     value: getSpy,
-                     writable: true
-                 });
-             }
+            try {
+                chrome.storage.local.get = getSpy;
+            } catch (e) {
+                Object.defineProperty(chrome.storage.local, 'get', {
+                    value: getSpy,
+                    writable: true,
+                    configurable: true
+                });
+            }
 
-             const state = await import('./modules/stateManager.js');
+            const state = await import('./modules/stateManager.js');
 
-             // Measure buildBookmarkCache
-             const startBuild = performance.now();
-             await state.buildBookmarkCache();
-             const endBuild = performance.now();
+            // Measure buildBookmarkCache
+            const startBuild = performance.now();
+            await state.buildBookmarkCache();
+            const endBuild = performance.now();
 
-             // Measure loadBookmarkCache
-             const startLoad = performance.now();
-             await state.loadBookmarkCache();
-             const endLoad = performance.now();
+            // Measure loadBookmarkCache
+            const startLoad = performance.now();
+            await state.loadBookmarkCache();
+            const endLoad = performance.now();
 
-             return {
-                 buildTime: endBuild - startBuild,
-                 loadTime: endLoad - startLoad,
-                 setCalled: setCalled,
-                 getCalled: getCalled
-             };
+            return {
+                buildTime: endBuild - startBuild,
+                loadTime: endLoad - startLoad,
+                setCalled: setCalled,
+                getCalled: getCalled
+            };
         });
 
         console.log(`Bookmark Cache Benchmark:`);
@@ -91,7 +93,12 @@ describe('Bookmark Cache Performance Benchmark', () => {
         console.log(`  Storage SET called: ${result.setCalled}`);
         console.log(`  Storage GET called: ${result.getCalled}`);
 
+        // Verify storage API was used
         expect(result.setCalled).toBe(true);
         expect(result.getCalled).toBe(true);
+
+        // Performance sanity check - should complete within reasonable time
+        expect(result.buildTime).toBeLessThan(5000); // 5 seconds max
+        expect(result.loadTime).toBeLessThan(1000);  // 1 second max
     }, 60000);
 });
