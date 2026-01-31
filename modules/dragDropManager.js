@@ -86,8 +86,8 @@ async function handleDragEnd(evt, updateTabList) {
     if (evt.to.closest('#bookmark-list')) {
         return;
     }
-    const { item, newIndex } = evt;
-    await moveItem(item, newIndex, evt.to);
+    const { item } = evt;
+    await moveItem(item);
 }
 
 async function handleDragAdd(evt, updateTabList) {
@@ -156,7 +156,7 @@ function getNextDraggable(currentElement) {
     return undefined;
 }
 
-async function moveItem(item, newIndex, container) {
+async function moveItem(item) {
     // Optimized: Use DOM traversal to find the next draggable element instead of querySelectorAll
     // which eliminates O(N) operations on large tab lists.
     const targetElement = getNextDraggable(item);
