@@ -3,6 +3,7 @@ import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
 import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
+import { highlightText } from '../utils/textUtils.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -102,8 +103,10 @@ let listenerAbortController = null;
 let bookmarkContainer = null;
 /** @type {Function|null} Callback for refreshing bookmarks */
 let currentRefreshCallback = null;
-/** @type {Function|null} Callback to expand all folders (state) */
+/** @type {boolean} Flag to expand all folders */
 let currentForceExpandAll = false;
+/** @type {RegExp[]} Current highlight regexes for lazy load */
+let currentHighlightRegexes = [];
 
 // Shared data access helpers for delegation
 const getBookmarkItem = (el) => el.closest('.bookmark-item');
@@ -263,7 +266,10 @@ function initBookmarkListeners(container) {
                             // 使用 getSubTree 來獲取包含 children 的節點
                             const subtree = await api.getSubTree(id);
                             if (subtree && subtree[0] && subtree[0].children) {
-                                renderBookmarks(subtree[0].children, content, id, currentRefreshCallback, currentForceExpandAll);
+                                renderBookmarks(subtree[0].children, content, id, currentRefreshCallback, {
+                                    forceExpandAll: currentForceExpandAll,
+                                    highlightRegexes: currentHighlightRegexes
+                                });
                             }
                         } catch (err) {
                             console.error('Failed to load bookmark subtree:', err);
@@ -306,14 +312,29 @@ function initBookmarkListeners(container) {
 }
 
 
-export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, forceExpandAll = false) {
+export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, options = {}) {
     if (!listenersInitialized && container.id === 'bookmark-list') {
         initBookmarkListeners(container);
     }
+
+    let forceExpandAll = false;
+    let highlightRegexes = [];
+
+    if (typeof options === 'boolean') {
+        forceExpandAll = options;
+    } else {
+        forceExpandAll = options.forceExpandAll || false;
+        highlightRegexes = options.highlightRegexes || [];
+    }
+
+    // Construct options object for recursive calls
+    const currentOptions = { forceExpandAll, highlightRegexes };
+
     // Only update callback if it's the root render
     if (parentId === '1' || container.id === 'bookmark-list') {
         currentRefreshCallback = refreshBookmarksCallback;
         currentForceExpandAll = forceExpandAll;
+        currentHighlightRegexes = highlightRegexes;
     }
 
     container.dataset.parentId = parentId;
@@ -361,11 +382,46 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             const title = document.createElement('span');
             title.className = 'bookmark-title';
-            title.textContent = node.title;
+
+            // Highlighting Logic
+            if (highlightRegexes.length > 0) {
+                const titleHtml = highlightText(node.title, highlightRegexes, 'title');
+                title.innerHTML = titleHtml;
+                // Store original text for recovery if needed (though we rebuild on clear)
+                // Keeping it consistent with previous logic might be useful but likely unnecessary if we always rebuild
+                title.dataset.originalText = node.title;
+            } else {
+                title.textContent = node.title;
+            }
 
             const titleWrapper = document.createElement('div');
             titleWrapper.className = 'bookmark-content-wrapper';
             titleWrapper.appendChild(title);
+
+            // Domain Match Display Logic
+            if (highlightRegexes.length > 0) {
+                // Check if title has highlight
+                const titleMatched = title.innerHTML.includes('<mark');
+
+                try {
+                    const domain = new URL(node.url).hostname;
+                    const domainHtml = highlightText(domain, highlightRegexes, 'url');
+                    const domainMatched = domainHtml.includes('<mark');
+
+                    if (domainMatched && !titleMatched) {
+                        const domainElement = document.createElement('div');
+                        domainElement.className = 'matched-domain';
+                        domainElement.innerHTML = domainHtml + '...';
+                        titleWrapper.appendChild(domainElement);
+
+                        // Set dataset for consistency, though visual is already added
+                        bookmarkItem.dataset.urlMatch = 'true';
+                        bookmarkItem.dataset.matchedDomain = domain;
+                    }
+                } catch (e) {
+                    // Ignore invalid URLs
+                }
+            }
 
             bookmarkItem.appendChild(icon);
 
@@ -425,7 +481,14 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
             const title = document.createElement('span');
             title.className = 'bookmark-title';
-            title.textContent = node.title;
+
+            // Highlighting Logic for Folders
+            if (highlightRegexes.length > 0) {
+                title.innerHTML = highlightText(node.title, highlightRegexes, 'title');
+                title.dataset.originalText = node.title;
+            } else {
+                title.textContent = node.title;
+            }
 
             const actionsContainer = document.createElement('div');
             actionsContainer.className = 'bookmark-actions';
@@ -468,7 +531,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             folderContent.style.display = isExpanded ? 'block' : 'none';
 
             if (isExpanded && node.children) {
-                renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, forceExpandAll);
+                renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, currentOptions);
             }
 
             fragment.appendChild(folderItem);

@@ -3,7 +3,7 @@ import * as state from './stateManager.js';
 import * as api from './apiManager.js';
 import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from './ui/tabRenderer.js';
 import { getOtherTabCache, getOtherTabElementsCache } from './ui/otherWindowRenderer.js';
-import { escapeHtml } from './utils/textUtils.js';
+import { highlightText, escapeRegExp } from './utils/textUtils.js';
 
 // Debounce 工具函式：延遲執行，避免頻繁觸發
 function debounce(func, wait) {
@@ -25,16 +25,19 @@ async function handleSearch() {
     // 將查詢字串分割成多個關鍵字（空白分隔）
     const keywords = query.toLowerCase().split(/\s+/).filter(k => k.length > 0);
 
+    // 預先編譯所有正則表達式，避免在迴圈中重複編譯
+    let regexes = [];
+    if (keywords.length > 0) {
+        regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
+    }
+
     // 過濾分頁和書籤
     const tabCount = filterTabsAndGroups(keywords);
     const otherWindowsTabCount = filterOtherWindowsTabs(keywords);
-    const bookmarkCount = await filterBookmarks(keywords);
+    const bookmarkCount = await filterBookmarks(keywords, regexes);
 
     // 高亮匹配文字
     if (keywords.length > 0) {
-        // 預先編譯所有正則表達式，避免在迴圈中重複編譯
-        // keywords 已在上方被 filter(k => k.length > 0) 過濾，此處無需重複過濾
-        const regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
         highlightMatches(regexes);
     } else {
         clearHighlights();
@@ -285,7 +288,7 @@ function filterOtherWindowsTabs(keywords) {
 let isFiltering = false;
 
 // 過濾書籤，回傳可見書籤數量 (使用 Cache 進行搜尋)
-async function filterBookmarks(keywords) {
+async function filterBookmarks(keywords, regexes = []) {
     // 如果沒有關鍵字，直接返回（不重新渲染）
     // 書籤已經在 refreshBookmarks 中渲染好了
     // 如果沒有關鍵字，檢查是否需要重置視圖
@@ -353,11 +356,11 @@ async function filterBookmarks(keywords) {
     // 過濾樹：只保留 visibleIds 中的節點
     const filteredTree = filterTreeByIds(tree[0].children, visibleIds);
 
-    // 重新渲染過濾後的書籤樹（強制展開所有資料夾）
+    // 重新渲染過濾後的書籤樹（強制展開所有資料夾），並傳入 regexes 用於高亮
     ui.bookmarkListContainer.innerHTML = '';
     ui.renderBookmarks(filteredTree, ui.bookmarkListContainer, '1', () => {
         document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
-    }, keywords, true); // forceExpandAll = true
+    }, { forceExpandAll: true, highlightRegexes: regexes });
 
     // 確保所有資料夾視覺上是展開狀態
     const allFolderContents = ui.bookmarkListContainer.querySelectorAll('.folder-content');
@@ -367,16 +370,11 @@ async function filterBookmarks(keywords) {
         if (folderIcon) folderIcon.textContent = '▼';
     });
 
-    // 設定 URL 匹配的 dataset 以供 highlightMatches 使用
-    for (const item of matchingItems) {
-        if (item._urlMatches && !item._titleMatches) {
-            const domElement = ui.bookmarkListContainer.querySelector(`.bookmark-item[data-bookmark-id="${item.id}"]`);
-            if (domElement) {
-                domElement.dataset.urlMatch = 'true';
-                domElement.dataset.matchedDomain = extractDomain(item.url);
-            }
-        }
-    }
+    // 設定 URL 匹配的 dataset 以供 renderBookmarks (如果將來需要) 或其他邏輯使用
+    // 注意：因為現在高亮是在渲染時直接做的，這裡可能不需要再設定 dataset.urlMatch 給高亮函數用了，
+    // 但也許還有其他用途，先保留，但 matchedDomain 其實已經在高亮邏輯中處理了。
+    // 實際上，如果 renderBookmarks 處理了高亮和 domain 顯示，這裡的 loop 可能可以簡化或移除。
+    // 但為了保持資料一致性，保留無妨。
 
     return matchingItems.length;
 }
@@ -402,7 +400,13 @@ function filterTreeByIds(nodes, visibleIds) {
     return result;
 }
 
-// 遞迴計算書籤可見性
+// 遞迴計算書籤可見性 (used by something else? filterTreeByIds replaces this logic inside search?
+// No, filterTreeByIds is used. calculateBookmarkVisibility and applyBookmarkVisibility seem unused in current active path
+// since we use filterTreeByIds + renderBookmarks.
+// Wait, looking at original code, applyBookmarkVisibility was exported but unused in handleSearch?
+// No, filterBookmarks was using filterTreeByIds. calculate/applyBookmarkVisibility seem to be legacy or helper functions not used in the main flow
+// inside filterBookmarks which uses reconstruction.
+// I will leave them as is to avoid breaking anything unexpected.)
 function calculateBookmarkVisibility(node, keywords, visibleItems) {
     const titleElement = node.querySelector('.bookmark-title');
     if (!titleElement) return false;
@@ -560,99 +564,7 @@ function highlightMatches(regexes) {
         highlightTabItem(item);
     }
 
-    // 高亮書籤標題
-    const bookmarkItems = ui.bookmarkListContainer.querySelectorAll('.bookmark-item:not(.hidden), .bookmark-folder:not(.hidden)');
-    bookmarkItems.forEach(item => {
-        const titleElement = item.querySelector('.bookmark-title');
-        const isUrlMatch = item.dataset.urlMatch === 'true';
-        const matchedDomain = item.dataset.matchedDomain;
-
-        if (titleElement) {
-            // Check if we already have original text stored (to avoid double escaping or loss of original)
-            // If it's already highlighted, we should start from original text
-            const originalTitle = titleElement.dataset.originalText || titleElement.textContent;
-            const highlightedTitle = highlightText(originalTitle, regexes, 'title');
-
-            if (highlightedTitle !== originalTitle) {
-                titleElement.innerHTML = highlightedTitle;
-                if (!titleElement.dataset.originalText) {
-                    titleElement.dataset.originalText = originalTitle;
-                }
-            }
-
-            // 如果是 URL 匹配，顯示 domain
-            if (isUrlMatch && matchedDomain) {
-                // 移除舊的 domain 顯示（如果有）
-                const existingDomain = item.querySelector('.matched-domain');
-                if (existingDomain) {
-                    existingDomain.remove();
-                }
-
-                // 建立 domain 顯示元素
-                const domainElement = document.createElement('div');
-                domainElement.className = 'matched-domain';
-                const highlightedDomain = highlightText(matchedDomain, regexes, 'url');
-                domainElement.innerHTML = highlightedDomain + '...';
-
-                // 附加到 bookmark-content-wrapper
-                const titleWrapper = item.querySelector('.bookmark-content-wrapper');
-                if (titleWrapper) {
-                    titleWrapper.appendChild(domainElement);
-                }
-            }
-        }
-    });
-}
-
-// 高亮文字工具函式（安全版本：防止 XSS 攻擊）
-function highlightText(text, regexes, type) {
-    // 1. 收集所有匹配區間
-    const matches = [];
-    regexes.forEach(regex => {
-        let match;
-        const clonedRegex = new RegExp(regex.source, regex.flags);
-        while ((match = clonedRegex.exec(text)) !== null) {
-            matches.push({ start: match.index, end: match.index + match[0].length });
-            // 防止無限迴圈 (當 regex 是 global 且匹配空字串時)
-            if (match[0].length === 0) {
-                clonedRegex.lastIndex++;
-            }
-        }
-    });
-
-    // 如果沒有匹配，直接返回轉義後的原始文字
-    if (matches.length === 0) {
-        return escapeHtml(text);
-    }
-
-    // 2. 合併重疊區間
-    matches.sort((a, b) => a.start - b.start);
-    const merged = [];
-    for (const m of matches) {
-        if (merged.length === 0 || m.start > merged[merged.length - 1].end) {
-            merged.push({ ...m });
-        } else {
-            merged[merged.length - 1].end = Math.max(merged[merged.length - 1].end, m.end);
-        }
-    }
-
-    // 3. 組裝結果：先轉義文字，再插入 <mark> 標籤
-    const markClass = type === 'url' ? 'url-match' : 'title-match';
-    let result = '';
-    let lastIndex = 0;
-    for (const { start, end } of merged) {
-        result += escapeHtml(text.slice(lastIndex, start));
-        result += `<mark class="${markClass}">${escapeHtml(text.slice(start, end))}</mark>`;
-        lastIndex = end;
-    }
-    result += escapeHtml(text.slice(lastIndex));
-
-    return result;
-}
-
-// 轉義正則表達式特殊字元
-function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // 書籤高亮部分已移除，改為在 renderBookmarks 中處理
 }
 
 // 清除所有高亮
@@ -683,16 +595,7 @@ function clearHighlights() {
         clearTabItem(item);
     }
 
-    // 清除書籤高亮
-    const bookmarkTitles = ui.bookmarkListContainer.querySelectorAll('.bookmark-title[data-original-text]');
-    bookmarkTitles.forEach(element => {
-        element.textContent = element.dataset.originalText;
-        delete element.dataset.originalText;
-    });
-
-    // 清除書籤的 domain 顯示
-    const bookmarkDomains = ui.bookmarkListContainer.querySelectorAll('.matched-domain');
-    bookmarkDomains.forEach(element => element.remove());
+    // 書籤高亮清除部分已移除，因為搜尋結束後會重新渲染書籤列表
 }
 
 
