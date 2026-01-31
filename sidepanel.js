@@ -98,10 +98,10 @@ function applyStaticTranslations() {
 async function initialize() {
     await Promise.all([
         state.initLinkedTabs(), // Load linked tabs state first
-        state.initWindowNames() // Load window names
+        state.initWindowNames(), // Load window names
+        state.loadBookmarkCache() // Load cached bookmarks from storage
     ]);
     state.pruneWindowNames().catch(console.error); // Prune stale window names on startup (non-blocking)
-    state.loadBookmarkCache(); // Load cached bookmarks from localStorage
     state.buildBookmarkCache().catch(console.error); // Build fresh cache on startup (non-blocking)
     applyStaticTranslations();
 
