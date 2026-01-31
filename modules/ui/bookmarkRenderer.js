@@ -103,8 +103,10 @@ let listenerAbortController = null;
 let bookmarkContainer = null;
 /** @type {Function|null} Callback for refreshing bookmarks */
 let currentRefreshCallback = null;
-/** @type {Function|null} Callback to expand all folders (state) */
+/** @type {boolean} Flag to expand all folders */
 let currentForceExpandAll = false;
+/** @type {RegExp[]} Current highlight regexes for lazy load */
+let currentHighlightRegexes = [];
 
 // Shared data access helpers for delegation
 const getBookmarkItem = (el) => el.closest('.bookmark-item');
@@ -264,7 +266,10 @@ function initBookmarkListeners(container) {
                             // 使用 getSubTree 來獲取包含 children 的節點
                             const subtree = await api.getSubTree(id);
                             if (subtree && subtree[0] && subtree[0].children) {
-                                renderBookmarks(subtree[0].children, content, id, currentRefreshCallback, currentForceExpandAll);
+                                renderBookmarks(subtree[0].children, content, id, currentRefreshCallback, {
+                                    forceExpandAll: currentForceExpandAll,
+                                    highlightRegexes: currentHighlightRegexes
+                                });
                             }
                         } catch (err) {
                             console.error('Failed to load bookmark subtree:', err);
@@ -329,6 +334,7 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
     if (parentId === '1' || container.id === 'bookmark-list') {
         currentRefreshCallback = refreshBookmarksCallback;
         currentForceExpandAll = forceExpandAll;
+        currentHighlightRegexes = highlightRegexes;
     }
 
     container.dataset.parentId = parentId;
