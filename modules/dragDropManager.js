@@ -87,7 +87,11 @@ async function handleDragEnd(evt, updateTabList) {
         return;
     }
     const { item, newIndex } = evt;
-    await moveItem(item, newIndex, evt.to);
+    try {
+        await moveItem(item, newIndex, evt.to);
+    } catch (error) {
+        console.error("Error in moveItem:", error);
+    }
 }
 
 async function handleDragAdd(evt, updateTabList) {
@@ -121,18 +125,48 @@ async function handleDragAdd(evt, updateTabList) {
     }
 }
 
+function getNextDraggable(currentElement) {
+    // Helper to check if element matches draggable selector
+    const matches = (el) => {
+        return (el.classList.contains('tab-item') && !el.classList.contains('in-split-view')) ||
+            el.classList.contains('tab-group-header') ||
+            el.classList.contains('tab-split-group');
+    };
+
+    // Try next sibling
+    let sibling = currentElement.nextElementSibling;
+
+    while (sibling) {
+        // If sibling is a group content, we want its first child
+        if (sibling.classList.contains('tab-group-content')) {
+            let child = sibling.firstElementChild;
+            while (child) {
+                if (matches(child)) return child;
+                child = child.nextElementSibling;
+            }
+        } else if (matches(sibling)) {
+            return sibling;
+        }
+        sibling = sibling.nextElementSibling;
+    }
+
+    // If no sibling found in current container, go up
+    const parent = currentElement.parentElement;
+    if (parent && parent.classList.contains('tab-group-content')) {
+        // We are inside a group. Continue from parent's next sibling.
+        return getNextDraggable(parent);
+    }
+
+    return undefined;
+}
+
 async function moveItem(item, newIndex, container) {
-    // Exclude tabs that are inside a split view because the split group itself is the draggable unit
-    // This prevents double-counting indices or finding a nested tab as the 'next' element
-    const allDraggables = Array.from(container.closest('#tab-list').querySelectorAll('.tab-item:not(.in-split-view), .tab-group-header, .tab-split-group'));
+    // Optimized: Use DOM traversal to find the next draggable element instead of querySelectorAll
+    // which eliminates O(N) operations on large tab lists.
+    const targetElement = getNextDraggable(item);
 
-    const droppedItemElement = allDraggables.find(el => el === item);
+    // console.log("moveItem", { item, targetElement });
 
-    // Safety check if something went wrong finding the element
-    if (!droppedItemElement) return;
-
-    const actualNewIndex = allDraggables.indexOf(droppedItemElement);
-    const targetElement = allDraggables[actualNewIndex + 1];
     let targetAbsoluteIndex = -1;
     if (targetElement) {
         if (targetElement.classList.contains('tab-item')) {
@@ -157,6 +191,8 @@ async function moveItem(item, newIndex, container) {
             }
         }
     }
+
+    // console.log("Calculated targetAbsoluteIndex:", targetAbsoluteIndex);
 
     if (item.classList.contains('tab-item')) {
         const tabIdToMove = parseInt(item.dataset.tabId, 10);
