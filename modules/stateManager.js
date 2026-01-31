@@ -255,7 +255,7 @@ export async function buildBookmarkCache() {
     if (tree[0] && tree[0].children) {
       bookmarkTreeCache = tree;
       bookmarkCache = flattenBookmarkTree(tree[0].children, [], []);
-      localStorage.setItem(BOOKMARK_CACHE_KEY, JSON.stringify(bookmarkCache));
+      await setStorage('local', { [BOOKMARK_CACHE_KEY]: bookmarkCache });
     }
   } catch (error) {
     console.error('[stateManager] Error building bookmark cache:', error);
@@ -263,13 +263,14 @@ export async function buildBookmarkCache() {
 }
 
 /**
- * Loads the bookmark cache from localStorage into memory.
+ * Loads the bookmark cache from storage into memory.
  */
-export function loadBookmarkCache() {
+export async function loadBookmarkCache() {
   try {
-    const cached = localStorage.getItem(BOOKMARK_CACHE_KEY);
+    const result = await getStorage('local', [BOOKMARK_CACHE_KEY]);
+    const cached = result[BOOKMARK_CACHE_KEY];
     if (cached) {
-      bookmarkCache = JSON.parse(cached);
+      bookmarkCache = cached;
     }
   } catch (error) {
     console.error('[stateManager] Error loading bookmark cache:', error);
