@@ -173,111 +173,118 @@ function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
-    const folders = list.querySelectorAll('.window-folder');
     let totalCount = 0;
 
-    // Optimization: Use cache to avoid DOM reads for title/url lookup.
-    // We still iterate DOM to toggle 'hidden' class and track group visibility.
+    // Optimization: Iterate over cached elements instead of querySelectorAll
+    const otherTabElements = getOtherTabElementsCache();
     const otherTabsCache = getOtherTabCache();
-    const groupVisibility = new Map();
 
+    // Track counts to update container visibility
+    const windowCounts = new Map();
+    const groupCounts = new Map();
+
+    for (const [tabId, item] of otherTabElements) {
+        const tab = otherTabsCache.get(tabId);
+        let title, url, groupId, windowId;
+
+        if (tab) {
+            title = tab.title;
+            url = tab.url;
+            groupId = tab.groupId;
+            windowId = tab.windowId;
+        } else {
+            // Fallback to DOM if not in cache (should be rare)
+            const titleElement = item.querySelector('.tab-title');
+            title = titleElement ? titleElement.textContent : '';
+            url = item.dataset.url || '';
+            if (item.dataset.groupId) {
+                groupId = parseInt(item.dataset.groupId);
+            }
+            // Try to find windowId from DOM structure if missing from cache
+            const folderContent = item.closest('.folder-content');
+            if (folderContent) {
+                const folder = folderContent.previousElementSibling;
+                if (folder && folder.dataset.windowId) {
+                    windowId = parseInt(folder.dataset.windowId);
+                }
+            }
+        }
+
+        const domain = extractDomain(url);
+        const titleMatches = matchesAnyKeyword(title, keywords);
+        const urlMatches = matchesAnyKeyword(domain, keywords);
+        const matches = titleMatches || urlMatches;
+
+        item.classList.toggle('hidden', !matches);
+
+        if (urlMatches && !titleMatches) {
+            item.dataset.urlMatch = 'true';
+            item.dataset.matchedDomain = domain;
+        } else {
+            delete item.dataset.urlMatch;
+            delete item.dataset.matchedDomain;
+        }
+
+        if (matches) {
+            totalCount++;
+            if (windowId) {
+                windowCounts.set(windowId, (windowCounts.get(windowId) || 0) + 1);
+            }
+            if (groupId > 0) {
+                groupCounts.set(groupId, (groupCounts.get(groupId) || 0) + 1);
+            }
+        }
+    }
+
+    // Update window folders and group headers visibility
+    const folders = list.querySelectorAll('.window-folder');
     folders.forEach(folder => {
-        const content = folder.nextElementSibling;
-        if (!content || !content.classList.contains('folder-content')) return;
-
-        // Get all tab items in this window folder (including inside groups)
-        const tabs = content.querySelectorAll('.tab-item');
-        let windowCount = 0;
-
-        tabs.forEach(item => {
-            const tabId = parseInt(item.dataset.tabId);
-            const tab = otherTabsCache.get(tabId);
-
-            let title, url, groupId;
-            if (tab) {
-                title = tab.title;
-                url = tab.url;
-                groupId = tab.groupId;
-            } else {
-                // Fallback to DOM if not in cache
-                const titleElement = item.querySelector('.tab-title');
-                title = titleElement ? titleElement.textContent : '';
-                url = item.dataset.url || '';
-                if (item.dataset.groupId) {
-                    groupId = parseInt(item.dataset.groupId);
-                }
-            }
-
-            const domain = extractDomain(url);
-            const titleMatches = matchesAnyKeyword(title, keywords);
-            const urlMatches = matchesAnyKeyword(domain, keywords);
-            const matches = titleMatches || urlMatches;
-
-            item.classList.toggle('hidden', !matches);
-
-            if (urlMatches && !titleMatches) {
-                item.dataset.urlMatch = 'true';
-                item.dataset.matchedDomain = domain;
-            } else {
-                delete item.dataset.urlMatch;
-                delete item.dataset.matchedDomain;
-            }
-
-            if (matches) {
-                windowCount++;
-                // If this tab is inside a group, we need to mark that group as having visible children.
-                // In otherWindowRenderer, tabs in group are inside .tab-group-content.
-                // Detailed check:
-                const groupContent = item.closest('.tab-group-content');
-                if (groupContent) {
-                    const groupHeader = groupContent.previousElementSibling;
-                    if (groupHeader && groupHeader.dataset.groupId) {
-                        const gId = parseInt(groupHeader.dataset.groupId);
-                        groupVisibility.set(gId, (groupVisibility.get(gId) || 0) + 1);
-                    }
-                }
-            }
-        });
-
-        // Expand/collapse tab groups
-        const groupHeaders = content.querySelectorAll('.tab-group-header');
-        groupHeaders.forEach(header => {
-            const groupContent = header.nextElementSibling;
-            if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
-
-            const groupId = parseInt(header.dataset.groupId);
-            const visibleTabsCount = groupVisibility.get(groupId) || 0;
-
-            const titleElement = header.querySelector('.tab-group-title');
-            const title = titleElement ? titleElement.textContent : '';
-            const groupTitleMatches = matchesAnyKeyword(title, keywords);
-            const hasVisibleChildren = visibleTabsCount > 0;
-
-            header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
-
-            if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
-                groupContent.style.display = 'block';
-                header.querySelector('.tab-group-arrow').textContent = '▼';
-            } else if (keywords.length === 0) {
-                const isCollapsed = header.dataset.collapsed === 'true';
-                groupContent.style.display = isCollapsed ? 'none' : 'block';
-                header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
-            }
-        });
-
-        totalCount += windowCount;
+        const windowId = parseInt(folder.dataset.windowId);
+        const windowCount = windowCounts.get(windowId) || 0;
         const visible = windowCount > 0 || keywords.length === 0;
-        folder.classList.toggle('hidden', !visible);
-        content.classList.toggle('hidden', !visible);
 
-        // 展開/收合
-        const icon = folder.querySelector('.window-icon'); // Note: changed from .bookmark-icon to .window-icon based on renderer
-        if (windowCount > 0 && keywords.length > 0) {
-            content.style.display = 'block';
-            if (icon) icon.textContent = '▼';
-        } else if (keywords.length === 0) {
-            content.style.display = 'none';
-            if (icon) icon.textContent = '▶';
+        folder.classList.toggle('hidden', !visible);
+        const content = folder.nextElementSibling;
+
+        if (content && content.classList.contains('folder-content')) {
+            content.classList.toggle('hidden', !visible);
+
+            // Expand/collapse based on search results
+            const icon = folder.querySelector('.window-icon');
+            if (windowCount > 0 && keywords.length > 0) {
+                content.style.display = 'block';
+                if (icon) icon.textContent = '▼';
+            } else if (keywords.length === 0) {
+                content.style.display = 'none';
+                if (icon) icon.textContent = '▶';
+            }
+
+            // Update group headers within this window
+            // We still query headers here, but this is much lighter than querying all tabs
+            const groupHeaders = content.querySelectorAll('.tab-group-header');
+            groupHeaders.forEach(header => {
+                const groupId = parseInt(header.dataset.groupId);
+                const visibleTabsCount = groupCounts.get(groupId) || 0;
+
+                const groupContent = header.nextElementSibling;
+                if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
+
+                const titleElement = header.querySelector('.tab-group-title');
+                const title = titleElement ? titleElement.textContent : '';
+                const groupTitleMatches = matchesAnyKeyword(title, keywords);
+                const hasVisibleChildren = visibleTabsCount > 0;
+
+                header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
+
+                if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
+                    groupContent.style.display = 'block';
+                    header.querySelector('.tab-group-arrow').textContent = '▼';
+                } else if (keywords.length === 0) {
+                    const isCollapsed = header.dataset.collapsed === 'true';
+                    groupContent.style.display = isCollapsed ? 'none' : 'block';
+                    header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
+                }
+            });
         }
     });
 
