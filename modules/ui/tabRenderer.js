@@ -244,13 +244,13 @@ function updateTabElement(tabItem, tab) {
         tabItem.setAttribute('aria-label', tab.title);
     }
 
-    const titleSpan = tabItem.querySelector('.tab-title');
+    const titleSpan = tabItem._refs ? tabItem._refs.title : tabItem.querySelector('.tab-title');
     if (titleSpan && titleSpan.textContent !== tab.title) {
         titleSpan.textContent = tab.title || 'Loading...';
         delete titleSpan.dataset.originalText;
     }
 
-    const favicon = tabItem.querySelector('.tab-favicon');
+    const favicon = tabItem._refs ? tabItem._refs.favicon : tabItem.querySelector('.tab-favicon');
     if (favicon) {
         const newSrc = (tab.favIconUrl && tab.favIconUrl.startsWith('http')) ? tab.favIconUrl : 'icons/fallback-favicon.svg';
         const currentSrc = favicon.getAttribute('src');
@@ -365,6 +365,14 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.appendChild(favicon);
     tabItem.appendChild(titleWrapper);
     tabItem.appendChild(actionsContainer);
+
+    // Cache DOM references to avoid repeated querySelector calls
+    tabItem._refs = {
+        favicon,
+        title,
+        titleWrapper,
+        actionsContainer
+    };
 
     return tabItem;
 }
