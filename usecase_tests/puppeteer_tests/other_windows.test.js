@@ -40,9 +40,10 @@ describe('Other Windows Use Case', () => {
         }, secondWindowId);
         createdTabIds.push(newTab.id);
 
-        // Wait for extension to register new window and reload
+        // Wait for extension to register new window
+        await new Promise(r => setTimeout(r, 500));
         await page.reload();
-        await page.waitForSelector('#other-windows-list', { timeout: 10000 });
+        await page.waitForSelector('#other-windows-list');
     });
 
     afterEach(async () => {
@@ -67,17 +68,9 @@ describe('Other Windows Use Case', () => {
         await page.waitForSelector(otherWindowFolderSelector, { visible: false });
         await page.$eval(otherWindowFolderSelector, el => el.scrollIntoView());
 
-        // Click to expand the folder and wait for expansion using waitForFunction
+        // Click to expand the folder
         await page.$eval(otherWindowFolderSelector, el => el.click());
-        await page.waitForFunction(
-            (selector) => {
-                const folder = document.querySelector(selector);
-                const content = folder ? folder.nextElementSibling : null;
-                return content && content.classList.contains('folder-content') && content.children.length > 0;
-            },
-            { timeout: 10000 },
-            otherWindowFolderSelector
-        );
+        await new Promise(r => setTimeout(r, 500)); // Wait for expansion animation
 
         // Verify tabs are visible inside the folder-content with retry logic
         const folderContentSelector = '#other-windows-list .folder-content';
@@ -110,16 +103,7 @@ describe('Other Windows Use Case', () => {
         await page.waitForSelector(otherWindowFolderSelector, { visible: false });
         await page.$eval(otherWindowFolderSelector, el => el.scrollIntoView());
         await page.$eval(otherWindowFolderSelector, el => el.click());
-        // Wait for expansion
-        await page.waitForFunction(
-            (selector) => {
-                const folder = document.querySelector(selector);
-                const content = folder ? folder.nextElementSibling : null;
-                return content && content.classList.contains('folder-content') && content.children.length > 0;
-            },
-            { timeout: 10000 },
-            otherWindowFolderSelector
-        );
+        await new Promise(r => setTimeout(r, 300));
 
         // Get a tab item from Other Windows
         const folderContentSelector = '#other-windows-list .folder-content';

@@ -34,12 +34,8 @@ describe('Tab Dragging Use Case', () => {
                 createdTabIds.push(newTab.id);
             }
         }
-        // Wait for the side panel to update with new tabs using polling instead of fixed timeout
-        await page.waitForFunction(
-            (expectedCount) => document.querySelectorAll('.tab-item').length >= expectedCount,
-            { timeout: 10000 },
-            tabs.length + tabsToCreate
-        );
+        // Wait for the side panel to update with new tabs
+        await new Promise(r => setTimeout(r, 1000)); // Give extension time to process new tabs
     });
 
     afterEach(async () => {
@@ -100,16 +96,8 @@ describe('Tab Dragging Use Case', () => {
         await new Promise(r => setTimeout(r, 500)); // Simulate drag duration
         await page.mouse.up();
 
-        // Wait for the UI to update after drag and drop using polling
-        await page.waitForFunction(
-            (tabId) => {
-                const items = document.querySelectorAll('.tab-item');
-                const lastItem = items[items.length - 1];
-                return lastItem && lastItem.dataset.tabId === tabId;
-            },
-            { timeout: 10000 },
-            tabAId
-        );
+        // Wait for the UI to update after drag and drop
+        await new Promise(r => setTimeout(r, 1000));
 
         // Expected Outcome & Verification: Tab A's position updated in sidebar list
         const finalTabElements = await page.$$('.tab-item');

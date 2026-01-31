@@ -86,8 +86,12 @@ async function handleDragEnd(evt, updateTabList) {
     if (evt.to.closest('#bookmark-list')) {
         return;
     }
-    const { item } = evt;
-    await moveItem(item);
+    const { item, newIndex } = evt;
+    try {
+        await moveItem(item, newIndex, evt.to);
+    } catch (error) {
+        console.error("Error in moveItem:", error);
+    }
 }
 
 async function handleDragAdd(evt, updateTabList) {
@@ -156,10 +160,12 @@ function getNextDraggable(currentElement) {
     return undefined;
 }
 
-async function moveItem(item) {
+async function moveItem(item, newIndex, container) {
     // Optimized: Use DOM traversal to find the next draggable element instead of querySelectorAll
     // which eliminates O(N) operations on large tab lists.
     const targetElement = getNextDraggable(item);
+
+    // console.log("moveItem", { item, targetElement });
 
     let targetAbsoluteIndex = -1;
     if (targetElement) {
@@ -185,6 +191,8 @@ async function moveItem(item) {
             }
         }
     }
+
+    // console.log("Calculated targetAbsoluteIndex:", targetAbsoluteIndex);
 
     if (item.classList.contains('tab-item')) {
         const tabIdToMove = parseInt(item.dataset.tabId, 10);
