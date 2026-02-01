@@ -177,66 +177,73 @@ function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
-    const folders = list.querySelectorAll('.window-folder');
     const otherTabsCache = getOtherTabCache();
+    const otherTabElements = getOtherTabElementsCache();
 
-    let totalCount = 0;
+    // Track visibility maps: ID -> Count of visible tabs
+    const visibleWindowCounts = new Map();
+    const visibleGroupCounts = new Map();
+    let totalVisibleTabs = 0;
 
+    // 1. Filter Tabs efficiently using cache (no nested DOM queries)
+    for (const [tabId, item] of otherTabElements) {
+        const tab = otherTabsCache.get(tabId);
+        // If tab is missing from cache, skip or fallback (safe guard)
+        if (!tab) continue;
+
+        const { matches } = filterTabItem(item, tab, keywords);
+
+        if (matches) {
+            totalVisibleTabs++;
+            visibleWindowCounts.set(tab.windowId, (visibleWindowCounts.get(tab.windowId) || 0) + 1);
+            if (tab.groupId > 0) {
+                visibleGroupCounts.set(tab.groupId, (visibleGroupCounts.get(tab.groupId) || 0) + 1);
+            }
+        }
+    }
+
+    // 2. Update Group Headers (Flat DOM query)
+    const groupHeaders = list.querySelectorAll('.tab-group-header');
+    groupHeaders.forEach(header => {
+        const content = header.nextElementSibling;
+        if (!content || !content.classList.contains('tab-group-content')) return;
+
+        const groupId = parseInt(header.dataset.groupId);
+        const visibleTabsCount = visibleGroupCounts.get(groupId) || 0;
+        updateGroupVisibility(header, content, visibleTabsCount, keywords);
+    });
+
+    // 3. Update Window Folders (Flat DOM query)
+    const folders = list.querySelectorAll('.window-folder');
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
         if (!content || !content.classList.contains('folder-content')) return;
 
-        const tabs = content.querySelectorAll('.tab-item');
-        const groupVisibility = new Map();
-        let windowCount = 0;
+        const windowId = parseInt(folder.dataset.windowId);
+        const windowCount = visibleWindowCounts.get(windowId) || 0;
 
-        tabs.forEach(item => {
-            const tabId = parseInt(item.dataset.tabId);
-            const tab = otherTabsCache.get(tabId);
-            const { matches } = filterTabItem(item, tab, keywords);
-
-            if (matches) {
-                windowCount++;
-                // Track group visibility for tabs inside groups
-                const groupContent = item.closest('.tab-group-content');
-                if (groupContent) {
-                    const groupHeader = groupContent.previousElementSibling;
-                    if (groupHeader && groupHeader.dataset.groupId) {
-                        const gId = parseInt(groupHeader.dataset.groupId);
-                        groupVisibility.set(gId, (groupVisibility.get(gId) || 0) + 1);
-                    }
-                }
-            }
-        });
-
-        // Update tab groups visibility
-        const groupHeaders = content.querySelectorAll('.tab-group-header');
-        groupHeaders.forEach(header => {
-            const groupContent = header.nextElementSibling;
-            if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
-
-            const groupId = parseInt(header.dataset.groupId);
-            const visibleTabsCount = groupVisibility.get(groupId) || 0;
-            updateGroupVisibility(header, groupContent, visibleTabsCount, keywords);
-        });
-
-        totalCount += windowCount;
         const visible = windowCount > 0 || keywords.length === 0;
         folder.classList.toggle('hidden', !visible);
         content.classList.toggle('hidden', !visible);
 
-        // 展開/收合 (使用 CSS class)
+        // 展開/收合
         const icon = folder.querySelector('.window-icon');
         if (windowCount > 0 && keywords.length > 0) {
+            // Search match: Expand and show
             content.classList.remove('collapsed');
+            content.style.display = 'block'; // Override potentially inline style
             if (icon) icon.textContent = '▼';
+            folder.setAttribute('aria-expanded', 'true');
         } else if (keywords.length === 0) {
+            // Clear search: Collapse
             content.classList.add('collapsed');
+            content.style.display = 'none'; // Ensure hidden matches default behavior
             if (icon) icon.textContent = '▶';
+            folder.setAttribute('aria-expanded', 'false');
         }
     });
 
-    return totalCount;
+    return totalVisibleTabs;
 }
 
 // Search state to track if we are currently showing filtered results
