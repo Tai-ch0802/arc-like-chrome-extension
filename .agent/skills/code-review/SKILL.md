@@ -10,7 +10,7 @@ description: Reviews code changes for bugs, style issues, and best practices. Us
 ## 審查清單 (Review checklist)
 
 1. **正確性 (Correctness)**：程式碼是否符合預期功能？
-2. **邊界情況 (Edge cases)**：是否處理了錯誤條件？
+2. **邊界情況 (Edge cases)**：是否處理了錯誤條件？以及思考是否存在其他未被考慮到的情況。
 3. **風格 (Style)**：是否符合專案規範？
 4. **效能 (Performance)**：是否存在明顯的效率低落？
 
