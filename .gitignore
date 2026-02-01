@@ -6,3 +6,4 @@ RELEASE_NOTE.md
 tmp/
 jest-storage
 .vscode/settings.json
+.Jules/

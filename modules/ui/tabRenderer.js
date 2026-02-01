@@ -370,8 +370,7 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem._refs = {
         favicon,
         title,
-        titleWrapper,
-        actionsContainer
+        titleWrapper
     };
 
     return tabItem;
