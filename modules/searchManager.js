@@ -107,7 +107,7 @@ function filterTabsAndGroups(keywords) {
             groupId = tab.groupId;
         } else {
             // Fallback to DOM if not in cache (should be rare)
-            const titleElement = item.querySelector('.tab-title');
+            const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
             title = titleElement ? titleElement.textContent : '';
             url = item.dataset.url || '';
             // Try to get groupId from dataset (added in tabRenderer)
@@ -200,7 +200,7 @@ function filterOtherWindowsTabs(keywords) {
                 groupId = tab.groupId;
             } else {
                 // Fallback to DOM if not in cache
-                const titleElement = item.querySelector('.tab-title');
+                const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
                 title = titleElement ? titleElement.textContent : '';
                 url = item.dataset.url || '';
                 if (item.dataset.groupId) {
@@ -514,7 +514,7 @@ function highlightMatches(regexes) {
         // Skip hidden items
         if (item.classList.contains('hidden')) return;
 
-        const titleElement = item.querySelector('.tab-title');
+        const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
         const isUrlMatch = item.dataset.urlMatch === 'true';
         const matchedDomain = item.dataset.matchedDomain;
 
@@ -548,7 +548,7 @@ function highlightMatches(regexes) {
                 domainElement.innerHTML = highlightedDomain + '...';
 
                 // 附加到 titleWrapper
-                const titleWrapper = item.querySelector('.tab-content-wrapper');
+                const titleWrapper = item._refs ? item._refs.titleWrapper : item.querySelector('.tab-content-wrapper');
                 if (titleWrapper) {
                     titleWrapper.appendChild(domainElement);
                 }
@@ -575,7 +575,7 @@ function clearHighlights() {
     const otherTabElements = getOtherTabElementsCache();
 
     const clearTabItem = (item) => {
-        const titleElement = item.querySelector('.tab-title');
+        const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
         if (titleElement && titleElement.dataset.originalText) {
             titleElement.textContent = titleElement.dataset.originalText;
             delete titleElement.dataset.originalText;

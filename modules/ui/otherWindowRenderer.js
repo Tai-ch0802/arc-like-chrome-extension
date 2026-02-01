@@ -86,6 +86,13 @@ function createOtherWindowTabElement(tab) {
     tabItem.appendChild(favicon);
     tabItem.appendChild(titleWrapper);
 
+    // Cache DOM references
+    tabItem._refs = {
+        favicon,
+        title,
+        titleWrapper
+    };
+
     // Click to focus the tab and its window
     const activateTab = () => {
         api.updateTab(tab.id, { active: true });
