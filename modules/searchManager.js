@@ -4,19 +4,7 @@ import * as api from './apiManager.js';
 import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from './ui/tabRenderer.js';
 import { getOtherTabCache, getOtherTabElementsCache } from './ui/otherWindowRenderer.js';
 import { highlightText, escapeRegExp } from './utils/textUtils.js';
-
-// Debounce 工具函式：延遲執行，避免頻繁觸發
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+import { debounce } from './utils/functionUtils.js';
 
 // 主搜尋處理函式
 async function handleSearch() {
@@ -400,107 +388,7 @@ function filterTreeByIds(nodes, visibleIds) {
     return result;
 }
 
-// 遞迴計算書籤可見性 (used by something else? filterTreeByIds replaces this logic inside search?
-// No, filterTreeByIds is used. calculateBookmarkVisibility and applyBookmarkVisibility seem unused in current active path
-// since we use filterTreeByIds + renderBookmarks.
-// Wait, looking at original code, applyBookmarkVisibility was exported but unused in handleSearch?
-// No, filterBookmarks was using filterTreeByIds. calculate/applyBookmarkVisibility seem to be legacy or helper functions not used in the main flow
-// inside filterBookmarks which uses reconstruction.
-// I will leave them as is to avoid breaking anything unexpected.)
-function calculateBookmarkVisibility(node, keywords, visibleItems) {
-    const titleElement = node.querySelector('.bookmark-title');
-    if (!titleElement) return false;
 
-    const title = titleElement.textContent;
-    let url = '';
-
-    // 如果是書籤項目，取得 URL 和 domain
-    if (node.classList.contains('bookmark-item')) {
-        url = node.title.split('\n')[1] || ''; // URL 在 tooltip 的第二行
-    }
-    const domain = extractDomain(url);
-
-    // 檢查標題或 domain 是否匹配
-    const titleMatches = matchesAnyKeyword(title, keywords);
-    const urlMatches = matchesAnyKeyword(domain, keywords);
-    const selfMatches = titleMatches || urlMatches;
-
-    // 標記是否為 URL 匹配
-    if (urlMatches && !titleMatches) {
-        node.dataset.urlMatch = 'true';
-        node.dataset.matchedDomain = domain;
-    } else {
-        delete node.dataset.urlMatch;
-        delete node.dataset.matchedDomain;
-    }
-
-    let hasVisibleChild = false;
-    if (node.classList.contains('bookmark-folder')) {
-        const content = node.nextElementSibling;
-        if (content && content.classList.contains('folder-content')) {
-            for (const child of content.children) {
-                if (calculateBookmarkVisibility(child, keywords, visibleItems)) {
-                    hasVisibleChild = true;
-                }
-            }
-        }
-    }
-
-    const shouldBeVisible = selfMatches || hasVisibleChild;
-    if (shouldBeVisible) {
-        visibleItems.add(node);
-    }
-    return shouldBeVisible;
-}
-
-// 套用書籤可見性，回傳可見書籤數量
-function applyBookmarkVisibility(keywords, visibleItems) {
-    const allItems = ui.bookmarkListContainer.querySelectorAll('.bookmark-item, .bookmark-folder');
-    let visibleCount = 0;
-
-    allItems.forEach(node => {
-        const isVisible = visibleItems.has(node);
-        node.classList.toggle('hidden', !isVisible);
-
-        // 只計算書籤項目，不含資料夾
-        if (isVisible && node.classList.contains('bookmark-item')) {
-            visibleCount++;
-        }
-
-        if (node.classList.contains('bookmark-folder')) {
-            const content = node.nextElementSibling;
-            const icon = node.querySelector('.bookmark-icon');
-            if (isVisible && keywords.length > 0) {
-                let shouldExpand = false;
-                if (content) {
-                    for (const child of content.children) {
-                        if (visibleItems.has(child)) {
-                            shouldExpand = true;
-                            break;
-                        }
-                    }
-                }
-                if (shouldExpand) {
-                    content.style.display = 'block';
-                    icon.textContent = '▼';
-                } else {
-                    content.style.display = 'none';
-                    icon.textContent = '▶';
-                }
-            } else {
-                if (state.isFolderExpanded(node.dataset.bookmarkId)) {
-                    content.style.display = 'block';
-                    icon.textContent = '▼';
-                } else {
-                    content.style.display = 'none';
-                    icon.textContent = '▶';
-                }
-            }
-        }
-    });
-
-    return visibleCount;
-}
 
 // 高亮匹配的文字
 function highlightMatches(regexes) {

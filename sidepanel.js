@@ -6,17 +6,7 @@ import * as modal from './modules/modalManager.js';
 import * as state from './modules/stateManager.js';
 import * as keyboard from './modules/keyboardManager.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
-// --- 輔助函式 ---
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+import { debounce } from './modules/utils/functionUtils.js';
 
 // --- 主要協調器 ---
 

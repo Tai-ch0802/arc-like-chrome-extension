@@ -12,6 +12,7 @@ import {
     hexToHsl,
     meetsWcagAA
 } from '../utils/colorUtils.js';
+import { debounce } from '../utils/functionUtils.js';
 
 // Storage keys
 const CUSTOM_THEME_STORAGE_KEY = 'customTheme';
@@ -126,19 +127,7 @@ function createColorPickerPanelHtml(currentColors) {
     `;
 }
 
-/**
- * Debounce utility function.
- * @param {Function} func - Function to debounce.
- * @param {number} wait - Wait time in ms.
- * @returns {Function} Debounced function.
- */
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
+
 
 /**
  * Gets current color values from the color pickers.
