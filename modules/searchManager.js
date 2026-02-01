@@ -70,57 +70,90 @@ function extractDomain(url) {
     }
 }
 
+// --- Shared Filter Helpers ---
+
+/**
+ * 過濾單一 tab item 並設置匹配狀態
+ * @param {HTMLElement} item - Tab DOM 元素
+ * @param {Object} tab - Tab 資料 (from cache)
+ * @param {string[]} keywords - 搜尋關鍵字
+ * @returns {{matches: boolean, groupId: number|undefined}} 匹配結果
+ */
+function filterTabItem(item, tab, keywords) {
+    let title, url, groupId;
+    if (tab) {
+        title = tab.title;
+        url = tab.url;
+        groupId = tab.groupId;
+    } else {
+        // Fallback to DOM if not in cache
+        const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
+        title = titleElement ? titleElement.textContent : '';
+        url = item.dataset.url || '';
+        if (item.dataset.groupId) {
+            groupId = parseInt(item.dataset.groupId);
+        }
+    }
+
+    const domain = extractDomain(url);
+    const titleMatches = matchesAnyKeyword(title, keywords);
+    const urlMatches = matchesAnyKeyword(domain, keywords);
+    const matches = titleMatches || urlMatches;
+
+    item.classList.toggle('hidden', !matches);
+
+    // 標記是否為 URL 匹配，稍後用於顯示 domain
+    if (urlMatches && !titleMatches) {
+        item.dataset.urlMatch = 'true';
+        item.dataset.matchedDomain = domain;
+    } else {
+        delete item.dataset.urlMatch;
+        delete item.dataset.matchedDomain;
+    }
+
+    return { matches, groupId };
+}
+
+/**
+ * 更新群組 header 的可見性與展開/收合狀態
+ * @param {HTMLElement} header - Group header 元素
+ * @param {HTMLElement} content - Group content 元素
+ * @param {number} visibleTabsCount - 可見 tab 數量
+ * @param {string[]} keywords - 搜尋關鍵字
+ */
+function updateGroupVisibility(header, content, visibleTabsCount, keywords) {
+    const titleElement = header.querySelector('.tab-group-title');
+    const title = titleElement ? titleElement.textContent : '';
+    const groupTitleMatches = matchesAnyKeyword(title, keywords);
+    const hasVisibleChildren = visibleTabsCount > 0;
+
+    header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
+
+    const arrow = header.querySelector('.tab-group-arrow');
+    if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
+        // 搜尋時展開群組
+        content.classList.remove('collapsed');
+        if (arrow) arrow.textContent = '▼';
+    } else if (keywords.length === 0) {
+        // 無搜尋時恢復原狀態
+        const isCollapsed = header.dataset.collapsed === 'true';
+        content.classList.toggle('collapsed', isCollapsed);
+        if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
+    }
+}
+
 // 過濾分頁和群組，回傳可見分頁數量
 function filterTabsAndGroups(keywords) {
-    // Optimization: Use DOM element cache to avoid repeated querySelectorAll and DOM reads
     const tabElements = getTabElementsCache();
-    // Optimization: Use DOM element cache for group headers
     const groupHeaderElements = getGroupHeaderElementsCache();
+    const tabsCache = getTabCache();
+    const groupVisibility = new Map();
 
     let visibleCount = 0;
 
-    // Optimization: Use cache to avoid DOM reads
-    const tabsCache = getTabCache();
-    // Optimization: Track group visibility to avoid querying DOM in group loop
-    const groupVisibility = new Map();
-
     for (const [tabId, item] of tabElements) {
-        // Direct cache access using ID from map key
         const tab = tabsCache.get(tabId);
-
-        let title, url, groupId;
-        if (tab) {
-            title = tab.title;
-            url = tab.url;
-            groupId = tab.groupId;
-        } else {
-            // Fallback to DOM if not in cache (should be rare)
-            const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
-            title = titleElement ? titleElement.textContent : '';
-            url = item.dataset.url || '';
-            // Try to get groupId from dataset (added in tabRenderer)
-            if (item.dataset.groupId) {
-                groupId = parseInt(item.dataset.groupId);
-            }
-        }
-
-        const domain = extractDomain(url);
-
-        // OR 邏輯：標題或 domain 匹配任一關鍵字即可
-        const titleMatches = matchesAnyKeyword(title, keywords);
-        const urlMatches = matchesAnyKeyword(domain, keywords);
-        const matches = titleMatches || urlMatches;
-
-        item.classList.toggle('hidden', !matches);
-
-        // 標記是否為 URL 匹配，稍後用於顯示 domain
-        if (urlMatches && !titleMatches) {
-            item.dataset.urlMatch = 'true';
-            item.dataset.matchedDomain = domain;
-        } else {
-            delete item.dataset.urlMatch;
-            delete item.dataset.matchedDomain;
-        }
+        const { matches, groupId } = filterTabItem(item, tab, keywords);
 
         if (matches) {
             visibleCount++;
@@ -132,90 +165,39 @@ function filterTabsAndGroups(keywords) {
 
     for (const [groupId, header] of groupHeaderElements) {
         const content = header.nextElementSibling;
-
-        // Group ID is available from map key
         const visibleTabsCount = groupVisibility.get(groupId) || 0;
-
-        const titleElement = header.querySelector('.tab-group-title');
-        const title = titleElement ? titleElement.textContent : '';
-        const groupTitleMatches = matchesAnyKeyword(title, keywords);
-        const hasVisibleChildren = visibleTabsCount > 0;
-
-        header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
-
-        if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
-            content.style.display = 'block';
-            header.querySelector('.tab-group-arrow').textContent = '▼';
-        } else if (keywords.length === 0) {
-            const isCollapsed = header.dataset.collapsed === 'true';
-            content.style.display = isCollapsed ? 'none' : 'block';
-            header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
-        }
+        updateGroupVisibility(header, content, visibleTabsCount, keywords);
     }
 
     return visibleCount;
 }
 
-// 過濾其他視窗的分頁（與 filterTabsAndGroups 相同邏輯）
+// 過濾其他視窗的分頁（使用共用 filter helpers）
 function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
     const folders = list.querySelectorAll('.window-folder');
-    let totalCount = 0;
-
-    // Optimization: Use cache to avoid DOM reads for title/url lookup.
-    // We still iterate DOM to toggle 'hidden' class and track group visibility.
     const otherTabsCache = getOtherTabCache();
-    const groupVisibility = new Map();
+
+    let totalCount = 0;
 
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
         if (!content || !content.classList.contains('folder-content')) return;
 
-        // Get all tab items in this window folder (including inside groups)
         const tabs = content.querySelectorAll('.tab-item');
+        const groupVisibility = new Map();
         let windowCount = 0;
 
         tabs.forEach(item => {
             const tabId = parseInt(item.dataset.tabId);
             const tab = otherTabsCache.get(tabId);
-
-            let title, url, groupId;
-            if (tab) {
-                title = tab.title;
-                url = tab.url;
-                groupId = tab.groupId;
-            } else {
-                // Fallback to DOM if not in cache
-                const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
-                title = titleElement ? titleElement.textContent : '';
-                url = item.dataset.url || '';
-                if (item.dataset.groupId) {
-                    groupId = parseInt(item.dataset.groupId);
-                }
-            }
-
-            const domain = extractDomain(url);
-            const titleMatches = matchesAnyKeyword(title, keywords);
-            const urlMatches = matchesAnyKeyword(domain, keywords);
-            const matches = titleMatches || urlMatches;
-
-            item.classList.toggle('hidden', !matches);
-
-            if (urlMatches && !titleMatches) {
-                item.dataset.urlMatch = 'true';
-                item.dataset.matchedDomain = domain;
-            } else {
-                delete item.dataset.urlMatch;
-                delete item.dataset.matchedDomain;
-            }
+            const { matches } = filterTabItem(item, tab, keywords);
 
             if (matches) {
                 windowCount++;
-                // If this tab is inside a group, we need to mark that group as having visible children.
-                // In otherWindowRenderer, tabs in group are inside .tab-group-content.
-                // Detailed check:
+                // Track group visibility for tabs inside groups
                 const groupContent = item.closest('.tab-group-content');
                 if (groupContent) {
                     const groupHeader = groupContent.previousElementSibling;
@@ -227,7 +209,7 @@ function filterOtherWindowsTabs(keywords) {
             }
         });
 
-        // Expand/collapse tab groups
+        // Update tab groups visibility
         const groupHeaders = content.querySelectorAll('.tab-group-header');
         groupHeaders.forEach(header => {
             const groupContent = header.nextElementSibling;
@@ -235,22 +217,7 @@ function filterOtherWindowsTabs(keywords) {
 
             const groupId = parseInt(header.dataset.groupId);
             const visibleTabsCount = groupVisibility.get(groupId) || 0;
-
-            const titleElement = header.querySelector('.tab-group-title');
-            const title = titleElement ? titleElement.textContent : '';
-            const groupTitleMatches = matchesAnyKeyword(title, keywords);
-            const hasVisibleChildren = visibleTabsCount > 0;
-
-            header.classList.toggle('hidden', !hasVisibleChildren && !groupTitleMatches);
-
-            if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
-                groupContent.style.display = 'block';
-                header.querySelector('.tab-group-arrow').textContent = '▼';
-            } else if (keywords.length === 0) {
-                const isCollapsed = header.dataset.collapsed === 'true';
-                groupContent.style.display = isCollapsed ? 'none' : 'block';
-                header.querySelector('.tab-group-arrow').textContent = isCollapsed ? '▶' : '▼';
-            }
+            updateGroupVisibility(header, groupContent, visibleTabsCount, keywords);
         });
 
         totalCount += windowCount;
@@ -258,13 +225,13 @@ function filterOtherWindowsTabs(keywords) {
         folder.classList.toggle('hidden', !visible);
         content.classList.toggle('hidden', !visible);
 
-        // 展開/收合
-        const icon = folder.querySelector('.window-icon'); // Note: changed from .bookmark-icon to .window-icon based on renderer
+        // 展開/收合 (使用 CSS class)
+        const icon = folder.querySelector('.window-icon');
         if (windowCount > 0 && keywords.length > 0) {
-            content.style.display = 'block';
+            content.classList.remove('collapsed');
             if (icon) icon.textContent = '▼';
         } else if (keywords.length === 0) {
-            content.style.display = 'none';
+            content.classList.add('collapsed');
             if (icon) icon.textContent = '▶';
         }
     });

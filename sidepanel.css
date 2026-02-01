@@ -766,6 +766,12 @@ mark.url-match {
     padding-left: 20px;
 }
 
+/* --- Collapsed State (for JS toggle instead of inline style) --- */
+.folder-content.collapsed,
+.tab-group-content.collapsed {
+    display: none;
+}
+
 /* --- i18n Styles --- */
 
 [data-i18n="tabsHeader"]::before {
