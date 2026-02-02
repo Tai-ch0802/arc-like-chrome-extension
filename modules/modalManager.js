@@ -510,7 +510,8 @@ export function showCreateGroupDialog() {
                  tabindex="0"
                  role="radio"
                  aria-checked="${colorName === selectedColor}"
-                 aria-label="${colorName}"></div>
+                 aria-label="${colorName}"
+                 title="${colorName}"></div>
         `).join('');
 
         form.innerHTML = `
