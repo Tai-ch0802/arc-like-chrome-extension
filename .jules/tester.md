@@ -11,22 +11,24 @@
 | `tab_close.test.js` | 關閉分頁 | 2 | P0 |
 | `open_bookmark.test.js` | 開啟書籤 | 2 | P0 |
 | `search.test.js` | 搜尋過濾 | 4 | P0 |
+| `search_edge_cases.test.js` | 搜尋 Edge Cases | 5 | P1 |
 | `bookmark_folder_toggle.test.js` | 資料夾展開/收合 | 2 | P1 |
+| `bookmark_edge_cases.test.js` | 書籤 Edge Cases | 3 | P1 |
 | `tab_group_toggle.test.js` | 群組展開/收合 | 2 | P1 |
 | `add_to_group.test.js` | 新增分頁到群組 | 2 | P1 |
 | `edit_bookmark.test.js` | 編輯書籤 | 3 | P1 |
 | `theme_switch.test.js` | 主題切換 | 3 | P2 |
 | `settings_panel.test.js` | 設定面板 | 4 | P2 |
 
-**總計: 32 測試案例**
+**總計: 40 測試案例**
 
 ---
 
 ## 測試覆蓋缺口
 
 ### 待補充的 Edge Cases
-- [ ] 搜尋：空字串、特殊字元、超長輸入
-- [ ] 書籤：無效 URL、重複書籤
+- [x] 搜尋：空字串、特殊字元、超長輸入 (Implemented in `search_edge_cases.test.js`)
+- [x] 書籤：無效 URL、重複書籤、巢狀資料夾 (Implemented in `bookmark_edge_cases.test.js`)
 - [ ] 分頁：大量分頁處理
 - [ ] 群組：空群組、跨視窗操作
 
@@ -61,6 +63,11 @@
 ---
 
 ## 更新日誌
+
+### 2026-02-02 - Edge Case 補充
+- 新增 `search_edge_cases.test.js` (5 tests): 覆蓋特殊字元、Regex、XSS、長輸入、無結果
+- 新增 `bookmark_edge_cases.test.js` (3 tests): 覆蓋深層巢狀、重複書籤、無效 URL
+- 總測試案例增至 40 個
 
 ### 2026-02-02 - 初始化
 - 建立 32 個基礎 E2E 測試 (P0/P1/P2)
