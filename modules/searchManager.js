@@ -172,71 +172,94 @@ function filterTabsAndGroups(keywords) {
     return visibleCount;
 }
 
-// 過濾其他視窗的分頁（使用共用 filter helpers）
+// 過濾其他視窗的分頁（使用共用 filter helpers，優化版本使用快取迭代）
 function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
-    const folders = list.querySelectorAll('.window-folder');
     const otherTabsCache = getOtherTabCache();
+    const otherTabElements = getOtherTabElementsCache();
 
-    let totalCount = 0;
+    // 追蹤可見性計數：ID -> 可見分頁數量
+    const visibleWindowCounts = new Map();
+    const visibleGroupCounts = new Map();
+    let totalVisibleTabs = 0;
 
+    // 1. 使用快取高效過濾分頁（避免巢狀 DOM 查詢）
+    for (const [tabId, item] of otherTabElements) {
+        const tab = otherTabsCache.get(tabId);
+        // 即使 cache miss，filterTabItem 內有 fallback 邏輯從 DOM 讀取資料
+        const { matches } = filterTabItem(item, tab, keywords);
+
+        if (matches) {
+            totalVisibleTabs++;
+            // 從 DOM dataset 取得 windowId，確保與 DOM 結構同步
+            const itemWindowId = item.closest('.folder-content')?.previousElementSibling?.dataset?.windowId;
+            if (itemWindowId) {
+                const wId = parseInt(itemWindowId, 10);
+                if (!isNaN(wId)) {
+                    visibleWindowCounts.set(wId, (visibleWindowCounts.get(wId) || 0) + 1);
+                }
+            }
+            // 從 DOM dataset 取得 groupId
+            const groupIdStr = item.dataset.groupId;
+            if (groupIdStr) {
+                const gId = parseInt(groupIdStr, 10);
+                if (!isNaN(gId) && gId > 0) {
+                    visibleGroupCounts.set(gId, (visibleGroupCounts.get(gId) || 0) + 1);
+                }
+            }
+        }
+    }
+
+    // 2. 更新分頁群組 Header（平面 DOM 查詢）
+    const groupHeaders = list.querySelectorAll('.tab-group-header');
+    groupHeaders.forEach(header => {
+        const content = header.nextElementSibling;
+        if (!content || !content.classList.contains('tab-group-content')) return;
+
+        const groupIdStr = header.dataset.groupId;
+        if (!groupIdStr) return;
+        const groupId = parseInt(groupIdStr, 10);
+        if (isNaN(groupId)) return;
+
+        const visibleTabsCount = visibleGroupCounts.get(groupId) || 0;
+        updateGroupVisibility(header, content, visibleTabsCount, keywords);
+    });
+
+    // 3. 更新視窗資料夾（平面 DOM 查詢）
+    const folders = list.querySelectorAll('.window-folder');
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
         if (!content || !content.classList.contains('folder-content')) return;
 
-        const tabs = content.querySelectorAll('.tab-item');
-        const groupVisibility = new Map();
-        let windowCount = 0;
+        const windowIdStr = folder.dataset.windowId;
+        if (!windowIdStr) return;
+        const windowId = parseInt(windowIdStr, 10);
+        if (isNaN(windowId)) return;
 
-        tabs.forEach(item => {
-            const tabId = parseInt(item.dataset.tabId);
-            const tab = otherTabsCache.get(tabId);
-            const { matches } = filterTabItem(item, tab, keywords);
+        const windowCount = visibleWindowCounts.get(windowId) || 0;
 
-            if (matches) {
-                windowCount++;
-                // Track group visibility for tabs inside groups
-                const groupContent = item.closest('.tab-group-content');
-                if (groupContent) {
-                    const groupHeader = groupContent.previousElementSibling;
-                    if (groupHeader && groupHeader.dataset.groupId) {
-                        const gId = parseInt(groupHeader.dataset.groupId);
-                        groupVisibility.set(gId, (groupVisibility.get(gId) || 0) + 1);
-                    }
-                }
-            }
-        });
-
-        // Update tab groups visibility
-        const groupHeaders = content.querySelectorAll('.tab-group-header');
-        groupHeaders.forEach(header => {
-            const groupContent = header.nextElementSibling;
-            if (!groupContent || !groupContent.classList.contains('tab-group-content')) return;
-
-            const groupId = parseInt(header.dataset.groupId);
-            const visibleTabsCount = groupVisibility.get(groupId) || 0;
-            updateGroupVisibility(header, groupContent, visibleTabsCount, keywords);
-        });
-
-        totalCount += windowCount;
         const visible = windowCount > 0 || keywords.length === 0;
         folder.classList.toggle('hidden', !visible);
         content.classList.toggle('hidden', !visible);
 
-        // 展開/收合 (使用 CSS class)
+        // 展開/收合（統一使用 CSS class 控制，避免 inline style 衝突）
         const icon = folder.querySelector('.window-icon');
         if (windowCount > 0 && keywords.length > 0) {
+            // 有搜尋結果時：展開並顯示
             content.classList.remove('collapsed');
             if (icon) icon.textContent = '▼';
+            folder.setAttribute('aria-expanded', 'true');
         } else if (keywords.length === 0) {
+            // 清除搜尋時：收合
             content.classList.add('collapsed');
             if (icon) icon.textContent = '▶';
+            folder.setAttribute('aria-expanded', 'false');
         }
     });
 
-    return totalCount;
+    return totalVisibleTabs;
 }
 
 // Search state to track if we are currently showing filtered results
