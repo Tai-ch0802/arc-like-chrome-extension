@@ -78,7 +78,7 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
             closeBtn.dataset.tabIdToClose = tab.id;
             closeBtn.setAttribute('aria-label', closeTabLabel);
             closeBtn.title = closeTabLabel;
-            closeBtn.innerHTML = '&times;';
+            closeBtn.textContent = '×';
             item.appendChild(closeBtn);
 
             listContainer.appendChild(item);
