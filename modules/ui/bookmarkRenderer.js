@@ -18,43 +18,76 @@ export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) 
     // Fetch tab info; if getTab fails (tab closed), catch returns null, then we filter out nulls.
     const linkedTabs = (await Promise.all(linkedTabIds.map(id => api.getTab(id).catch(() => null)))).filter(Boolean);
 
-    let contentHtml = '<div class="linked-tabs-list">';
+    const listContainer = document.createElement('div');
+    listContainer.className = 'linked-tabs-list';
     let shouldAutoClose = false;
 
     // Check if we have stale tabs (IDs existed in state but tabs are gone)
     // or if the list is just empty.
     if (linkedTabs.length === 0) {
-        contentHtml += `<p>${api.getMessage('noLinkedTabs')}</p>`;
+        const msg = document.createElement('p');
+        msg.textContent = api.getMessage('noLinkedTabs');
+        listContainer.appendChild(msg);
 
         // If we had IDs in state but no actual tabs found, it means they were stale.
         // We should clean up and auto-close.
         if (linkedTabIds.length > 0) {
             shouldAutoClose = true;
             await state.removeLinksByBookmarkId(bookmarkId);
-            contentHtml += `<p class="auto-close-warning" style="margin-top: 10px; color: var(--accent-color); font-size: 0.9em;">${api.getMessage('autoCloseDialog')}</p>`;
+            const warning = document.createElement('p');
+            warning.className = 'auto-close-warning';
+            warning.style.marginTop = '10px';
+            warning.style.color = 'var(--accent-color)';
+            warning.style.fontSize = '0.9em';
+            warning.textContent = api.getMessage('autoCloseDialog');
+            listContainer.appendChild(warning);
         }
     } else {
         const closeTabLabel = api.getMessage('closeTab') || 'Close Tab';
         for (const tab of linkedTabs) {
             const group = tab.groupId ? groupMap.get(tab.groupId) : null;
-            const groupName = group ? `<span class="linked-tab-group" style="color: ${GROUP_COLORS[group.color] || '#5f6368'};">${group.title}</span>` : '';
             const faviconUrl = (tab.favIconUrl && tab.favIconUrl.startsWith('http')) ? tab.favIconUrl : 'icons/fallback-favicon.svg';
 
-            contentHtml += `
-                <div class="linked-tab-item" data-tab-id="${tab.id}" data-window-id="${tab.windowId}" title="Switch to this tab">
-                    <img src="${faviconUrl}" alt="" class="linked-tab-favicon" />
-                    <span class="linked-tab-title">${tab.title}</span>
-                    ${groupName}
-                    <button class="linked-tab-close-btn" data-tab-id-to-close="${tab.id}" aria-label="${closeTabLabel}" title="${closeTabLabel}">&times;</button>
-                </div>
-            `;
+            const item = document.createElement('div');
+            item.className = 'linked-tab-item';
+            item.dataset.tabId = tab.id;
+            item.dataset.windowId = tab.windowId;
+            item.title = 'Switch to this tab';
+
+            const img = document.createElement('img');
+            img.src = faviconUrl;
+            img.alt = "";
+            img.className = 'linked-tab-favicon';
+            item.appendChild(img);
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'linked-tab-title';
+            titleSpan.textContent = tab.title;
+            item.appendChild(titleSpan);
+
+            if (group) {
+                const groupSpan = document.createElement('span');
+                groupSpan.className = 'linked-tab-group';
+                groupSpan.style.color = GROUP_COLORS[group.color] || '#5f6368';
+                groupSpan.textContent = group.title;
+                item.appendChild(groupSpan);
+            }
+
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'linked-tab-close-btn';
+            closeBtn.dataset.tabIdToClose = tab.id;
+            closeBtn.setAttribute('aria-label', closeTabLabel);
+            closeBtn.title = closeTabLabel;
+            closeBtn.innerHTML = '&times;';
+            item.appendChild(closeBtn);
+
+            listContainer.appendChild(item);
         }
     }
-    contentHtml += '</div>';
 
     await modal.showCustomDialog({
         title: `${api.getMessage('linkedTabsPanelTitle')} "${bookmark.title}"`,
-        content: contentHtml,
+        content: listContainer,
         onOpen: (modalContentElement) => {
             const listElement = modalContentElement.querySelector('.linked-tabs-list');
             const closeBtn = modalContentElement.querySelector('#closeButton');
