@@ -172,7 +172,7 @@ function filterTabsAndGroups(keywords) {
     return visibleCount;
 }
 
-// 過濾其他視窗的分頁（使用共用 filter helpers）
+// 過濾其他視窗的分頁（使用共用 filter helpers，優化版本使用快取迭代）
 function filterOtherWindowsTabs(keywords) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
@@ -180,64 +180,80 @@ function filterOtherWindowsTabs(keywords) {
     const otherTabsCache = getOtherTabCache();
     const otherTabElements = getOtherTabElementsCache();
 
-    // Track visibility maps: ID -> Count of visible tabs
+    // 追蹤可見性計數：ID -> 可見分頁數量
     const visibleWindowCounts = new Map();
     const visibleGroupCounts = new Map();
     let totalVisibleTabs = 0;
 
-    // 1. Filter Tabs efficiently using cache (no nested DOM queries)
+    // 1. 使用快取高效過濾分頁（避免巢狀 DOM 查詢）
     for (const [tabId, item] of otherTabElements) {
         const tab = otherTabsCache.get(tabId);
-        // If tab is missing from cache, skip or fallback (safe guard)
-        if (!tab) continue;
-
+        // 即使 cache miss，filterTabItem 內有 fallback 邏輯從 DOM 讀取資料
         const { matches } = filterTabItem(item, tab, keywords);
 
         if (matches) {
             totalVisibleTabs++;
-            visibleWindowCounts.set(tab.windowId, (visibleWindowCounts.get(tab.windowId) || 0) + 1);
-            if (tab.groupId > 0) {
-                visibleGroupCounts.set(tab.groupId, (visibleGroupCounts.get(tab.groupId) || 0) + 1);
+            // 從 DOM dataset 取得 windowId，確保與 DOM 結構同步
+            const itemWindowId = item.closest('.folder-content')?.previousElementSibling?.dataset?.windowId;
+            if (itemWindowId) {
+                const wId = parseInt(itemWindowId, 10);
+                if (!isNaN(wId)) {
+                    visibleWindowCounts.set(wId, (visibleWindowCounts.get(wId) || 0) + 1);
+                }
+            }
+            // 從 DOM dataset 取得 groupId
+            const groupIdStr = item.dataset.groupId;
+            if (groupIdStr) {
+                const gId = parseInt(groupIdStr, 10);
+                if (!isNaN(gId) && gId > 0) {
+                    visibleGroupCounts.set(gId, (visibleGroupCounts.get(gId) || 0) + 1);
+                }
             }
         }
     }
 
-    // 2. Update Group Headers (Flat DOM query)
+    // 2. 更新分頁群組 Header（平面 DOM 查詢）
     const groupHeaders = list.querySelectorAll('.tab-group-header');
     groupHeaders.forEach(header => {
         const content = header.nextElementSibling;
         if (!content || !content.classList.contains('tab-group-content')) return;
 
-        const groupId = parseInt(header.dataset.groupId);
+        const groupIdStr = header.dataset.groupId;
+        if (!groupIdStr) return;
+        const groupId = parseInt(groupIdStr, 10);
+        if (isNaN(groupId)) return;
+
         const visibleTabsCount = visibleGroupCounts.get(groupId) || 0;
         updateGroupVisibility(header, content, visibleTabsCount, keywords);
     });
 
-    // 3. Update Window Folders (Flat DOM query)
+    // 3. 更新視窗資料夾（平面 DOM 查詢）
     const folders = list.querySelectorAll('.window-folder');
     folders.forEach(folder => {
         const content = folder.nextElementSibling;
         if (!content || !content.classList.contains('folder-content')) return;
 
-        const windowId = parseInt(folder.dataset.windowId);
+        const windowIdStr = folder.dataset.windowId;
+        if (!windowIdStr) return;
+        const windowId = parseInt(windowIdStr, 10);
+        if (isNaN(windowId)) return;
+
         const windowCount = visibleWindowCounts.get(windowId) || 0;
 
         const visible = windowCount > 0 || keywords.length === 0;
         folder.classList.toggle('hidden', !visible);
         content.classList.toggle('hidden', !visible);
 
-        // 展開/收合
+        // 展開/收合（統一使用 CSS class 控制，避免 inline style 衝突）
         const icon = folder.querySelector('.window-icon');
         if (windowCount > 0 && keywords.length > 0) {
-            // Search match: Expand and show
+            // 有搜尋結果時：展開並顯示
             content.classList.remove('collapsed');
-            content.style.display = 'block'; // Override potentially inline style
             if (icon) icon.textContent = '▼';
             folder.setAttribute('aria-expanded', 'true');
         } else if (keywords.length === 0) {
-            // Clear search: Collapse
+            // 清除搜尋時：收合
             content.classList.add('collapsed');
-            content.style.display = 'none'; // Ensure hidden matches default behavior
             if (icon) icon.textContent = '▶';
             folder.setAttribute('aria-expanded', 'false');
         }
