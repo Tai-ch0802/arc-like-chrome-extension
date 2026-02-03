@@ -3,6 +3,7 @@ import * as modal from '../modalManager.js';
 import * as state from '../stateManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
+import * as rss from '../rssManager.js';
 
 /**
  * 應用指定的主題到文檔的 body 上。
@@ -106,6 +107,32 @@ async function buildSettingsDialogContent(selectedTheme) {
             </div>
         </div>
 
+        <!-- Reading List Section -->
+        <div class="settings-section collapsible">
+            <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                ${chevronIcon}
+                <span>${api.getMessage('readingListSettingsHeader')}</span>
+            </button>
+            <div class="settings-section-content">
+                <!-- Show/Hide Toggle -->
+                <label class="settings-toggle">
+                    <input type="checkbox" id="reading-list-toggle" ${state.isReadingListVisible() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('showReadingListLabel')}</span>
+                </label>
+
+                <!-- RSS Subsection -->
+                <div class="settings-subsection">
+                    <h4 class="settings-subsection-header">${api.getMessage('rssSubscriptionHeader')}</h4>
+                    <div id="rss-subscriptions-list"></div>
+                    <div class="rss-add-form">
+                        <input type="url" id="rss-url-input" placeholder="https://example.com/feed.xml" class="settings-input">
+                        <button id="add-rss-btn" class="settings-button">${api.getMessage('addRssSubscription')}</button>
+                    </div>
+                    <div id="rss-error-message" class="rss-error hidden"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Shortcuts Section -->
         <div class="settings-section collapsible">
             <button class="settings-section-header collapsible-toggle" aria-expanded="false">
@@ -197,6 +224,131 @@ function bindSettingsEventHandlers(modalContentElement) {
             chrome.runtime.sendMessage({ action: 'openAppearanceSettingsPage' });
         });
     }
+
+    // Reading List toggle handler
+    const readingListToggle = modalContentElement.querySelector('#reading-list-toggle');
+    if (readingListToggle) {
+        readingListToggle.addEventListener('change', async (e) => {
+            const isVisible = e.target.checked;
+            await state.setReadingListVisible(isVisible);
+            // Dispatch custom event for sidepanel to react
+            document.dispatchEvent(new CustomEvent('readingListVisibilityChanged', {
+                detail: { visible: isVisible }
+            }));
+        });
+    }
+
+    // RSS Subscriptions handlers
+    const rssListContainer = modalContentElement.querySelector('#rss-subscriptions-list');
+    const rssUrlInput = modalContentElement.querySelector('#rss-url-input');
+    const addRssBtn = modalContentElement.querySelector('#add-rss-btn');
+    const rssErrorMessage = modalContentElement.querySelector('#rss-error-message');
+
+    // Render RSS subscription list
+    async function renderRssList() {
+        if (!rssListContainer) return;
+
+        const subscriptions = rss.getSubscriptions();
+
+        if (subscriptions.length === 0) {
+            rssListContainer.innerHTML = `<p class="rss-empty">${api.getMessage('rssNoSubscriptions') || 'No RSS subscriptions yet.'}</p>`;
+            return;
+        }
+
+        rssListContainer.innerHTML = subscriptions.map(sub => `
+            <div class="rss-subscription-item" data-id="${escapeHtml(sub.id)}">
+                <div class="rss-subscription-info">
+                    <span class="rss-subscription-title">${escapeHtml(sub.title)}</span>
+                    <select class="rss-interval-select" title="${api.getMessage('rssIntervalLabel')}">
+                        <option value="1h" ${sub.interval === '1h' ? 'selected' : ''}>1h</option>
+                        <option value="3h" ${sub.interval === '3h' ? 'selected' : ''}>3h</option>
+                        <option value="8h" ${sub.interval === '8h' ? 'selected' : ''}>8h</option>
+                        <option value="12h" ${sub.interval === '12h' ? 'selected' : ''}>12h</option>
+                        <option value="24h" ${sub.interval === '24h' ? 'selected' : ''}>24h</option>
+                    </select>
+                </div>
+                <div class="rss-subscription-actions">
+                    <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
+                        ${sub.enabled ? '⏸' : '▶'}
+                    </button>
+                    <button class="rss-delete-btn" title="${api.getMessage('rssDeleteButton')}">×</button>
+                </div>
+            </div>
+        `).join('');
+
+        // Bind event listeners
+        rssListContainer.querySelectorAll('.rss-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                const action = e.target.dataset.action;
+                await rss.updateSubscription(id, { enabled: action === 'resume' });
+                renderRssList();
+            });
+        });
+
+        // Interval change handler
+        rssListContainer.querySelectorAll('.rss-interval-select').forEach(select => {
+            select.addEventListener('change', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                const newInterval = e.target.value;
+                await rss.updateSubscription(id, { interval: newInterval });
+            });
+        });
+
+        rssListContainer.querySelectorAll('.rss-delete-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                await rss.removeSubscription(id);
+                renderRssList();
+            });
+        });
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // Add subscription handler
+    if (addRssBtn && rssUrlInput) {
+        addRssBtn.addEventListener('click', async () => {
+            const url = rssUrlInput.value.trim();
+            if (!url) return;
+
+            addRssBtn.disabled = true;
+            addRssBtn.textContent = '...';
+            rssErrorMessage.classList.add('hidden');
+
+            try {
+                await rss.addSubscription(url);
+                rssUrlInput.value = '';
+                renderRssList();
+            } catch (err) {
+                // Use i18n error messages based on error type
+                let errorMsg;
+                if (err.message.includes('timeout')) {
+                    errorMsg = api.getMessage('rssErrorTimeout');
+                } else if (err.message.includes('Already subscribed')) {
+                    errorMsg = api.getMessage('rssErrorAlreadySubscribed');
+                } else {
+                    errorMsg = api.getMessage('rssErrorFetchFailed') || err.message;
+                }
+                rssErrorMessage.textContent = errorMsg;
+                rssErrorMessage.classList.remove('hidden');
+            } finally {
+                addRssBtn.disabled = false;
+                addRssBtn.textContent = api.getMessage('addRssSubscription');
+            }
+        });
+    }
+
+    // Initial render of RSS list
+    renderRssList();
 
     // Setup collapsible section toggles
     const collapsibleToggles = modalContentElement.querySelectorAll('.collapsible-toggle');

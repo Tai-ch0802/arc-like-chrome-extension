@@ -9,7 +9,12 @@
     "sidePanel",
     "bookmarks",
     "tabGroups",
-    "storage"
+    "storage",
+    "readingList",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://*/*"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'none';"
@@ -18,7 +23,8 @@
     "default_path": "sidepanel.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "action": {
     "default_title": "__MSG_extensionName__"

@@ -5,6 +5,9 @@ import * as dragDrop from './modules/dragDropManager.js';
 import * as modal from './modules/modalManager.js';
 import * as state from './modules/stateManager.js';
 import * as keyboard from './modules/keyboardManager.js';
+import * as readingListManager from './modules/readingListManager.js';
+import * as readingListRenderer from './modules/ui/readingListRenderer.js';
+import * as rssManager from './modules/rssManager.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 
@@ -64,6 +67,21 @@ async function refreshBookmarks() {
     }
 }
 
+async function refreshReadingList() {
+    const entries = await readingListManager.getAllEntries();
+    const container = document.getElementById('reading-list');
+    if (container) {
+        readingListRenderer.renderReadingList(entries, container, refreshReadingList);
+    }
+}
+
+function applyReadingListVisibility(visible) {
+    const section = document.getElementById('reading-list-section');
+    if (section) {
+        section.style.display = visible ? '' : 'none';
+    }
+}
+
 // --- 初始化 ---
 
 function applyStaticTranslations() {
@@ -83,13 +101,23 @@ function applyStaticTranslations() {
         settingsToggle.setAttribute('aria-label', settingsLabel);
         settingsToggle.title = settingsLabel;
     }
+
+    // Process all data-i18n attributes for static text elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const message = api.getMessage(key);
+        if (message) {
+            el.textContent = message;
+        }
+    });
 }
 
 async function initialize() {
-    await Promise.all([
+    const [, , , readingListVisible] = await Promise.all([
         state.initLinkedTabs(), // Load linked tabs state first
         state.initWindowNames(), // Load window names
-        state.loadBookmarkCache() // Load cached bookmarks from storage
+        state.loadBookmarkCache(), // Load cached bookmarks from storage
+        state.initReadingListVisibility() // Load Reading List visibility
     ]);
     state.pruneWindowNames().catch(console.error); // Prune stale window names on startup (non-blocking)
     state.buildBookmarkCache().catch(console.error); // Build fresh cache on startup (non-blocking)
@@ -106,8 +134,13 @@ async function initialize() {
     await updateTabList();
 
     refreshBookmarks();
+    refreshReadingList();
+    applyReadingListVisibility(state.isReadingListVisible());
     addEventListeners();
     initializeSearchUI();
+
+    // Initialize RSS Manager (load subscriptions and setup alarms)
+    rssManager.initRssManager().catch(console.error);
     keyboard.initialize();
 
     // Listen for refresh request from settings
@@ -179,6 +212,19 @@ function addEventListeners() {
     chrome.bookmarks.onMoved.addListener(() => {
         debouncedBuildBookmarkCache(); // Rebuild cache on bookmark move
         debouncedRefreshBookmarks();
+    });
+
+    // Reading List events
+    if (chrome.readingList && chrome.readingList.onEntryAdded) {
+        const debouncedRefreshReadingList = debounce(refreshReadingList, 250);
+        chrome.readingList.onEntryAdded.addListener(debouncedRefreshReadingList);
+        chrome.readingList.onEntryRemoved.addListener(debouncedRefreshReadingList);
+        chrome.readingList.onEntryUpdated.addListener(debouncedRefreshReadingList);
+    }
+
+    // Reading List visibility toggle from settings
+    document.addEventListener('readingListVisibilityChanged', (e) => {
+        applyReadingListVisibility(e.detail.visible);
     });
 }
 

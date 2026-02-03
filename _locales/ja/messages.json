@@ -451,5 +451,75 @@
     "alignBottom": {
         "message": "下揃え",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "リーディングリスト",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "リーディングリストから",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "リーディングリストに追加",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "リーディングリストに登録済み",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "既読にする",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "未読にする",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "リーディングリストから削除",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "$COUNT$ 日前に閲覧",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "リーディングリスト",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "リーディングリストを表示",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "RSSフィード",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "購読を追加",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "更新間隔",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "一時停止",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "再開",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "削除",
+        "description": "Button to remove an RSS subscription."
     }
 }

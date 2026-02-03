@@ -66,3 +66,19 @@ export const setStorage = (area, items) => {
         });
     });
 };
+
+// Wrappers for chrome.readingList API
+export const queryReadingList = (info = {}) => chrome.readingList.query(info);
+export const addReadingListEntry = (options) => chrome.readingList.addEntry(options);
+export const removeReadingListEntry = (options) => chrome.readingList.removeEntry(options);
+export const updateReadingListEntry = (options) => chrome.readingList.updateEntry(options);
+
+/**
+ * Checks if a URL exists in the reading list.
+ * @param {string} url - The URL to check.
+ * @returns {Promise<boolean>}
+ */
+export async function isInReadingList(url) {
+    const entries = await queryReadingList({ url });
+    return entries.length > 0;
+}

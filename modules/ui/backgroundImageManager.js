@@ -259,7 +259,7 @@ export function createBackgroundPanelHtml(config) {
             <div id="bg-url-section" class="${!isUpload ? '' : 'hidden'}">
                 <div class="input-with-button">
                     <input type="text" id="bg-url-input" placeholder="https://example.com/image.jpg" value="${cfg.sourceUrl || ''}" />
-                    <button id="btn-apply-url" class="modal-button small">${api.getMessage('buttonApply') || 'Apply'}</button>
+                    <button id="btn-apply-url" class="settings-button">${api.getMessage('buttonApply') || 'Apply'}</button>
                 </div>
             </div>
 

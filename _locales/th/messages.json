@@ -451,5 +451,75 @@
     "alignBottom": {
         "message": "จัดชิดด้านล่าง",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "Reading List",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "From Reading List",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "Add to Reading List",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "Already in Reading List",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "Mark as Read",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "Mark as Unread",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "Remove from Reading List",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "Viewed $COUNT$ days ago",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "Reading List",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "Show Reading List",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "RSS Subscriptions",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "Add Subscription",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "Update Interval",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "Pause",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "Resume",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "Remove",
+        "description": "Button to remove an RSS subscription."
     }
 }

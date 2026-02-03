@@ -89,6 +89,38 @@ export async function pruneWindowNames() {
   }
 }
 
+// --- Reading List Visibility State ---
+
+const READING_LIST_VISIBLE_KEY = 'readingListVisible';
+let readingListVisible = true; // Default to visible
+
+/**
+ * Loads the Reading List visibility state from chrome.storage.sync.
+ * @returns {Promise<boolean>} The visibility state.
+ */
+export async function initReadingListVisibility() {
+  const result = await getStorage('sync', [READING_LIST_VISIBLE_KEY]);
+  readingListVisible = result[READING_LIST_VISIBLE_KEY] !== false; // Default true if not set
+  return readingListVisible;
+}
+
+/**
+ * Gets the current Reading List visibility state from in-memory cache.
+ * @returns {boolean} True if Reading List should be visible.
+ */
+export function isReadingListVisible() {
+  return readingListVisible;
+}
+
+/**
+ * Sets the Reading List visibility state.
+ * @param {boolean} visible - Whether the Reading List should be visible.
+ */
+export async function setReadingListVisible(visible) {
+  readingListVisible = visible;
+  await setStorage('sync', { [READING_LIST_VISIBLE_KEY]: visible });
+}
+
 // --- Bookmark-Tab Linking State ---
 
 const LINKED_TABS_STORAGE_KEY = 'linkedTabs';
