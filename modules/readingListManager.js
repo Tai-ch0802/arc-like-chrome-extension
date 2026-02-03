@@ -2,6 +2,7 @@
 // Business logic for Reading List operations
 
 import * as api from './apiManager.js';
+import { markAsFetched } from './rssManager.js';
 
 /**
  * Group name for tabs opened from reading list.
@@ -69,10 +70,13 @@ export async function toggleReadStatus(url, hasBeenRead) {
 
 /**
  * Deletes a reading list entry.
+ * Also marks the URL as fetched to prevent RSS from re-adding it.
  * @param {string} url - The URL of the entry to delete.
  */
 export async function deleteEntry(url) {
     await api.removeReadingListEntry({ url });
+    // Mark as fetched to prevent RSS from re-adding this URL
+    await markAsFetched(url);
 }
 
 /**
@@ -139,5 +143,28 @@ export function getDaysSinceViewed(lastUpdateTime) {
 export function shouldShowViewedLabel(entry) {
     if (!entry.hasBeenRead) return false;
     const daysSinceViewed = getDaysSinceViewed(entry.lastUpdateTime);
-    return daysSinceViewed >= 3;
+    return daysSinceViewed >= 1;
+}
+
+/**
+ * Deletes all read entries from the reading list.
+ * Also marks each URL as fetched to prevent RSS from re-adding them.
+ * @returns {Promise<number>} Number of deleted entries.
+ */
+export async function deleteAllRead() {
+    const readEntries = await getReadEntries();
+    let deletedCount = 0;
+
+    for (const entry of readEntries) {
+        try {
+            await api.removeReadingListEntry({ url: entry.url });
+            // Mark as fetched to prevent RSS from re-adding
+            await markAsFetched(entry.url);
+            deletedCount++;
+        } catch (err) {
+            console.warn('Failed to delete entry:', entry.url, err);
+        }
+    }
+
+    return deletedCount;
 }

@@ -537,5 +537,49 @@
     "rssErrorFetchFailed": {
         "message": "無法抓取 Feed，請檢查網址。",
         "description": "RSS 抓取失敗時的錯誤訊息。"
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "確定要從閱讀清單中刪除這個項目嗎？",
+        "description": "刪除閱讀清單項目時的確認對話框標題。"
+    },
+    "deleteButton": {
+        "message": "刪除",
+        "description": "刪除按鈕文字。"
+    },
+    "readingListEmptyGuidance": {
+        "message": "右鍵點擊任何連結可將其加入此處",
+        "description": "閱讀清單為空時顯示的引導文字。"
+    },
+    "newItemBadge": {
+        "message": "新",
+        "description": "新加入閱讀清單項目上的標籤。"
+    },
+    "sortByDateNewest": {
+        "message": "最新優先",
+        "description": "閱讀清單排序選項 - 最新項目優先。"
+    },
+    "sortByDateOldest": {
+        "message": "最舊優先",
+        "description": "閱讀清單排序選項 - 最舊項目優先。"
+    },
+    "sortByTitle": {
+        "message": "依標題",
+        "description": "閱讀清單排序選項 - 依標題字母排序。"
+    },
+    "clearAllRead": {
+        "message": "清除所有已讀",
+        "description": "清除所有已讀項目的按鈕。"
+    },
+    "confirmClearAllRead": {
+        "message": "確定要移除所有已讀項目嗎？",
+        "description": "清除所有已讀項目的確認對話框。"
+    },
+    "rssFetchNowButton": {
+        "message": "立即抓取",
+        "description": "手動觸發 RSS 抓取的按鈕。"
+    },
+    "rssFetching": {
+        "message": "抓取中...",
+        "description": "RSS 抓取時的載入狀態文字。"
     }
 }

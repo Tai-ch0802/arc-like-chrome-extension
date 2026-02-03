@@ -2,13 +2,13 @@
 
 | Attribute | Details |
 | :--- | :--- |
-| **Version** | v1.1 |
+| **Version** | v1.2 |
 | **Status** | Draft |
 | **Author** | Antigravity Agent |
 | **Related PRD** | [PRD_spec.md](./PRD_spec.md) |
 | **PRD Version** | v1.3 |
 | **Created** | 2026-02-02 |
-| **Last Updated** | 2026-02-02 |
+| **Last Updated** | 2026-02-03 |
 
 ## 1. Overview
 
@@ -98,34 +98,39 @@ graph TD
 **Description**: 負責 Reading List 區塊的 UI 渲染與用戶互動。
 
 **Responsibilities**:
-- 渲染閱讀清單區塊 (標題、展開/收合)
-- 渲染閱讀清單項目 (favicon, title, domain, 狀態按鈕)
-- 計算並顯示 "viewed X days ago" label
+- 渲染閱讀清單區塊 (標題、展開/收合、批次操作按鈕)
+- 渲染閱讀清單項目 (favicon, title, domain, 狀態按鈕, NEW 標籤)
+- 計算並顯示 "viewed X days ago" label (≥1 天)
 - 處理項目點擊事件 (觸發 `readingListManager`)
+- 刪除確認對話框 (使用 `modalManager.showConfirm`)
+- 鍵盤導航 (↑↓ 移動, Enter 開啟, Delete 刪除)
+- 展開/收合狀態持久化 (`chrome.storage.sync`)
+- 新項目標籤 (1 小時內新增 + 未讀 = 顯示 "NEW")
+- 空狀態引導 (顯示 "右鍵點擊任何連結可將其加入")
+- 批次刪除已讀項目 ("清除所有已讀" 按鈕)
 
-**Dependencies**: `apiManager.js`, `readingListManager.js`, `icons.js`
+**Dependencies**: `apiManager.js`, `readingListManager.js`, `modalManager.js`, `icons.js`
 
 **Interfaces**:
 ```javascript
 /**
  * Renders the reading list section into the container.
- * @param {HTMLElement} container - The parent container element.
- * @param {Function} onItemClick - Callback when an item is clicked.
- * @param {Function} onToggleRead - Callback to toggle read status.
- * @param {Function} onDelete - Callback to delete an item.
+ * @param {ReadingListEntry[]} entries - The entries to render.
+ * @param {HTMLElement} containerElement - The container element.
+ * @param {Function} refreshCallback - Callback to refresh the list.
  */
-export function renderReadingList(container, { onItemClick, onToggleRead, onDelete });
-
-/**
- * Refreshes the reading list UI.
- */
-export async function refreshReadingList();
+export function renderReadingList(entries, containerElement, refreshCallback);
 
 /**
  * Initializes event listeners for the reading list container.
- * @param {HTMLElement} container - The container element.
+ * @param {HTMLElement} containerElement - The container element.
  */
-export function initReadingListListeners(container);
+export function initReadingListListeners(containerElement);
+
+/**
+ * Resets reading list listeners. Useful for re-initialization or cleanup.
+ */
+export function resetReadingListListeners();
 ```
 
 ---
@@ -137,10 +142,11 @@ export function initReadingListListeners(container);
 **Responsibilities**:
 - 開啟閱讀清單項目 (建立分頁 + 自動分組)
 - 標記已讀/未讀
-- 刪除項目
+- 刪除項目（同時標記 hash 防止 RSS 重複加入）
+- 批次刪除所有已讀項目
 - 查詢 URL 是否已存在於閱讀清單
 
-**Dependencies**: `apiManager.js`
+**Dependencies**: `apiManager.js`, `rssManager.js` (for `markAsFetched`)
 
 **Interfaces**:
 ```javascript
@@ -160,9 +166,17 @@ export async function toggleReadStatus(url, hasBeenRead);
 
 /**
  * Deletes a reading list entry.
+ * Also marks the URL as fetched to prevent RSS from re-adding it.
  * @param {string} url - The URL of the entry to delete.
  */
 export async function deleteEntry(url);
+
+/**
+ * Deletes all read entries from the reading list.
+ * Also marks each URL as fetched to prevent RSS from re-adding them.
+ * @returns {Promise<number>} Number of deleted entries.
+ */
+export async function deleteAllRead();
 
 /**
  * Checks if a URL exists in the reading list.
@@ -178,6 +192,12 @@ export async function isInReadingList(url);
  * @returns {Promise<void>}
  */
 export async function addToReadingList(url, title);
+
+/**
+ * Gets all read entries from the reading list.
+ * @returns {Promise<ReadingListEntry[]>}
+ */
+export async function getReadEntries();
 ```
 
 ---
@@ -289,6 +309,13 @@ export async function getSubscriptions();
  * @param {string} subscriptionId - The subscription ID.
  */
 export async function fetchNow(subscriptionId);
+
+/**
+ * Marks a URL as fetched to prevent RSS from re-adding it.
+ * Called by readingListManager when user manually deletes an entry.
+ * @param {string} url - The URL to mark as fetched.
+ */
+export async function markAsFetched(url);
 ```
 
 ## 4. Data Design
@@ -462,6 +489,11 @@ const READING_LIST_GROUP_NAME = api.getMessage('readingListGroupName') || 'From 
 | `rssPauseButton` | Pause | 暫停 | 一時停止 |
 | `rssResumeButton` | Resume | 恢復 | 再開 |
 | `rssDeleteButton` | Remove | 刪除 | 削除 |
+| `confirmDeleteReadingListItem` | Remove this item from reading list? | 確定要從閱讀清單移除此項目嗎？ | この項目を削除しますか？ |
+| `confirmClearAllRead` | Remove all read items? | 確定要清除所有已讀項目嗎？ | 既読の項目をすべて削除しますか？ |
+| `newItemBadge` | NEW | 新 | 新着 |
+| `readingListEmptyGuidance` | Right-click any link to add it here | 右鍵點擊任何連結可將其加入 | リンクを右クリックして追加 |
+| `clearAllRead` | Clear all read | 清除已讀 | 既読を削除 |
 
 ## 7. Sequence Flows
 
@@ -634,3 +666,4 @@ npm test -- --testPathPattern="reading_list|context_menu_reading_list"
 |---------|------|--------|---------|
 | v1.0 | 2026-02-02 | Antigravity Agent | Initial draft |
 | v1.1 | 2026-02-02 | Antigravity Agent | 依據 User Review 修訂：`rssSubscriptions` 改用 `chrome.storage.sync`，採用緊湊 pipe-delimiter 格式最小化資料量，新增配額限制說明 |
+| v1.2 | 2026-02-03 | Antigravity Agent | UX 優化逆向更新：新增刪除確認對話框、鍵盤導航、展開/收合狀態持久化、NEW 標籤、空狀態引導、批次刪除已讀、`deleteAllRead()` API、`markAsFetched()` 導出防止 RSS 重複加入 |

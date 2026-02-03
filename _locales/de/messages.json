@@ -453,35 +453,35 @@
         "description": "Tooltip for aligning background image to the bottom"
     },
     "readingListHeader": {
-        "message": "Reading List",
+        "message": "Leseliste",
         "description": "Header for the reading list section."
     },
     "readingListGroupName": {
-        "message": "From Reading List",
+        "message": "Aus der Leseliste",
         "description": "Name for the tab group created when opening reading list items."
     },
     "addToReadingList": {
-        "message": "Add to Reading List",
+        "message": "Zur Leseliste hinzufügen",
         "description": "Context menu option to add a tab to the reading list."
     },
     "alreadyInReadingList": {
-        "message": "Already in Reading List",
+        "message": "Bereits in der Leseliste",
         "description": "Tooltip shown when URL is already in the reading list."
     },
     "markAsRead": {
-        "message": "Mark as Read",
+        "message": "Als gelesen markieren",
         "description": "Button to mark a reading list item as read."
     },
     "markAsUnread": {
-        "message": "Mark as Unread",
+        "message": "Als ungelesen markieren",
         "description": "Button to mark a reading list item as unread."
     },
     "deleteReadingListItem": {
-        "message": "Remove from Reading List",
+        "message": "Aus Leseliste entfernen",
         "description": "Button to remove an item from the reading list."
     },
     "viewedDaysAgo": {
-        "message": "Viewed $COUNT$ days ago",
+        "message": "Vor $COUNT$ Tagen angesehen",
         "description": "Label showing how many days ago an item was viewed.",
         "placeholders": {
             "COUNT": {
@@ -491,23 +491,23 @@
         }
     },
     "readingListSettingsHeader": {
-        "message": "Reading List",
+        "message": "Leseliste",
         "description": "Header for reading list settings section."
     },
     "showReadingListLabel": {
-        "message": "Show Reading List",
+        "message": "Leseliste anzeigen",
         "description": "Label for the toggle to show/hide reading list."
     },
     "rssSubscriptionHeader": {
-        "message": "RSS Subscriptions",
+        "message": "RSS-Abonnements",
         "description": "Header for RSS subscriptions section in settings."
     },
     "addRssSubscription": {
-        "message": "Add Subscription",
+        "message": "Abonnement hinzufügen",
         "description": "Button to add a new RSS subscription."
     },
     "rssIntervalLabel": {
-        "message": "Update Interval",
+        "message": "Aktualisierungsintervall",
         "description": "Label for RSS update interval selector."
     },
     "rssPauseButton": {
@@ -515,11 +515,67 @@
         "description": "Button to pause an RSS subscription."
     },
     "rssResumeButton": {
-        "message": "Resume",
+        "message": "Fortsetzen",
         "description": "Button to resume a paused RSS subscription."
     },
     "rssDeleteButton": {
-        "message": "Remove",
+        "message": "Entfernen",
         "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "Noch keine RSS-Abonnements.",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "Anforderung zeitlich überschritten. Bitte überprüfen Sie die URL.",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "Sie haben diesen Feed bereits abonniert.",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "Fehler beim Abrufen des Feeds. Bitte überprüfen Sie die URL.",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "Diesen Eintrag aus der Leseliste löschen?",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "Rechtsklick auf einen Link, um ihn hier hinzuzufügen",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "NEU",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "Neueste zuerst",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "Älteste zuerst",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "Nach Titel",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "Alle gelesenen löschen",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "Alle gelesenen Einträge aus der Leseliste löschen?",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "Jetzt abrufen",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "Wird abgerufen...",
+        "description": "Loading state text when fetching RSS."
     }
 }

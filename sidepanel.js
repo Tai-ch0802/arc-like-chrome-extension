@@ -226,6 +226,11 @@ function addEventListeners() {
     document.addEventListener('readingListVisibilityChanged', (e) => {
         applyReadingListVisibility(e.detail.visible);
     });
+
+    // Listen for manual RSS fetch updates
+    document.addEventListener('readingListUpdated', () => {
+        refreshReadingList();
+    });
 }
 
 // --- 搜尋 UI 事件處理 ---

@@ -268,6 +268,9 @@ function bindSettingsEventHandlers(modalContentElement) {
                     </select>
                 </div>
                 <div class="rss-subscription-actions">
+                    <button class="rss-fetch-now-btn" title="${api.getMessage('rssFetchNowButton')}">
+                        🔄
+                    </button>
                     <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
                         ${sub.enabled ? '⏸' : '▶'}
                     </button>
@@ -277,6 +280,41 @@ function bindSettingsEventHandlers(modalContentElement) {
         `).join('');
 
         // Bind event listeners
+        rssListContainer.querySelectorAll('.rss-fetch-now-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+
+                // Show loading state
+                const originalContent = btn.innerHTML;
+                btn.disabled = true;
+                btn.textContent = '...';
+
+                const statusMsg = document.createElement('div');
+                statusMsg.className = 'rss-fetch-status';
+                statusMsg.textContent = api.getMessage('rssFetching') || 'Fetching...';
+                item.appendChild(statusMsg);
+
+                try {
+                    const addedCount = await rss.fetchNow(id);
+                    statusMsg.textContent = api.getMessage('labelSuccess') || 'Success!';
+                    statusMsg.classList.add('success');
+
+                    // Dispatch event to refresh reading list UI if visible
+                    document.dispatchEvent(new CustomEvent('readingListUpdated'));
+
+                    setTimeout(() => statusMsg.remove(), 2000);
+                } catch (err) {
+                    statusMsg.textContent = err.message;
+                    statusMsg.classList.add('error');
+                    setTimeout(() => statusMsg.remove(), 3000);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }
+            });
+        });
+
         rssListContainer.querySelectorAll('.rss-toggle-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const item = e.target.closest('.rss-subscription-item');

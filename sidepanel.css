@@ -414,6 +414,97 @@ mark.url-match {
     letter-spacing: 1px;
 }
 
+.section-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 8px;
+}
+
+.section-header-row .section-header {
+    margin: 16px 0 8px 4px;
+}
+
+.header-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    /* Ensures it pushes to right even if parent display changes */
+}
+
+.header-action-btn {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.header-action-btn:hover {
+    background: var(--danger-color);
+    color: var(--text-color-inverted);
+}
+
+/* Section toggle button */
+.section-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.section-toggle-btn .section-header {
+    margin: 16px 0 8px 4px;
+    pointer-events: none;
+}
+
+.toggle-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+    color: var(--text-color-secondary);
+}
+
+.toggle-chevron::before {
+    content: '';
+    border: solid var(--text-color-secondary);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.section-toggle-btn[aria-expanded="false"] .toggle-chevron::before {
+    transform: rotate(-45deg);
+}
+
+/* Reading list collapsible (specific to avoid conflict with settings panel) */
+#reading-list {
+    overflow: hidden;
+    transition: max-height 0.25s ease-out, opacity 0.2s ease;
+    max-height: 2000px;
+    opacity: 1;
+}
+
+#reading-list.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+}
+
 .divider {
     border: none;
     height: 1px;
@@ -2051,6 +2142,13 @@ mark.url-match {
     font-size: 14px;
 }
 
+.reading-list-title-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+}
+
 .reading-list-viewed-label {
     display: flex;
     align-items: center;
@@ -2113,4 +2211,117 @@ mark.url-match {
 
 .reading-list-item.is-read .reading-list-toggle-read:hover {
     opacity: 1;
+}
+
+/* Controls bar */
+.reading-list-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 8px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reading-list-clear-all {
+    font-size: 11px;
+    padding: 4px 8px;
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.reading-list-clear-all:hover {
+    background: var(--danger-color);
+    color: var(--text-color-inverted);
+}
+
+/* NEW badge */
+.reading-list-new-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 500;
+    padding: 0 3px;
+    margin-right: 4px;
+    background: var(--accent-color);
+    color: var(--text-color-inverted);
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 13px;
+    vertical-align: middle;
+    opacity: 0.9;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* --- Reading List Header Sorting --- */
+.header-select {
+    font-size: 11px;
+    padding: 1px 4px;
+    background: var(--element-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 4px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.header-select:hover,
+.header-select:focus {
+    border-color: var(--accent-color);
+    color: var(--text-color-primary);
+}
+
+/* --- RSS Fetch Now Button and Status --- */
+.rss-fetch-now-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-color-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    font-size: 10px;
+}
+
+.rss-fetch-now-btn:hover {
+    color: var(--accent-color);
+}
+
+.rss-fetch-status {
+    font-size: 10px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.rss-fetch-status.success {
+    color: var(--accent-color);
+    background: rgba(0, 255, 65, 0.1);
+}
+
+.rss-fetch-status.error {
+    color: var(--danger-color);
+    background: rgba(243, 139, 168, 0.1);
 }

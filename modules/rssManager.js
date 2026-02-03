@@ -2,10 +2,12 @@
 // Manages RSS subscription storage, scheduling, and fetching
 
 import * as api from './apiManager.js';
-import { addToReadingList, isUrlInReadingList } from './readingListManager.js';
+import { addToReadingList } from './readingListManager.js';
 
 // --- Constants ---
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
+const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
+const MAX_STORED_HASHES = 500; // Limit stored hashes to prevent storage bloat
 const DELIMITER = '|';
 const ESCAPE_CHAR = '\\|';
 const ALARM_PREFIX = 'rss_fetch_';
@@ -13,6 +15,7 @@ const FETCH_TIMEOUT_MS = 10000; // 10 seconds
 
 // --- In-memory cache ---
 let subscriptions = [];
+let fetchedHashes = new Set();
 
 // --- Serialization/Deserialization ---
 
@@ -111,6 +114,67 @@ async function saveSubscriptions() {
     await api.setStorage('sync', { [RSS_SUBSCRIPTIONS_KEY]: serialized });
 }
 
+// --- Hash Storage Operations (Local) ---
+
+/**
+ * Loads fetched hashes from local storage.
+ */
+async function loadFetchedHashes() {
+    const result = await api.getStorage('local', [RSS_FETCHED_HASHES_KEY]);
+    const stored = result[RSS_FETCHED_HASHES_KEY] || [];
+    fetchedHashes = new Set(stored);
+}
+
+/**
+ * Saves fetched hashes to local storage.
+ * Limits to MAX_STORED_HASHES to prevent storage bloat.
+ */
+async function saveFetchedHashes() {
+    let hashArray = Array.from(fetchedHashes);
+
+    // Keep only the most recent hashes if exceeding limit
+    if (hashArray.length > MAX_STORED_HASHES) {
+        hashArray = hashArray.slice(-MAX_STORED_HASHES);
+        fetchedHashes = new Set(hashArray);
+    }
+
+    await api.setStorage('local', { [RSS_FETCHED_HASHES_KEY]: hashArray });
+}
+
+/**
+ * Calculates SHA-256 hash of a URL string.
+ * @param {string} url - URL to hash.
+ * @returns {Promise<string>} Hex-encoded hash.
+ */
+async function calculateHash(url) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(url);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Checks if a URL hash has been fetched before.
+ * @param {string} url - URL to check.
+ * @returns {Promise<boolean>} True if already fetched.
+ */
+async function isHashFetched(url) {
+    const hash = await calculateHash(url);
+    return fetchedHashes.has(hash);
+}
+
+/**
+ * Marks a URL as fetched by adding its hash.
+ * Also saves to storage immediately to persist the change.
+ * @param {string} url - URL to mark.
+ */
+export async function markAsFetched(url) {
+    const hash = await calculateHash(url);
+    fetchedHashes.add(hash);
+    await saveFetchedHashes();
+}
+
 // --- Alarm Management ---
 
 /**
@@ -160,8 +224,9 @@ async function setupAllAlarms() {
 
 /**
  * Fetches and parses an RSS feed with timeout.
+ * Uses regex-based parsing for service worker compatibility (no DOMParser).
  * @param {string} feedUrl - RSS feed URL.
- * @returns {Promise<{title: string, items: Array<{title: string, url: string, pubDate: number}>}>}
+ * @returns {Promise<{title: string, items: Array<{title: string, url: string}>}>}
  */
 async function fetchRssFeed(feedUrl) {
     // Create abort controller for timeout
@@ -177,52 +242,60 @@ async function fetchRssFeed(feedUrl) {
         }
 
         const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'application/xml');
 
-        // Check for parse errors
-        const parserError = doc.querySelector('parsererror');
-        if (parserError) {
-            throw new Error('Invalid RSS feed format');
-        }
-
-        // Support both RSS and Atom formats
-        const isAtom = !!doc.querySelector('feed');
+        // Detect feed type: Atom uses <feed> with <entry>, RSS uses <channel> with <item>
+        const hasAtomFeed = /<feed[^>]*>/i.test(text);
+        const hasAtomEntry = /<entry[^>]*>/i.test(text);
+        const isAtom = hasAtomFeed && hasAtomEntry;
 
         let feedTitle = '';
         let items = [];
 
         if (isAtom) {
-            // Atom format
-            feedTitle = doc.querySelector('feed > title')?.textContent || feedUrl;
-            const entries = doc.querySelectorAll('entry');
-            items = Array.from(entries).map(entry => {
-                // Atom uses <updated> or <published>
-                const dateStr = entry.querySelector('updated')?.textContent ||
-                    entry.querySelector('published')?.textContent ||
-                    entry.querySelector('pubDate')?.textContent || '';
-                return {
-                    title: entry.querySelector('title')?.textContent || '',
-                    url: entry.querySelector('link')?.getAttribute('href') || '',
-                    pubDate: parseDateToTimestamp(dateStr)
-                };
-            }).filter(item => item.url);
+            // Parse Atom format using regex
+            feedTitle = extractTagContent(text, 'title') || feedUrl;
+
+            // Extract entries
+            const entryRegex = /<entry[^>]*>([\s\S]*?)<\/entry>/gi;
+            let match;
+            while ((match = entryRegex.exec(text)) !== null) {
+                const entryContent = match[1];
+                const title = extractTagContent(entryContent, 'title') || '';
+                const url = extractAtomLink(entryContent) || '';
+                if (url) {
+                    items.push({ title: decodeXmlEntities(title), url });
+                }
+            }
         } else {
-            // RSS format
-            feedTitle = doc.querySelector('channel > title')?.textContent || feedUrl;
-            const rssItems = doc.querySelectorAll('item');
-            items = Array.from(rssItems).map(item => {
-                // RSS uses <pubDate>
-                const dateStr = item.querySelector('pubDate')?.textContent || '';
-                return {
-                    title: item.querySelector('title')?.textContent || '',
-                    url: item.querySelector('link')?.textContent || '',
-                    pubDate: parseDateToTimestamp(dateStr)
-                };
-            }).filter(item => item.url);
+            // Parse RSS format using regex
+            // Get channel title - try multiple approaches
+            const channelTitleMatch = text.match(/<channel[^>]*>[\s\S]*?<title[^>]*>([\s\S]*?)<\/title>/i);
+            if (channelTitleMatch) {
+                // Check for CDATA
+                const cdataMatch = channelTitleMatch[1].match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
+                feedTitle = cdataMatch ? cdataMatch[1] : channelTitleMatch[1].trim();
+            }
+            if (!feedTitle) feedTitle = feedUrl;
+
+            // Extract items
+            const itemRegex = /<item[^>]*>([\s\S]*?)<\/item>/gi;
+            let match;
+            while ((match = itemRegex.exec(text)) !== null) {
+                const itemContent = match[1];
+                const title = extractTagContent(itemContent, 'title') || '';
+                const url = extractTagContent(itemContent, 'link') || extractLinkFromGuid(itemContent) || '';
+                if (url) {
+                    items.push({ title: decodeXmlEntities(title), url: url.trim() });
+                }
+            }
         }
 
-        return { title: feedTitle, items };
+        // Validate we got some items
+        if (items.length === 0) {
+            console.warn('RSS: No items found in feed:', feedUrl);
+        }
+
+        return { title: decodeXmlEntities(feedTitle), items };
     } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === 'AbortError') {
@@ -231,6 +304,80 @@ async function fetchRssFeed(feedUrl) {
         console.error('Error fetching RSS feed:', feedUrl, err);
         throw err;
     }
+}
+
+/**
+ * Extracts content from an XML tag.
+ * @param {string} xml - XML string to search.
+ * @param {string} tagName - Tag name to extract.
+ * @returns {string|null} Tag content or null.
+ */
+function extractTagContent(xml, tagName) {
+    // Handle CDATA sections
+    const cdataRegex = new RegExp(`<${tagName}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tagName}>`, 'i');
+    const cdataMatch = xml.match(cdataRegex);
+    if (cdataMatch) {
+        return cdataMatch[1];
+    }
+
+    // Handle regular content
+    const regex = new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, 'i');
+    const match = xml.match(regex);
+    return match ? match[1].trim() : null;
+}
+
+/**
+ * Extracts href from Atom link element.
+ * @param {string} xml - XML string containing link element.
+ * @returns {string|null} Link href or null.
+ */
+function extractAtomLink(xml) {
+    // Try to find alternate link first
+    const alternateMatch = xml.match(/<link[^>]*rel=["']alternate["'][^>]*href=["']([^"']+)["']/i);
+    if (alternateMatch) return alternateMatch[1];
+
+    // Try href attribute in any link
+    const hrefMatch = xml.match(/<link[^>]*href=["']([^"']+)["']/i);
+    if (hrefMatch) return hrefMatch[1];
+
+    // Try link content (rare but possible)
+    return extractTagContent(xml, 'link');
+}
+
+/**
+ * Extracts link from guid element if isPermaLink is true.
+ * @param {string} xml - XML string containing guid element.
+ * @returns {string|null} Link from guid or null.
+ */
+function extractLinkFromGuid(xml) {
+    // Check for guid with isPermaLink="true"
+    const guidPermaMatch = xml.match(/<guid[^>]*isPermaLink=["']true["'][^>]*>([^<]+)<\/guid>/i);
+    if (guidPermaMatch) return guidPermaMatch[1].trim();
+
+    // Some feeds have guid content that looks like a URL
+    const guidContent = extractTagContent(xml, 'guid');
+    if (guidContent && (guidContent.startsWith('http://') || guidContent.startsWith('https://'))) {
+        return guidContent;
+    }
+
+    return null;
+}
+
+/**
+ * Decodes common XML entities.
+ * @param {string} str - String with XML entities.
+ * @returns {string} Decoded string.
+ */
+function decodeXmlEntities(str) {
+    if (!str) return '';
+    return str
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&apos;/g, "'")
+        .replace(/&quot;/g, '"')
+        .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)))
+        .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 }
 
 /**
@@ -252,6 +399,7 @@ function parseDateToTimestamp(dateStr) {
  */
 export async function initRssManager() {
     await loadSubscriptions();
+    await loadFetchedHashes();
     await setupAllAlarms();
 }
 
@@ -263,9 +411,12 @@ export async function initRssManager() {
 export async function handleAlarm(alarm) {
     if (!alarm.name.startsWith(ALARM_PREFIX)) return;
 
-    // Ensure subscriptions are loaded
+    // Ensure data is loaded
     if (subscriptions.length === 0) {
         await loadSubscriptions();
+    }
+    if (fetchedHashes.size === 0) {
+        await loadFetchedHashes();
     }
 
     const subscriptionId = alarm.name.replace(ALARM_PREFIX, '');
@@ -348,6 +499,7 @@ export function getSubscriptions() {
 
 /**
  * Manually triggers a fetch for a subscription.
+ * Uses hash-based deduplication to avoid adding duplicate items.
  * @param {string} subscriptionId - The subscription ID.
  * @returns {Promise<number>} Number of new items added.
  */
@@ -356,39 +508,32 @@ export async function fetchNow(subscriptionId) {
     if (!sub) return 0;
 
     const fetchStartTime = Date.now();
+    const isFirstFetch = sub.lastFetched === 0;
 
     try {
         const feed = await fetchRssFeed(sub.url);
         let addedCount = 0;
 
-        // Filter items: only those published after lastFetched
-        // If lastFetched is 0 (first fetch), take only items from the last 24 hours
-        const cutoffTime = sub.lastFetched > 0
-            ? sub.lastFetched
-            : Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
+        // On first fetch, limit to 5 items to avoid spam
+        // On subsequent fetches, process all items (up to 20)
+        const itemsToProcess = isFirstFetch
+            ? feed.items.slice(0, 5)
+            : feed.items.slice(0, 20);
 
-        // Filter by pubDate, limit to 10 to avoid spam
-        let newItems = feed.items
-            .filter(item => item.pubDate > cutoffTime)
-            .slice(0, 10);
-
-        // Issue #5: First fetch fallback - if no items match, take top 5
-        if (sub.lastFetched === 0 && newItems.length === 0) {
-            newItems = feed.items.slice(0, 5);
-            console.log(`RSS [${sub.title}]: First fetch fallback, taking top 5 items`);
-        }
-
-        // Issue #3: Try-catch per item to prevent one failure from stopping all
-        for (const item of newItems) {
+        // Process items using hash-based deduplication
+        for (const item of itemsToProcess) {
             try {
-                // Skip items without valid pubDate if we have a lastFetched
-                if (sub.lastFetched > 0 && item.pubDate === 0) {
-                    // Fall back to URL existence check for items without pubDate
-                    const exists = await isUrlInReadingList(item.url);
-                    if (exists) continue;
+                // Check if this item was already fetched using hash
+                const alreadyFetched = await isHashFetched(item.url);
+                if (alreadyFetched) {
+                    continue;
                 }
 
+                // Add to reading list
                 await addToReadingList(item.url, item.title);
+
+                // Mark as fetched
+                await markAsFetched(item.url);
                 addedCount++;
             } catch (itemErr) {
                 console.warn(`RSS: Failed to add item "${item.title}":`, itemErr.message);
@@ -396,11 +541,14 @@ export async function fetchNow(subscriptionId) {
             }
         }
 
-        // Update last fetched time to when we started the fetch
+        // Save hashes to local storage
+        await saveFetchedHashes();
+
+        // Update last fetched time
         sub.lastFetched = fetchStartTime;
         await saveSubscriptions();
 
-        console.log(`RSS [${sub.title}]: Added ${addedCount} new items`);
+        console.log(`RSS [${sub.title}]: Added ${addedCount} new items (hash-based)`);
         return addedCount;
     } catch (err) {
         console.error('Error fetching subscription:', subscriptionId, err);

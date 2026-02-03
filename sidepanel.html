@@ -42,7 +42,22 @@
 
         <!-- Reading List Section -->
         <div id="reading-list-section">
-            <h2 class="section-header" data-i18n="readingListHeader"></h2>
+            <div class="section-header-row">
+                <button id="reading-list-toggle" class="section-toggle-btn" aria-expanded="true"
+                    aria-controls="reading-list">
+                    <h2 class="section-header" data-i18n="readingListHeader"></h2>
+                    <span class="toggle-chevron"></span>
+                </button>
+                <div class="header-controls-right">
+                    <select id="reading-list-sort" class="header-select" title="Sort by" data-i18n-title="sortByTitle">
+                        <option value="date-newest" data-i18n="sortByDateNewest"></option>
+                        <option value="date-oldest" data-i18n="sortByDateOldest"></option>
+                        <option value="title" data-i18n="sortByTitle"></option>
+                    </select>
+                    <button id="clear-all-read-btn" class="header-action-btn hidden" data-action="clear-all-read"
+                        data-i18n="clearAllRead"></button>
+                </div>
+            </div>
             <div id="reading-list"></div>
             <hr class="divider">
         </div>

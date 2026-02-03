@@ -453,35 +453,35 @@
         "description": "Tooltip for aligning background image to the bottom"
     },
     "readingListHeader": {
-        "message": "Reading List",
+        "message": "पढ़ने की सूची",
         "description": "Header for the reading list section."
     },
     "readingListGroupName": {
-        "message": "From Reading List",
+        "message": "पढ़ने की सूची से",
         "description": "Name for the tab group created when opening reading list items."
     },
     "addToReadingList": {
-        "message": "Add to Reading List",
+        "message": "पढ़ने की सूची में जोड़ें",
         "description": "Context menu option to add a tab to the reading list."
     },
     "alreadyInReadingList": {
-        "message": "Already in Reading List",
+        "message": "पढ़ने की सूची में पहले से मौजूद",
         "description": "Tooltip shown when URL is already in the reading list."
     },
     "markAsRead": {
-        "message": "Mark as Read",
+        "message": "पढ़ा हुआ चिह्नित करें",
         "description": "Button to mark a reading list item as read."
     },
     "markAsUnread": {
-        "message": "Mark as Unread",
+        "message": "अपठित चिह्नित करें",
         "description": "Button to mark a reading list item as unread."
     },
     "deleteReadingListItem": {
-        "message": "Remove from Reading List",
+        "message": "पढ़ने की सूची से हटाएँ",
         "description": "Button to remove an item from the reading list."
     },
     "viewedDaysAgo": {
-        "message": "Viewed $COUNT$ days ago",
+        "message": "$COUNT$ दिन पहले देखा गया",
         "description": "Label showing how many days ago an item was viewed.",
         "placeholders": {
             "COUNT": {
@@ -491,35 +491,91 @@
         }
     },
     "readingListSettingsHeader": {
-        "message": "Reading List",
+        "message": "पढ़ने की सूची",
         "description": "Header for reading list settings section."
     },
     "showReadingListLabel": {
-        "message": "Show Reading List",
+        "message": "पढ़ने की सूची दिखाएँ",
         "description": "Label for the toggle to show/hide reading list."
     },
     "rssSubscriptionHeader": {
-        "message": "RSS Subscriptions",
+        "message": "RSS सदस्यताएँ",
         "description": "Header for RSS subscriptions section in settings."
     },
     "addRssSubscription": {
-        "message": "Add Subscription",
+        "message": "सदस्यता जोड़ें",
         "description": "Button to add a new RSS subscription."
     },
     "rssIntervalLabel": {
-        "message": "Update Interval",
+        "message": "अपडेट अंतराल",
         "description": "Label for RSS update interval selector."
     },
     "rssPauseButton": {
-        "message": "Pause",
+        "message": "रोकें",
         "description": "Button to pause an RSS subscription."
     },
     "rssResumeButton": {
-        "message": "Resume",
+        "message": "फिर से शुरू करें",
         "description": "Button to resume a paused RSS subscription."
     },
     "rssDeleteButton": {
-        "message": "Remove",
+        "message": "हटाएँ",
         "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "अभी तक कोई RSS सदस्यता नहीं है।",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "अनुरोध का समय समाप्त हो गया। कृपया URL जाँचें।",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "आपने पहले ही इस फ़ीड की सदस्यता ले ली है।",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "फ़ीड प्राप्त करने में विफल। कृपया URL जाँचें।",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "इस आइटम को पढ़ने की सूची से हटाएँ?",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "इसे यहाँ जोड़ने के लिए किसी भी लिंक पर राइट-क्लिक करें",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "नया",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "सबसे नए पहले",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "सबसे पुराने पहले",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "शीर्षक के अनुसार",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "सभी पढ़े गए साफ़ करें",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "पढ़ने की सूची से सभी पढ़े गए आइटम हटाएँ?",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "अभी अपडेट करें",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "अपडेट हो रहा है...",
+        "description": "Loading state text when fetching RSS."
     }
 }

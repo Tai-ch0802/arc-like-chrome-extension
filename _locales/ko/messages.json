@@ -453,35 +453,35 @@
         "description": "Tooltip for aligning background image to the bottom"
     },
     "readingListHeader": {
-        "message": "Reading List",
+        "message": "읽기 목록",
         "description": "Header for the reading list section."
     },
     "readingListGroupName": {
-        "message": "From Reading List",
+        "message": "읽기 목록에서",
         "description": "Name for the tab group created when opening reading list items."
     },
     "addToReadingList": {
-        "message": "Add to Reading List",
+        "message": "읽기 목록에 추가",
         "description": "Context menu option to add a tab to the reading list."
     },
     "alreadyInReadingList": {
-        "message": "Already in Reading List",
+        "message": "이미 읽기 목록에 있음",
         "description": "Tooltip shown when URL is already in the reading list."
     },
     "markAsRead": {
-        "message": "Mark as Read",
+        "message": "읽음 상태로 표시",
         "description": "Button to mark a reading list item as read."
     },
     "markAsUnread": {
-        "message": "Mark as Unread",
+        "message": "읽지 않음 상태로 표시",
         "description": "Button to mark a reading list item as unread."
     },
     "deleteReadingListItem": {
-        "message": "Remove from Reading List",
+        "message": "읽기 목록에서 삭제",
         "description": "Button to remove an item from the reading list."
     },
     "viewedDaysAgo": {
-        "message": "Viewed $COUNT$ days ago",
+        "message": "$COUNT$일 전에 확인",
         "description": "Label showing how many days ago an item was viewed.",
         "placeholders": {
             "COUNT": {
@@ -491,35 +491,91 @@
         }
     },
     "readingListSettingsHeader": {
-        "message": "Reading List",
+        "message": "읽기 목록",
         "description": "Header for reading list settings section."
     },
     "showReadingListLabel": {
-        "message": "Show Reading List",
+        "message": "읽기 목록 표시",
         "description": "Label for the toggle to show/hide reading list."
     },
     "rssSubscriptionHeader": {
-        "message": "RSS Subscriptions",
+        "message": "RSS 구독",
         "description": "Header for RSS subscriptions section in settings."
     },
     "addRssSubscription": {
-        "message": "Add Subscription",
+        "message": "구독 추가",
         "description": "Button to add a new RSS subscription."
     },
     "rssIntervalLabel": {
-        "message": "Update Interval",
+        "message": "업데이트 간격",
         "description": "Label for RSS update interval selector."
     },
     "rssPauseButton": {
-        "message": "Pause",
+        "message": "일시 정지",
         "description": "Button to pause an RSS subscription."
     },
     "rssResumeButton": {
-        "message": "Resume",
+        "message": "재개",
         "description": "Button to resume a paused RSS subscription."
     },
     "rssDeleteButton": {
-        "message": "Remove",
+        "message": "삭제",
         "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "RSS 구독이 없습니다.",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "요청 시간이 초과되었습니다. URL을 확인하세요.",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "이미 구독 중인 피드입니다.",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "피드를 가져오지 못했습니다. URL을 확인하세요.",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "읽기 목록에서 이 항목을 삭제하시겠습니까?",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "링크를 마우스 오른쪽 버튼으로 클릭하여 여기에 추가하세요",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "신규",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "최신순",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "오래된순",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "제목순",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "모든 읽음 항목 삭제",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "읽기 목록에서 모든 읽음 항목을 삭제하시겠습니까?",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "지금 업데이트",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "업데이트 중...",
+        "description": "Loading state text when fetching RSS."
     }
 }
