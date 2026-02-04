@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForAttribute } = require('./setup');
 
 describe('Settings Panel Use Case', () => {
     let browser;
@@ -19,9 +19,7 @@ describe('Settings Panel Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for tab list to load to ensure app is initialized
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
-            return new Promise(r => setTimeout(r, 1000));
-        });
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -47,9 +45,7 @@ describe('Settings Panel Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for tab list to load to ensure app is initialized
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
-            return new Promise(r => setTimeout(r, 1000));
-        });
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -71,9 +67,7 @@ describe('Settings Panel Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for tab list to load to ensure app is initialized
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
-            return new Promise(r => setTimeout(r, 1000));
-        });
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -88,6 +82,9 @@ describe('Settings Panel Use Case', () => {
             // Find a collapsed section (not the first one which is expanded by default)
             const secondToggle = collapsibleToggles[1];
 
+            // Get the id of the second toggle for waiting
+            const toggleId = await secondToggle.evaluate(el => el.id || el.getAttribute('aria-controls'));
+
             // Check initial state (should be collapsed)
             const initiallyExpanded = await secondToggle.evaluate(el => {
                 return el.getAttribute('aria-expanded') === 'true';
@@ -96,7 +93,13 @@ describe('Settings Panel Use Case', () => {
 
             // Click to expand
             await secondToggle.click();
-            await new Promise(r => setTimeout(r, 200));
+
+            // Wait for aria-expanded to become 'true'
+            await page.waitForFunction(
+                toggle => toggle.getAttribute('aria-expanded') === 'true',
+                { timeout: 3000 },
+                secondToggle
+            );
 
             // Verify expanded
             const afterClickExpanded = await secondToggle.evaluate(el => {
@@ -106,7 +109,13 @@ describe('Settings Panel Use Case', () => {
 
             // Click to collapse again
             await secondToggle.click();
-            await new Promise(r => setTimeout(r, 200));
+
+            // Wait for aria-expanded to become 'false'
+            await page.waitForFunction(
+                toggle => toggle.getAttribute('aria-expanded') === 'false',
+                { timeout: 3000 },
+                secondToggle
+            );
 
             // Verify collapsed
             const finalExpanded = await secondToggle.evaluate(el => {
@@ -122,9 +131,7 @@ describe('Settings Panel Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for tab list to load to ensure app is initialized
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
-            return new Promise(r => setTimeout(r, 1000));
-        });
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -140,7 +147,12 @@ describe('Settings Panel Use Case', () => {
                 const text = await toggle.evaluate(el => el.textContent);
                 if (text.includes('Shortcut') || text.includes('快捷')) {
                     await toggle.click();
-                    await new Promise(r => setTimeout(r, 200));
+                    // Wait for aria-expanded to become 'true'
+                    await page.waitForFunction(
+                        t => t.getAttribute('aria-expanded') === 'true',
+                        { timeout: 3000 },
+                        toggle
+                    );
                     break;
                 }
             }
