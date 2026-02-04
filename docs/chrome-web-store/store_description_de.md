@@ -35,6 +35,7 @@ Suchen Sie nicht nur – finden Sie sofort.
 - **Benutzerdefinierte Fensterbenennung**: Weisen Sie Ihren Fenstern eigene Namen zu (z. B. 'Arbeit', 'Persönlich').
 - **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichenordnern.
 - **Drag to Save**: Ziehen Sie einen Tab in den Lesezeichenbereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tabbereich, um es zu öffnen.
+- **Leseliste & RSS**: Ihr persönlicher Hub für die Artikel-Kuratierung. Synchronisieren Sie mit der nativen Chrome-Leseliste, abonnieren Sie RSS-Feeds und verwalten Sie alles an einem Ort mit intelligenter Duplikaterkennung und Sortierung.
 
 ### 🎨 Premium-Design & Anpassung
 - **Benutzerdefiniertes Hintergrundbild**: Personalisieren Sie Ihren Arbeitsbereich! Laden Sie Ihr eigenes Bild hoch oder verwenden Sie eine URL. Passen Sie die **Deckkraft** und **Unschärfe** für den perfekten Look an.

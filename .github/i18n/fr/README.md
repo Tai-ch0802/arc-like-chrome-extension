@@ -74,6 +74,15 @@ Ne vous contentez pas de chercher — trouvez instantanément.
 - **Extension automatique** : Passer la souris sur les dossiers tout en faisant glisser des éléments pour étendre automatiquement le chemin.
 - **Survol intelligent** : Les boutons d'action n'apparaissent que lorsque c'est nécessaire, gardant l'interface propre et sans distractions.
 
+### 📚 Liste de lecture et RSS
+Votre centre de veille personnel, directement dans votre barre latérale.
+- **Intégration de la Liste de lecture Chrome** : Synchronisation avec la liste de lecture native de Chrome pour une fonctionnalité "À lire plus tard" fluide.
+- **Abonnement RSS** : Abonnez-vous à n'importe quel flux RSS ; les nouveaux articles sont automatiquement ajoutés à votre liste.
+- **Déduplication intelligente** : Le filtrage basé sur le hachage garantit l'absence de doublons.
+- **Options de tri** : Triez par date (récent/ancien) ou par titre pour un accès rapide.
+- **Récupération manuelle** : Obtenez instantanément les derniers articles via le bouton "Actualiser maintenant".
+- **Suppression par lot** : Supprimez tous les articles lus en un clic.
+
 ## ⌨️ Navigation complète au clavier
 - **Expérience native** : Utiliser les touches `Flèche Haut`/`Flèche Bas` pour naviguer de manière fluide entre les onglets et les signets.
 - **Micro-interactions** : Utiliser `Flèche Gauche`/`Flèche Droite` pour naviguer et déclencher les boutons internes (comme Fermer, Ajouter au groupe).
@@ -94,6 +103,7 @@ Ne vous contentez pas de chercher — trouvez instantanément.
 | **Groupes d'onglets** | ✅ Synchronisation native | ✅ | ⚠️ Partiel |
 | **Intégration des signets** | ✅ Panneau unifié | ❌ Gestionnaire séparé | ❌ Séparé |
 | **Onglets liés** | ✅ Synchronisé | ❌ | ❌ |
+| **Liste de lecture et RSS** | ✅ Intégré | ⚠️ Basique | ❌ |
 | **Recherche multi-fenêtres** | ✅ | ❌ | ⚠️ Varie |
 | **Performance** | ⚡️ Rendu dynamique | N/A | 🐢 Défilement virtuel |
 

@@ -74,6 +74,15 @@ Không chỉ tìm kiếm — mà là tìm thấy ngay lập tức.
 - **Tự động mở rộng**: Di chuột qua các thư mục trong khi kéo các mục để tự động mở rộng đường dẫn.
 - **Di chuột thông minh**: Các nút hành động chỉ xuất hiện khi cần thiết, giữ cho giao diện sạch sẽ và không gây xao nhãng.
 
+### 📚 Danh sách đọc & RSS
+Trung tâm quản lý bài viết cá nhân của bạn, ngay trên thanh bên.
+- **Tích hợp Danh sách đọc Chrome**: Đồng bộ hóa với danh sách đọc gốc của Chrome để lưu bài đọc sau một cách mượt mà.
+- **Đăng ký RSS**: Đăng ký bất kỳ nguồn cấp dữ liệu RSS nào; các bài viết mới sẽ tự động được thêm vào danh sách đọc của bạn.
+- **Khử trùng lặp thông minh**: Lọc dựa trên mã băm (hash) đảm bảo không có mục nào bị lặp lại.
+- **Tùy chọn sắp xếp**: Sắp xếp theo ngày (mới nhất/cũ nhất) hoặc tiêu đề để truy cập nhanh.
+- **Lấy dữ liệu thủ công**: Cập nhật bài viết mới ngay lập tức với nút "Lấy dữ liệu ngay".
+- **Xóa hàng loạt**: Xóa tất cả các mục đã đọc chỉ với một lần nhấp.
+
 ## ⌨️ Điều hướng bằng bàn phím đầy đủ
 - **Trải nghiệm nguyên bản**: Sử dụng các phím `Mũi tên Lên`/`Mũi tên Xuống` để điều hướng mượt mà giữa các tab và dấu trang.
 - **Tương tác vi mô**: Sử dụng `Mũi tên Trái`/`Mũi tên Phải` để điều hướng và kích hoạt các nút nội bộ (như Đóng, Thêm vào Nhóm).
@@ -94,6 +103,7 @@ Không chỉ tìm kiếm — mà là tìm thấy ngay lập tức.
 | **Nhóm tab** | ✅ Đồng bộ nguyên bản | ✅ | ⚠️ Một phần |
 | **Tích hợp dấu trang** | ✅ Bảng thống nhất | ❌ Trình quản lý riêng | ❌ Riêng biệt |
 | **Tab liên kết** | ✅ Trạng thái đồng bộ | ❌ | ❌ |
+| **Danh sách đọc & RSS** | ✅ Tích hợp sẵn | ⚠️ Cơ bản | ❌ |
 | **Tìm kiếm đa cửa sổ** | ✅ | ❌ | ⚠️ Khác nhau |
 | **Hiệu suất** | ⚡️ Kết xuất động | N/A | 🐢 Cuộn ảo |
 

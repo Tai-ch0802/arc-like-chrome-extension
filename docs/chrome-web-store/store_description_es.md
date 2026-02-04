@@ -35,6 +35,7 @@ No solo busques, encuentra al instante.
 - **Nombrado de Ventanas Personalizado**: Asigna nombres personalizados a tus ventanas (ej. 'Trabajo', 'Personal').
 - **Arrastrar y Soltar**: Gestión intuitiva: mueve elementos sin esfuerzo entre pestañas, grupos y carpetas de marcadores.
 - **Arrastrar para Guardar**: Arrastra una pestaña al área de marcadores para guardarla al instante; arrastra un marcador al área de pestañas para abrirlo.
+- **Lista de lectura y RSS**: Tu centro personal de curación de artículos. Sincroniza con la lista de lectura nativa de Chrome, suscríbete a canales RSS y gestiónalo todo en un solo lugar con deduplicación y ordenación inteligentes.
 
 ### 🎨 Diseño Premium y Personalización
 - **Imagen de fondo personalizada**: ¡Personaliza su espacio de trabajo! Sube su propia imagen o usa una URL. Ajusta la **opacidad** y el **desenfoque** para lograr el aspecto perfecto.

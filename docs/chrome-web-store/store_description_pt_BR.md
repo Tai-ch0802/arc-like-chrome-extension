@@ -32,9 +32,10 @@ Não apenas pesquise — encontre instantaneamente.
 ### 🗂️ Espaço de Trabalho Unificado
 - **Abas Verticais**: Veja títulos de páginas completos, não mais compactados em ícones minúsculos.
 - **Suporte Nativo a Grupos**: Integra-se perfeitamente com Grupos de Abas do Chrome, sincronizando cores e nomes.
-- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
+- **Nomenclatura Personalizada de Janelas**: Atribua nomes personalizados às suas janelas (ex: "Trabalho", "Pessoal") para um contexto mais claro.
 - **Arrastar e Soltar**: Gerenciamento intuitivo — mova itens sem esforço entre abas, grupos e pastas de favoritos.
 - **Arrastar para Salvar**: Arraste uma aba para a área de favoritos para salvá-la instantaneamente; arraste um favorito para a área de abas para abri-lo.
+- **Lista de Leitura & RSS**: Seu hub pessoal de curadoria de artigos. Sincronize com a Lista de Leitura nativa do Chrome, assine feeds RSS e gerencie tudo em um só lugar com deduplicação e ordenação inteligentes.
 
 ### 🎨 Design Premium e Personalização
 - **Imagem de Fundo Personalizada**: Personalize seu espaço de trabalho! Faça upload de sua própria imagem ou use uma URL. Ajuste a **opacidade** e o **desfoque** para o visual perfeito.

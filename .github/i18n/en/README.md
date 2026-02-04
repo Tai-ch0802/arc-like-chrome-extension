@@ -74,6 +74,16 @@ Don't just search—find instantly.
 - **Auto-Expand**: Hover over folders while dragging items to automatically expand the path.
 - **Smart Hover**: Action buttons appear only when needed, keeping the interface clean and distraction-free.
 
+### 📚 Reading List & RSS
+Your personal article curation hub, right in the sidebar.
+- **Chrome Reading List Integration**: Synced with Chrome's native Reading List for seamless "Save for Later" functionality.
+- **RSS Subscription**: Subscribe to any RSS feed and have new articles automatically added to your reading list.
+- **Smart Deduplication**: Hash-based filtering ensures no duplicate entries, even across multiple fetches.
+- **Sorting Options**: Sort by date (newest/oldest) or title for quick access.
+- **Manual Fetch**: Instantly pull the latest articles with a "Fetch Now" button.
+- **Batch Clear**: Remove all read items with one click.
+
+
 ## ⌨️ Full Keyboard Navigation
 - **Native Experience**: Use `Arrow Up`/`Arrow Down` keys to navigate seamlessly between tabs and bookmarks.
 - **Micro-Interactions**: Use `Arrow Left`/`Arrow Right` to navigate and trigger internal buttons (like Close, Add to Group).
@@ -94,6 +104,7 @@ Don't just search—find instantly.
 | **Tab Groups** | ✅ Native Sync | ✅ | ⚠️ Partial |
 | **Bookmarks Integration** | ✅ Unified Panel | ❌ Separate Manager | ❌ Separate |
 | **Linked Tabs** | ✅ Indync | ❌ | ❌ |
+| **Reading List & RSS** | ✅ Built-in | ⚠️ Basic | ❌ |
 | **Cross-Window Search** | ✅ | ❌ | ⚠️ Varies |
 | **Performance** | ⚡️ Dynamic Rendering | N/A | 🐢 Virtual Scroll |
 

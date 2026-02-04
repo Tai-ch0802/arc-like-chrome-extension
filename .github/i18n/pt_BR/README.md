@@ -74,6 +74,15 @@ Não apenas pesquise — encontre instantaneamente.
 - **Expansão automática**: Passe o mouse sobre as pastas enquanto arrasta itens para expandir automaticamente o caminho.
 - **Hover inteligente**: Os botões de ação aparecem apenas quando necessário, mantendo a interface limpa e livre de distrações.
 
+### 📚 Lista de Leitura & RSS
+Seu hub pessoal de curadoria de artigos, diretamente na barra lateral.
+- **Integração com a Lista de Leitura do Chrome**: Sincronizado com a lista de leitura nativa do Chrome para a funcionalidade "Ler Depois".
+- **Assinatura RSS**: Assine qualquer feed RSS; novos artigos são adicionados automaticamente à sua lista de leitura.
+- **Deduplicação Inteligente**: A filtragem baseada em hash garante que não haja entradas duplicadas.
+- **Opções de Ordenação**: Ordene por data (mais recente/mais antiga) ou título para acesso rápido.
+- **Busca Manual**: Obtenha os artigos mais recentes instantaneamente com o botão "Buscar Agora".
+- **Limpeza em Lote**: Remova todos os itens lidos com um clique.
+
 ## ⌨️ Navegação Completa por Teclado
 - **Experiência nativa**: Use as teclas `Seta para Cima`/`Seta para Baixo` para navegar perfeitamente entre abas e favoritos.
 - **Microinterações**: Use `Seta para Esquerda`/`Seta para Direita` para navegar e acionar botões internos (como Fechar, Adicionar ao Grupo).
@@ -94,6 +103,7 @@ Não apenas pesquise — encontre instantaneamente.
 | **Grupos de abas** | ✅ Sincronização Nativa | ✅ | ⚠️ Parcial |
 | **Integração de favoritos** | ✅ Painel Unificado | ❌ Gerenciador Separado | ❌ Separado |
 | **Abas vinculadas** | ✅ Sincronizado | ❌ | ❌ |
+| **Lista de Leitura & RSS** | ✅ Integrado | ⚠️ Básico | ❌ |
 | **Busca entre janelas** | ✅ | ❌ | ⚠️ Varia |
 | **Desempenho** | ⚡️ Renderização Dinâmica | N/A | 🐢 Rolagem Virtual |
 
