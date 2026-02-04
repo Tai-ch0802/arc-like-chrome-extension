@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForAttribute } = require('./setup');
 
 describe('Tab Group Toggle Use Case', () => {
     let browser;
@@ -65,7 +65,10 @@ describe('Tab Group Toggle Use Case', () => {
 
             // Click to toggle
             await page.click(groupHeaderSelector);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for data-collapsed attribute to change
+            const expectedAfterClick = initiallyCollapsed ? 'false' : 'true';
+            await waitForAttribute(page, groupHeaderSelector, 'data-collapsed', expectedAfterClick);
 
             // Verify state changed
             const afterClickCollapsed = await page.$eval(groupHeaderSelector, el => {
@@ -77,7 +80,10 @@ describe('Tab Group Toggle Use Case', () => {
 
             // Click again to toggle back
             await page.click(groupHeaderSelector);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for data-collapsed to return to initial state
+            const expectedFinal = initiallyCollapsed ? 'true' : 'false';
+            await waitForAttribute(page, groupHeaderSelector, 'data-collapsed', expectedFinal);
 
             const finalCollapsed = await page.$eval(groupHeaderSelector, el => {
                 return el.dataset.collapsed === 'true';
@@ -140,15 +146,17 @@ describe('Tab Group Toggle Use Case', () => {
             const groupHeaderSelector = `.tab-group-header[data-group-id="${groupId}"]`;
             await page.waitForSelector(groupHeaderSelector);
 
-            // Get initial content visibility (check sibling element's display)
-            const initiallyVisible = await page.$eval(groupHeaderSelector, el => {
-                const content = el.nextElementSibling;
-                return content && window.getComputedStyle(content).display !== 'none';
+            // Get initial collapsed state
+            const initiallyCollapsed = await page.$eval(groupHeaderSelector, el => {
+                return el.dataset.collapsed === 'true';
             });
 
             // Toggle group by clicking header
             await page.click(groupHeaderSelector);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for data-collapsed attribute to change
+            const expectedAfterToggle = initiallyCollapsed ? 'false' : 'true';
+            await waitForAttribute(page, groupHeaderSelector, 'data-collapsed', expectedAfterToggle);
 
             // Check visibility after toggle
             const afterToggleVisible = await page.$eval(groupHeaderSelector, el => {
@@ -156,8 +164,8 @@ describe('Tab Group Toggle Use Case', () => {
                 return content && window.getComputedStyle(content).display !== 'none';
             });
 
-            // Visibility should have changed
-            expect(afterToggleVisible).toBe(!initiallyVisible);
+            // Visibility should have changed (if initially collapsed, now visible; if initially visible, now hidden)
+            expect(afterToggleVisible).toBe(initiallyCollapsed);
         } finally {
             try {
                 if (createdTabIds.length > 0) {

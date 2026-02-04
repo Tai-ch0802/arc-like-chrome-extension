@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForTabCount } = require('./setup');
 
 describe('Tab Dragging Use Case', () => {
     let browser;
@@ -23,6 +23,9 @@ describe('Tab Dragging Use Case', () => {
             });
         });
 
+        // Get current tab item count in DOM
+        const currentTabItemCount = (await page.$$('.tab-item')).length;
+
         const tabsToCreate = 3 - tabs.length;
         if (tabsToCreate > 0) {
             for (let i = 0; i < tabsToCreate; i++) {
@@ -33,9 +36,9 @@ describe('Tab Dragging Use Case', () => {
                 });
                 createdTabIds.push(newTab.id);
             }
+            // Wait for the side panel to update with new tabs using condition-based wait
+            await waitForTabCount(page, currentTabItemCount + tabsToCreate);
         }
-        // Wait for the side panel to update with new tabs
-        await new Promise(r => setTimeout(r, 1000)); // Give extension time to process new tabs
     });
 
     afterEach(async () => {
@@ -90,14 +93,22 @@ describe('Tab Dragging Use Case', () => {
         // Simulate drag and drop: Drag Tab A to the end of the list
         await page.mouse.move(tabABox.x + tabABox.width / 2, tabABox.y + tabABox.height / 2);
         await page.mouse.down();
-        await new Promise(r => setTimeout(r, 200)); // Small delay to simulate user drag start
-        // Move to just below the last tab
+        // Move to just below the last tab (use steps for smoother drag)
         await page.mouse.move(targetTabBox.x + targetTabBox.width / 2, targetTabBox.y + targetTabBox.height + 5, { steps: 10 });
-        await new Promise(r => setTimeout(r, 500)); // Simulate drag duration
         await page.mouse.up();
 
-        // Wait for the UI to update after drag and drop
-        await new Promise(r => setTimeout(r, 1000));
+        // Wait for the UI to update after drag and drop using condition-based wait
+        // Wait for Tab A to be at the expected final position
+        await page.waitForFunction(
+            (expectedTabId, expectedIndex) => {
+                const items = document.querySelectorAll('.tab-item');
+                const ids = Array.from(items).map(e => e.dataset.tabId);
+                return ids.indexOf(expectedTabId) === expectedIndex;
+            },
+            { timeout: 5000 },
+            tabAId,
+            initialTabElements.length - 1
+        );
 
         // Expected Outcome & Verification: Tab A's position updated in sidebar list
         const finalTabElements = await page.$$('.tab-item');

@@ -2,7 +2,7 @@ import * as ui from './uiManager.js';
 import * as state from './stateManager.js';
 import * as api from './apiManager.js';
 import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from './ui/tabRenderer.js';
-import { getOtherTabCache, getOtherTabElementsCache } from './ui/otherWindowRenderer.js';
+import { getOtherTabCache, getOtherTabElementsCache, getOtherGroupHeaderElementsCache, getOtherWindowFolderElementsCache } from './ui/otherWindowRenderer.js';
 import { highlightText, escapeRegExp } from './utils/textUtils.js';
 import { debounce } from './utils/functionUtils.js';
 
@@ -212,31 +212,21 @@ function filterOtherWindowsTabs(keywords) {
         }
     }
 
-    // 2. 更新分頁群組 Header（平面 DOM 查詢）
-    const groupHeaders = list.querySelectorAll('.tab-group-header');
-    groupHeaders.forEach(header => {
+    // 2. 更新分頁群組 Header（使用 Cache 避免 DOM 查詢）
+    const groupHeaders = getOtherGroupHeaderElementsCache();
+    for (const [groupId, header] of groupHeaders) {
         const content = header.nextElementSibling;
-        if (!content || !content.classList.contains('tab-group-content')) return;
-
-        const groupIdStr = header.dataset.groupId;
-        if (!groupIdStr) return;
-        const groupId = parseInt(groupIdStr, 10);
-        if (isNaN(groupId)) return;
+        if (!content || !content.classList.contains('tab-group-content')) continue;
 
         const visibleTabsCount = visibleGroupCounts.get(groupId) || 0;
         updateGroupVisibility(header, content, visibleTabsCount, keywords);
-    });
+    }
 
-    // 3. 更新視窗資料夾（平面 DOM 查詢）
-    const folders = list.querySelectorAll('.window-folder');
-    folders.forEach(folder => {
+    // 3. 更新視窗資料夾（使用 Cache 避免 DOM 查詢）
+    const windowFolders = getOtherWindowFolderElementsCache();
+    for (const [windowId, folder] of windowFolders) {
         const content = folder.nextElementSibling;
-        if (!content || !content.classList.contains('folder-content')) return;
-
-        const windowIdStr = folder.dataset.windowId;
-        if (!windowIdStr) return;
-        const windowId = parseInt(windowIdStr, 10);
-        if (isNaN(windowId)) return;
+        if (!content || !content.classList.contains('folder-content')) continue;
 
         const windowCount = visibleWindowCounts.get(windowId) || 0;
 
@@ -257,7 +247,7 @@ function filterOtherWindowsTabs(keywords) {
             if (icon) icon.textContent = '▶';
             folder.setAttribute('aria-expanded', 'false');
         }
-    });
+    }
 
     return totalVisibleTabs;
 }
@@ -339,14 +329,6 @@ async function filterBookmarks(keywords, regexes = []) {
     ui.renderBookmarks(filteredTree, ui.bookmarkListContainer, '1', () => {
         document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
     }, { forceExpandAll: true, highlightRegexes: regexes });
-
-    // 確保所有資料夾視覺上是展開狀態
-    const allFolderContents = ui.bookmarkListContainer.querySelectorAll('.folder-content');
-    allFolderContents.forEach(content => {
-        content.style.display = 'block';
-        const folderIcon = content.previousElementSibling?.querySelector('.bookmark-icon');
-        if (folderIcon) folderIcon.textContent = '▼';
-    });
 
     // 設定 URL 匹配的 dataset 以供 renderBookmarks (如果將來需要) 或其他邏輯使用
     // 注意：因為現在高亮是在渲染時直接做的，這裡可能不需要再設定 dataset.urlMatch 給高亮函數用了，

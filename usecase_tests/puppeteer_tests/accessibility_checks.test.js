@@ -56,8 +56,9 @@ describe('Accessibility Checks', () => {
             });
         });
 
-        // Give it a moment to update
-        await new Promise(r => setTimeout(r, 1000));
+        // Reload page to sync UI with Chrome API
+        await page.reload();
+        await page.waitForSelector('#bookmark-list');
 
         // Expand bookmarks bar to render bookmarks
         try {

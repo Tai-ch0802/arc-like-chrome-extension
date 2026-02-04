@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser, expandBookmarksBar } = require('./setup');
+const { setupBrowser, teardownBrowser, expandBookmarksBar, waitForTextContent } = require('./setup');
 
 describe('Bookmark Folder Toggle Use Case', () => {
     let browser;
@@ -63,7 +63,9 @@ describe('Bookmark Folder Toggle Use Case', () => {
 
             // Click on the folder to expand it
             await page.click(folderSelector);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for folder icon to change to expanded state (▼)
+            await waitForTextContent(page, `${folderSelector} .bookmark-icon`, '▼');
 
             // Verify folder is now expanded (icon shows ▼)
             const isExpanded = await page.$eval(folderSelector, el => {
@@ -126,7 +128,9 @@ describe('Bookmark Folder Toggle Use Case', () => {
 
             // First expand the folder
             await page.click(folderSelector);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for folder icon to change to expanded state (▼)
+            await waitForTextContent(page, `${folderSelector} .bookmark-icon`, '▼');
 
             // Verify it's expanded
             const isExpanded = await page.$eval(folderSelector, el => {
@@ -137,7 +141,9 @@ describe('Bookmark Folder Toggle Use Case', () => {
 
             // Now click to collapse
             await page.click(folderSelector);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for folder icon to change to collapsed state (▶)
+            await waitForTextContent(page, `${folderSelector} .bookmark-icon`, '▶');
 
             // Verify it's collapsed
             const isCollapsed = await page.$eval(folderSelector, el => {

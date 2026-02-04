@@ -3,16 +3,17 @@
  * Handles creation and management of custom context menus for tabs.
  */
 import * as api from '../apiManager.js';
-import { COPY_ICON_SVG } from '../icons.js';
+import { COPY_ICON_SVG, READING_LIST_ICON_SVG } from '../icons.js';
+import { addToReadingList, isUrlInReadingList } from '../readingListManager.js';
 
 /**
  * Shows a custom context menu for a tab element.
  * @param {number} x - X coordinate for menu position
  * @param {number} y - Y coordinate for menu position
- * @param {Object} tab - Tab object containing at least { id, url }
+ * @param {Object} tab - Tab object containing at least { id, url, title }
  * @param {HTMLElement} originElement - The element that triggered the context menu (for focus restoration)
  */
-export function showContextMenu(x, y, tab, originElement) {
+export async function showContextMenu(x, y, tab, originElement) {
     // Remove existing context menus
     const existingMenu = document.querySelector('.custom-context-menu');
     if (existingMenu) {
@@ -32,7 +33,7 @@ export function showContextMenu(x, y, tab, originElement) {
     menu.style.left = `${x}px`;
     menu.style.top = `${y}px`;
 
-    // Copy URL Option
+    // --- Copy URL Option ---
     const copyOption = document.createElement('div');
     copyOption.className = 'context-menu-item';
     copyOption.setAttribute('role', 'menuitem');
@@ -51,11 +52,11 @@ export function showContextMenu(x, y, tab, originElement) {
             copyOption.style.color = 'var(--accent-color)';
 
             setTimeout(() => {
-                menu.remove();
+                closeMenu();
             }, 800);
         } catch (err) {
             console.error('Failed to copy: ', err);
-            menu.remove();
+            closeMenu();
         }
     };
 
@@ -77,6 +78,72 @@ export function showContextMenu(x, y, tab, originElement) {
     });
 
     menu.appendChild(copyOption);
+
+    // --- Add to Reading List Option ---
+    const readingListOption = document.createElement('div');
+    readingListOption.className = 'context-menu-item';
+    readingListOption.setAttribute('role', 'menuitem');
+    readingListOption.tabIndex = 0;
+
+    // Check if Reading List API is available and URL is valid (not chrome:// pages)
+    const isValidUrl = tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('chrome-extension://');
+    const isReadingListAvailable = typeof chrome.readingList !== 'undefined';
+
+    if (isReadingListAvailable && isValidUrl) {
+        // Check if URL already exists in reading list
+        const alreadyExists = await isUrlInReadingList(tab.url);
+
+        if (alreadyExists) {
+            readingListOption.classList.add('disabled');
+            readingListOption.setAttribute('aria-disabled', 'true');
+            readingListOption.innerHTML = `
+                ${READING_LIST_ICON_SVG}
+                <span>${api.getMessage('alreadyInReadingList')}</span>
+            `;
+        } else {
+            readingListOption.innerHTML = `
+                ${READING_LIST_ICON_SVG}
+                <span>${api.getMessage('addToReadingList')}</span>
+            `;
+
+            const triggerAddToReadingList = async () => {
+                try {
+                    await addToReadingList(tab.url, tab.title || tab.url);
+
+                    // Show feedback with fade-in animation
+                    readingListOption.classList.add('success');
+                    readingListOption.querySelector('span').textContent = api.getMessage('alreadyInReadingList');
+
+                    setTimeout(() => {
+                        closeMenu();
+                    }, 1000);
+                } catch (err) {
+                    console.error('Failed to add to reading list: ', err);
+                    closeMenu();
+                }
+            };
+
+            readingListOption.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                await triggerAddToReadingList();
+            });
+
+            readingListOption.addEventListener('keydown', async (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    await triggerAddToReadingList();
+                } else if (e.key === 'Escape' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeMenu();
+                }
+            });
+        }
+
+        menu.appendChild(readingListOption);
+    }
+
     document.body.appendChild(menu);
 
     // Focus the first item
@@ -109,7 +176,7 @@ export function showContextMenu(x, y, tab, originElement) {
 /**
  * Binds a context menu to an element.
  * @param {HTMLElement} element - The element to bind the context menu to
- * @param {Object} tab - Tab object containing at least { id, url }
+ * @param {Object} tab - Tab object containing at least { id, url, title }
  */
 export function bindContextMenu(element, tab) {
     element.addEventListener('contextmenu', (e) => {

@@ -14,6 +14,18 @@ let otherTabsCache = new Map();
 /** @type {Map<number, HTMLElement>} Cache of tab DOM elements for other windows */
 let otherTabElementsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of group header DOM elements for other windows */
+let otherGroupHeaderElementsCache = new Map();
+
+/** @type {Map<number, HTMLElement>} Cache of group content DOM elements for other windows */
+let otherGroupContentElementsCache = new Map();
+
+/** @type {Map<number, HTMLElement>} Cache of window folder DOM elements */
+let otherWindowFolderElementsCache = new Map();
+
+/** @type {Map<number, HTMLElement>} Cache of window content DOM elements */
+let otherWindowContentElementsCache = new Map();
+
 /**
  * Returns the current cache of tab objects for other windows.
  * @returns {Map<number, chrome.tabs.Tab>}
@@ -31,6 +43,22 @@ export function getOtherTabElementsCache() {
 }
 
 /**
+ * Returns the current cache of group header DOM elements for other windows.
+ * @returns {Map<number, HTMLElement>}
+ */
+export function getOtherGroupHeaderElementsCache() {
+    return otherGroupHeaderElementsCache;
+}
+
+/**
+ * Returns the current cache of window folder DOM elements.
+ * @returns {Map<number, HTMLElement>}
+ */
+export function getOtherWindowFolderElementsCache() {
+    return otherWindowFolderElementsCache;
+}
+
+/**
  * Resets the other window caches.
  * Useful for testing, hot-reload, or when the container element is replaced.
  * @returns {void}
@@ -38,6 +66,10 @@ export function getOtherTabElementsCache() {
 export function resetOtherWindowCaches() {
     otherTabsCache = new Map();
     otherTabElementsCache = new Map();
+    otherGroupHeaderElementsCache = new Map();
+    otherGroupContentElementsCache = new Map();
+    otherWindowFolderElementsCache = new Map();
+    otherWindowContentElementsCache = new Map();
 }
 
 /**
@@ -140,6 +172,11 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
     // Reset and rebuild cache
     otherTabsCache.clear();
     otherTabElementsCache.clear();
+    otherGroupHeaderElementsCache.clear();
+    otherGroupContentElementsCache.clear();
+    otherWindowFolderElementsCache.clear();
+    otherWindowContentElementsCache.clear();
+
     windowsToShow.forEach(window => {
         window.tabs.forEach(tab => {
             otherTabsCache.set(tab.id, tab);
@@ -205,9 +242,12 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         folderItem.appendChild(title);
         folderItem.appendChild(editBtn);
 
+        otherWindowFolderElementsCache.set(window.id, folderItem);
+
         const folderContent = document.createElement('div');
         folderContent.className = 'folder-content';
         folderContent.style.display = 'none';
+        otherWindowContentElementsCache.set(window.id, folderContent);
 
         // Get groups for this window
         const windowGroups = groupsByWindow.get(window.id) || [];
@@ -268,10 +308,12 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                 groupHeader.appendChild(colorDot);
                 groupHeader.appendChild(groupTitle);
                 folderContent.appendChild(groupHeader);
+                otherGroupHeaderElementsCache.set(group.id, groupHeader);
 
                 const groupContent = document.createElement('div');
                 groupContent.className = 'tab-group-content';
                 groupContent.style.display = group.collapsed ? 'none' : 'block';
+                otherGroupContentElementsCache.set(group.id, groupContent);
 
                 // Optimization: Use pre-grouped tabs
                 const tabsInThisGroup = tabsByGroup.get(group.id) || [];

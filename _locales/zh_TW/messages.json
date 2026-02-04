@@ -451,5 +451,135 @@
     "alignBottom": {
         "message": "靠下對齊",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "閱讀清單",
+        "description": "閱讀清單區塊的標題。"
+    },
+    "readingListGroupName": {
+        "message": "來自 閱讀清單",
+        "description": "開啟閱讀清單項目時建立的分頁群組名稱。"
+    },
+    "addToReadingList": {
+        "message": "加入到閱讀清單",
+        "description": "將分頁加入閱讀清單的右鍵選單選項。"
+    },
+    "alreadyInReadingList": {
+        "message": "已在閱讀清單中",
+        "description": "當網址已在閱讀清單中時顯示的提示。"
+    },
+    "markAsRead": {
+        "message": "標記為已讀",
+        "description": "將閱讀清單項目標記為已讀的按鈕。"
+    },
+    "markAsUnread": {
+        "message": "標記為未讀",
+        "description": "將閱讀清單項目標記為未讀的按鈕。"
+    },
+    "deleteReadingListItem": {
+        "message": "從閱讀清單移除",
+        "description": "從閱讀清單移除項目的按鈕。"
+    },
+    "viewedDaysAgo": {
+        "message": "$COUNT$ 天前閱讀",
+        "description": "顯示項目閱讀天數的標籤。",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "閱讀清單",
+        "description": "設定中閱讀清單區塊的標題。"
+    },
+    "showReadingListLabel": {
+        "message": "顯示閱讀清單",
+        "description": "顯示/隱藏閱讀清單開關的標籤。"
+    },
+    "rssSubscriptionHeader": {
+        "message": "RSS 訂閱",
+        "description": "設定中 RSS 訂閱區塊的標題。"
+    },
+    "addRssSubscription": {
+        "message": "新增訂閱",
+        "description": "新增 RSS 訂閱的按鈕。"
+    },
+    "rssIntervalLabel": {
+        "message": "更新間隔",
+        "description": "RSS 更新間隔選擇器的標籤。"
+    },
+    "rssPauseButton": {
+        "message": "暫停",
+        "description": "暫停 RSS 訂閱的按鈕。"
+    },
+    "rssResumeButton": {
+        "message": "恢復",
+        "description": "恢復暫停的 RSS 訂閱的按鈕。"
+    },
+    "rssDeleteButton": {
+        "message": "刪除",
+        "description": "刪除 RSS 訂閱的按鈕。"
+    },
+    "rssNoSubscriptions": {
+        "message": "尚無 RSS 訂閱。",
+        "description": "沒有任何 RSS 訂閱時顯示的訊息。"
+    },
+    "rssErrorTimeout": {
+        "message": "請求逾時，請檢查網址。",
+        "description": "RSS 抓取逾時時的錯誤訊息。"
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "您已訂閱此 Feed。",
+        "description": "嘗試新增重複訂閱時的錯誤訊息。"
+    },
+    "rssErrorFetchFailed": {
+        "message": "無法抓取 Feed，請檢查網址。",
+        "description": "RSS 抓取失敗時的錯誤訊息。"
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "確定要從閱讀清單中刪除這個項目嗎？",
+        "description": "刪除閱讀清單項目時的確認對話框標題。"
+    },
+    "deleteButton": {
+        "message": "刪除",
+        "description": "刪除按鈕文字。"
+    },
+    "readingListEmptyGuidance": {
+        "message": "右鍵點擊任何連結可將其加入此處",
+        "description": "閱讀清單為空時顯示的引導文字。"
+    },
+    "newItemBadge": {
+        "message": "新",
+        "description": "新加入閱讀清單項目上的標籤。"
+    },
+    "sortByDateNewest": {
+        "message": "最新優先",
+        "description": "閱讀清單排序選項 - 最新項目優先。"
+    },
+    "sortByDateOldest": {
+        "message": "最舊優先",
+        "description": "閱讀清單排序選項 - 最舊項目優先。"
+    },
+    "sortByTitle": {
+        "message": "依標題",
+        "description": "閱讀清單排序選項 - 依標題字母排序。"
+    },
+    "clearAllRead": {
+        "message": "清除所有已讀",
+        "description": "清除所有已讀項目的按鈕。"
+    },
+    "confirmClearAllRead": {
+        "message": "確定要移除所有已讀項目嗎？",
+        "description": "清除所有已讀項目的確認對話框。"
+    },
+    "rssFetchNowButton": {
+        "message": "立即抓取",
+        "description": "手動觸發 RSS 抓取的按鈕。"
+    },
+    "rssFetching": {
+        "message": "抓取中...",
+        "description": "RSS 抓取時的載入狀態文字。"
     }
 }

@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForTabCount, waitForClass } = require('./setup');
 
 describe('Tab Switch Use Case', () => {
     let browser;
@@ -22,6 +22,10 @@ describe('Tab Switch Use Case', () => {
         await page.goto(sidePanelUrl);
         await page.waitForSelector('#tab-list');
 
+        // Get initial tab count
+        const initialTabItems = await page.$$('.tab-item');
+        const initialCount = initialTabItems.length;
+
         // Create test tabs
         const createdTabIds = [];
         for (let i = 0; i < 2; i++) {
@@ -37,10 +41,11 @@ describe('Tab Switch Use Case', () => {
         }
 
         try {
-            // Wait and reload to see new tabs
-            await new Promise(r => setTimeout(r, 300));
+            // Wait for new tabs to appear in DOM, then reload
             await page.reload();
             await page.waitForSelector('.tab-item');
+            // Wait for expected tab count
+            await waitForTabCount(page, initialCount + 2);
 
             // Get all tab items
             const tabItems = await page.$$('.tab-item');
@@ -63,8 +68,9 @@ describe('Tab Switch Use Case', () => {
             // Click on the non-active tab
             await targetTabHandle.click();
 
-            // Wait for the UI to update
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for the tab to become active in the UI
+            const targetSelector = `.tab-item[data-tab-id="${targetTabId}"]`;
+            await waitForClass(page, targetSelector, 'active');
 
             // Verify the tab is now active in Chrome
             const activeTab = await page.evaluate(() => {
@@ -97,6 +103,10 @@ describe('Tab Switch Use Case', () => {
         await page.goto(sidePanelUrl);
         await page.waitForSelector('#tab-list');
 
+        // Get initial tab count
+        const initialTabItems = await page.$$('.tab-item');
+        const initialCount = initialTabItems.length;
+
         // Create test tabs
         const createdTabIds = [];
         for (let i = 0; i < 2; i++) {
@@ -113,9 +123,9 @@ describe('Tab Switch Use Case', () => {
 
         try {
             // Wait and reload
-            await new Promise(r => setTimeout(r, 300));
             await page.reload();
             await page.waitForSelector('.tab-item');
+            await waitForTabCount(page, initialCount + 2);
 
             // Get a non-active tab
             const tabItems = await page.$$('.tab-item');
@@ -138,11 +148,14 @@ describe('Tab Switch Use Case', () => {
 
             // Click to switch
             await targetTabHandle.click();
-            await new Promise(r => setTimeout(r, 500));
+
+            // Wait for the target tab to have 'active' class
+            const targetSelector = `.tab-item[data-tab-id="${targetTabId}"]`;
+            await waitForClass(page, targetSelector, 'active');
 
             // Verify the clicked tab now has 'active' class
             const hasActiveClass = await page.$eval(
-                `.tab-item[data-tab-id="${targetTabId}"]`,
+                targetSelector,
                 el => el.classList.contains('active')
             );
             expect(hasActiveClass).toBe(true);

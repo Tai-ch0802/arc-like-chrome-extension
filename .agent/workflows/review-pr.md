@@ -30,6 +30,10 @@ gh pr diff <PR_NUMBER>
     -   **Side Effects**: 是否存在潛在的副作用？
     -   **風格 (Style)**: 是否符合專案規範？
     -   **效能 (Performance)**: 是否存在明顯的效率低落？
+    -   **CI 穩定性 (CI Stability)**: 測試是否有 race condition 風險？
+        -   ⚠️ 避免使用 `setTimeout` 進行固定時間等待
+        -   ✅ 優先使用 `page.waitForFunction()` 條件式等待
+        -   ✅ 等待 DOM 元素出現或狀態改變，而非假設延遲時間
 
 ## 3. Generate Review Comment
 

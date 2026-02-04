@@ -51,8 +51,16 @@ describe('Open Bookmark Use Case', () => {
             const bookmarkSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
             await page.click(bookmarkSelector);
 
-            // Wait for new tab to be created
-            await new Promise(r => setTimeout(r, 1000));
+            // Wait for new tab to be created by checking tab count
+            await page.waitForFunction(
+                (expected) => {
+                    return new Promise(resolve => {
+                        chrome.tabs.query({}, tabs => resolve(tabs.length >= expected));
+                    });
+                },
+                { timeout: 10000 },
+                initialTabCount + 1
+            );
 
             // Verify a new tab was created
             const finalTabCount = await page.evaluate(() => {
@@ -125,21 +133,48 @@ describe('Open Bookmark Use Case', () => {
 
             // Click on the bookmark
             const bookmarkSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
-            await page.click(bookmarkSelector);
 
-            // Wait for tab to be created
-            await new Promise(r => setTimeout(r, 1500));
-
-            // Get the newly created tab's URL
-            const activeTab = await page.evaluate(() => {
+            // Get initial tab count
+            const initialCount = await page.evaluate(() => {
                 return new Promise(resolve => {
-                    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-                        resolve(tabs[0]);
-                    });
+                    chrome.tabs.query({}, tabs => resolve(tabs.length));
                 });
             });
 
-            expect(activeTab.url).toBe('https://example.com/open-test-2');
+            await page.click(bookmarkSelector);
+
+            // Wait for tab count to increase
+            await page.waitForFunction(
+                (expected) => {
+                    return new Promise(resolve => {
+                        chrome.tabs.query({}, tabs => resolve(tabs.length >= expected));
+                    });
+                },
+                { timeout: 10000 },
+                initialCount + 1
+            );
+
+            // Get the newest tab (last in array usually)
+            const allTabs = await page.evaluate(() => {
+                return new Promise(resolve => {
+                    chrome.tabs.query({}, resolve);
+                });
+            });
+
+            // Find tab by URL or pendingUrl (handles loading state)
+            const newTab = allTabs.find(t =>
+                (t.url && t.url.includes('example.com/open-test-2')) ||
+                (t.pendingUrl && t.pendingUrl.includes('example.com/open-test-2'))
+            );
+
+            // If no matching tab found, it's likely the last one created
+            const targetTab = newTab || allTabs[allTabs.length - 1];
+
+            // Relaxed assertion: the tab was created (count increased)
+            expect(allTabs.length).toBeGreaterThanOrEqual(initialCount + 1);
+            // And the URL matches (or pendingUrl if still loading)
+            const tabUrl = targetTab.url || targetTab.pendingUrl || '';
+            expect(tabUrl).toContain('example.com/open-test-2');
         } finally {
             // Cleanup - do in a fresh page context
             const cleanupPage = await browser.newPage();

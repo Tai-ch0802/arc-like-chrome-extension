@@ -344,6 +344,279 @@ function initBookmarkListeners(container) {
     }, { signal });
 }
 
+// --- DOM Recycling Cache & Helpers ---
+
+/** @type {Map<string, {item: HTMLElement, content: HTMLElement|null}>} Cache for bookmark DOM elements */
+let bookmarkElementsCache = new Map();
+
+export function resetBookmarkCache() {
+    bookmarkElementsCache = new Map();
+}
+
+function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
+    // Update basic attributes
+    if (item.dataset.bookmarkId !== node.id) item.dataset.bookmarkId = node.id;
+
+    let urlPreview = node.url;
+    if (urlPreview && urlPreview.length > 300) {
+        urlPreview = urlPreview.substring(0, 300) + '...';
+    }
+    const newTitleTooltip = `${node.title}\n${urlPreview}`;
+    if (item.title !== newTitleTooltip) item.title = newTitleTooltip;
+
+    // Update Icon
+    const icon = item.querySelector('.bookmark-icon');
+    if (icon) {
+        let newSrc = 'icons/fallback-favicon.svg';
+        if (node.url && (node.url.startsWith('http') || node.url.startsWith('https'))) {
+             try {
+                const domain = new URL(node.url).hostname;
+                newSrc = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
+            } catch (error) {}
+        }
+        if (icon.src !== newSrc && !icon.src.endsWith(newSrc)) {
+             icon.src = newSrc;
+        }
+    }
+
+    // Update Title and Highlighting
+    const titleSpan = item.querySelector('.bookmark-title');
+    const titleWrapper = item.querySelector('.bookmark-content-wrapper');
+
+    if (titleSpan) {
+        if (highlightRegexes.length > 0) {
+            const titleHtml = highlightText(node.title, highlightRegexes, 'title');
+             // Only update if changed
+            if (titleSpan.innerHTML !== titleHtml) {
+                titleSpan.innerHTML = titleHtml;
+                titleSpan.dataset.originalText = node.title;
+            }
+        } else {
+            if (titleSpan.dataset.originalText || titleSpan.textContent !== node.title) {
+                titleSpan.textContent = node.title;
+                delete titleSpan.dataset.originalText;
+            }
+        }
+    }
+
+    // Domain Match Display Logic
+    // Remove existing domain match
+    const existingDomain = item.querySelector('.matched-domain');
+    if (existingDomain) existingDomain.remove();
+    delete item.dataset.urlMatch;
+    delete item.dataset.matchedDomain;
+
+    if (highlightRegexes.length > 0 && titleWrapper) {
+         const titleMatched = titleSpan && titleSpan.innerHTML.includes('<mark');
+         try {
+            const domain = new URL(node.url).hostname;
+            const domainHtml = highlightText(domain, highlightRegexes, 'url');
+            const domainMatched = domainHtml.includes('<mark');
+
+            if (domainMatched && !titleMatched) {
+                const domainElement = document.createElement('div');
+                domainElement.className = 'matched-domain';
+                domainElement.innerHTML = domainHtml + '...';
+                titleWrapper.appendChild(domainElement);
+                item.dataset.urlMatch = 'true';
+                item.dataset.matchedDomain = domain;
+            }
+        } catch (e) {}
+    }
+
+    // Linked Tabs Icon
+    const linkedTabIds = state.getLinkedTabsByBookmarkId(node.id);
+    const linkedIcon = item.querySelector('.linked-tab-icon');
+    if (linkedTabIds.length > 0) {
+        if (!linkedIcon) {
+             const newLinkedIcon = document.createElement('span');
+             newLinkedIcon.className = 'linked-tab-icon';
+             newLinkedIcon.style.marginRight = '8px';
+             newLinkedIcon.innerHTML = LINKED_TAB_ICON_SVG;
+             // Insert before titleWrapper
+             item.insertBefore(newLinkedIcon, titleWrapper);
+             updateLinkedIconTooltip(newLinkedIcon, linkedTabIds.length);
+             newLinkedIcon.setAttribute('role', 'button');
+             newLinkedIcon.setAttribute('tabindex', '0');
+        } else {
+             updateLinkedIconTooltip(linkedIcon, linkedTabIds.length);
+        }
+    } else if (linkedIcon) {
+        linkedIcon.remove();
+    }
+}
+
+function updateLinkedIconTooltip(icon, count) {
+     const label = api.getMessage('linkedTabsIcon') + ' - ' + api.getMessage('linkedTabsTooltip', count.toString());
+     if (icon.getAttribute('aria-label') !== label) {
+         icon.setAttribute('aria-label', label);
+         icon.title = api.getMessage('linkedTabsTooltip', count.toString());
+     }
+}
+
+function createBookmarkItem(node, options) {
+    const item = document.createElement('div');
+    item.className = 'bookmark-item';
+    item.tabIndex = 0;
+    item.setAttribute('role', 'button');
+
+    const icon = document.createElement('img');
+    icon.className = 'bookmark-icon';
+    icon.alt = "";
+    item.appendChild(icon); // Src set in update
+
+    const title = document.createElement('span');
+    title.className = 'bookmark-title';
+
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'bookmark-content-wrapper';
+    titleWrapper.appendChild(title);
+    item.appendChild(titleWrapper);
+
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'bookmark-actions';
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'bookmark-edit-btn';
+    editBtn.innerHTML = EDIT_ICON_SVG;
+    editBtn.tabIndex = -1;
+    editBtn.setAttribute('aria-label', api.getMessage('editBookmark'));
+    editBtn.title = api.getMessage('editBookmark');
+    editBtn.dataset.action = 'edit-bookmark';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'bookmark-close-btn';
+    closeBtn.textContent = '×';
+    closeBtn.tabIndex = -1;
+    closeBtn.setAttribute('aria-label', api.getMessage('deleteBookmark'));
+    closeBtn.title = api.getMessage('deleteBookmark');
+    closeBtn.dataset.action = 'delete-bookmark';
+
+    actionsContainer.appendChild(editBtn);
+    actionsContainer.appendChild(closeBtn);
+    item.appendChild(actionsContainer);
+
+    updateBookmarkElement(item, node, options);
+    return item;
+}
+
+function getOrCreateBookmarkElement(node, options) {
+    const cacheKey = `bookmark_${node.id}`;
+    const cached = bookmarkElementsCache.get(cacheKey);
+    if (cached && cached.item) {
+        updateBookmarkElement(cached.item, node, options);
+        return cached.item;
+    }
+    const item = createBookmarkItem(node, options);
+    bookmarkElementsCache.set(cacheKey, { item, content: null });
+    return item;
+}
+
+function updateFolderElement(item, node, { forceExpandAll = false, highlightRegexes = [] } = {}) {
+    if (item.dataset.bookmarkId !== node.id) item.dataset.bookmarkId = node.id;
+    if (item.title !== node.title) item.title = node.title;
+
+    const isExpanded = forceExpandAll || state.isFolderExpanded(node.id);
+    if (item.getAttribute('aria-expanded') !== isExpanded.toString()) {
+        item.setAttribute('aria-expanded', isExpanded.toString());
+        const icon = item.querySelector('.bookmark-icon');
+        if (icon) icon.textContent = isExpanded ? '▼' : '▶';
+    }
+
+    const titleSpan = item.querySelector('.bookmark-title');
+    if (titleSpan) {
+        if (highlightRegexes.length > 0) {
+            const titleHtml = highlightText(node.title, highlightRegexes, 'title');
+            if (titleSpan.innerHTML !== titleHtml) {
+                titleSpan.innerHTML = titleHtml;
+                titleSpan.dataset.originalText = node.title;
+            }
+        } else {
+             if (titleSpan.dataset.originalText || titleSpan.textContent !== node.title) {
+                titleSpan.textContent = node.title;
+                delete titleSpan.dataset.originalText;
+            }
+        }
+    }
+}
+
+function createFolderItem(node, options) {
+    const folderItem = document.createElement('div');
+    folderItem.className = 'bookmark-folder';
+    folderItem.tabIndex = 0;
+    folderItem.setAttribute('role', 'button');
+
+    const icon = document.createElement('span');
+    icon.className = 'bookmark-icon';
+    // Text content set in update
+    folderItem.appendChild(icon);
+
+    const title = document.createElement('span');
+    title.className = 'bookmark-title';
+    folderItem.appendChild(title);
+
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'bookmark-actions';
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'bookmark-edit-btn';
+    editBtn.innerHTML = EDIT_ICON_SVG;
+    editBtn.tabIndex = -1;
+    editBtn.setAttribute('aria-label', api.getMessage('editFolder'));
+    editBtn.title = api.getMessage('editFolder');
+    editBtn.dataset.action = 'edit-folder';
+
+    const addFolderBtn = document.createElement('button');
+    addFolderBtn.className = 'add-folder-btn';
+    addFolderBtn.textContent = '+';
+    addFolderBtn.tabIndex = -1;
+    addFolderBtn.setAttribute('aria-label', api.getMessage('addFolder'));
+    addFolderBtn.title = api.getMessage('addFolder');
+    addFolderBtn.dataset.action = 'add-folder';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'bookmark-close-btn';
+    closeBtn.textContent = '×';
+    closeBtn.tabIndex = -1;
+    closeBtn.setAttribute('aria-label', api.getMessage('deleteFolder'));
+    closeBtn.title = api.getMessage('deleteFolder');
+    closeBtn.dataset.action = 'delete-folder';
+
+    actionsContainer.appendChild(editBtn);
+    actionsContainer.appendChild(addFolderBtn);
+    actionsContainer.appendChild(closeBtn);
+    folderItem.appendChild(actionsContainer);
+
+    updateFolderElement(folderItem, node, options);
+    return folderItem;
+}
+
+function getOrCreateFolderElement(node, options) {
+    const cacheKey = `folder_${node.id}`;
+    let cached = bookmarkElementsCache.get(cacheKey);
+
+    let item, content;
+
+    if (cached && cached.item) {
+        updateFolderElement(cached.item, node, options);
+        item = cached.item;
+        content = cached.content;
+    } else {
+        item = createFolderItem(node, options);
+    }
+
+    if (!content) {
+         content = document.createElement('div');
+         content.className = 'folder-content';
+    }
+
+    const isExpanded = options.forceExpandAll || state.isFolderExpanded(node.id);
+    content.style.display = isExpanded ? 'block' : 'none';
+    content.dataset.parentId = node.id;
+
+    bookmarkElementsCache.set(cacheKey, { item, content });
+    return { item, content };
+}
 
 export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookmarksCallback, options = {}) {
     if (!listenersInitialized && container.id === 'bookmark-list') {
@@ -384,191 +657,19 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
 
     bookmarkNodes.forEach(node => {
         if (node.url) { // It's a bookmark
-            const linkedTabIds = state.getLinkedTabsByBookmarkId(node.id);
-
-            const bookmarkItem = document.createElement('div');
-            bookmarkItem.className = 'bookmark-item';
-            bookmarkItem.tabIndex = 0;
-            bookmarkItem.setAttribute('role', 'button');
-            bookmarkItem.dataset.bookmarkId = node.id;
-
-            let urlPreview = node.url;
-            if (urlPreview && urlPreview.length > 300) {
-                urlPreview = urlPreview.substring(0, 300) + '...';
-            }
-            bookmarkItem.title = `${node.title}\n${urlPreview}`;
-
-            const icon = document.createElement('img');
-            icon.className = 'bookmark-icon';
-            icon.alt = "";
-            if (node.url && (node.url.startsWith('http') || node.url.startsWith('https'))) {
-                try {
-                    const domain = new URL(node.url).hostname;
-                    icon.src = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
-                } catch (error) {
-                    icon.src = 'icons/fallback-favicon.svg';
-                }
-            } else {
-                icon.src = 'icons/fallback-favicon.svg';
-            }
-            icon.onerror = () => { icon.src = 'icons/fallback-favicon.svg'; };
-
-            const title = document.createElement('span');
-            title.className = 'bookmark-title';
-
-            // Highlighting Logic
-            if (highlightRegexes.length > 0) {
-                const titleHtml = highlightText(node.title, highlightRegexes, 'title');
-                title.innerHTML = titleHtml;
-                // Store original text for recovery if needed (though we rebuild on clear)
-                // Keeping it consistent with previous logic might be useful but likely unnecessary if we always rebuild
-                title.dataset.originalText = node.title;
-            } else {
-                title.textContent = node.title;
-            }
-
-            const titleWrapper = document.createElement('div');
-            titleWrapper.className = 'bookmark-content-wrapper';
-            titleWrapper.appendChild(title);
-
-            // Domain Match Display Logic
-            if (highlightRegexes.length > 0) {
-                // Check if title has highlight
-                const titleMatched = title.innerHTML.includes('<mark');
-
-                try {
-                    const domain = new URL(node.url).hostname;
-                    const domainHtml = highlightText(domain, highlightRegexes, 'url');
-                    const domainMatched = domainHtml.includes('<mark');
-
-                    if (domainMatched && !titleMatched) {
-                        const domainElement = document.createElement('div');
-                        domainElement.className = 'matched-domain';
-                        domainElement.innerHTML = domainHtml + '...';
-                        titleWrapper.appendChild(domainElement);
-
-                        // Set dataset for consistency, though visual is already added
-                        bookmarkItem.dataset.urlMatch = 'true';
-                        bookmarkItem.dataset.matchedDomain = domain;
-                    }
-                } catch (e) {
-                    // Ignore invalid URLs
-                }
-            }
-
-            bookmarkItem.appendChild(icon);
-
-            if (linkedTabIds.length > 0) {
-                const linkedIcon = document.createElement('span');
-                linkedIcon.className = 'linked-tab-icon';
-                linkedIcon.style.marginRight = '8px';
-                linkedIcon.innerHTML = LINKED_TAB_ICON_SVG;
-                const linkedTabsLabel = api.getMessage('linkedTabsIcon') + ' - ' + api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
-                linkedIcon.title = api.getMessage('linkedTabsTooltip', linkedTabIds.length.toString());
-                linkedIcon.setAttribute('aria-label', linkedTabsLabel);
-                linkedIcon.setAttribute('role', 'button');
-                linkedIcon.setAttribute('tabindex', '0');
-                bookmarkItem.appendChild(linkedIcon);
-            }
-
-            bookmarkItem.appendChild(titleWrapper);
-
-            const actionsContainer = document.createElement('div');
-            actionsContainer.className = 'bookmark-actions';
-
-            const editBtn = document.createElement('button');
-            editBtn.className = 'bookmark-edit-btn';
-            editBtn.innerHTML = EDIT_ICON_SVG;
-            editBtn.tabIndex = -1;
-            editBtn.setAttribute('aria-label', api.getMessage('editBookmark'));
-            editBtn.title = api.getMessage('editBookmark');
-            editBtn.dataset.action = 'edit-bookmark';
-
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'bookmark-close-btn';
-            closeBtn.textContent = '×';
-            closeBtn.tabIndex = -1;
-            closeBtn.setAttribute('aria-label', api.getMessage('deleteBookmark'));
-            closeBtn.title = api.getMessage('deleteBookmark');
-            closeBtn.dataset.action = 'delete-bookmark';
-
-            actionsContainer.appendChild(editBtn);
-            actionsContainer.appendChild(closeBtn);
-            bookmarkItem.appendChild(actionsContainer);
-
-            fragment.appendChild(bookmarkItem);
-
+            const item = getOrCreateBookmarkElement(node, currentOptions);
+            fragment.appendChild(item);
         } else if (node.children) { // It's a folder
-            const folderItem = document.createElement('div');
-            folderItem.className = 'bookmark-folder';
-            folderItem.tabIndex = 0;
-            folderItem.setAttribute('role', 'button');
-            const isExpanded = forceExpandAll || state.isFolderExpanded(node.id);
-            folderItem.setAttribute('aria-expanded', isExpanded.toString());
-            folderItem.dataset.bookmarkId = node.id;
-            folderItem.title = node.title;
+            const { item, content } = getOrCreateFolderElement(node, currentOptions);
 
-            const icon = document.createElement('span');
-            icon.className = 'bookmark-icon';
-            icon.textContent = isExpanded ? '▼' : '▶';
-
-            const title = document.createElement('span');
-            title.className = 'bookmark-title';
-
-            // Highlighting Logic for Folders
-            if (highlightRegexes.length > 0) {
-                title.innerHTML = highlightText(node.title, highlightRegexes, 'title');
-                title.dataset.originalText = node.title;
-            } else {
-                title.textContent = node.title;
-            }
-
-            const actionsContainer = document.createElement('div');
-            actionsContainer.className = 'bookmark-actions';
-
-            const editBtn = document.createElement('button');
-            editBtn.className = 'bookmark-edit-btn';
-            editBtn.innerHTML = EDIT_ICON_SVG;
-            editBtn.tabIndex = -1;
-            editBtn.setAttribute('aria-label', api.getMessage('editFolder'));
-            editBtn.title = api.getMessage('editFolder');
-            editBtn.dataset.action = 'edit-folder';
-
-            const addFolderBtn = document.createElement('button');
-            addFolderBtn.className = 'add-folder-btn';
-            addFolderBtn.textContent = '+';
-            addFolderBtn.tabIndex = -1;
-            addFolderBtn.setAttribute('aria-label', api.getMessage('addFolder'));
-            addFolderBtn.title = api.getMessage('addFolder');
-            addFolderBtn.dataset.action = 'add-folder';
-
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'bookmark-close-btn';
-            closeBtn.textContent = '×';
-            closeBtn.tabIndex = -1;
-            closeBtn.setAttribute('aria-label', api.getMessage('deleteFolder'));
-            closeBtn.title = api.getMessage('deleteFolder');
-            closeBtn.dataset.action = 'delete-folder';
-
-            actionsContainer.appendChild(editBtn);
-            actionsContainer.appendChild(addFolderBtn);
-            actionsContainer.appendChild(closeBtn);
-
-            folderItem.appendChild(icon);
-            folderItem.appendChild(title);
-            folderItem.appendChild(actionsContainer);
-
-            const folderContent = document.createElement('div');
-            folderContent.className = 'folder-content';
-            folderContent.dataset.parentId = node.id;
-            folderContent.style.display = isExpanded ? 'block' : 'none';
-
+            const isExpanded = currentOptions.forceExpandAll || state.isFolderExpanded(node.id);
             if (isExpanded && node.children) {
-                renderBookmarks(node.children, folderContent, node.id, refreshBookmarksCallback, currentOptions);
+                content.innerHTML = '';
+                renderBookmarks(node.children, content, node.id, refreshBookmarksCallback, currentOptions);
             }
 
-            fragment.appendChild(folderItem);
-            fragment.appendChild(folderContent);
+            fragment.appendChild(item);
+            fragment.appendChild(content);
         }
     });
 

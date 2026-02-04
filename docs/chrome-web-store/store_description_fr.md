@@ -32,9 +32,10 @@ Ne cherchez pas seulement — trouvez instantanément.
 ### 🗂️ Espace de Travail Unifié
 - **Onglets Verticaux** : Affichez les titres complets des pages, qui ne sont plus compressés en minuscules icônes.
 - **Support Natif des Groupes** : S'intègre parfaitement aux Groupes d'Onglets Chrome, synchronisant les couleurs et les noms.
-- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
+- **Nommage de fenêtre personnalisé** : Attribuez des noms personnalisés à vos fenêtres (ex. "Travail", "Personnel") pour un contexte plus clair.
 - **Glisser-Déposer** : Gestion intuitive — déplacez les éléments sans effort entre les onglets, les groupes et les dossiers de favoris.
 - **Glisser pour Sauvegarder** : Faites glisser un onglet dans la zone des favoris pour le sauvegarder instantanément ; faites glisser un favori dans la zone des onglets pour l'ouvrir.
+- **Liste de lecture et RSS** : Votre centre personnel de curation d'articles. Synchronisez-vous avec la liste de lecture native de Chrome, abonnez-vous à des flux RSS et gérez tout au même endroit grâce à la déduplication et au tri intelligents.
 
 ### 🎨 Design Premium & Personnalisation
 - **Image d'arrière-plan personnalisée** : Personnalisez votre espace de travail ! Téléchargez votre propre image ou utilisez une URL. Ajustez l'**opacité** et le **flou** pour un rendu parfait.

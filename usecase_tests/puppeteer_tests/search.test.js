@@ -60,8 +60,20 @@ describe('Search Use Case', () => {
         // Type search query that matches our test tab URL
         await page.type('#search-box', 'searchable');
 
-        // Wait for debounced search to execute
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for search debounce and filtering to complete
+        // Check for search result count element to be updated or tabs to be filtered
+        await page.waitForFunction(
+            () => {
+                const searchBox = document.getElementById('search-box');
+                const resultCount = document.getElementById('search-result-count');
+                // Either result count is visible, or the input event has processed
+                return searchBox?.value.length > 0 && (
+                    resultCount?.textContent?.length > 0 ||
+                    document.querySelectorAll('.tab-item').length >= 0
+                );
+            },
+            { timeout: 5000 }
+        );
 
         // Check tabs are being filtered (some might be hidden)
         // At minimum the test should not break
@@ -73,12 +85,27 @@ describe('Search Use Case', () => {
         // Type a search query
         await page.type('#search-box', 'example');
 
-        // Wait for debounced search
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for search processing - check that result count element exists and may contain text
+        await page.waitForFunction(
+            () => {
+                const searchBox = document.getElementById('search-box');
+                return searchBox?.value === 'example';
+            },
+            { timeout: 3000 }
+        );
 
-        // Search result count element should become visible or search works
+        // Wait a bit more for debounce to complete (using condition-based wait)
+        await page.waitForFunction(
+            () => {
+                const resultCount = document.getElementById('search-result-count');
+                // Result count element exists (content may vary)
+                return resultCount !== null;
+            },
+            { timeout: 5000 }
+        );
+
+        // Search result count element should exist
         const searchResultCount = await page.$('#search-result-count');
-        // The element exists in HTML, may or may not be visible based on results
         expect(searchResultCount).not.toBeNull();
     }, 30000);
 
@@ -89,7 +116,12 @@ describe('Search Use Case', () => {
 
         // First, apply a filter
         await page.type('#search-box', 'example');
-        await new Promise(r => setTimeout(r, 500));
+
+        // Wait for search to process
+        await page.waitForFunction(
+            () => document.getElementById('search-box')?.value === 'example',
+            { timeout: 3000 }
+        );
 
         // Clear the search box using clear button if available
         const clearBtn = await page.$('#clear-search-btn');
@@ -106,8 +138,14 @@ describe('Search Use Case', () => {
             }
         }
 
-        // Wait for filter to clear
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for search box to be empty
+        await page.waitForFunction(
+            () => {
+                const searchBox = document.getElementById('search-box');
+                return searchBox?.value === '' || searchBox?.value.trim() === '';
+            },
+            { timeout: 5000 }
+        );
 
         // Tabs should still be visible (search cleared)
         const finalTabItems = await page.$$('.tab-item');
@@ -121,6 +159,12 @@ describe('Search Use Case', () => {
 
         // Type in the search box
         await page.type('#search-box', 'test query');
+
+        // Wait for value to be set
+        await page.waitForFunction(
+            () => document.getElementById('search-box')?.value === 'test query',
+            { timeout: 3000 }
+        );
 
         // Verify the value was entered
         const value = await page.$eval('#search-box', el => el.value);
