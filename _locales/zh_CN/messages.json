@@ -451,5 +451,131 @@
     "alignBottom": {
         "message": "底部对齐",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "阅读清单",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "来自阅读清单",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "加入阅读清单",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "已在阅读清单中",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "标记为已读",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "标记为未读",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "从阅读清单移除",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "已阅读 $COUNT$ 天前",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "阅读清单",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "显示阅读清单",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "RSS 订阅",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "新增订阅",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "更新间隔",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "暂停",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "恢复",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "删除",
+        "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "尚无 RSS 订阅。",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "请求超时，请检查网址。",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "您已订阅此 Feed。",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "无法获取 Feed，请检查网址。",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "确定要从阅读清单中删除此项目吗？",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "右键点击任何链接可将其加入此处",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "新",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "最新优先",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "最旧优先",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "依标题",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "清除所有已读",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "确定要移除所有已读项目吗？",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "立即抓取",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "抓取中...",
+        "description": "Loading state text when fetching RSS."
     }
 }

@@ -35,6 +35,7 @@ Don't just search—find instantly.
 - **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
 - **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
 - **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
+- **Reading List & RSS**: Your personal hub for article curation. Sync with the native Chrome Reading List, subscribe to RSS feeds, and manage everything in one place with smart deduplication and sorting.
 
 ### 🎨 Premium Design & Customization
 - **Custom Background Image**: Personalize your workspace! Upload your own image or use a URL. Fine-tune it with adjustable **opacity** and **blur** for the perfect look.

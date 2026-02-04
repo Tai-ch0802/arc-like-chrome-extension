@@ -451,5 +451,131 @@
     "alignBottom": {
         "message": "下揃え",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "リーディングリスト",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "リーディングリストから",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "リーディングリストに追加",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "リーディングリストに登録済み",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "既読にする",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "未読にする",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "リーディングリストから削除",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "$COUNT$ 日前に閲覧",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "リーディングリスト",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "リーディングリストを表示",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "RSSフィード",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "購読を追加",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "更新間隔",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "一時停止",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "再開",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "削除",
+        "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "RSS購読はまだありません。",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "リクエストがタイムアウトしました。URLを確認してください。",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "このフィードは既に購読されています。",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "フィードの取得に失敗しました。URLを確認してください。",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "リーディングリストからこの項目を削除しますか？",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "リンクを右クリックしてここに追加します",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "新着",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "新しい順",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "古い順",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "タイトル順",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "既読をすべて削除",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "リーディングリストからすべての既読項目を削除しますか？",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "今すぐ更新",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "更新中...",
+        "description": "Loading state text when fetching RSS."
     }
 }

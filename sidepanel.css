@@ -414,6 +414,97 @@ mark.url-match {
     letter-spacing: 1px;
 }
 
+.section-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 8px;
+}
+
+.section-header-row .section-header {
+    margin: 16px 0 8px 4px;
+}
+
+.header-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    /* Ensures it pushes to right even if parent display changes */
+}
+
+.header-action-btn {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.header-action-btn:hover {
+    background: var(--danger-color);
+    color: var(--text-color-inverted);
+}
+
+/* Section toggle button */
+.section-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.section-toggle-btn .section-header {
+    margin: 16px 0 8px 4px;
+    pointer-events: none;
+}
+
+.toggle-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+    color: var(--text-color-secondary);
+}
+
+.toggle-chevron::before {
+    content: '';
+    border: solid var(--text-color-secondary);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.section-toggle-btn[aria-expanded="false"] .toggle-chevron::before {
+    transform: rotate(-45deg);
+}
+
+/* Reading list collapsible (specific to avoid conflict with settings panel) */
+#reading-list {
+    overflow: hidden;
+    transition: max-height 0.25s ease-out, opacity 0.2s ease;
+    max-height: 2000px;
+    opacity: 1;
+}
+
+#reading-list.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+}
+
 .divider {
     border: none;
     height: 1px;
@@ -1172,6 +1263,34 @@ mark.url-match {
     fill: none;
 }
 
+.context-menu-item.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: var(--text-color-secondary);
+}
+
+.context-menu-item.disabled:hover {
+    background-color: transparent;
+    color: var(--text-color-secondary);
+}
+
+.context-menu-item.success {
+    color: var(--info-color);
+    animation: fadeInSuccess 0.3s ease-out;
+}
+
+@keyframes fadeInSuccess {
+    from {
+        opacity: 0.5;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* --- Split View Styles --- */
 .tab-split-group {
     display: flex;
@@ -1695,4 +1814,514 @@ mark.url-match {
 /* Theme options spacing */
 .settings-section-content .theme-options {
     margin-bottom: 12px;
+}
+
+/* Settings toggle styles */
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.settings-toggle input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+}
+
+.settings-toggle .toggle-label {
+    font-size: 13px;
+    color: var(--text-color-primary);
+}
+
+/* --- Settings Design System (Unified Components) --- */
+
+/* Design Tokens */
+:root {
+    --settings-radius: 6px;
+    --settings-height: 32px;
+    --settings-height-sm: 24px;
+    --settings-transition: all 0.15s ease;
+}
+
+/* Subsection */
+.settings-subsection {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.settings-subsection-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-color-secondary);
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Unified Input */
+.settings-input {
+    height: var(--settings-height);
+    padding: 0 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--settings-radius);
+    background: var(--element-bg-color);
+    color: var(--text-color-primary);
+    font-size: 13px;
+    transition: var(--settings-transition);
+}
+
+.settings-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+.settings-input::placeholder {
+    color: var(--text-color-secondary);
+    opacity: 0.7;
+}
+
+/* Unified Button */
+.settings-button {
+    height: var(--settings-height);
+    padding: 0 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--settings-radius);
+    background: var(--element-bg-color);
+    color: var(--text-color-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--settings-transition);
+    white-space: nowrap;
+}
+
+.settings-button:hover {
+    background: var(--element-bg-hover-color);
+}
+
+.settings-button:active {
+    transform: scale(0.98);
+}
+
+.settings-button-primary {
+    background: var(--accent-color);
+    color: white;
+    border-color: transparent;
+}
+
+.settings-button-primary:hover {
+    filter: brightness(1.1);
+    background: var(--accent-color);
+}
+
+/* Icon Button (small square buttons) */
+.settings-icon-button {
+    width: var(--settings-height-sm);
+    height: var(--settings-height-sm);
+    padding: 0;
+    border: none;
+    border-radius: var(--settings-radius);
+    background: transparent;
+    color: var(--text-color-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--settings-transition);
+}
+
+.settings-icon-button:hover {
+    background: var(--element-bg-hover-color);
+    color: var(--text-color-primary);
+}
+
+.settings-icon-button--danger:hover {
+    color: var(--danger-color);
+}
+
+.settings-icon-button--info:hover {
+    color: var(--info-color);
+}
+
+/* Select Dropdown */
+.settings-select {
+    height: var(--settings-height-sm);
+    padding: 0 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--settings-radius);
+    background: var(--element-bg-color);
+    color: var(--text-color-primary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: var(--settings-transition);
+}
+
+.settings-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* --- RSS Subscription Styles (using design system) --- */
+.rss-add-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.rss-add-form .settings-input {
+    flex: 1;
+    min-width: 0;
+    /* Allow shrinking in flex */
+}
+
+.rss-subscription-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: var(--element-bg-color);
+    border-radius: var(--settings-radius);
+    margin-bottom: 6px;
+    transition: var(--settings-transition);
+}
+
+.rss-subscription-item:hover {
+    background: var(--element-bg-hover-color);
+}
+
+.rss-subscription-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+}
+
+.rss-subscription-title {
+    font-size: 13px;
+    color: var(--text-color-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rss-subscription-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Reuse icon button styles */
+.rss-toggle-btn,
+.rss-delete-btn {
+    width: var(--settings-height-sm);
+    height: var(--settings-height-sm);
+    padding: 0;
+    border: none;
+    border-radius: var(--settings-radius);
+    background: transparent;
+    color: var(--text-color-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--settings-transition);
+}
+
+.rss-toggle-btn:hover {
+    background: var(--element-bg-hover-color);
+    color: var(--info-color);
+}
+
+.rss-delete-btn:hover {
+    background: var(--element-bg-hover-color);
+    color: var(--danger-color);
+}
+
+.rss-interval-select {
+    height: var(--settings-height-sm);
+    padding: 0 6px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--settings-radius);
+    background: var(--element-bg-color);
+    color: var(--text-color-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    transition: var(--settings-transition);
+}
+
+.rss-interval-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.rss-error {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.rss-empty {
+    color: var(--text-color-secondary);
+    font-size: 12px;
+    font-style: italic;
+    margin: 0;
+    padding: 8px 0;
+}
+
+/* --- Reading List Styles --- */
+#reading-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.reading-list-empty {
+    padding: 12px 8px;
+    color: var(--text-color-secondary);
+    font-style: italic;
+    font-size: 13px;
+}
+
+.reading-list-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    border-left: 3px solid transparent;
+    position: relative;
+}
+
+.reading-list-item:hover {
+    background-color: var(--element-bg-hover-color);
+}
+
+.reading-list-item.is-read {
+    opacity: 0.6;
+}
+
+.reading-list-item.is-read .reading-list-title {
+    text-decoration: line-through;
+    color: var(--text-color-secondary);
+}
+
+.reading-list-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    filter: grayscale(30%);
+}
+
+.reading-list-item:hover .reading-list-favicon {
+    filter: grayscale(0%);
+}
+
+.reading-list-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.reading-list-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.reading-list-title-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+}
+
+.reading-list-viewed-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-color-secondary);
+    margin-top: 2px;
+}
+
+.reading-list-viewed-label svg {
+    flex-shrink: 0;
+}
+
+.reading-list-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+    padding-left: 8px;
+}
+
+.reading-list-item:hover .reading-list-actions,
+.reading-list-item:focus-within .reading-list-actions {
+    opacity: 1;
+}
+
+.reading-list-toggle-read,
+.reading-list-delete {
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    color: var(--text-color-secondary);
+    transition: color 0.2s ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reading-list-toggle-read:hover {
+    color: var(--accent-color);
+}
+
+.reading-list-delete:hover {
+    color: var(--danger-color);
+}
+
+.reading-list-item.is-read .reading-list-toggle-read {
+    color: var(--accent-color);
+    opacity: 0.7;
+}
+
+.reading-list-item.is-read .reading-list-toggle-read:hover {
+    opacity: 1;
+}
+
+/* Controls bar */
+.reading-list-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 8px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reading-list-clear-all {
+    font-size: 11px;
+    padding: 4px 8px;
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.reading-list-clear-all:hover {
+    background: var(--danger-color);
+    color: var(--text-color-inverted);
+}
+
+/* NEW badge */
+.reading-list-new-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 500;
+    padding: 0 3px;
+    margin-right: 4px;
+    background: var(--accent-color);
+    color: var(--text-color-inverted);
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 13px;
+    vertical-align: middle;
+    opacity: 0.9;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* --- Reading List Header Sorting --- */
+.header-select {
+    font-size: 11px;
+    padding: 1px 4px;
+    background: var(--element-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 4px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.header-select:hover,
+.header-select:focus {
+    border-color: var(--accent-color);
+    color: var(--text-color-primary);
+}
+
+/* --- RSS Fetch Now Button and Status --- */
+.rss-fetch-now-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-color-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    font-size: 10px;
+}
+
+.rss-fetch-now-btn:hover {
+    color: var(--accent-color);
+}
+
+.rss-fetch-status {
+    font-size: 10px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.rss-fetch-status.success {
+    color: var(--accent-color);
+    background: rgba(0, 255, 65, 0.1);
+}
+
+.rss-fetch-status.error {
+    color: var(--danger-color);
+    background: rgba(243, 139, 168, 0.1);
 }

@@ -1,22 +1,24 @@
 // background.js
 
+import { handleAlarm as handleRssAlarm } from './modules/rssManager.js';
+
 // 監聽快捷鍵指令
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === 'create-new-tab-right') {
     // 查詢當前作用中的分頁
     const [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (currentTab) {
-        const newTab = await chrome.tabs.create({
-            index: currentTab.index + 1,
-            active: true
+      const newTab = await chrome.tabs.create({
+        index: currentTab.index + 1,
+        active: true
+      });
+      // 如果當前分頁在群組中，也將新分頁加入同一個群組
+      if (currentTab.groupId > 0) {
+        await chrome.tabs.group({
+          groupId: currentTab.groupId,
+          tabIds: newTab.id
         });
-        // 如果當前分頁在群組中，也將新分頁加入同一個群組
-        if (currentTab.groupId > 0) {
-            await chrome.tabs.group({
-                groupId: currentTab.groupId,
-                tabIds: newTab.id
-            });
-        }
+      }
     }
   }
 });
@@ -28,6 +30,9 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
     .catch((error) => console.error(error));
 });
+
+// 監聯 RSS 定時抓取鬧鐘
+chrome.alarms.onAlarm.addListener(handleRssAlarm);
 
 // 監聽來自側邊面板的訊息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

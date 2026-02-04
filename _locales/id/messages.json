@@ -451,5 +451,131 @@
     "alignBottom": {
         "message": "Ratakan Bawah",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "Daftar Bacaan",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "Dari Daftar Bacaan",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "Tambahkan ke Daftar Bacaan",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "Sudah ada di Daftar Bacaan",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "Tandai sudah dibaca",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "Tandai belum dibaca",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "Hapus dari Daftar Bacaan",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "Dilihat $COUNT$ hari yang lalu",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "Daftar Bacaan",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "Tampilkan Daftar Bacaan",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "Langganan RSS",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "Tambah langganan",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "Interval pembaruan",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "Jeda",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "Lanjutkan",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "Hapus",
+        "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "Belum ada langganan RSS.",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "Permintaan habis waktu. Silakan periksa URL.",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "Anda sudah berlangganan feed ini.",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "Gagal mengambil feed. Silakan periksa URL.",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "Hapus item ini dari daftar bacaan?",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "Klik kanan pada tautan mana punเพื่อเพิ่มที่นี่",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "BARU",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "Terbaru lebih dulu",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "Terlama lebih dulu",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "Berdasarkan judul",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "Hapus semua yang sudah dibaca",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "Hapus semua item yang đã đọc khỏi danh sách đọc?",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "Perbarui sekarang",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "Memperbarui...",
+        "description": "Loading state text when fetching RSS."
     }
 }

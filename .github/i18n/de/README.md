@@ -74,6 +74,15 @@ Nicht nur suchen – sofort finden.
 - **Automatisches Aufklappen**: Bewegen Sie den Mauszeiger beim Ziehen von Elementen über einen Ordner, um den Pfad automatisch aufzuklappen.
 - **Smart Hover**: Aktionsschaltflächen erscheinen nur bei Bedarf, um die Benutzeroberfläche sauber und ablenkungsfrei zu halten.
 
+### 📚 Leseliste & RSS
+Ihr persönlicher Hub für Artikel-Kuratierung direkt in der Sidebar.
+- **Chrome Leselisten-Integration**: Synchronisiert mit der nativen Chrome-Leseliste für nahtloses „Später lesen“.
+- **RSS-Abonnement**: Abonnieren Sie beliebige RSS-Feeds; neue Artikel werden automatisch Ihrer Leseliste hinzugefügt.
+- **Intelligente Duplikaterkennung**: Hash-basierte Filterung stellt sicher, dass keine doppelten Einträge entstehen.
+- **Sortieroptionen**: Sortieren Sie nach Datum (neueste/älteste) oder Titel für schnellen Zugriff.
+- **Manuelles Abrufen**: Laden Sie die neuesten Artikel sofort mit der Schaltfläche „Jetzt abrufen“.
+- **Stapelweises Löschen**: Entfernen Sie alle gelesenen Elemente mit einem Klick.
+
 ## ⌨️ Vollständige Tastaturnavigation
 - **Native Erfahrung**: Verwenden Sie die Tasten `Pfeil auf`/`Pfeil ab`, um nahtlos zwischen Tabs und Lesezeichen zu navigieren.
 - **Mikro-Interaktionen**: Verwenden Sie `Pfeil links`/`Pfeil rechts` zum Navigieren und zum Auslösen interner Schaltflächen (wie Schließen, Zu Gruppe hinzufügen).
@@ -94,6 +103,7 @@ Nicht nur suchen – sofort finden.
 | **Tab-Gruppen** | ✅ Native Sync | ✅ | ⚠️ Teilweise |
 | **Lesezeichen-Integration** | ✅ Einheitliches Panel | ❌ Separater Manager | ❌ Separat |
 | **Verknüpfte Tabs** | ✅ Synchronisiert | ❌ | ❌ |
+| **Leseliste & RSS** | ✅ Integriert | ⚠️ Basis | ❌ |
 | **Fensterübergreifende Suche** | ✅ | ❌ | ⚠️ Variiert |
 | **Performance** | ⚡️ Dynamisches Rendering | N/A | 🐢 Virtual Scroll |
 

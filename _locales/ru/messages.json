@@ -451,5 +451,131 @@
     "alignBottom": {
         "message": "По нижнему краю",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "Список для чтения",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "Из списка для чтения",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "Добавить в список",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "Уже в списке",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "Отметить как прочитанное",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "Отметить как непрочитанное",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "Удалить из списка",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "Просмотрено $COUNT$ дн. назад",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "Список для чтения",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "Показать список для чтения",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "Подписки RSS",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "Добавить подписку",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "Интервал обновления",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "Пауза",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "Возобновить",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "Удалить",
+        "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "Подписок RSS пока нет.",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "Время запроса истекло. Пожалуйста, проверьте URL.",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "Вы уже подписаны на этот фид.",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "Не удалось получить фид. Пожалуйста, проверьте URL.",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "Удалить этот элемент из списка чтения?",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "Нажмите правой кнопкой мыши на любую ссылку, чтобы добавить ее сюда",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "НОВОЕ",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "Сначала новые",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "Сначала старые",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "По названию",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "Очистить все прочитанные",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "Удалить все прочитанные элементы из списка чтения?",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "Обновить сейчас",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "Обновление...",
+        "description": "Loading state text when fetching RSS."
     }
 }

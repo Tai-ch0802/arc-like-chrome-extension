@@ -34,7 +34,8 @@ Have thousands of bookmarks? No problem!
 - **Hỗ trợ Nhóm Gốc**: Tích hợp hoàn hảo với Nhóm Tab Chrome, đồng bộ hóa màu sắc và tên.
 - **Kéo & Thả**: Quản lý trực quan—di chuyển các mục dễ dàng giữa các tab, nhóm và thư mục dấu trang.
 - **Kéo để Lưu**: Kéo một tab vào khu vực dấu trang để lưu ngay lập tức; kéo một dấu trang vào khu vực tab để mở nó.
-- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
+- **Danh sách đọc & RSS**: Trung tâm quản lý bài viết cá nhân của bạn. Đồng bộ hóa với Danh sách đọc gốc của Chrome, đăng ký nguồn cấp dữ liệu RSS và quản lý mọi thứ ở một nơi với tính năng khử trùng lặp và sắp xếp thông minh.
+- **Đặt tên cửa sổ tùy chỉnh**: Gán tên tùy chỉnh cho các cửa sổ của bạn (ví dụ: "Công việc", "Cá nhân") để có ngữ cảnh rõ ràng hơn.
 
 ### 🎨 Thiết kế Cao cấp & Tùy chỉnh
 - **Hình nền tùy chỉnh**: Cá nhân hóa không gian làm việc của bạn! Tải lên hình ảnh của riêng bạn hoặc sử dụng URL. Tinh chỉnh với độ **mờ** và độ **nhòe** có thể điều chỉnh để có vẻ ngoài hoàn hảo.

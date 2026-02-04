@@ -74,6 +74,15 @@ No solo busques, encuentra al instante.
 - **Expansión automática**: Desplázate sobre las carpetas mientras arrastras elementos para expandir automáticamente la ruta.
 - **Desplazamiento inteligente**: Los botones de acción solo aparecen cuando es necesario, manteniendo la interfaz limpia y libre de distracciones.
 
+### 📚 Lista de lectura y RSS
+Tu centro personal de curación de artículos, directamente en la barra lateral.
+- **Integración con la lista de lectura de Chrome**: Sincronizado con la lista de lectura nativa de Chrome para guardar artículos fácilmente.
+- **Suscripción RSS**: Suscríbete a cualquier canal RSS; los nuevos artículos se añadirán automáticamente a tu lista.
+- **Deduplicación inteligente**: El filtrado basado en hash garantiza que no haya entradas duplicadas.
+- **Opciones de ordenación**: Ordena por fecha (más reciente/más antigua) o por título.
+- **Recuperación manual**: Obtén los últimos artículos al instante con el botón "Obtener ahora".
+- **Borrado por lotes**: Elimina todos los elementos leídos con un solo clic.
+
 ## ⌨️ Navegación completa por teclado
 - **Experiencia nativa**: Usa las teclas `Flecha arriba`/`Flecha abajo` para navegar sin problemas entre pestañas y marcadores.
 - **Microinteracciones**: Usa `Flecha izquierda`/`Flecha derecha` para navegar y activar botones internos (como Cerrar, Añadir al grupo).
@@ -94,6 +103,7 @@ No solo busques, encuentra al instante.
 | **Grupos de pestañas** | ✅ Sincronización nativa | ✅ | ⚠️ Parcial |
 | **Integración de marcadores** | ✅ Panel unificado | ❌ Gestor independiente | ❌ Independiente |
 | **Pestañas vinculadas** | ✅ Sincronizado | ❌ | ❌ |
+| **Lista de lectura y RSS** | ✅ Integrado | ⚠️ Básico | ❌ |
 | **Búsqueda en ventanas** | ✅ | ❌ | ⚠️ Varía |
 | **Rendimiento** | ⚡️ Renderizado dinámico | N/A | 🐢 Desplazamiento virtual |
 

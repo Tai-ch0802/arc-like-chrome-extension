@@ -451,5 +451,131 @@
     "alignBottom": {
         "message": "Căn dưới",
         "description": "Tooltip for aligning background image to the bottom"
+    },
+    "readingListHeader": {
+        "message": "Danh sách đọc",
+        "description": "Header for the reading list section."
+    },
+    "readingListGroupName": {
+        "message": "Từ Danh sách đọc",
+        "description": "Name for the tab group created when opening reading list items."
+    },
+    "addToReadingList": {
+        "message": "Thêm vào Danh sách đọc",
+        "description": "Context menu option to add a tab to the reading list."
+    },
+    "alreadyInReadingList": {
+        "message": "Đã có trong Danh sách đọc",
+        "description": "Tooltip shown when URL is already in the reading list."
+    },
+    "markAsRead": {
+        "message": "Đánh dấu đã đọc",
+        "description": "Button to mark a reading list item as read."
+    },
+    "markAsUnread": {
+        "message": "Đánh dấu chưa đọc",
+        "description": "Button to mark a reading list item as unread."
+    },
+    "deleteReadingListItem": {
+        "message": "Xóa khỏi Danh sách đọc",
+        "description": "Button to remove an item from the reading list."
+    },
+    "viewedDaysAgo": {
+        "message": "Đã xem $COUNT$ ngày trước",
+        "description": "Label showing how many days ago an item was viewed.",
+        "placeholders": {
+            "COUNT": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "readingListSettingsHeader": {
+        "message": "Danh sách đọc",
+        "description": "Header for reading list settings section."
+    },
+    "showReadingListLabel": {
+        "message": "Hiển thị Danh sách đọc",
+        "description": "Label for the toggle to show/hide reading list."
+    },
+    "rssSubscriptionHeader": {
+        "message": "Đăng ký RSS",
+        "description": "Header for RSS subscriptions section in settings."
+    },
+    "addRssSubscription": {
+        "message": "Thêm đăng ký",
+        "description": "Button to add a new RSS subscription."
+    },
+    "rssIntervalLabel": {
+        "message": "Khoảng thời gian cập nhật",
+        "description": "Label for RSS update interval selector."
+    },
+    "rssPauseButton": {
+        "message": "Tạm dừng",
+        "description": "Button to pause an RSS subscription."
+    },
+    "rssResumeButton": {
+        "message": "Tiếp tục",
+        "description": "Button to resume a paused RSS subscription."
+    },
+    "rssDeleteButton": {
+        "message": "Xóa",
+        "description": "Button to remove an RSS subscription."
+    },
+    "rssNoSubscriptions": {
+        "message": "Chưa có đăng ký RSS nào.",
+        "description": "Message shown when there are no RSS subscriptions."
+    },
+    "rssErrorTimeout": {
+        "message": "Yêu cầu đã hết thời gian. Vui lòng kiểm tra URL.",
+        "description": "Error message when RSS fetch times out."
+    },
+    "rssErrorAlreadySubscribed": {
+        "message": "Bạn đã đăng ký nguồn cấp dữ liệu này rồi.",
+        "description": "Error message when trying to add a duplicate subscription."
+    },
+    "rssErrorFetchFailed": {
+        "message": "Không thể tải nguồn cấp dữ liệu. Vui lòng kiểm tra URL.",
+        "description": "Error message when RSS fetch fails."
+    },
+    "confirmDeleteReadingListItem": {
+        "message": "Xóa mục này khỏi danh sách đọc?",
+        "description": "Confirmation dialog title when deleting a reading list item."
+    },
+    "readingListEmptyGuidance": {
+        "message": "Nhấp chuột phải vào bất kỳ liên kết nào để thêm vào đây",
+        "description": "Guidance text shown when reading list is empty."
+    },
+    "newItemBadge": {
+        "message": "MỚI",
+        "description": "Badge shown on newly added reading list items."
+    },
+    "sortByDateNewest": {
+        "message": "Mới nhất trước",
+        "description": "Sort option for reading list - newest items first."
+    },
+    "sortByDateOldest": {
+        "message": "Cũ nhất trước",
+        "description": "Sort option for reading list - oldest items first."
+    },
+    "sortByTitle": {
+        "message": "Theo tiêu đề",
+        "description": "Sort option for reading list - alphabetical by title."
+    },
+    "clearAllRead": {
+        "message": "Xóa tất cả đã đọc",
+        "description": "Button to clear all read items from reading list."
+    },
+    "confirmClearAllRead": {
+        "message": "Xóa tất cả các mục đã đọc khỏi danh sách đọc?",
+        "description": "Confirmation dialog for clearing all read items."
+    },
+    "rssFetchNowButton": {
+        "message": "Cập nhật ngay",
+        "description": "Button to manually trigger RSS fetch."
+    },
+    "rssFetching": {
+        "message": "Đang cập nhật...",
+        "description": "Loading state text when fetching RSS."
     }
 }

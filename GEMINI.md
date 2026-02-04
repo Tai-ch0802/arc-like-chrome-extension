@@ -17,6 +17,8 @@ tech_stack:
     - chrome.bookmarks
     - chrome.i18n
     - chrome.storage
+    - chrome.readingList
+    - chrome.alarms
   js_libraries:
     - Sortable.js
   build_tools:
@@ -58,6 +60,14 @@ key_files:
     description: "[功能] 拖曳排序模組。封裝 SortableJS 的所有邏輯，處理分頁與書籤的拖曳事件，並在拖曳分頁成為書籤時建立關聯。"
   - file_path: modules/searchManager.js
     description: "[功能] 搜尋過濾模組。負責處理搜尋框的輸入與列表的即時過濾邏輯。"
+  - file_path: modules/readingListManager.js
+    description: "[功能] 閱讀清單業務邏輯。管理閱讀清單 CRUD 操作、自動分組開啟的分頁、刪除時標記 hash 防止 RSS 重複加入、清除所有已讀功能。"
+  - file_path: modules/rssManager.js
+    description: "[功能] RSS 訂閱管理。處理 RSS feed 訂閱儲存、chrome.alarms 排程抓取、hash 去重、自動加入閱讀清單、手動立即抓取功能。"
+  - file_path: modules/ui/readingListRenderer.js
+    description: "[UI] 閱讀清單渲染。負責閱讀清單項目的 DOM 生成、事件處理（點擊/刪除/切換已讀）、展開收合、鍵盤導航、新項目標籤、排序功能 (日期/標題)。"
+  - file_path: modules/icons.js
+    description: "[UI] SVG 圖示集中管理。匯出所有 UI 使用的 SVG 圖示常數，避免重複定義。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

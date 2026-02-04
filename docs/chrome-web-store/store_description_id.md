@@ -32,9 +32,10 @@ Jangan hanya mencari—temukan secara instan.
 ### 🗂️ Ruang Kerja Terpadu
 - **Tab Vertikal**: Lihat judul halaman lengkap, tidak lagi dipadatkan menjadi ikon kecil.
 - **Dukungan Grup Asli**: Terintegrasi sempurna dengan Grup Tab Chrome, menyinkronkan warna dan nama.
-- **Custom Window Naming**: Assign custom names to your windows (e.g., "Work", "Personal") for clearer context.
+- **Penamaan Jendela Kustom**: Tetapkan nama kustom ke jendela Anda (misalnya, "Kerja", "Pribadi") untuk konteks yang lebih jelas.
 - **Seret & Lepas**: Manajemen intuitif—pindahkan item dengan mudah antara tab, grup, dan folder bookmark.
 - **Seret untuk Menyimpan**: Seret tab ke area bookmark untuk menyimpannya secara instan; seret bookmark ke area tab untuk membukanya.
+- **Daftar Bacaan & RSS**: Pusat kurasi artikel pribadi Anda. Sinkronkan dengan Daftar Bacaan asli Chrome, berlangganan umpan RSS, dan kelola semuanya di satu tempat dengan deduplikasi dan penyortiran cerdas.
 
 ### 🎨 Desain Premium & Kustomisasi
 - **Gambar Latar Kustom**: Personalisasi ruang kerja Anda! Unggah gambar sendiri atau gunakan URL. Atur dengan **opasitas** dan **blur** yang dapat disesuaikan untuk tampilan sempurna.

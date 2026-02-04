@@ -74,6 +74,15 @@ Jangan hanya mencari—temukan secara instan.
 - **Perluas Otomatis**: Arahkan kursor ke folder saat menyeret item untuk memperluas jalur secara otomatis.
 - **Smart Hover**: Tombol tindakan hanya muncul saat dibutuhkan, menjaga antarmuka tetap bersih dan bebas gangguan.
 
+### 📚 Daftar Bacaan & RSS
+Hub kurasi artikel pribadi Anda, langsung di sidebar.
+- **Integrasi Daftar Bacaan Chrome**: Sinkron dengan Daftar Bacaan asli Chrome untuk fungsionalitas "Simpan untuk Nanti" yang mulus.
+- **Langganan RSS**: Berlangganan umpan RSS apa pun dan tambahkan artikel baru secara otomatis ke daftar bacaan Anda.
+- **Deduplikasi Cerdas**: Pemfilteran berbasis hash memastikan tidak ada entri duplikat.
+- **Opsi Pengurutan**: Urutkan berdasarkan tanggal (terbaru/terlama) oatau judul untuk akses cepat.
+- **Ambil Manual**: Tarik artikel terbaru secara instan dengan tombol "Ambil Sekarang".
+- **Hapus Massal**: Hapus semua item yang sudah dibaca dengan satu klik.
+
 ## ⌨️ Navigasi Keyboard Lengkap
 - **Pengalaman Asli**: Gunakan tombol `Panah Atas`/`Panah Bawah` untuk menavigasi secara mulus antara tab dan bookmark.
 - **Mikro-Interaksi**: Gunakan `Panah Kiri`/`Panah Kanan` untuk menavigasi dan memicu tombol internal (seperti Tutup, Tambahkan ke Grup).
@@ -94,6 +103,7 @@ Jangan hanya mencari—temukan secara instan.
 | **Grup Tab** | ✅ Sinkronisasi Asli | ✅ | ⚠️ Parsial |
 | **Integrasi Bookmark** | ✅ Panel Terpadu | ❌ Manajer Terpisah | ❌ Terpisah |
 | **Tab Terkait** | ✅ Sinkronisasi Status| ❌ | ❌ |
+| **Daftar Bacaan & RSS** | ✅ Bawaan | ⚠️ Dasar | ❌ |
 | **Pencarian Antar Jendela** | ✅ | ❌ | ⚠️ Bervariasi |
 | **Performa** | ⚡️ Rendering Dinamis | N/A | 🐢 Virtual Scroll |
 
