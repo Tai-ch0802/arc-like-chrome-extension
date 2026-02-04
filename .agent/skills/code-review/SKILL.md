@@ -22,6 +22,45 @@ description: Reviews code changes for bugs, style issues, and best practices. Us
 2. **Chrome API 使用**：確認正確使用 `chrome.tabs`、`chrome.bookmarks` 等 API
 3. **權限最小化**：確認只請求必要的權限
 
+## Puppeteer 測試穩定性檢查
+
+審查 Puppeteer 測試時，特別注意潛在的 race condition：
+
+| 反模式 ❌ | 正確模式 ✅ | 說明 |
+|-----------|-------------|------|
+| `await new Promise(r => setTimeout(r, 2000))` | `await page.waitForFunction(...)` | 固定延遲會在 CI 環境不穩定 |
+| `setTimeout(r, 500)` debounce | `waitForSelector` + visibility | 等待實際 DOM 狀態 |
+| 等待 active tab URL 精確匹配 | 檢查 tab count 或使用 `includes` | Headless 環境 navigation 可能被阻擋 |
+| 直接 click 後立即驗證 | `waitForFunction` 後再驗證 | 給予 Chrome API 回應時間 |
+
+### 正確等待模式範例
+
+```javascript
+// ✅ 等待 tab 出現在 DOM
+await page.waitForFunction(
+    (id) => document.querySelector(`.tab-item[data-tab-id="${id}"]`),
+    { timeout: 10000 },
+    createdTabId
+);
+
+// ✅ 等待 modal 關閉
+await page.waitForFunction(
+    () => !document.querySelector('.modal-content'),
+    { timeout: 5000 }
+);
+
+// ✅ 等待 tab count 增加
+await page.waitForFunction(
+    (expected) => {
+        return new Promise(resolve => {
+            chrome.tabs.query({}, tabs => resolve(tabs.length >= expected));
+        });
+    },
+    { timeout: 10000 },
+    initialTabCount + 1
+);
+```
+
 ## 如何提供回饋
 
 - 不需要給予太多浮誇的稱讚來滿足 PR 提交者的行緒價值
@@ -52,6 +91,7 @@ description: Reviews code changes for bugs, style issues, and best practices. Us
 | `eval()` | ❌ 錯誤 | 嚴重安全風險 |
 | `TODO/FIXME` | 📝 資訊 | 未完成項目 |
 | 未處理的 Promise | ⚠️ 警告 | 可能的錯誤遺漏 |
+| `setTimeout` 固定等待 | ⚠️ 警告 | 測試中使用可能造成 CI race condition |
 
 ## 參考資料
 
