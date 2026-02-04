@@ -20,8 +20,8 @@ describe('Theme Switch Use Case', () => {
         await page.goto(sidePanelUrl);
         // Wait for tab list to load to ensure app is initialized and listeners are attached
         await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
-             // If no tabs are rendered (unlikely but possible in empty state), wait a safe delay
-             return new Promise(r => setTimeout(r, 1000));
+            // If no tabs are rendered (unlikely but possible in empty state), wait a safe delay
+            return new Promise(r => setTimeout(r, 1000));
         });
         await page.waitForSelector('#settings-toggle');
 
@@ -33,6 +33,8 @@ describe('Theme Switch Use Case', () => {
 
             // Open settings dialog
             await page.click('#settings-toggle');
+            // Wait for modal overlay first, then for the dropdown (Windows CI may be slower)
+            await page.waitForSelector('.modal-overlay');
             await page.waitForSelector('#theme-select-dropdown');
 
             // Select a different theme
@@ -64,6 +66,7 @@ describe('Theme Switch Use Case', () => {
         try {
             // Open settings and change theme to darcula
             await page.click('#settings-toggle');
+            await page.waitForSelector('.modal-overlay');
             await page.waitForSelector('#theme-select-dropdown');
             await page.select('#theme-select-dropdown', 'darcula');
             await new Promise(r => setTimeout(r, 500));
@@ -81,6 +84,7 @@ describe('Theme Switch Use Case', () => {
 
             // Reset to default theme for other tests
             await page.click('#settings-toggle');
+            await page.waitForSelector('.modal-overlay');
             await page.waitForSelector('#theme-select-dropdown');
             await page.select('#theme-select-dropdown', 'geek');
             await new Promise(r => setTimeout(r, 200));
@@ -99,6 +103,7 @@ describe('Theme Switch Use Case', () => {
         try {
             // Open settings dialog
             await page.click('#settings-toggle');
+            await page.waitForSelector('.modal-overlay');
             await page.waitForSelector('#theme-select-dropdown');
 
             // Get all theme options
