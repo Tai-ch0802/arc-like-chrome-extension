@@ -2,14 +2,14 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "**" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Check out repository
