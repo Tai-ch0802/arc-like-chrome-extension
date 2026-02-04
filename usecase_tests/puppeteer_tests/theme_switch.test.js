@@ -18,6 +18,11 @@ describe('Theme Switch Use Case', () => {
     test('should change theme when selecting from dropdown', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for tab list to load to ensure app is initialized and listeners are attached
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
+             // If no tabs are rendered (unlikely but possible in empty state), wait a safe delay
+             return new Promise(r => setTimeout(r, 1000));
+        });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -52,6 +57,8 @@ describe('Theme Switch Use Case', () => {
     test('should persist theme selection after reload', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for initialization
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => new Promise(r => setTimeout(r, 1000)));
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -85,6 +92,8 @@ describe('Theme Switch Use Case', () => {
     test('should have all expected theme options', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for initialization
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => new Promise(r => setTimeout(r, 1000)));
         await page.waitForSelector('#settings-toggle');
 
         try {
