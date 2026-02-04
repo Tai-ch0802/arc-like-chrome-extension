@@ -142,7 +142,9 @@ describe('Edit Bookmark Use Case', () => {
 
             // Hover over the bookmark
             await page.hover(bookmarkSelector);
-            await new Promise(r => setTimeout(r, 200));
+
+            // Wait for edit button to be visible
+            await page.waitForSelector(`${bookmarkSelector} .bookmark-edit-btn`, { visible: true, timeout: 3000 });
 
             // Check if edit button is visible (or exists)
             const editBtn = await page.$(`${bookmarkSelector} .bookmark-edit-btn`);

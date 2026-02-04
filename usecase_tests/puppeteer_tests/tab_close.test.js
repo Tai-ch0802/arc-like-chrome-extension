@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForTabCount, waitForElementRemoved } = require('./setup');
 
 describe('Tab Close Use Case', () => {
     let browser;
@@ -16,6 +16,13 @@ describe('Tab Close Use Case', () => {
     });
 
     beforeEach(async () => {
+        // Get initial tab count before creating new tab
+        const initialCount = await page.evaluate(() => {
+            return new Promise(resolve => {
+                chrome.tabs.query({}, tabs => resolve(tabs.length));
+            });
+        });
+
         // Create a test tab to close
         const newTab = await page.evaluate(() => {
             return new Promise(resolve => {
@@ -27,10 +34,11 @@ describe('Tab Close Use Case', () => {
         });
         createdTabIds.push(newTab.id);
 
-        // Wait for side panel to update
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for side panel to reflect the new tab, then reload
         await page.reload();
         await page.waitForSelector('.tab-item');
+        // Wait for the specific tab item to appear
+        await page.waitForSelector(`.tab-item[data-tab-id="${newTab.id}"]`, { timeout: 5000 });
     });
 
     afterEach(async () => {
@@ -66,15 +74,16 @@ describe('Tab Close Use Case', () => {
         // Hover over the tab to reveal close button
         const tabItem = await page.$(tabSelector);
         await tabItem.hover();
-        await new Promise(r => setTimeout(r, 200));
+        // Wait for close button to be visible (no setTimeout needed, hover is synchronous)
+        await page.waitForSelector(`${tabSelector} .close-btn`, { visible: true, timeout: 2000 });
 
         // Find and click the close button
         const closeBtn = await tabItem.$('.close-btn');
         expect(closeBtn).not.toBeNull();
         await closeBtn.click();
 
-        // Wait for Chrome API to process
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for the tab element to be removed from DOM
+        await waitForElementRemoved(page, tabSelector);
 
         // Verify the tab is closed
         const finalTabCount = await page.evaluate(() => {
@@ -109,12 +118,12 @@ describe('Tab Close Use Case', () => {
         // Hover and click close
         const tabItem = await page.$(tabSelector);
         await tabItem.hover();
-        await new Promise(r => setTimeout(r, 200));
+        await page.waitForSelector(`${tabSelector} .close-btn`, { visible: true, timeout: 2000 });
         const closeBtn = await tabItem.$('.close-btn');
         await closeBtn.click();
 
-        // Wait for UI to update
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for element to be removed from DOM
+        await waitForElementRemoved(page, tabSelector);
 
         // Verify the tab item is removed from the DOM
         const tabItemAfterClose = await page.$(tabSelector);

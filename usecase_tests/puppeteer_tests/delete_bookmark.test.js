@@ -32,6 +32,9 @@ describe('Delete Bookmark Use Case', () => {
     });
 
     afterEach(async () => {
+        // Guard against page being undefined if test failed during setup
+        if (!page) return;
+
         await page.evaluate((id) => {
             return new Promise(resolve => {
                 if (!id) return resolve();
@@ -51,39 +54,44 @@ describe('Delete Bookmark Use Case', () => {
         const bookmarkItemSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
         await page.waitForSelector(bookmarkItemSelector);
 
-        // Step 1: Force the delete button to be visible
+        // Step 1: Force the delete button to be visible and click it directly
         const deleteButtonSelector = `${bookmarkItemSelector} .bookmark-close-btn`;
+
+        // Wait for button to exist in DOM first
+        await page.waitForSelector(deleteButtonSelector);
+
+        // Force visibility and click in one evaluate call
         await page.evaluate((selector) => {
             const button = document.querySelector(selector);
             if (button) {
                 // Force visibility
                 button.style.display = 'block';
                 button.style.opacity = '1';
-                // Ensure parent is also visible
-                let parent = button.parentElement;
-                while (parent) {
-                    parent.style.display = 'flex'; // or 'block'
-                    parent.style.opacity = '1';
-                    parent.style.visibility = 'visible';
-                    parent = parent.parentElement;
-                }
+                button.style.visibility = 'visible';
+                // Click immediately
+                button.click();
             }
         }, deleteButtonSelector);
 
-        // Step 2: Click the delete button using page.evaluate
-        await page.waitForSelector(deleteButtonSelector, { visible: true });
-        await page.evaluate((selector) => {
-            document.querySelector(selector).click();
-        }, deleteButtonSelector);
+        // Step 2: Wait for the confirmation modal using waitForFunction
+        await page.waitForFunction(
+            () => document.querySelector('.modal-overlay')?.style.display !== 'none',
+            { timeout: 10000 }
+        );
 
-        // Step 3: Wait for the confirmation modal and click the confirm button
-        await page.waitForSelector('.modal-overlay', { visible: true });
+        // Step 3: Click the confirm button
         const confirmButtonSelector = '.modal-content .confirm-btn';
-        await page.waitForSelector(confirmButtonSelector, { visible: true });
-        await page.click(confirmButtonSelector);
+        await page.waitForSelector(confirmButtonSelector);
+        await page.evaluate((selector) => {
+            document.querySelector(selector)?.click();
+        }, confirmButtonSelector);
 
         // Step 4: Verify the bookmark is removed from the side panel UI
-        await page.waitForSelector(bookmarkItemSelector, { hidden: true });
+        await page.waitForFunction(
+            (selector) => !document.querySelector(selector),
+            { timeout: 10000 },
+            bookmarkItemSelector
+        );
 
         // Step 5: Verify the bookmark is removed from the browser's bookmarks API
         const bookmarkExists = await page.evaluate((id) => {

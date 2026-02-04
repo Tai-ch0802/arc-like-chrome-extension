@@ -34,10 +34,16 @@ describe('Window Renaming Feature', () => {
         });
         secondWindowId = newWindow.id;
 
-        // Wait for extension to detect the new window
-        await new Promise(r => setTimeout(r, 2000));
-        await page.reload();
-        await page.waitForSelector('#other-windows-list');
+        // Wait for extension to detect the new window by checking DOM
+        await page.waitForFunction(
+            (windowId) => document.querySelector(`.window-folder[data-window-id="${windowId}"]`),
+            { timeout: 10000 },
+            secondWindowId
+        ).catch(async () => {
+            // Fallback: reload and try again
+            await page.reload();
+            await page.waitForSelector('#other-windows-list');
+        });
 
         // 2. Find the window folder for the new window
         // The new window should be in the list. Index might vary, but we can look for the one with data-window-id matching secondWindowId
@@ -65,8 +71,16 @@ describe('Window Renaming Feature', () => {
         const confirmBtnSelector = `${modalSelector} button.confirm-btn`;
         await page.click(confirmBtnSelector);
 
-        // 5. Verify the title has updated
-        await new Promise(r => setTimeout(r, 500));
+        // Verify the title has updated
+        await page.waitForFunction(
+            (sel, expected) => {
+                const el = document.querySelector(sel + ' .window-title');
+                return el && el.textContent === expected;
+            },
+            { timeout: 5000 },
+            folderSelector,
+            'My Custom Window Name'
+        );
 
         const newTitle = await page.$eval(`${folderSelector} .window-title`, el => el.textContent);
         expect(newTitle).toBe('My Custom Window Name');
@@ -80,9 +94,14 @@ describe('Window Renaming Feature', () => {
         });
         const tempWindowId = tempWindow.id;
 
-        // 2. Wait for it to appear
-        await new Promise(r => setTimeout(r, 1000));
-        await page.reload();
+        // 2. Wait for it to appear in DOM
+        await page.waitForFunction(
+            (windowId) => document.querySelector(`.window-folder[data-window-id="${windowId}"]`),
+            { timeout: 10000 },
+            tempWindowId
+        ).catch(async () => {
+            await page.reload();
+        });
         const folderSelector = `.window-folder[data-window-id="${tempWindowId}"]`;
         await page.waitForSelector(folderSelector);
 
@@ -95,7 +114,11 @@ describe('Window Renaming Feature', () => {
         await page.waitForSelector('.modal-content input.modal-input');
         await page.type('.modal-content input.modal-input', 'Temporary Window');
         await page.click('.modal-content button.confirm-btn');
-        await new Promise(r => setTimeout(r, 500));
+        // Wait for dialog to close and title to update
+        await page.waitForFunction(
+            () => !document.querySelector('.modal-content'),
+            { timeout: 5000 }
+        );
 
         // 4. Verify storage has it
         let storedNames = await page.evaluate(() => {
@@ -108,8 +131,18 @@ describe('Window Renaming Feature', () => {
         // 5. Close the window
         await page.evaluate((id) => chrome.windows.remove(id), tempWindowId);
 
-        // 6. Wait for cleanup
-        await new Promise(r => setTimeout(r, 1000));
+        // 6. Wait for cleanup by checking storage
+        await page.waitForFunction(
+            (id) => {
+                return new Promise(resolve => {
+                    chrome.storage.local.get('windowNames', (result) => {
+                        resolve(!result.windowNames || result.windowNames[id] === undefined);
+                    });
+                });
+            },
+            { timeout: 10000 },
+            tempWindowId
+        );
 
         // 7. Verify storage removed it
         storedNames = await page.evaluate(() => {

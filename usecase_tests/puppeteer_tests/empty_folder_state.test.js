@@ -27,8 +27,9 @@ describe('Empty Folder State', () => {
             });
         }, folderTitle);
 
-        // 2. Wait for UI to update (debounced)
-        await new Promise(r => setTimeout(r, 1000));
+        // 2. Reload page to ensure UI is synced with Chrome API
+        await page.reload();
+        await page.waitForSelector('#bookmark-list');
 
         // 3. Ensure Bookmarks Bar is expanded
         await expandBookmarksBar(page);

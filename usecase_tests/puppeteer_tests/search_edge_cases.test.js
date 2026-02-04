@@ -34,12 +34,24 @@ describe('Search Edge Cases', () => {
                 });
             }, url);
 
-            // Wait for tab to load and appear in list
-            await new Promise(r => setTimeout(r, 2000));
+            // Wait for tab to appear in list (instead of fixed timeout)
+            await page.waitForFunction(
+                (id) => document.querySelector(`.tab-item[data-tab-id="${id}"]`),
+                { timeout: 10000 },
+                createdTabId
+            );
 
             // Search for a unique part of the title
             await page.type('#search-box', '<test>');
-            await new Promise(r => setTimeout(r, 500)); // Wait for debounce
+            // Wait for search to process (debounce) by checking visibility
+            await page.waitForFunction(
+                (id) => {
+                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
+                    return el && !el.classList.contains('hidden');
+                },
+                { timeout: 5000 },
+                createdTabId
+            );
 
             // Check if the specific tab is visible
             const found = await page.evaluate((id) => {
@@ -52,9 +64,9 @@ describe('Search Edge Cases', () => {
             if (createdTabId) {
                 try {
                     await page.evaluate((id) => chrome.tabs.remove(id), createdTabId);
-                } catch (e) {}
+                } catch (e) { }
             }
-            try { await page.close(); } catch (e) {}
+            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 
@@ -73,11 +85,23 @@ describe('Search Edge Cases', () => {
                 });
             }, url);
 
-            await new Promise(r => setTimeout(r, 2000));
+            // Wait for tab to appear in list
+            await page.waitForFunction(
+                (id) => document.querySelector(`.tab-item[data-tab-id="${id}"]`),
+                { timeout: 10000 },
+                createdTabId
+            );
 
             // Search for "(Special)"
             await page.type('#search-box', '(Special)');
-            await new Promise(r => setTimeout(r, 500));
+            await page.waitForFunction(
+                (id) => {
+                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
+                    return el && !el.classList.contains('hidden');
+                },
+                { timeout: 5000 },
+                createdTabId
+            );
 
             const found = await page.evaluate((id) => {
                 const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
@@ -86,11 +110,19 @@ describe('Search Edge Cases', () => {
             expect(found).toBe(true);
 
             // Clear and search for "[Chars]"
-             await page.evaluate(() => {
+            await page.evaluate(() => {
                 document.getElementById('search-box').value = '';
             });
             await page.type('#search-box', '[Chars]');
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for filter to apply
+            await page.waitForFunction(
+                (id) => {
+                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
+                    return el && !el.classList.contains('hidden');
+                },
+                { timeout: 5000 },
+                createdTabId
+            );
 
             const found2 = await page.evaluate((id) => {
                 const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
@@ -102,9 +134,9 @@ describe('Search Edge Cases', () => {
             if (createdTabId) {
                 try {
                     await page.evaluate((id) => chrome.tabs.remove(id), createdTabId);
-                } catch (e) {}
+                } catch (e) { }
             }
-            try { await page.close(); } catch (e) {}
+            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 
@@ -121,7 +153,14 @@ describe('Search Edge Cases', () => {
 
             const xssInput = '<script>alert("XSS")</script>';
             await page.type('#search-box', xssInput);
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for search to process
+            await page.waitForFunction(
+                () => {
+                    const el = document.getElementById('no-search-results');
+                    return el && !el.classList.contains('hidden');
+                },
+                { timeout: 5000 }
+            );
 
             expect(dialogShown).toBe(false);
 
@@ -135,7 +174,7 @@ describe('Search Edge Cases', () => {
             expect(isVisible).toBe(true);
 
         } finally {
-            try { await page.close(); } catch (e) {}
+            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 
@@ -146,7 +185,14 @@ describe('Search Edge Cases', () => {
         try {
             const longString = 'a'.repeat(500);
             await page.type('#search-box', longString);
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for search to process
+            await page.waitForFunction(
+                () => {
+                    const el = document.getElementById('no-search-results');
+                    return el && !el.classList.contains('hidden');
+                },
+                { timeout: 5000 }
+            );
 
             // Verify UI is still responsive
             const searchBox = await page.$('#search-box');
@@ -157,7 +203,7 @@ describe('Search Edge Cases', () => {
             expect(isVisible).toBe(true);
 
         } finally {
-            try { await page.close(); } catch (e) {}
+            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 
@@ -168,7 +214,14 @@ describe('Search Edge Cases', () => {
         try {
             const query = 'nonExistentStringXYZ123';
             await page.type('#search-box', query);
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for no-results to appear
+            await page.waitForFunction(
+                () => {
+                    const el = document.getElementById('no-search-results');
+                    return el && !el.classList.contains('hidden');
+                },
+                { timeout: 5000 }
+            );
 
             const noResults = await page.$('#no-search-results');
             const isVisible = await page.evaluate(el => !el.classList.contains('hidden'), noResults);
@@ -179,7 +232,7 @@ describe('Search Edge Cases', () => {
             expect(isContentHidden).toBe(true);
 
         } finally {
-            try { await page.close(); } catch (e) {}
+            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 });

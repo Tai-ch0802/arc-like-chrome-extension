@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForTheme } = require('./setup');
 
 describe('Theme Switch Use Case', () => {
     let browser;
@@ -19,10 +19,7 @@ describe('Theme Switch Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for tab list to load to ensure app is initialized and listeners are attached
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
-             // If no tabs are rendered (unlikely but possible in empty state), wait a safe delay
-             return new Promise(r => setTimeout(r, 1000));
-        });
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -38,7 +35,9 @@ describe('Theme Switch Use Case', () => {
             // Select a different theme
             const newTheme = originalTheme === 'google' ? 'darcula' : 'google';
             await page.select('#theme-select-dropdown', newTheme);
-            await new Promise(r => setTimeout(r, 300));
+
+            // Wait for theme to be applied
+            await waitForTheme(page, newTheme);
 
             // Verify body has new theme
             const appliedTheme = await page.evaluate(() => {
@@ -48,7 +47,7 @@ describe('Theme Switch Use Case', () => {
 
             // Restore original theme
             await page.select('#theme-select-dropdown', originalTheme);
-            await new Promise(r => setTimeout(r, 200));
+            await waitForTheme(page, originalTheme);
         } finally {
             try { await page.close(); } catch (e) { }
         }
@@ -58,7 +57,7 @@ describe('Theme Switch Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for initialization
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => new Promise(r => setTimeout(r, 1000)));
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -66,12 +65,16 @@ describe('Theme Switch Use Case', () => {
             await page.click('#settings-toggle');
             await page.waitForSelector('#theme-select-dropdown');
             await page.select('#theme-select-dropdown', 'darcula');
-            await new Promise(r => setTimeout(r, 500));
 
-            // Close modal by clicking outside or reloading
+            // Wait for theme to be applied
+            await waitForTheme(page, 'darcula');
+
+            // Close modal by reloading
             await page.reload();
             await page.waitForSelector('#tab-list');
-            await new Promise(r => setTimeout(r, 500));
+
+            // Wait for theme to be restored from storage
+            await waitForTheme(page, 'darcula');
 
             // Verify theme persisted
             const persistedTheme = await page.evaluate(() => {
@@ -83,7 +86,7 @@ describe('Theme Switch Use Case', () => {
             await page.click('#settings-toggle');
             await page.waitForSelector('#theme-select-dropdown');
             await page.select('#theme-select-dropdown', 'geek');
-            await new Promise(r => setTimeout(r, 200));
+            await waitForTheme(page, 'geek');
         } finally {
             try { await page.close(); } catch (e) { }
         }
@@ -93,7 +96,7 @@ describe('Theme Switch Use Case', () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         // Wait for initialization
-        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => new Promise(r => setTimeout(r, 1000)));
+        await page.waitForSelector('#tab-list', { timeout: 10000 });
         await page.waitForSelector('#settings-toggle');
 
         try {
