@@ -267,6 +267,8 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
         }
 
         containerElement.appendChild(fragment);
+    }).catch(err => {
+        console.warn('Failed to load reading list sort preference:', err);
     });
 }
 
@@ -297,6 +299,8 @@ function initToggleButton() {
     api.getStorage('sync', ['readingListCollapsed']).then(result => {
         const isCollapsed = result.readingListCollapsed === true;
         setCollapsedState(isCollapsed);
+    }).catch(err => {
+        console.warn('Failed to load reading list collapsed state:', err);
     });
 
     toggleBtn.addEventListener('click', () => {

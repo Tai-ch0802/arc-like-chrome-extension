@@ -224,7 +224,18 @@ async function setupAllAlarms() {
 
 /**
  * Fetches and parses an RSS feed with timeout.
- * Uses regex-based parsing for service worker compatibility (no DOMParser).
+ * 
+ * Uses regex-based parsing because this module runs in the Service Worker context,
+ * where DOMParser is not available. This is an intentional design decision.
+ * 
+ * Known Limitations:
+ * - Deeply nested same-named tags may not parse correctly
+ * - Unusual attribute ordering in self-closing tags may be missed
+ * - Malformed XML may cause incomplete extraction
+ * 
+ * These edge cases are rare in real-world RSS/Atom feeds and the regex approach
+ * handles the vast majority of feeds correctly.
+ * 
  * @param {string} feedUrl - RSS feed URL.
  * @returns {Promise<{title: string, items: Array<{title: string, url: string}>}>}
  */
