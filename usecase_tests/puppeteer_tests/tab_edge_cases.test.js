@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForTabCount } = require('./setup');
 
 describe('Tab Edge Cases', () => {
     let browser;
@@ -24,6 +24,9 @@ describe('Tab Edge Cases', () => {
             // Wait for initial load
             await page.waitForSelector('.tab-item');
 
+            // Get initial tab count
+            const initialCount = await page.$$eval('.tab-item', tabs => tabs.length);
+
             // Create 20 tabs
             await page.evaluate(async () => {
                 const promises = [];
@@ -35,16 +38,16 @@ describe('Tab Edge Cases', () => {
                 await Promise.all(promises);
             });
 
-            // Wait for tabs to render
-            await new Promise(r => setTimeout(r, 1000));
+            // Wait for tabs to render using state-based waiting
+            await waitForTabCount(page, initialCount + 20);
 
             // Verify count
             const tabCount = await page.$$eval('.tab-item', tabs => tabs.length);
-            // 20 new tabs + 1 initial tab (sidepanel) + any other existing tabs
-            expect(tabCount).toBeGreaterThanOrEqual(20);
+            // 20 new tabs + initial tabs
+            expect(tabCount).toBeGreaterThanOrEqual(initialCount + 20);
 
         } finally {
-            try { await page.close(); } catch (e) { }
+            try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
 
@@ -61,8 +64,8 @@ describe('Tab Edge Cases', () => {
                 });
             });
 
-            // Wait for render
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for the pinned tab to appear in the DOM (state-based waiting)
+            await page.waitForSelector('.tab-item[data-url="https://example.com/pinned"]', { timeout: 5000 });
 
             // Verify tab exists and has pinned data/url
             // Note: Our current UI might not explicitly verify "visual" pinned state without screenshot,
@@ -76,12 +79,12 @@ describe('Tab Edge Cases', () => {
             });
             expect(pinnedTabExists).toBe(true);
 
-            // Check if it is in DOM
+            // Check if it is in DOM (already confirmed by waitForSelector, but verify explicitly)
             const tabInDom = await page.$eval('.tab-item[data-url="https://example.com/pinned"]', el => !!el);
             expect(tabInDom).toBe(true);
 
         } finally {
-            try { await page.close(); } catch (e) { }
+            try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
 
@@ -109,15 +112,23 @@ describe('Tab Edge Cases', () => {
                 });
             }, tabId);
 
-            // Wait for UI update
-            await new Promise(r => setTimeout(r, 1000));
+            // Wait for UI update using state-based waiting (wait for data-url attribute to change)
+            await page.waitForFunction(
+                (id, expectedUrl) => {
+                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
+                    return el && el.dataset.url === expectedUrl;
+                },
+                { timeout: 10000 },
+                tabId,
+                'https://example.com/updated'
+            );
 
             // Verify DOM data-url update
             const newUrl = await page.$eval(`.tab-item[data-tab-id="${tabId}"]`, el => el.dataset.url);
             expect(newUrl).toBe('https://example.com/updated');
 
         } finally {
-            try { await page.close(); } catch (e) { }
+            try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
 

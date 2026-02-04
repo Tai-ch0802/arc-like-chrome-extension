@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForTheme } = require('./setup');
 
 describe('Theme Edge Cases', () => {
     let browser;
@@ -34,8 +34,8 @@ describe('Theme Edge Cases', () => {
             await page.reload();
             await page.waitForSelector('.tab-item');
 
-            // Allow some time for async storage check and theme application
-            await new Promise(r => setTimeout(r, 500));
+            // Wait for theme to be applied using state-based waiting
+            await waitForTheme(page, 'geek');
 
             // Verify body dataset theme is 'geek' (default)
             const theme = await page.evaluate(() => document.body.dataset.theme);
@@ -49,7 +49,7 @@ describe('Theme Edge Cases', () => {
             expect(storedTheme).toBe('geek');
 
         } finally {
-            try { await page.close(); } catch (e) { }
+            try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
 

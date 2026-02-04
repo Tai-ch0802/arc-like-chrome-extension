@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser } = require('./setup');
+const { setupBrowser, teardownBrowser, waitForElementRemoved } = require('./setup');
 
 describe('Group Edge Cases', () => {
     let browser;
@@ -32,32 +32,35 @@ describe('Group Edge Cases', () => {
             });
 
             // Wait for group render
-            await page.waitForSelector(`.tab-group-header[data-group-id="${groupId}"]`);
+            const dotSelector = `.tab-group-header[data-group-id="${groupId}"] .tab-group-color-dot`;
+            await page.waitForSelector(dotSelector);
 
-            // Verify initial color (blue is often #1a73e8 or similar, but let's check the style update)
-            // The renderer sets --group-bg-color and the dot color.
+            // Get initial color before changing
+            const initialColor = await page.$eval(dotSelector, el => el.style.backgroundColor);
 
             // Update color to 'red'
             await page.evaluate(async (gid) => {
                 await new Promise(resolve => chrome.tabGroups.update(gid, { color: 'red' }, resolve));
             }, groupId);
 
-            // Wait for update
-            await new Promise(r => setTimeout(r, 1000));
+            // Wait for color to change using state-based waiting
+            await page.waitForFunction(
+                (selector, oldColor) => {
+                    const el = document.querySelector(selector);
+                    return el && el.style.backgroundColor !== oldColor;
+                },
+                { timeout: 5000 },
+                dotSelector,
+                initialColor
+            );
 
-            // Verify the color dot style or computed style
-            // We check if the element has updated styles.
-            const colorDotColor = await page.$eval(`.tab-group-header[data-group-id="${groupId}"] .tab-group-color-dot`, el => {
-                return el.style.backgroundColor;
-            });
-
-            // Red in Chrome groups is usually associated with specific hex, but checking it changed from blue is enough
-            // or we can check if it matches the GROUP_COLORS['red'] from source if we knew it.
-            // Let's just assert it is valid and potentially red-ish.
-            expect(colorDotColor).toBeTruthy();
+            // Verify the color dot style has actually changed
+            const newColor = await page.$eval(dotSelector, el => el.style.backgroundColor);
+            expect(newColor).not.toBe(initialColor);
+            expect(newColor).toBeTruthy();
 
         } finally {
-            try { await page.close(); } catch (e) { }
+            try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
 
@@ -84,15 +87,15 @@ describe('Group Edge Cases', () => {
                 await new Promise(resolve => chrome.tabs.ungroup(tid, resolve));
             }, tabId);
 
-            // Wait for update - group should disappear
-            await new Promise(r => setTimeout(r, 1000));
+            // Wait for group header to be removed using state-based waiting
+            await waitForElementRemoved(page, groupSelector);
 
             // Verify group header is gone
             const groupExists = await page.$(groupSelector);
             expect(groupExists).toBeNull();
 
         } finally {
-            try { await page.close(); } catch (e) { }
+            try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
 
