@@ -3,6 +3,7 @@ import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG } from '../icons.js';
 import { tabListContainer } from './elements.js';
 import { showContextMenu } from './contextMenuManager.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 /**
  * Module-level state for event delegation.
@@ -404,8 +405,8 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     }
 
     const renderedTabIds = new Set();
-    // Use DocumentFragment to batch DOM updates
-    const fragment = document.createDocumentFragment();
+    const topLevelChildren = [];
+
     const splitTabsMap = new Map();
     for (const tab of tabs) {
         if (tab.splitViewId && tab.splitViewId > 0) {
@@ -429,7 +430,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     };
 
     // Helper to render split groups
-    const renderSplitOrTab = (tab, container) => {
+    const renderSplitOrTab = (tab, targetArray) => {
         if (renderedTabIds.has(tab.id)) return;
 
         if (tab.splitViewId && tab.splitViewId > 0) {
@@ -446,7 +447,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                     splitGroup.appendChild(tabElement);
                     renderedTabIds.add(splitTab.id);
                 });
-                container.appendChild(splitGroup);
+                targetArray.push(splitGroup);
                 return;
             }
         }
@@ -454,7 +455,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
         // Fallback to normal rendering if not split view or only 1 tab in split
         const tabElement = getOrCreateTabElement(tab);
         tabElement.classList.remove('in-split-view'); // Ensure it's clean if it was in split before
-        container.appendChild(tabElement);
+        targetArray.push(tabElement);
         renderedTabIds.add(tab.id);
     };
 
@@ -494,14 +495,11 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
             groupHeader.dataset.groupId = group.id; // Ensure ID is set
             newGroupHeaderElementsCache.set(group.id, groupHeader);
-            fragment.appendChild(groupHeader);
+            topLevelChildren.push(groupHeader);
 
             // Get or create groupContent container
             let groupContent = groupContentElementsCache.get(group.id);
-            if (groupContent) {
-                // Reuse existing container - clear its children
-                groupContent.innerHTML = '';
-            } else {
+            if (!groupContent) {
                 groupContent = document.createElement('div');
                 groupContent.className = 'tab-group-content';
             }
@@ -511,19 +509,21 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             // Optimization: Use pre-grouped tabs
             const tabsInThisGroup = tabsByGroup.get(group.id) || [];
 
+            const groupChildren = [];
             for (const groupTab of tabsInThisGroup) {
-                renderSplitOrTab(groupTab, groupContent);
+                renderSplitOrTab(groupTab, groupChildren);
             }
-            fragment.appendChild(groupContent);
+            reconcileDOM(groupContent, groupChildren);
+
+            topLevelChildren.push(groupContent);
 
         } else {
-            renderSplitOrTab(tab, fragment);
+            renderSplitOrTab(tab, topLevelChildren);
         }
     }
 
-    // Clear the container to remove any elements that were not reused (deleted tabs)
-    tabListContainer.innerHTML = '';
-    tabListContainer.appendChild(fragment);
+    // Reconcile top-level container
+    reconcileDOM(tabListContainer, topLevelChildren);
 
     // Update caches
     tabElementsCache = newTabElementsCache;
