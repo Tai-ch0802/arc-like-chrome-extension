@@ -11,7 +11,8 @@
     "tabGroups",
     "storage",
     "readingList",
-    "alarms"
+    "alarms",
+    "offscreen"
   ],
   "host_permissions": [
     "*://*/*"

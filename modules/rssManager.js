@@ -225,16 +225,8 @@ async function setupAllAlarms() {
 /**
  * Fetches and parses an RSS feed with timeout.
  * 
- * Uses regex-based parsing because this module runs in the Service Worker context,
- * where DOMParser is not available. This is an intentional design decision.
- * 
- * Known Limitations:
- * - Deeply nested same-named tags may not parse correctly
- * - Unusual attribute ordering in self-closing tags may be missed
- * - Malformed XML may cause incomplete extraction
- * 
- * These edge cases are rare in real-world RSS/Atom feeds and the regex approach
- * handles the vast majority of feeds correctly.
+ * Uses the Offscreen API to parse XML with DOMParser in a hidden document context,
+ * since DOMParser is not available in the Service Worker environment.
  * 
  * @param {string} feedUrl - RSS feed URL.
  * @returns {Promise<{title: string, items: Array<{title: string, url: string}>}>}
@@ -252,61 +244,27 @@ async function fetchRssFeed(feedUrl) {
             throw new Error(`HTTP ${response.status}`);
         }
 
-        const text = await response.text();
+        const xmlText = await response.text();
 
-        // Detect feed type: Atom uses <feed> with <entry>, RSS uses <channel> with <item>
-        const hasAtomFeed = /<feed[^>]*>/i.test(text);
-        const hasAtomEntry = /<entry[^>]*>/i.test(text);
-        const isAtom = hasAtomFeed && hasAtomEntry;
+        // Ensure offscreen document exists
+        await ensureOffscreenDocument();
 
-        let feedTitle = '';
-        let items = [];
+        // Send XML to offscreen document for parsing with DOMParser
+        const result = await chrome.runtime.sendMessage({
+            action: 'parseRssFeed',
+            xmlText: xmlText
+        });
 
-        if (isAtom) {
-            // Parse Atom format using regex
-            feedTitle = extractTagContent(text, 'title') || feedUrl;
-
-            // Extract entries
-            const entryRegex = /<entry[^>]*>([\s\S]*?)<\/entry>/gi;
-            let match;
-            while ((match = entryRegex.exec(text)) !== null) {
-                const entryContent = match[1];
-                const title = extractTagContent(entryContent, 'title') || '';
-                const url = extractAtomLink(entryContent) || '';
-                if (url) {
-                    items.push({ title: decodeXmlEntities(title), url });
-                }
-            }
-        } else {
-            // Parse RSS format using regex
-            // Get channel title - try multiple approaches
-            const channelTitleMatch = text.match(/<channel[^>]*>[\s\S]*?<title[^>]*>([\s\S]*?)<\/title>/i);
-            if (channelTitleMatch) {
-                // Check for CDATA
-                const cdataMatch = channelTitleMatch[1].match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
-                feedTitle = cdataMatch ? cdataMatch[1] : channelTitleMatch[1].trim();
-            }
-            if (!feedTitle) feedTitle = feedUrl;
-
-            // Extract items
-            const itemRegex = /<item[^>]*>([\s\S]*?)<\/item>/gi;
-            let match;
-            while ((match = itemRegex.exec(text)) !== null) {
-                const itemContent = match[1];
-                const title = extractTagContent(itemContent, 'title') || '';
-                const url = extractTagContent(itemContent, 'link') || extractLinkFromGuid(itemContent) || '';
-                if (url) {
-                    items.push({ title: decodeXmlEntities(title), url: url.trim() });
-                }
-            }
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to parse RSS feed');
         }
 
         // Validate we got some items
-        if (items.length === 0) {
+        if (result.data.items.length === 0) {
             console.warn('RSS: No items found in feed:', feedUrl);
         }
 
-        return { title: decodeXmlEntities(feedTitle), items };
+        return result.data;
     } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === 'AbortError') {
@@ -315,6 +273,42 @@ async function fetchRssFeed(feedUrl) {
         console.error('Error fetching RSS feed:', feedUrl, err);
         throw err;
     }
+}
+
+// --- Offscreen Document Management ---
+
+const OFFSCREEN_DOCUMENT_PATH = '/offscreen.html';
+let creatingOffscreenDocument = null;
+
+/**
+ * Ensures the offscreen document exists, creating it if necessary.
+ * Uses a singleton pattern to prevent multiple document creations.
+ */
+async function ensureOffscreenDocument() {
+    // Check if document already exists
+    const existingContexts = await chrome.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+        documentUrls: [chrome.runtime.getURL(OFFSCREEN_DOCUMENT_PATH)]
+    });
+
+    if (existingContexts.length > 0) {
+        return; // Document already exists
+    }
+
+    // Prevent multiple concurrent creation attempts
+    if (creatingOffscreenDocument) {
+        await creatingOffscreenDocument;
+        return;
+    }
+
+    creatingOffscreenDocument = chrome.offscreen.createDocument({
+        url: OFFSCREEN_DOCUMENT_PATH,
+        reasons: [chrome.offscreen.Reason.DOM_PARSER],
+        justification: 'Parse RSS/Atom XML feeds using DOMParser'
+    });
+
+    await creatingOffscreenDocument;
+    creatingOffscreenDocument = null;
 }
 
 /**
