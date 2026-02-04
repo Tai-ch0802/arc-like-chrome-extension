@@ -18,6 +18,10 @@ describe('Settings Panel Use Case', () => {
     test('should open settings dialog when clicking settings button', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for tab list to load to ensure app is initialized
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
+            return new Promise(r => setTimeout(r, 1000));
+        });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -42,6 +46,10 @@ describe('Settings Panel Use Case', () => {
     test('should have collapsible sections in settings', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for tab list to load to ensure app is initialized
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
+            return new Promise(r => setTimeout(r, 1000));
+        });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -62,6 +70,10 @@ describe('Settings Panel Use Case', () => {
     test('should expand/collapse sections when clicking headers', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for tab list to load to ensure app is initialized
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
+            return new Promise(r => setTimeout(r, 1000));
+        });
         await page.waitForSelector('#settings-toggle');
 
         try {
@@ -109,6 +121,10 @@ describe('Settings Panel Use Case', () => {
     test('should show shortcuts section with current shortcut', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
+        // Wait for tab list to load to ensure app is initialized
+        await page.waitForSelector('.tab-item', { timeout: 10000 }).catch(() => {
+            return new Promise(r => setTimeout(r, 1000));
+        });
         await page.waitForSelector('#settings-toggle');
 
         try {
