@@ -22,6 +22,10 @@
 | `other_windows.test.js` | 其他視窗 | 2 | P1 |
 | `theme_switch.test.js` | 主題切換 | 3 | P2 |
 | `settings_panel.test.js` | 設定面板 | 4 | P2 |
+| `tab_edge_cases.test.js` | 分頁 Edge Cases | 3 | P1 |
+| `group_edge_cases.test.js` | 群組 Edge Cases | 2 | P1 |
+| `theme_edge_cases.test.js` | 主題 Edge Cases | 1 | P2 |
+
 
 **總計: 47 測試案例**
 
@@ -32,7 +36,9 @@
 ### 待補充的 Edge Cases
 - [x] 搜尋：空字串、特殊字元、超長輸入 (Implemented in `search_edge_cases.test.js`)
 - [x] 書籤：無效 URL、重複書籤、巢狀資料夾 (Implemented in `bookmark_edge_cases.test.js`)
-- [x] 分頁：大量分頁處理、Pinned Tabs (Implemented in `tabs_edge_cases.test.js`)
+- [x] 分頁：大量分頁處理、Pinned Tabs、URL 更新 (Implemented in `tab_edge_cases.test.js`)
+- [x] 群組：空群組、顏色變更 (Implemented in `group_edge_cases.test.js`)
+- [x] 主題：自訂主題資料遺失 Fallback (Implemented in `theme_edge_cases.test.js`)
 - [x] 群組：跨視窗操作 (Tested in `other_windows.test.js` and `groups_edge_cases.test.js`)
 - [x] 群組：群組顏色/標題變更 (Implemented in `groups_edge_cases.test.js`)
 
@@ -72,13 +78,14 @@
 
 ## 更新日誌
 
-### 2026-02-02 - Edge Case 補充 Part 2
-- 新增 `tabs_edge_cases.test.js` (2 tests): 覆蓋大量分頁 (Stress Test) 與 Pinned Tabs 顯示。
+### 2026-02-02 - Edge Case 補充 (Part 2)
+- 新增 `tab_edge_cases.test.js` (3 tests): 覆蓋大量分頁、Pinned Tabs、URL 更新
+- 新增 `group_edge_cases.test.js` (2 tests): 覆蓋群組顏色變更、空群組自動移除
+- 新增 `theme_edge_cases.test.js` (1 test): 覆蓋自訂主題資料遺失 Fallback
 - 新增 `groups_edge_cases.test.js` (3 tests): 覆蓋群組顏色變更、標題變更、API 移動分頁進群組。
 - 修復 `other_windows.test.js`: 重構為 Fresh Page 模式，增加對 Headless 環境下 URL/Title 檢查的容錯性。
-- 總測試案例增至 47 個。
+- 總測試案例增至 46 個
 
-### 2026-02-02 - Edge Case 補充
 - 新增 `search_edge_cases.test.js` (5 tests): 覆蓋特殊字元、Regex、XSS、長輸入、無結果
 - 新增 `bookmark_edge_cases.test.js` (3 tests): 覆蓋深層巢狀、重複書籤、無效 URL
 - 總測試案例增至 40 個
