@@ -19,8 +19,10 @@ async function setupBrowser() {
     await page.setViewport({ width: 1280, height: 800 });
     // Get the extension ID dynamically if possible, or from manifest.json
     // For now, we'll assume the side panel URL structure
+    // Add timeout to prevent infinite hang in CI environments
     const extensionTarget = await browser.waitForTarget(
-        target => target.type() === 'service_worker' || target.url().startsWith('chrome-extension://')
+        target => target.type() === 'service_worker' || target.url().startsWith('chrome-extension://'),
+        { timeout: 30000 }
     );
     const extensionId = extensionTarget.url().split('/')[2];
     const sidePanelUrl = `chrome-extension://${extensionId}/sidepanel.html`;
@@ -31,7 +33,9 @@ async function setupBrowser() {
 }
 
 async function teardownBrowser(browser) {
-    await browser.close();
+    if (browser) {
+        await browser.close();
+    }
 }
 
 /**
