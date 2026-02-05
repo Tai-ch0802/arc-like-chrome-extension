@@ -53,4 +53,82 @@ describe('Theme Edge Cases', () => {
         }
     }, 60000);
 
+    test('should handle rapid theme switching without crashing', async () => {
+        const page = await browser.newPage();
+        await page.goto(sidePanelUrl);
+        await page.waitForSelector('#settings-toggle');
+
+        try {
+            await page.click('#settings-toggle');
+            await page.waitForSelector('#theme-select-dropdown');
+
+            const themes = ['geek', 'google', 'darcula', 'geek-blue'];
+
+            // Rapidly select themes
+            for (const theme of themes) {
+                await page.select('#theme-select-dropdown', theme);
+                // No await for theme application to simulate rapid user action
+            }
+
+            // Finally select one and verify it settles
+            await page.select('#theme-select-dropdown', 'geek');
+            await waitForTheme(page, 'geek');
+
+            // Verify app is still alive
+            const isAlive = await page.evaluate(() => document.body.dataset.theme === 'geek');
+            expect(isAlive).toBe(true);
+
+        } finally {
+            try { await page.close(); } catch (e) { }
+        }
+    }, 60000);
+
+    test('should handle storage quota exceeded gracefully', async () => {
+        const page = await browser.newPage();
+        await page.goto(sidePanelUrl);
+        await page.waitForSelector('#settings-toggle');
+
+        try {
+            // Mock storage.sync.set failure
+            await page.evaluate(() => {
+                // We don't overwrite the original function but the property on the object
+                // Note: In some environments chrome.storage.sync might be read-only/configurable.
+                // If this fails, we skip.
+                try {
+                    const originalSet = chrome.storage.sync.set;
+                    // We need to overwrite it on the prototype or the object instance?
+                    // Puppeteer evaluate context is separate.
+                    // Usually overriding works.
+                    chrome.storage.sync.set = (items, callback) => {
+                        console.log('Mocking storage error');
+                        // Simulate async callback
+                        setTimeout(() => {
+                            chrome.runtime.lastError = { message: 'QUOTA_BYTES_PER_ITEM quota exceeded' };
+                            if (callback) callback();
+                            chrome.runtime.lastError = undefined;
+                        }, 10);
+                    };
+                } catch(e) {
+                    console.error('Failed to mock storage', e);
+                }
+            });
+
+            await page.click('#settings-toggle');
+            await page.waitForSelector('#theme-select-dropdown');
+
+            // Trigger save
+            await page.select('#theme-select-dropdown', 'darcula');
+
+            // Wait for theme to be applied in DOM (optimistic update)
+            await waitForTheme(page, 'darcula');
+
+            // Verify no crash (element still exists)
+            const dropdown = await page.$('#theme-select-dropdown');
+            expect(dropdown).not.toBeNull();
+
+        } finally {
+             try { await page.close(); } catch (e) { }
+        }
+    }, 60000);
+
 });

@@ -235,4 +235,91 @@ describe('Search Edge Cases', () => {
             try { await page.close(); } catch (e) { }
         }
     }, 60000);
+
+    test('should handle rapid input updates correctly (race condition check)', async () => {
+        const page = await browser.newPage();
+        await page.goto(sidePanelUrl);
+        await page.waitForSelector('#tab-list');
+
+        let createdTabIds = [];
+        try {
+            // Create tabs with specific titles (since search logic matches title or domain, not full URL path)
+            const ids = await page.evaluate(async () => {
+                const t1 = await new Promise(r => chrome.tabs.create({ url: 'data:text/html,<title>search-race-1</title>', active: false }, r));
+                const t2 = await new Promise(r => chrome.tabs.create({ url: 'data:text/html,<title>search-race-2</title>', active: false }, r));
+                return [t1.id, t2.id];
+            });
+            createdTabIds = ids;
+
+            // Wait for tabs to render
+            await page.waitForFunction(
+                (ids) => ids.every(id => document.querySelector(`.tab-item[data-tab-id="${id}"]`)),
+                { timeout: 10000 },
+                createdTabIds
+            );
+
+            const input = '#search-box';
+
+            // Type common prefix -> matches both
+            await page.type(input, 'search-race');
+
+            // Wait for 2 visible tabs
+            await page.waitForFunction((ids) => {
+                 const t1 = document.querySelector(`.tab-item[data-tab-id="${ids[0]}"]`);
+                 const t2 = document.querySelector(`.tab-item[data-tab-id="${ids[1]}"]`);
+                 return t1 && !t1.classList.contains('hidden') && t2 && !t2.classList.contains('hidden');
+            }, {}, createdTabIds);
+
+            // Type specific suffix for first tab
+            await page.type(input, '-1');
+
+            // Wait for 1 visible tab (Tab 1)
+            await page.waitForFunction((ids) => {
+                 const t1 = document.querySelector(`.tab-item[data-tab-id="${ids[0]}"]`);
+                 const t2 = document.querySelector(`.tab-item[data-tab-id="${ids[1]}"]`);
+                 return t1 && !t1.classList.contains('hidden') && t2 && t2.classList.contains('hidden');
+            }, {}, createdTabIds);
+
+            // Rapidly change to match second tab: backspace twice and type '-2'
+            // We use keyboard press for speed
+            await page.focus(input);
+            await page.keyboard.press('Backspace');
+            await page.keyboard.press('Backspace');
+            await page.type(input, '-2');
+
+            // Debug: Check input value
+            const finalValue = await page.$eval(input, el => el.value);
+            if (finalValue !== 'search-race-2') {
+                console.log('Search value mismatch:', finalValue);
+            }
+
+            // Wait for results to settle to Tab 2
+            try {
+                await page.waitForFunction((ids) => {
+                     const t1 = document.querySelector(`.tab-item[data-tab-id="${ids[0]}"]`);
+                     const t2 = document.querySelector(`.tab-item[data-tab-id="${ids[1]}"]`);
+                     // Tab 1 hidden, Tab 2 visible
+                     return t1 && t1.classList.contains('hidden') && t2 && !t2.classList.contains('hidden');
+                }, { timeout: 5000 }, createdTabIds);
+            } catch (e) {
+                // Debug failure
+                const t1Hidden = await page.$eval(`.tab-item[data-tab-id="${createdTabIds[0]}"]`, el => el.classList.contains('hidden'));
+                const t2Hidden = await page.$eval(`.tab-item[data-tab-id="${createdTabIds[1]}"]`, el => el.classList.contains('hidden'));
+                console.log('T1 hidden:', t1Hidden);
+                console.log('T2 hidden:', t2Hidden);
+                throw e;
+            }
+
+            // Assertion is implicit in waitForFunction success
+            expect(true).toBe(true);
+
+        } finally {
+            if (createdTabIds.length > 0) {
+                 try {
+                    await page.evaluate((ids) => chrome.tabs.remove(ids), createdTabIds);
+                } catch (e) { }
+            }
+            try { await page.close(); } catch (e) { }
+        }
+    }, 60000);
 });
