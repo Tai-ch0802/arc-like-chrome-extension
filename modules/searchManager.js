@@ -20,16 +20,9 @@ async function handleSearch() {
     }
 
     // 過濾分頁和書籤
-    const tabCount = filterTabsAndGroups(keywords);
-    const otherWindowsTabCount = filterOtherWindowsTabs(keywords);
+    const tabCount = filterTabsAndGroups(keywords, regexes);
+    const otherWindowsTabCount = filterOtherWindowsTabs(keywords, regexes);
     const bookmarkCount = await filterBookmarks(keywords, regexes);
-
-    // 高亮匹配文字
-    if (keywords.length > 0) {
-        highlightMatches(regexes);
-    } else {
-        clearHighlights();
-    }
 
     // 發送結果計數事件 (include other windows tabs in count)
     const event = new CustomEvent('searchResultUpdated', {
@@ -115,6 +108,64 @@ function filterTabItem(item, tab, keywords) {
 }
 
 /**
+ * Updates the highlighting of a tab item.
+ * @param {HTMLElement} item - The tab item element.
+ * @param {RegExp[]} regexes - The regexes to highlight.
+ */
+function updateItemHighlighting(item, regexes) {
+    const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
+
+    // Always clear existing domain match first to avoid duplicates or stale state
+    const existingDomain = item.querySelector('.matched-domain');
+    if (existingDomain) {
+        existingDomain.remove();
+    }
+
+    if (!titleElement) return;
+
+    // If regexes is empty, we are clearing highlights
+    if (regexes.length === 0) {
+        if (titleElement.dataset.originalText) {
+            titleElement.textContent = titleElement.dataset.originalText;
+            delete titleElement.dataset.originalText;
+        }
+        return;
+    }
+
+    // We are highlighting
+    // Get original text: either from dataset or current textContent
+    // If dataset exists, use it (it's the clean source). If not, current textContent is the source.
+    const originalTitle = titleElement.dataset.originalText || titleElement.textContent;
+
+    const highlightedTitle = highlightText(originalTitle, regexes, 'title');
+
+    // Update DOM only if different (avoids layout thrashing if no change)
+    if (highlightedTitle !== titleElement.innerHTML) {
+        titleElement.innerHTML = highlightedTitle;
+        // Store original text if not already stored
+        if (!titleElement.dataset.originalText) {
+            titleElement.dataset.originalText = originalTitle;
+        }
+    }
+
+    // Handle URL/Domain matching
+    const isUrlMatch = item.dataset.urlMatch === 'true';
+    const matchedDomain = item.dataset.matchedDomain;
+
+    if (isUrlMatch && matchedDomain) {
+        const domainElement = document.createElement('div');
+        domainElement.className = 'matched-domain';
+        const highlightedDomain = highlightText(matchedDomain, regexes, 'url');
+        domainElement.innerHTML = highlightedDomain + '...';
+
+        const titleWrapper = item._refs ? item._refs.titleWrapper : item.querySelector('.tab-content-wrapper');
+        if (titleWrapper) {
+            titleWrapper.appendChild(domainElement);
+        }
+    }
+}
+
+/**
  * 更新群組 header 的可見性與展開/收合狀態
  * @param {HTMLElement} header - Group header 元素
  * @param {HTMLElement} content - Group content 元素
@@ -143,7 +194,7 @@ function updateGroupVisibility(header, content, visibleTabsCount, keywords) {
 }
 
 // 過濾分頁和群組，回傳可見分頁數量
-function filterTabsAndGroups(keywords) {
+function filterTabsAndGroups(keywords, regexes = []) {
     const tabElements = getTabElementsCache();
     const groupHeaderElements = getGroupHeaderElementsCache();
     const tabsCache = getTabCache();
@@ -160,6 +211,7 @@ function filterTabsAndGroups(keywords) {
             if (groupId > 0) {
                 groupVisibility.set(groupId, (groupVisibility.get(groupId) || 0) + 1);
             }
+            updateItemHighlighting(item, regexes);
         }
     }
 
@@ -173,7 +225,7 @@ function filterTabsAndGroups(keywords) {
 }
 
 // 過濾其他視窗的分頁（使用共用 filter helpers，優化版本使用快取迭代）
-function filterOtherWindowsTabs(keywords) {
+function filterOtherWindowsTabs(keywords, regexes = []) {
     const list = document.getElementById('other-windows-list');
     if (!list) return 0;
 
@@ -209,6 +261,7 @@ function filterOtherWindowsTabs(keywords) {
                     visibleGroupCounts.set(gId, (visibleGroupCounts.get(gId) || 0) + 1);
                 }
             }
+            updateItemHighlighting(item, regexes);
         }
     }
 
@@ -362,103 +415,6 @@ function filterTreeByIds(nodes, visibleIds) {
 
 
 
-// 高亮匹配的文字
-function highlightMatches(regexes) {
-
-    // 高亮分頁標題（包含其他視窗）
-    // Optimization: Iterate over cached elements instead of querySelectorAll
-    const tabElements = getTabElementsCache();
-    const otherTabElements = getOtherTabElementsCache();
-
-    const highlightTabItem = (item) => {
-        // Skip hidden items
-        if (item.classList.contains('hidden')) return;
-
-        const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
-        const isUrlMatch = item.dataset.urlMatch === 'true';
-        const matchedDomain = item.dataset.matchedDomain;
-
-        if (titleElement) {
-            // Check if we already have original text stored (to avoid double escaping or loss of original)
-            // If it's already highlighted, we should start from original text
-            const originalTitle = titleElement.dataset.originalText || titleElement.textContent;
-
-            const highlightedTitle = highlightText(originalTitle, regexes, 'title');
-
-            // 只在有高亮時才更新 DOM
-            if (highlightedTitle !== originalTitle) {
-                titleElement.innerHTML = highlightedTitle;
-                if (!titleElement.dataset.originalText) {
-                    titleElement.dataset.originalText = originalTitle;
-                }
-            }
-
-            // 如果是 URL 匹配，顯示 domain
-            if (isUrlMatch && matchedDomain) {
-                // 移除舊的 domain 顯示（如果有）
-                const existingDomain = item.querySelector('.matched-domain');
-                if (existingDomain) {
-                    existingDomain.remove();
-                }
-
-                // 建立 domain 顯示元素
-                const domainElement = document.createElement('div');
-                domainElement.className = 'matched-domain';
-                const highlightedDomain = highlightText(matchedDomain, regexes, 'url');
-                domainElement.innerHTML = highlightedDomain + '...';
-
-                // 附加到 titleWrapper
-                const titleWrapper = item._refs ? item._refs.titleWrapper : item.querySelector('.tab-content-wrapper');
-                if (titleWrapper) {
-                    titleWrapper.appendChild(domainElement);
-                }
-            }
-        }
-    };
-
-    for (const item of tabElements.values()) {
-        highlightTabItem(item);
-    }
-
-    for (const item of otherTabElements.values()) {
-        highlightTabItem(item);
-    }
-
-    // 書籤高亮部分已移除，改為在 renderBookmarks 中處理
-}
-
-// 清除所有高亮
-function clearHighlights() {
-    // 清除分頁高亮（包含其他視窗）
-    // Optimization: Use caches to clear highlights
-    const tabElements = getTabElementsCache();
-    const otherTabElements = getOtherTabElementsCache();
-
-    const clearTabItem = (item) => {
-        const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
-        if (titleElement && titleElement.dataset.originalText) {
-            titleElement.textContent = titleElement.dataset.originalText;
-            delete titleElement.dataset.originalText;
-        }
-
-        const domainElement = item.querySelector('.matched-domain');
-        if (domainElement) {
-            domainElement.remove();
-        }
-    };
-
-    for (const item of tabElements.values()) {
-        clearTabItem(item);
-    }
-
-    for (const item of otherTabElements.values()) {
-        clearTabItem(item);
-    }
-
-    // 書籤高亮清除部分已移除，因為搜尋結束後會重新渲染書籤列表
-}
-
-
 // 使用 debounce 包裝的搜尋函式
 const debouncedSearch = debounce(() => {
     handleSearch();
@@ -466,9 +422,6 @@ const debouncedSearch = debounce(() => {
 
 function initialize() {
     ui.searchBox.addEventListener('input', () => {
-        if (ui.searchBox.value.trim().length > 0) {
-            ui.setSearchLoading(true);
-        }
         debouncedSearch();
     });
 }
