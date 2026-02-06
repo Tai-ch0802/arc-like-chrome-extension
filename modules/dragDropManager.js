@@ -30,6 +30,14 @@ function initializeTabSortable(updateTabList) {
         scroll: true,
         scrollSensitivity: 50,
         scrollSpeed: 15,
+        // Specify which elements can be dragged:
+        // - .tab-item (but not .in-split-view - those are filtered out)
+        // - .tab-group-header
+        // - .tab-split-group (entire split view groups)
+        draggable: '.tab-item, .tab-group-header, .tab-split-group',
+        // Prevent dragging individual tabs within a split view to preserve splitViewId
+        filter: '.in-split-view',
+        preventOnFilter: true,
         onEnd: (evt) => handleDragEnd(evt, updateTabList),
         onAdd: (evt) => handleDragAdd(evt, updateTabList),
     };
