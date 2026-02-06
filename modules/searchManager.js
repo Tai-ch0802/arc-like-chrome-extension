@@ -19,9 +19,10 @@ async function handleSearch() {
         regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
     }
 
-    // 過濾分頁和書籤
+    // 過濾分頁、閱讀清單和書籤
     const tabCount = filterTabsAndGroups(keywords);
     const otherWindowsTabCount = filterOtherWindowsTabs(keywords);
+    const readingListCount = filterReadingList(keywords, regexes);
     const bookmarkCount = await filterBookmarks(keywords, regexes);
 
     // 高亮匹配文字
@@ -31,9 +32,9 @@ async function handleSearch() {
         clearHighlights();
     }
 
-    // 發送結果計數事件 (include other windows tabs in count)
+    // 發送結果計數事件 (include other windows tabs and reading list in count)
     const event = new CustomEvent('searchResultUpdated', {
-        detail: { tabCount: tabCount + otherWindowsTabCount, bookmarkCount }
+        detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount, bookmarkCount }
     });
     document.dispatchEvent(event);
 }
@@ -250,6 +251,108 @@ function filterOtherWindowsTabs(keywords) {
     }
 
     return totalVisibleTabs;
+}
+
+/**
+ * 過濾閱讀清單項目，回傳可見項目數量
+ * @param {string[]} keywords - 搜尋關鍵字
+ * @param {RegExp[]} regexes - 預編譯的正則表達式（用於高亮）
+ * @returns {number} 可見閱讀清單項目數量
+ */
+function filterReadingList(keywords, regexes = []) {
+    const container = document.getElementById('reading-list');
+    if (!container) return 0;
+
+    const items = container.querySelectorAll('.reading-list-item');
+    if (items.length === 0) return 0;
+
+    let visibleCount = 0;
+
+    items.forEach(item => {
+        const title = item.dataset.title || '';
+        const url = item.dataset.url || '';
+        const domain = extractDomain(url);
+
+        const titleMatches = matchesAnyKeyword(title, keywords);
+        const urlMatches = matchesAnyKeyword(domain, keywords);
+        const matches = keywords.length === 0 || titleMatches || urlMatches;
+
+        item.classList.toggle('hidden', !matches);
+
+        if (matches && keywords.length > 0) {
+            visibleCount++;
+
+            // 高亮標題
+            const titleEl = item.querySelector('.reading-list-title');
+            if (titleEl && regexes.length > 0) {
+                const originalTitle = titleEl.dataset.originalText || titleEl.textContent;
+                const highlightedTitle = highlightText(originalTitle, regexes, 'title');
+                if (highlightedTitle !== originalTitle) {
+                    titleEl.innerHTML = highlightedTitle;
+                    if (!titleEl.dataset.originalText) {
+                        titleEl.dataset.originalText = originalTitle;
+                    }
+                }
+            }
+
+            // 如果是 URL 匹配（非標題匹配），顯示高亮的 domain
+            if (urlMatches && !titleMatches && domain) {
+                // 先移除舊的 domain 顯示（如果有）
+                const existingDomain = item.querySelector('.matched-domain');
+                if (existingDomain) {
+                    existingDomain.remove();
+                }
+
+                // 建立 domain 顯示元素
+                const domainElement = document.createElement('div');
+                domainElement.className = 'matched-domain';
+                const highlightedDomain = highlightText(domain, regexes, 'url');
+                domainElement.innerHTML = highlightedDomain + '...';
+
+                // 附加到 content wrapper
+                const contentWrapper = item.querySelector('.reading-list-content');
+                if (contentWrapper) {
+                    contentWrapper.appendChild(domainElement);
+                }
+            } else {
+                // 標題匹配時，移除可能存在的 domain 顯示
+                const existingDomain = item.querySelector('.matched-domain');
+                if (existingDomain) {
+                    existingDomain.remove();
+                }
+            }
+        } else if (keywords.length === 0) {
+            // 清除高亮（無搜尋時）
+            const titleEl = item.querySelector('.reading-list-title');
+            if (titleEl && titleEl.dataset.originalText) {
+                titleEl.textContent = titleEl.dataset.originalText;
+                delete titleEl.dataset.originalText;
+            }
+
+            // 移除 domain 顯示
+            const existingDomain = item.querySelector('.matched-domain');
+            if (existingDomain) {
+                existingDomain.remove();
+            }
+        }
+    });
+
+    // 處理閱讀清單區塊的展開/收合
+    const section = document.getElementById('reading-list-section');
+    const toggleBtn = document.getElementById('reading-list-toggle');
+
+    if (section) {
+        if (keywords.length > 0 && visibleCount > 0) {
+            // 有搜尋結果時展開
+            container.classList.remove('collapsed');
+            if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+        } else if (keywords.length === 0) {
+            // 清除搜尋時，恢復使用者偏好的收合狀態
+            // 不做任何事，讓使用者的原有設定維持
+        }
+    }
+
+    return visibleCount;
 }
 
 // Search state to track if we are currently showing filtered results
