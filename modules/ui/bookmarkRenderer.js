@@ -4,6 +4,7 @@ import * as modal from '../modalManager.js';
 import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -649,29 +650,28 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
         const emptyMsg = document.createElement('div');
         emptyMsg.className = 'empty-folder-message';
         emptyMsg.innerHTML = `${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>`;
-        container.appendChild(emptyMsg);
+        reconcileDOM(container, [emptyMsg]);
         return;
     }
 
-    const fragment = document.createDocumentFragment();
+    const newChildren = [];
 
     bookmarkNodes.forEach(node => {
         if (node.url) { // It's a bookmark
             const item = getOrCreateBookmarkElement(node, currentOptions);
-            fragment.appendChild(item);
+            newChildren.push(item);
         } else if (node.children) { // It's a folder
             const { item, content } = getOrCreateFolderElement(node, currentOptions);
 
             const isExpanded = currentOptions.forceExpandAll || state.isFolderExpanded(node.id);
             if (isExpanded && node.children) {
-                content.innerHTML = '';
                 renderBookmarks(node.children, content, node.id, refreshBookmarksCallback, currentOptions);
             }
 
-            fragment.appendChild(item);
-            fragment.appendChild(content);
+            newChildren.push(item);
+            newChildren.push(content);
         }
     });
 
-    container.appendChild(fragment);
+    reconcileDOM(container, newChildren);
 }
