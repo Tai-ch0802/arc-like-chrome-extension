@@ -2099,8 +2099,15 @@ mark.url-match {
     position: relative;
 }
 
-.reading-list-item:hover {
+.reading-list-item:hover,
+.reading-list-item:focus {
     background-color: var(--element-bg-hover-color);
+    outline: none;
+}
+
+.reading-list-item:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
 }
 
 .reading-list-item.is-read {

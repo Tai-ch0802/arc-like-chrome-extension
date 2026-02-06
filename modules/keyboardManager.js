@@ -5,7 +5,7 @@
  * and Left/Right moves between actions within an item.
  */
 
-import { tabListContainer, bookmarkListContainer, otherWindowsList, searchBox } from './ui/elements.js';
+import { tabListContainer, bookmarkListContainer, otherWindowsList, searchBox, readingListContainer } from './ui/elements.js';
 
 export function initialize() {
     // Add global keydown listener to the document for delegation
@@ -38,7 +38,8 @@ function handleKeyDown(e) {
     // Check if we are inside a list container we manage
     if (!tabListContainer.contains(target) &&
         !bookmarkListContainer.contains(target) &&
-        !otherWindowsList.contains(target)) {
+        !otherWindowsList.contains(target) &&
+        !(readingListContainer && readingListContainer.contains(target))) {
 
         // Special handling for search box:
         // ArrowDown should move focus to the first visible item
@@ -59,12 +60,13 @@ function handleKeyDown(e) {
     const isTabGroupHeader = target.classList.contains('tab-group-header');
     const isBookmarkItem = target.classList.contains('bookmark-item') || target.classList.contains('bookmark-folder');
     const isWindowFolder = target.classList.contains('window-folder');
+    const isReadingListItem = target.classList.contains('reading-list-item');
     const isActionButton = target.tagName === 'BUTTON' || target.classList.contains('bookmark-edit-btn') || target.classList.contains('bookmark-close-btn');
 
     // Find the main container item (the row)
     let rowItem = target;
     if (isActionButton) {
-        rowItem = target.closest('.tab-item, .bookmark-item, .bookmark-folder, .window-folder, .tab-group-header');
+        rowItem = target.closest('.tab-item, .bookmark-item, .bookmark-folder, .window-folder, .tab-group-header, .reading-list-item');
     }
 
     if (!rowItem) return; // Should not happen if contains check passed, but safety first
@@ -137,7 +139,8 @@ function getAllVisibleRowItems() {
         '.tab-group-header',
         '.bookmark-item',
         '.bookmark-folder',
-        '.window-folder'
+        '.window-folder',
+        '.reading-list-item'
     ];
 
     // Get all potential items

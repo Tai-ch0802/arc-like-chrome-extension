@@ -165,26 +165,8 @@ function initReadingListListeners(containerElement) {
             return;
         }
 
-        // Arrow keys: Navigate between items
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            const items = Array.from(container.querySelectorAll('.reading-list-item'));
-            const currentIndex = items.indexOf(item);
-
-            let nextIndex;
-            if (e.key === 'ArrowDown') {
-                nextIndex = currentIndex + 1;
-                if (nextIndex >= items.length) nextIndex = 0; // Loop to start
-            } else {
-                nextIndex = currentIndex - 1;
-                if (nextIndex < 0) nextIndex = items.length - 1; // Loop to end
-            }
-
-            if (items[nextIndex]) {
-                items[nextIndex].focus();
-            }
-            return;
-        }
+        // Arrow keys: Let keyboardManager.js handle navigation for unified cross-section navigation
+        // We no longer handle ArrowUp/ArrowDown here to avoid preventing global navigation
 
         // Delete key: Trigger delete action
         if (e.key === 'Delete' || e.key === 'Backspace') {
