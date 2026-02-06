@@ -12,8 +12,8 @@
 
 这是一个 Chrome 扩展程序项目，旨在为 Google Chrome 带来类似 Arc 浏览器的垂直侧边栏体验，提供一个统一且强大的面板来管理标签页和书籤。
 
-## 🚀 新版本 v1.12.0 更新！
-[![演示视频](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
+## 🚀 新版本 v1.13.0 更新！
+[![演示视频](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
 
 ### ⚡️ 功能特点
 - **自定义背景图片**：支持通过上传图片或 URL 设置侧边栏背景，并可调整透明度与模糊度。

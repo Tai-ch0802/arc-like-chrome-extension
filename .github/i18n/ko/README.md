@@ -12,8 +12,8 @@
 
 이 프로젝트는 Google Chrome에 Arc 브라우저와 같은 수직 사이드바 경험을 제공하여 탭과 북마크를 관리할 수 있는 통합된 강력한 패널을 제공하는 Chrome 확장 프로그램입니다.
 
-## 🚀 새 릴리스 v1.12.0 업데이트! 
-[![데모 비디오](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
+## 🚀 새 릴리스 v1.13.0 업데이트! 
+[![데모 비디오](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
 
 ### ⚡️ 주요 특징
 - **사용자 정의 배경 이미지**: 업로드 또는 URL을 통해 사이드바 배경을 설정하고 투명도와 흐림 효과를 조절할 수 있습니다.

@@ -12,8 +12,8 @@
 
 Este es un proyecto de extensión de Chrome que tiene como objetivo llevar una experiencia de barra lateral vertical similar al navegador Arc a Google Chrome, proporcionando un panel unificado y potente para gestionar pestañas y marcadores.
 
-## 🚀 ¡Nueva actualización v1.12.0! 
-[![Video de demostración](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
+## 🚀 ¡Nueva actualización v1.13.0! 
+[![Video de demostración](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
 
 ### ⚡️ Funciones
 - **Imagen de fondo personalizada**: Sube tu propia imagen o usa una URL, con ajustes de opacidad y desenfoque.

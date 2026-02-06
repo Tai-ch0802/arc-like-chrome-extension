@@ -12,8 +12,8 @@
 
 This is a Chrome extension project that aims to bring an Arc browser-like vertical sidebar experience to Google Chrome, providing a unified and powerful panel for managing tabs and bookmarks.
 
-## 🚀 New Release v1.12.0 update! 
-[![Demo Video](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
+## 🚀 New Release v1.13.0 update! 
+[![Demo Video](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
 
 ### ⚡️ Features
 - **Custom Background Image**: Set your own sidebar background via upload or URL, with adjustable opacity and blur.

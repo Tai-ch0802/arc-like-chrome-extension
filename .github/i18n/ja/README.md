@@ -12,8 +12,8 @@
 
 これは、Google ChromeにArcブラウザのような垂直サイドバー体験をもたらすことを目的としたChrome拡張機能プロジェクトです。タブとブックマークを管理するための統一された強力なパネルを提供します。
 
-## 🚀 新リリース v1.12.0 アップデート！
-[![デモビデオ](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
+## 🚀 新リリース v1.13.0 アップデート！
+[![デモビデオ](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
 
 ### ⚡️ 特徴
 - **カスタム背景画像**: アップロードまたは URL を使用してサイドバーの背景を設定可能。透明度、ぼかし、位置調整機能付き。

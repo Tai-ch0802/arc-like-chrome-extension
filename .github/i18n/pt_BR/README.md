@@ -12,8 +12,8 @@
 
 Este é um projeto de extensão para o Chrome que visa trazer uma experiência de barra lateral vertical ao estilo do navegador Arc para o Google Chrome, fornecendo um painel unificado e poderoso para gerenciar abas e favoritos.
 
-## 🚀 Nova atualização v1.12.0! 
-[![Vídeo de Demonstração](http://img.youtube.com/vi/EgaxJ9mNg4U/0.jpg)](https://www.youtube.com/watch?v=EgaxJ9mNg4U)
+## 🚀 Nova atualização v1.13.0! 
+[![Vídeo de Demonstração](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
 
 ### ⚡️ Funcionalidades
 - **Imagem de Fundo Personalizada**: Defina seu próprio fundo via upload ou URL, com ajuste de opacidade e desfoque.
