@@ -3,6 +3,7 @@ import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG } from '../icons.js';
 import { tabListContainer } from './elements.js';
 import { showContextMenu } from './contextMenuManager.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 /**
  * Module-level state for event delegation.
@@ -27,6 +28,9 @@ let groupHeaderElementsCache = new Map();
 /** @type {Map<number, HTMLElement>} Cache of group content container DOM elements for performance optimization */
 let groupContentElementsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of split group container DOM elements for performance optimization */
+let splitGroupElementsCache = new Map();
+
 /** @type {AbortController|null} Controller to abort event listeners when resetting */
 let listenerAbortController = null;
 
@@ -46,6 +50,7 @@ export function resetTabListeners() {
     tabElementsCache = new Map();
     groupHeaderElementsCache = new Map();
     groupContentElementsCache = new Map();
+    splitGroupElementsCache = new Map();
 }
 
 /**
@@ -389,6 +394,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     const newTabElementsCache = new Map();
     const newGroupHeaderElementsCache = new Map();
     const newGroupContentElementsCache = new Map();
+    const newSplitGroupElementsCache = new Map();
 
     const groupsMap = new Map(groups.map(group => [group.id, group]));
 
@@ -404,8 +410,8 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     }
 
     const renderedTabIds = new Set();
-    // Use DocumentFragment to batch DOM updates
-    const fragment = document.createDocumentFragment();
+    const topLevelChildren = [];
+
     const splitTabsMap = new Map();
     for (const tab of tabs) {
         if (tab.splitViewId && tab.splitViewId > 0) {
@@ -429,7 +435,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     };
 
     // Helper to render split groups
-    const renderSplitOrTab = (tab, container) => {
+    const renderSplitOrTab = (tab, targetArray) => {
         if (renderedTabIds.has(tab.id)) return;
 
         if (tab.splitViewId && tab.splitViewId > 0) {
@@ -437,16 +443,25 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             const splitTabs = splitTabsMap.get(tab.splitViewId);
 
             if (splitTabs && splitTabs.length > 1) {
-                const splitGroup = document.createElement('div');
-                splitGroup.className = 'tab-split-group';
+                // Get or create split group container (reuse from cache for DOM reconciliation)
+                let splitGroup = splitGroupElementsCache.get(tab.splitViewId);
+                if (!splitGroup) {
+                    splitGroup = document.createElement('div');
+                    splitGroup.className = 'tab-split-group';
+                }
+                newSplitGroupElementsCache.set(tab.splitViewId, splitGroup);
 
+                // Build children array and reconcile
+                const splitChildren = [];
                 splitTabs.forEach(splitTab => {
                     const tabElement = getOrCreateTabElement(splitTab);
                     tabElement.classList.add('in-split-view');
-                    splitGroup.appendChild(tabElement);
+                    splitChildren.push(tabElement);
                     renderedTabIds.add(splitTab.id);
                 });
-                container.appendChild(splitGroup);
+                reconcileDOM(splitGroup, splitChildren);
+
+                targetArray.push(splitGroup);
                 return;
             }
         }
@@ -454,7 +469,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
         // Fallback to normal rendering if not split view or only 1 tab in split
         const tabElement = getOrCreateTabElement(tab);
         tabElement.classList.remove('in-split-view'); // Ensure it's clean if it was in split before
-        container.appendChild(tabElement);
+        targetArray.push(tabElement);
         renderedTabIds.add(tab.id);
     };
 
@@ -494,14 +509,11 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
             groupHeader.dataset.groupId = group.id; // Ensure ID is set
             newGroupHeaderElementsCache.set(group.id, groupHeader);
-            fragment.appendChild(groupHeader);
+            topLevelChildren.push(groupHeader);
 
             // Get or create groupContent container
             let groupContent = groupContentElementsCache.get(group.id);
-            if (groupContent) {
-                // Reuse existing container - clear its children
-                groupContent.innerHTML = '';
-            } else {
+            if (!groupContent) {
                 groupContent = document.createElement('div');
                 groupContent.className = 'tab-group-content';
             }
@@ -511,22 +523,25 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             // Optimization: Use pre-grouped tabs
             const tabsInThisGroup = tabsByGroup.get(group.id) || [];
 
+            const groupChildren = [];
             for (const groupTab of tabsInThisGroup) {
-                renderSplitOrTab(groupTab, groupContent);
+                renderSplitOrTab(groupTab, groupChildren);
             }
-            fragment.appendChild(groupContent);
+            reconcileDOM(groupContent, groupChildren);
+
+            topLevelChildren.push(groupContent);
 
         } else {
-            renderSplitOrTab(tab, fragment);
+            renderSplitOrTab(tab, topLevelChildren);
         }
     }
 
-    // Clear the container to remove any elements that were not reused (deleted tabs)
-    tabListContainer.innerHTML = '';
-    tabListContainer.appendChild(fragment);
+    // Reconcile top-level container
+    reconcileDOM(tabListContainer, topLevelChildren);
 
     // Update caches
     tabElementsCache = newTabElementsCache;
     groupHeaderElementsCache = newGroupHeaderElementsCache;
     groupContentElementsCache = newGroupContentElementsCache;
+    splitGroupElementsCache = newSplitGroupElementsCache;
 }
