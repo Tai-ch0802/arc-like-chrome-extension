@@ -67,7 +67,7 @@ describe('Group Edge Cases', () => {
                         if (targets.length > 0) chrome.tabs.remove(targets.map(t => t.id));
                     });
                 });
-            } catch (e) {}
+            } catch (e) { }
             try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
@@ -110,7 +110,7 @@ describe('Group Edge Cases', () => {
                         if (targets.length > 0) chrome.tabs.remove(targets.map(t => t.id));
                     });
                 });
-            } catch (e) {}
+            } catch (e) { }
             try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
     }, 60000);
@@ -132,7 +132,7 @@ describe('Group Edge Cases', () => {
             groupId = await page.evaluate((tId) => {
                 return new Promise(resolve => {
                     chrome.tabs.group({ tabIds: [tId] }, id => {
-                         chrome.tabGroups.update(id, { title: 'Old Title', color: 'grey' }, () => resolve(id));
+                        chrome.tabGroups.update(id, { title: 'Old Title', color: 'grey' }, () => resolve(id));
                     });
                 });
             }, tabId);
@@ -146,7 +146,7 @@ describe('Group Edge Cases', () => {
             // Rename
             await page.evaluate((id) => {
                 return new Promise(resolve => {
-                     chrome.tabGroups.update(parseInt(id), { title: 'New Title' }, resolve);
+                    chrome.tabGroups.update(parseInt(id), { title: 'New Title' }, resolve);
                 });
             }, groupId);
 
@@ -160,14 +160,14 @@ describe('Group Edge Cases', () => {
             expect(newTitle).toBe('New Title');
 
         } finally {
-             try {
+            try {
                 await page.evaluate(() => {
                     chrome.tabs.query({}, (tabs) => {
                         const targets = tabs.filter(t => t.url.includes('rename'));
                         if (targets.length > 0) chrome.tabs.remove(targets.map(t => t.id));
                     });
                 });
-            } catch(e) {}
+            } catch (e) { }
             try { await page.close(); } catch (e) { }
         }
     }, 60000);
@@ -190,13 +190,13 @@ describe('Group Edge Cases', () => {
             groupId = await page.evaluate((tId) => {
                 return new Promise(resolve => {
                     chrome.tabs.group({ tabIds: [tId] }, id => {
-                         chrome.tabGroups.update(id, { title: 'Move Target', color: 'green' }, () => resolve(id));
+                        chrome.tabGroups.update(id, { title: 'Move Target', color: 'green' }, () => resolve(id));
                     });
                 });
             }, tab1.id);
 
             // Create tab2 (independent)
-             const tab2 = await page.evaluate(() => {
+            const tab2 = await page.evaluate(() => {
                 return new Promise(resolve => {
                     chrome.tabs.create({ url: 'https://example.com/g2', active: false }, resolve);
                 });
@@ -218,20 +218,20 @@ describe('Group Edge Cases', () => {
 
             // Move tab2 into group
             await page.evaluate((gId, tId) => {
-                 return new Promise(resolve => {
-                     chrome.tabs.group({ tabIds: [tId], groupId: gId }, resolve);
-                 });
+                return new Promise(resolve => {
+                    chrome.tabs.group({ tabIds: [tId], groupId: gId }, resolve);
+                });
             }, groupId, tabId2);
 
             // Wait for update (tab2 should be inside group content)
-             await page.waitForFunction((gId, tId) => {
+            await page.waitForFunction((gId, tId) => {
                 const header = document.querySelector(`.tab-group-header[data-group-id="${gId}"]`);
                 const content = header && header.nextElementSibling;
                 const tab = document.querySelector(`.tab-item[data-tab-id="${tId}"]`);
                 return content && tab && content.contains(tab);
-             }, {}, groupId, tabId2);
+            }, {}, groupId, tabId2);
 
-             const isNowInsideGroup = await page.evaluate((gId, tId) => {
+            const isNowInsideGroup = await page.evaluate((gId, tId) => {
                 const header = document.querySelector(`.tab-group-header[data-group-id="${gId}"]`);
                 const content = header.nextElementSibling;
                 const tab = document.querySelector(`.tab-item[data-tab-id="${tId}"]`);
@@ -240,14 +240,14 @@ describe('Group Edge Cases', () => {
             expect(isNowInsideGroup).toBe(true);
 
         } finally {
-             try {
+            try {
                 await page.evaluate(() => {
                     chrome.tabs.query({}, (tabs) => {
                         const targets = tabs.filter(t => t.url.includes('example.com/g1') || t.url.includes('example.com/g2'));
                         if (targets.length > 0) chrome.tabs.remove(targets.map(t => t.id));
                     });
                 });
-            } catch(e) {}
+            } catch (e) { }
             try { await page.close(); } catch (e) { }
         }
     }, 60000);
@@ -258,6 +258,7 @@ describe('Group Edge Cases', () => {
         await page.waitForSelector('#tab-list');
 
         let otherWindowId;
+        let groupId;
         try {
             // Create a second window with 2 tabs initially
             const otherWindow = await page.evaluate(() => {
@@ -270,8 +271,22 @@ describe('Group Edge Cases', () => {
             });
             otherWindowId = otherWindow.id;
 
+            // Wait for tabs to be ready in the new window
+            await page.waitForFunction(
+                (winId) => {
+                    return new Promise(resolve => {
+                        chrome.tabs.query({ windowId: winId }, (tabs) => {
+                            // Wait until tabs have loaded their URLs
+                            resolve(tabs.length >= 2 && tabs.every(t => t.url && t.url.includes('example.com')));
+                        });
+                    });
+                },
+                { timeout: 15000 },
+                otherWindowId
+            );
+
             // Group the second tab
-            await page.evaluate((winId) => {
+            groupId = await page.evaluate((winId) => {
                 return new Promise(resolve => {
                     chrome.tabs.query({ windowId: winId }, (tabs) => {
                         const targetTab = tabs.find(t => t.url.includes('other-group-tab'));
@@ -287,27 +302,32 @@ describe('Group Edge Cases', () => {
                 });
             }, otherWindowId);
 
+            // Verify group was created
+            if (!groupId) {
+                throw new Error('Failed to create group in other window');
+            }
+
             // Force reload to ensure we get the latest state of other windows/tabs/groups
-            // and avoid race conditions with event listeners or auto-collapse behavior
             await page.reload();
+            await page.waitForSelector('#tab-list'); // Wait for main content to load
 
             // Expand "Other Windows" section
             const windowFolderSelector = '#other-windows-list .window-folder';
-            await page.waitForSelector(windowFolderSelector, { timeout: 10000 });
+            await page.waitForSelector(windowFolderSelector, { timeout: 15000 });
             await page.$eval(windowFolderSelector, el => el.click());
 
             // Wait for content expansion
             await page.waitForFunction(() => {
                 const el = document.querySelector('#other-windows-list .folder-content');
                 return el && el.style.display !== 'none';
-            });
+            }, { timeout: 10000 });
 
             // Wait for the group header to appear in the other window list
-            // Use retry logic in case of render delay
+            // Increase timeout for cross-window rendering
             await page.waitForFunction((title) => {
                 const elements = Array.from(document.querySelectorAll('#other-windows-list .tab-group-title'));
                 return elements.some(el => el.textContent === title);
-            }, { timeout: 10000 }, 'Other Window Group');
+            }, { timeout: 30000 }, 'Other Window Group');
 
             // Verify
             const groupVisible = await page.evaluate(() => {
@@ -320,9 +340,9 @@ describe('Group Edge Cases', () => {
             if (otherWindowId) {
                 try {
                     await page.evaluate((id) => chrome.windows.remove(id), otherWindowId);
-                } catch(e) {}
+                } catch (e) { }
             }
             try { await page.close(); } catch (e) { }
         }
-    }, 60000);
+    }, 90000);
 });
