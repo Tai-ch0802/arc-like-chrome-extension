@@ -28,6 +28,9 @@ let groupHeaderElementsCache = new Map();
 /** @type {Map<number, HTMLElement>} Cache of group content container DOM elements for performance optimization */
 let groupContentElementsCache = new Map();
 
+/** @type {Map<number, HTMLElement>} Cache of split group container DOM elements for performance optimization */
+let splitGroupElementsCache = new Map();
+
 /** @type {AbortController|null} Controller to abort event listeners when resetting */
 let listenerAbortController = null;
 
@@ -47,6 +50,7 @@ export function resetTabListeners() {
     tabElementsCache = new Map();
     groupHeaderElementsCache = new Map();
     groupContentElementsCache = new Map();
+    splitGroupElementsCache = new Map();
 }
 
 /**
@@ -390,6 +394,7 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     const newTabElementsCache = new Map();
     const newGroupHeaderElementsCache = new Map();
     const newGroupContentElementsCache = new Map();
+    const newSplitGroupElementsCache = new Map();
 
     const groupsMap = new Map(groups.map(group => [group.id, group]));
 
@@ -438,15 +443,24 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
             const splitTabs = splitTabsMap.get(tab.splitViewId);
 
             if (splitTabs && splitTabs.length > 1) {
-                const splitGroup = document.createElement('div');
-                splitGroup.className = 'tab-split-group';
+                // Get or create split group container (reuse from cache for DOM reconciliation)
+                let splitGroup = splitGroupElementsCache.get(tab.splitViewId);
+                if (!splitGroup) {
+                    splitGroup = document.createElement('div');
+                    splitGroup.className = 'tab-split-group';
+                }
+                newSplitGroupElementsCache.set(tab.splitViewId, splitGroup);
 
+                // Build children array and reconcile
+                const splitChildren = [];
                 splitTabs.forEach(splitTab => {
                     const tabElement = getOrCreateTabElement(splitTab);
                     tabElement.classList.add('in-split-view');
-                    splitGroup.appendChild(tabElement);
+                    splitChildren.push(tabElement);
                     renderedTabIds.add(splitTab.id);
                 });
+                reconcileDOM(splitGroup, splitChildren);
+
                 targetArray.push(splitGroup);
                 return;
             }
@@ -529,4 +543,5 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
     tabElementsCache = newTabElementsCache;
     groupHeaderElementsCache = newGroupHeaderElementsCache;
     groupContentElementsCache = newGroupContentElementsCache;
+    splitGroupElementsCache = newSplitGroupElementsCache;
 }

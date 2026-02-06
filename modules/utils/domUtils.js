@@ -5,6 +5,14 @@
  *
  * @param {HTMLElement} container - The container element.
  * @param {HTMLElement[]} newChildren - The array of elements that should be in the container.
+ * @example
+ * // Initial render - uses DocumentFragment for batch insertion
+ * const items = [createElement('a'), createElement('b'), createElement('c')];
+ * reconcileDOM(container, items);
+ *
+ * // Update render - moves/inserts only changed elements
+ * const updatedItems = [createElement('b'), createElement('a'), createElement('d')];
+ * reconcileDOM(container, updatedItems); // 'b' moves to front, 'c' removed, 'd' added
  */
 export function reconcileDOM(container, newChildren) {
     // Optimization: If container is empty, use DocumentFragment for batch insertion
