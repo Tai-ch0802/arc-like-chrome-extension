@@ -11,7 +11,11 @@ async function setupBrowser() {
             `--disable-extensions-except=${EXTENSION_PATH}`,
             `--load-extension=${EXTENSION_PATH}`,
             '--no-sandbox', // Required for some environments
-            '--disable-setuid-sandbox' // Required for some environments
+            '--disable-setuid-sandbox', // Required for some environments
+            // CI stability optimizations:
+            '--disable-dev-shm-usage', // Prevents /dev/shm memory issues in Docker/CI
+            '--disable-gpu', // Disable GPU hardware acceleration in headless CI
+            '--window-size=1280,800' // Consistent window size for rendering
         ]
     });
 
@@ -20,9 +24,10 @@ async function setupBrowser() {
     // Get the extension ID dynamically if possible, or from manifest.json
     // For now, we'll assume the side panel URL structure
     // Add timeout to prevent infinite hang in CI environments
+    // Increased to 60s for slow CI runners
     const extensionTarget = await browser.waitForTarget(
         target => target.type() === 'service_worker' || target.url().startsWith('chrome-extension://'),
-        { timeout: 30000 }
+        { timeout: 60000 }
     );
     const extensionId = extensionTarget.url().split('/')[2];
     const sidePanelUrl = `chrome-extension://${extensionId}/sidepanel.html`;

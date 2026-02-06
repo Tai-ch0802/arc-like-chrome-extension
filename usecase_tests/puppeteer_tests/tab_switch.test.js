@@ -41,6 +41,19 @@ describe('Tab Switch Use Case', () => {
         }
 
         try {
+            // CI stability: Wait for Chrome to confirm tabs are created before reload
+            await page.waitForFunction(
+                (expectedCount) => {
+                    return new Promise(resolve => {
+                        chrome.tabs.query({}, (tabs) => {
+                            resolve(tabs.length >= expectedCount);
+                        });
+                    });
+                },
+                { timeout: 10000 },
+                initialCount + 2
+            );
+
             // Wait for new tabs to appear in DOM, then reload
             await page.reload();
             await page.waitForSelector('.tab-item');
@@ -122,6 +135,19 @@ describe('Tab Switch Use Case', () => {
         }
 
         try {
+            // CI stability: Wait for Chrome to confirm tabs are created before reload
+            await page.waitForFunction(
+                (expectedCount) => {
+                    return new Promise(resolve => {
+                        chrome.tabs.query({}, (tabs) => {
+                            resolve(tabs.length >= expectedCount);
+                        });
+                    });
+                },
+                { timeout: 10000 },
+                initialCount + 2
+            );
+
             // Wait and reload
             await page.reload();
             await page.waitForSelector('.tab-item');

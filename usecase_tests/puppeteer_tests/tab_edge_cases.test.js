@@ -17,7 +17,7 @@ describe('Tab Edge Cases', () => {
         await teardownBrowser(browser);
     });
 
-    test('should render a large number of tabs (20+)', async () => {
+    test('should render a large number of tabs (50+)', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         try {
@@ -27,29 +27,43 @@ describe('Tab Edge Cases', () => {
             // Get initial tab count
             const initialCount = await page.$$eval('.tab-item', tabs => tabs.length);
 
-            // Create 20 tabs
+            // Create 50 tabs
             await page.evaluate(async () => {
                 const promises = [];
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 50; i++) {
                     promises.push(new Promise(resolve => {
-                        chrome.tabs.create({ url: `https://example.com/${i}`, active: false }, resolve);
+                        chrome.tabs.create({ url: `https://example.com/load-${i}`, active: false }, resolve);
                     }));
                 }
                 await Promise.all(promises);
             });
 
             // Wait for tabs to render using state-based waiting
-            await waitForTabCount(page, initialCount + 20);
+            // Timeout increased for high volume
+            await waitForTabCount(page, initialCount + 50, 60000);
 
             // Verify count
             const tabCount = await page.$$eval('.tab-item', tabs => tabs.length);
-            // 20 new tabs + initial tabs
-            expect(tabCount).toBeGreaterThanOrEqual(initialCount + 20);
+            // 50 new tabs + initial tabs
+            expect(tabCount).toBeGreaterThanOrEqual(initialCount + 50);
 
         } finally {
+            // Cleanup tabs created during test
+            try {
+                // Get all tabs created (approximate by matching URL pattern)
+                await page.evaluate(async () => {
+                    const tabs = await new Promise(r => chrome.tabs.query({}, r));
+                    const testTabs = tabs.filter(t => t.url && t.url.includes('example.com/load-'));
+                    if (testTabs.length > 0) {
+                        const ids = testTabs.map(t => t.id);
+                        await new Promise(r => chrome.tabs.remove(ids, r));
+                    }
+                });
+            } catch (e) { console.error('Cleanup failed', e); }
+
             try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
-    }, 60000);
+    }, 90000);
 
     test('should render pinned tabs correctly', async () => {
         const page = await browser.newPage();
@@ -65,14 +79,9 @@ describe('Tab Edge Cases', () => {
             });
 
             // Wait for the pinned tab to appear in the DOM (state-based waiting)
-            await page.waitForSelector('.tab-item[data-url="https://example.com/pinned"]', { timeout: 5000 });
+            await page.waitForSelector('.tab-item[data-url="https://example.com/pinned"]', { timeout: 10000 });
 
             // Verify tab exists and has pinned data/url
-            // Note: Our current UI might not explicitly verify "visual" pinned state without screenshot,
-            // but we can verify the tab with that URL exists.
-            // If the UI exposed 'pinned' class or attribute we could check that.
-            // Let's check if the API returns it as pinned and UI renders it.
-
             const pinnedTabExists = await page.evaluate(async () => {
                 const tabs = await new Promise(resolve => chrome.tabs.query({ pinned: true }, resolve));
                 return tabs.some(t => t.url === 'https://example.com/pinned');
