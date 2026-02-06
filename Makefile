@@ -22,7 +22,6 @@ PROD_ZIP_FILE = arc-sidebar-v$(VERSION).zip
 PROD_BUILD_DIR = build-prod
 PROD_STATIC_FILES = \
     manifest.json \
-    background.js \
     icons \
     lib \
     _locales
@@ -59,6 +58,7 @@ build-prod:
 	@cp -R $(PROD_STATIC_FILES) $(PROD_BUILD_DIR)/
 	@echo "    - Bundling and minifying JS with esbuild..."
 	@npx esbuild sidepanel.js --bundle --minify --outfile=$(PROD_BUILD_DIR)/sidepanel.js
+	@npx esbuild background.js --bundle --minify --outfile=$(PROD_BUILD_DIR)/background.js
 	@echo "    - Minifying CSS with esbuild..."
 	@npx esbuild sidepanel.css --minify --outfile=$(PROD_BUILD_DIR)/sidepanel.css
 	@echo "    - Preparing HTML for production..."
