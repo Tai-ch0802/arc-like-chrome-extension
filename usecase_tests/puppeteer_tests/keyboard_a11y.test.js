@@ -83,4 +83,39 @@ describe('Keyboard Accessibility', () => {
         const finalTabCount = await page.$$eval('.tab-item', tabs => tabs.length);
         expect(finalTabCount).toBe(initialTabCount - 1);
     }, 30000);
+
+    test('should navigate between tabs using Arrow Up/Down keys', async () => {
+        // Ensure we have at least 2 tabs
+        const tabCount = await page.$$eval('.tab-item', tabs => tabs.length);
+        if (tabCount < 2) {
+            await page.evaluate(() => new Promise(r => chrome.tabs.create({ url: 'about:blank' }, r)));
+            await page.waitForFunction(() => document.querySelectorAll('.tab-item').length >= 2);
+        }
+
+        // Get handles to first two tabs
+        const tabs = await page.$$('.tab-item');
+        const tab1Id = await tabs[0].evaluate(el => el.dataset.tabId);
+        const tab2Id = await tabs[1].evaluate(el => el.dataset.tabId);
+
+        // Focus the first tab
+        await tabs[0].focus();
+
+        // Verify focus
+        let focusedId = await page.evaluate(() => document.activeElement.dataset.tabId);
+        expect(focusedId).toBe(tab1Id);
+
+        // Press Arrow Down
+        await page.keyboard.press('ArrowDown');
+
+        // Verify focus moved to second tab
+        focusedId = await page.evaluate(() => document.activeElement.dataset.tabId);
+        expect(focusedId).toBe(tab2Id);
+
+        // Press Arrow Up
+        await page.keyboard.press('ArrowUp');
+
+        // Verify focus moved back to first tab
+        focusedId = await page.evaluate(() => document.activeElement.dataset.tabId);
+        expect(focusedId).toBe(tab1Id);
+    }, 30000);
 });
