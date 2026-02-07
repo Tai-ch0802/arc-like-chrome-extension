@@ -46,20 +46,38 @@ async function teardownBrowser(browser) {
 /**
  * Expands the Bookmarks Bar folder (id="1") if it's collapsed.
  * Required because dynamic rendering only shows children when folder is expanded.
+ * Uses retry logic to handle the race condition where click fires before
+ * event delegation is fully initialized after page reload.
  */
 async function expandBookmarksBar(page) {
     const bookmarksBarSelector = '.bookmark-folder[data-bookmark-id="1"]';
-    await page.waitForSelector(bookmarksBarSelector);
+
+    // Wait for the bookmark list container first — ensures event delegation is initialized
+    await page.waitForSelector('#bookmark-list', { timeout: 10000 });
+    await page.waitForSelector(bookmarksBarSelector, { timeout: 10000 });
+
     const isCollapsed = await page.$eval(bookmarksBarSelector, el =>
         el.querySelector('.bookmark-icon').textContent.includes('▶')
     );
+
     if (isCollapsed) {
-        await page.click(bookmarksBarSelector);
-        await page.waitForFunction(
-            s => document.querySelector(s).querySelector('.bookmark-icon').textContent.includes('▼'),
-            {},
-            bookmarksBarSelector
-        );
+        // Retry click up to 3 times in case event delegation isn't ready yet
+        const maxRetries = 3;
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            await page.click(bookmarksBarSelector);
+            try {
+                await page.waitForFunction(
+                    s => document.querySelector(s)?.querySelector('.bookmark-icon')?.textContent?.includes('▼'),
+                    { timeout: 5000 },
+                    bookmarksBarSelector
+                );
+                return; // Success
+            } catch (e) {
+                if (attempt === maxRetries) throw e;
+                // Wait a bit before retrying — event delegation may need more time
+                await new Promise(r => setTimeout(r, 500));
+            }
+        }
     }
 }
 
