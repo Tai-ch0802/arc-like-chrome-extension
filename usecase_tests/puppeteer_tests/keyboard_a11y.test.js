@@ -4,6 +4,7 @@ const { setupBrowser, teardownBrowser } = require('./setup');
 describe('Keyboard Accessibility', () => {
     let browser;
     let page;
+    let createdTabIdForCleanup = null;
 
     beforeAll(async () => {
         ({ browser, page } = await setupBrowser());
@@ -11,6 +12,21 @@ describe('Keyboard Accessibility', () => {
 
     afterAll(async () => {
         await teardownBrowser(browser);
+    });
+
+    afterEach(async () => {
+        // Cleanup any tabs created during tests
+        if (createdTabIdForCleanup) {
+            await page.evaluate((id) => {
+                return new Promise(resolve => {
+                    chrome.tabs.get(id, (tab) => {
+                        if (chrome.runtime.lastError || !tab) return resolve();
+                        chrome.tabs.remove(id, resolve);
+                    });
+                });
+            }, createdTabIdForCleanup).catch(() => { });
+            createdTabIdForCleanup = null;
+        }
     });
 
     test('Tabs should be keyboard focusable (tabindex="0")', async () => {
@@ -49,11 +65,15 @@ describe('Keyboard Accessibility', () => {
     test('Pressing Enter on child buttons should NOT activate tab or folder', async () => {
         // Create a dummy tab to close safely
         const dummyUrl = 'http://example.com/';
-        await page.evaluate((url) => {
+        const createdTab = await page.evaluate((url) => {
             return new Promise(resolve => {
-                chrome.tabs.create({ url: url, active: false }, resolve);
+                chrome.tabs.create({ url: url, active: false }, (tab) => resolve(tab));
             });
         }, dummyUrl);
+
+        // Note: this tab will be closed by the test itself (via Enter on close button),
+        // so we don't need afterEach cleanup for it. But set it just in case.
+        createdTabIdForCleanup = createdTab.id;
 
         // Wait for it to appear
         const tabSelector = `.tab-item[data-url*="example.com"]`;
@@ -82,14 +102,20 @@ describe('Keyboard Accessibility', () => {
 
         const finalTabCount = await page.$$eval('.tab-item', tabs => tabs.length);
         expect(finalTabCount).toBe(initialTabCount - 1);
+
+        // Tab was closed by the test, clear cleanup reference
+        createdTabIdForCleanup = null;
     }, 30000);
 
     test('should navigate between tabs using Arrow Up/Down keys', async () => {
         // Ensure we have at least 2 tabs
         const tabCount = await page.$$eval('.tab-item', tabs => tabs.length);
         if (tabCount < 2) {
-            await page.evaluate(() => new Promise(r => chrome.tabs.create({ url: 'about:blank' }, r)));
-            await page.waitForFunction(() => document.querySelectorAll('.tab-item').length >= 2);
+            const newTab = await page.evaluate(() => {
+                return new Promise(r => chrome.tabs.create({ url: 'about:blank' }, (tab) => r(tab)));
+            });
+            createdTabIdForCleanup = newTab.id;
+            await page.waitForFunction(() => document.querySelectorAll('.tab-item').length >= 2, { timeout: 10000 });
         }
 
         // Get handles to first two tabs
@@ -100,22 +126,22 @@ describe('Keyboard Accessibility', () => {
         // Focus the first tab
         await tabs[0].focus();
 
-        // Verify focus
-        let focusedId = await page.evaluate(() => document.activeElement.dataset.tabId);
+        // Verify focus — use optional chaining to guard against null activeElement
+        let focusedId = await page.evaluate(() => document.activeElement?.dataset?.tabId ?? null);
         expect(focusedId).toBe(tab1Id);
 
         // Press Arrow Down
         await page.keyboard.press('ArrowDown');
 
         // Verify focus moved to second tab
-        focusedId = await page.evaluate(() => document.activeElement.dataset.tabId);
+        focusedId = await page.evaluate(() => document.activeElement?.dataset?.tabId ?? null);
         expect(focusedId).toBe(tab2Id);
 
         // Press Arrow Up
         await page.keyboard.press('ArrowUp');
 
         // Verify focus moved back to first tab
-        focusedId = await page.evaluate(() => document.activeElement.dataset.tabId);
+        focusedId = await page.evaluate(() => document.activeElement?.dataset?.tabId ?? null);
         expect(focusedId).toBe(tab1Id);
     }, 30000);
 });

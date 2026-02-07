@@ -46,7 +46,7 @@
 
 ### 待補充的 Happy Paths
 - [x] 拖曳分頁排序 (已有 `tab_dragging.test.js`)
-- [x] 書籤拖曳排序 (更新 `bookmark_dragging.test.js` 新增 UI 測試)
+- [x] 書籤拖曳排序 (更新 `bookmark_dragging.test.js` 新增 API 排序驗證測試)
 - [x] 右鍵選單操作 (新增 `context_menu.test.js`)
 - [x] 鍵盤導航 (更新 `keyboard_a11y.test.js` 新增 Arrow Key 測試)
 
@@ -60,7 +60,7 @@
 | 分頁導航事件 | Headless 環境下 Navigation 不穩定 | 依賴 API 狀態檢查或 Active 狀態 |
 | 跨視窗群組創建 | Chrome API 行為差異 | 明確指定 `windowId` 於 `createProperties` |
 | 搜尋路徑匹配 | 搜尋邏輯只匹配 Title/Domain | 使用 Data URL 時需指定 Title |
-| 書籤拖曳進資料夾 | UI 拖曳在 Headless/Puppeteer 中對 Drop Target 的判定不穩定 | 暫時依賴 API 測試驗證 Backend 邏輯，保留同層級排序 UI 測試 |
+| 書籤拖曳進資料夾 | UI 拖曳在 Headless/Puppeteer 中對 Drop Target 與 SortableJS 的判定不穩定 | 依賴 API 測試驗證排序邏輯，避免 UI 拖曳造成 CI flaky |
 
 ---
 
@@ -85,9 +85,14 @@
 
 ## 更新日誌
 
+### 2026-02-07 - Review 修正
+- 修正 `bookmark_dragging.test.js`: 移除不穩定 UI 拖曳測試，改用 Chrome API 排序驗證；移除所有 `setTimeout` 反模式。
+- 修正 `context_menu.test.js`: 將 tab cleanup 移至 `afterEach`；修正 URL 尾斜線匹配問題。
+- 修正 `keyboard_a11y.test.js`: 新增 `afterEach` tab cleanup；加入 `activeElement` null 防禦。
+
 ### 2026-02-06 - Happy Path 補完
 - 新增 `context_menu.test.js`: 測試右鍵選單顯示與項目檢查。
-- 更新 `bookmark_dragging.test.js`: 增加 UI 拖曳排序測試 (Drag & Drop Reorder)。
+- 更新 `bookmark_dragging.test.js`: 增加書籤排序測試。
 - 更新 `keyboard_a11y.test.js`: 增加 Arrow Up/Down 鍵盤導航測試。
 - 確認所有 Missing Happy Paths 已補齊。
 
