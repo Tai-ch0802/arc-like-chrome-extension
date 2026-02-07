@@ -22,15 +22,17 @@
 | `other_windows.test.js` | 其他視窗 | 2 | P1 |
 | `theme_switch.test.js` | 主題切換 | 3 | P2 |
 | `theme_edge_cases.test.js` | 主題 Edge Cases | 3 | P2 |
+| `reading_list_edge_cases.test.js` | 閱讀清單 Edge Cases | 3 | P1 |
 | `settings_panel.test.js` | 設定面板 | 4 | P2 |
 
-**總計: 54 測試案例**
+**總計: 57 測試案例**
 
 ---
 
 ## 測試覆蓋缺口
 
 ### 待補充的 Edge Cases
+- [x] 閱讀清單：搜尋過濾、URL 匹配、鍵盤導航 (Implemented in `reading_list_edge_cases.test.js`)
 - [x] 搜尋：空字串、特殊字元、超長輸入 (Implemented in `search_edge_cases.test.js`)
 - [x] 搜尋：快速輸入 Race Condition (Implemented in `search_edge_cases.test.js`)
 - [x] 書籤：無效 URL、重複書籤、巢狀資料夾 (Implemented in `bookmark_edge_cases.test.js`)
@@ -55,7 +57,6 @@
 | Service Worker 重啟 | 需要模擬瀏覽器關閉 | 使用 `worker.close()` |
 | 分頁導航事件 | Headless 環境下 Navigation 不穩定 | 依賴 API 狀態檢查或 Active 狀態 |
 | 跨視窗群組創建 | Chrome API 行為差異 | 明確指定 `windowId` 於 `createProperties` |
-| 搜尋路徑匹配 | 搜尋邏輯只匹配 Title/Domain | 使用 Data URL 時需指定 Title |
 
 ---
 
@@ -79,6 +80,11 @@
 ---
 
 ## 更新日誌
+
+### 2026-02-06 - Edge Case 補充 (Part 3)
+- 新增 `reading_list_edge_cases.test.js` (3 tests): 覆蓋閱讀清單搜尋過濾 (Title/URL)、鍵盤導航、空狀態。
+- 解決了 "搜尋路徑匹配" 的測試難點，透過 DOM 模擬與實際輸入觸發驗證。
+- 總測試案例增至 57 個。
 
 ### 2026-02-04 - Edge Case 完整補充與整合
 - 整合 `tabs_edge_cases.test.js` 至 `tab_edge_cases.test.js`: 測試 50+ 大量分頁渲染、Pinned Tabs。
