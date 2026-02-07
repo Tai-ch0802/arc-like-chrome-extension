@@ -4,6 +4,7 @@ import * as modal from '../modalManager.js';
 import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -349,8 +350,12 @@ function initBookmarkListeners(container) {
 /** @type {Map<string, {item: HTMLElement, content: HTMLElement|null}>} Cache for bookmark DOM elements */
 let bookmarkElementsCache = new Map();
 
+/** @type {Map<string, HTMLElement>} Cache for empty folder message elements, keyed by parentId */
+let emptyMsgCache = new Map();
+
 export function resetBookmarkCache() {
     bookmarkElementsCache = new Map();
+    emptyMsgCache = new Map();
 }
 
 function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
@@ -369,13 +374,13 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
     if (icon) {
         let newSrc = 'icons/fallback-favicon.svg';
         if (node.url && (node.url.startsWith('http') || node.url.startsWith('https'))) {
-             try {
+            try {
                 const domain = new URL(node.url).hostname;
                 newSrc = `https://www.google.com/s2/favicons?sz=16&domain_url=${domain}`;
-            } catch (error) {}
+            } catch (error) { }
         }
         if (icon.src !== newSrc && !icon.src.endsWith(newSrc)) {
-             icon.src = newSrc;
+            icon.src = newSrc;
         }
     }
 
@@ -386,7 +391,7 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
     if (titleSpan) {
         if (highlightRegexes.length > 0) {
             const titleHtml = highlightText(node.title, highlightRegexes, 'title');
-             // Only update if changed
+            // Only update if changed
             if (titleSpan.innerHTML !== titleHtml) {
                 titleSpan.innerHTML = titleHtml;
                 titleSpan.dataset.originalText = node.title;
@@ -407,8 +412,8 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
     delete item.dataset.matchedDomain;
 
     if (highlightRegexes.length > 0 && titleWrapper) {
-         const titleMatched = titleSpan && titleSpan.innerHTML.includes('<mark');
-         try {
+        const titleMatched = titleSpan && titleSpan.innerHTML.includes('<mark');
+        try {
             const domain = new URL(node.url).hostname;
             const domainHtml = highlightText(domain, highlightRegexes, 'url');
             const domainMatched = domainHtml.includes('<mark');
@@ -421,7 +426,7 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
                 item.dataset.urlMatch = 'true';
                 item.dataset.matchedDomain = domain;
             }
-        } catch (e) {}
+        } catch (e) { }
     }
 
     // Linked Tabs Icon
@@ -429,17 +434,17 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
     const linkedIcon = item.querySelector('.linked-tab-icon');
     if (linkedTabIds.length > 0) {
         if (!linkedIcon) {
-             const newLinkedIcon = document.createElement('span');
-             newLinkedIcon.className = 'linked-tab-icon';
-             newLinkedIcon.style.marginRight = '8px';
-             newLinkedIcon.innerHTML = LINKED_TAB_ICON_SVG;
-             // Insert before titleWrapper
-             item.insertBefore(newLinkedIcon, titleWrapper);
-             updateLinkedIconTooltip(newLinkedIcon, linkedTabIds.length);
-             newLinkedIcon.setAttribute('role', 'button');
-             newLinkedIcon.setAttribute('tabindex', '0');
+            const newLinkedIcon = document.createElement('span');
+            newLinkedIcon.className = 'linked-tab-icon';
+            newLinkedIcon.style.marginRight = '8px';
+            newLinkedIcon.innerHTML = LINKED_TAB_ICON_SVG;
+            // Insert before titleWrapper
+            item.insertBefore(newLinkedIcon, titleWrapper);
+            updateLinkedIconTooltip(newLinkedIcon, linkedTabIds.length);
+            newLinkedIcon.setAttribute('role', 'button');
+            newLinkedIcon.setAttribute('tabindex', '0');
         } else {
-             updateLinkedIconTooltip(linkedIcon, linkedTabIds.length);
+            updateLinkedIconTooltip(linkedIcon, linkedTabIds.length);
         }
     } else if (linkedIcon) {
         linkedIcon.remove();
@@ -447,11 +452,11 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
 }
 
 function updateLinkedIconTooltip(icon, count) {
-     const label = api.getMessage('linkedTabsIcon') + ' - ' + api.getMessage('linkedTabsTooltip', count.toString());
-     if (icon.getAttribute('aria-label') !== label) {
-         icon.setAttribute('aria-label', label);
-         icon.title = api.getMessage('linkedTabsTooltip', count.toString());
-     }
+    const label = api.getMessage('linkedTabsIcon') + ' - ' + api.getMessage('linkedTabsTooltip', count.toString());
+    if (icon.getAttribute('aria-label') !== label) {
+        icon.setAttribute('aria-label', label);
+        icon.title = api.getMessage('linkedTabsTooltip', count.toString());
+    }
 }
 
 function createBookmarkItem(node, options) {
@@ -532,7 +537,7 @@ function updateFolderElement(item, node, { forceExpandAll = false, highlightRege
                 titleSpan.dataset.originalText = node.title;
             }
         } else {
-             if (titleSpan.dataset.originalText || titleSpan.textContent !== node.title) {
+            if (titleSpan.dataset.originalText || titleSpan.textContent !== node.title) {
                 titleSpan.textContent = node.title;
                 delete titleSpan.dataset.originalText;
             }
@@ -606,8 +611,8 @@ function getOrCreateFolderElement(node, options) {
     }
 
     if (!content) {
-         content = document.createElement('div');
-         content.className = 'folder-content';
+        content = document.createElement('div');
+        content.className = 'folder-content';
     }
 
     const isExpanded = options.forceExpandAll || state.isFolderExpanded(node.id);
@@ -646,32 +651,35 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
     container.dataset.parentId = parentId;
 
     if (bookmarkNodes.length === 0) {
-        const emptyMsg = document.createElement('div');
-        emptyMsg.className = 'empty-folder-message';
-        emptyMsg.innerHTML = `${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>`;
-        container.appendChild(emptyMsg);
+        let emptyMsg = emptyMsgCache.get(parentId);
+        if (!emptyMsg) {
+            emptyMsg = document.createElement('div');
+            emptyMsg.className = 'empty-folder-message';
+            emptyMsg.innerHTML = `${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>`;
+            emptyMsgCache.set(parentId, emptyMsg);
+        }
+        reconcileDOM(container, [emptyMsg]);
         return;
     }
 
-    const fragment = document.createDocumentFragment();
+    const newChildren = [];
 
     bookmarkNodes.forEach(node => {
         if (node.url) { // It's a bookmark
             const item = getOrCreateBookmarkElement(node, currentOptions);
-            fragment.appendChild(item);
+            newChildren.push(item);
         } else if (node.children) { // It's a folder
             const { item, content } = getOrCreateFolderElement(node, currentOptions);
 
             const isExpanded = currentOptions.forceExpandAll || state.isFolderExpanded(node.id);
             if (isExpanded && node.children) {
-                content.innerHTML = '';
                 renderBookmarks(node.children, content, node.id, refreshBookmarksCallback, currentOptions);
             }
 
-            fragment.appendChild(item);
-            fragment.appendChild(content);
+            newChildren.push(item);
+            newChildren.push(content);
         }
     });
 
-    container.appendChild(fragment);
+    reconcileDOM(container, newChildren);
 }
