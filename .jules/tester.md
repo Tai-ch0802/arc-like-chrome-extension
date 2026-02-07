@@ -22,6 +22,7 @@
 | `other_windows.test.js` | 其他視窗 | 2 | P1 |
 | `theme_switch.test.js` | 主題切換 | 3 | P2 |
 | `theme_edge_cases.test.js` | 主題 Edge Cases | 3 | P2 |
+| `reading_list_edge_cases.test.js` | 閱讀清單 Edge Cases | 3 | P1 |
 | `settings_panel.test.js` | 設定面板 | 4 | P2 |
 | `context_menu.test.js` | 右鍵選單 (Tab) | 1 | P1 |
 | `bookmark_dragging.test.js` | 書籤拖曳排序 | 2 | P1 |
@@ -35,6 +36,7 @@
 ## 測試覆蓋缺口
 
 ### 待補充的 Edge Cases
+- [x] 閱讀清單：搜尋過濾、URL 匹配、鍵盤導航 (Implemented in `reading_list_edge_cases.test.js`)
 - [x] 搜尋：空字串、特殊字元、超長輸入 (Implemented in `search_edge_cases.test.js`)
 - [x] 搜尋：快速輸入 Race Condition (Implemented in `search_edge_cases.test.js`)
 - [x] 書籤：無效 URL、重複書籤、巢狀資料夾 (Implemented in `bookmark_edge_cases.test.js`)
@@ -94,7 +96,9 @@
 - 新增 `context_menu.test.js`: 測試右鍵選單顯示與項目檢查。
 - 更新 `bookmark_dragging.test.js`: 增加書籤排序測試。
 - 更新 `keyboard_a11y.test.js`: 增加 Arrow Up/Down 鍵盤導航測試。
-- 確認所有 Missing Happy Paths 已補齊。
+- 確認所有 Missing Happy Paths 已補齊。- 新增 `reading_list_edge_cases.test.js` (3 tests): 覆蓋閱讀清單搜尋過濾 (Title/URL)、鍵盤導航、空狀態。
+- 解決了 "搜尋路徑匹配" 的測試難點，透過 DOM 模擬與實際輸入觸發驗證。
+- 總測試案例增至 57 個。
 
 ### 2026-02-04 - Edge Case 完整補充與整合
 - 整合 `tabs_edge_cases.test.js` 至 `tab_edge_cases.test.js`: 測試 50+ 大量分頁渲染、Pinned Tabs。
