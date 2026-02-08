@@ -28,8 +28,9 @@
 | `bookmark_dragging.test.js` | 書籤拖曳排序 | 2 | P1 |
 | `tab_dragging.test.js` | 分頁拖曳排序 | 1 | P1 |
 | `keyboard_a11y.test.js` | 鍵盤導航 | 5 | P1 |
+| `modify_bookmark_folder.test.js` | 修改書籤資料夾 (API/UI) | 3 | P1 |
 
-**總計: 57 測試案例**
+**總計: 59 測試案例**
 
 ---
 
@@ -40,7 +41,7 @@
 - [x] 搜尋：空字串、特殊字元、超長輸入 (Implemented in `search_edge_cases.test.js`)
 - [x] 搜尋：快速輸入 Race Condition (Implemented in `search_edge_cases.test.js`)
 - [x] 書籤：無效 URL、重複書籤、巢狀資料夾 (Implemented in `bookmark_edge_cases.test.js`)
-- [x] 分頁：大量分頁處理 (50+)、Pinned Tabs、URL 更新 (Implemented in `tab_edge_cases.test.js`)
+- [x] 分頁：大量分頁處理 (100+)、Pinned Tabs、URL 更新 (Implemented in `tab_edge_cases.test.js`)
 - [x] 群組：空群組、顏色變更、標題變更、API 移動 (Implemented in `group_edge_cases.test.js`)
 - [x] 群組：跨視窗群組顯示 (Implemented in `group_edge_cases.test.js`)
 - [x] 主題：自訂主題資料遺失 Fallback (Implemented in `theme_edge_cases.test.js`)
@@ -51,6 +52,7 @@
 - [x] 書籤拖曳排序 (更新 `bookmark_dragging.test.js` 新增 API 排序驗證測試)
 - [x] 右鍵選單操作 (新增 `context_menu.test.js`)
 - [x] 鍵盤導航 (更新 `keyboard_a11y.test.js` 新增 Arrow Key 測試)
+- [x] 資料夾管理 UI (新增 `modify_bookmark_folder.test.js` 的 UI 測試)
 
 ---
 
@@ -86,6 +88,12 @@
 ---
 
 ## 更新日誌
+
+### 2026-02-08 - Edge Case 與 Happy Path 補強
+- 更新 `tab_edge_cases.test.js`: 增加至 100+ 分頁測試，提升 Timeout 確保穩定性。
+- 更新 `modify_bookmark_folder.test.js`: 新增 UI 測試案例，覆蓋 "新增資料夾" 與 "重命名資料夾" 的 UI 操作流程。
+- 修正 `rename_window.test.js`: 優化 Timeout 與 Selector 等待邏輯，解決不穩定的失敗。
+- 移除無效測試：原計畫新增的書籤右鍵選單測試，經查證該功能未實作，故移除。
 
 ### 2026-02-07 - Review 修正
 - 修正 `bookmark_dragging.test.js`: 移除不穩定 UI 拖曳測試，改用 Chrome API 排序驗證；移除所有 `setTimeout` 反模式。
