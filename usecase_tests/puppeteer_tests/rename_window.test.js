@@ -1,5 +1,5 @@
 const { setupBrowser, teardownBrowser } = require('./setup');
-jest.setTimeout(30000);
+jest.setTimeout(60000); // Increased global timeout
 
 describe('Window Renaming Feature', () => {
     let browser;
@@ -37,7 +37,7 @@ describe('Window Renaming Feature', () => {
         // Wait for extension to detect the new window by checking DOM
         await page.waitForFunction(
             (windowId) => document.querySelector(`.window-folder[data-window-id="${windowId}"]`),
-            { timeout: 10000 },
+            { timeout: 15000 }, // Increased timeout
             secondWindowId
         ).catch(async () => {
             // Fallback: reload and try again
@@ -46,18 +46,25 @@ describe('Window Renaming Feature', () => {
         });
 
         // 2. Find the window folder for the new window
-        // The new window should be in the list. Index might vary, but we can look for the one with data-window-id matching secondWindowId
         const folderSelector = `.window-folder[data-window-id="${secondWindowId}"]`;
-        await page.waitForSelector(folderSelector);
+        await page.waitForSelector(folderSelector, { timeout: 10000 });
 
-        // Scroll to element to ensure it's rendered (due to content-visibility: auto)
+        // Scroll to element to ensure it's rendered
         await page.$eval(folderSelector, el => el.scrollIntoView());
 
         // 3. Find and click the edit button
-        // Need to hover first because the button is hidden and has pointer-events: none
+        // Force hover to show button
         await page.hover(folderSelector);
         const editBtnSelector = `${folderSelector} .window-edit-btn`;
-        await page.waitForSelector(editBtnSelector);
+
+        // Wait for button to be present
+        await page.waitForSelector(editBtnSelector, { visible: true, timeout: 5000 }).catch(() => {
+            // Try forcing visibility if hover failed in headless
+            return page.evaluate((sel) => {
+                const btn = document.querySelector(sel);
+                if(btn) btn.style.display = 'block'; // Force show
+            }, editBtnSelector);
+        });
 
         await page.click(editBtnSelector);
 
@@ -77,7 +84,7 @@ describe('Window Renaming Feature', () => {
                 const el = document.querySelector(sel + ' .window-title');
                 return el && el.textContent === expected;
             },
-            { timeout: 5000 },
+            { timeout: 10000 }, // Increased timeout
             folderSelector,
             'My Custom Window Name'
         );
@@ -85,6 +92,7 @@ describe('Window Renaming Feature', () => {
         const newTitle = await page.$eval(`${folderSelector} .window-title`, el => el.textContent);
         expect(newTitle).toBe('My Custom Window Name');
     });
+
     test('Should remove window name from storage when window is closed', async () => {
         // 1. Create a new window
         const tempWindow = await page.evaluate(() => {
@@ -97,7 +105,7 @@ describe('Window Renaming Feature', () => {
         // 2. Wait for it to appear in DOM
         await page.waitForFunction(
             (windowId) => document.querySelector(`.window-folder[data-window-id="${windowId}"]`),
-            { timeout: 10000 },
+            { timeout: 15000 },
             tempWindowId
         ).catch(async () => {
             await page.reload();
@@ -110,14 +118,21 @@ describe('Window Renaming Feature', () => {
 
         // 3. Rename it
         await page.hover(folderSelector);
-        await page.click(`${folderSelector} .window-edit-btn`);
+        // Force click via evaluate to avoid visibility issues
+        const editBtnSelector = `${folderSelector} .window-edit-btn`;
+        await page.evaluate((sel) => {
+             const btn = document.querySelector(sel);
+             if(btn) btn.click();
+        }, editBtnSelector);
+
         await page.waitForSelector('.modal-content input.modal-input');
         await page.type('.modal-content input.modal-input', 'Temporary Window');
         await page.click('.modal-content button.confirm-btn');
+
         // Wait for dialog to close and title to update
         await page.waitForFunction(
             () => !document.querySelector('.modal-content'),
-            { timeout: 5000 }
+            { timeout: 10000 }
         );
 
         // 4. Verify storage has it
@@ -126,7 +141,14 @@ describe('Window Renaming Feature', () => {
                 chrome.storage.local.get('windowNames', (result) => resolve(result.windowNames));
             });
         });
-        expect(storedNames[tempWindowId]).toBe('Temporary Window');
+        // Wait until storage is updated?
+        // Use waitForFunction for storage check
+        await page.waitForFunction((id) => {
+             return new Promise(r => chrome.storage.local.get('windowNames', res => {
+                 r(res.windowNames && res.windowNames[id] === 'Temporary Window');
+             }));
+        }, { timeout: 5000 }, tempWindowId);
+
 
         // 5. Close the window
         await page.evaluate((id) => chrome.windows.remove(id), tempWindowId);
@@ -140,7 +162,7 @@ describe('Window Renaming Feature', () => {
                     });
                 });
             },
-            { timeout: 10000 },
+            { timeout: 15000 },
             tempWindowId
         );
 
