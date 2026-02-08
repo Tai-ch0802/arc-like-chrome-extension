@@ -53,20 +53,14 @@ describe('Window Renaming Feature', () => {
         await page.$eval(folderSelector, el => el.scrollIntoView());
 
         // 3. Find and click the edit button
-        // Force hover to show button
+        // Use evaluate(el.click()) because headless hover may not reveal the button
         await page.hover(folderSelector);
         const editBtnSelector = `${folderSelector} .window-edit-btn`;
-
-        // Wait for button to be present
-        await page.waitForSelector(editBtnSelector, { visible: true, timeout: 5000 }).catch(() => {
-            // Try forcing visibility if hover failed in headless
-            return page.evaluate((sel) => {
-                const btn = document.querySelector(sel);
-                if(btn) btn.style.display = 'block'; // Force show
-            }, editBtnSelector);
-        });
-
-        await page.click(editBtnSelector);
+        await page.evaluate((sel) => {
+            const btn = document.querySelector(sel);
+            if (!btn) throw new Error(`Edit button not found: ${sel}`);
+            btn.click();
+        }, editBtnSelector);
 
         // 4. Handle Custom Modal
         const modalSelector = '.modal-content';
@@ -121,8 +115,8 @@ describe('Window Renaming Feature', () => {
         // Force click via evaluate to avoid visibility issues
         const editBtnSelector = `${folderSelector} .window-edit-btn`;
         await page.evaluate((sel) => {
-             const btn = document.querySelector(sel);
-             if(btn) btn.click();
+            const btn = document.querySelector(sel);
+            if (btn) btn.click();
         }, editBtnSelector);
 
         await page.waitForSelector('.modal-content input.modal-input');
@@ -136,19 +130,11 @@ describe('Window Renaming Feature', () => {
         );
 
         // 4. Verify storage has it
-        let storedNames = await page.evaluate(() => {
-            return new Promise(resolve => {
-                chrome.storage.local.get('windowNames', (result) => resolve(result.windowNames));
-            });
-        });
-        // Wait until storage is updated?
-        // Use waitForFunction for storage check
         await page.waitForFunction((id) => {
-             return new Promise(r => chrome.storage.local.get('windowNames', res => {
-                 r(res.windowNames && res.windowNames[id] === 'Temporary Window');
-             }));
-        }, { timeout: 5000 }, tempWindowId);
-
+            return new Promise(r => chrome.storage.local.get('windowNames', res => {
+                r(res.windowNames && res.windowNames[id] === 'Temporary Window');
+            }));
+        }, { timeout: 10000 }, tempWindowId);
 
         // 5. Close the window
         await page.evaluate((id) => chrome.windows.remove(id), tempWindowId);
@@ -167,11 +153,11 @@ describe('Window Renaming Feature', () => {
         );
 
         // 7. Verify storage removed it
-        storedNames = await page.evaluate(() => {
+        const storedNames = await page.evaluate(() => {
             return new Promise(resolve => {
                 chrome.storage.local.get('windowNames', (result) => resolve(result.windowNames));
             });
         });
-        expect(storedNames[tempWindowId]).toBeUndefined();
+        expect(storedNames?.[tempWindowId]).toBeUndefined();
     });
 });

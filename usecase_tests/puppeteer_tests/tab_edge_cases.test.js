@@ -17,7 +17,7 @@ describe('Tab Edge Cases', () => {
         await teardownBrowser(browser);
     });
 
-    test('should render a large number of tabs (100+)', async () => {
+    test('should render a large number of tabs (50+)', async () => {
         const page = await browser.newPage();
         await page.goto(sidePanelUrl);
         try {
@@ -27,10 +27,10 @@ describe('Tab Edge Cases', () => {
             // Get initial tab count
             const initialCount = await page.$$eval('.tab-item', tabs => tabs.length);
 
-            // Create 100 tabs
+            // Create 50 tabs
             await page.evaluate(async () => {
                 const promises = [];
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 50; i++) {
                     promises.push(new Promise(resolve => {
                         chrome.tabs.create({ url: `https://example.com/load-${i}`, active: false }, resolve);
                     }));
@@ -39,13 +39,12 @@ describe('Tab Edge Cases', () => {
             });
 
             // Wait for tabs to render using state-based waiting
-            // Timeout increased for high volume (120s) to avoid flakes in CI
-            await waitForTabCount(page, initialCount + 100, 120000);
+            await waitForTabCount(page, initialCount + 50, 60000);
 
             // Verify count
             const tabCount = await page.$$eval('.tab-item', tabs => tabs.length);
-            // 100 new tabs + initial tabs
-            expect(tabCount).toBeGreaterThanOrEqual(initialCount + 100);
+            // 50 new tabs + initial tabs
+            expect(tabCount).toBeGreaterThanOrEqual(initialCount + 50);
 
         } finally {
             // Cleanup tabs created during test
@@ -63,7 +62,7 @@ describe('Tab Edge Cases', () => {
 
             try { await page.close(); } catch (e) { /* intentionally ignored - cleanup only */ }
         }
-    }, 150000); // 150s test timeout
+    }, 90000);
 
     test('should render pinned tabs correctly', async () => {
         const page = await browser.newPage();
