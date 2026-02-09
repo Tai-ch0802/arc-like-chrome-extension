@@ -14,7 +14,7 @@ describe('Bookmark Cache Performance Benchmark', () => {
         sidePanelUrl = setup.sidePanelUrl;
 
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

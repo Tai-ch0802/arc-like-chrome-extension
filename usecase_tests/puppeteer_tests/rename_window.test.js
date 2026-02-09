@@ -67,6 +67,7 @@ describe('Window Renaming Feature', () => {
         await page.waitForSelector(modalSelector);
 
         const inputSelector = `${modalSelector} input.modal-input`;
+        await page.click(inputSelector, { clickCount: 3 }); // Select all existing text
         await page.type(inputSelector, 'My Custom Window Name');
 
         const confirmBtnSelector = `${modalSelector} button.confirm-btn`;

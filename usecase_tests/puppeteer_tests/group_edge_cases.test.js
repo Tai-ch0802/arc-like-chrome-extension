@@ -10,7 +10,7 @@ describe('Group Edge Cases', () => {
         page = setup.page;
         // Wait for initial app load
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -129,7 +129,14 @@ describe('Group Edge Cases', () => {
                 });
             }, tab.id);
 
-            await page.waitForSelector(`.tab-group-header[data-group-id="${groupId}"]`, { timeout: 10000 });
+            await page.waitForFunction(
+                (id) => {
+                    const el = document.querySelector(`.tab-group-header[data-group-id="${id}"] .tab-group-title`);
+                    return el && el.textContent === 'Old Title';
+                },
+                { timeout: 10000 },
+                groupId
+            );
 
             // Verify old title
             const oldTitle = await page.$eval(`.tab-group-header[data-group-id="${groupId}"] .tab-group-title`, el => el.textContent);

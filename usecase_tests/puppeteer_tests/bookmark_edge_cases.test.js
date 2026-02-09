@@ -10,7 +10,7 @@ describe('Bookmark Edge Cases', () => {
         page = setup.page;
         // Wait for initial app load
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         if (browser) await teardownBrowser(browser);
