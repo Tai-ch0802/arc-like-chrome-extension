@@ -13,7 +13,7 @@ async function setupBrowser() {
             '--no-sandbox', // Required for some environments
             '--disable-setuid-sandbox', // Required for some environments
             // CI stability optimizations:
-            '--disable-dev-shm-usage', // Prevents /dev/shm memory issues in Docker/CI
+            //'--disable-dev-shm-usage', // Prevents /dev/shm memory issues in Docker/CI
             '--disable-gpu', // Disable GPU hardware acceleration in headless CI
             '--window-size=1280,800' // Consistent window size for rendering
         ]
