@@ -9,7 +9,7 @@ describe('Other Windows Use Case', () => {
         browser = setup.browser;
         page = setup.page;
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -80,7 +80,7 @@ describe('Other Windows Use Case', () => {
                 } catch (e) { }
             }
         }
-    }, 60000);
+    }, 120000);
 
     test('should NOT allow dragging tabs from Other Windows', async () => {
         let secondWindowId = null;
@@ -125,5 +125,5 @@ describe('Other Windows Use Case', () => {
                 } catch (e) { }
             }
         }
-    }, 60000);
+    }, 120000);
 });

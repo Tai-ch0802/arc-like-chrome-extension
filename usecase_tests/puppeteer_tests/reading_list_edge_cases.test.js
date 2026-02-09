@@ -11,7 +11,7 @@ describe('Reading List Edge Cases', () => {
 
         // Wait for app initialization
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

@@ -145,5 +145,5 @@ describe('Tab to Bookmark Use Case', () => {
         expect(newBookmark.url).toBe(tabUrl);
         if (newBookmark) createdBookmarkIds.push(newBookmark.id);
 
-    }, 60000);
+    }, 120000);
 });

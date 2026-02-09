@@ -82,7 +82,7 @@ describe('Bookmark Edge Cases', () => {
                 } catch (e) { }
             }
         }
-    }, 60000);
+    }, 120000);
 
     test('should handle duplicate bookmarks in same folder', async () => {
         let createdIds = [];

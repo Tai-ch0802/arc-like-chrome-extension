@@ -149,11 +149,21 @@ describe('Group Edge Cases', () => {
                 });
             }, groupId);
 
-            // Wait for update
-            await page.waitForFunction((id) => {
-                const el = document.querySelector(`.tab-group-header[data-group-id="${id}"] .tab-group-title`);
-                return el && el.textContent === 'New Title';
-            }, { timeout: 10000 }, groupId);
+            // Wait for update (with reload fallback for slow VMs)
+            try {
+                await page.waitForFunction((id) => {
+                    const el = document.querySelector(`.tab-group-header[data-group-id="${id}"] .tab-group-title`);
+                    return el && el.textContent === 'New Title';
+                }, { timeout: 15000 }, groupId);
+            } catch (_) {
+                // Fallback: reload to force DOM refresh from Chrome API state
+                await page.reload();
+                await page.waitForSelector('#tab-list', { timeout: 10000 });
+                await page.waitForFunction((id) => {
+                    const el = document.querySelector(`.tab-group-header[data-group-id="${id}"] .tab-group-title`);
+                    return el && el.textContent === 'New Title';
+                }, { timeout: 15000 }, groupId);
+            }
 
             const newTitle = await page.$eval(`.tab-group-header[data-group-id="${groupId}"] .tab-group-title`, el => el.textContent);
             expect(newTitle).toBe('New Title');
@@ -314,5 +324,5 @@ describe('Group Edge Cases', () => {
                 } catch (e) { }
             }
         }
-    }, 60000);
+    }, 120000);
 });

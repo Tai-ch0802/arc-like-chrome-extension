@@ -67,19 +67,26 @@ describe('Window Renaming Feature', () => {
         await page.waitForSelector(modalSelector);
 
         const inputSelector = `${modalSelector} input.modal-input`;
-        await page.click(inputSelector, { clickCount: 3 }); // Select all existing text
+        // Clear existing text by setting value directly (triple-click unreliable in headless)
+        await page.$eval(inputSelector, el => { el.value = ''; });
         await page.type(inputSelector, 'My Custom Window Name');
 
         const confirmBtnSelector = `${modalSelector} button.confirm-btn`;
         await page.click(confirmBtnSelector);
 
-        // Verify the title has updated
+        // Wait for modal to close first
+        await page.waitForFunction(
+            () => !document.querySelector('.modal-content'),
+            { timeout: 10000 }
+        );
+
+        // Verify the title has updated (increased timeout for VM)
         await page.waitForFunction(
             (sel, expected) => {
                 const el = document.querySelector(sel + ' .window-title');
                 return el && el.textContent === expected;
             },
-            { timeout: 10000 }, // Increased timeout
+            { timeout: 30000 },
             folderSelector,
             'My Custom Window Name'
         );

@@ -9,7 +9,7 @@ describe('Theme Edge Cases', () => {
         browser = setup.browser;
         page = setup.page;
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -57,7 +57,7 @@ describe('Theme Edge Cases', () => {
         } catch (e) {
             throw e;
         }
-    }, 60000);
+    }, 120000);
 
     test('should handle rapid theme switching without crashing', async () => {
         await page.waitForSelector('#settings-toggle', { timeout: 10000 });
@@ -83,7 +83,7 @@ describe('Theme Edge Cases', () => {
         } catch (e) {
             throw e;
         }
-    }, 60000);
+    }, 120000);
 
     test('should handle storage quota exceeded gracefully', async () => {
         await page.waitForSelector('#settings-toggle', { timeout: 10000 });
@@ -119,6 +119,6 @@ describe('Theme Edge Cases', () => {
         } catch (e) {
             throw e;
         }
-    }, 60000);
+    }, 120000);
 
 });

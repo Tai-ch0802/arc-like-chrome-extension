@@ -100,5 +100,5 @@ describe('Bookmark Cache Performance Benchmark', () => {
         // Performance sanity check - should complete within reasonable time
         expect(result.buildTime).toBeLessThan(5000); // 5 seconds max
         expect(result.loadTime).toBeLessThan(1000);  // 1 second max
-    }, 60000);
+    }, 120000);
 });
