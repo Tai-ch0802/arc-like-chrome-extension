@@ -26,7 +26,10 @@ jobs:
             ## 可用指令
 
             ```bash
-            # 執行所有測試
+            # 執行 CI 測試 (僅 happy-path)
+            npm run test:ci
+
+            # 執行所有測試 (包含 edge cases)
             npm test
 
             # 執行特定測試檔案
@@ -39,6 +42,18 @@ jobs:
             ## 測試架構
 
             所有 E2E 測試位於 `usecase_tests/puppeteer_tests/`，使用 Puppeteer + Jest。
+
+            ### ⚠️ 檔案命名規則 (Critical)
+
+            測試檔案依照 CI 重要性分為兩類：
+
+            | 類型 | 前綴 | CI 行為 | 說明 |
+            |------|------|---------|------|
+            | Happy-Path | `happy_path_*.test.js` | ✅ CI 必跑 | 核心功能測試，`npm run test:ci` 會執行 |
+            | Edge Case / Optional | `*.test.js` (無前綴) | ❌ CI 不跑 | 本地通過即可，不影響 CI |
+
+            **新增 happy-path 測試時，檔名必須以 `happy_path_` 為前綴！**
+            **新增 edge case 測試時，不要使用 `happy_path_` 前綴。**
 
             ### 現有測試檔案
 
@@ -90,6 +105,30 @@ jobs:
 
             ## ⚠️ 常見問題與解法
 
+            ### 🚨 測試穩定性 - Race Condition 反模式 (必讀)
+
+            | 反模式 ❌ | 正確模式 ✅ | 說明 |
+            |-----------|-------------|------|
+            | `await new Promise(r => setTimeout(r, 2000))` | `await page.waitForFunction(...)` | 固定延遲會在 CI 環境不穩定 |
+            | `setTimeout(r, 500)` debounce | `waitForSelector` + visibility | 等待實際 DOM 狀態 |
+            | 等待 active tab URL 精確匹配 | 檢查 tab count 或使用 `includes` | Headless 環境 navigation 可能被阻擋 |
+            | 直接 click 後立即驗證 | `waitForFunction` 後再驗證 | 給予 Chrome API 回應時間 |
+
+            ```javascript
+            // ✅ 等待 DOM 元素出現
+            await page.waitForFunction(
+                (id) => document.querySelector(`.tab-item[data-tab-id="${id}"]`),
+                { timeout: 10000 },
+                createdTabId
+            );
+
+            // ✅ 等待 modal 關閉
+            await page.waitForFunction(
+                () => !document.querySelector('.modal-content'),
+                { timeout: 5000 }
+            );
+            ```
+
             ### Frame Detachment
             ```javascript
             // ❌ BAD: 直接操作可能已 detach 的 page
@@ -109,8 +148,8 @@ jobs:
                 // ...
             }, 90000); // 90 秒超時
 
-            // ✅ 等待 DOM 更新
-            await new Promise(r => setTimeout(r, 300));
+            // ✅ 等待 DOM 更新 — 使用 waitForFunction 而非 setTimeout
+            await page.waitForFunction(() => document.querySelector('.target')?.classList.contains('updated'));
             ```
 
             ### Selector 問題
@@ -134,9 +173,11 @@ jobs:
 
             ## ✅ 務必執行
 
-            - 執行 `npm test` 確保所有測試通過
+            - 執行 `npm test` 確保所有測試通過（包含你新增的測試）
             - 改動應該增加測試覆蓋，而非破壞現有測試
             - 每個新測試檔案應有 2-5 個測試案例
+            - **測試必須在單獨執行和全套執行時都 100% 通過，不允許 flaky test**
+            - **絕對不使用固定延遲 (`setTimeout`) 作為等待機制，必須使用 `waitForFunction` / `waitForSelector`**
 
             ## ⚠️ 先詢問
 
