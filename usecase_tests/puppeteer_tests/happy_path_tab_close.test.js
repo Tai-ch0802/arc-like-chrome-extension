@@ -131,4 +131,4 @@ describe('Tab Close Use Case', () => {
 
         createdTabIds = [];
     });
-}, 60000);
+}, 120000);

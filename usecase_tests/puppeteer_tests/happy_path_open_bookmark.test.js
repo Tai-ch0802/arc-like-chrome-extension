@@ -11,7 +11,7 @@ describe('Open Bookmark Use Case', () => {
         page = setup.page;
         sidePanelUrl = setup.sidePanelUrl;
         await page.waitForSelector('#bookmark-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

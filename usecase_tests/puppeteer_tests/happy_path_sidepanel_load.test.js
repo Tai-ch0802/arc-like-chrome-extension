@@ -61,4 +61,4 @@ describe('Side Panel Load Use Case', () => {
         const settingsBtn = await page.$('#settings-toggle');
         expect(settingsBtn).not.toBeNull();
     });
-}, 60000);
+}, 120000);

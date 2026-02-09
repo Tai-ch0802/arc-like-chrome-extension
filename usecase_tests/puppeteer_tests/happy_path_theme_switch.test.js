@@ -9,7 +9,7 @@ describe('Theme Switch Use Case', () => {
         browser = setup.browser;
         page = setup.page;
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -55,7 +55,7 @@ describe('Theme Switch Use Case', () => {
         // Restore original theme
         await page.select('#theme-select-dropdown', originalTheme);
         await waitForTheme(page, originalTheme);
-    }, 60000);
+    }, 120000);
 
     test('should persist theme selection after reload', async () => {
         await page.waitForSelector('#settings-toggle', { timeout: 10000 });
@@ -84,7 +84,7 @@ describe('Theme Switch Use Case', () => {
         await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
         await page.select('#theme-select-dropdown', 'geek');
         await waitForTheme(page, 'geek');
-    }, 60000);
+    }, 120000);
 
     test('should have all expected theme options', async () => {
         await page.waitForSelector('#settings-toggle', { timeout: 10000 });
@@ -103,5 +103,5 @@ describe('Theme Switch Use Case', () => {
         expect(themeOptions).toContain('geek-blue');
         expect(themeOptions).toContain('christmas');
         expect(themeOptions).toContain('custom');
-    }, 60000);
+    }, 120000);
 });

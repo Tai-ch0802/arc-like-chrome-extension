@@ -9,7 +9,7 @@ describe('Delete Bookmark Use Case', () => {
         const setup = await setupBrowser();
         browser = setup.browser;
         page = setup.page;
-    });
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

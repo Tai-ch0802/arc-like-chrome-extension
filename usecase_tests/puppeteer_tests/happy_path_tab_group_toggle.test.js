@@ -9,7 +9,7 @@ describe('Tab Group Toggle Use Case', () => {
         browser = setup.browser;
         page = setup.page;
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

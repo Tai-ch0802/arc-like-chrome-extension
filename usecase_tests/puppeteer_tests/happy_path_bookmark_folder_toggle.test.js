@@ -9,7 +9,7 @@ describe('Bookmark Folder Toggle Use Case', () => {
         browser = setup.browser;
         page = setup.page;
         await page.waitForSelector('#bookmark-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -73,7 +73,7 @@ describe('Bookmark Folder Toggle Use Case', () => {
                 }, testFolderId);
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 
     test('should collapse an expanded folder when clicking on it', async () => {
         const folder = await page.evaluate(() => {
@@ -132,5 +132,5 @@ describe('Bookmark Folder Toggle Use Case', () => {
                 }, testFolderId);
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 });

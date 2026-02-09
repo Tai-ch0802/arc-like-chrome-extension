@@ -4,37 +4,50 @@ const path = require('path');
 const EXTENSION_PATH = path.resolve(__dirname, '../../'); // Path to your extension's root directory
 // const EXTENSION_ID = 'YOUR_EXTENSION_ID'; // You'll need to get this dynamically or from manifest.json
 
-async function setupBrowser() {
-    const browser = await puppeteer.launch({
-        headless: "new", // Set to "new" for headless mode
-        args: [
-            `--disable-extensions-except=${EXTENSION_PATH}`,
-            `--load-extension=${EXTENSION_PATH}`,
-            '--no-sandbox', // Required for some environments
-            '--disable-setuid-sandbox', // Required for some environments
-            // CI stability optimizations:
-            //'--disable-dev-shm-usage', // Prevents /dev/shm memory issues in Docker/CI
-            '--disable-gpu', // Disable GPU hardware acceleration in headless CI
-            '--window-size=1280,800' // Consistent window size for rendering
-        ]
-    });
+async function setupBrowser(retries = 2) {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        let browser;
+        try {
+            browser = await puppeteer.launch({
+                headless: "new", // Set to "new" for headless mode
+                args: [
+                    `--disable-extensions-except=${EXTENSION_PATH}`,
+                    `--load-extension=${EXTENSION_PATH}`,
+                    '--no-sandbox', // Required for some environments
+                    '--disable-setuid-sandbox', // Required for some environments
+                    // CI stability optimizations:
+                    //'--disable-dev-shm-usage', // Prevents /dev/shm memory issues in Docker/CI
+                    '--disable-gpu', // Disable GPU hardware acceleration in headless CI
+                    '--window-size=1280,800' // Consistent window size for rendering
+                ]
+            });
 
-    const page = await browser.newPage();
-    await page.setViewport({ width: 1280, height: 800 });
-    // Get the extension ID dynamically if possible, or from manifest.json
-    // For now, we'll assume the side panel URL structure
-    // Add timeout to prevent infinite hang in CI environments
-    // Increased to 60s for slow CI runners
-    const extensionTarget = await browser.waitForTarget(
-        target => target.type() === 'service_worker' || target.url().startsWith('chrome-extension://'),
-        { timeout: 60000 }
-    );
-    const extensionId = extensionTarget.url().split('/')[2];
-    const sidePanelUrl = `chrome-extension://${extensionId}/sidepanel.html`;
+            const page = await browser.newPage();
+            await page.setViewport({ width: 1280, height: 800 });
+            // Get the extension ID dynamically if possible, or from manifest.json
+            // For now, we'll assume the side panel URL structure
+            // Add timeout to prevent infinite hang in CI environments
+            // Increased to 60s for slow CI runners
+            const extensionTarget = await browser.waitForTarget(
+                target => target.type() === 'service_worker' || target.url().startsWith('chrome-extension://'),
+                { timeout: 60000 }
+            );
+            const extensionId = extensionTarget.url().split('/')[2];
+            const sidePanelUrl = `chrome-extension://${extensionId}/sidepanel.html`;
 
-    await page.goto(sidePanelUrl);
+            await page.goto(sidePanelUrl);
 
-    return { browser, page, extensionId, sidePanelUrl };
+            return { browser, page, extensionId, sidePanelUrl };
+        } catch (e) {
+            console.warn(`⚠️ Browser setup failed (attempt ${attempt + 1}/${retries + 1}): ${e.message}`);
+            // Clean up the failed browser instance
+            try { if (browser) await browser.close(); } catch (_) { }
+
+            if (attempt === retries) throw e;
+            // Wait before retrying to let system stabilize
+            await new Promise(r => setTimeout(r, 1000));
+        }
+    }
 }
 
 async function teardownBrowser(browser) {

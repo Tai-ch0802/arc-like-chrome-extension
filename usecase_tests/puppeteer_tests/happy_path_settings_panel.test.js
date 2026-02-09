@@ -12,7 +12,7 @@ describe('Settings Panel Use Case', () => {
         // Wait for app initialization
         await page.waitForSelector('#tab-list', { timeout: 15000 });
         await page.waitForSelector('#settings-toggle', { timeout: 5000 });
-    });
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

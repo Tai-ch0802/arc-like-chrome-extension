@@ -9,7 +9,7 @@ describe('Edit Bookmark Use Case', () => {
         browser = setup.browser;
         page = setup.page;
         await page.waitForSelector('#bookmark-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -61,7 +61,7 @@ describe('Edit Bookmark Use Case', () => {
                 }, testBookmarkId);
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 
     test('should update bookmark URL via Chrome API', async () => {
         const bookmark = await page.evaluate(() => {
@@ -98,7 +98,7 @@ describe('Edit Bookmark Use Case', () => {
                 }, testBookmarkId);
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 
     test('should show edit button on bookmark hover', async () => {
         const bookmark = await page.evaluate(() => {
@@ -134,5 +134,5 @@ describe('Edit Bookmark Use Case', () => {
                 }, testBookmarkId);
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 });

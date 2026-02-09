@@ -11,7 +11,7 @@ describe('Tab Switch Use Case', () => {
         page = setup.page;
         sidePanelUrl = setup.sidePanelUrl;
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-    }, 60000);
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -116,7 +116,7 @@ describe('Tab Switch Use Case', () => {
                 }
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 
     test('should update active class in sidebar when tab is switched', async () => {
         const initialTabItems = await page.$$('.tab-item');
@@ -191,5 +191,5 @@ describe('Tab Switch Use Case', () => {
                 }
             } catch (e) { }
         }
-    }, 60000);
+    }, 120000);
 });

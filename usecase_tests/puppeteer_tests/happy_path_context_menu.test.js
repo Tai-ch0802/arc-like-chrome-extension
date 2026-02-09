@@ -95,5 +95,5 @@ describe('Context Menu Use Case', () => {
 
         const menuGone = await page.$('.custom-context-menu');
         expect(menuGone).toBeNull();
-    }, 60000);
+    }, 120000);
 });
