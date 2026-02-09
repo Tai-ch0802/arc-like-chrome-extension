@@ -2,27 +2,53 @@ const { setupBrowser, teardownBrowser, expandBookmarksBar } = require('./setup')
 
 describe('Open Bookmark Use Case', () => {
     let browser;
+    let page;
     let sidePanelUrl;
 
     beforeAll(async () => {
         const setup = await setupBrowser();
         browser = setup.browser;
+        page = setup.page;
         sidePanelUrl = setup.sidePanelUrl;
-        // Close the initial page, we'll create fresh ones per test
-        await setup.page.close();
-    });
+        await page.waitForSelector('#bookmark-list', { timeout: 15000 });
+    }, 60000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
     });
 
-    test('should open bookmark URL in new tab when clicking', async () => {
-        // Create a fresh page for this test
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#bookmark-list');
+    /**
+     * Helper: clean up extra tabs, keeping only the sidepanel page
+     */
+    async function cleanupExtraTabs() {
+        try {
+            await page.evaluate((spUrl) => {
+                return new Promise(resolve => {
+                    chrome.tabs.query({}, tabs => {
+                        // Keep the sidepanel tab, remove everything else
+                        const idsToClose = tabs
+                            .filter(t => !t.url.startsWith('chrome-extension://'))
+                            .map(t => t.id);
+                        if (idsToClose.length > 0) {
+                            chrome.tabs.remove(idsToClose, resolve);
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+            }, sidePanelUrl);
+        } catch (e) { }
+    }
 
-        // Create a test bookmark
+    afterEach(async () => {
+        // After each test, clean up extra tabs and re-navigate to restore context
+        await cleanupExtraTabs();
+        // Re-navigate unconditionally to restore context
+        await page.goto(sidePanelUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+        await page.waitForSelector('#bookmark-list', { timeout: 10000 });
+    });
+
+    test('should open bookmark URL in new tab when clicking', async () => {
         const bookmark = await page.evaluate(() => {
             return new Promise(resolve => {
                 chrome.bookmarks.create({
@@ -35,23 +61,20 @@ describe('Open Bookmark Use Case', () => {
         const testBookmarkId = bookmark.id;
 
         try {
-            // Reload and expand Bookmarks Bar
             await page.reload();
+            await page.waitForSelector('#bookmark-list', { timeout: 10000 });
             await expandBookmarksBar(page);
-            await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`);
+            await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`, { timeout: 10000 });
 
-            // Get initial tab count
             const initialTabCount = await page.evaluate(() => {
                 return new Promise(resolve => {
                     chrome.tabs.query({}, tabs => resolve(tabs.length));
                 });
             });
 
-            // Click on the bookmark
             const bookmarkSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
             await page.click(bookmarkSelector);
 
-            // Wait for new tab to be created by checking tab count
             await page.waitForFunction(
                 (expected) => {
                     return new Promise(resolve => {
@@ -62,7 +85,6 @@ describe('Open Bookmark Use Case', () => {
                 initialTabCount + 1
             );
 
-            // Verify a new tab was created
             const finalTabCount = await page.evaluate(() => {
                 return new Promise(resolve => {
                     chrome.tabs.query({}, tabs => resolve(tabs.length));
@@ -71,49 +93,17 @@ describe('Open Bookmark Use Case', () => {
 
             expect(finalTabCount).toBe(initialTabCount + 1);
         } finally {
-            // Cleanup - do in a fresh page context
-            const cleanupPage = await browser.newPage();
-            await cleanupPage.goto(sidePanelUrl);
-            await cleanupPage.waitForSelector('#tab-list');
-
             try {
-                // Remove bookmark
-                await cleanupPage.evaluate((id) => {
+                await page.evaluate((id) => {
                     return new Promise(resolve => {
                         chrome.bookmarks.remove(id, resolve);
                     });
                 }, testBookmarkId);
             } catch (e) { }
-
-            // Close extra tabs
-            try {
-                const tabs = await cleanupPage.evaluate(() => {
-                    return new Promise(resolve => {
-                        chrome.tabs.query({}, resolve);
-                    });
-                });
-                if (tabs.length > 1) {
-                    const tabsToClose = tabs.slice(1).map(t => t.id);
-                    await cleanupPage.evaluate((ids) => {
-                        return new Promise(resolve => {
-                            chrome.tabs.remove(ids, resolve);
-                        });
-                    }, tabsToClose);
-                }
-            } catch (e) { }
-
-            try { await cleanupPage.close(); } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 90000);
 
     test('should open correct URL when clicking bookmark', async () => {
-        // Create a fresh page for this test
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#bookmark-list');
-
-        // Create a test bookmark
         const bookmark = await page.evaluate(() => {
             return new Promise(resolve => {
                 chrome.bookmarks.create({
@@ -126,15 +116,13 @@ describe('Open Bookmark Use Case', () => {
         const testBookmarkId = bookmark.id;
 
         try {
-            // Reload and expand Bookmarks Bar
             await page.reload();
+            await page.waitForSelector('#bookmark-list', { timeout: 10000 });
             await expandBookmarksBar(page);
-            await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`);
+            await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`, { timeout: 10000 });
 
-            // Click on the bookmark
             const bookmarkSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
 
-            // Get initial tab count
             const initialCount = await page.evaluate(() => {
                 return new Promise(resolve => {
                     chrome.tabs.query({}, tabs => resolve(tabs.length));
@@ -143,7 +131,6 @@ describe('Open Bookmark Use Case', () => {
 
             await page.click(bookmarkSelector);
 
-            // Wait for tab count to increase
             await page.waitForFunction(
                 (expected) => {
                     return new Promise(resolve => {
@@ -154,61 +141,30 @@ describe('Open Bookmark Use Case', () => {
                 initialCount + 1
             );
 
-            // Get the newest tab (last in array usually)
             const allTabs = await page.evaluate(() => {
                 return new Promise(resolve => {
                     chrome.tabs.query({}, resolve);
                 });
             });
 
-            // Find tab by URL or pendingUrl (handles loading state)
             const newTab = allTabs.find(t =>
                 (t.url && t.url.includes('example.com/open-test-2')) ||
                 (t.pendingUrl && t.pendingUrl.includes('example.com/open-test-2'))
             );
 
-            // If no matching tab found, it's likely the last one created
             const targetTab = newTab || allTabs[allTabs.length - 1];
 
-            // Relaxed assertion: the tab was created (count increased)
             expect(allTabs.length).toBeGreaterThanOrEqual(initialCount + 1);
-            // And the URL matches (or pendingUrl if still loading)
             const tabUrl = targetTab.url || targetTab.pendingUrl || '';
             expect(tabUrl).toContain('example.com/open-test-2');
         } finally {
-            // Cleanup - do in a fresh page context
-            const cleanupPage = await browser.newPage();
-            await cleanupPage.goto(sidePanelUrl);
-            await cleanupPage.waitForSelector('#tab-list');
-
             try {
-                // Remove bookmark
-                await cleanupPage.evaluate((id) => {
+                await page.evaluate((id) => {
                     return new Promise(resolve => {
                         chrome.bookmarks.remove(id, resolve);
                     });
                 }, testBookmarkId);
             } catch (e) { }
-
-            // Close extra tabs
-            try {
-                const tabs = await cleanupPage.evaluate(() => {
-                    return new Promise(resolve => {
-                        chrome.tabs.query({}, resolve);
-                    });
-                });
-                if (tabs.length > 1) {
-                    const tabsToClose = tabs.slice(1).map(t => t.id);
-                    await cleanupPage.evaluate((ids) => {
-                        return new Promise(resolve => {
-                            chrome.tabs.remove(ids, resolve);
-                        });
-                    }, tabsToClose);
-                }
-            } catch (e) { }
-
-            try { await cleanupPage.close(); } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 90000);
-}, 240000);
+});

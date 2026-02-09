@@ -2,25 +2,20 @@ const { setupBrowser, teardownBrowser, expandBookmarksBar } = require('./setup')
 
 describe('Edit Bookmark Use Case', () => {
     let browser;
-    let sidePanelUrl;
+    let page;
 
     beforeAll(async () => {
         const setup = await setupBrowser();
         browser = setup.browser;
-        sidePanelUrl = setup.sidePanelUrl;
-        await setup.page.close();
-    });
+        page = setup.page;
+        await page.waitForSelector('#bookmark-list', { timeout: 15000 });
+    }, 60000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
     });
 
     test('should update bookmark title via Chrome API', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#bookmark-list');
-
-        // Create a test bookmark
         const bookmark = await page.evaluate(() => {
             return new Promise(resolve => {
                 chrome.bookmarks.create({
@@ -33,14 +28,12 @@ describe('Edit Bookmark Use Case', () => {
         const testBookmarkId = bookmark.id;
 
         try {
-            // Update the bookmark title via Chrome API
             await page.evaluate((id) => {
                 return new Promise(resolve => {
                     chrome.bookmarks.update(id, { title: 'Updated Title' }, resolve);
                 });
             }, testBookmarkId);
 
-            // Verify the update was applied
             const updated = await page.evaluate((id) => {
                 return new Promise(resolve => {
                     chrome.bookmarks.get(id, items => resolve(items[0]));
@@ -49,12 +42,11 @@ describe('Edit Bookmark Use Case', () => {
 
             expect(updated.title).toBe('Updated Title');
 
-            // Reload and verify UI reflects the change
             await page.reload();
+            await page.waitForSelector('#bookmark-list', { timeout: 10000 });
             await expandBookmarksBar(page);
-            await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`);
+            await page.waitForSelector(`.bookmark-item[data-bookmark-id="${testBookmarkId}"]`, { timeout: 10000 });
 
-            // Check the displayed title
             const displayedTitle = await page.$eval(
                 `.bookmark-item[data-bookmark-id="${testBookmarkId}"] .bookmark-title`,
                 el => el.textContent
@@ -68,16 +60,10 @@ describe('Edit Bookmark Use Case', () => {
                     });
                 }, testBookmarkId);
             } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 
     test('should update bookmark URL via Chrome API', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#bookmark-list');
-
-        // Create a test bookmark
         const bookmark = await page.evaluate(() => {
             return new Promise(resolve => {
                 chrome.bookmarks.create({
@@ -90,14 +76,12 @@ describe('Edit Bookmark Use Case', () => {
         const testBookmarkId = bookmark.id;
 
         try {
-            // Update the bookmark URL
             await page.evaluate((id) => {
                 return new Promise(resolve => {
                     chrome.bookmarks.update(id, { url: 'https://example.com/new-url' }, resolve);
                 });
             }, testBookmarkId);
 
-            // Verify the update was applied
             const updated = await page.evaluate((id) => {
                 return new Promise(resolve => {
                     chrome.bookmarks.get(id, items => resolve(items[0]));
@@ -113,16 +97,10 @@ describe('Edit Bookmark Use Case', () => {
                     });
                 }, testBookmarkId);
             } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 60000);
 
     test('should show edit button on bookmark hover', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#bookmark-list');
-
-        // Create a test bookmark
         const bookmark = await page.evaluate(() => {
             return new Promise(resolve => {
                 chrome.bookmarks.create({
@@ -136,19 +114,16 @@ describe('Edit Bookmark Use Case', () => {
 
         try {
             await page.reload();
+            await page.waitForSelector('#bookmark-list', { timeout: 10000 });
             await expandBookmarksBar(page);
             const bookmarkSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
-            await page.waitForSelector(bookmarkSelector);
+            await page.waitForSelector(bookmarkSelector, { timeout: 10000 });
 
-            // Hover over the bookmark
             await page.hover(bookmarkSelector);
 
-            // Wait for edit button to be visible
             await page.waitForSelector(`${bookmarkSelector} .bookmark-edit-btn`, { visible: true, timeout: 3000 });
 
-            // Check if edit button is visible (or exists)
             const editBtn = await page.$(`${bookmarkSelector} .bookmark-edit-btn`);
-            // The edit button should exist in the DOM
             expect(editBtn).not.toBeNull();
         } finally {
             try {
@@ -158,7 +133,6 @@ describe('Edit Bookmark Use Case', () => {
                     });
                 }, testBookmarkId);
             } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 60000);
-}, 240000);
+});

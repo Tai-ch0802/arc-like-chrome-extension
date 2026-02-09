@@ -2,24 +2,20 @@ const { setupBrowser, teardownBrowser } = require('./setup');
 
 describe('Add Tab to Group Use Case', () => {
     let browser;
-    let sidePanelUrl;
+    let page;
 
     beforeAll(async () => {
         const setup = await setupBrowser();
         browser = setup.browser;
-        sidePanelUrl = setup.sidePanelUrl;
-        await setup.page.close();
-    });
+        page = setup.page;
+        await page.waitForSelector('#tab-list', { timeout: 15000 });
+    }, 60000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
     });
 
     test('should add an ungrouped tab to an existing group via Chrome API', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#tab-list');
-
         const createdTabIds = [];
 
         // Create tabs for the group
@@ -67,7 +63,7 @@ describe('Add Tab to Group Use Case', () => {
                     chrome.tabs.get(tabId, tab => resolve(tab));
                 });
             }, ungroupedTab.id);
-            expect(tabBeforeAdd.groupId).toBe(-1); // -1 means ungrouped
+            expect(tabBeforeAdd.groupId).toBe(-1);
 
             // Add the ungrouped tab to the group via Chrome API
             await page.evaluate(({ tabId, groupId }) => {
@@ -86,9 +82,8 @@ describe('Add Tab to Group Use Case', () => {
 
             // Reload and verify UI reflects the change
             await page.reload();
-            await page.waitForSelector('.tab-group-header');
+            await page.waitForSelector('.tab-group-header', { timeout: 10000 });
 
-            // The tab should now be inside the group container (sibling of header)
             const groupHeaderSelector = `.tab-group-header[data-group-id="${groupId}"]`;
             const tabInGroup = await page.$eval(groupHeaderSelector, (header, tabId) => {
                 const content = header.nextElementSibling;
@@ -105,15 +100,10 @@ describe('Add Tab to Group Use Case', () => {
                     }, createdTabIds);
                 }
             } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 90000);
 
     test('should create a new group when grouping ungrouped tabs', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        await page.waitForSelector('#tab-list');
-
         const createdTabIds = [];
 
         // Create ungrouped tabs
@@ -173,7 +163,6 @@ describe('Add Tab to Group Use Case', () => {
                     }, createdTabIds);
                 }
             } catch (e) { }
-            try { await page.close(); } catch (e) { }
         }
     }, 90000);
-}, 240000);
+});

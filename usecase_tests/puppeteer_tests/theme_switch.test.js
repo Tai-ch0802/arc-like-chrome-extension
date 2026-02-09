@@ -2,122 +2,106 @@ const { setupBrowser, teardownBrowser, waitForTheme } = require('./setup');
 
 describe('Theme Switch Use Case', () => {
     let browser;
-    let sidePanelUrl;
+    let page;
 
     beforeAll(async () => {
         const setup = await setupBrowser();
         browser = setup.browser;
-        sidePanelUrl = setup.sidePanelUrl;
-        await setup.page.close();
-    });
+        page = setup.page;
+        await page.waitForSelector('#tab-list', { timeout: 15000 });
+    }, 60000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
     });
 
-    test('should change theme when selecting from dropdown', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        // Wait for tab list to load to ensure app is initialized and listeners are attached
-        await page.waitForSelector('#tab-list', { timeout: 10000 });
-        await page.waitForSelector('#settings-toggle');
-
+    afterEach(async () => {
+        // Dismiss any open modal dialog
         try {
-            // Store original theme
-            const originalTheme = await page.evaluate(() => {
-                return document.body.dataset.theme || 'geek';
-            });
+            const modalOverlay = await page.$('.modal-overlay');
+            if (modalOverlay) {
+                await page.evaluate(() => {
+                    const overlay = document.querySelector('.modal-overlay');
+                    if (overlay) overlay.click();
+                });
+                await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 3000 }).catch(() => { });
+            }
+        } catch (e) { }
+    });
 
-            // Open settings dialog
-            await page.click('#settings-toggle');
-            await page.waitForSelector('#theme-select-dropdown');
+    test('should change theme when selecting from dropdown', async () => {
+        await page.waitForSelector('#settings-toggle', { timeout: 10000 });
 
-            // Select a different theme
-            const newTheme = originalTheme === 'google' ? 'darcula' : 'google';
-            await page.select('#theme-select-dropdown', newTheme);
+        // Store original theme
+        const originalTheme = await page.evaluate(() => {
+            return document.body.dataset.theme || 'geek';
+        });
 
-            // Wait for theme to be applied
-            await waitForTheme(page, newTheme);
+        // Open settings dialog
+        await page.click('#settings-toggle');
+        await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
 
-            // Verify body has new theme
-            const appliedTheme = await page.evaluate(() => {
-                return document.body.dataset.theme;
-            });
-            expect(appliedTheme).toBe(newTheme);
+        // Select a different theme
+        const newTheme = originalTheme === 'google' ? 'darcula' : 'google';
+        await page.select('#theme-select-dropdown', newTheme);
 
-            // Restore original theme
-            await page.select('#theme-select-dropdown', originalTheme);
-            await waitForTheme(page, originalTheme);
-        } finally {
-            try { await page.close(); } catch (e) { }
-        }
+        await waitForTheme(page, newTheme);
+
+        const appliedTheme = await page.evaluate(() => {
+            return document.body.dataset.theme;
+        });
+        expect(appliedTheme).toBe(newTheme);
+
+        // Restore original theme
+        await page.select('#theme-select-dropdown', originalTheme);
+        await waitForTheme(page, originalTheme);
     }, 60000);
 
     test('should persist theme selection after reload', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        // Wait for initialization
+        await page.waitForSelector('#settings-toggle', { timeout: 10000 });
+
+        // Open settings and change theme to darcula
+        await page.click('#settings-toggle');
+        await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
+        await page.select('#theme-select-dropdown', 'darcula');
+
+        await waitForTheme(page, 'darcula');
+
+        // Close modal by reloading
+        await page.reload();
         await page.waitForSelector('#tab-list', { timeout: 10000 });
-        await page.waitForSelector('#settings-toggle');
 
-        try {
-            // Open settings and change theme to darcula
-            await page.click('#settings-toggle');
-            await page.waitForSelector('#theme-select-dropdown');
-            await page.select('#theme-select-dropdown', 'darcula');
+        // Wait for theme to be restored from storage
+        await waitForTheme(page, 'darcula');
 
-            // Wait for theme to be applied
-            await waitForTheme(page, 'darcula');
+        const persistedTheme = await page.evaluate(() => {
+            return document.body.dataset.theme;
+        });
+        expect(persistedTheme).toBe('darcula');
 
-            // Close modal by reloading
-            await page.reload();
-            await page.waitForSelector('#tab-list');
-
-            // Wait for theme to be restored from storage
-            await waitForTheme(page, 'darcula');
-
-            // Verify theme persisted
-            const persistedTheme = await page.evaluate(() => {
-                return document.body.dataset.theme;
-            });
-            expect(persistedTheme).toBe('darcula');
-
-            // Reset to default theme for other tests
-            await page.click('#settings-toggle');
-            await page.waitForSelector('#theme-select-dropdown');
-            await page.select('#theme-select-dropdown', 'geek');
-            await waitForTheme(page, 'geek');
-        } finally {
-            try { await page.close(); } catch (e) { }
-        }
+        // Reset to default theme for other tests
+        await page.click('#settings-toggle');
+        await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
+        await page.select('#theme-select-dropdown', 'geek');
+        await waitForTheme(page, 'geek');
     }, 60000);
 
     test('should have all expected theme options', async () => {
-        const page = await browser.newPage();
-        await page.goto(sidePanelUrl);
-        // Wait for initialization
-        await page.waitForSelector('#tab-list', { timeout: 10000 });
-        await page.waitForSelector('#settings-toggle');
+        await page.waitForSelector('#settings-toggle', { timeout: 10000 });
 
-        try {
-            // Open settings dialog
-            await page.click('#settings-toggle');
-            await page.waitForSelector('#theme-select-dropdown');
+        // Open settings dialog
+        await page.click('#settings-toggle');
+        await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
 
-            // Get all theme options
-            const themeOptions = await page.$$eval('#theme-select-dropdown option', options => {
-                return options.map(opt => opt.value);
-            });
+        const themeOptions = await page.$$eval('#theme-select-dropdown option', options => {
+            return options.map(opt => opt.value);
+        });
 
-            // Verify expected themes exist
-            expect(themeOptions).toContain('geek');
-            expect(themeOptions).toContain('google');
-            expect(themeOptions).toContain('darcula');
-            expect(themeOptions).toContain('geek-blue');
-            expect(themeOptions).toContain('christmas');
-            expect(themeOptions).toContain('custom');
-        } finally {
-            try { await page.close(); } catch (e) { }
-        }
+        expect(themeOptions).toContain('geek');
+        expect(themeOptions).toContain('google');
+        expect(themeOptions).toContain('darcula');
+        expect(themeOptions).toContain('geek-blue');
+        expect(themeOptions).toContain('christmas');
+        expect(themeOptions).toContain('custom');
     }, 60000);
-}, 240000);
+});

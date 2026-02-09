@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 20
 
     steps:
@@ -34,15 +34,4 @@ jobs:
       timeout-minutes: 15
       env:
         CI: true
-      run: |
-        MAX_RETRIES=5
-        retry_count=0
-        until [ $retry_count -ge $MAX_RETRIES ]
-        do
-          npm test && exit 0
-          echo "Test failed. Retrying ($((retry_count+1))/$MAX_RETRIES)..."
-          retry_count=$((retry_count+1))
-          sleep 3
-        done
-        echo "Test failed after $MAX_RETRIES attempts."
-        exit 1
+      run: npm test

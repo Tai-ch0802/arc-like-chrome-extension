@@ -19,10 +19,10 @@ describe('Performance Benchmark', () => {
     });
 
     test('Measure renderTabsAndGroups and renderOtherWindowsSection performance with large dataset', async () => {
-        // Define mock data size - HIGH DENSITY to stress the O(N*M) algorithm
-        const NUM_WINDOWS = 5;
-        const TABS_PER_WINDOW = 500; // Reduced to prevent timeout in sandbox
-        const GROUPS_PER_WINDOW = 50;
+        // Define mock data size - stress testing but CI-friendly
+        const NUM_WINDOWS = 3;
+        const TABS_PER_WINDOW = 100;
+        const GROUPS_PER_WINDOW = 10;
 
         // Generate mock data in the browser context to avoid serialization overhead in measurement
         // However, we need to pass the data to the functions.
@@ -115,10 +115,10 @@ describe('Performance Benchmark', () => {
 
         expect(result.tabsTime).toBeGreaterThan(0);
         expect(result.otherWindowsTime).toBeGreaterThan(0);
-    });
+    }, 90000);
 
     test('Measure handleSearch highlighting performance with large dataset', async () => {
-        const NUM_TABS = 2000;
+        const NUM_TABS = 500;
         const SEARCH_KEYWORD = "Tab";
 
         const result = await page.evaluate(async (numTabs, searchKeyword) => {
@@ -163,5 +163,5 @@ describe('Performance Benchmark', () => {
         console.log(`  handleSearch execution time: ${result.executionTime.toFixed(2)} ms`);
 
         expect(result.executionTime).toBeGreaterThan(0);
-    });
+    }, 90000);
 });
