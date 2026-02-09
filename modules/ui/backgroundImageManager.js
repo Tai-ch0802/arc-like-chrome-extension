@@ -7,6 +7,7 @@
 
 import * as api from '../apiManager.js';
 import { processImage } from '../utils/imageUtils.js';
+import { escapeHtml } from '../utils/textUtils.js';
 
 // Storage keys
 const BG_IMAGE_DATA_KEY = 'custom_bg_image_data';  // chrome.storage.local
@@ -258,7 +259,7 @@ export function createBackgroundPanelHtml(config) {
             <!-- URL Section -->
             <div id="bg-url-section" class="${!isUpload ? '' : 'hidden'}">
                 <div class="input-with-button">
-                    <input type="text" id="bg-url-input" placeholder="https://example.com/image.jpg" value="${cfg.sourceUrl || ''}" />
+                    <input type="text" id="bg-url-input" placeholder="https://example.com/image.jpg" value="${escapeHtml(cfg.sourceUrl || '')}" />
                     <button id="btn-apply-url" class="settings-button">${api.getMessage('buttonApply') || 'Apply'}</button>
                 </div>
             </div>
@@ -276,13 +277,13 @@ export function createBackgroundPanelHtml(config) {
                     <!-- Sliders Group -->
                     <div class="settings-group">
                         <div class="control-group">
-                            <label>${api.getMessage('labelOpacity') || 'Opacity'}: <span id="opacity-value">${cfg.opacity}</span></label>
-                            <input type="range" id="bg-opacity" min="0.1" max="1" step="0.1" value="${cfg.opacity}" />
+                            <label>${api.getMessage('labelOpacity') || 'Opacity'}: <span id="opacity-value">${escapeHtml(String(cfg.opacity))}</span></label>
+                            <input type="range" id="bg-opacity" min="0.1" max="1" step="0.1" value="${escapeHtml(String(cfg.opacity))}" />
                         </div>
 
                         <div class="control-group">
-                            <label>${api.getMessage('labelBlur') || 'Blur'}: <span id="blur-value">${cfg.blur}px</span></label>
-                            <input type="range" id="bg-blur" min="0" max="20" step="1" value="${cfg.blur}" />
+                            <label>${api.getMessage('labelBlur') || 'Blur'}: <span id="blur-value">${escapeHtml(String(cfg.blur))}px</span></label>
+                            <input type="range" id="bg-blur" min="0" max="20" step="1" value="${escapeHtml(String(cfg.blur))}" />
                         </div>
                     </div>
 

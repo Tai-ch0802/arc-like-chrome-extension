@@ -5,6 +5,7 @@
 
 /**
  * Escapes HTML special characters to prevent XSS attacks.
+ * Safe for use in HTML content and attribute values.
  * @param {string} text - The text to escape
  * @returns {string} The escaped HTML string
  */
@@ -12,9 +13,12 @@ export function escapeHtml(text) {
     if (typeof text !== 'string') {
         return '';
     }
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 /**

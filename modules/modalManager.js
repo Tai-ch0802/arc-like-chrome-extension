@@ -246,7 +246,7 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
         buttons.className = 'modal-buttons';
         buttons.innerHTML = `
             <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
-            <button type="submit" class="modal-button confirm-btn primary">${confirmButtonText}</button>
+            <button type="submit" class="modal-button confirm-btn primary">${escapeHtml(confirmButtonText)}</button>
         `;
         form.appendChild(buttons);
 

@@ -4,6 +4,7 @@ import * as state from '../stateManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 import * as rss from '../rssManager.js';
+import { escapeHtml } from '../utils/textUtils.js';
 
 /**
  * 應用指定的主題到文檔的 body 上。
@@ -64,11 +65,11 @@ async function buildSettingsDialogContent(selectedTheme) {
         const commands = await chrome.commands.getAll();
         const toggleCommand = commands.find(cmd => cmd.name === '_execute_action');
         if (toggleCommand && toggleCommand.shortcut) {
-            currentShortcut = toggleCommand.shortcut;
+            currentShortcut = escapeHtml(toggleCommand.shortcut);
         }
         const newTabRightCommand = commands.find(cmd => cmd.name === 'create-new-tab-right');
         if (newTabRightCommand && newTabRightCommand.shortcut) {
-            newTabRightShortcut = newTabRightCommand.shortcut;
+            newTabRightShortcut = escapeHtml(newTabRightCommand.shortcut);
         }
     } catch (error) {
         console.error('Failed to get commands:', error);
@@ -345,12 +346,6 @@ function bindSettingsEventHandlers(modalContentElement) {
         });
     }
 
-    // Helper function to escape HTML
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
 
     // Add subscription handler
     if (addRssBtn && rssUrlInput) {
