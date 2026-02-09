@@ -365,7 +365,7 @@ export function showAddToBookmarkDialog({ name, url }) {
         const locationPathDiv = form.querySelector('.modal-location-path');
         const treeContainer = form.querySelector('.modal-bookmark-tree');
 
-        function renderFolders(nodes, container, path) {
+        function renderFolders(nodes, container, path, level = 0) {
             nodes.forEach(node => {
                 if (node.children) { // It's a folder
                     const folderItem = document.createElement('div');
@@ -375,9 +375,15 @@ export function showAddToBookmarkDialog({ name, url }) {
                     folderItem.tabIndex = 0; // Make focusable
                     folderItem.setAttribute('role', 'button'); // Accessibility role
 
+                    const isRoot = level === 0;
+                    const isExpanded = isRoot; // Only expand root folders by default
+
+                    folderItem.setAttribute('aria-expanded', isExpanded.toString());
+
                     const icon = document.createElement('span');
                     icon.className = 'bookmark-icon';
-                    icon.textContent = '▼'; // Always expanded
+                    icon.textContent = isExpanded ? '▼' : '▶';
+                    icon.style.cursor = 'pointer'; // Indicate interactivity
 
                     const title = document.createElement('span');
                     title.className = 'bookmark-title';
@@ -388,6 +394,24 @@ export function showAddToBookmarkDialog({ name, url }) {
 
                     const newPath = path ? `${path} / ${title.textContent}` : title.textContent;
 
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'folder-content'; // Reuse style
+                    childrenContainer.style.display = isExpanded ? 'block' : 'none';
+                    container.appendChild(folderItem);
+                    container.appendChild(childrenContainer);
+
+                    // Toggle Expansion Logic
+                    const toggleExpansion = (e) => {
+                        e.stopPropagation(); // Prevent selection
+                        const expanded = childrenContainer.style.display !== 'none';
+                        childrenContainer.style.display = expanded ? 'none' : 'block';
+                        icon.textContent = expanded ? '▶' : '▼';
+                        folderItem.setAttribute('aria-expanded', (!expanded).toString());
+                    };
+
+                    icon.addEventListener('click', toggleExpansion);
+
+                    // Selection Logic
                     const selectFolder = () => {
                         selectedFolder = { id: node.id, path: newPath };
                         locationPathDiv.textContent = newPath;
@@ -403,24 +427,31 @@ export function showAddToBookmarkDialog({ name, url }) {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
                             selectFolder();
+                        } else if (e.key === 'ArrowRight') {
+                            // Expand if collapsed
+                            if (childrenContainer.style.display === 'none') {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleExpansion(e);
+                            }
+                        } else if (e.key === 'ArrowLeft') {
+                            // Collapse if expanded
+                            if (childrenContainer.style.display !== 'none') {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleExpansion(e);
+                            }
                         }
                     });
 
-                    container.appendChild(folderItem);
-
-                    const childrenContainer = document.createElement('div');
-                    childrenContainer.className = 'folder-content'; // Reuse style
-                    childrenContainer.style.display = 'block'; // Always expanded
-                    container.appendChild(childrenContainer);
-
                     if (node.children.length > 0) {
-                        renderFolders(node.children, childrenContainer, newPath);
+                        renderFolders(node.children, childrenContainer, newPath, level + 1);
                     }
                 }
             });
         }
 
-        renderFolders(rootFolders, treeContainer, '');
+        renderFolders(rootFolders, treeContainer, '', 0);
 
         // Optimize: Cache the folder list for keyboard navigation instead of querying on every keypress.
         // Note: This assumes all folders are rendered synchronously by renderFolders.
@@ -428,7 +459,8 @@ export function showAddToBookmarkDialog({ name, url }) {
         const allFolders = Array.from(treeContainer.querySelectorAll('.bookmark-folder'));
 
         treeContainer.addEventListener('keydown', (e) => {
-            if (['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
+            // ArrowRight and ArrowLeft are handled by individual folder items for expansion/collapse
+            if (['ArrowDown', 'ArrowUp'].includes(e.key)) {
                 // Use closest() for robustness in case folder has child elements
                 const targetFolder = e.target.closest('.bookmark-folder');
                 if (targetFolder) {
@@ -438,16 +470,15 @@ export function showAddToBookmarkDialog({ name, url }) {
                     const index = allFolders.indexOf(targetFolder);
                     if (index !== -1) {
                         let nextIndex = index;
-                        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                            nextIndex = index + 1;
-                            if (nextIndex >= allFolders.length) nextIndex = 0;
-                        } else {
-                            nextIndex = index - 1;
-                            if (nextIndex < 0) nextIndex = allFolders.length - 1;
-                        }
+                        const direction = e.key === 'ArrowDown' ? 1 : -1;
 
-                        if (allFolders[nextIndex]) {
-                            allFolders[nextIndex].focus();
+                        // Find next visible folder
+                        for (let i = 1; i < allFolders.length; i++) {
+                            nextIndex = ((index + i * direction) % allFolders.length + allFolders.length) % allFolders.length;
+                            if (allFolders[nextIndex].offsetParent !== null) {
+                                allFolders[nextIndex].focus();
+                                break;
+                            }
                         }
                     }
                 }

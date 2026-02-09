@@ -268,13 +268,13 @@ function bindSettingsEventHandlers(modalContentElement) {
                     </select>
                 </div>
                 <div class="rss-subscription-actions">
-                    <button class="rss-fetch-now-btn" title="${api.getMessage('rssFetchNowButton')}">
+                    <button class="rss-fetch-now-btn" title="${api.getMessage('rssFetchNowButton')}" aria-label="${api.getMessage('rssFetchNowButton')}">
                         🔄
                     </button>
-                    <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
+                    <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}" aria-label="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
                         ${sub.enabled ? '⏸' : '▶'}
                     </button>
-                    <button class="rss-delete-btn" title="${api.getMessage('rssDeleteButton')}">×</button>
+                    <button class="rss-delete-btn" title="${api.getMessage('rssDeleteButton')}" aria-label="${api.getMessage('rssDeleteButton')}">×</button>
                 </div>
             </div>
         `).join('');
