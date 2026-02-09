@@ -14,7 +14,7 @@ describe('Window Renaming Feature', () => {
         page = setup.page;
         extensionId = setup.extensionId;
         sidePanelUrl = setup.sidePanelUrl;
-    });
+    }, 120000);
 
     afterAll(async () => {
         if (secondWindowId) {

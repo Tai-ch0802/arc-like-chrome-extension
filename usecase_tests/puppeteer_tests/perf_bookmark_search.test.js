@@ -13,7 +13,7 @@ describe.skip('Bookmark Search Performance Benchmark', () => {
 
         // Wait for api to be exposed
         await page.waitForFunction(() => window.api);
-    });
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
@@ -25,21 +25,21 @@ describe.skip('Bookmark Search Performance Benchmark', () => {
         console.log(`Generating ${NUM_BOOKMARKS} bookmarks...`);
 
         const folderId = await page.evaluate(async (count) => {
-             const parentId = '1'; // Bookmarks bar
-             const folder = await window.api.createBookmark({
-                 parentId: parentId,
-                 title: 'PerfTestFolder'
-             });
+            const parentId = '1'; // Bookmarks bar
+            const folder = await window.api.createBookmark({
+                parentId: parentId,
+                title: 'PerfTestFolder'
+            });
 
-             // Batch creation loop
-             for (let i = 0; i < count; i++) {
-                 await window.api.createBookmark({
-                     parentId: folder.id,
-                     title: `PerfTest Bookmark ${i}`,
-                     url: `https://perftest.example.com/${i}`
-                 });
-             }
-             return folder.id;
+            // Batch creation loop
+            for (let i = 0; i < count; i++) {
+                await window.api.createBookmark({
+                    parentId: folder.id,
+                    title: `PerfTest Bookmark ${i}`,
+                    url: `https://perftest.example.com/${i}`
+                });
+            }
+            return folder.id;
         }, NUM_BOOKMARKS);
 
         console.log('Bookmarks generated.');

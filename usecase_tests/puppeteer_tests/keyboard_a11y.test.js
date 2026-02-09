@@ -8,7 +8,7 @@ describe('Keyboard Accessibility', () => {
 
     beforeAll(async () => {
         ({ browser, page } = await setupBrowser());
-    });
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

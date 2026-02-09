@@ -12,7 +12,7 @@ describe.skip('Performance Benchmark', () => {
         page = setup.page;
         extensionId = setup.extensionId;
         sidePanelUrl = setup.sidePanelUrl;
-    });
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);

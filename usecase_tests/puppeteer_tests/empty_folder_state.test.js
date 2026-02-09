@@ -7,7 +7,7 @@ describe('Empty Folder State', () => {
 
     beforeAll(async () => {
         ({ browser, page, extensionId } = await setupBrowser());
-    });
+    }, 120000);
 
     afterAll(async () => {
         await teardownBrowser(browser);
