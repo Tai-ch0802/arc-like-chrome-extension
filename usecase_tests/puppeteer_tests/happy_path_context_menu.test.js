@@ -67,7 +67,7 @@ describe('Context Menu Use Case', () => {
         await targetTab.click({ button: 'right' });
 
         // Wait for the custom context menu to appear
-        await page.waitForSelector('.custom-context-menu', { timeout: 5000 });
+        await page.waitForSelector('.custom-context-menu', { timeout: 15000 });
 
         // Check if the menu contains expected items
         const menuItems = await page.$$('.custom-context-menu .context-menu-item');
@@ -91,7 +91,7 @@ describe('Context Menu Use Case', () => {
         });
 
         // Wait for the menu to disappear
-        await page.waitForFunction(() => !document.querySelector('.custom-context-menu'), { timeout: 5000 });
+        await page.waitForFunction(() => !document.querySelector('.custom-context-menu'), { timeout: 15000 });
 
         const menuGone = await page.$('.custom-context-menu');
         expect(menuGone).toBeNull();

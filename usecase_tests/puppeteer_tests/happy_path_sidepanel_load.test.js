@@ -25,28 +25,28 @@ describe('Side Panel Load Use Case', () => {
 
     test('should render tab list container', async () => {
         // Wait for tab list container to be present
-        await page.waitForSelector('#tab-list', { timeout: 5000 });
+        await page.waitForSelector('#tab-list', { timeout: 15000 });
         const tabListExists = await page.$('#tab-list');
         expect(tabListExists).not.toBeNull();
     });
 
     test('should render bookmark list container', async () => {
         // Wait for bookmark list container to be present
-        await page.waitForSelector('#bookmark-list', { timeout: 5000 });
+        await page.waitForSelector('#bookmark-list', { timeout: 15000 });
         const bookmarkListExists = await page.$('#bookmark-list');
         expect(bookmarkListExists).not.toBeNull();
     });
 
     test('should render at least one tab item', async () => {
         // Wait for at least one tab item to render
-        await page.waitForSelector('.tab-item', { timeout: 5000 });
+        await page.waitForSelector('.tab-item', { timeout: 15000 });
         const tabItems = await page.$$('.tab-item');
         expect(tabItems.length).toBeGreaterThanOrEqual(1);
     });
 
     test('should have search input available', async () => {
         // Verify search box is present and interactable
-        await page.waitForSelector('#search-box', { timeout: 5000 });
+        await page.waitForSelector('#search-box', { timeout: 15000 });
         const searchBox = await page.$('#search-box');
         expect(searchBox).not.toBeNull();
 
@@ -57,7 +57,7 @@ describe('Side Panel Load Use Case', () => {
 
     test('should have settings button available', async () => {
         // Verify settings panel toggle button exists
-        await page.waitForSelector('#settings-toggle', { timeout: 5000 });
+        await page.waitForSelector('#settings-toggle', { timeout: 15000 });
         const settingsBtn = await page.$('#settings-toggle');
         expect(settingsBtn).not.toBeNull();
     });

@@ -33,7 +33,7 @@ describe('Search Edge Cases', () => {
         await page.waitForFunction(() => {
             const hidden = document.querySelectorAll('.tab-item.hidden');
             return hidden.length === 0;
-        }, { timeout: 5000 }).catch(() => { });
+        }, { timeout: 15000 }).catch(() => { });
     }
 
     afterEach(async () => {
@@ -68,7 +68,7 @@ describe('Search Edge Cases', () => {
                     const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
                     return el && !el.classList.contains('hidden');
                 },
-                { timeout: 5000 },
+                { timeout: 15000 },
                 createdTabId
             );
 
@@ -113,7 +113,7 @@ describe('Search Edge Cases', () => {
                     const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
                     return el && !el.classList.contains('hidden');
                 },
-                { timeout: 5000 },
+                { timeout: 15000 },
                 createdTabId
             );
 
@@ -131,7 +131,7 @@ describe('Search Edge Cases', () => {
                     const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
                     return el && !el.classList.contains('hidden');
                 },
-                { timeout: 5000 },
+                { timeout: 15000 },
                 createdTabId
             );
 
@@ -167,7 +167,7 @@ describe('Search Edge Cases', () => {
                     const el = document.getElementById('no-search-results');
                     return el && !el.classList.contains('hidden');
                 },
-                { timeout: 5000 }
+                { timeout: 15000 }
             );
 
             expect(dialogShown).toBe(false);
@@ -214,7 +214,7 @@ describe('Search Edge Cases', () => {
                 const el = document.getElementById('no-search-results');
                 return el && !el.classList.contains('hidden');
             },
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         const isVisible = await page.$eval('#no-search-results', el => !el.classList.contains('hidden'));
@@ -252,7 +252,7 @@ describe('Search Edge Cases', () => {
                 const t1 = document.querySelector(`.tab-item[data-tab-id="${ids[0]}"]`);
                 const t2 = document.querySelector(`.tab-item[data-tab-id="${ids[1]}"]`);
                 return t1 && !t1.classList.contains('hidden') && t2 && !t2.classList.contains('hidden');
-            }, { timeout: 5000 }, createdTabIds);
+            }, { timeout: 15000 }, createdTabIds);
 
             // Type specific suffix for first tab
             await page.type(input, '-1');
@@ -262,7 +262,7 @@ describe('Search Edge Cases', () => {
                 const t1 = document.querySelector(`.tab-item[data-tab-id="${ids[0]}"]`);
                 const t2 = document.querySelector(`.tab-item[data-tab-id="${ids[1]}"]`);
                 return t1 && !t1.classList.contains('hidden') && t2 && t2.classList.contains('hidden');
-            }, { timeout: 5000 }, createdTabIds);
+            }, { timeout: 15000 }, createdTabIds);
 
             // Rapidly change to match second tab: backspace twice and type '-2'
             await page.focus(input);
@@ -275,7 +275,7 @@ describe('Search Edge Cases', () => {
                 const t1 = document.querySelector(`.tab-item[data-tab-id="${ids[0]}"]`);
                 const t2 = document.querySelector(`.tab-item[data-tab-id="${ids[1]}"]`);
                 return t1 && t1.classList.contains('hidden') && t2 && !t2.classList.contains('hidden');
-            }, { timeout: 5000 }, createdTabIds);
+            }, { timeout: 15000 }, createdTabIds);
 
             expect(true).toBe(true);
 

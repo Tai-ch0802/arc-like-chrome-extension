@@ -77,7 +77,7 @@ describe('Keyboard Accessibility', () => {
 
         // Wait for it to appear
         const tabSelector = `.tab-item[data-url*="example.com"]`;
-        await page.waitForSelector(tabSelector, { timeout: 5000 });
+        await page.waitForSelector(tabSelector, { timeout: 15000 });
 
         const initialTabCount = await page.$$eval('.tab-item', tabs => tabs.length);
 

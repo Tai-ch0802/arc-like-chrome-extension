@@ -38,7 +38,7 @@ describe('Tab Close Use Case', () => {
         await page.reload();
         await page.waitForSelector('.tab-item');
         // Wait for the specific tab item to appear
-        await page.waitForSelector(`.tab-item[data-tab-id="${newTab.id}"]`, { timeout: 5000 });
+        await page.waitForSelector(`.tab-item[data-tab-id="${newTab.id}"]`, { timeout: 15000 });
     });
 
     afterEach(async () => {

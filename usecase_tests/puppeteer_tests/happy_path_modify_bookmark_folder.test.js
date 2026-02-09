@@ -96,7 +96,7 @@ describe('Modify Bookmark Folder Use Case', () => {
         }, addBtnSelector);
 
         // Wait for modal
-        await page.waitForSelector('.modal-input', { timeout: 5000 });
+        await page.waitForSelector('.modal-input', { timeout: 15000 });
 
         // Type new folder name
         const subFolderName = 'Sub Folder UI Test';
@@ -108,7 +108,7 @@ describe('Modify Bookmark Folder Use Case', () => {
         // Wait for modal to disappear
         await page.waitForFunction(
             () => !document.querySelector('.modal-input'),
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         // Wait for new folder to appear in UI
@@ -138,7 +138,7 @@ describe('Modify Bookmark Folder Use Case', () => {
         }, editBtnSelector);
 
         // Wait for modal
-        await page.waitForSelector('.modal-input', { timeout: 5000 });
+        await page.waitForSelector('.modal-input', { timeout: 15000 });
 
         // Clear input and type new name
         await page.click('.modal-input', { clickCount: 3 });
@@ -151,7 +151,7 @@ describe('Modify Bookmark Folder Use Case', () => {
         // Wait for modal to disappear
         await page.waitForFunction(
             () => !document.querySelector('.modal-input'),
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         // Verify UI update

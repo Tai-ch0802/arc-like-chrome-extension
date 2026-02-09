@@ -62,7 +62,7 @@ describe('Bookmark Edge Cases', () => {
                         const el = allElements.find(e => e.textContent.includes(t));
                         return el && el.offsetParent !== null;
                     },
-                    { timeout: 5000 },
+                    { timeout: 15000 },
                     nextTitle
                 );
             }

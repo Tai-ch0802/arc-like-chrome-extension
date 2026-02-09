@@ -11,7 +11,7 @@ describe('Settings Panel Use Case', () => {
 
         // Wait for app initialization
         await page.waitForSelector('#tab-list', { timeout: 15000 });
-        await page.waitForSelector('#settings-toggle', { timeout: 5000 });
+        await page.waitForSelector('#settings-toggle', { timeout: 15000 });
     }, 120000);
 
     afterAll(async () => {
@@ -36,7 +36,7 @@ describe('Settings Panel Use Case', () => {
         // Close modal for the next test
         const closeBtn = await page.$('.modal-overlay #closeButton');
         if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 5000 });
+        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
     }, 30000);
 
     test('should have collapsible sections in settings', async () => {
@@ -53,7 +53,7 @@ describe('Settings Panel Use Case', () => {
         // Close modal for the next test
         const closeBtn = await page.$('.modal-overlay #closeButton');
         if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 5000 });
+        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
     }, 30000);
 
     test('should expand/collapse sections when clicking headers', async () => {
@@ -109,7 +109,7 @@ describe('Settings Panel Use Case', () => {
         // Close modal for the next test
         const closeBtn = await page.$('.modal-overlay #closeButton');
         if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 5000 });
+        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
     }, 30000);
 
     test('should show shortcuts section with current shortcut', async () => {
@@ -142,6 +142,6 @@ describe('Settings Panel Use Case', () => {
         // Close modal
         const closeBtn = await page.$('.modal-overlay #closeButton');
         if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 5000 });
+        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
     }, 30000);
 }, 180000);

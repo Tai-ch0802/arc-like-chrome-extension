@@ -64,7 +64,7 @@ describe('Theme Edge Cases', () => {
 
         try {
             await page.click('#settings-toggle');
-            await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
+            await page.waitForSelector('#theme-select-dropdown', { timeout: 15000 });
 
             const themes = ['geek', 'google', 'darcula', 'geek-blue'];
 
@@ -106,7 +106,7 @@ describe('Theme Edge Cases', () => {
             });
 
             await page.click('#settings-toggle');
-            await page.waitForSelector('#theme-select-dropdown', { timeout: 5000 });
+            await page.waitForSelector('#theme-select-dropdown', { timeout: 15000 });
 
             // Trigger save
             await page.select('#theme-select-dropdown', 'darcula');

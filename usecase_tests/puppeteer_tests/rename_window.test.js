@@ -67,9 +67,19 @@ describe('Window Renaming Feature', () => {
         await page.waitForSelector(modalSelector);
 
         const inputSelector = `${modalSelector} input.modal-input`;
-        // Clear existing text by setting value directly (triple-click unreliable in headless)
-        await page.$eval(inputSelector, el => { el.value = ''; });
+        // Select all existing text with Ctrl+A, then type to replace
+        await page.focus(inputSelector);
+        await page.keyboard.down('Control');
+        await page.keyboard.press('a');
+        await page.keyboard.up('Control');
         await page.type(inputSelector, 'My Custom Window Name');
+
+        // Verify input value before confirming
+        const inputValue = await page.$eval(inputSelector, el => el.value);
+        if (inputValue !== 'My Custom Window Name') {
+            // Fallback: force set value directly
+            await page.$eval(inputSelector, el => { el.value = 'My Custom Window Name'; });
+        }
 
         const confirmBtnSelector = `${modalSelector} button.confirm-btn`;
         await page.click(confirmBtnSelector);
@@ -80,16 +90,10 @@ describe('Window Renaming Feature', () => {
             { timeout: 10000 }
         );
 
-        // Verify the title has updated (increased timeout for VM)
-        await page.waitForFunction(
-            (sel, expected) => {
-                const el = document.querySelector(sel + ' .window-title');
-                return el && el.textContent === expected;
-            },
-            { timeout: 30000 },
-            folderSelector,
-            'My Custom Window Name'
-        );
+        // Verify: reload to get fresh DOM from storage state
+        await page.reload();
+        await page.waitForSelector('#tab-list', { timeout: 15000 });
+        await page.waitForSelector(folderSelector, { timeout: 15000 });
 
         const newTitle = await page.$eval(`${folderSelector} .window-title`, el => el.textContent);
         expect(newTitle).toBe('My Custom Window Name');

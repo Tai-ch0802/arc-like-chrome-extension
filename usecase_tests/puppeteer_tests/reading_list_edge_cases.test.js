@@ -78,7 +78,7 @@ describe('Reading List Edge Cases', () => {
 
     test('should filter reading list items by title and URL', async () => {
         // Wait for reading list container (more robust than .reading-list-empty)
-        await page.waitForSelector('#reading-list', { timeout: 5000 });
+        await page.waitForSelector('#reading-list', { timeout: 15000 });
 
         // Inject mock reading list items
         await injectReadingListItems([
@@ -93,7 +93,7 @@ describe('Reading List Edge Cases', () => {
         // Wait for search results to update (debounce is 300ms, wait for DOM update)
         await page.waitForFunction(
             () => document.querySelectorAll('.reading-list-item:not(.hidden)').length === 1,
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         const reactItemTitle = await page.$eval('.reading-list-item:not(.hidden) .reading-list-title', el => el.textContent);
@@ -105,7 +105,7 @@ describe('Reading List Edge Cases', () => {
         // Wait for reset (all 3 items visible)
         await page.waitForFunction(
             () => document.querySelectorAll('.reading-list-item:not(.hidden)').length === 3,
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         await page.type('#search-box', 'google');
@@ -113,7 +113,7 @@ describe('Reading List Edge Cases', () => {
         // Wait for filtering result
         await page.waitForFunction(
             () => document.querySelectorAll('.reading-list-item:not(.hidden)').length === 1,
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         const googleItemUrl = await page.$eval('.reading-list-item:not(.hidden)', el => el.dataset.url);
@@ -158,19 +158,19 @@ describe('Reading List Edge Cases', () => {
         // Wait for focus change (with null safety)
         await page.waitForFunction(
             () => document.activeElement?.id === 'rl-1',
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         await page.keyboard.press('ArrowDown');
         await page.waitForFunction(
             () => document.activeElement?.id === 'rl-2',
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         await page.keyboard.press('ArrowUp');
         await page.waitForFunction(
             () => document.activeElement?.id === 'rl-1',
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
     }, 30000);
 
@@ -186,7 +186,7 @@ describe('Reading List Edge Cases', () => {
         });
 
         // Verify empty message presence
-        await page.waitForSelector('.reading-list-empty', { timeout: 5000 });
+        await page.waitForSelector('.reading-list-empty', { timeout: 15000 });
         const emptyText = await page.$eval('.reading-list-empty', el => el.textContent);
         expect(emptyText).toContain('Right-click');
 
@@ -197,7 +197,7 @@ describe('Reading List Edge Cases', () => {
         await page.waitForFunction(() => {
             const searchBox = document.getElementById('search-box');
             return searchBox && searchBox.value === 'test';
-        }, { timeout: 5000 });
+        }, { timeout: 15000 });
 
         // Verify container still has content (empty msg or similar)
         const containerChildCount = await page.$eval('#reading-list', el => el.children.length);

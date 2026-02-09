@@ -7,9 +7,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest --runInBand usecase_tests/puppeteer_tests/",
-    "test:ci": "jest --runInBand --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
-    "test:full": "jest --runInBand usecase_tests/puppeteer_tests/"
+    "test": "jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
+    "test:ci": "jest --maxWorkers=2 --bail --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
+    "test:full": "jest --maxWorkers=2 usecase_tests/puppeteer_tests/"
   },
   "repository": {
     "type": "git",

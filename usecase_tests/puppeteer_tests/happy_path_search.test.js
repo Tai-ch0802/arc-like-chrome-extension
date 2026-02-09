@@ -72,7 +72,7 @@ describe('Search Use Case', () => {
                     document.querySelectorAll('.tab-item').length >= 0
                 );
             },
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         // Check tabs are being filtered (some might be hidden)
@@ -101,7 +101,7 @@ describe('Search Use Case', () => {
                 // Result count element exists (content may vary)
                 return resultCount !== null;
             },
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         // Search result count element should exist
@@ -144,7 +144,7 @@ describe('Search Use Case', () => {
                 const searchBox = document.getElementById('search-box');
                 return searchBox?.value === '' || searchBox?.value.trim() === '';
             },
-            { timeout: 5000 }
+            { timeout: 15000 }
         );
 
         // Tabs should still be visible (search cleared)

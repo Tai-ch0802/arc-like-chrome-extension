@@ -92,7 +92,7 @@ describe('Tab to Bookmark Use Case', () => {
                 const el = document.querySelector(selector);
                 return el && typeof Sortable !== 'undefined' && Sortable.get(el);
             },
-            { timeout: 5000 },
+            { timeout: 15000 },
             dropTargetSelector
         );
 

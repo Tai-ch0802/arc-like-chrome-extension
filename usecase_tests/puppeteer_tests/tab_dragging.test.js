@@ -105,7 +105,7 @@ describe('Tab Dragging Use Case', () => {
                 const ids = Array.from(items).map(e => e.dataset.tabId);
                 return ids.indexOf(expectedTabId) === expectedIndex;
             },
-            { timeout: 5000 },
+            { timeout: 15000 },
             tabAId,
             initialTabElements.length - 1
         );

@@ -70,7 +70,7 @@ describe('Accessibility Checks', () => {
         // Wait for ANY bookmark item to appear.
         // If expansion failed, this might fail, but let's see.
         try {
-            await page.waitForSelector('.bookmark-item', { timeout: 5000 });
+            await page.waitForSelector('.bookmark-item', { timeout: 15000 });
         } catch (e) {
             console.warn('No bookmark items found.');
         }

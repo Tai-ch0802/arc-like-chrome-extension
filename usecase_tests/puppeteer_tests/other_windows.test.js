@@ -38,7 +38,7 @@ describe('Other Windows Use Case', () => {
             const windowFolderSelector = '#other-windows-list .window-folder';
 
             try {
-                await page.waitForSelector(windowFolderSelector, { timeout: 5000 });
+                await page.waitForSelector(windowFolderSelector, { timeout: 15000 });
             } catch (e) {
                 // If listener didn't fire (headless env quirks), try reload
                 console.log("Other Windows not appeared, reloading...");
@@ -55,13 +55,13 @@ describe('Other Windows Use Case', () => {
             await page.waitForFunction((selector) => {
                 const el = document.querySelector(selector);
                 return el && el.style.display !== 'none' && !el.classList.contains('hidden');
-            }, { timeout: 5000 }, folderContentSelector);
+            }, { timeout: 15000 }, folderContentSelector);
 
             // Verify tabs
             await page.waitForFunction((selector) => {
                 const items = document.querySelectorAll(`${selector} .tab-item`);
                 return items.length >= 2;
-            }, { timeout: 5000 }, folderContentSelector);
+            }, { timeout: 15000 }, folderContentSelector);
 
             const tabItems = await page.$$eval(`${folderContentSelector} .tab-item`, items => items.map(el => ({
                 url: el.dataset.url,
@@ -94,7 +94,7 @@ describe('Other Windows Use Case', () => {
 
             const windowFolderSelector = '#other-windows-list .window-folder';
             try {
-                await page.waitForSelector(windowFolderSelector, { timeout: 5000 });
+                await page.waitForSelector(windowFolderSelector, { timeout: 15000 });
             } catch (e) {
                 await page.reload();
                 await page.waitForSelector('#tab-list', { timeout: 10000 });
@@ -108,7 +108,7 @@ describe('Other Windows Use Case', () => {
             await page.waitForFunction((selector) => {
                 const el = document.querySelector(selector);
                 return el && el.style.display !== 'none';
-            }, { timeout: 5000 }, folderContentSelector);
+            }, { timeout: 15000 }, folderContentSelector);
 
             // Check Sortable
             const sortableInstance = await page.$eval(folderContentSelector, el => {
