@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest-4-cores
+    runs-on: self-hosted
     timeout-minutes: 20
 
     steps:
