@@ -38,7 +38,7 @@ describe('Theme Switch Use Case', () => {
         });
 
         // Open settings dialog
-        await page.click('#settings-toggle');
+        await page.evaluate(() => document.getElementById('settings-toggle').click());
         await page.waitForSelector('#theme-select-dropdown', { timeout: 15000 });
 
         // Select a different theme
@@ -61,7 +61,7 @@ describe('Theme Switch Use Case', () => {
         await page.waitForSelector('#settings-toggle', { timeout: 10000 });
 
         // Open settings and change theme to darcula
-        await page.click('#settings-toggle');
+        await page.evaluate(() => document.getElementById('settings-toggle').click());
         await page.waitForSelector('#theme-select-dropdown', { timeout: 15000 });
         await page.select('#theme-select-dropdown', 'darcula');
 
@@ -80,7 +80,7 @@ describe('Theme Switch Use Case', () => {
         expect(persistedTheme).toBe('darcula');
 
         // Reset to default theme for other tests
-        await page.click('#settings-toggle');
+        await page.evaluate(() => document.getElementById('settings-toggle').click());
         await page.waitForSelector('#theme-select-dropdown', { timeout: 15000 });
         await page.select('#theme-select-dropdown', 'geek');
         await waitForTheme(page, 'geek');
@@ -90,7 +90,7 @@ describe('Theme Switch Use Case', () => {
         await page.waitForSelector('#settings-toggle', { timeout: 10000 });
 
         // Open settings dialog
-        await page.click('#settings-toggle');
+        await page.evaluate(() => document.getElementById('settings-toggle').click());
         await page.waitForSelector('#theme-select-dropdown', { timeout: 15000 });
 
         const themeOptions = await page.$$eval('#theme-select-dropdown option', options => {

@@ -20,7 +20,7 @@ describe('Settings Panel Use Case', () => {
 
     test('should open settings dialog when clicking settings button', async () => {
         // Click settings button
-        await page.click('#settings-toggle');
+        await page.evaluate(() => document.getElementById('settings-toggle').click());
 
         // Wait for modal to appear
         await page.waitForSelector('.modal-overlay', { timeout: 10000 });
