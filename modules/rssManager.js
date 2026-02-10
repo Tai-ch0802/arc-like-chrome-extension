@@ -222,11 +222,111 @@ async function setupAllAlarms() {
     }
 }
 
+// --- Local XML Parsing (for extension page contexts with DOMParser) ---
+
+/**
+ * Gets text content of a direct child element.
+ * @param {Element} parent - Parent element.
+ * @param {string} tagName - Tag name to find.
+ * @returns {string|null}
+ */
+function getTextContent(parent, tagName) {
+    const el = parent.querySelector(tagName);
+    return el ? el.textContent : null;
+}
+
+/**
+ * Gets the link href from an Atom entry.
+ * Prioritizes rel="alternate" link.
+ * @param {Element} entry - Atom entry element.
+ * @returns {string|null}
+ */
+function getAtomLink(entry) {
+    const alternateLink = entry.querySelector('link[rel="alternate"]');
+    if (alternateLink && alternateLink.hasAttribute('href')) {
+        return alternateLink.getAttribute('href');
+    }
+    const anyLink = entry.querySelector('link[href]');
+    if (anyLink) {
+        return anyLink.getAttribute('href');
+    }
+    const linkContent = entry.querySelector('link');
+    if (linkContent && linkContent.textContent) {
+        return linkContent.textContent.trim();
+    }
+    return null;
+}
+
+/**
+ * Gets link from guid if isPermaLink is true.
+ * @param {Element} item - RSS item element.
+ * @returns {string|null}
+ */
+function getLinkFromGuid(item) {
+    const guid = item.querySelector('guid');
+    if (!guid) return null;
+    const isPermaLink = guid.getAttribute('isPermaLink');
+    const content = guid.textContent.trim();
+    if (isPermaLink === 'true' ||
+        (isPermaLink !== 'false' && (content.startsWith('http://') || content.startsWith('https://')))) {
+        return content;
+    }
+    return null;
+}
+
+/**
+ * Parses RSS/Atom XML string using DOMParser.
+ * This is used in extension page contexts (side panel) where DOMParser is available.
+ * @param {string} xmlText - Raw XML text.
+ * @returns {{title: string, items: Array<{title: string, url: string}>}}
+ */
+function parseRssFeedXml(xmlText) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xmlText, 'application/xml');
+
+    const parseError = doc.querySelector('parsererror');
+    if (parseError) {
+        throw new Error('XML Parse Error: ' + parseError.textContent.slice(0, 100));
+    }
+
+    const feedElement = doc.querySelector('feed'); // Atom
+    const channelElement = doc.querySelector('channel'); // RSS
+
+    let feedTitle = '';
+    let items = [];
+
+    if (feedElement) {
+        feedTitle = getTextContent(feedElement, 'title') || '';
+        const entries = feedElement.querySelectorAll('entry');
+        entries.forEach(entry => {
+            const title = getTextContent(entry, 'title') || '';
+            const url = getAtomLink(entry) || '';
+            if (url) items.push({ title, url });
+        });
+    } else if (channelElement) {
+        const channelTitleEl = channelElement.querySelector(':scope > title');
+        feedTitle = channelTitleEl ? channelTitleEl.textContent.trim() : '';
+        const rssItems = channelElement.querySelectorAll('item');
+        rssItems.forEach(item => {
+            const title = getTextContent(item, 'title') || '';
+            const url = getTextContent(item, 'link') || getLinkFromGuid(item) || '';
+            if (url) items.push({ title: title.trim(), url: url.trim() });
+        });
+    } else {
+        throw new Error('Unknown feed format: neither RSS nor Atom detected');
+    }
+
+    return { title: feedTitle.trim(), items };
+}
+
+// --- Feed Fetching ---
+
 /**
  * Fetches and parses an RSS feed with timeout.
  * 
- * Uses the Offscreen API to parse XML with DOMParser in a hidden document context,
- * since DOMParser is not available in the Service Worker environment.
+ * Automatically detects the execution context:
+ * - Extension pages (side panel): Uses local DOMParser directly.
+ * - Service Worker (background): Uses Offscreen API for XML parsing.
  * 
  * @param {string} feedUrl - RSS feed URL.
  * @returns {Promise<{title: string, items: Array<{title: string, url: string}>}>}
@@ -246,25 +346,32 @@ async function fetchRssFeed(feedUrl) {
 
         const xmlText = await response.text();
 
-        // Ensure offscreen document exists
-        await ensureOffscreenDocument();
+        // Parse XML — use different strategies based on context
+        let parsedData;
+        if (typeof DOMParser !== 'undefined') {
+            // Extension page context (side panel) — parse locally
+            parsedData = parseRssFeedXml(xmlText);
+        } else {
+            // Service Worker context — use offscreen document
+            await ensureOffscreenDocument();
 
-        // Send XML to offscreen document for parsing with DOMParser
-        const result = await chrome.runtime.sendMessage({
-            action: 'parseRssFeed',
-            xmlText: xmlText
-        });
+            const result = await chrome.runtime.sendMessage({
+                action: 'parseRssFeed',
+                xmlText: xmlText
+            });
 
-        if (!result.success) {
-            throw new Error(result.error || 'Failed to parse RSS feed');
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to parse RSS feed');
+            }
+            parsedData = result.data;
         }
 
         // Validate we got some items
-        if (result.data.items.length === 0) {
+        if (parsedData.items.length === 0) {
             console.warn('RSS: No items found in feed:', feedUrl);
         }
 
-        return result.data;
+        return parsedData;
     } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === 'AbortError') {
