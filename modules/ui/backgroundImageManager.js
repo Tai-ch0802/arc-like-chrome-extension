@@ -7,6 +7,7 @@
 
 import * as api from '../apiManager.js';
 import { processImage } from '../utils/imageUtils.js';
+import { escapeHtml } from '../utils/textUtils.js';
 
 // Storage keys
 const BG_IMAGE_DATA_KEY = 'custom_bg_image_data';  // chrome.storage.local
@@ -258,7 +259,7 @@ export function createBackgroundPanelHtml(config) {
             <!-- URL Section -->
             <div id="bg-url-section" class="${!isUpload ? '' : 'hidden'}">
                 <div class="input-with-button">
-                    <input type="text" id="bg-url-input" placeholder="https://example.com/image.jpg" value="${cfg.sourceUrl || ''}" />
+                    <input type="text" id="bg-url-input" placeholder="https://example.com/image.jpg" value="${escapeHtml(cfg.sourceUrl || '')}" />
                     <button id="btn-apply-url" class="settings-button">${api.getMessage('buttonApply') || 'Apply'}</button>
                 </div>
             </div>

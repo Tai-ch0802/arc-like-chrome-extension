@@ -13,6 +13,7 @@ import {
     meetsWcagAA
 } from '../utils/colorUtils.js';
 import { debounce } from '../utils/functionUtils.js';
+import { escapeHtml } from '../utils/textUtils.js';
 
 // Storage keys
 const CUSTOM_THEME_STORAGE_KEY = 'customTheme';
@@ -104,15 +105,15 @@ function createColorPickerPanelHtml(currentColors) {
         <div class="custom-theme-panel">
             <div class="color-picker-row">
                 <label for="color-main-bg">${api.getMessage('labelMainBgColor') || 'Main Background'}</label>
-                <input type="color" id="color-main-bg" value="${colors.mainBgColor}" />
+                <input type="color" id="color-main-bg" value="${escapeHtml(colors.mainBgColor)}" />
             </div>
             <div class="color-picker-row">
                 <label for="color-accent">${api.getMessage('labelAccentColor') || 'Accent Color'}</label>
-                <input type="color" id="color-accent" value="${colors.accentColor}" />
+                <input type="color" id="color-accent" value="${escapeHtml(colors.accentColor)}" />
             </div>
             <div class="color-picker-row">
                 <label for="color-text-primary">${api.getMessage('labelPrimaryTextColor') || 'Primary Text'}</label>
-                <input type="color" id="color-text-primary" value="${colors.primaryTextColor}" />
+                <input type="color" id="color-text-primary" value="${escapeHtml(colors.primaryTextColor)}" />
             </div>
             <div id="contrast-warning" class="contrast-warning hidden">
                 ⚠️ ${api.getMessage('warningLowContrast') || 'Low contrast detected. Colors will be auto-adjusted.'}
