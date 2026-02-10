@@ -277,13 +277,13 @@ export function createBackgroundPanelHtml(config) {
                     <!-- Sliders Group -->
                     <div class="settings-group">
                         <div class="control-group">
-                            <label>${api.getMessage('labelOpacity') || 'Opacity'}: <span id="opacity-value">${escapeHtml(String(cfg.opacity))}</span></label>
-                            <input type="range" id="bg-opacity" min="0.1" max="1" step="0.1" value="${escapeHtml(String(cfg.opacity))}" />
+                            <label>${api.getMessage('labelOpacity') || 'Opacity'}: <span id="opacity-value">${cfg.opacity}</span></label>
+                            <input type="range" id="bg-opacity" min="0.1" max="1" step="0.1" value="${cfg.opacity}" />
                         </div>
 
                         <div class="control-group">
-                            <label>${api.getMessage('labelBlur') || 'Blur'}: <span id="blur-value">${escapeHtml(String(cfg.blur))}px</span></label>
-                            <input type="range" id="bg-blur" min="0" max="20" step="1" value="${escapeHtml(String(cfg.blur))}" />
+                            <label>${api.getMessage('labelBlur') || 'Blur'}: <span id="blur-value">${cfg.blur}px</span></label>
+                            <input type="range" id="bg-blur" min="0" max="20" step="1" value="${cfg.blur}" />
                         </div>
                     </div>
 
