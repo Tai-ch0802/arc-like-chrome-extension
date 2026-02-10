@@ -325,43 +325,50 @@ function parseRssFeedXml(xmlText) {
  * Fetches and parses an RSS feed with timeout.
  * 
  * Automatically detects the execution context:
- * - Extension pages (side panel): Uses local DOMParser directly.
- * - Service Worker (background): Uses Offscreen API for XML parsing.
+ * - Extension pages (side panel): Fetches and parses locally using DOMParser.
+ * - Service Worker (background): Delegates both fetch and parse to the offscreen document.
  * 
  * @param {string} feedUrl - RSS feed URL.
  * @returns {Promise<{title: string, items: Array<{title: string, url: string}>}>}
  */
 async function fetchRssFeed(feedUrl) {
-    // Create abort controller for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
     try {
-        const response = await fetch(feedUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const xmlText = await response.text();
-
-        // Parse XML — use different strategies based on context
         let parsedData;
+
         if (typeof DOMParser !== 'undefined') {
-            // Extension page context (side panel) — parse locally
-            parsedData = parseRssFeedXml(xmlText);
+            // Extension page context (side panel) — fetch and parse locally
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+            try {
+                const response = await fetch(feedUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const xmlText = await response.text();
+                parsedData = parseRssFeedXml(xmlText);
+            } catch (err) {
+                clearTimeout(timeoutId);
+                if (err.name === 'AbortError') {
+                    throw new Error('Request timeout');
+                }
+                throw err;
+            }
         } else {
-            // Service Worker context — use offscreen document
+            // Service Worker context — delegate fetch + parse to offscreen document
             await ensureOffscreenDocument();
 
             const result = await chrome.runtime.sendMessage({
-                action: 'parseRssFeed',
-                xmlText: xmlText
+                action: 'fetchAndParseRssFeed',
+                feedUrl: feedUrl,
+                timeoutMs: FETCH_TIMEOUT_MS
             });
 
-            if (!result.success) {
-                throw new Error(result.error || 'Failed to parse RSS feed');
+            if (!result || !result.success) {
+                throw new Error(result?.error || 'Failed to fetch RSS feed');
             }
             parsedData = result.data;
         }
@@ -373,10 +380,6 @@ async function fetchRssFeed(feedUrl) {
 
         return parsedData;
     } catch (err) {
-        clearTimeout(timeoutId);
-        if (err.name === 'AbortError') {
-            throw new Error('Request timeout');
-        }
         console.error('Error fetching RSS feed:', feedUrl, err);
         throw err;
     }

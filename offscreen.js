@@ -128,4 +128,30 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
         return true; // Keep channel open for async response
     }
+
+    if (message.action === 'fetchAndParseRssFeed') {
+        // Fetch and parse in the offscreen document context
+        // This is used by the Service Worker which cannot use fetch() reliably for some URLs
+        (async () => {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), message.timeoutMs || 10000);
+
+                const response = await fetch(message.feedUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    sendResponse({ success: false, error: `HTTP ${response.status}` });
+                    return;
+                }
+
+                const xmlText = await response.text();
+                const result = parseRssFeed(xmlText);
+                sendResponse({ success: true, data: result });
+            } catch (err) {
+                sendResponse({ success: false, error: err.name === 'AbortError' ? 'Request timeout' : err.message });
+            }
+        })();
+        return true; // Keep channel open for async response
+    }
 });
