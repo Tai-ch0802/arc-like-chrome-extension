@@ -24,7 +24,9 @@ PROD_STATIC_FILES = \
     manifest.json \
     icons \
     lib \
-    _locales
+    _locales \
+    offscreen.html \
+    offscreen.js
 
 # --- Targets ---
 

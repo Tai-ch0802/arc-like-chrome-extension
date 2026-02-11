@@ -38,7 +38,10 @@ chrome.alarms.onAlarm.addListener(handleRssAlarm);
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'openShortcutsPage') {
     chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+    return false;
   } else if (message.action === 'openAppearanceSettingsPage') {
     chrome.tabs.create({ url: 'chrome://settings/appearance' });
+    return false;
   }
+  // 不處理的 action：不攔截，讓 offscreen document 等其他 context 可以回應
 });
