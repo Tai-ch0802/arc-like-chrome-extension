@@ -581,5 +581,15 @@
     "rssFetching": {
         "message": "抓取中...",
         "description": "RSS 抓取時的載入狀態文字。"
+    },
+    "confirmDeleteRss": {
+        "message": "您確定要移除 RSS 訂閱「$RSS_TITLE$」嗎？",
+        "description": "刪除 RSS 訂閱時的確認訊息。",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }
