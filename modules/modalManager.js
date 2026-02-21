@@ -136,10 +136,11 @@ function removeModal(overlay) {
     document.body.style.overflow = '';
 }
 
-export function showConfirm({ title, confirmButtonText = 'Confirm', confirmButtonClass = 'primary' }) {
+export function showConfirm({ title, message = '', confirmButtonText = 'Confirm', confirmButtonClass = 'primary' }) {
     return new Promise((resolve) => {
         const content = `
             <h3 class="modal-title">${escapeHtml(title)}</h3>
+            ${message ? `<p class="modal-message">${escapeHtml(message)}</p>` : ''}
             <div class="modal-buttons">
                 <button class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
                 <button class="modal-button confirm-btn ${confirmButtonClass}">${escapeHtml(confirmButtonText)}</button>

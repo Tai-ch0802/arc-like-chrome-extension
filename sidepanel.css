@@ -959,6 +959,13 @@ mark.url-match {
     font-weight: normal;
 }
 
+.modal-message {
+    font-size: 14px;
+    color: var(--text-color-primary);
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
 .modal-input {
     width: 100%;
     padding: 8px 12px;
