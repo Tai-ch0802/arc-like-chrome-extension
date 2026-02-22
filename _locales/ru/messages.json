@@ -577,5 +577,15 @@
     "rssFetching": {
         "message": "Обновление...",
         "description": "Loading state text when fetching RSS."
+    },
+    "confirmDeleteRss": {
+        "message": "Вы уверены, что хотите удалить RSS-подписку «$RSS_TITLE$»?",
+        "description": "Confirmation message when deleting an RSS subscription.",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }

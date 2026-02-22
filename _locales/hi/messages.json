@@ -577,5 +577,15 @@
     "rssFetching": {
         "message": "अपडेट हो रहा है...",
         "description": "Loading state text when fetching RSS."
+    },
+    "confirmDeleteRss": {
+        "message": "क्या आप वाकई RSS सदस्यता \"$RSS_TITLE$\" को हटाना चाहते हैं?",
+        "description": "Confirmation message when deleting an RSS subscription.",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }

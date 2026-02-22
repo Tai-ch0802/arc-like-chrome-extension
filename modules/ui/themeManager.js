@@ -269,13 +269,13 @@ function bindSettingsEventHandlers(modalContentElement) {
                     </select>
                 </div>
                 <div class="rss-subscription-actions">
-                    <button class="rss-fetch-now-btn" title="${api.getMessage('rssFetchNowButton')}">
+                    <button class="rss-fetch-now-btn" title="${api.getMessage('rssFetchNowButton')}" aria-label="${api.getMessage('rssFetchNowButton')}">
                         🔄
                     </button>
-                    <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
+                    <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}" aria-label="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
                         ${sub.enabled ? '⏸' : '▶'}
                     </button>
-                    <button class="rss-delete-btn" title="${api.getMessage('rssDeleteButton')}">×</button>
+                    <button class="rss-delete-btn" title="${api.getMessage('rssDeleteButton')}" aria-label="${api.getMessage('rssDeleteButton')}">×</button>
                 </div>
             </div>
         `).join('');
@@ -340,8 +340,19 @@ function bindSettingsEventHandlers(modalContentElement) {
             btn.addEventListener('click', async (e) => {
                 const item = e.target.closest('.rss-subscription-item');
                 const id = item.dataset.id;
-                await rss.removeSubscription(id);
-                renderRssList();
+                const title = item.querySelector('.rss-subscription-title').textContent;
+
+                const confirmed = await modal.showConfirm({
+                    title: api.getMessage('rssDeleteButton'),
+                    message: api.getMessage('confirmDeleteRss', title),
+                    confirmButtonText: api.getMessage('deleteButton'),
+                    confirmButtonClass: 'danger'
+                });
+
+                if (confirmed) {
+                    await rss.removeSubscription(id);
+                    renderRssList();
+                }
             });
         });
     }

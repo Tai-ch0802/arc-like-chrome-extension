@@ -577,5 +577,15 @@
     "rssFetching": {
         "message": "Đang cập nhật...",
         "description": "Loading state text when fetching RSS."
+    },
+    "confirmDeleteRss": {
+        "message": "Bạn có chắc chắn muốn xóa đăng ký RSS \"$RSS_TITLE$\" không?",
+        "description": "Confirmation message when deleting an RSS subscription.",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }

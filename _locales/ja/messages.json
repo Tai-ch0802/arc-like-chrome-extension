@@ -577,5 +577,15 @@
     "rssFetching": {
         "message": "更新中...",
         "description": "Loading state text when fetching RSS."
+    },
+    "confirmDeleteRss": {
+        "message": "RSS購読「$RSS_TITLE$」を削除してもよろしいですか？",
+        "description": "Confirmation message when deleting an RSS subscription.",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }

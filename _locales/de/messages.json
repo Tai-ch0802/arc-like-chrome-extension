@@ -577,5 +577,15 @@
     "rssFetching": {
         "message": "Wird abgerufen...",
         "description": "Loading state text when fetching RSS."
+    },
+    "confirmDeleteRss": {
+        "message": "Möchten Sie das RSS-Abonnement „$RSS_TITLE$“ wirklich entfernen?",
+        "description": "Confirmation message when deleting an RSS subscription.",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }

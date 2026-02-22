@@ -577,5 +577,15 @@
     "rssFetching": {
         "message": "업데이트 중...",
         "description": "Loading state text when fetching RSS."
+    },
+    "confirmDeleteRss": {
+        "message": "RSS 구독 \"$RSS_TITLE$\"을(를) 삭제하시겠습니까?",
+        "description": "Confirmation message when deleting an RSS subscription.",
+        "placeholders": {
+            "RSS_TITLE": {
+                "content": "$1",
+                "example": "TechCrunch"
+            }
+        }
     }
 }
