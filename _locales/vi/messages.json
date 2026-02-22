@@ -579,7 +579,7 @@
         "description": "Loading state text when fetching RSS."
     },
     "confirmDeleteRss": {
-        "message": "Are you sure you want to remove the RSS subscription \"$RSS_TITLE$\"?",
+        "message": "Bạn có chắc chắn muốn xóa đăng ký RSS \"$RSS_TITLE$\" không?",
         "description": "Confirmation message when deleting an RSS subscription.",
         "placeholders": {
             "RSS_TITLE": {

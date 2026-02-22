@@ -579,7 +579,7 @@
         "description": "Loading state text when fetching RSS."
     },
     "confirmDeleteRss": {
-        "message": "Are you sure you want to remove the RSS subscription \"$RSS_TITLE$\"?",
+        "message": "RSS購読「$RSS_TITLE$」を削除してもよろしいですか？",
         "description": "Confirmation message when deleting an RSS subscription.",
         "placeholders": {
             "RSS_TITLE": {
