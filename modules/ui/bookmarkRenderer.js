@@ -1,7 +1,7 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
-import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
+import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
@@ -274,6 +274,47 @@ function initBookmarkListeners(container) {
                 const newTab = await api.createTab({ url: node.url, active: true });
                 await state.addLinkedTab(id, newTab.id);
                 handleRefresh();
+            }
+            return;
+        }
+
+        // 5. Handle Empty State Action (Add Current Tab)
+        const emptyStateBtn = e.target.closest('.empty-state-action-btn');
+        if (emptyStateBtn) {
+            e.preventDefault();
+            e.stopPropagation(); // prevent folder toggling if we clicked inside
+
+            // Find parentId. If inside a folder, the container (e.currentTarget) or .folder-content has parentId.
+            // renderBookmarks sets container.dataset.parentId.
+            // If the empty state is inside a .folder-content, we need to find it.
+            // But 'container' in initBookmarkListeners IS the element that has parentId?
+            // Actually renderBookmarks calls initBookmarkListeners(container).
+            // But listener is delegated.
+            // When we click the button, we need the parentId associated with *that* empty state.
+            // The empty state div is inside 'container'. 'container' has dataset.parentId *if* it was rendered by renderBookmarks directly.
+            // But wait, renderBookmarks is recursive.
+            // If we are in a subfolder, renderBookmarks is called on `content` (div.folder-content).
+            // So `content` has dataset.parentId.
+            // The emptyMsg is a child of `content`.
+            // So we can find the closest [data-parent-id].
+
+            const parentContainer = emptyStateBtn.closest('[data-parent-id]');
+            const parentId = parentContainer ? parentContainer.dataset.parentId : null;
+
+            if (parentId) {
+                try {
+                    const tab = await api.getActiveTab();
+                    if (tab && tab.url) {
+                        await api.createBookmark({
+                            parentId: parentId,
+                            title: tab.title,
+                            url: tab.url
+                        });
+                        handleRefresh();
+                    }
+                } catch (err) {
+                    console.error('Failed to add current tab to empty folder:', err);
+                }
             }
             return;
         }
@@ -654,8 +695,15 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
         let emptyMsg = emptyMsgCache.get(parentId);
         if (!emptyMsg) {
             emptyMsg = document.createElement('div');
-            emptyMsg.className = 'empty-folder-message';
-            emptyMsg.innerHTML = `${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>`;
+            emptyMsg.className = 'empty-folder-state';
+            emptyMsg.innerHTML = `
+                <div class="empty-folder-message">
+                    ${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>
+                </div>
+                <button class="empty-state-action-btn" data-action="add-current-tab">
+                    ${PLUS_ICON_SVG}<span>${api.getMessage("addCurrentTab") || 'Add Current Tab'}</span>
+                </button>
+            `;
             emptyMsgCache.set(parentId, emptyMsg);
         }
         reconcileDOM(container, [emptyMsg]);

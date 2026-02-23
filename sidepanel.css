@@ -2336,3 +2336,52 @@ mark.url-match {
     color: var(--danger-color);
     background: rgba(243, 139, 168, 0.1);
 }
+/* --- Empty Folder State --- */
+.empty-folder-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 8px 8px 20px;
+    gap: 8px;
+}
+
+.empty-folder-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-style: italic;
+    color: var(--text-color-secondary);
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.empty-folder-message svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    opacity: 0.7;
+}
+
+.empty-state-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--accent-color);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.empty-state-action-btn:hover {
+    background-color: var(--element-bg-hover-color);
+    border-color: var(--accent-color);
+}
+
+.empty-state-action-btn svg {
+    width: 14px;
+    height: 14px;
+}

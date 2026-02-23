@@ -2,6 +2,10 @@
 
 // Wrappers for chrome.tabs API
 export const getTabsInCurrentWindow = () => chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT });
+export const getActiveTab = async () => {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    return tabs[0];
+};
 export const moveTab = (tabId, index) => chrome.tabs.move(tabId, { index });
 export const groupTabs = (tabIds, groupId) => chrome.tabs.group({ tabIds, groupId });
 export const ungroupTabs = (tabIds) => chrome.tabs.ungroup(tabIds);
