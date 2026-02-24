@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 Categoría Desconocida"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Agrupación automática inteligente (Requiere Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Esta función utiliza el modelo de IA integrado (Gemini Nano) para agrupar automáticamente las pestañas sin clasificar."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Consulte la "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "documentación oficial"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " para descargar el modelo local y habilitar los parámetros (flags) correspondientes."
   }
 }

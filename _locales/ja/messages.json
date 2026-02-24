@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 不明なカテゴリ"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "スマート自動グループ化 (Gemini Nanoが必要)"
+  },
+  "aiGroupingDescription1": {
+    "message": "この機能は組み込みのAIモデル (Gemini Nano) を使用して、未分類のタブを自動的にグループ化します。"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "ローカルモデルをダウンロードし、関連するフラグを有効にするには、"
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "公式ドキュメント"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": "を参照してください。"
   }
 }

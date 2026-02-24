@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 未知分类"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "智能自动分组 (需 Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "此功能使用内置 AI 模型 (Gemini Nano) 将未分类的标签页自动分组。"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "请参考"
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "官方文档"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": "下载 Local Model 并开启相关 Flag 来启用。"
   }
 }

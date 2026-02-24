@@ -152,6 +152,38 @@ export async function setReadingListVisible(visible) {
   await setStorage('sync', { [READING_LIST_VISIBLE_KEY]: visible });
 }
 
+// --- AI Grouping Visibility State ---
+
+const AI_GROUPING_VISIBLE_KEY = 'aiGroupingVisible';
+let aiGroupingVisible = true; // Default to visible
+
+/**
+ * Loads the AI Grouping visibility state from chrome.storage.sync.
+ * @returns {Promise<boolean>} The visibility state.
+ */
+export async function initAiGroupingVisibility() {
+  const result = await getStorage('sync', [AI_GROUPING_VISIBLE_KEY]);
+  aiGroupingVisible = result[AI_GROUPING_VISIBLE_KEY] !== false; // Default true if not set
+  return aiGroupingVisible;
+}
+
+/**
+ * Gets the current AI Grouping visibility state from in-memory cache.
+ * @returns {boolean} True if AI Grouping should be visible.
+ */
+export function isAiGroupingVisible() {
+  return aiGroupingVisible;
+}
+
+/**
+ * Sets the AI Grouping visibility state.
+ * @param {boolean} visible - Whether the AI Grouping should be visible.
+ */
+export async function setAiGroupingVisible(visible) {
+  aiGroupingVisible = visible;
+  await setStorage('sync', { [AI_GROUPING_VISIBLE_KEY]: visible });
+}
+
 // --- Bookmark-Tab Linking State ---
 
 const LINKED_TABS_STORAGE_KEY = 'linkedTabs';

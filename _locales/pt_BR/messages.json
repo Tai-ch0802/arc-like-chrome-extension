@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 Categoria Desconhecida"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Agrupamento automático inteligente (Requer Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Este recurso usa o modelo de IA integrado (Gemini Nano) para agrupar automaticamente guias não classificadas."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Consulte a "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "documentação oficial"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " para baixar o modelo local e ativar as flags relevantes."
   }
 }

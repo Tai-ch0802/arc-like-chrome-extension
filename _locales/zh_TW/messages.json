@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 未知分類"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Smart Auto-Grouping (需 Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "此功能使用內建 AI 模型 (Gemini Nano) 將未分類分頁自動分群。"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "請參考 "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "官方文件"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " 下載 Local Model 並開啟相關 Flag 來啟用。"
   }
 }

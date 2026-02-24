@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 Kategori Tidak Diketahui"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Pengelompokan Otomatis Cerdas (Memerlukan Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Fitur ini menggunakan model AI bawaan (Gemini Nano) untuk mengelompokkan tab yang belum diklasifikasi secara otomatis."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Silakan merujuk ke "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "dokumentasi resmi"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " untuk mengunduh model lokal dan mengaktifkan flag yang relevan."
   }
 }

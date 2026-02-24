@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 Catégorie Inconnue"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Regroupement automatique intelligent (Nécessite Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Cette fonctionnalité utilise le modèle d'IA intégré (Gemini Nano) pour regrouper automatiquement les onglets non classés."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Veuillez consulter la "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "documentation officielle"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " pour télécharger le modèle local et activer les options (flags) correspondantes."
   }
 }

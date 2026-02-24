@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 알 수 없는 카테고리"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "스마트 자동 그룹화 (Gemini Nano 필요)"
+  },
+  "aiGroupingDescription1": {
+    "message": "이 기능은 내장된 AI 모델(Gemini Nano)을 사용하여 분류되지 않은 탭을 자동으로 그룹화합니다."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "로컬 모델을 다운로드하고 관련 플래그를 활성화하려면 "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "공식 문서"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": "를 참조하십시오."
   }
 }

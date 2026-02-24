@@ -11,6 +11,20 @@ export function initAiGrouper() {
 
     if (aiGroupBtn) {
         aiGroupBtn.addEventListener('click', handleGroupAction);
+
+        // Apply initial visibility state
+        if (!state.isAiGroupingVisible()) {
+            aiGroupBtn.style.display = 'none';
+        }
+
+        // Listen for visibility toggle from settings
+        document.addEventListener('aiGroupingVisibilityChanged', (e) => {
+            if (e.detail.visible) {
+                aiGroupBtn.style.display = '';
+            } else {
+                aiGroupBtn.style.display = 'none';
+            }
+        });
     }
     if (undoBtn) {
         undoBtn.addEventListener('click', handleUndoAction);

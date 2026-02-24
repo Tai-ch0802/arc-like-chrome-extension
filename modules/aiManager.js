@@ -76,8 +76,10 @@ ${tabsData}`;
             systemPrompt: 'You are a helpful assistant that strictly outputs JSON arrays based on the requested format. Do NOT use markdown code blocks like ```json or ```.',
             temperature: 0.1,
             topK: 1,
-            // To silence the "No output language was specified" warning, we provide a supported code
-            expectedOutputLanguage: 'en'
+            // To silence the "No output language was specified" warning, we provide supported codes
+            // using multiple property names to maintain compatibility with different Chrome versions
+            expectedOutputLanguage: 'en',
+            languages: ['en']
         };
         // Chrome sometimes requires these options depending on the version
         session = await globalThis.LanguageModel.create(options);

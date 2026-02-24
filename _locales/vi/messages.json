@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 Danh mục không xác định"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Gom nhóm tự động thông minh (Yêu cầu Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Tính năng này sử dụng mô hình AI tích hợp sẵn (Gemini Nano) để tự động gom nhóm các tab chưa được phân loại."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Vui lòng tham khảo "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "tài liệu chính thức"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " để tải xuống Mô hình cục bộ và bật các Flag liên quan."
   }
 }

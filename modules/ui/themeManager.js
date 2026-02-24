@@ -160,6 +160,24 @@ async function buildSettingsDialogContent(selectedTheme) {
             </div>
         </div>
 
+        <!-- Experimental Features Section -->
+        <div class="settings-section collapsible">
+            <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                ${chevronIcon}
+                <span>${api.getMessage('experimentalSectionHeader')}</span>
+            </button>
+            <div class="settings-section-content">
+                <label class="settings-toggle">
+                    <input type="checkbox" id="ai-grouping-toggle" ${state.isAiGroupingVisible() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('aiGroupingToggleLabel')}</span>
+                </label>
+                <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    <p>${api.getMessage('aiGroupingDescription1')}</p>
+                    <p>${api.getMessage('aiGroupingDescription2_part1')}<a href="https://developer.chrome.com/docs/ai/get-started" target="_blank" style="color: var(--accent-color); text-decoration: underline;">${api.getMessage('aiGroupingDescription2_linkText')}</a>${api.getMessage('aiGroupingDescription2_part2')}</p>
+                </div>
+            </div>
+        </div>
+
         <!-- About Section -->
         <div class="settings-section collapsible">
             <button class="settings-section-header collapsible-toggle" aria-expanded="false">
@@ -234,6 +252,19 @@ function bindSettingsEventHandlers(modalContentElement) {
             await state.setReadingListVisible(isVisible);
             // Dispatch custom event for sidepanel to react
             document.dispatchEvent(new CustomEvent('readingListVisibilityChanged', {
+                detail: { visible: isVisible }
+            }));
+        });
+    }
+
+    // AI Grouping toggle handler
+    const aiGroupingToggle = modalContentElement.querySelector('#ai-grouping-toggle');
+    if (aiGroupingToggle) {
+        aiGroupingToggle.addEventListener('change', async (e) => {
+            const isVisible = e.target.checked;
+            await state.setAiGroupingVisible(isVisible);
+            // Dispatch custom event for sidepanel to react
+            document.dispatchEvent(new CustomEvent('aiGroupingVisibilityChanged', {
                 detail: { visible: isVisible }
             }));
         });

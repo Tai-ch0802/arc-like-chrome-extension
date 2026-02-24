@@ -617,5 +617,20 @@
   },
   "unknownCategory": {
     "message": "📦 Unbekannte Kategorie"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Intelligente automatische Gruppierung (Erfordert Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Diese Funktion nutzt das integrierte KI-Modell (Gemini Nano), um nicht klassifizierte Tabs automatisch zu gruppieren."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Bitte rufen Sie die "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "offizielle Dokumentation"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " auf, um das lokale Modell herunterzuladen und die entsprechenden Flags zu aktivieren."
   }
 }

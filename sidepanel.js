@@ -113,11 +113,12 @@ function applyStaticTranslations() {
 }
 
 async function initialize() {
-    const [, , , readingListVisible] = await Promise.all([
+    const [, , , readingListVisible, aiGroupingVisible] = await Promise.all([
         state.initLinkedTabs(), // Load linked tabs state first
         state.initWindowNames(), // Load window names
         state.loadBookmarkCache(), // Load cached bookmarks from storage
-        state.initReadingListVisibility() // Load Reading List visibility
+        state.initReadingListVisibility(), // Load Reading List visibility
+        state.initAiGroupingVisibility() // Load AI Grouping visibility
     ]);
     state.pruneWindowNames().catch(console.error); // Prune stale window names on startup (non-blocking)
     state.buildBookmarkCache().catch(console.error); // Build fresh cache on startup (non-blocking)
