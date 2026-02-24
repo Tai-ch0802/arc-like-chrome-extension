@@ -32,8 +32,8 @@ key_files:
     description: "[UI Facade] UI 模組的入口點。作為 Facade 模式，重新匯出 `modules/ui/` 下的所有子模組功能，保持對外接口一致。"
   - file_path: modules/ui/elements.js
     description: "[UI] DOM 元素集中管理。負責匯出所有主要 UI 容器與控制元件的 DOM 引用。"
-  - file_path: modules/ui/themeManager.js
-    description: "[UI] 主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
+  - file_path: modules/ui/settingManager.js
+    description: "[UI] 設定與主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
   - file_path: modules/ui/customThemeManager.js
     description: "[UI] 自訂主題管理。負責顏色選擇器面板 UI、使用者自訂配色儲存與載入、以及 JSON 匯出匯入功能。"
   - file_path: modules/ui/backgroundImageManager.js

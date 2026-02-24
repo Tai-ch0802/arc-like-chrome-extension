@@ -38,20 +38,24 @@ cat manifest.json | grep '"version"'
 - **Action**: Compare the version with the planned release version.
 - **If outdated**: Remind the user to update `manifest.json` before proceeding.
 
-## 4. Check Documentation Needs
+## 4. Check Makefile File Inclusions
+- **Action**: Verify if any newly added or renamed files in the git diff need to be added to the `Makefile` (e.g., `DEV_SRC_FILES` or `PROD_STATIC_FILES`).
+- **Context**: Missing files in the `Makefile` will cause them to be excluded from the release zip. Remind the user or update it automatically if discrepancies are found.
+
+## 5. Check Documentation Needs
 Analyze the commit messages:
 - If any `feat:` commits add user-facing features:
   1. Use the `update-multilingual-docs` skill to update documentation.
   2. Commit the documentation changes before generating the release note.
 
-## 5. Generate RELEASE_NOTE.md
+## 6. Generate RELEASE_NOTE.md
 Use the `release-notes` skill to:
 1. Categorize commits by type (`feat:` vs others).
 2. Format them in the bilingual template.
 3. Include contributor attributions with PR links where available.
 4. Write to `RELEASE_NOTE.md` in project root.
 
-## 6. Present to User
+## 7. Present to User
 Notify the user with:
 - The generated `RELEASE_NOTE.md` for review.
 - Any warnings (e.g., manifest version not updated).

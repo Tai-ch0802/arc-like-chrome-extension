@@ -140,7 +140,7 @@ graph LR
 | 檔案 | 職責 |
 |------|------|
 | `elements.js` | DOM 元素集中管理 |
-| `themeManager.js` | 主題切換邏輯 |
+| `settingManager.js` | 設定與主題切換邏輯 |
 | `customThemeManager.js` | 自訂主題配色 |
 | `searchUI.js` | 搜尋介面更新 |
 | `tabRenderer.js` | 分頁渲染 |
