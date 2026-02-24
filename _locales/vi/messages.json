@@ -1,591 +1,646 @@
 {
-    "extensionName": {
-        "message": "Thanh bên cho Tab/Dấu trang",
-        "description": "The name of the extension."
-    },
-    "extensionDescription": {
-        "message": "Một tiện ích mở rộng của Chrome mô phỏng các tab dọc của trình duyệt Arc.",
-        "description": "The description of the extension."
-    },
-    "searchPlaceholder": {
-        "message": "Tìm kiếm tab hoặc dấu trang...",
-        "description": "Placeholder text for the search box."
-    },
-    "tabsHeader": {
-        "message": "Tab",
-        "description": "Header for the tabs section."
-    },
-    "bookmarksHeader": {
-        "message": "Dấu trang",
-        "description": "Header for the bookmarks section."
-    },
-    "deleteBookmarkConfirm": {
-        "message": "Bạn có chắc chắn muốn xóa vĩnh viễn dấu trang \"$bookmark_title$\"",
-        "description": "Confirmation message for deleting a single bookmark.",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "Bạn có chắc chắn muốn xóa vĩnh viễn thư mục \"$folder_title$\" và tất cả nội dung của nó không?\n\nHành động này không thể hoàn tác!",
-        "description": "Confirmation message for deleting a bookmark folder.",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "Vui lòng nhập tên cho thư mục mới trong \"$parent_folder$\"",
-        "description": "Prompt for adding a new bookmark folder.",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "Chỉnh sửa Tên Thư mục:",
-        "description": "Prompt for the user to input or edit the name of a bookmark folder."
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "Chỉnh sửa Tên Dấu trang:",
-        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "Chỉnh sửa URL Dấu trang:",
-        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
-    },
-    "cancelButton": {
-        "message": "Hủy",
-        "description": "Label for the cancel button in dialogs."
-    },
-    "deleteButton": {
-        "message": "Xóa",
-        "description": "Label for the delete button in dialogs."
-    },
-    "createButton": {
-        "message": "Tạo",
-        "description": "Label for the create button in dialogs."
-    },
-    "saveButton": {
-        "message": "Lưu",
-        "description": "Label for the save button in dialogs."
-    },
-    "closeButton": {
-        "message": "Close",
-        "description": "Label for the close button in dialogs."
-    },
-    "settingsTitle": {
-        "message": "Settings",
-        "description": "Title for the settings dialog."
-    },
-    "themeSectionHeader": {
-        "message": "Appearance",
-        "description": "Header for the theme/appearance section in settings."
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Name for the Geek theme option."
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Name for the Google theme option."
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Name for the Darcula (JetBrains) theme option."
-    },
-    "themeOptionGeekBlue": {
-        "message": "Geek Xanh",
-        "description": "Name for the Geek Xanh theme option."
-    },
-    "themeOptionChristmas": {
-        "message": "Giáng Sinh",
-        "description": "Name for the Christmas theme option."
-    },
-    "shortcutSectionHeader": {
-        "message": "Cài đặt phím tắt",
-        "description": "Header for the keyboard shortcut section in settings."
-    },
-    "shortcutExplanation": {
-        "message": "Bạn có thể tùy chỉnh các phím tắt của tiện ích trên trang quản lý của Chrome.",
-        "description": "Explanation text for how to set the extension's keyboard shortcuts."
-    },
-    "shortcutLinkText": {
-        "message": "Quản lý Phím tắt Tiện ích",
-        "description": "Link text to Chrome's shortcut management page."
-    },
-    "currentShortcutLabel": {
-        "message": "Phím tắt hiện tại:",
-        "description": "Label for displaying the current shortcut."
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "Vị trí bảng điều khiển bên",
-        "description": "Header for the side panel position section in settings."
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome có một cài đặt tích hợp cho vị trí của thanh bên. Bạn có thể điều chỉnh xem thanh bên xuất hiện ở bên trái hay bên phải của trình duyệt tại đây.",
-        "description": "Explanation text for how to set Chrome's built-in side panel position."
-    },
-    "sidePanelPositionLinkText": {
-        "message": "Thay đổi Vị trí Thanh bên của Chrome",
-        "description": "Link text to Chrome's side panel position setting."
-    },
-    "commandOpenSidePanel": {
-        "message": "Mở thanh bên",
-        "description": "Command to open the sidebar."
-    },
-    "commandCreateNewTabRight": {
-        "message": "Tạo tab mới ở bên phải tab hiện tại",
-        "description": "Command to create a new tab to the right."
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "Tạo tab mới ở bên phải:",
-        "description": "Description for the create new tab to the right shortcut in settings."
-    },
-    "closeTab": {
-        "message": "Đóng tab",
-        "description": "Tooltip for the close button on a tab."
-    },
-    "addBookmark": {
-        "message": "Thêm vào dấu trang",
-        "description": "Tooltip for the add-to-bookmark button on a tab."
-    },
-    "addBookmarkDialogTitle": {
-        "message": "Thêm dấu trang",
-        "description": "Title for the new dialog."
-    },
-    "addToGroup": {
-        "message": "Thêm tab vào nhóm mới",
-        "description": "Tooltip for the add to group button on a tab."
-    },
-    "createGroupDialogTitle": {
-        "message": "Tạo nhóm mới",
-        "description": "Title for the create new group dialog."
-    },
-    "groupNameInputPlaceholder": {
-        "message": "Nhập tên nhóm...",
-        "description": "Placeholder for the group name input in the create group dialog."
-    },
-    "createGroupButton": {
-        "message": "Tạo nhóm",
-        "description": "Label for the create button in the create group dialog."
-    },
-    "bookmarksBar": {
-        "message": "Thanh dấu trang",
-        "description": "The name for the root bookmark folder."
-    },
-    "addButton": {
-        "message": "Thêm",
-        "description": "The confirm button text in the new dialog."
-    },
-    "linkedTabsTooltip": {
-        "message": "Dấu trang này được liên kết với $COUNT$ tab. Nhấp để xem chi tiết.",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "Các tab được liên kết cho",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "Không tìm thấy tab nào được liên kết cho dấu trang này.",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "Trang này đã được đánh dấu là \"$BOOKMARK_NAME$\".<br><br>Bạn có muốn thêm lại không?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "searchResultCount": {
-        "message": "Tìm thấy $TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark",
-        "description": "Thông báo hiển thị số lượng kết quả tìm kiếm.",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "Tính năng thử nghiệm",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "Bật cuộn ảo",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "Tối ưu hóa hiệu suất cho danh sách bookmark lớn bằng cách chỉ hiển thị các mục có thể nhìn thấy. Có thể có một số lỗi hình ảnh nhỏ.",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchNoResults": {
-        "message": "Không tìm thấy kết quả",
-        "description": "Message displayed when search returns no results."
-    },
-    "copyUrl": {
-        "message": "Sao chép URL",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "Đã sao chép URL!",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "Cửa sổ khác",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "Hộp thoại này sẽ đóng sau 5 giây...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "Đổi tên cửa sổ",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "Đổi tên cửa sổ",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "Nhập tên cửa sổ mới:",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "Không phát hiện được các tab xem chia đôi. Bạn có muốn tiếp tục tạo nhóm cho tab đơn này không?",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "Có",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "Tìm kiếm tab và dấu trang",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "Xóa tìm kiếm",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "Cài đặt",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "Chỉnh sửa dấu trang",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "Xóa dấu trang",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "Chỉnh sửa tên thư mục",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "Thêm thư mục mới",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "Xóa thư mục",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "Các tab được liên kết",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "Giới thiệu",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "Dự án này là mã nguồn mở. Bạn được chào đón tham gia phát triển! Hãy cho chúng tôi một ngôi sao trên GitHub!",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "Xem trên GitHub",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "Tùy chỉnh",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "Màu nền chính",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "Màu nhấn",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "Màu văn bản chính",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "Xuất chủ đề",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "Nhập chủ đề",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "Đặt lại về mặc định",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "Phát hiện độ tương phản thấp. Màu sắc sẽ được tự động điều chỉnh.",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "Định dạng tệp chủ đề không hợp lệ",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "Đang tìm kiếm...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "Thư mục trống",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "Hình nền",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "Nguồn",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "Tải lên",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "URL",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "Chọn ảnh...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "Áp dụng",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "Độ mờ",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "Làm mờ",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "Ngang",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "Dọc",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "Xóa ảnh",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "Đang xử lý...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "Xong!",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "Lỗi xử lý ảnh.",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "Đã áp dụng hình nền",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "Điều chỉnh cài đặt",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "Căn lề trái",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "Căn giữa",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "Căn lề phải",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "Căn trên",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "Căn dưới",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "Danh sách đọc",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "Từ Danh sách đọc",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "Thêm vào Danh sách đọc",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "Đã có trong Danh sách đọc",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "Đánh dấu đã đọc",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "Đánh dấu chưa đọc",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "Xóa khỏi Danh sách đọc",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "Đã xem $COUNT$ ngày trước",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "Danh sách đọc",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "Hiển thị Danh sách đọc",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "Đăng ký RSS",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "Thêm đăng ký",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "Khoảng thời gian cập nhật",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "Tạm dừng",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "Tiếp tục",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "Xóa",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "Chưa có đăng ký RSS nào.",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "Yêu cầu đã hết thời gian. Vui lòng kiểm tra URL.",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "Bạn đã đăng ký nguồn cấp dữ liệu này rồi.",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "Không thể tải nguồn cấp dữ liệu. Vui lòng kiểm tra URL.",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "Xóa mục này khỏi danh sách đọc?",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "Nhấp chuột phải vào bất kỳ liên kết nào để thêm vào đây",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "MỚI",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "Mới nhất trước",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "Cũ nhất trước",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "Theo tiêu đề",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "Xóa tất cả đã đọc",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "Xóa tất cả các mục đã đọc khỏi danh sách đọc?",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "Cập nhật ngay",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "Đang cập nhật...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "Bạn có chắc chắn muốn xóa đăng ký RSS \"$RSS_TITLE$\" không?",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "Thanh bên cho Tab/Dấu trang",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Một tiện ích mở rộng của Chrome mô phỏng các tab dọc của trình duyệt Arc.",
+    "description": "The description of the extension."
+  },
+  "searchPlaceholder": {
+    "message": "Tìm kiếm tab hoặc dấu trang...",
+    "description": "Placeholder text for the search box."
+  },
+  "tabsHeader": {
+    "message": "Tab",
+    "description": "Header for the tabs section."
+  },
+  "bookmarksHeader": {
+    "message": "Dấu trang",
+    "description": "Header for the bookmarks section."
+  },
+  "deleteBookmarkConfirm": {
+    "message": "Bạn có chắc chắn muốn xóa vĩnh viễn dấu trang \"$bookmark_title$\"",
+    "description": "Confirmation message for deleting a single bookmark.",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "Bạn có chắc chắn muốn xóa vĩnh viễn thư mục \"$folder_title$\" và tất cả nội dung của nó không?\n\nHành động này không thể hoàn tác!",
+    "description": "Confirmation message for deleting a bookmark folder.",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "Vui lòng nhập tên cho thư mục mới trong \"$parent_folder$\"",
+    "description": "Prompt for adding a new bookmark folder.",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "Chỉnh sửa Tên Thư mục:",
+    "description": "Prompt for the user to input or edit the name of a bookmark folder."
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "Chỉnh sửa Tên Dấu trang:",
+    "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "Chỉnh sửa URL Dấu trang:",
+    "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+  },
+  "cancelButton": {
+    "message": "Hủy",
+    "description": "Label for the cancel button in dialogs."
+  },
+  "deleteButton": {
+    "message": "Xóa",
+    "description": "Label for the delete button in dialogs."
+  },
+  "createButton": {
+    "message": "Tạo",
+    "description": "Label for the create button in dialogs."
+  },
+  "saveButton": {
+    "message": "Lưu",
+    "description": "Label for the save button in dialogs."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Label for the close button in dialogs."
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for the settings dialog."
+  },
+  "themeSectionHeader": {
+    "message": "Appearance",
+    "description": "Header for the theme/appearance section in settings."
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Name for the Geek theme option."
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Name for the Google theme option."
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Name for the Darcula (JetBrains) theme option."
+  },
+  "themeOptionGeekBlue": {
+    "message": "Geek Xanh",
+    "description": "Name for the Geek Xanh theme option."
+  },
+  "themeOptionChristmas": {
+    "message": "Giáng Sinh",
+    "description": "Name for the Christmas theme option."
+  },
+  "shortcutSectionHeader": {
+    "message": "Cài đặt phím tắt",
+    "description": "Header for the keyboard shortcut section in settings."
+  },
+  "shortcutExplanation": {
+    "message": "Bạn có thể tùy chỉnh các phím tắt của tiện ích trên trang quản lý của Chrome.",
+    "description": "Explanation text for how to set the extension's keyboard shortcuts."
+  },
+  "shortcutLinkText": {
+    "message": "Quản lý Phím tắt Tiện ích",
+    "description": "Link text to Chrome's shortcut management page."
+  },
+  "currentShortcutLabel": {
+    "message": "Phím tắt hiện tại:",
+    "description": "Label for displaying the current shortcut."
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "Vị trí bảng điều khiển bên",
+    "description": "Header for the side panel position section in settings."
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome có một cài đặt tích hợp cho vị trí của thanh bên. Bạn có thể điều chỉnh xem thanh bên xuất hiện ở bên trái hay bên phải của trình duyệt tại đây.",
+    "description": "Explanation text for how to set Chrome's built-in side panel position."
+  },
+  "sidePanelPositionLinkText": {
+    "message": "Thay đổi Vị trí Thanh bên của Chrome",
+    "description": "Link text to Chrome's side panel position setting."
+  },
+  "commandOpenSidePanel": {
+    "message": "Mở thanh bên",
+    "description": "Command to open the sidebar."
+  },
+  "commandCreateNewTabRight": {
+    "message": "Tạo tab mới ở bên phải tab hiện tại",
+    "description": "Command to create a new tab to the right."
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "Tạo tab mới ở bên phải:",
+    "description": "Description for the create new tab to the right shortcut in settings."
+  },
+  "closeTab": {
+    "message": "Đóng tab",
+    "description": "Tooltip for the close button on a tab."
+  },
+  "addBookmark": {
+    "message": "Thêm vào dấu trang",
+    "description": "Tooltip for the add-to-bookmark button on a tab."
+  },
+  "addBookmarkDialogTitle": {
+    "message": "Thêm dấu trang",
+    "description": "Title for the new dialog."
+  },
+  "addToGroup": {
+    "message": "Thêm tab vào nhóm mới",
+    "description": "Tooltip for the add to group button on a tab."
+  },
+  "createGroupDialogTitle": {
+    "message": "Tạo nhóm mới",
+    "description": "Title for the create new group dialog."
+  },
+  "groupNameInputPlaceholder": {
+    "message": "Nhập tên nhóm...",
+    "description": "Placeholder for the group name input in the create group dialog."
+  },
+  "createGroupButton": {
+    "message": "Tạo nhóm",
+    "description": "Label for the create button in the create group dialog."
+  },
+  "bookmarksBar": {
+    "message": "Thanh dấu trang",
+    "description": "The name for the root bookmark folder."
+  },
+  "addButton": {
+    "message": "Thêm",
+    "description": "The confirm button text in the new dialog."
+  },
+  "linkedTabsTooltip": {
+    "message": "Dấu trang này được liên kết với $COUNT$ tab. Nhấp để xem chi tiết.",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "Các tab được liên kết cho",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "Không tìm thấy tab nào được liên kết cho dấu trang này.",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "Trang này đã được đánh dấu là \"$BOOKMARK_NAME$\".<br><br>Bạn có muốn thêm lại không?",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "searchResultCount": {
+    "message": "Tìm thấy $TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark",
+    "description": "Thông báo hiển thị số lượng kết quả tìm kiếm.",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "Tính năng thử nghiệm",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "Bật cuộn ảo",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "Tối ưu hóa hiệu suất cho danh sách bookmark lớn bằng cách chỉ hiển thị các mục có thể nhìn thấy. Có thể có một số lỗi hình ảnh nhỏ.",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchNoResults": {
+    "message": "Không tìm thấy kết quả",
+    "description": "Message displayed when search returns no results."
+  },
+  "copyUrl": {
+    "message": "Sao chép URL",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "Đã sao chép URL!",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "Cửa sổ khác",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "Hộp thoại này sẽ đóng sau 5 giây...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "Đổi tên cửa sổ",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "Đổi tên cửa sổ",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "Nhập tên cửa sổ mới:",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "Không phát hiện được các tab xem chia đôi. Bạn có muốn tiếp tục tạo nhóm cho tab đơn này không?",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "Có",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "Tìm kiếm tab và dấu trang",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "Xóa tìm kiếm",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "Cài đặt",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "Chỉnh sửa dấu trang",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "Xóa dấu trang",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "Chỉnh sửa tên thư mục",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "Thêm thư mục mới",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "Xóa thư mục",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "Các tab được liên kết",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "Giới thiệu",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "Dự án này là mã nguồn mở. Bạn được chào đón tham gia phát triển! Hãy cho chúng tôi một ngôi sao trên GitHub!",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "Xem trên GitHub",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "Tùy chỉnh",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "Màu nền chính",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "Màu nhấn",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "Màu văn bản chính",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "Xuất chủ đề",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "Nhập chủ đề",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "Đặt lại về mặc định",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "Phát hiện độ tương phản thấp. Màu sắc sẽ được tự động điều chỉnh.",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "Định dạng tệp chủ đề không hợp lệ",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "Đang tìm kiếm...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "Thư mục trống",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "addCurrentTab": {
+    "message": "Thêm tab hiện tại",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "Hình nền",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "Nguồn",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "Tải lên",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "URL",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "Chọn ảnh...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "Áp dụng",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "Độ mờ",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "Làm mờ",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "Ngang",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "Dọc",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "Xóa ảnh",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "Đang xử lý...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "Xong!",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "Lỗi xử lý ảnh.",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "Đã áp dụng hình nền",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "Điều chỉnh cài đặt",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "Căn lề trái",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "Căn giữa",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "Căn lề phải",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "Căn trên",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "Căn dưới",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "Danh sách đọc",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "Từ Danh sách đọc",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "Thêm vào Danh sách đọc",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "Đã có trong Danh sách đọc",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "Đánh dấu đã đọc",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "Đánh dấu chưa đọc",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "Xóa khỏi Danh sách đọc",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "Đã xem $COUNT$ ngày trước",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "Danh sách đọc",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "Hiển thị Danh sách đọc",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "Đăng ký RSS",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "Thêm đăng ký",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "Khoảng thời gian cập nhật",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "Tạm dừng",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "Tiếp tục",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "Xóa",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "Chưa có đăng ký RSS nào.",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "Yêu cầu đã hết thời gian. Vui lòng kiểm tra URL.",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "Bạn đã đăng ký nguồn cấp dữ liệu này rồi.",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "Không thể tải nguồn cấp dữ liệu. Vui lòng kiểm tra URL.",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "Xóa mục này khỏi danh sách đọc?",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "Nhấp chuột phải vào bất kỳ liên kết nào để thêm vào đây",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "MỚI",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "Mới nhất trước",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "Cũ nhất trước",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "Theo tiêu đề",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "Xóa tất cả đã đọc",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "Xóa tất cả các mục đã đọc khỏi danh sách đọc?",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "Cập nhật ngay",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "Đang cập nhật...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "Bạn có chắc chắn muốn xóa đăng ký RSS \"$RSS_TITLE$\" không?",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ Nhóm Thông Minh"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ Nhóm các thẻ chưa phân loại một cách thông minh"
+  },
+  "toastUndoBtn": {
+    "message": "Hoàn tác"
+  },
+  "toastCloseBtn": {
+    "message": "Đóng"
+  },
+  "aiModelNotReady": {
+    "message": "Mô hình AI chưa sẵn sàng. Vui lòng đảm bảo Chrome của bạn hỗ trợ Gemini Nano."
+  },
+  "tooFewTabsToGroup": {
+    "message": "Quá ít thẻ chưa phân loại để nhóm ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ Các thẻ đã được nhóm thành công!"
+  },
+  "noTabsGrouped": {
+    "message": "Không có thẻ nào được nhóm thành công."
+  },
+  "autoGroupingError": {
+    "message": "Đã xảy ra lỗi: "
+  },
+  "unknownCategory": {
+    "message": "📦 Danh mục không xác định"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Gom nhóm tự động thông minh (Yêu cầu Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Tính năng này sử dụng mô hình AI tích hợp sẵn (Gemini Nano) để tự động gom nhóm các tab chưa được phân loại."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Vui lòng tham khảo "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "tài liệu chính thức"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " để tải xuống Mô hình cục bộ và bật các Flag liên quan."
+  },
+  "languageSectionHeader": {
+    "message": "Ngôn ngữ (Language)"
+  },
+  "languageAuto": {
+    "message": "Tự động (Theo trình duyệt)"
+  }
 }

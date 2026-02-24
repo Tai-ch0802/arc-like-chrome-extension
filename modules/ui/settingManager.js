@@ -97,6 +97,35 @@ async function buildSettingsDialogContent(selectedTheme) {
             </div>
         </div>
 
+        <!-- Language Section -->
+        <div class="settings-section collapsible">
+            <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                ${chevronIcon}
+                <span>${api.getMessage('languageSectionHeader') || 'Language / 語言'}</span>
+            </button>
+            <div class="settings-section-content">
+                <div class="theme-options">
+                    <select id="ui-language-select" class="modal-select">
+                        <option value="auto" ${state.getUiLanguage() === 'auto' ? 'selected' : ''}>${api.getMessage('languageAuto') || 'Auto (Follow Browser)'}</option>
+                        <option value="en" ${state.getUiLanguage() === 'en' ? 'selected' : ''}>English</option>
+                        <option value="zh_TW" ${state.getUiLanguage() === 'zh_TW' ? 'selected' : ''}>繁體中文</option>
+                        <option value="zh_CN" ${state.getUiLanguage() === 'zh_CN' ? 'selected' : ''}>简体中文</option>
+                        <option value="ja" ${state.getUiLanguage() === 'ja' ? 'selected' : ''}>日本語</option>
+                        <option value="ko" ${state.getUiLanguage() === 'ko' ? 'selected' : ''}>한국어</option>
+                        <option value="fr" ${state.getUiLanguage() === 'fr' ? 'selected' : ''}>Français</option>
+                        <option value="de" ${state.getUiLanguage() === 'de' ? 'selected' : ''}>Deutsch</option>
+                        <option value="es" ${state.getUiLanguage() === 'es' ? 'selected' : ''}>Español</option>
+                        <option value="pt_BR" ${state.getUiLanguage() === 'pt_BR' ? 'selected' : ''}>Português (BR)</option>
+                        <option value="ru" ${state.getUiLanguage() === 'ru' ? 'selected' : ''}>Русский</option>
+                        <option value="id" ${state.getUiLanguage() === 'id' ? 'selected' : ''}>Bahasa Indonesia</option>
+                        <option value="th" ${state.getUiLanguage() === 'th' ? 'selected' : ''}>ไทย</option>
+                        <option value="vi" ${state.getUiLanguage() === 'vi' ? 'selected' : ''}>Tiếng Việt</option>
+                        <option value="hi" ${state.getUiLanguage() === 'hi' ? 'selected' : ''}>हिन्दी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <!-- Background Image Section -->
         <div class="settings-section collapsible">
             <button class="settings-section-header collapsible-toggle" aria-expanded="false">
@@ -157,6 +186,24 @@ async function buildSettingsDialogContent(selectedTheme) {
             <div class="settings-section-content">
                 <p>${api.getMessage('sidePanelPositionExplanation')}</p>
                 <button id="open-appearance-settings-button" class="modal-button">${api.getMessage('sidePanelPositionLinkText')}</button>
+            </div>
+        </div>
+
+        <!-- Experimental Features Section -->
+        <div class="settings-section collapsible">
+            <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                ${chevronIcon}
+                <span>${api.getMessage('experimentalSectionHeader')}</span>
+            </button>
+            <div class="settings-section-content">
+                <label class="settings-toggle">
+                    <input type="checkbox" id="ai-grouping-toggle" ${state.isAiGroupingVisible() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('aiGroupingToggleLabel')}</span>
+                </label>
+                <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    <p>${api.getMessage('aiGroupingDescription1')}</p>
+                    <p>${api.getMessage('aiGroupingDescription2_part1')}<a href="https://developer.chrome.com/docs/ai/get-started" target="_blank" style="color: var(--accent-color); text-decoration: underline;">${api.getMessage('aiGroupingDescription2_linkText')}</a>${api.getMessage('aiGroupingDescription2_part2')}</p>
+                </div>
             </div>
         </div>
 
@@ -234,6 +281,29 @@ function bindSettingsEventHandlers(modalContentElement) {
             await state.setReadingListVisible(isVisible);
             // Dispatch custom event for sidepanel to react
             document.dispatchEvent(new CustomEvent('readingListVisibilityChanged', {
+                detail: { visible: isVisible }
+            }));
+        });
+    }
+
+    // UI Language Override handler
+    const uiLanguageSelect = modalContentElement.querySelector('#ui-language-select');
+    if (uiLanguageSelect) {
+        uiLanguageSelect.addEventListener('change', async (e) => {
+            await state.setUiLanguage(e.target.value);
+            // Reload sidepanel to fully apply the new locale
+            window.location.reload();
+        });
+    }
+
+    // AI Grouping toggle handler
+    const aiGroupingToggle = modalContentElement.querySelector('#ai-grouping-toggle');
+    if (aiGroupingToggle) {
+        aiGroupingToggle.addEventListener('change', async (e) => {
+            const isVisible = e.target.checked;
+            await state.setAiGroupingVisible(isVisible);
+            // Dispatch custom event for sidepanel to react
+            document.dispatchEvent(new CustomEvent('aiGroupingVisibilityChanged', {
                 detail: { visible: isVisible }
             }));
         });

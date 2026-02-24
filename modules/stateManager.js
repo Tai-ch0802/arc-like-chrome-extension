@@ -1,5 +1,36 @@
 import { getStorage, setStorage, getAllWindows } from './apiManager.js';
 
+// --- Smart Auto-Grouping Undo State ---
+
+let lastAutoGroupState = {
+  canUndo: false,
+  timestamp: null,
+  affectedTabs: [], // 被移動的分頁 ID 陣列
+  createdGroups: [] // 新建的群組 ID 陣列
+};
+
+export function setLastAutoGroupState(state) {
+  lastAutoGroupState = {
+    canUndo: true,
+    timestamp: Date.now(),
+    affectedTabs: state.affectedTabs || [],
+    createdGroups: state.createdGroups || []
+  };
+}
+
+export function getLastAutoGroupState() {
+  return lastAutoGroupState;
+}
+
+export function clearLastAutoGroupState() {
+  lastAutoGroupState = {
+    canUndo: false,
+    timestamp: null,
+    affectedTabs: [],
+    createdGroups: []
+  };
+}
+
 // --- UI State Management Module ---
 
 const expandedBookmarkFolders = new Set();
@@ -119,6 +150,70 @@ export function isReadingListVisible() {
 export async function setReadingListVisible(visible) {
   readingListVisible = visible;
   await setStorage('sync', { [READING_LIST_VISIBLE_KEY]: visible });
+}
+
+// --- AI Grouping Visibility State ---
+
+const AI_GROUPING_VISIBLE_KEY = 'aiGroupingVisible';
+let aiGroupingVisible = true; // Default to visible
+
+/**
+ * Loads the AI Grouping visibility state from chrome.storage.sync.
+ * @returns {Promise<boolean>} The visibility state.
+ */
+export async function initAiGroupingVisibility() {
+  const result = await getStorage('sync', [AI_GROUPING_VISIBLE_KEY]);
+  aiGroupingVisible = result[AI_GROUPING_VISIBLE_KEY] !== false; // Default true if not set
+  return aiGroupingVisible;
+}
+
+/**
+ * Gets the current AI Grouping visibility state from in-memory cache.
+ * @returns {boolean} True if AI Grouping should be visible.
+ */
+export function isAiGroupingVisible() {
+  return aiGroupingVisible;
+}
+
+/**
+ * Sets the AI Grouping visibility state.
+ * @param {boolean} visible - Whether the AI Grouping should be visible.
+ */
+export async function setAiGroupingVisible(visible) {
+  aiGroupingVisible = visible;
+  await setStorage('sync', { [AI_GROUPING_VISIBLE_KEY]: visible });
+}
+
+// --- UI Language Override State ---
+
+const UI_LANGUAGE_KEY = 'uiLanguage';
+let uiLanguage = 'auto'; // Default to 'auto' (follow browser)
+
+/**
+ * Loads the UI language override state from chrome.storage.sync.
+ * @returns {Promise<string>} The configured UI language code.
+ */
+export async function initUiLanguage() {
+  const result = await getStorage('sync', [UI_LANGUAGE_KEY]);
+  uiLanguage = result[UI_LANGUAGE_KEY] || 'auto';
+  return uiLanguage;
+}
+
+/**
+ * Gets the current UI language override state from in-memory cache.
+ * @returns {string} The configured UI language code.
+ */
+export function getUiLanguage() {
+  return uiLanguage;
+}
+
+/**
+ * Sets the UI language override state.
+ * @param {string} lang - The language code (e.g., 'en', 'zh_TW', 'auto').
+ */
+export async function setUiLanguage(lang) {
+  uiLanguage = lang;
+  await setStorage('sync', { [UI_LANGUAGE_KEY]: lang });
 }
 
 // --- Bookmark-Tab Linking State ---

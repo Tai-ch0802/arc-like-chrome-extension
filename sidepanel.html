@@ -32,6 +32,16 @@
     </div>
 
     <div id="content-container">
+        <!-- Tab Section Header -->
+        <div class="section-header-row">
+            <h2 class="section-header" data-i18n="tabsHeader">Tabs</h2>
+            <div class="header-controls-right">
+                <button id="ai-group-btn" class="header-action-btn" title="✨ Smart Auto-Grouping"
+                    data-i18n-title="smartGroupingBtnTitle" aria-label="Smart Auto-Grouping"
+                    data-i18n="smartGroupingBtnText">✨ 智慧整理</button>
+            </div>
+        </div>
+
         <div id="tab-list"></div>
 
         <hr class="divider">
@@ -64,6 +74,14 @@
 
         <h2 class="section-header" data-i18n="bookmarksHeader"></h2>
         <div id="bookmark-list"></div>
+    </div>
+
+    <!-- Toast Notification for Undo -->
+    <div id="toast-container" class="hidden" aria-live="polite">
+        <span id="toast-message"></span>
+        <button id="toast-undo-btn" class="hidden" title="Undo" data-i18n-title="toastUndoBtn"
+            data-i18n="toastUndoBtn">復原 (Undo)</button>
+        <button id="toast-close-btn" title="Close" data-i18n-title="toastCloseBtn">×</button>
     </div>
 
     <script src="lib/Sortable.min.js" defer></script>

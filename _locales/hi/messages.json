@@ -1,591 +1,646 @@
 {
-    "extensionName": {
-        "message": "टैब/बुकमार्क के लिए साइडबार",
-        "description": "The name of the extension."
-    },
-    "extensionDescription": {
-        "message": "एक क्रोम एक्सटेंशन जो आर्क ब्राउज़र के वर्टिकल टैब की नकल करता है।",
-        "description": "The description of the extension."
-    },
-    "searchPlaceholder": {
-        "message": "टैब या बुकमार्क खोजें...",
-        "description": "Placeholder text for the search box."
-    },
-    "tabsHeader": {
-        "message": "टैब",
-        "description": "Header for the tabs section."
-    },
-    "bookmarksHeader": {
-        "message": "बुकमार्क",
-        "description": "Header for the bookmarks section."
-    },
-    "deleteBookmarkConfirm": {
-        "message": "क्या आप वाकई बुकमार्क \"$bookmark_title$\" को स्थायी रूप से हटाना चाहते हैं?",
-        "description": "Confirmation message for deleting a single bookmark.",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "क्या आप वाकई फ़ोल्डर \"$folder_title$\" और उसकी सभी सामग्री को स्थायी रूप से हटाना चाहते हैं?\n\nयह कार्रवाई पूर्ववत नहीं की जा सकती!",
-        "description": "Confirmation message for deleting a bookmark folder.",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "कृपया \"$parent_folder$\" के अंतर्गत नए फ़ोल्डर का नाम दर्ज करें:",
-        "description": "Prompt for adding a new bookmark folder.",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "फ़ोल्डर का नाम संपादित करें:",
-        "description": "Prompt for the user to input or edit the name of a bookmark folder."
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "बुकमार्क का नाम संपादित करें:",
-        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "बुकमार्क URL संपादित करें:",
-        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
-    },
-    "cancelButton": {
-        "message": "रद्द करें",
-        "description": "Label for the cancel button in dialogs."
-    },
-    "deleteButton": {
-        "message": "हटाएं",
-        "description": "Label for the delete button in dialogs."
-    },
-    "createButton": {
-        "message": "बनाएं",
-        "description": "Label for the create button in dialogs."
-    },
-    "saveButton": {
-        "message": "सहेजें",
-        "description": "Label for the save button in dialogs."
-    },
-    "closeButton": {
-        "message": "Close",
-        "description": "Label for the close button in dialogs."
-    },
-    "settingsTitle": {
-        "message": "Settings",
-        "description": "Title for the settings dialog."
-    },
-    "themeSectionHeader": {
-        "message": "Appearance",
-        "description": "Header for the theme/appearance section in settings."
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Name for the Geek theme option."
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Name for the Google theme option."
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Name for the Darcula (JetBrains) theme option."
-    },
-    "themeOptionGeekBlue": {
-        "message": "गीक ब्लू",
-        "description": "Name for the गीक ब्लू theme option."
-    },
-    "themeOptionChristmas": {
-        "message": "क्रिसमस",
-        "description": "Name for the Christmas theme option."
-    },
-    "shortcutSectionHeader": {
-        "message": "कीबोर्ड शॉर्टकट सेटिंग्स",
-        "description": "Header for the keyboard shortcut section in settings."
-    },
-    "shortcutExplanation": {
-        "message": "आप Chrome के प्रबंधन पृष्ठ पर एक्सटेंशन के शॉर्टकट को अनुकूलित कर सकते हैं।",
-        "description": "Explanation text for how to set the extension's keyboard shortcuts."
-    },
-    "shortcutLinkText": {
-        "message": "एक्सटेंशन शॉर्टकट प्रबंधित करें",
-        "description": "Link text to Chrome's shortcut management page."
-    },
-    "currentShortcutLabel": {
-        "message": "वर्तमान शॉर्टकट:",
-        "description": "Label for displaying the current shortcut."
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "साइड पैनल स्थिति",
-        "description": "Header for the side panel position section in settings."
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome में साइड पैनल की स्थिति के लिए एक अंतर्निहित सेटिंग है। आप यहां समायोजित कर सकते हैं कि पैनल ब्राउज़र के बाईं ओर या दाईं ओर दिखाई दे।",
-        "description": "Explanation text for how to set Chrome's built-in side panel position."
-    },
-    "sidePanelPositionLinkText": {
-        "message": "Chrome साइड पैनल की स्थिति बदलें",
-        "description": "Link text to Chrome's side panel position setting."
-    },
-    "commandOpenSidePanel": {
-        "message": "साइडबार खोलें",
-        "description": "Command to open the sidebar."
-    },
-    "commandCreateNewTabRight": {
-        "message": "वर्तमान टैब के दाईं ओर एक नया टैब बनाएं",
-        "description": "Command to create a new tab to the right."
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "दाईं ओर नया टैब बनाएं:",
-        "description": "Description for the create new tab to the right shortcut in settings."
-    },
-    "closeTab": {
-        "message": "टैब बंद करें",
-        "description": "Tooltip for the close button on a tab."
-    },
-    "addBookmark": {
-        "message": "बुकमार्क में जोड़ें",
-        "description": "Tooltip for the add-to-bookmark button on a tab."
-    },
-    "addBookmarkDialogTitle": {
-        "message": "बुकमार्क जोड़ें",
-        "description": "Title for the new dialog."
-    },
-    "addToGroup": {
-        "message": "टैब को नए समूह में जोड़ें",
-        "description": "Tooltip for the add to group button on a tab."
-    },
-    "createGroupDialogTitle": {
-        "message": "नया समूह बनाएं",
-        "description": "Title for the create new group dialog."
-    },
-    "groupNameInputPlaceholder": {
-        "message": "समूह का नाम दर्ज करें...",
-        "description": "Placeholder for the group name input in the create group dialog."
-    },
-    "createGroupButton": {
-        "message": "समूह बनाएं",
-        "description": "Label for the create button in the create group dialog."
-    },
-    "bookmarksBar": {
-        "message": "बुकमार्क बार",
-        "description": "The name for the root bookmark folder."
-    },
-    "addButton": {
-        "message": "जोड़ें",
-        "description": "The confirm button text in the new dialog."
-    },
-    "linkedTabsTooltip": {
-        "message": "यह बुकमार्क $COUNT$ टैब से जुड़ा है। विवरण देखने के लिए क्लिक करें।",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "इसके लिए लिंक किए गए टैब",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "इस बुकमार्क के लिए कोई लिंक किया गया टैब नहीं मिला।",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "यह पृष्ठ पहले से ही \"$BOOKMARK_NAME$\" के रूप में बुकमार्क किया गया है।<br><br>क्या आप इसे फिर से जोड़ना चाहते हैं?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$ टैब, $BOOKMARK_COUNT$ बुकमार्क मिले",
-        "description": "खोज परिणामों की संख्या प्रदर्शित करने वाला संदेश।",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "प्रयोगात्मक सुविधाएँ",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "वर्चुअल स्क्रॉलिंग सक्षम करें",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "केवल दृश्यमान आइटम प्रस्तुत करके बड़े बुकमार्क सूचियों के लिए प्रदर्शन को अनुकूलित करता है। मामूली दृश्य समस्याएं हो सकती हैं।",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchNoResults": {
-        "message": "कोई परिणाम नहीं मिला",
-        "description": "खोज कोई परिणाम नहीं देती तो प्रदर्शित संदेश।"
-    },
-    "copyUrl": {
-        "message": "URL कॉपी करें",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "URL कॉपी किया गया!",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "अन्य विंडो",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "यह संवाद 5 सेकंड में बंद हो जाएगा...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "विंडो का नाम बदलें",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "विंडो का नाम बदलें",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "नया विंडो नाम दर्ज करें:",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "विभाजित दृश्य टैब का पता लगाने में विफल। क्या आप इस एकल टैब के लिए एक समूह बनाने के साथ आगे बढ़ना चाहते हैं?",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "हाँ",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "टैब और बुकमार्क खोजें",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "खोज साफ़ करें",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "सेटिंग",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "बुकमार्क संपादित करें",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "बुकमार्क हटाएं",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "फ़ोल्डर का नाम संपादित करें",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "नया फ़ोल्डर जोड़ें",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "फ़ोल्डर हटाएं",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "लिंक किए गए टैब",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "के बारे में",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "यह प्रोजेक्ट ओपन सोर्स है। विकास में शामिल होने के लिए आपका स्वागत है! हमें GitHub पर एक स्टार दें!",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "GitHub पर देखें",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "कस्टम",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "मुख्य पृष्ठभूमि का रंग",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "एक्सेंट रंग",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "मुख्य टेक्स्ट रंग",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "थीम निर्यात करें",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "थीम आयात करें",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "डिफ़ॉल्ट पर रीसेट करें",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "कम कंट्रास्ट का पता चला। रंग स्वचालित रूप से समायोजित किए जाएंगे।",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "अमान्य थीम फ़ाइल स्वरूप",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "खोज रहा है...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "फ़ोल्डर खाली है",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "पृष्ठभूमि की छवि",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "स्रोत",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "अपलोड करें",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "यूआरएल",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "छवि चुनें...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "लागू करें",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "अपारदर्शिता",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "धुंधला",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "क्षैतिज",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "ऊर्ध्वाधर",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "छवि हटाएं",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "प्रसंस्करण...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "हो गया!",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "छवि संसाधित करने में विफल।",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "पृष्ठभूमि छवि लागू की गई",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "सेटिंग्स समायोजित करें",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "बाईं ओर संरेखित करें",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "बीच में संरेखित करें",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "दाईं ओर संरेखित करें",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "ऊपर संरेखित करें",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "नीचे संरेखित करें",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "पढ़ने की सूची",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "पढ़ने की सूची से",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "पढ़ने की सूची में जोड़ें",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "पढ़ने की सूची में पहले से मौजूद",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "पढ़ा हुआ चिह्नित करें",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "अपठित चिह्नित करें",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "पढ़ने की सूची से हटाएँ",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "$COUNT$ दिन पहले देखा गया",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "पढ़ने की सूची",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "पढ़ने की सूची दिखाएँ",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "RSS सदस्यताएँ",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "सदस्यता जोड़ें",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "अपडेट अंतराल",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "रोकें",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "फिर से शुरू करें",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "हटाएँ",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "अभी तक कोई RSS सदस्यता नहीं है।",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "अनुरोध का समय समाप्त हो गया। कृपया URL जाँचें।",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "आपने पहले ही इस फ़ीड की सदस्यता ले ली है।",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "फ़ीड प्राप्त करने में विफल। कृपया URL जाँचें।",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "इस आइटम को पढ़ने की सूची से हटाएँ?",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "इसे यहाँ जोड़ने के लिए किसी भी लिंक पर राइट-क्लिक करें",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "नया",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "सबसे नए पहले",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "सबसे पुराने पहले",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "शीर्षक के अनुसार",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "सभी पढ़े गए साफ़ करें",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "पढ़ने की सूची से सभी पढ़े गए आइटम हटाएँ?",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "अभी अपडेट करें",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "अपडेट हो रहा है...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "क्या आप वाकई RSS सदस्यता \"$RSS_TITLE$\" को हटाना चाहते हैं?",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "टैब/बुकमार्क के लिए साइडबार",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "एक क्रोम एक्सटेंशन जो आर्क ब्राउज़र के वर्टिकल टैब की नकल करता है।",
+    "description": "The description of the extension."
+  },
+  "searchPlaceholder": {
+    "message": "टैब या बुकमार्क खोजें...",
+    "description": "Placeholder text for the search box."
+  },
+  "tabsHeader": {
+    "message": "टैब",
+    "description": "Header for the tabs section."
+  },
+  "bookmarksHeader": {
+    "message": "बुकमार्क",
+    "description": "Header for the bookmarks section."
+  },
+  "deleteBookmarkConfirm": {
+    "message": "क्या आप वाकई बुकमार्क \"$bookmark_title$\" को स्थायी रूप से हटाना चाहते हैं?",
+    "description": "Confirmation message for deleting a single bookmark.",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "क्या आप वाकई फ़ोल्डर \"$folder_title$\" और उसकी सभी सामग्री को स्थायी रूप से हटाना चाहते हैं?\n\nयह कार्रवाई पूर्ववत नहीं की जा सकती!",
+    "description": "Confirmation message for deleting a bookmark folder.",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "कृपया \"$parent_folder$\" के अंतर्गत नए फ़ोल्डर का नाम दर्ज करें:",
+    "description": "Prompt for adding a new bookmark folder.",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "फ़ोल्डर का नाम संपादित करें:",
+    "description": "Prompt for the user to input or edit the name of a bookmark folder."
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "बुकमार्क का नाम संपादित करें:",
+    "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "बुकमार्क URL संपादित करें:",
+    "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+  },
+  "cancelButton": {
+    "message": "रद्द करें",
+    "description": "Label for the cancel button in dialogs."
+  },
+  "deleteButton": {
+    "message": "हटाएं",
+    "description": "Label for the delete button in dialogs."
+  },
+  "createButton": {
+    "message": "बनाएं",
+    "description": "Label for the create button in dialogs."
+  },
+  "saveButton": {
+    "message": "सहेजें",
+    "description": "Label for the save button in dialogs."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Label for the close button in dialogs."
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for the settings dialog."
+  },
+  "themeSectionHeader": {
+    "message": "Appearance",
+    "description": "Header for the theme/appearance section in settings."
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Name for the Geek theme option."
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Name for the Google theme option."
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Name for the Darcula (JetBrains) theme option."
+  },
+  "themeOptionGeekBlue": {
+    "message": "गीक ब्लू",
+    "description": "Name for the गीक ब्लू theme option."
+  },
+  "themeOptionChristmas": {
+    "message": "क्रिसमस",
+    "description": "Name for the Christmas theme option."
+  },
+  "shortcutSectionHeader": {
+    "message": "कीबोर्ड शॉर्टकट सेटिंग्स",
+    "description": "Header for the keyboard shortcut section in settings."
+  },
+  "shortcutExplanation": {
+    "message": "आप Chrome के प्रबंधन पृष्ठ पर एक्सटेंशन के शॉर्टकट को अनुकूलित कर सकते हैं।",
+    "description": "Explanation text for how to set the extension's keyboard shortcuts."
+  },
+  "shortcutLinkText": {
+    "message": "एक्सटेंशन शॉर्टकट प्रबंधित करें",
+    "description": "Link text to Chrome's shortcut management page."
+  },
+  "currentShortcutLabel": {
+    "message": "वर्तमान शॉर्टकट:",
+    "description": "Label for displaying the current shortcut."
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "साइड पैनल स्थिति",
+    "description": "Header for the side panel position section in settings."
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome में साइड पैनल की स्थिति के लिए एक अंतर्निहित सेटिंग है। आप यहां समायोजित कर सकते हैं कि पैनल ब्राउज़र के बाईं ओर या दाईं ओर दिखाई दे।",
+    "description": "Explanation text for how to set Chrome's built-in side panel position."
+  },
+  "sidePanelPositionLinkText": {
+    "message": "Chrome साइड पैनल की स्थिति बदलें",
+    "description": "Link text to Chrome's side panel position setting."
+  },
+  "commandOpenSidePanel": {
+    "message": "साइडबार खोलें",
+    "description": "Command to open the sidebar."
+  },
+  "commandCreateNewTabRight": {
+    "message": "वर्तमान टैब के दाईं ओर एक नया टैब बनाएं",
+    "description": "Command to create a new tab to the right."
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "दाईं ओर नया टैब बनाएं:",
+    "description": "Description for the create new tab to the right shortcut in settings."
+  },
+  "closeTab": {
+    "message": "टैब बंद करें",
+    "description": "Tooltip for the close button on a tab."
+  },
+  "addBookmark": {
+    "message": "बुकमार्क में जोड़ें",
+    "description": "Tooltip for the add-to-bookmark button on a tab."
+  },
+  "addBookmarkDialogTitle": {
+    "message": "बुकमार्क जोड़ें",
+    "description": "Title for the new dialog."
+  },
+  "addToGroup": {
+    "message": "टैब को नए समूह में जोड़ें",
+    "description": "Tooltip for the add to group button on a tab."
+  },
+  "createGroupDialogTitle": {
+    "message": "नया समूह बनाएं",
+    "description": "Title for the create new group dialog."
+  },
+  "groupNameInputPlaceholder": {
+    "message": "समूह का नाम दर्ज करें...",
+    "description": "Placeholder for the group name input in the create group dialog."
+  },
+  "createGroupButton": {
+    "message": "समूह बनाएं",
+    "description": "Label for the create button in the create group dialog."
+  },
+  "bookmarksBar": {
+    "message": "बुकमार्क बार",
+    "description": "The name for the root bookmark folder."
+  },
+  "addButton": {
+    "message": "जोड़ें",
+    "description": "The confirm button text in the new dialog."
+  },
+  "linkedTabsTooltip": {
+    "message": "यह बुकमार्क $COUNT$ टैब से जुड़ा है। विवरण देखने के लिए क्लिक करें।",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "इसके लिए लिंक किए गए टैब",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "इस बुकमार्क के लिए कोई लिंक किया गया टैब नहीं मिला।",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "यह पृष्ठ पहले से ही \"$BOOKMARK_NAME$\" के रूप में बुकमार्क किया गया है।<br><br>क्या आप इसे फिर से जोड़ना चाहते हैं?",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$ टैब, $BOOKMARK_COUNT$ बुकमार्क मिले",
+    "description": "खोज परिणामों की संख्या प्रदर्शित करने वाला संदेश।",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "प्रयोगात्मक सुविधाएँ",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "वर्चुअल स्क्रॉलिंग सक्षम करें",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "केवल दृश्यमान आइटम प्रस्तुत करके बड़े बुकमार्क सूचियों के लिए प्रदर्शन को अनुकूलित करता है। मामूली दृश्य समस्याएं हो सकती हैं।",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchNoResults": {
+    "message": "कोई परिणाम नहीं मिला",
+    "description": "खोज कोई परिणाम नहीं देती तो प्रदर्शित संदेश।"
+  },
+  "copyUrl": {
+    "message": "URL कॉपी करें",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "URL कॉपी किया गया!",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "अन्य विंडो",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "यह संवाद 5 सेकंड में बंद हो जाएगा...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "विंडो का नाम बदलें",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "विंडो का नाम बदलें",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "नया विंडो नाम दर्ज करें:",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "विभाजित दृश्य टैब का पता लगाने में विफल। क्या आप इस एकल टैब के लिए एक समूह बनाने के साथ आगे बढ़ना चाहते हैं?",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "हाँ",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "टैब और बुकमार्क खोजें",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "खोज साफ़ करें",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "सेटिंग",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "बुकमार्क संपादित करें",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "बुकमार्क हटाएं",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "फ़ोल्डर का नाम संपादित करें",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "नया फ़ोल्डर जोड़ें",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "फ़ोल्डर हटाएं",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "लिंक किए गए टैब",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "के बारे में",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "यह प्रोजेक्ट ओपन सोर्स है। विकास में शामिल होने के लिए आपका स्वागत है! हमें GitHub पर एक स्टार दें!",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "GitHub पर देखें",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "कस्टम",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "मुख्य पृष्ठभूमि का रंग",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "एक्सेंट रंग",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "मुख्य टेक्स्ट रंग",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "थीम निर्यात करें",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "थीम आयात करें",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "डिफ़ॉल्ट पर रीसेट करें",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "कम कंट्रास्ट का पता चला। रंग स्वचालित रूप से समायोजित किए जाएंगे।",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "अमान्य थीम फ़ाइल स्वरूप",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "खोज रहा है...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "फ़ोल्डर खाली है",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "addCurrentTab": {
+    "message": "वर्तमान टैब जोड़ें",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "पृष्ठभूमि की छवि",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "स्रोत",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "अपलोड करें",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "यूआरएल",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "छवि चुनें...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "लागू करें",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "अपारदर्शिता",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "धुंधला",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "क्षैतिज",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "ऊर्ध्वाधर",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "छवि हटाएं",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "प्रसंस्करण...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "हो गया!",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "छवि संसाधित करने में विफल।",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "पृष्ठभूमि छवि लागू की गई",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "सेटिंग्स समायोजित करें",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "बाईं ओर संरेखित करें",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "बीच में संरेखित करें",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "दाईं ओर संरेखित करें",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "ऊपर संरेखित करें",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "नीचे संरेखित करें",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "पढ़ने की सूची",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "पढ़ने की सूची से",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "पढ़ने की सूची में जोड़ें",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "पढ़ने की सूची में पहले से मौजूद",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "पढ़ा हुआ चिह्नित करें",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "अपठित चिह्नित करें",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "पढ़ने की सूची से हटाएँ",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "$COUNT$ दिन पहले देखा गया",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "पढ़ने की सूची",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "पढ़ने की सूची दिखाएँ",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "RSS सदस्यताएँ",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "सदस्यता जोड़ें",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "अपडेट अंतराल",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "रोकें",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "फिर से शुरू करें",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "हटाएँ",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "अभी तक कोई RSS सदस्यता नहीं है।",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "अनुरोध का समय समाप्त हो गया। कृपया URL जाँचें।",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "आपने पहले ही इस फ़ीड की सदस्यता ले ली है।",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "फ़ीड प्राप्त करने में विफल। कृपया URL जाँचें।",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "इस आइटम को पढ़ने की सूची से हटाएँ?",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "इसे यहाँ जोड़ने के लिए किसी भी लिंक पर राइट-क्लिक करें",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "नया",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "सबसे नए पहले",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "सबसे पुराने पहले",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "शीर्षक के अनुसार",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "सभी पढ़े गए साफ़ करें",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "पढ़ने की सूची से सभी पढ़े गए आइटम हटाएँ?",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "अभी अपडेट करें",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "अपडेट हो रहा है...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "क्या आप वाकई RSS सदस्यता \"$RSS_TITLE$\" को हटाना चाहते हैं?",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ स्मार्ट ग्रुप"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ अवर्गीकृत टैब को स्मार्ट तरीके से ग्रुप करें"
+  },
+  "toastUndoBtn": {
+    "message": "पूर्ववत करें"
+  },
+  "toastCloseBtn": {
+    "message": "बंद करें"
+  },
+  "aiModelNotReady": {
+    "message": "AI मॉडल तैयार नहीं है। कृपया सुनिश्चित करें कि आपका Chrome Gemini Nano का समर्थन करता है।"
+  },
+  "tooFewTabsToGroup": {
+    "message": "ग्रुप करने के लिए बहुत कम अवर्गीकृत टैब ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ टैब सफलतापूर्वक ग्रुप किए गए!"
+  },
+  "noTabsGrouped": {
+    "message": "किसी भी टैब को सफलतापूर्वक ग्रुप नहीं किया गया।"
+  },
+  "autoGroupingError": {
+    "message": "त्रुटि हुई: "
+  },
+  "unknownCategory": {
+    "message": "📦 अज्ञात श्रेणी"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "स्मार्ट ऑटो-ग्रुपिंग (Gemini Nano की आवश्यकता है)"
+  },
+  "aiGroupingDescription1": {
+    "message": "यह सुविधा अवर्गीकृत टैब को स्वचालित रूप से समूहबद्ध करने के लिए अंतर्निहित AI मॉडल (Gemini Nano) का उपयोग करती है।"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "कृपया स्थानीय मॉडल डाउनलोड करने और प्रासंगिक फ़्लैग सक्षम करने के लिए "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "आधिकारिक दस्तावेज़"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " देखें।"
+  },
+  "languageSectionHeader": {
+    "message": "भाषा (Language)"
+  },
+  "languageAuto": {
+    "message": "स्वचालित (ब्राउज़र का अनुसरण करें)"
+  }
 }

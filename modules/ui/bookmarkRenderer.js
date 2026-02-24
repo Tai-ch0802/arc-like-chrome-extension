@@ -278,33 +278,20 @@ function initBookmarkListeners(container) {
             return;
         }
 
-        // 5. Handle Empty State Action (Add Current Tab)
+        // 4. Handle Empty State Action (Add Current Tab)
         const emptyStateBtn = e.target.closest('.empty-state-action-btn');
         if (emptyStateBtn) {
             e.preventDefault();
-            e.stopPropagation(); // prevent folder toggling if we clicked inside
+            e.stopPropagation();
 
-            // Find parentId. If inside a folder, the container (e.currentTarget) or .folder-content has parentId.
-            // renderBookmarks sets container.dataset.parentId.
-            // If the empty state is inside a .folder-content, we need to find it.
-            // But 'container' in initBookmarkListeners IS the element that has parentId?
-            // Actually renderBookmarks calls initBookmarkListeners(container).
-            // But listener is delegated.
-            // When we click the button, we need the parentId associated with *that* empty state.
-            // The empty state div is inside 'container'. 'container' has dataset.parentId *if* it was rendered by renderBookmarks directly.
-            // But wait, renderBookmarks is recursive.
-            // If we are in a subfolder, renderBookmarks is called on `content` (div.folder-content).
-            // So `content` has dataset.parentId.
-            // The emptyMsg is a child of `content`.
-            // So we can find the closest [data-parent-id].
-
+            // Find the closest folder container to get parentId
             const parentContainer = emptyStateBtn.closest('[data-parent-id]');
             const parentId = parentContainer ? parentContainer.dataset.parentId : null;
 
             if (parentId) {
                 try {
                     const tab = await api.getActiveTab();
-                    if (tab && tab.url) {
+                    if (tab && tab.url && tab.url.startsWith('http')) {
                         await api.createBookmark({
                             parentId: parentId,
                             title: tab.title,
@@ -319,7 +306,7 @@ function initBookmarkListeners(container) {
             return;
         }
 
-        // 4. Handle Folder Click (Expand/Collapse)
+        // 5. Handle Folder Click (Expand/Collapse)
         const folderItem = getFolderItem(e.target);
         if (folderItem) {
             const id = folderItem.dataset.bookmarkId;

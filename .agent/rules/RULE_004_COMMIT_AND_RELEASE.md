@@ -45,4 +45,5 @@ feat(tabs): add split view support
 
 ### 注意事項
 
-產出的 `RELEASE_NOTE.md` 檔案僅為臨時預覽用途，應被加入 `.gitignore` 中，不進入版控。
+- **打包檔案檢核**: 由於過去曾發生漏打包的問題，撰寫 release note 或是發布前，務必檢核新建立或是重新命名的檔案是否已經正確加入到 `Makefile` 的 `DEV_SRC_FILES` 或其他編譯設定當中。
+- 產出的 `RELEASE_NOTE.md` 檔案僅為臨時預覽用途，應被加入 `.gitignore` 中，不進入版控。

@@ -1,591 +1,646 @@
 {
-    "extensionName": {
-        "message": "タブ/ブックマーク用のサイドバー",
-        "description": "The name of the extension."
-    },
-    "extensionDescription": {
-        "message": "Arcブラウザの垂直タブを模倣したChrome拡張機能。",
-        "description": "The description of the extension."
-    },
-    "searchPlaceholder": {
-        "message": "タブまたはブックマークを検索...",
-        "description": "Placeholder text for the search box."
-    },
-    "tabsHeader": {
-        "message": "タブ",
-        "description": "Header for the tabs section."
-    },
-    "bookmarksHeader": {
-        "message": "ブックマーク",
-        "description": "Header for the bookmarks section."
-    },
-    "deleteBookmarkConfirm": {
-        "message": "ブックマーク\"$bookmark_title$\"を完全に削除してもよろしいですか？",
-        "description": "Confirmation message for deleting a single bookmark.",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "フォルダ\"$folder_title$\"とその中のすべてのコンテンツを完全に削除してもよろしいですか？\n\nこの操作は元に戻せません！",
-        "description": "Confirmation message for deleting a bookmark folder.",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "\"$parent_folder$\"の下に新しいフォルダの名前を入力してください：",
-        "description": "Prompt for adding a new bookmark folder.",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "フォルダ名を編集：",
-        "description": "Prompt for the user to input or edit the name of a bookmark folder."
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "ブックマーク名を編集：",
-        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "ブックマークURLを編集：",
-        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
-    },
-    "cancelButton": {
-        "message": "キャンセル",
-        "description": "Label for the cancel button in dialogs."
-    },
-    "deleteButton": {
-        "message": "削除",
-        "description": "Label for the delete button in dialogs."
-    },
-    "createButton": {
-        "message": "作成",
-        "description": "Label for the create button in dialogs."
-    },
-    "saveButton": {
-        "message": "保存",
-        "description": "Label for the save button in dialogs."
-    },
-    "closeButton": {
-        "message": "Close",
-        "description": "Label for the close button in dialogs."
-    },
-    "settingsTitle": {
-        "message": "Settings",
-        "description": "Title for the settings dialog."
-    },
-    "themeSectionHeader": {
-        "message": "Appearance",
-        "description": "Header for the theme/appearance section in settings."
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Name for the Geek theme option."
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Name for the Google theme option."
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Name for the Darcula (JetBrains) theme option."
-    },
-    "themeOptionGeekBlue": {
-        "message": "ギークブルー",
-        "description": "Name for the ギークブルー theme option."
-    },
-    "themeOptionChristmas": {
-        "message": "クリスマス",
-        "description": "Name for the Christmas theme option."
-    },
-    "shortcutSectionHeader": {
-        "message": "キーボードショートカット設定",
-        "description": "Header for the keyboard shortcut section in settings."
-    },
-    "shortcutExplanation": {
-        "message": "Chromeの管理ページで拡張機能のショートカットをカスタマイズできます。",
-        "description": "Explanation text for how to set the extension's keyboard shortcuts."
-    },
-    "shortcutLinkText": {
-        "message": "拡張機能のショートカットを管理",
-        "description": "Link text to Chrome's shortcut management page."
-    },
-    "currentShortcutLabel": {
-        "message": "現在のショートカット:",
-        "description": "Label for displaying the current shortcut."
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "サイドパネルの位置",
-        "description": "Header for the side panel position section in settings."
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chromeにはサイドパネルの位置に関する組み込みの設定があります。ここで、パネルをブラウザの左側または右側に表示するかを調整できます。",
-        "description": "Explanation text for how to set Chrome's built-in side panel position."
-    },
-    "sidePanelPositionLinkText": {
-        "message": "Chromeサイドパネルの位置を変更",
-        "description": "Link text to Chrome's side panel position setting."
-    },
-    "commandOpenSidePanel": {
-        "message": "サイドバーを開く",
-        "description": "Command to open the sidebar."
-    },
-    "commandCreateNewTabRight": {
-        "message": "現在のタブの右側に新しいタブを作成",
-        "description": "Command to create a new tab to the right."
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "右側に新しいタブを作成:",
-        "description": "Description for the create new tab to the right shortcut in settings."
-    },
-    "closeTab": {
-        "message": "タブを閉じる",
-        "description": "Tooltip for the close button on a tab."
-    },
-    "addBookmark": {
-        "message": "ブックマークに追加",
-        "description": "Tooltip for the add-to-bookmark button on a tab."
-    },
-    "addBookmarkDialogTitle": {
-        "message": "ブックマークを追加",
-        "description": "Title for the new dialog."
-    },
-    "addToGroup": {
-        "message": "タブを新しいグループに追加",
-        "description": "Tooltip for the add to group button on a tab."
-    },
-    "createGroupDialogTitle": {
-        "message": "新しいグループを作成",
-        "description": "Title for the create new group dialog."
-    },
-    "groupNameInputPlaceholder": {
-        "message": "グループ名を入力...",
-        "description": "Placeholder for the group name input in the create group dialog."
-    },
-    "createGroupButton": {
-        "message": "グループを作成",
-        "description": "Label for the create button in the create group dialog."
-    },
-    "bookmarksBar": {
-        "message": "ブックマークバー",
-        "description": "The name for the root bookmark folder."
-    },
-    "addButton": {
-        "message": "追加",
-        "description": "The confirm button text in the new dialog."
-    },
-    "linkedTabsTooltip": {
-        "message": "このブックマークは$COUNT$個のタブにリンクされています。クリックして詳細を表示します。",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "関連付けられたタブ：",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "このブックマークに関連付けられたタブはありません。",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "このページは既に「$BOOKMARK_NAME$」としてブックマークされています。<br><br>再度追加しますか？",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "実験的な機能",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "仮想スクロールを有効にする",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "表示されているアイテムのみをレンダリングすることで、大規模なブックマークリストのパフォーマンスを最適化します。軽微な視覚的な不具合が発生する可能性があります。",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$ 個のタブ、$BOOKMARK_COUNT$ 個のブックマークが見つかりました",
-        "description": "Message showing the count of search results",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "searchNoResults": {
-        "message": "結果が見つかりません",
-        "description": "Message displayed when search returns no results."
-    },
-    "copyUrl": {
-        "message": "URLをコピー",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "URLをコピーしました！",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "他のウィンドウ",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "このダイアログは5秒後に閉じます...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "ウィンドウの名前を変更",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "ウィンドウの名前を変更",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "新しいウィンドウ名を入力してください:",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "分割表示タブの検出に失敗しました。この単一のタブでグループを作成しますか？",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "はい",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "タブとブックマークを検索",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "検索をクリア",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "設定",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "ブックマークを編集",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "ブックマークを削除",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "フォルダ名を編集",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "新しいフォルダを追加",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "フォルダを削除",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "リンクされたタブ",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "詳細",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "このプロジェクトはオープンソースです。開発への参加を歓迎します！GitHubでスターをお願いします！",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "GitHubで見る",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "カスタム",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "背景色",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "アクセントカラー",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "テキストカラー",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "テーマを書き出す",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "テーマを読み込む",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "デフォルトに戻す",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "コントラストが不足しています。色は自動的に調整されます。",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "テーマファイルの形式が正しくありません",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "検索中...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "フォルダは空です",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "背景画像",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "ソース",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "アップロード",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "URL",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "画像を選択...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "適用",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "不透明度",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "ぼかし",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "水平位置",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "垂直位置",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "画像を削除",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "処理中...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "完了！",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "画像の処理に失敗しました。",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "背景画像が適用されました",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "設定を調整",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "左揃え",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "中央揃え",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "右揃え",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "上揃え",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "下揃え",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "リーディングリスト",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "リーディングリストから",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "リーディングリストに追加",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "リーディングリストに登録済み",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "既読にする",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "未読にする",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "リーディングリストから削除",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "$COUNT$ 日前に閲覧",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "リーディングリスト",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "リーディングリストを表示",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "RSSフィード",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "購読を追加",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "更新間隔",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "一時停止",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "再開",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "削除",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "RSS購読はまだありません。",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "リクエストがタイムアウトしました。URLを確認してください。",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "このフィードは既に購読されています。",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "フィードの取得に失敗しました。URLを確認してください。",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "リーディングリストからこの項目を削除しますか？",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "リンクを右クリックしてここに追加します",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "新着",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "新しい順",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "古い順",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "タイトル順",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "既読をすべて削除",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "リーディングリストからすべての既読項目を削除しますか？",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "今すぐ更新",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "更新中...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "RSS購読「$RSS_TITLE$」を削除してもよろしいですか？",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "タブ/ブックマーク用のサイドバー",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Arcブラウザの垂直タブを模倣したChrome拡張機能。",
+    "description": "The description of the extension."
+  },
+  "searchPlaceholder": {
+    "message": "タブまたはブックマークを検索...",
+    "description": "Placeholder text for the search box."
+  },
+  "tabsHeader": {
+    "message": "タブ",
+    "description": "Header for the tabs section."
+  },
+  "bookmarksHeader": {
+    "message": "ブックマーク",
+    "description": "Header for the bookmarks section."
+  },
+  "deleteBookmarkConfirm": {
+    "message": "ブックマーク\"$bookmark_title$\"を完全に削除してもよろしいですか？",
+    "description": "Confirmation message for deleting a single bookmark.",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "フォルダ\"$folder_title$\"とその中のすべてのコンテンツを完全に削除してもよろしいですか？\n\nこの操作は元に戻せません！",
+    "description": "Confirmation message for deleting a bookmark folder.",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "\"$parent_folder$\"の下に新しいフォルダの名前を入力してください：",
+    "description": "Prompt for adding a new bookmark folder.",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "フォルダ名を編集：",
+    "description": "Prompt for the user to input or edit the name of a bookmark folder."
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "ブックマーク名を編集：",
+    "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "ブックマークURLを編集：",
+    "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+  },
+  "cancelButton": {
+    "message": "キャンセル",
+    "description": "Label for the cancel button in dialogs."
+  },
+  "deleteButton": {
+    "message": "削除",
+    "description": "Label for the delete button in dialogs."
+  },
+  "createButton": {
+    "message": "作成",
+    "description": "Label for the create button in dialogs."
+  },
+  "saveButton": {
+    "message": "保存",
+    "description": "Label for the save button in dialogs."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Label for the close button in dialogs."
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for the settings dialog."
+  },
+  "themeSectionHeader": {
+    "message": "Appearance",
+    "description": "Header for the theme/appearance section in settings."
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Name for the Geek theme option."
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Name for the Google theme option."
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Name for the Darcula (JetBrains) theme option."
+  },
+  "themeOptionGeekBlue": {
+    "message": "ギークブルー",
+    "description": "Name for the ギークブルー theme option."
+  },
+  "themeOptionChristmas": {
+    "message": "クリスマス",
+    "description": "Name for the Christmas theme option."
+  },
+  "shortcutSectionHeader": {
+    "message": "キーボードショートカット設定",
+    "description": "Header for the keyboard shortcut section in settings."
+  },
+  "shortcutExplanation": {
+    "message": "Chromeの管理ページで拡張機能のショートカットをカスタマイズできます。",
+    "description": "Explanation text for how to set the extension's keyboard shortcuts."
+  },
+  "shortcutLinkText": {
+    "message": "拡張機能のショートカットを管理",
+    "description": "Link text to Chrome's shortcut management page."
+  },
+  "currentShortcutLabel": {
+    "message": "現在のショートカット:",
+    "description": "Label for displaying the current shortcut."
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "サイドパネルの位置",
+    "description": "Header for the side panel position section in settings."
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chromeにはサイドパネルの位置に関する組み込みの設定があります。ここで、パネルをブラウザの左側または右側に表示するかを調整できます。",
+    "description": "Explanation text for how to set Chrome's built-in side panel position."
+  },
+  "sidePanelPositionLinkText": {
+    "message": "Chromeサイドパネルの位置を変更",
+    "description": "Link text to Chrome's side panel position setting."
+  },
+  "commandOpenSidePanel": {
+    "message": "サイドバーを開く",
+    "description": "Command to open the sidebar."
+  },
+  "commandCreateNewTabRight": {
+    "message": "現在のタブの右側に新しいタブを作成",
+    "description": "Command to create a new tab to the right."
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "右側に新しいタブを作成:",
+    "description": "Description for the create new tab to the right shortcut in settings."
+  },
+  "closeTab": {
+    "message": "タブを閉じる",
+    "description": "Tooltip for the close button on a tab."
+  },
+  "addBookmark": {
+    "message": "ブックマークに追加",
+    "description": "Tooltip for the add-to-bookmark button on a tab."
+  },
+  "addBookmarkDialogTitle": {
+    "message": "ブックマークを追加",
+    "description": "Title for the new dialog."
+  },
+  "addToGroup": {
+    "message": "タブを新しいグループに追加",
+    "description": "Tooltip for the add to group button on a tab."
+  },
+  "createGroupDialogTitle": {
+    "message": "新しいグループを作成",
+    "description": "Title for the create new group dialog."
+  },
+  "groupNameInputPlaceholder": {
+    "message": "グループ名を入力...",
+    "description": "Placeholder for the group name input in the create group dialog."
+  },
+  "createGroupButton": {
+    "message": "グループを作成",
+    "description": "Label for the create button in the create group dialog."
+  },
+  "bookmarksBar": {
+    "message": "ブックマークバー",
+    "description": "The name for the root bookmark folder."
+  },
+  "addButton": {
+    "message": "追加",
+    "description": "The confirm button text in the new dialog."
+  },
+  "linkedTabsTooltip": {
+    "message": "このブックマークは$COUNT$個のタブにリンクされています。クリックして詳細を表示します。",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "関連付けられたタブ：",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "このブックマークに関連付けられたタブはありません。",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "このページは既に「$BOOKMARK_NAME$」としてブックマークされています。<br><br>再度追加しますか？",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "実験的な機能",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "仮想スクロールを有効にする",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "表示されているアイテムのみをレンダリングすることで、大規模なブックマークリストのパフォーマンスを最適化します。軽微な視覚的な不具合が発生する可能性があります。",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$ 個のタブ、$BOOKMARK_COUNT$ 個のブックマークが見つかりました",
+    "description": "Message showing the count of search results",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "searchNoResults": {
+    "message": "結果が見つかりません",
+    "description": "Message displayed when search returns no results."
+  },
+  "copyUrl": {
+    "message": "URLをコピー",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "URLをコピーしました！",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "他のウィンドウ",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "このダイアログは5秒後に閉じます...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "ウィンドウの名前を変更",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "ウィンドウの名前を変更",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "新しいウィンドウ名を入力してください:",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "分割表示タブの検出に失敗しました。この単一のタブでグループを作成しますか？",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "はい",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "タブとブックマークを検索",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "検索をクリア",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "設定",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "ブックマークを編集",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "ブックマークを削除",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "フォルダ名を編集",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "新しいフォルダを追加",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "フォルダを削除",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "リンクされたタブ",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "詳細",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "このプロジェクトはオープンソースです。開発への参加を歓迎します！GitHubでスターをお願いします！",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "GitHubで見る",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "カスタム",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "背景色",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "アクセントカラー",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "テキストカラー",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "テーマを書き出す",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "テーマを読み込む",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "デフォルトに戻す",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "コントラストが不足しています。色は自動的に調整されます。",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "テーマファイルの形式が正しくありません",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "検索中...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "フォルダは空です",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "addCurrentTab": {
+    "message": "現在のタブを追加",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "背景画像",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "ソース",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "アップロード",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "URL",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "画像を選択...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "適用",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "不透明度",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "ぼかし",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "水平位置",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "垂直位置",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "画像を削除",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "処理中...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "完了！",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "画像の処理に失敗しました。",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "背景画像が適用されました",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "設定を調整",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "左揃え",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "中央揃え",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "右揃え",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "上揃え",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "下揃え",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "リーディングリスト",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "リーディングリストから",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "リーディングリストに追加",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "リーディングリストに登録済み",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "既読にする",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "未読にする",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "リーディングリストから削除",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "$COUNT$ 日前に閲覧",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "リーディングリスト",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "リーディングリストを表示",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "RSSフィード",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "購読を追加",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "更新間隔",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "一時停止",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "再開",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "削除",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "RSS購読はまだありません。",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "リクエストがタイムアウトしました。URLを確認してください。",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "このフィードは既に購読されています。",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "フィードの取得に失敗しました。URLを確認してください。",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "リーディングリストからこの項目を削除しますか？",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "リンクを右クリックしてここに追加します",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "新着",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "新しい順",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "古い順",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "タイトル順",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "既読をすべて削除",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "リーディングリストからすべての既読項目を削除しますか？",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "今すぐ更新",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "更新中...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "RSS購読「$RSS_TITLE$」を削除してもよろしいですか？",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ スマートグループ化"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ 未分類のタブをスマートにグループ化"
+  },
+  "toastUndoBtn": {
+    "message": "元に戻す"
+  },
+  "toastCloseBtn": {
+    "message": "閉じる"
+  },
+  "aiModelNotReady": {
+    "message": "AIモデルの準備ができていません。ChromeがGemini Nanoをサポートしているか確認してください。"
+  },
+  "tooFewTabsToGroup": {
+    "message": "グループ化する未分類のタブが少なすぎます ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ タブが正常にグループ化されました！"
+  },
+  "noTabsGrouped": {
+    "message": "正常にグループ化されたタブはありませんでした。"
+  },
+  "autoGroupingError": {
+    "message": "エラーが発生しました: "
+  },
+  "unknownCategory": {
+    "message": "📦 不明なカテゴリ"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "スマート自動グループ化 (Gemini Nanoが必要)"
+  },
+  "aiGroupingDescription1": {
+    "message": "この機能は組み込みのAIモデル (Gemini Nano) を使用して、未分類のタブを自動的にグループ化します。"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "ローカルモデルをダウンロードし、関連するフラグを有効にするには、"
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "公式ドキュメント"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": "を参照してください。"
+  },
+  "languageSectionHeader": {
+    "message": "言語 (Language)"
+  },
+  "languageAuto": {
+    "message": "自動（ブラウザに従う）"
+  }
 }

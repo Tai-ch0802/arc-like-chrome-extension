@@ -32,8 +32,8 @@ key_files:
     description: "[UI Facade] UI 模組的入口點。作為 Facade 模式，重新匯出 `modules/ui/` 下的所有子模組功能，保持對外接口一致。"
   - file_path: modules/ui/elements.js
     description: "[UI] DOM 元素集中管理。負責匯出所有主要 UI 容器與控制元件的 DOM 引用。"
-  - file_path: modules/ui/themeManager.js
-    description: "[UI] 主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
+  - file_path: modules/ui/settingManager.js
+    description: "[UI] 設定與主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
   - file_path: modules/ui/customThemeManager.js
     description: "[UI] 自訂主題管理。負責顏色選擇器面板 UI、使用者自訂配色儲存與載入、以及 JSON 匯出匯入功能。"
   - file_path: modules/ui/backgroundImageManager.js
@@ -68,6 +68,10 @@ key_files:
     description: "[UI] 閱讀清單渲染。負責閱讀清單項目的 DOM 生成、事件處理（點擊/刪除/切換已讀）、展開收合、鍵盤導航、新項目標籤、排序功能 (日期/標題)。"
   - file_path: modules/icons.js
     description: "[UI] SVG 圖示集中管理。匯出所有 UI 使用的 SVG 圖示常數，避免重複定義。"
+  - file_path: modules/aiManager.js
+    description: "[AI] 本機 AI 模型管理。負責封裝與 Chrome `globalThis.LanguageModel` (Gemini Nano) 的對接、Prompt 生成及防呆。"
+  - file_path: modules/ui/aiGrouperUI.js
+    description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

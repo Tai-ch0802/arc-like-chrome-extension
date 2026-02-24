@@ -1,591 +1,646 @@
 {
-    "extensionName": {
-        "message": "탭/북마크용 사이드바",
-        "description": "The name of the extension."
-    },
-    "extensionDescription": {
-        "message": "Arc 브라우저의 수직 탭을 모방한 Chrome 확장 프로그램입니다.",
-        "description": "The description of the extension."
-    },
-    "searchPlaceholder": {
-        "message": "탭 또는 북마크 검색...",
-        "description": "Placeholder text for the search box."
-    },
-    "tabsHeader": {
-        "message": "탭",
-        "description": "Header for the tabs section."
-    },
-    "bookmarksHeader": {
-        "message": "북마크",
-        "description": "Header for the bookmarks section."
-    },
-    "deleteBookmarkConfirm": {
-        "message": "북마크 \"$bookmark_title$\"을(를) 영구적으로 삭제하시겠습니까?",
-        "description": "Confirmation message for deleting a single bookmark.",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "폴더 \"$folder_title$\"와(과) 그 안의 모든 콘텐츠를 영구적으로 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다!",
-        "description": "Confirmation message for deleting a bookmark folder.",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "\"$parent_folder$\" 아래에 새 폴더의 이름을 입력하십시오:",
-        "description": "Prompt for adding a new bookmark folder.",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "폴더 이름 편집:",
-        "description": "Prompt for the user to input or edit the name of a bookmark folder."
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "북마크 이름 편집:",
-        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "북마크 URL 편집:",
-        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
-    },
-    "cancelButton": {
-        "message": "취소",
-        "description": "Label for the cancel button in dialogs."
-    },
-    "deleteButton": {
-        "message": "삭제",
-        "description": "Label for the delete button in dialogs."
-    },
-    "createButton": {
-        "message": "만들기",
-        "description": "Label for the create button in dialogs."
-    },
-    "saveButton": {
-        "message": "저장",
-        "description": "Label for the save button in dialogs."
-    },
-    "closeButton": {
-        "message": "Close",
-        "description": "Label for the close button in dialogs."
-    },
-    "settingsTitle": {
-        "message": "Settings",
-        "description": "Title for the settings dialog."
-    },
-    "themeSectionHeader": {
-        "message": "Appearance",
-        "description": "Header for the theme/appearance section in settings."
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Name for the Geek theme option."
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Name for the Google theme option."
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Name for the Darcula (JetBrains) theme option."
-    },
-    "themeOptionGeekBlue": {
-        "message": "긱 블루",
-        "description": "Name for the 긱 블루 theme option."
-    },
-    "themeOptionChristmas": {
-        "message": "크리스마스",
-        "description": "Name for the Christmas theme option."
-    },
-    "shortcutSectionHeader": {
-        "message": "키보드 단축키 설정",
-        "description": "Header for the keyboard shortcut section in settings."
-    },
-    "shortcutExplanation": {
-        "message": "Chrome의 관리 페이지에서 확장 프로그램의 단축키를 사용자 지정할 수 있습니다.",
-        "description": "Explanation text for how to set the extension's keyboard shortcuts."
-    },
-    "shortcutLinkText": {
-        "message": "확장 프로그램 단축키 관리",
-        "description": "Link text to Chrome's shortcut management page."
-    },
-    "currentShortcutLabel": {
-        "message": "현재 단축키:",
-        "description": "Label for displaying the current shortcut."
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "사이드 패널 위치",
-        "description": "Header for the side panel position section in settings."
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome에는 사이드 패널 위치에 대한 기본 제공 설정이 있습니다. 여기에서 패널이 브라우저의 왼쪽 또는 오른쪽에 표시되는지 조정할 수 있습니다.",
-        "description": "Explanation text for how to set Chrome's built-in side panel position."
-    },
-    "sidePanelPositionLinkText": {
-        "message": "Chrome 사이드 패널 위치 변경",
-        "description": "Link text to Chrome's side panel position setting."
-    },
-    "commandOpenSidePanel": {
-        "message": "사이드바 열기",
-        "description": "Command to open the sidebar."
-    },
-    "commandCreateNewTabRight": {
-        "message": "현재 탭의 오른쪽에 새 탭 만들기",
-        "description": "Command to create a new tab to the right."
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "오른쪽에 새 탭 만들기:",
-        "description": "Description for the create new tab to the right shortcut in settings."
-    },
-    "closeTab": {
-        "message": "탭 닫기",
-        "description": "Tooltip for the close button on a tab."
-    },
-    "addBookmark": {
-        "message": "북마크에 추가",
-        "description": "Tooltip for the add-to-bookmark button on a tab."
-    },
-    "addBookmarkDialogTitle": {
-        "message": "북마크 추가",
-        "description": "Title for the new dialog."
-    },
-    "addToGroup": {
-        "message": "새 그룹에 탭 추가",
-        "description": "Tooltip for the add to group button on a tab."
-    },
-    "createGroupDialogTitle": {
-        "message": "새 그룹 만들기",
-        "description": "Title for the create new group dialog."
-    },
-    "groupNameInputPlaceholder": {
-        "message": "그룹 이름 입력...",
-        "description": "Placeholder for the group name input in the create group dialog."
-    },
-    "createGroupButton": {
-        "message": "그룹 만들기",
-        "description": "Label for the create button in the create group dialog."
-    },
-    "bookmarksBar": {
-        "message": "북마크바",
-        "description": "The name for the root bookmark folder."
-    },
-    "addButton": {
-        "message": "추가",
-        "description": "The confirm button text in the new dialog."
-    },
-    "linkedTabsTooltip": {
-        "message": "이 북마크는 $COUNT$개의 탭에 연결되어 있습니다. 자세한 내용을 보려면 클릭하세요.",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "연결된 탭:",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "이 북마크에 연결된 탭이 없습니다.",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "이 페이지는 이미 '$BOOKMARK_NAME$'(으)로 북마크에 추가되었습니다.<br><br>다시 추가하시겠습니까?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "실험적 기능",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "가상 스크롤 활성화",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "표시되는 항목만 렌더링하여 대규모 북마크 목록의 성능을 최적화합니다. 약간의 시각적 문제가 발생할 수 있습니다.",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$개 탭, $BOOKMARK_COUNT$개 북마크",
-        "description": "검색 결과 수를 표시하는 메시지입니다.",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "searchNoResults": {
-        "message": "검색 결과 없음",
-        "description": "Message displayed when search returns no results."
-    },
-    "copyUrl": {
-        "message": "URL 복사",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "URL 복사됨!",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "다른 창",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "이 대화 상자는 5초 후에 닫힙니다...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "창 이름 바꾸기",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "창 이름 바꾸기",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "새 창 이름 입력:",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "분할 보기 탭을 감지하지 못했습니다. 이 단일 탭에 대한 그룹을 계속 만들까요?",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "예",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "탭 및 북마크 검색",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "검색 지우기",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "설정",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "북마크 편집",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "북마크 삭제",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "폴더 이름 편집",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "새 폴더 추가",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "폴더 삭제",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "연결된 탭",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "정보",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "이 프로젝트는 오픈 소스입니다. 개발에 참여하는 것을 환영합니다! GitHub에서 스타를 눌러주세요!",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "GitHub에서 보기",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "사용자 정의",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "기본 배경색",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "강조색",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "기본 텍스트 색상",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "테마 내보내기",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "테마 가져오기",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "기본값으로 재설정",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "낮은 대비가 감지되었습니다. 색상이 자동으로 조정됩니다.",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "잘못된 테마 파일 형식",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "검색 중...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "폴더가 비어 있습니다",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "배경 이미지",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "출처",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "업로드",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "URL",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "이미지 선택...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "적용",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "투명도",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "가우시안 흐림",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "가로 정렬",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "세로 정렬",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "이미지 제거",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "처리 중...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "완료!",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "이미지 처리 실패.",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "배경 이미지가 적용되었습니다",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "설정 조정",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "왼쪽 정렬",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "가운데 정렬",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "오른쪽 정렬",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "위쪽 정렬",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "아래쪽 정렬",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "읽기 목록",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "읽기 목록에서",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "읽기 목록에 추가",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "이미 읽기 목록에 있음",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "읽음 상태로 표시",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "읽지 않음 상태로 표시",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "읽기 목록에서 삭제",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "$COUNT$일 전에 확인",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "읽기 목록",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "읽기 목록 표시",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "RSS 구독",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "구독 추가",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "업데이트 간격",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "일시 정지",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "재개",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "삭제",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "RSS 구독이 없습니다.",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "요청 시간이 초과되었습니다. URL을 확인하세요.",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "이미 구독 중인 피드입니다.",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "피드를 가져오지 못했습니다. URL을 확인하세요.",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "읽기 목록에서 이 항목을 삭제하시겠습니까?",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "링크를 마우스 오른쪽 버튼으로 클릭하여 여기에 추가하세요",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "신규",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "최신순",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "오래된순",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "제목순",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "모든 읽음 항목 삭제",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "읽기 목록에서 모든 읽음 항목을 삭제하시겠습니까?",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "지금 업데이트",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "업데이트 중...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "RSS 구독 \"$RSS_TITLE$\"을(를) 삭제하시겠습니까?",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "탭/북마크용 사이드바",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Arc 브라우저의 수직 탭을 모방한 Chrome 확장 프로그램입니다.",
+    "description": "The description of the extension."
+  },
+  "searchPlaceholder": {
+    "message": "탭 또는 북마크 검색...",
+    "description": "Placeholder text for the search box."
+  },
+  "tabsHeader": {
+    "message": "탭",
+    "description": "Header for the tabs section."
+  },
+  "bookmarksHeader": {
+    "message": "북마크",
+    "description": "Header for the bookmarks section."
+  },
+  "deleteBookmarkConfirm": {
+    "message": "북마크 \"$bookmark_title$\"을(를) 영구적으로 삭제하시겠습니까?",
+    "description": "Confirmation message for deleting a single bookmark.",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "폴더 \"$folder_title$\"와(과) 그 안의 모든 콘텐츠를 영구적으로 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다!",
+    "description": "Confirmation message for deleting a bookmark folder.",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "\"$parent_folder$\" 아래에 새 폴더의 이름을 입력하십시오:",
+    "description": "Prompt for adding a new bookmark folder.",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "폴더 이름 편집:",
+    "description": "Prompt for the user to input or edit the name of a bookmark folder."
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "북마크 이름 편집:",
+    "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "북마크 URL 편집:",
+    "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+  },
+  "cancelButton": {
+    "message": "취소",
+    "description": "Label for the cancel button in dialogs."
+  },
+  "deleteButton": {
+    "message": "삭제",
+    "description": "Label for the delete button in dialogs."
+  },
+  "createButton": {
+    "message": "만들기",
+    "description": "Label for the create button in dialogs."
+  },
+  "saveButton": {
+    "message": "저장",
+    "description": "Label for the save button in dialogs."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Label for the close button in dialogs."
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for the settings dialog."
+  },
+  "themeSectionHeader": {
+    "message": "Appearance",
+    "description": "Header for the theme/appearance section in settings."
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Name for the Geek theme option."
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Name for the Google theme option."
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Name for the Darcula (JetBrains) theme option."
+  },
+  "themeOptionGeekBlue": {
+    "message": "긱 블루",
+    "description": "Name for the 긱 블루 theme option."
+  },
+  "themeOptionChristmas": {
+    "message": "크리스마스",
+    "description": "Name for the Christmas theme option."
+  },
+  "shortcutSectionHeader": {
+    "message": "키보드 단축키 설정",
+    "description": "Header for the keyboard shortcut section in settings."
+  },
+  "shortcutExplanation": {
+    "message": "Chrome의 관리 페이지에서 확장 프로그램의 단축키를 사용자 지정할 수 있습니다.",
+    "description": "Explanation text for how to set the extension's keyboard shortcuts."
+  },
+  "shortcutLinkText": {
+    "message": "확장 프로그램 단축키 관리",
+    "description": "Link text to Chrome's shortcut management page."
+  },
+  "currentShortcutLabel": {
+    "message": "현재 단축키:",
+    "description": "Label for displaying the current shortcut."
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "사이드 패널 위치",
+    "description": "Header for the side panel position section in settings."
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome에는 사이드 패널 위치에 대한 기본 제공 설정이 있습니다. 여기에서 패널이 브라우저의 왼쪽 또는 오른쪽에 표시되는지 조정할 수 있습니다.",
+    "description": "Explanation text for how to set Chrome's built-in side panel position."
+  },
+  "sidePanelPositionLinkText": {
+    "message": "Chrome 사이드 패널 위치 변경",
+    "description": "Link text to Chrome's side panel position setting."
+  },
+  "commandOpenSidePanel": {
+    "message": "사이드바 열기",
+    "description": "Command to open the sidebar."
+  },
+  "commandCreateNewTabRight": {
+    "message": "현재 탭의 오른쪽에 새 탭 만들기",
+    "description": "Command to create a new tab to the right."
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "오른쪽에 새 탭 만들기:",
+    "description": "Description for the create new tab to the right shortcut in settings."
+  },
+  "closeTab": {
+    "message": "탭 닫기",
+    "description": "Tooltip for the close button on a tab."
+  },
+  "addBookmark": {
+    "message": "북마크에 추가",
+    "description": "Tooltip for the add-to-bookmark button on a tab."
+  },
+  "addBookmarkDialogTitle": {
+    "message": "북마크 추가",
+    "description": "Title for the new dialog."
+  },
+  "addToGroup": {
+    "message": "새 그룹에 탭 추가",
+    "description": "Tooltip for the add to group button on a tab."
+  },
+  "createGroupDialogTitle": {
+    "message": "새 그룹 만들기",
+    "description": "Title for the create new group dialog."
+  },
+  "groupNameInputPlaceholder": {
+    "message": "그룹 이름 입력...",
+    "description": "Placeholder for the group name input in the create group dialog."
+  },
+  "createGroupButton": {
+    "message": "그룹 만들기",
+    "description": "Label for the create button in the create group dialog."
+  },
+  "bookmarksBar": {
+    "message": "북마크바",
+    "description": "The name for the root bookmark folder."
+  },
+  "addButton": {
+    "message": "추가",
+    "description": "The confirm button text in the new dialog."
+  },
+  "linkedTabsTooltip": {
+    "message": "이 북마크는 $COUNT$개의 탭에 연결되어 있습니다. 자세한 내용을 보려면 클릭하세요.",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "연결된 탭:",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "이 북마크에 연결된 탭이 없습니다.",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "이 페이지는 이미 '$BOOKMARK_NAME$'(으)로 북마크에 추가되었습니다.<br><br>다시 추가하시겠습니까?",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "실험적 기능",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "가상 스크롤 활성화",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "표시되는 항목만 렌더링하여 대규모 북마크 목록의 성능을 최적화합니다. 약간의 시각적 문제가 발생할 수 있습니다.",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$개 탭, $BOOKMARK_COUNT$개 북마크",
+    "description": "검색 결과 수를 표시하는 메시지입니다.",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "searchNoResults": {
+    "message": "검색 결과 없음",
+    "description": "Message displayed when search returns no results."
+  },
+  "copyUrl": {
+    "message": "URL 복사",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "URL 복사됨!",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "다른 창",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "이 대화 상자는 5초 후에 닫힙니다...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "창 이름 바꾸기",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "창 이름 바꾸기",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "새 창 이름 입력:",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "분할 보기 탭을 감지하지 못했습니다. 이 단일 탭에 대한 그룹을 계속 만들까요?",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "예",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "탭 및 북마크 검색",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "검색 지우기",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "설정",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "북마크 편집",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "북마크 삭제",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "폴더 이름 편집",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "새 폴더 추가",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "폴더 삭제",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "연결된 탭",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "정보",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "이 프로젝트는 오픈 소스입니다. 개발에 참여하는 것을 환영합니다! GitHub에서 스타를 눌러주세요!",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "GitHub에서 보기",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "사용자 정의",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "기본 배경색",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "강조색",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "기본 텍스트 색상",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "테마 내보내기",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "테마 가져오기",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "기본값으로 재설정",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "낮은 대비가 감지되었습니다. 색상이 자동으로 조정됩니다.",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "잘못된 테마 파일 형식",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "검색 중...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "폴더가 비어 있습니다",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "addCurrentTab": {
+    "message": "현재 탭 추가",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "배경 이미지",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "출처",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "업로드",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "URL",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "이미지 선택...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "적용",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "투명도",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "가우시안 흐림",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "가로 정렬",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "세로 정렬",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "이미지 제거",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "처리 중...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "완료!",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "이미지 처리 실패.",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "배경 이미지가 적용되었습니다",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "설정 조정",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "왼쪽 정렬",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "가운데 정렬",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "오른쪽 정렬",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "위쪽 정렬",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "아래쪽 정렬",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "읽기 목록",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "읽기 목록에서",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "읽기 목록에 추가",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "이미 읽기 목록에 있음",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "읽음 상태로 표시",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "읽지 않음 상태로 표시",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "읽기 목록에서 삭제",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "$COUNT$일 전에 확인",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "읽기 목록",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "읽기 목록 표시",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "RSS 구독",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "구독 추가",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "업데이트 간격",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "일시 정지",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "재개",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "삭제",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "RSS 구독이 없습니다.",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "요청 시간이 초과되었습니다. URL을 확인하세요.",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "이미 구독 중인 피드입니다.",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "피드를 가져오지 못했습니다. URL을 확인하세요.",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "읽기 목록에서 이 항목을 삭제하시겠습니까?",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "링크를 마우스 오른쪽 버튼으로 클릭하여 여기에 추가하세요",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "신규",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "최신순",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "오래된순",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "제목순",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "모든 읽음 항목 삭제",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "읽기 목록에서 모든 읽음 항목을 삭제하시겠습니까?",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "지금 업데이트",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "업데이트 중...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "RSS 구독 \"$RSS_TITLE$\"을(를) 삭제하시겠습니까?",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ 스마트 그룹화"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ 분류되지 않은 탭 스마트 그룹화"
+  },
+  "toastUndoBtn": {
+    "message": "실행 취소"
+  },
+  "toastCloseBtn": {
+    "message": "닫기"
+  },
+  "aiModelNotReady": {
+    "message": "AI 모델이 준비되지 않았습니다. Chrome에서 Gemini Nano를 지원하는지 확인하세요."
+  },
+  "tooFewTabsToGroup": {
+    "message": "그룹화할 분류되지 않은 탭이 너무 적습니다 ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ 탭이 성공적으로 그룹화되었습니다!"
+  },
+  "noTabsGrouped": {
+    "message": "성공적으로 그룹화된 탭이 없습니다."
+  },
+  "autoGroupingError": {
+    "message": "오류가 발생했습니다: "
+  },
+  "unknownCategory": {
+    "message": "📦 알 수 없는 카테고리"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "스마트 자동 그룹화 (Gemini Nano 필요)"
+  },
+  "aiGroupingDescription1": {
+    "message": "이 기능은 내장된 AI 모델(Gemini Nano)을 사용하여 분류되지 않은 탭을 자동으로 그룹화합니다."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "로컬 모델을 다운로드하고 관련 플래그를 활성화하려면 "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "공식 문서"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": "를 참조하십시오."
+  },
+  "languageSectionHeader": {
+    "message": "언어 (Language)"
+  },
+  "languageAuto": {
+    "message": "자동 (브라우저 설정 따름)"
+  }
 }

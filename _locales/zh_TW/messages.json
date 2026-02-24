@@ -1,595 +1,646 @@
 {
-    "extensionName": {
-        "message": "書籤/分頁側邊欄",
-        "description": "擴充功能的名稱。"
-    },
-    "extensionDescription": {
-        "message": "一個參考 Arc 瀏覽器垂直分頁的 Chrome 擴充功能。",
-        "description": "擴充功能的描述。"
-    },
-    "searchPlaceholder": {
-        "message": "搜尋分頁或書籤...",
-        "description": "搜尋框的提示文字。"
-    },
-    "tabsHeader": {
-        "message": "分頁",
-        "description": "分頁區塊的標題。"
-    },
-    "bookmarksHeader": {
-        "message": "書籤",
-        "description": "書籤區塊的標題。"
-    },
-    "deleteBookmarkConfirm": {
-        "message": "你確定要永久刪除書籤「$bookmark_title$」嗎？",
-        "description": "刪除單一書籤的確認訊息。",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "你確定要永久刪除資料夾「$folder_title$」以及裡面的所有內容嗎？\n\n這個操作無法復原！",
-        "description": "刪除書籤資料夾的確認訊息。",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "請輸入要在「$parent_folder$」底下新增的資料夾名稱：",
-        "description": "新增書籤資料夾的提示訊息。",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "編輯資料夾名稱：",
-        "description": "提示使用者輸入或編輯書籤資料夾的名稱。"
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "編輯書籤名稱：",
-        "description": "提示使用者輸入或編輯特定書籤的標題或名稱。"
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "編輯書籤網址：",
-        "description": "提示使用者輸入或編輯特定書籤的網址（URL）。"
-    },
-    "cancelButton": {
-        "message": "取消",
-        "description": "對話框中「取消」按鈕的文字。"
-    },
-    "deleteButton": {
-        "message": "刪除",
-        "description": "對話框中「刪除」按鈕的文字。"
-    },
-    "createButton": {
-        "message": "建立",
-        "description": "對話框中「建立」按鈕的文字。"
-    },
-    "saveButton": {
-        "message": "儲存",
-        "description": "對話框中「儲存」按鈕的文字。"
-    },
-    "closeButton": {
-        "message": "關閉",
-        "description": "對話框中「關閉」按鈕的文字。"
-    },
-    "settingsTitle": {
-        "message": "設定",
-        "description": "設定對話框的標題。"
-    },
-    "themeSectionHeader": {
-        "message": "外觀",
-        "description": "設定中外觀區塊的標題。"
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Geek 主題選項的名稱。"
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Google 主題選項的名稱。"
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Darcula (JetBrains) 主題選項的名稱。"
-    },
-    "themeOptionGeekBlue": {
-        "message": "Geek Blue",
-        "description": "Geek Blue 主題選項的名稱。"
-    },
-    "themeOptionChristmas": {
-        "message": "聖誕節",
-        "description": "聖誕節主題選項的名稱。"
-    },
-    "shortcutSectionHeader": {
-        "message": "快捷鍵設定",
-        "description": "設定中快捷鍵區塊的標題。"
-    },
-    "shortcutExplanation": {
-        "message": "你可以在 Chrome 的管理頁面中自訂擴充功能的快捷鍵。",
-        "description": "關於如何設定擴充功能快捷鍵的簡短說明。"
-    },
-    "shortcutLinkText": {
-        "message": "管理擴充功能快捷鍵",
-        "description": "前往 Chrome 快捷鍵管理頁面的連結文字。"
-    },
-    "currentShortcutLabel": {
-        "message": "當前快捷鍵：",
-        "description": "顯示當前快捷鍵的標籤。"
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "側邊面板位置",
-        "description": "設定中側邊面板位置區塊的標題。"
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome 已內建側邊欄位置設定。你可以在此調整面板要顯示在瀏覽器的左側或右側。",
-        "description": "解釋如何設定 Chrome 內建的側邊面板位置。"
-    },
-    "sidePanelPositionLinkText": {
-        "message": "更改 Chrome 側邊欄位置",
-        "description": "前往 Chrome 側邊欄位置設定的連結文字。"
-    },
-    "commandOpenSidePanel": {
-        "message": "開啟側邊欄",
-        "description": "開啟側邊欄的指令。"
-    },
-    "commandCreateNewTabRight": {
-        "message": "在當前分頁右側新增一個分頁",
-        "description": "在當前分頁右側新增一個分頁的指令。"
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "在右側新增分頁：",
-        "description": "在設定中，『在右側新增分頁』快捷鍵的說明。"
-    },
-    "closeTab": {
-        "message": "關閉分頁",
-        "description": "分頁上關閉按鈕的提示文字。"
-    },
-    "addBookmark": {
-        "message": "加入書籤",
-        "description": "分頁上加入書籤按鈕的提示文字。"
-    },
-    "addBookmarkDialogTitle": {
-        "message": "新增書籤",
-        "description": "新增書籤對話框的標題。"
-    },
-    "addToGroup": {
-        "message": "將分頁加入新群組",
-        "description": "分頁上「加入群組」按鈕的提示文字。"
-    },
-    "createGroupDialogTitle": {
-        "message": "建立新群組",
-        "description": "建立新群組對話框的標題。"
-    },
-    "groupNameInputPlaceholder": {
-        "message": "輸入群組名稱...",
-        "description": "建立新群組對話框中，群組名稱輸入框的提示文字。"
-    },
-    "createGroupButton": {
-        "message": "建立群組",
-        "description": "建立新群組對話框中，「建立」按鈕的文字。"
-    },
-    "bookmarksBar": {
-        "message": "書籤列",
-        "description": "根書籤資料夾的名稱。"
-    },
-    "addButton": {
-        "message": "新增",
-        "description": "新增書籤對話框中的確認按鈕文字。"
-    },
-    "linkedTabsTooltip": {
-        "message": "這個書籤已連結 $COUNT$ 個分頁。點擊查看詳情。",
-        "description": "用於提示書籤已連結到開啟的分頁的圖示的工具提示。",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "已連結的分頁：",
-        "description": "顯示與書籤關聯的分頁的面板標題。"
-    },
-    "noLinkedTabs": {
-        "message": "此書籤目前沒有已連結的分頁。",
-        "description": "當書籤沒有任何活躍的已連結分頁時顯示的訊息。"
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "此分頁已存在於書籤「$BOOKMARK_NAME$」中。<br><br>您確定要重複新增嗎？",
-        "description": "當嘗試新增一個已存在的書籤時顯示的確認訊息。",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$ 個分頁、$BOOKMARK_COUNT$ 個書籤",
-        "description": "搜尋結果計數的顯示訊息。",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "實驗性功能",
-        "description": "設定中實驗性功能區塊的標題。"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "啟用虛擬滾動",
-        "description": "虛擬滾動開關的標籤。"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "針對大量書籤列表優化效能，僅渲染可見項目。可能會有些微視覺差異。",
-        "description": "虛擬滾動開關的說明。"
-    },
-    "searchNoResults": {
-        "message": "未找到符合的結果",
-        "description": "當搜尋沒有結果時顯示的訊息。"
-    },
-    "copyUrl": {
-        "message": "複製網址",
-        "description": "複製分頁網址的右鍵選單選項。"
-    },
-    "urlCopied": {
-        "message": "網址已複製！",
-        "description": "複製網址後的提示訊息。"
-    },
-    "otherWindowsHeader": {
-        "message": "其他視窗",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "此對話框將在 5 秒後關閉...",
-        "description": "當顯示自動關閉對話框時顯示的訊息。"
-    },
-    "renameWindow": {
-        "message": "重新命名視窗",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "重新命名視窗",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "輸入新的視窗名稱：",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "無法偵測分割畫面的分頁。您是否仍要為這個分頁建立群組？",
-        "description": "分割畫面分頁偵測失敗時的錯誤訊息。"
-    },
-    "yesButton": {
-        "message": "是",
-        "description": "確認對話框中「是」按鈕的文字。"
-    },
-    "searchAriaLabel": {
-        "message": "搜尋分頁與書籤",
-        "description": "搜尋輸入框的無障礙標籤。"
-    },
-    "clearSearchAriaLabel": {
-        "message": "清除搜尋",
-        "description": "清除搜尋按鈕的無障礙標籤。"
-    },
-    "settingsAriaLabel": {
-        "message": "設定",
-        "description": "設定切換按鈕的無障礙標籤。"
-    },
-    "editBookmark": {
-        "message": "編輯書籤",
-        "description": "編輯書籤按鈕的無障礙標籤。"
-    },
-    "deleteBookmark": {
-        "message": "刪除書籤",
-        "description": "刪除書籤按鈕的無障礙標籤。"
-    },
-    "editFolder": {
-        "message": "編輯資料夾名稱",
-        "description": "編輯資料夾按鈕的無障礙標籤。"
-    },
-    "addFolder": {
-        "message": "新增資料夾",
-        "description": "新增資料夾按鈕的無障礙標籤。"
-    },
-    "deleteFolder": {
-        "message": "刪除資料夾",
-        "description": "刪除資料夾按鈕的無障礙標籤。"
-    },
-    "linkedTabsIcon": {
-        "message": "已連結的分頁",
-        "description": "已連結分頁圖示的無障礙標籤。"
-    },
-    "aboutSectionHeader": {
-        "message": "關於",
-        "description": "設定中關於區塊的標題。"
-    },
-    "aboutText": {
-        "message": "本專案已開源，歡迎加入開發！給我們一顆星星吧！",
-        "description": "描述專案開源性質的文字。"
-    },
-    "githubLinkText": {
-        "message": "前往 GitHub 查看",
-        "description": "前往 GitHub 儲存庫的連結文字。"
-    },
-    "themeOptionCustom": {
-        "message": "自訂",
-        "description": "自訂主題選項的名稱。"
-    },
-    "labelMainBgColor": {
-        "message": "主背景色",
-        "description": "主背景色選擇器的標籤。"
-    },
-    "labelAccentColor": {
-        "message": "強調色",
-        "description": "強調色選擇器的標籤。"
-    },
-    "labelPrimaryTextColor": {
-        "message": "主要文字色",
-        "description": "主要文字色選擇器的標籤。"
-    },
-    "buttonExportTheme": {
-        "message": "匯出主題",
-        "description": "匯出主題按鈕的文字。"
-    },
-    "buttonImportTheme": {
-        "message": "載入主題",
-        "description": "載入主題按鈕的文字。"
-    },
-    "buttonResetTheme": {
-        "message": "重設為預設",
-        "description": "重設主題按鈕的文字。"
-    },
-    "warningLowContrast": {
-        "message": "偵測到對比度不足，顏色將自動調整。",
-        "description": "當文字與背景對比度不足時顯示的警告訊息。"
-    },
-    "errorInvalidThemeFile": {
-        "message": "無效的主題檔案格式",
-        "description": "當匯入主題檔案格式錯誤時顯示的錯誤訊息。"
-    },
-    "searchSearching": {
-        "message": "搜尋中...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "資料夾為空",
-        "description": "資料夾為空時顯示的文字"
-    },
-    "bgImageSectionHeader": {
-        "message": "背景圖片",
-        "description": "背景圖片區塊標題"
-    },
-    "labelBgSource": {
-        "message": "來源",
-        "description": "背景來源標籤"
-    },
-    "optionUpload": {
-        "message": "上傳",
-        "description": "上傳選項"
-    },
-    "optionUrl": {
-        "message": "網址",
-        "description": "網址選項"
-    },
-    "buttonUploadImage": {
-        "message": "選擇圖片...",
-        "description": "上傳圖片按鈕"
-    },
-    "buttonApply": {
-        "message": "套用",
-        "description": "套用按鈕"
-    },
-    "labelOpacity": {
-        "message": "不透明度",
-        "description": "不透明度標籤"
-    },
-    "labelBlur": {
-        "message": "模糊",
-        "description": "模糊標籤"
-    },
-    "labelPositionX": {
-        "message": "水平位置",
-        "description": "水平位置標籤"
-    },
-    "labelPositionY": {
-        "message": "垂直位置",
-        "description": "垂直位置標籤"
-    },
-    "buttonRemoveImage": {
-        "message": "移除圖片",
-        "description": "移除背景圖片按鈕"
-    },
-    "labelProcessing": {
-        "message": "處理中...",
-        "description": "處理狀態"
-    },
-    "labelSuccess": {
-        "message": "完成！",
-        "description": "成功狀態"
-    },
-    "errorImageProcessing": {
-        "message": "圖片處理失敗。",
-        "description": "圖片處理錯誤訊息"
-    },
-    "labelImageApplied": {
-        "message": "已套用背景圖片",
-        "description": "背景圖片啟用時的狀態文字"
-    },
-    "labelAdvancedSettings": {
-        "message": "調整設定",
-        "description": "可折疊設定區塊的標籤"
-    },
-    "alignLeft": {
-        "message": "靠左對齊",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "置中對齊",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "靠右對齊",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "靠上對齊",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "靠下對齊",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "閱讀清單",
-        "description": "閱讀清單區塊的標題。"
-    },
-    "readingListGroupName": {
-        "message": "來自 閱讀清單",
-        "description": "開啟閱讀清單項目時建立的分頁群組名稱。"
-    },
-    "addToReadingList": {
-        "message": "加入到閱讀清單",
-        "description": "將分頁加入閱讀清單的右鍵選單選項。"
-    },
-    "alreadyInReadingList": {
-        "message": "已在閱讀清單中",
-        "description": "當網址已在閱讀清單中時顯示的提示。"
-    },
-    "markAsRead": {
-        "message": "標記為已讀",
-        "description": "將閱讀清單項目標記為已讀的按鈕。"
-    },
-    "markAsUnread": {
-        "message": "標記為未讀",
-        "description": "將閱讀清單項目標記為未讀的按鈕。"
-    },
-    "deleteReadingListItem": {
-        "message": "從閱讀清單移除",
-        "description": "從閱讀清單移除項目的按鈕。"
-    },
-    "viewedDaysAgo": {
-        "message": "$COUNT$ 天前閱讀",
-        "description": "顯示項目閱讀天數的標籤。",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "閱讀清單",
-        "description": "設定中閱讀清單區塊的標題。"
-    },
-    "showReadingListLabel": {
-        "message": "顯示閱讀清單",
-        "description": "顯示/隱藏閱讀清單開關的標籤。"
-    },
-    "rssSubscriptionHeader": {
-        "message": "RSS 訂閱",
-        "description": "設定中 RSS 訂閱區塊的標題。"
-    },
-    "addRssSubscription": {
-        "message": "新增訂閱",
-        "description": "新增 RSS 訂閱的按鈕。"
-    },
-    "rssIntervalLabel": {
-        "message": "更新間隔",
-        "description": "RSS 更新間隔選擇器的標籤。"
-    },
-    "rssPauseButton": {
-        "message": "暫停",
-        "description": "暫停 RSS 訂閱的按鈕。"
-    },
-    "rssResumeButton": {
-        "message": "恢復",
-        "description": "恢復暫停的 RSS 訂閱的按鈕。"
-    },
-    "rssDeleteButton": {
-        "message": "刪除",
-        "description": "刪除 RSS 訂閱的按鈕。"
-    },
-    "rssNoSubscriptions": {
-        "message": "尚無 RSS 訂閱。",
-        "description": "沒有任何 RSS 訂閱時顯示的訊息。"
-    },
-    "rssErrorTimeout": {
-        "message": "請求逾時，請檢查網址。",
-        "description": "RSS 抓取逾時時的錯誤訊息。"
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "您已訂閱此 Feed。",
-        "description": "嘗試新增重複訂閱時的錯誤訊息。"
-    },
-    "rssErrorFetchFailed": {
-        "message": "無法抓取 Feed，請檢查網址。",
-        "description": "RSS 抓取失敗時的錯誤訊息。"
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "確定要從閱讀清單中刪除這個項目嗎？",
-        "description": "刪除閱讀清單項目時的確認對話框標題。"
-    },
-    "deleteButton": {
-        "message": "刪除",
-        "description": "刪除按鈕文字。"
-    },
-    "readingListEmptyGuidance": {
-        "message": "右鍵點擊任何連結可將其加入此處",
-        "description": "閱讀清單為空時顯示的引導文字。"
-    },
-    "newItemBadge": {
-        "message": "新",
-        "description": "新加入閱讀清單項目上的標籤。"
-    },
-    "sortByDateNewest": {
-        "message": "最新優先",
-        "description": "閱讀清單排序選項 - 最新項目優先。"
-    },
-    "sortByDateOldest": {
-        "message": "最舊優先",
-        "description": "閱讀清單排序選項 - 最舊項目優先。"
-    },
-    "sortByTitle": {
-        "message": "依標題",
-        "description": "閱讀清單排序選項 - 依標題字母排序。"
-    },
-    "clearAllRead": {
-        "message": "清除所有已讀",
-        "description": "清除所有已讀項目的按鈕。"
-    },
-    "confirmClearAllRead": {
-        "message": "確定要移除所有已讀項目嗎？",
-        "description": "清除所有已讀項目的確認對話框。"
-    },
-    "rssFetchNowButton": {
-        "message": "立即抓取",
-        "description": "手動觸發 RSS 抓取的按鈕。"
-    },
-    "rssFetching": {
-        "message": "抓取中...",
-        "description": "RSS 抓取時的載入狀態文字。"
-    },
-    "confirmDeleteRss": {
-        "message": "您確定要移除 RSS 訂閱「$RSS_TITLE$」嗎？",
-        "description": "刪除 RSS 訂閱時的確認訊息。",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "書籤/分頁側邊欄",
+    "description": "擴充功能的名稱。"
+  },
+  "extensionDescription": {
+    "message": "一個參考 Arc 瀏覽器垂直分頁的 Chrome 擴充功能。",
+    "description": "擴充功能的描述。"
+  },
+  "searchPlaceholder": {
+    "message": "搜尋分頁或書籤...",
+    "description": "搜尋框的提示文字。"
+  },
+  "tabsHeader": {
+    "message": "分頁",
+    "description": "分頁區塊的標題。"
+  },
+  "bookmarksHeader": {
+    "message": "書籤",
+    "description": "書籤區塊的標題。"
+  },
+  "deleteBookmarkConfirm": {
+    "message": "你確定要永久刪除書籤「$bookmark_title$」嗎？",
+    "description": "刪除單一書籤的確認訊息。",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "你確定要永久刪除資料夾「$folder_title$」以及裡面的所有內容嗎？\n\n這個操作無法復原！",
+    "description": "刪除書籤資料夾的確認訊息。",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "請輸入要在「$parent_folder$」底下新增的資料夾名稱：",
+    "description": "新增書籤資料夾的提示訊息。",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "編輯資料夾名稱：",
+    "description": "提示使用者輸入或編輯書籤資料夾的名稱。"
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "編輯書籤名稱：",
+    "description": "提示使用者輸入或編輯特定書籤的標題或名稱。"
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "編輯書籤網址：",
+    "description": "提示使用者輸入或編輯特定書籤的網址（URL）。"
+  },
+  "cancelButton": {
+    "message": "取消",
+    "description": "對話框中「取消」按鈕的文字。"
+  },
+  "deleteButton": {
+    "message": "刪除",
+    "description": "刪除按鈕文字。"
+  },
+  "createButton": {
+    "message": "建立",
+    "description": "對話框中「建立」按鈕的文字。"
+  },
+  "saveButton": {
+    "message": "儲存",
+    "description": "對話框中「儲存」按鈕的文字。"
+  },
+  "closeButton": {
+    "message": "關閉",
+    "description": "對話框中「關閉」按鈕的文字。"
+  },
+  "settingsTitle": {
+    "message": "設定",
+    "description": "設定對話框的標題。"
+  },
+  "themeSectionHeader": {
+    "message": "外觀",
+    "description": "設定中外觀區塊的標題。"
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Geek 主題選項的名稱。"
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Google 主題選項的名稱。"
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Darcula (JetBrains) 主題選項的名稱。"
+  },
+  "themeOptionGeekBlue": {
+    "message": "Geek Blue",
+    "description": "Geek Blue 主題選項的名稱。"
+  },
+  "themeOptionChristmas": {
+    "message": "聖誕節",
+    "description": "聖誕節主題選項的名稱。"
+  },
+  "shortcutSectionHeader": {
+    "message": "快捷鍵設定",
+    "description": "設定中快捷鍵區塊的標題。"
+  },
+  "shortcutExplanation": {
+    "message": "你可以在 Chrome 的管理頁面中自訂擴充功能的快捷鍵。",
+    "description": "關於如何設定擴充功能快捷鍵的簡短說明。"
+  },
+  "shortcutLinkText": {
+    "message": "管理擴充功能快捷鍵",
+    "description": "前往 Chrome 快捷鍵管理頁面的連結文字。"
+  },
+  "currentShortcutLabel": {
+    "message": "當前快捷鍵：",
+    "description": "顯示當前快捷鍵的標籤。"
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "側邊面板位置",
+    "description": "設定中側邊面板位置區塊的標題。"
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome 已內建側邊欄位置設定。你可以在此調整面板要顯示在瀏覽器的左側或右側。",
+    "description": "解釋如何設定 Chrome 內建的側邊面板位置。"
+  },
+  "sidePanelPositionLinkText": {
+    "message": "更改 Chrome 側邊欄位置",
+    "description": "前往 Chrome 側邊欄位置設定的連結文字。"
+  },
+  "commandOpenSidePanel": {
+    "message": "開啟側邊欄",
+    "description": "開啟側邊欄的指令。"
+  },
+  "commandCreateNewTabRight": {
+    "message": "在當前分頁右側新增一個分頁",
+    "description": "在當前分頁右側新增一個分頁的指令。"
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "在右側新增分頁：",
+    "description": "在設定中，『在右側新增分頁』快捷鍵的說明。"
+  },
+  "closeTab": {
+    "message": "關閉分頁",
+    "description": "分頁上關閉按鈕的提示文字。"
+  },
+  "addBookmark": {
+    "message": "加入書籤",
+    "description": "分頁上加入書籤按鈕的提示文字。"
+  },
+  "addBookmarkDialogTitle": {
+    "message": "新增書籤",
+    "description": "新增書籤對話框的標題。"
+  },
+  "addToGroup": {
+    "message": "將分頁加入新群組",
+    "description": "分頁上「加入群組」按鈕的提示文字。"
+  },
+  "createGroupDialogTitle": {
+    "message": "建立新群組",
+    "description": "建立新群組對話框的標題。"
+  },
+  "groupNameInputPlaceholder": {
+    "message": "輸入群組名稱...",
+    "description": "建立新群組對話框中，群組名稱輸入框的提示文字。"
+  },
+  "createGroupButton": {
+    "message": "建立群組",
+    "description": "建立新群組對話框中，「建立」按鈕的文字。"
+  },
+  "bookmarksBar": {
+    "message": "書籤列",
+    "description": "根書籤資料夾的名稱。"
+  },
+  "addButton": {
+    "message": "新增",
+    "description": "新增書籤對話框中的確認按鈕文字。"
+  },
+  "linkedTabsTooltip": {
+    "message": "這個書籤已連結 $COUNT$ 個分頁。點擊查看詳情。",
+    "description": "用於提示書籤已連結到開啟的分頁的圖示的工具提示。",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "已連結的分頁：",
+    "description": "顯示與書籤關聯的分頁的面板標題。"
+  },
+  "noLinkedTabs": {
+    "message": "此書籤目前沒有已連結的分頁。",
+    "description": "當書籤沒有任何活躍的已連結分頁時顯示的訊息。"
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "此分頁已存在於書籤「$BOOKMARK_NAME$」中。<br><br>您確定要重複新增嗎？",
+    "description": "當嘗試新增一個已存在的書籤時顯示的確認訊息。",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$ 個分頁、$BOOKMARK_COUNT$ 個書籤",
+    "description": "搜尋結果計數的顯示訊息。",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "實驗性功能",
+    "description": "設定中實驗性功能區塊的標題。"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "啟用虛擬滾動",
+    "description": "虛擬滾動開關的標籤。"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "針對大量書籤列表優化效能，僅渲染可見項目。可能會有些微視覺差異。",
+    "description": "虛擬滾動開關的說明。"
+  },
+  "searchNoResults": {
+    "message": "未找到符合的結果",
+    "description": "當搜尋沒有結果時顯示的訊息。"
+  },
+  "copyUrl": {
+    "message": "複製網址",
+    "description": "複製分頁網址的右鍵選單選項。"
+  },
+  "urlCopied": {
+    "message": "網址已複製！",
+    "description": "複製網址後的提示訊息。"
+  },
+  "otherWindowsHeader": {
+    "message": "其他視窗",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "此對話框將在 5 秒後關閉...",
+    "description": "當顯示自動關閉對話框時顯示的訊息。"
+  },
+  "renameWindow": {
+    "message": "重新命名視窗",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "重新命名視窗",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "輸入新的視窗名稱：",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "無法偵測分割畫面的分頁。您是否仍要為這個分頁建立群組？",
+    "description": "分割畫面分頁偵測失敗時的錯誤訊息。"
+  },
+  "yesButton": {
+    "message": "是",
+    "description": "確認對話框中「是」按鈕的文字。"
+  },
+  "searchAriaLabel": {
+    "message": "搜尋分頁與書籤",
+    "description": "搜尋輸入框的無障礙標籤。"
+  },
+  "clearSearchAriaLabel": {
+    "message": "清除搜尋",
+    "description": "清除搜尋按鈕的無障礙標籤。"
+  },
+  "settingsAriaLabel": {
+    "message": "設定",
+    "description": "設定切換按鈕的無障礙標籤。"
+  },
+  "editBookmark": {
+    "message": "編輯書籤",
+    "description": "編輯書籤按鈕的無障礙標籤。"
+  },
+  "deleteBookmark": {
+    "message": "刪除書籤",
+    "description": "刪除書籤按鈕的無障礙標籤。"
+  },
+  "editFolder": {
+    "message": "編輯資料夾名稱",
+    "description": "編輯資料夾按鈕的無障礙標籤。"
+  },
+  "addFolder": {
+    "message": "新增資料夾",
+    "description": "新增資料夾按鈕的無障礙標籤。"
+  },
+  "deleteFolder": {
+    "message": "刪除資料夾",
+    "description": "刪除資料夾按鈕的無障礙標籤。"
+  },
+  "linkedTabsIcon": {
+    "message": "已連結的分頁",
+    "description": "已連結分頁圖示的無障礙標籤。"
+  },
+  "aboutSectionHeader": {
+    "message": "關於",
+    "description": "設定中關於區塊的標題。"
+  },
+  "aboutText": {
+    "message": "本專案已開源，歡迎加入開發！給我們一顆星星吧！",
+    "description": "描述專案開源性質的文字。"
+  },
+  "githubLinkText": {
+    "message": "前往 GitHub 查看",
+    "description": "前往 GitHub 儲存庫的連結文字。"
+  },
+  "themeOptionCustom": {
+    "message": "自訂",
+    "description": "自訂主題選項的名稱。"
+  },
+  "labelMainBgColor": {
+    "message": "主背景色",
+    "description": "主背景色選擇器的標籤。"
+  },
+  "labelAccentColor": {
+    "message": "強調色",
+    "description": "強調色選擇器的標籤。"
+  },
+  "labelPrimaryTextColor": {
+    "message": "主要文字色",
+    "description": "主要文字色選擇器的標籤。"
+  },
+  "buttonExportTheme": {
+    "message": "匯出主題",
+    "description": "匯出主題按鈕的文字。"
+  },
+  "buttonImportTheme": {
+    "message": "載入主題",
+    "description": "載入主題按鈕的文字。"
+  },
+  "buttonResetTheme": {
+    "message": "重設為預設",
+    "description": "重設主題按鈕的文字。"
+  },
+  "warningLowContrast": {
+    "message": "偵測到對比度不足，顏色將自動調整。",
+    "description": "當文字與背景對比度不足時顯示的警告訊息。"
+  },
+  "errorInvalidThemeFile": {
+    "message": "無效的主題檔案格式",
+    "description": "當匯入主題檔案格式錯誤時顯示的錯誤訊息。"
+  },
+  "searchSearching": {
+    "message": "搜尋中...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "資料夾為空",
+    "description": "資料夾為空時顯示的文字"
+  },
+  "addCurrentTab": {
+    "message": "加入目前分頁",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "背景圖片",
+    "description": "背景圖片區塊標題"
+  },
+  "labelBgSource": {
+    "message": "來源",
+    "description": "背景來源標籤"
+  },
+  "optionUpload": {
+    "message": "上傳",
+    "description": "上傳選項"
+  },
+  "optionUrl": {
+    "message": "網址",
+    "description": "網址選項"
+  },
+  "buttonUploadImage": {
+    "message": "選擇圖片...",
+    "description": "上傳圖片按鈕"
+  },
+  "buttonApply": {
+    "message": "套用",
+    "description": "套用按鈕"
+  },
+  "labelOpacity": {
+    "message": "不透明度",
+    "description": "不透明度標籤"
+  },
+  "labelBlur": {
+    "message": "模糊",
+    "description": "模糊標籤"
+  },
+  "labelPositionX": {
+    "message": "水平位置",
+    "description": "水平位置標籤"
+  },
+  "labelPositionY": {
+    "message": "垂直位置",
+    "description": "垂直位置標籤"
+  },
+  "buttonRemoveImage": {
+    "message": "移除圖片",
+    "description": "移除背景圖片按鈕"
+  },
+  "labelProcessing": {
+    "message": "處理中...",
+    "description": "處理狀態"
+  },
+  "labelSuccess": {
+    "message": "完成！",
+    "description": "成功狀態"
+  },
+  "errorImageProcessing": {
+    "message": "圖片處理失敗。",
+    "description": "圖片處理錯誤訊息"
+  },
+  "labelImageApplied": {
+    "message": "已套用背景圖片",
+    "description": "背景圖片啟用時的狀態文字"
+  },
+  "labelAdvancedSettings": {
+    "message": "調整設定",
+    "description": "可折疊設定區塊的標籤"
+  },
+  "alignLeft": {
+    "message": "靠左對齊",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "置中對齊",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "靠右對齊",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "靠上對齊",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "靠下對齊",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "閱讀清單",
+    "description": "閱讀清單區塊的標題。"
+  },
+  "readingListGroupName": {
+    "message": "來自 閱讀清單",
+    "description": "開啟閱讀清單項目時建立的分頁群組名稱。"
+  },
+  "addToReadingList": {
+    "message": "加入到閱讀清單",
+    "description": "將分頁加入閱讀清單的右鍵選單選項。"
+  },
+  "alreadyInReadingList": {
+    "message": "已在閱讀清單中",
+    "description": "當網址已在閱讀清單中時顯示的提示。"
+  },
+  "markAsRead": {
+    "message": "標記為已讀",
+    "description": "將閱讀清單項目標記為已讀的按鈕。"
+  },
+  "markAsUnread": {
+    "message": "標記為未讀",
+    "description": "將閱讀清單項目標記為未讀的按鈕。"
+  },
+  "deleteReadingListItem": {
+    "message": "從閱讀清單移除",
+    "description": "從閱讀清單移除項目的按鈕。"
+  },
+  "viewedDaysAgo": {
+    "message": "$COUNT$ 天前閱讀",
+    "description": "顯示項目閱讀天數的標籤。",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "閱讀清單",
+    "description": "設定中閱讀清單區塊的標題。"
+  },
+  "showReadingListLabel": {
+    "message": "顯示閱讀清單",
+    "description": "顯示/隱藏閱讀清單開關的標籤。"
+  },
+  "rssSubscriptionHeader": {
+    "message": "RSS 訂閱",
+    "description": "設定中 RSS 訂閱區塊的標題。"
+  },
+  "addRssSubscription": {
+    "message": "新增訂閱",
+    "description": "新增 RSS 訂閱的按鈕。"
+  },
+  "rssIntervalLabel": {
+    "message": "更新間隔",
+    "description": "RSS 更新間隔選擇器的標籤。"
+  },
+  "rssPauseButton": {
+    "message": "暫停",
+    "description": "暫停 RSS 訂閱的按鈕。"
+  },
+  "rssResumeButton": {
+    "message": "恢復",
+    "description": "恢復暫停的 RSS 訂閱的按鈕。"
+  },
+  "rssDeleteButton": {
+    "message": "刪除",
+    "description": "刪除 RSS 訂閱的按鈕。"
+  },
+  "rssNoSubscriptions": {
+    "message": "尚無 RSS 訂閱。",
+    "description": "沒有任何 RSS 訂閱時顯示的訊息。"
+  },
+  "rssErrorTimeout": {
+    "message": "請求逾時，請檢查網址。",
+    "description": "RSS 抓取逾時時的錯誤訊息。"
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "您已訂閱此 Feed。",
+    "description": "嘗試新增重複訂閱時的錯誤訊息。"
+  },
+  "rssErrorFetchFailed": {
+    "message": "無法抓取 Feed，請檢查網址。",
+    "description": "RSS 抓取失敗時的錯誤訊息。"
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "確定要從閱讀清單中刪除這個項目嗎？",
+    "description": "刪除閱讀清單項目時的確認對話框標題。"
+  },
+  "readingListEmptyGuidance": {
+    "message": "右鍵點擊任何連結可將其加入此處",
+    "description": "閱讀清單為空時顯示的引導文字。"
+  },
+  "newItemBadge": {
+    "message": "新",
+    "description": "新加入閱讀清單項目上的標籤。"
+  },
+  "sortByDateNewest": {
+    "message": "最新優先",
+    "description": "閱讀清單排序選項 - 最新項目優先。"
+  },
+  "sortByDateOldest": {
+    "message": "最舊優先",
+    "description": "閱讀清單排序選項 - 最舊項目優先。"
+  },
+  "sortByTitle": {
+    "message": "依標題",
+    "description": "閱讀清單排序選項 - 依標題字母排序。"
+  },
+  "clearAllRead": {
+    "message": "清除所有已讀",
+    "description": "清除所有已讀項目的按鈕。"
+  },
+  "confirmClearAllRead": {
+    "message": "確定要移除所有已讀項目嗎？",
+    "description": "清除所有已讀項目的確認對話框。"
+  },
+  "rssFetchNowButton": {
+    "message": "立即抓取",
+    "description": "手動觸發 RSS 抓取的按鈕。"
+  },
+  "rssFetching": {
+    "message": "抓取中...",
+    "description": "RSS 抓取時的載入狀態文字。"
+  },
+  "confirmDeleteRss": {
+    "message": "您確定要移除 RSS 訂閱「$RSS_TITLE$」嗎？",
+    "description": "刪除 RSS 訂閱時的確認訊息。",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ 智慧整理"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ 智慧整理未分類分頁"
+  },
+  "toastUndoBtn": {
+    "message": "復原 (Undo)"
+  },
+  "toastCloseBtn": {
+    "message": "關閉"
+  },
+  "aiModelNotReady": {
+    "message": "AI 模型尚未準備好，請確認您的 Chrome 支援 Gemini Nano。"
+  },
+  "tooFewTabsToGroup": {
+    "message": "未分類的分頁數量過少，無需整理 ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ 分頁整理完成！"
+  },
+  "noTabsGrouped": {
+    "message": "沒有分頁被成功歸類。"
+  },
+  "autoGroupingError": {
+    "message": "發生錯誤："
+  },
+  "unknownCategory": {
+    "message": "📦 未知分類"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Smart Auto-Grouping (需 Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "此功能使用內建 AI 模型 (Gemini Nano) 將未分類分頁自動分群。"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "請參考 "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "官方文件"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " 下載 Local Model 並開啟相關 Flag 來啟用。"
+  },
+  "languageSectionHeader": {
+    "message": "介面語言 (Language)"
+  },
+  "languageAuto": {
+    "message": "自動 (跟隨瀏覽器)"
+  }
 }

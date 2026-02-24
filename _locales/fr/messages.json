@@ -1,591 +1,646 @@
 {
-    "extensionName": {
-        "message": "Barre latérale pour Onglets/Favoris",
-        "description": "The name of the extension."
-    },
-    "extensionDescription": {
-        "message": "Une extension Chrome qui imite les onglets verticaux du navigateur Arc.",
-        "description": "The description of the extension."
-    },
-    "searchPlaceholder": {
-        "message": "Rechercher des onglets ou des favoris...",
-        "description": "Placeholder text for the search box."
-    },
-    "tabsHeader": {
-        "message": "Onglets",
-        "description": "Header for the tabs section."
-    },
-    "bookmarksHeader": {
-        "message": "Favoris",
-        "description": "Header for the bookmarks section."
-    },
-    "deleteBookmarkConfirm": {
-        "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"",
-        "description": "Confirmation message for deleting a single bookmark.",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "Êtes-vous sûr de vouloir supprimer définitivement le dossier \"$folder_title$\" et tout son contenu ?\n\nCette action est irréversible !",
-        "description": "Confirmation message for deleting a bookmark folder.",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\"",
-        "description": "Prompt for adding a new bookmark folder.",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "Modifier le nom du dossier :",
-        "description": "Prompt for the user to input or edit the name of a bookmark folder."
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "Modifier le nom du favori :",
-        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "Modifier l'URL du favori :",
-        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
-    },
-    "cancelButton": {
-        "message": "Annuler",
-        "description": "Label for the cancel button in dialogs."
-    },
-    "deleteButton": {
-        "message": "Supprimer",
-        "description": "Label for the delete button in dialogs."
-    },
-    "createButton": {
-        "message": "Créer",
-        "description": "Label for the create button in dialogs."
-    },
-    "saveButton": {
-        "message": "Enregistrer",
-        "description": "Label for the save button in dialogs."
-    },
-    "closeButton": {
-        "message": "Close",
-        "description": "Label for the close button in dialogs."
-    },
-    "settingsTitle": {
-        "message": "Settings",
-        "description": "Title for the settings dialog."
-    },
-    "themeSectionHeader": {
-        "message": "Appearance",
-        "description": "Header for the theme/appearance section in settings."
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Name for the Geek theme option."
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Name for the Google theme option."
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Name for the Darcula (JetBrains) theme option."
-    },
-    "themeOptionGeekBlue": {
-        "message": "Geek Bleu",
-        "description": "Name for the Geek Bleu theme option."
-    },
-    "themeOptionChristmas": {
-        "message": "Noël",
-        "description": "Name for the Christmas theme option."
-    },
-    "shortcutSectionHeader": {
-        "message": "Paramètres des raccourcis clavier",
-        "description": "Header for the keyboard shortcut section in settings."
-    },
-    "shortcutExplanation": {
-        "message": "Vous pouvez personnaliser les raccourcis de l'extension sur la page de gestion de Chrome.",
-        "description": "Explanation text for how to set the extension's keyboard shortcuts."
-    },
-    "shortcutLinkText": {
-        "message": "Gérer les raccourcis de l'extension",
-        "description": "Link text to Chrome's shortcut management page."
-    },
-    "currentShortcutLabel": {
-        "message": "Raccourci actuel :",
-        "description": "Label for displaying the current shortcut."
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "Position du panneau latéral",
-        "description": "Header for the side panel position section in settings."
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome dispose d'un paramètre intégré pour la position du panneau latéral. Vous pouvez ajuster ici si le panneau apparaît sur le côté gauche ou droit du navigateur.",
-        "description": "Explanation text for how to set Chrome's built-in side panel position."
-    },
-    "sidePanelPositionLinkText": {
-        "message": "Modifier la position du panneau latéral de Chrome",
-        "description": "Link text to Chrome's side panel position setting."
-    },
-    "commandOpenSidePanel": {
-        "message": "Ouvrir la barre latérale",
-        "description": "Command to open the sidebar."
-    },
-    "commandCreateNewTabRight": {
-        "message": "Créer un nouvel onglet à droite de l'onglet actuel",
-        "description": "Command to create a new tab to the right."
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "Créer un nouvel onglet à droite :",
-        "description": "Description for the create new tab to the right shortcut in settings."
-    },
-    "closeTab": {
-        "message": "Fermer l'onglet",
-        "description": "Tooltip for the close button on a tab."
-    },
-    "addBookmark": {
-        "message": "Ajouter aux favoris",
-        "description": "Tooltip for the add-to-bookmark button on a tab."
-    },
-    "addBookmarkDialogTitle": {
-        "message": "Ajouter un favori",
-        "description": "Title for the new dialog."
-    },
-    "addToGroup": {
-        "message": "Ajouter l'onglet à un nouveau groupe",
-        "description": "Tooltip for the add to group button on a tab."
-    },
-    "createGroupDialogTitle": {
-        "message": "Créer un nouveau groupe",
-        "description": "Title for the create new group dialog."
-    },
-    "groupNameInputPlaceholder": {
-        "message": "Saisir le nom du groupe...",
-        "description": "Placeholder for the group name input in the create group dialog."
-    },
-    "createGroupButton": {
-        "message": "Créer un groupe",
-        "description": "Label for the create button in the create group dialog."
-    },
-    "bookmarksBar": {
-        "message": "Barre de favoris",
-        "description": "The name for the root bookmark folder."
-    },
-    "addButton": {
-        "message": "Ajouter",
-        "description": "The confirm button text in the new dialog."
-    },
-    "linkedTabsTooltip": {
-        "message": "Ce favori est lié à $COUNT$ onglet(s). Cliquez pour voir les détails.",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "Onglets liés pour",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "Aucun onglet lié trouvé pour ce favori.",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "Cette page est déjà dans les favoris sous le nom « $BOOKMARK_NAME$ ».<br><br>Voulez-vous l'ajouter à nouveau ?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "Fonctionnalités expérimentales",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "Activer le défilement virtuel",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "Optimise les performances pour les grandes listes de signets en ne rendant que les éléments visibles. Peut présenter de légers problèmes visuels.",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$ onglets, $BOOKMARK_COUNT$ signets trouvés",
-        "description": "Message showing the count of search results",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "searchNoResults": {
-        "message": "Aucun résultat trouvé",
-        "description": "Message affiché lorsque la recherche ne renvoie aucun résultat."
-    },
-    "copyUrl": {
-        "message": "Copier l'URL",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "URL copiée !",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "Autres fenêtres",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "Cette boîte de dialogue se fermera dans 5 secondes...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "Renommer la fenêtre",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "Renommer la fenêtre",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "Entrez le nouveau nom de la fenêtre :",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "La détection des onglets en vue fractionnée a échoué. Voulez-vous continuer en créant un groupe pour cet onglet unique ?",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "Oui",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "Rechercher des onglets et des favoris",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "Effacer la recherche",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "Paramètres",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "Modifier le favori",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "Supprimer le favori",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "Modifier le nom du dossier",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "Ajouter un nouveau dossier",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "Supprimer le dossier",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "Onglets liés",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "À propos",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "Ce projet est open source. Vous êtes invités à rejoindre le développement ! Donnez-nous une étoile sur GitHub !",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "Voir sur GitHub",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "Personnalisé",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "Couleur de fond",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "Couleur d'accent",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "Couleur du texte",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "Exporter le thème",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "Importer le thème",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "Réinitialiser par défaut",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "Contraste faible détecté. Les couleurs seront ajustées automatiquement.",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "Format de fichier de thème invalide",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "Recherche...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "Le dossier est vide",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "Image d'arrière-plan",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "Source",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "Télécharger",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "URL",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "Choisir une image...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "Appliquer",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "Opacité",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "Flou",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "Horizontal",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "Vertical",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "Supprimer l'image",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "Traitement...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "Terminé !",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "Échec du traitement de l'image.",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "Image d'arrière-plan appliquée",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "Ajuster les paramètres",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "Aligner à gauche",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "Aligner au centre",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "Aligner à droite",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "Aligner en haut",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "Aligner en bas",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "Liste de lecture",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "De la liste de lecture",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "Ajouter à la liste de lecture",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "Déjà dans la liste",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "Marquer comme lu",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "Marquer comme non lu",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "Retirer de la liste",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "Consulté il y a $COUNT$ jours",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "Liste de lecture",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "Afficher la liste de lecture",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "Abonnements RSS",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "Ajouter un abonnement",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "Intervalle de mise à jour",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "Pause",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "Reprendre",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "Supprimer",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "Aucun abonnement RSS pour le moment.",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "La demande a expiré. Veuillez vérifier l'URL.",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "Vous êtes déjà abonné à ce flux.",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "Échec de la récupération du flux. Veuillez vérifier l'URL.",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "Supprimer cet élément de la liste de lecture ?",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "Faites un clic droit sur n'importe quel lien pour l'ajouter ici",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "NOUVEAU",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "Plus récents d'abord",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "Plus anciens d'abord",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "Par titre",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "Effacer tous les lus",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "Supprimer tous les éléments lus de la liste de lecture ?",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "Actualiser maintenant",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "Actualisation...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "Voulez-vous vraiment supprimer l'abonnement RSS « $RSS_TITLE$ » ?",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "Barre latérale pour Onglets/Favoris",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Une extension Chrome qui imite les onglets verticaux du navigateur Arc.",
+    "description": "The description of the extension."
+  },
+  "searchPlaceholder": {
+    "message": "Rechercher des onglets ou des favoris...",
+    "description": "Placeholder text for the search box."
+  },
+  "tabsHeader": {
+    "message": "Onglets",
+    "description": "Header for the tabs section."
+  },
+  "bookmarksHeader": {
+    "message": "Favoris",
+    "description": "Header for the bookmarks section."
+  },
+  "deleteBookmarkConfirm": {
+    "message": "Êtes-vous sûr de vouloir supprimer définitivement le favori \"$bookmark_title$\"",
+    "description": "Confirmation message for deleting a single bookmark.",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "Êtes-vous sûr de vouloir supprimer définitivement le dossier \"$folder_title$\" et tout son contenu ?\n\nCette action est irréversible !",
+    "description": "Confirmation message for deleting a bookmark folder.",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "Veuillez saisir le nom du nouveau dossier sous \"$parent_folder$\"",
+    "description": "Prompt for adding a new bookmark folder.",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "Modifier le nom du dossier :",
+    "description": "Prompt for the user to input or edit the name of a bookmark folder."
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "Modifier le nom du favori :",
+    "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "Modifier l'URL du favori :",
+    "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+  },
+  "cancelButton": {
+    "message": "Annuler",
+    "description": "Label for the cancel button in dialogs."
+  },
+  "deleteButton": {
+    "message": "Supprimer",
+    "description": "Label for the delete button in dialogs."
+  },
+  "createButton": {
+    "message": "Créer",
+    "description": "Label for the create button in dialogs."
+  },
+  "saveButton": {
+    "message": "Enregistrer",
+    "description": "Label for the save button in dialogs."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Label for the close button in dialogs."
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for the settings dialog."
+  },
+  "themeSectionHeader": {
+    "message": "Appearance",
+    "description": "Header for the theme/appearance section in settings."
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Name for the Geek theme option."
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Name for the Google theme option."
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Name for the Darcula (JetBrains) theme option."
+  },
+  "themeOptionGeekBlue": {
+    "message": "Geek Bleu",
+    "description": "Name for the Geek Bleu theme option."
+  },
+  "themeOptionChristmas": {
+    "message": "Noël",
+    "description": "Name for the Christmas theme option."
+  },
+  "shortcutSectionHeader": {
+    "message": "Paramètres des raccourcis clavier",
+    "description": "Header for the keyboard shortcut section in settings."
+  },
+  "shortcutExplanation": {
+    "message": "Vous pouvez personnaliser les raccourcis de l'extension sur la page de gestion de Chrome.",
+    "description": "Explanation text for how to set the extension's keyboard shortcuts."
+  },
+  "shortcutLinkText": {
+    "message": "Gérer les raccourcis de l'extension",
+    "description": "Link text to Chrome's shortcut management page."
+  },
+  "currentShortcutLabel": {
+    "message": "Raccourci actuel :",
+    "description": "Label for displaying the current shortcut."
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "Position du panneau latéral",
+    "description": "Header for the side panel position section in settings."
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome dispose d'un paramètre intégré pour la position du panneau latéral. Vous pouvez ajuster ici si le panneau apparaît sur le côté gauche ou droit du navigateur.",
+    "description": "Explanation text for how to set Chrome's built-in side panel position."
+  },
+  "sidePanelPositionLinkText": {
+    "message": "Modifier la position du panneau latéral de Chrome",
+    "description": "Link text to Chrome's side panel position setting."
+  },
+  "commandOpenSidePanel": {
+    "message": "Ouvrir la barre latérale",
+    "description": "Command to open the sidebar."
+  },
+  "commandCreateNewTabRight": {
+    "message": "Créer un nouvel onglet à droite de l'onglet actuel",
+    "description": "Command to create a new tab to the right."
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "Créer un nouvel onglet à droite :",
+    "description": "Description for the create new tab to the right shortcut in settings."
+  },
+  "closeTab": {
+    "message": "Fermer l'onglet",
+    "description": "Tooltip for the close button on a tab."
+  },
+  "addBookmark": {
+    "message": "Ajouter aux favoris",
+    "description": "Tooltip for the add-to-bookmark button on a tab."
+  },
+  "addBookmarkDialogTitle": {
+    "message": "Ajouter un favori",
+    "description": "Title for the new dialog."
+  },
+  "addToGroup": {
+    "message": "Ajouter l'onglet à un nouveau groupe",
+    "description": "Tooltip for the add to group button on a tab."
+  },
+  "createGroupDialogTitle": {
+    "message": "Créer un nouveau groupe",
+    "description": "Title for the create new group dialog."
+  },
+  "groupNameInputPlaceholder": {
+    "message": "Saisir le nom du groupe...",
+    "description": "Placeholder for the group name input in the create group dialog."
+  },
+  "createGroupButton": {
+    "message": "Créer un groupe",
+    "description": "Label for the create button in the create group dialog."
+  },
+  "bookmarksBar": {
+    "message": "Barre de favoris",
+    "description": "The name for the root bookmark folder."
+  },
+  "addButton": {
+    "message": "Ajouter",
+    "description": "The confirm button text in the new dialog."
+  },
+  "linkedTabsTooltip": {
+    "message": "Ce favori est lié à $COUNT$ onglet(s). Cliquez pour voir les détails.",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "Onglets liés pour",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "Aucun onglet lié trouvé pour ce favori.",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "Cette page est déjà dans les favoris sous le nom « $BOOKMARK_NAME$ ».<br><br>Voulez-vous l'ajouter à nouveau ?",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "Fonctionnalités expérimentales",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "Activer le défilement virtuel",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "Optimise les performances pour les grandes listes de signets en ne rendant que les éléments visibles. Peut présenter de légers problèmes visuels.",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$ onglets, $BOOKMARK_COUNT$ signets trouvés",
+    "description": "Message showing the count of search results",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "searchNoResults": {
+    "message": "Aucun résultat trouvé",
+    "description": "Message affiché lorsque la recherche ne renvoie aucun résultat."
+  },
+  "copyUrl": {
+    "message": "Copier l'URL",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "URL copiée !",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "Autres fenêtres",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "Cette boîte de dialogue se fermera dans 5 secondes...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "Renommer la fenêtre",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "Renommer la fenêtre",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "Entrez le nouveau nom de la fenêtre :",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "La détection des onglets en vue fractionnée a échoué. Voulez-vous continuer en créant un groupe pour cet onglet unique ?",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "Oui",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "Rechercher des onglets et des favoris",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "Effacer la recherche",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "Paramètres",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "Modifier le favori",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "Supprimer le favori",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "Modifier le nom du dossier",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "Ajouter un nouveau dossier",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "Supprimer le dossier",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "Onglets liés",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "À propos",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "Ce projet est open source. Vous êtes invités à rejoindre le développement ! Donnez-nous une étoile sur GitHub !",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "Voir sur GitHub",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "Personnalisé",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "Couleur de fond",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "Couleur d'accent",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "Couleur du texte",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "Exporter le thème",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "Importer le thème",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "Réinitialiser par défaut",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "Contraste faible détecté. Les couleurs seront ajustées automatiquement.",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "Format de fichier de thème invalide",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "Recherche...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "Le dossier est vide",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "addCurrentTab": {
+    "message": "Ajouter l'onglet actuel",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "Image d'arrière-plan",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "Source",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "Télécharger",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "URL",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "Choisir une image...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "Appliquer",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "Opacité",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "Flou",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "Horizontal",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "Vertical",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "Supprimer l'image",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "Traitement...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "Terminé !",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "Échec du traitement de l'image.",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "Image d'arrière-plan appliquée",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "Ajuster les paramètres",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "Aligner à gauche",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "Aligner au centre",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "Aligner à droite",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "Aligner en haut",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "Aligner en bas",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "Liste de lecture",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "De la liste de lecture",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "Ajouter à la liste de lecture",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "Déjà dans la liste",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "Marquer comme lu",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "Marquer comme non lu",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "Retirer de la liste",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "Consulté il y a $COUNT$ jours",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "Liste de lecture",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "Afficher la liste de lecture",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "Abonnements RSS",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "Ajouter un abonnement",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "Intervalle de mise à jour",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "Pause",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "Reprendre",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "Supprimer",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "Aucun abonnement RSS pour le moment.",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "La demande a expiré. Veuillez vérifier l'URL.",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "Vous êtes déjà abonné à ce flux.",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "Échec de la récupération du flux. Veuillez vérifier l'URL.",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "Supprimer cet élément de la liste de lecture ?",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "Faites un clic droit sur n'importe quel lien pour l'ajouter ici",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "NOUVEAU",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "Plus récents d'abord",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "Plus anciens d'abord",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "Par titre",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "Effacer tous les lus",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "Supprimer tous les éléments lus de la liste de lecture ?",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "Actualiser maintenant",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "Actualisation...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "Voulez-vous vraiment supprimer l'abonnement RSS « $RSS_TITLE$ » ?",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ Groupement Intelligent"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ Grouper intelligemment les onglets non classés"
+  },
+  "toastUndoBtn": {
+    "message": "Annuler"
+  },
+  "toastCloseBtn": {
+    "message": "Fermer"
+  },
+  "aiModelNotReady": {
+    "message": "Le modèle d'IA n'est pas prêt. Veuillez vous assurer que votre Chrome prend en charge Gemini Nano."
+  },
+  "tooFewTabsToGroup": {
+    "message": "Trop peu d'onglets non classés pour être groupés ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ Onglets groupés avec succès !"
+  },
+  "noTabsGrouped": {
+    "message": "Aucun onglet n'a été groupé avec succès."
+  },
+  "autoGroupingError": {
+    "message": "Une erreur s'est produite : "
+  },
+  "unknownCategory": {
+    "message": "📦 Catégorie Inconnue"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "Regroupement automatique intelligent (Nécessite Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "Cette fonctionnalité utilise le modèle d'IA intégré (Gemini Nano) pour regrouper automatiquement les onglets non classés."
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "Veuillez consulter la "
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "documentation officielle"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": " pour télécharger le modèle local et activer les options (flags) correspondantes."
+  },
+  "languageSectionHeader": {
+    "message": "Langue (Language)"
+  },
+  "languageAuto": {
+    "message": "Auto (Suivre le navigateur)"
+  }
 }

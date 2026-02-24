@@ -1,591 +1,646 @@
 {
-    "extensionName": {
-        "message": "标签页/书签侧边栏",
-        "description": "扩展程序的名称。"
-    },
-    "extensionDescription": {
-        "message": "一个模仿 Arc 浏览器垂直标签页的 Chrome 扩展程序。",
-        "description": "扩展程序的描述。"
-    },
-    "searchPlaceholder": {
-        "message": "搜索标签页或书签...",
-        "description": "搜索框的占位符文本。"
-    },
-    "tabsHeader": {
-        "message": "标签页",
-        "description": "标签页部分的标题。"
-    },
-    "bookmarksHeader": {
-        "message": "书签",
-        "description": "书签部分的标题。"
-    },
-    "deleteBookmarkConfirm": {
-        "message": "您确定要永久删除书签“$bookmark_title$”吗？",
-        "description": "删除单个书签的确认信息。",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "您确定要永久删除文件夹“$folder_title$”及其所有内容吗？\n\n此操作无法撤销！",
-        "description": "删除书签文件夹的确认信息。",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "请输入要在“$parent_folder$”下创建的新文件夹的名称：",
-        "description": "添加新书签文件夹的提示信息。",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "编辑文件夹名称：",
-        "description": "提示用户输入或编辑书签文件夹的名称。"
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "编辑书签名称：",
-        "description": "提示用户输入或编辑特定书签的标题或名称。"
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "编辑书签网址：",
-        "description": "提示用户输入或编辑特定书签的网址（URL）。"
-    },
-    "cancelButton": {
-        "message": "取消",
-        "description": "对话框中“取消”按钮的文本。"
-    },
-    "deleteButton": {
-        "message": "删除",
-        "description": "对话框中“删除”按钮的文本。"
-    },
-    "createButton": {
-        "message": "创建",
-        "description": "对话框中“创建”按钮的文本。"
-    },
-    "saveButton": {
-        "message": "保存",
-        "description": "对话框中“保存”按钮的文本。"
-    },
-    "closeButton": {
-        "message": "关闭",
-        "description": "对话框中“关闭”按钮的文本。"
-    },
-    "settingsTitle": {
-        "message": "设置",
-        "description": "设置对话框的标题。"
-    },
-    "themeSectionHeader": {
-        "message": "外观",
-        "description": "设置中外观部分的标题。"
-    },
-    "themeOptionGeek": {
-        "message": "Geek (默认)",
-        "description": "Geek 主题选项的名称。"
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Google 主题选项的名称。"
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Darcula (JetBrains) 主题选项的名称。"
-    },
-    "themeOptionGeekBlue": {
-        "message": "Geek Blue",
-        "description": "Geek Blue 主题选项的名称。"
-    },
-    "themeOptionChristmas": {
-        "message": "圣诞节",
-        "description": "圣诞节主题选项的名称。"
-    },
-    "shortcutSectionHeader": {
-        "message": "快捷键设置",
-        "description": "设置中快捷键部分的标题。"
-    },
-    "shortcutExplanation": {
-        "message": "您可以在 Chrome 的管理页面中自定义扩展程序的快捷键。",
-        "description": "关于如何设置扩展程序快捷键的简短说明。"
-    },
-    "shortcutLinkText": {
-        "message": "管理扩展程序快捷键",
-        "description": "前往 Chrome 快捷键管理页面的链接文本。"
-    },
-    "currentShortcutLabel": {
-        "message": "当前快捷键：",
-        "description": "显示当前快捷键的标签。"
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "侧边面板位置",
-        "description": "设置中侧边面板位置部分的标题。"
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome 已内置侧边栏位置设定。您可在此调整面板要显示在浏览器的左侧或右侧。",
-        "description": "解释如何设置 Chrome 内置的侧边面板位置。"
-    },
-    "sidePanelPositionLinkText": {
-        "message": "更改 Chrome 侧边栏位置",
-        "description": "前往 Chrome 侧边栏位置设置的链接文本。"
-    },
-    "commandOpenSidePanel": {
-        "message": "打开侧边栏",
-        "description": "打开侧边栏的命令。"
-    },
-    "commandCreateNewTabRight": {
-        "message": "在当前标签页右侧新建一个标签页",
-        "description": "在当前标签页右侧新建一个标签页的命令。"
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "在右侧新建标签页：",
-        "description": "在设置中，“在右侧新建标签页”快捷键的说明。"
-    },
-    "closeTab": {
-        "message": "关闭标签页",
-        "description": "标签页上关闭按钮的提示文本。"
-    },
-    "addBookmark": {
-        "message": "添加到书签",
-        "description": "标签页上添加到书签按钮的提示文本。"
-    },
-    "addBookmarkDialogTitle": {
-        "message": "添加书签",
-        "description": "添加书签对话框的标题。"
-    },
-    "addToGroup": {
-        "message": "将标签页添加到新组",
-        "description": "标签页上“添加到组”按钮的工具提示文本。"
-    },
-    "createGroupDialogTitle": {
-        "message": "创建新组",
-        "description": "创建新组对话框的标题。"
-    },
-    "groupNameInputPlaceholder": {
-        "message": "输入组名...",
-        "description": "创建新组对话框中组名输入的占位符。"
-    },
-    "createGroupButton": {
-        "message": "创建组",
-        "description": "创建新组对话框中“创建”按钮的标签。"
-    },
-    "bookmarksBar": {
-        "message": "书签栏",
-        "description": "根书签文件夹的名称。"
-    },
-    "addButton": {
-        "message": "添加",
-        "description": "添加书签对话框中的确认按钮文本。"
-    },
-    "linkedTabsTooltip": {
-        "message": "此书签已链接 $COUNT$ 个标签页。点击查看详情。",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "已链接的标签页：",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "此书签当前没有已链接的标签页。",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "此页面已存在于书签“$BOOKMARK_NAME$”中。<br><br>您确定要重复添加吗？",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "实验性功能",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "启用虚拟滚动",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "通过仅渲染可见项目来优化大型书签列表的性能。可能会有一些视觉小问题。",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$ 个标签页、$BOOKMARK_COUNT$ 个书签",
-        "description": "显示搜索结果计数的消息。",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "searchNoResults": {
-        "message": "未找到结果",
-        "description": "Message displayed when search returns no results."
-    },
-    "copyUrl": {
-        "message": "复制网址",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "网址已复制！",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "其他窗口",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "此对话框将在 5 秒后关闭...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "重命名窗口",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "重命名窗口",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "输入新窗口名称：",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "未能检测到分屏视图选项卡。您想继续为这个单一选项卡创建一个组吗？",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "是",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "搜索标签页和书签",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "清除搜索",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "设置",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "编辑书签",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "删除书签",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "编辑文件夹名称",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "新建文件夹",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "删除文件夹",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "已链接的标签页",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "关于",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "本项目已开源，欢迎加入开发！请在 GitHub 上给我们一颗星星！",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "在 GitHub 上查看",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "自定义",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "主背景色",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "强调色",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "主要文字色",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "导出主题",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "导入主题",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "重置为默认",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "检测到对比度不足，颜色将自动调整。",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "无效的主题文件格式",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "搜索中...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "文件夹为空",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "背景图片",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "来源",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "上传",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "网址",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "选择图片...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "应用",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "不透明度",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "模糊",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "水平",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "垂直",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "移除图片",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "处理中...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "完成！",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "图片处理失败。",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "已应用背景图片",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "调整设置",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "左对齐",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "居中对齐",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "右对齐",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "顶部对齐",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "底部对齐",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "阅读清单",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "来自阅读清单",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "加入阅读清单",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "已在阅读清单中",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "标记为已读",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "标记为未读",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "从阅读清单移除",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "已阅读 $COUNT$ 天前",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "阅读清单",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "显示阅读清单",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "RSS 订阅",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "新增订阅",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "更新间隔",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "暂停",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "恢复",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "删除",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "尚无 RSS 订阅。",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "请求超时，请检查网址。",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "您已订阅此 Feed。",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "无法获取 Feed，请检查网址。",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "确定要从阅读清单中删除此项目吗？",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "右键点击任何链接可将其加入此处",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "新",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "最新优先",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "最旧优先",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "依标题",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "清除所有已读",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "确定要移除所有已读项目吗？",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "立即抓取",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "抓取中...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "您确定要移除 RSS 订阅“$RSS_TITLE$”吗？",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "标签页/书签侧边栏",
+    "description": "扩展程序的名称。"
+  },
+  "extensionDescription": {
+    "message": "一个模仿 Arc 浏览器垂直标签页的 Chrome 扩展程序。",
+    "description": "扩展程序的描述。"
+  },
+  "searchPlaceholder": {
+    "message": "搜索标签页或书签...",
+    "description": "搜索框的占位符文本。"
+  },
+  "tabsHeader": {
+    "message": "标签页",
+    "description": "标签页部分的标题。"
+  },
+  "bookmarksHeader": {
+    "message": "书签",
+    "description": "书签部分的标题。"
+  },
+  "deleteBookmarkConfirm": {
+    "message": "您确定要永久删除书签“$bookmark_title$”吗？",
+    "description": "删除单个书签的确认信息。",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "您确定要永久删除文件夹“$folder_title$”及其所有内容吗？\n\n此操作无法撤销！",
+    "description": "删除书签文件夹的确认信息。",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "请输入要在“$parent_folder$”下创建的新文件夹的名称：",
+    "description": "添加新书签文件夹的提示信息。",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "编辑文件夹名称：",
+    "description": "提示用户输入或编辑书签文件夹的名称。"
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "编辑书签名称：",
+    "description": "提示用户输入或编辑特定书签的标题或名称。"
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "编辑书签网址：",
+    "description": "提示用户输入或编辑特定书签的网址（URL）。"
+  },
+  "cancelButton": {
+    "message": "取消",
+    "description": "对话框中“取消”按钮的文本。"
+  },
+  "deleteButton": {
+    "message": "删除",
+    "description": "对话框中“删除”按钮的文本。"
+  },
+  "createButton": {
+    "message": "创建",
+    "description": "对话框中“创建”按钮的文本。"
+  },
+  "saveButton": {
+    "message": "保存",
+    "description": "对话框中“保存”按钮的文本。"
+  },
+  "closeButton": {
+    "message": "关闭",
+    "description": "对话框中“关闭”按钮的文本。"
+  },
+  "settingsTitle": {
+    "message": "设置",
+    "description": "设置对话框的标题。"
+  },
+  "themeSectionHeader": {
+    "message": "外观",
+    "description": "设置中外观部分的标题。"
+  },
+  "themeOptionGeek": {
+    "message": "Geek (默认)",
+    "description": "Geek 主题选项的名称。"
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Google 主题选项的名称。"
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Darcula (JetBrains) 主题选项的名称。"
+  },
+  "themeOptionGeekBlue": {
+    "message": "Geek Blue",
+    "description": "Geek Blue 主题选项的名称。"
+  },
+  "themeOptionChristmas": {
+    "message": "圣诞节",
+    "description": "圣诞节主题选项的名称。"
+  },
+  "shortcutSectionHeader": {
+    "message": "快捷键设置",
+    "description": "设置中快捷键部分的标题。"
+  },
+  "shortcutExplanation": {
+    "message": "您可以在 Chrome 的管理页面中自定义扩展程序的快捷键。",
+    "description": "关于如何设置扩展程序快捷键的简短说明。"
+  },
+  "shortcutLinkText": {
+    "message": "管理扩展程序快捷键",
+    "description": "前往 Chrome 快捷键管理页面的链接文本。"
+  },
+  "currentShortcutLabel": {
+    "message": "当前快捷键：",
+    "description": "显示当前快捷键的标签。"
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "侧边面板位置",
+    "description": "设置中侧边面板位置部分的标题。"
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome 已内置侧边栏位置设定。您可在此调整面板要显示在浏览器的左侧或右侧。",
+    "description": "解释如何设置 Chrome 内置的侧边面板位置。"
+  },
+  "sidePanelPositionLinkText": {
+    "message": "更改 Chrome 侧边栏位置",
+    "description": "前往 Chrome 侧边栏位置设置的链接文本。"
+  },
+  "commandOpenSidePanel": {
+    "message": "打开侧边栏",
+    "description": "打开侧边栏的命令。"
+  },
+  "commandCreateNewTabRight": {
+    "message": "在当前标签页右侧新建一个标签页",
+    "description": "在当前标签页右侧新建一个标签页的命令。"
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "在右侧新建标签页：",
+    "description": "在设置中，“在右侧新建标签页”快捷键的说明。"
+  },
+  "closeTab": {
+    "message": "关闭标签页",
+    "description": "标签页上关闭按钮的提示文本。"
+  },
+  "addBookmark": {
+    "message": "添加到书签",
+    "description": "标签页上添加到书签按钮的提示文本。"
+  },
+  "addBookmarkDialogTitle": {
+    "message": "添加书签",
+    "description": "添加书签对话框的标题。"
+  },
+  "addToGroup": {
+    "message": "将标签页添加到新组",
+    "description": "标签页上“添加到组”按钮的工具提示文本。"
+  },
+  "createGroupDialogTitle": {
+    "message": "创建新组",
+    "description": "创建新组对话框的标题。"
+  },
+  "groupNameInputPlaceholder": {
+    "message": "输入组名...",
+    "description": "创建新组对话框中组名输入的占位符。"
+  },
+  "createGroupButton": {
+    "message": "创建组",
+    "description": "创建新组对话框中“创建”按钮的标签。"
+  },
+  "bookmarksBar": {
+    "message": "书签栏",
+    "description": "根书签文件夹的名称。"
+  },
+  "addButton": {
+    "message": "添加",
+    "description": "添加书签对话框中的确认按钮文本。"
+  },
+  "linkedTabsTooltip": {
+    "message": "此书签已链接 $COUNT$ 个标签页。点击查看详情。",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "已链接的标签页：",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "此书签当前没有已链接的标签页。",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "此页面已存在于书签“$BOOKMARK_NAME$”中。<br><br>您确定要重复添加吗？",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "实验性功能",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "启用虚拟滚动",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "通过仅渲染可见项目来优化大型书签列表的性能。可能会有一些视觉小问题。",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$ 个标签页、$BOOKMARK_COUNT$ 个书签",
+    "description": "显示搜索结果计数的消息。",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "searchNoResults": {
+    "message": "未找到结果",
+    "description": "Message displayed when search returns no results."
+  },
+  "copyUrl": {
+    "message": "复制网址",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "网址已复制！",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "其他窗口",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "此对话框将在 5 秒后关闭...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "重命名窗口",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "重命名窗口",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "输入新窗口名称：",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "未能检测到分屏视图选项卡。您想继续为这个单一选项卡创建一个组吗？",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "是",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "搜索标签页和书签",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "清除搜索",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "设置",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "编辑书签",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "删除书签",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "编辑文件夹名称",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "新建文件夹",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "删除文件夹",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "已链接的标签页",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "关于",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "本项目已开源，欢迎加入开发！请在 GitHub 上给我们一颗星星！",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "在 GitHub 上查看",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "自定义",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "主背景色",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "强调色",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "主要文字色",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "导出主题",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "导入主题",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "重置为默认",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "检测到对比度不足，颜色将自动调整。",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "无效的主题文件格式",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "搜索中...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "文件夹为空",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "addCurrentTab": {
+    "message": "添加当前标签页",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
+  "bgImageSectionHeader": {
+    "message": "背景图片",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "来源",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "上传",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "网址",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "选择图片...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "应用",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "不透明度",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "模糊",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "水平",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "垂直",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "移除图片",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "处理中...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "完成！",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "图片处理失败。",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "已应用背景图片",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "调整设置",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "左对齐",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "居中对齐",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "右对齐",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "顶部对齐",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "底部对齐",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "阅读清单",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "来自阅读清单",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "加入阅读清单",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "已在阅读清单中",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "标记为已读",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "标记为未读",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "从阅读清单移除",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "已阅读 $COUNT$ 天前",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "阅读清单",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "显示阅读清单",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "RSS 订阅",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "新增订阅",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "更新间隔",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "暂停",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "恢复",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "删除",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "尚无 RSS 订阅。",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "请求超时，请检查网址。",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "您已订阅此 Feed。",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "无法获取 Feed，请检查网址。",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "确定要从阅读清单中删除此项目吗？",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "右键点击任何链接可将其加入此处",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "新",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "最新优先",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "最旧优先",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "依标题",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "清除所有已读",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "确定要移除所有已读项目吗？",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "立即抓取",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "抓取中...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "您确定要移除 RSS 订阅“$RSS_TITLE$”吗？",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ 智能整理"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ 智能整理未分类标签页"
+  },
+  "toastUndoBtn": {
+    "message": "撤销 (Undo)"
+  },
+  "toastCloseBtn": {
+    "message": "关闭"
+  },
+  "aiModelNotReady": {
+    "message": "AI 模型尚未准备好，请确认您的 Chrome 支持 Gemini Nano。"
+  },
+  "tooFewTabsToGroup": {
+    "message": "未分类的标签页数量过少，无需整理 ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ 标签页整理完成！"
+  },
+  "noTabsGrouped": {
+    "message": "没有标签页被成功归类。"
+  },
+  "autoGroupingError": {
+    "message": "发生错误："
+  },
+  "unknownCategory": {
+    "message": "📦 未知分类"
+  },
+  "aiGroupingToggleLabel": {
+    "message": "智能自动分组 (需 Gemini Nano)"
+  },
+  "aiGroupingDescription1": {
+    "message": "此功能使用内置 AI 模型 (Gemini Nano) 将未分类的标签页自动分组。"
+  },
+  "aiGroupingDescription2_part1": {
+    "message": "请参考"
+  },
+  "aiGroupingDescription2_linkText": {
+    "message": "官方文档"
+  },
+  "aiGroupingDescription2_part2": {
+    "message": "下载 Local Model 并开启相关 Flag 来启用。"
+  },
+  "languageSectionHeader": {
+    "message": "界面语言 (Language)"
+  },
+  "languageAuto": {
+    "message": "自动 (跟随浏览器)"
+  }
 }
