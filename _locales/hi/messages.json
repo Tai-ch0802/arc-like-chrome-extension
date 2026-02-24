@@ -368,6 +368,10 @@
     "message": "फ़ोल्डर खाली है",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "वर्तमान टैब जोड़ें",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "पृष्ठभूमि की छवि",
     "description": "Header for background image section"

@@ -368,6 +368,10 @@
     "message": "Thư mục trống",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Thêm tab hiện tại",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Hình nền",
     "description": "Header for background image section"

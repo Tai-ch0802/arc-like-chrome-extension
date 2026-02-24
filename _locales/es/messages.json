@@ -368,6 +368,10 @@
     "message": "La carpeta está vacía",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Añadir pestaña actual",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Imagen de fondo",
     "description": "Header for background image section"

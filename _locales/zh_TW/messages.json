@@ -368,6 +368,10 @@
     "message": "資料夾為空",
     "description": "資料夾為空時顯示的文字"
   },
+  "addCurrentTab": {
+    "message": "加入目前分頁",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "背景圖片",
     "description": "背景圖片區塊標題"

@@ -368,6 +368,10 @@
     "message": "폴더가 비어 있습니다",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "현재 탭 추가",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "배경 이미지",
     "description": "Header for background image section"

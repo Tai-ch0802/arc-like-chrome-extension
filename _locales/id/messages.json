@@ -368,6 +368,10 @@
     "message": "Folder kosong",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Tambah Tab Saat Ini",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Gambar Latar",
     "description": "Header for background image section"

@@ -368,6 +368,10 @@
     "message": "Папка пуста",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Добавить текущую вкладку",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Фоновое изображение",
     "description": "Header for background image section"

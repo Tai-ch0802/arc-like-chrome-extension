@@ -1,7 +1,7 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
-import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG } from '../icons.js';
+import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
@@ -278,7 +278,35 @@ function initBookmarkListeners(container) {
             return;
         }
 
-        // 4. Handle Folder Click (Expand/Collapse)
+        // 4. Handle Empty State Action (Add Current Tab)
+        const emptyStateBtn = e.target.closest('.empty-state-action-btn');
+        if (emptyStateBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Find the closest folder container to get parentId
+            const parentContainer = emptyStateBtn.closest('[data-parent-id]');
+            const parentId = parentContainer ? parentContainer.dataset.parentId : null;
+
+            if (parentId) {
+                try {
+                    const tab = await api.getActiveTab();
+                    if (tab && tab.url && tab.url.startsWith('http')) {
+                        await api.createBookmark({
+                            parentId: parentId,
+                            title: tab.title,
+                            url: tab.url
+                        });
+                        handleRefresh();
+                    }
+                } catch (err) {
+                    console.error('Failed to add current tab to empty folder:', err);
+                }
+            }
+            return;
+        }
+
+        // 5. Handle Folder Click (Expand/Collapse)
         const folderItem = getFolderItem(e.target);
         if (folderItem) {
             const id = folderItem.dataset.bookmarkId;
@@ -654,8 +682,15 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
         let emptyMsg = emptyMsgCache.get(parentId);
         if (!emptyMsg) {
             emptyMsg = document.createElement('div');
-            emptyMsg.className = 'empty-folder-message';
-            emptyMsg.innerHTML = `${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>`;
+            emptyMsg.className = 'empty-folder-state';
+            emptyMsg.innerHTML = `
+                <div class="empty-folder-message">
+                    ${EMPTY_FOLDER_ICON_SVG}<span>${api.getMessage("emptyFolder") || 'Folder is empty'}</span>
+                </div>
+                <button class="empty-state-action-btn" data-action="add-current-tab">
+                    ${PLUS_ICON_SVG}<span>${api.getMessage("addCurrentTab") || 'Add Current Tab'}</span>
+                </button>
+            `;
             emptyMsgCache.set(parentId, emptyMsg);
         }
         reconcileDOM(container, [emptyMsg]);

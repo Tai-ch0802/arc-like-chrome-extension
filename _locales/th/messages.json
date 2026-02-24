@@ -368,6 +368,10 @@
     "message": "โฟลเดอร์ว่างเปล่า",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "เพิ่มแท็บปัจจุบัน",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "รูปภาพพื้นหลัง",
     "description": "Header for background image section"

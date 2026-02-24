@@ -368,6 +368,10 @@
     "message": "文件夹为空",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "添加当前标签页",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "背景图片",
     "description": "Header for background image section"

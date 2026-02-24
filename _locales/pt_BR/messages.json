@@ -368,6 +368,10 @@
     "message": "A pasta está vazia",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Adicionar aba atual",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Imagem de Fundo",
     "description": "Header for background image section"

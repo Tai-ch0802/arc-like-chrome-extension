@@ -368,6 +368,10 @@
     "message": "Le dossier est vide",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Ajouter l'onglet actuel",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Image d'arrière-plan",
     "description": "Header for background image section"

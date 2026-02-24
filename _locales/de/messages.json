@@ -368,6 +368,10 @@
     "message": "Ordner ist leer",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "Aktuellen Tab hinzufügen",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "Hintergrundbild",
     "description": "Header for background image section"

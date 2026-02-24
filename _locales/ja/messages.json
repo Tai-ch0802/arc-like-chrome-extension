@@ -368,6 +368,10 @@
     "message": "フォルダは空です",
     "description": "Text shown when a folder has no bookmarks"
   },
+  "addCurrentTab": {
+    "message": "現在のタブを追加",
+    "description": "Button text to add the current tab as a bookmark to an empty folder."
+  },
   "bgImageSectionHeader": {
     "message": "背景画像",
     "description": "Header for background image section"
