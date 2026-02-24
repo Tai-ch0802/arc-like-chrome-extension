@@ -68,6 +68,10 @@ key_files:
     description: "[UI] 閱讀清單渲染。負責閱讀清單項目的 DOM 生成、事件處理（點擊/刪除/切換已讀）、展開收合、鍵盤導航、新項目標籤、排序功能 (日期/標題)。"
   - file_path: modules/icons.js
     description: "[UI] SVG 圖示集中管理。匯出所有 UI 使用的 SVG 圖示常數，避免重複定義。"
+  - file_path: modules/aiManager.js
+    description: "[AI] 本機 AI 模型管理。負責封裝與 Chrome `globalThis.LanguageModel` (Gemini Nano) 的對接、Prompt 生成及防呆。"
+  - file_path: modules/ui/aiGrouperUI.js
+    description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

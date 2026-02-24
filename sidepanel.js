@@ -131,6 +131,7 @@ async function initialize() {
 
     search.initialize();
     ui.initThemeSwitcher();
+    ui.initAiGrouper();
     await updateTabList();
 
     refreshBookmarks();

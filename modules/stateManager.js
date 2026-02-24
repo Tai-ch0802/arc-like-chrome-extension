@@ -1,5 +1,36 @@
 import { getStorage, setStorage, getAllWindows } from './apiManager.js';
 
+// --- Smart Auto-Grouping Undo State ---
+
+let lastAutoGroupState = {
+  canUndo: false,
+  timestamp: null,
+  affectedTabs: [], // 被移動的分頁 ID 陣列
+  createdGroups: [] // 新建的群組 ID 陣列
+};
+
+export function setLastAutoGroupState(state) {
+  lastAutoGroupState = {
+    canUndo: true,
+    timestamp: Date.now(),
+    affectedTabs: state.affectedTabs || [],
+    createdGroups: state.createdGroups || []
+  };
+}
+
+export function getLastAutoGroupState() {
+  return lastAutoGroupState;
+}
+
+export function clearLastAutoGroupState() {
+  lastAutoGroupState = {
+    canUndo: false,
+    timestamp: null,
+    affectedTabs: [],
+    createdGroups: []
+  };
+}
+
 // --- UI State Management Module ---
 
 const expandedBookmarkFolders = new Set();

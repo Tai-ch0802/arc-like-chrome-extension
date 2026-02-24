@@ -1,591 +1,621 @@
 {
-    "extensionName": {
-        "message": "Bilah Sisi untuk Tab/Markah",
-        "description": "The name of the extension."
-    },
-    "extensionDescription": {
-        "message": "Ekstensi Chrome yang meniru tab vertikal dari peramban Arc.",
-        "description": "The description of the extension."
-    },
-    "searchPlaceholder": {
-        "message": "Cari tab atau markah...",
-        "description": "Placeholder text for the search box."
-    },
-    "tabsHeader": {
-        "message": "Tab",
-        "description": "Header for the tabs section."
-    },
-    "bookmarksHeader": {
-        "message": "Markah",
-        "description": "Header for the bookmarks section."
-    },
-    "deleteBookmarkConfirm": {
-        "message": "Apakah Anda yakin ingin menghapus markah \"$bookmark_title$\" secara permanen?",
-        "description": "Confirmation message for deleting a single bookmark.",
-        "placeholders": {
-            "bookmark_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "deleteFolderConfirm": {
-        "message": "Apakah Anda yakin ingin menghapus folder \"$folder_title$\" dan semua isinya secara permanen?\n\nTindakan ini tidak dapat dibatalkan!",
-        "description": "Confirmation message for deleting a bookmark folder.",
-        "placeholders": {
-            "folder_title": {
-                "content": "$1"
-            }
-        }
-    },
-    "addFolderPrompt": {
-        "message": "Silakan masukkan nama untuk folder baru di bawah \"$parent_folder$\":",
-        "description": "Prompt for adding a new bookmark folder.",
-        "placeholders": {
-            "parent_folder": {
-                "content": "$1"
-            }
-        }
-    },
-    "editBookmarkFolderPromptForTitle": {
-        "message": "Edit Nama Folder:",
-        "description": "Prompt for the user to input or edit the name of a bookmark folder."
-    },
-    "editBookmarkPromptForTitle": {
-        "message": "Edit Nama Markah:",
-        "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
-    },
-    "editBookmarkPromptForUrl": {
-        "message": "Edit URL Markah:",
-        "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
-    },
-    "cancelButton": {
-        "message": "Batal",
-        "description": "Label for the cancel button in dialogs."
-    },
-    "deleteButton": {
-        "message": "Hapus",
-        "description": "Label for the delete button in dialogs."
-    },
-    "createButton": {
-        "message": "Buat",
-        "description": "Label for the create button in dialogs."
-    },
-    "saveButton": {
-        "message": "Simpan",
-        "description": "Label for the save button in dialogs."
-    },
-    "closeButton": {
-        "message": "Close",
-        "description": "Label for the close button in dialogs."
-    },
-    "settingsTitle": {
-        "message": "Settings",
-        "description": "Title for the settings dialog."
-    },
-    "themeSectionHeader": {
-        "message": "Appearance",
-        "description": "Header for the theme/appearance section in settings."
-    },
-    "themeOptionGeek": {
-        "message": "Geek (Default)",
-        "description": "Name for the Geek theme option."
-    },
-    "themeOptionGoogle": {
-        "message": "Google",
-        "description": "Name for the Google theme option."
-    },
-    "themeOptionDarcula": {
-        "message": "Darcula (JetBrains)",
-        "description": "Name for the Darcula (JetBrains) theme option."
-    },
-    "themeOptionGeekBlue": {
-        "message": "Geek Biru",
-        "description": "Name for the Geek Biru theme option."
-    },
-    "themeOptionChristmas": {
-        "message": "Natal",
-        "description": "Name for the Christmas theme option."
-    },
-    "shortcutSectionHeader": {
-        "message": "Pengaturan Pintasan Keyboard",
-        "description": "Header for the keyboard shortcut section in settings."
-    },
-    "shortcutExplanation": {
-        "message": "Anda dapat menyesuaikan pintasan ekstensi di halaman pengelolaan Chrome.",
-        "description": "Explanation text for how to set the extension's keyboard shortcuts."
-    },
-    "shortcutLinkText": {
-        "message": "Kelola Pintasan Ekstensi",
-        "description": "Link text to Chrome's shortcut management page."
-    },
-    "currentShortcutLabel": {
-        "message": "Pintasan Saat Ini:",
-        "description": "Label for displaying the current shortcut."
-    },
-    "sidePanelPositionSectionHeader": {
-        "message": "Posisi Panel Samping",
-        "description": "Header for the side panel position section in settings."
-    },
-    "sidePanelPositionExplanation": {
-        "message": "Chrome memiliki pengaturan bawaan untuk posisi panel samping. Anda dapat menyesuaikan apakah panel muncul di sisi kiri atau kanan browser di sini.",
-        "description": "Explanation text for how to set Chrome's built-in side panel position."
-    },
-    "sidePanelPositionLinkText": {
-        "message": "Ubah Posisi Panel Samping Chrome",
-        "description": "Link text to Chrome's side panel position setting."
-    },
-    "commandOpenSidePanel": {
-        "message": "Buka bilah sisi",
-        "description": "Command to open the sidebar."
-    },
-    "commandCreateNewTabRight": {
-        "message": "Buat tab baru di sebelah kanan tab saat ini",
-        "description": "Command to create a new tab to the right."
-    },
-    "settingsShortcutCreateTabRight": {
-        "message": "Buat tab baru di sebelah kanan:",
-        "description": "Description for the create new tab to the right shortcut in settings."
-    },
-    "closeTab": {
-        "message": "Tutup Tab",
-        "description": "Tooltip for the close button on a tab."
-    },
-    "addBookmark": {
-        "message": "Tambahkan ke bookmark",
-        "description": "Tooltip for the add-to-bookmark button on a tab."
-    },
-    "addBookmarkDialogTitle": {
-        "message": "Tambah Bookmark",
-        "description": "Title for the new dialog."
-    },
-    "addToGroup": {
-        "message": "Tambahkan tab ke grup baru",
-        "description": "Tooltip for the add to group button on a tab."
-    },
-    "createGroupDialogTitle": {
-        "message": "Buat Grup Baru",
-        "description": "Title for the create new group dialog."
-    },
-    "groupNameInputPlaceholder": {
-        "message": "Masukkan nama grup...",
-        "description": "Placeholder for the group name input in the create group dialog."
-    },
-    "createGroupButton": {
-        "message": "Buat Grup",
-        "description": "Label for the create button in the create group dialog."
-    },
-    "bookmarksBar": {
-        "message": "Bilah bookmark",
-        "description": "The name for the root bookmark folder."
-    },
-    "addButton": {
-        "message": "Tambah",
-        "description": "The confirm button text in the new dialog."
-    },
-    "linkedTabsTooltip": {
-        "message": "Bookmark ini tertaut ke $COUNT$ tab. Klik untuk melihat detail.",
-        "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "linkedTabsPanelTitle": {
-        "message": "Tab tertaut untuk",
-        "description": "Title for the panel that shows tabs linked to a bookmark."
-    },
-    "noLinkedTabs": {
-        "message": "Tidak ada tab tertaut yang ditemukan untuk bookmark ini.",
-        "description": "Message displayed when a bookmark has no active linked tabs."
-    },
-    "duplicateBookmarkConfirm": {
-        "message": "Halaman ini sudah ditandai sebagai \"$BOOKMARK_NAME$\".<br><br>Apakah Anda ingin menambahkannya lagi?",
-        "description": "Confirmation message shown when trying to add a bookmark that already exists.",
-        "placeholders": {
-            "BOOKMARK_NAME": {
-                "content": "$1",
-                "example": "Google"
-            }
-        }
-    },
-    "searchResultCount": {
-        "message": "$TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark ditemukan",
-        "description": "Pesan yang menampilkan jumlah hasil pencarian.",
-        "placeholders": {
-            "TAB_COUNT": {
-                "content": "$1",
-                "example": "5"
-            },
-            "BOOKMARK_COUNT": {
-                "content": "$2",
-                "example": "12"
-            }
-        }
-    },
-    "experimentalSectionHeader": {
-        "message": "Fitur Eksperimental",
-        "description": "Header for the experimental features section in settings"
-    },
-    "virtualScrollingSettingLabel": {
-        "message": "Aktifkan Pengguliran Virtual",
-        "description": "Label for the virtual scrolling toggle"
-    },
-    "virtualScrollingSettingDesc": {
-        "message": "Mengoptimalkan kinerja untuk daftar bookmark besar dengan hanya merender item yang terlihat. Mungkin memiliki gangguan visual kecil.",
-        "description": "Description for the virtual scrolling toggle"
-    },
-    "searchNoResults": {
-        "message": "Tidak ada hasil ditemukan",
-        "description": "Message displayed when search returns no results."
-    },
-    "copyUrl": {
-        "message": "Salin URL",
-        "description": "Context menu option to copy the tab URL."
-    },
-    "urlCopied": {
-        "message": "URL Disalin!",
-        "description": "Feedback message after copying URL."
-    },
-    "otherWindowsHeader": {
-        "message": "Jendela Lain",
-        "description": "Header for the other windows section."
-    },
-    "autoCloseDialog": {
-        "message": "Dialog ini akan tertutup dalam 5 detik...",
-        "description": "Message displayed when an auto-closing dialog is shown."
-    },
-    "renameWindow": {
-        "message": "Ganti Nama Jendela",
-        "description": "Tooltip for the rename window button."
-    },
-    "renameWindowDialogTitle": {
-        "message": "Ganti Nama Jendela",
-        "description": "Title of the dialog to rename a window."
-    },
-    "enterWindowName": {
-        "message": "Masukkan nama jendela baru:",
-        "description": "Prompt message in the rename window dialog."
-    },
-    "splitViewDetectionError": {
-        "message": "Gagal mendeteksi tab tampilan terpisah. Apakah Anda ingin melanjutkan dengan membuat grup untuk tab tunggal ini?",
-        "description": "Error message when split view tab detection fails."
-    },
-    "yesButton": {
-        "message": "Ya",
-        "description": "Label for the yes button in confirmation dialogs."
-    },
-    "searchAriaLabel": {
-        "message": "Cari tab dan bookmark",
-        "description": "Accessibility label for the search input box."
-    },
-    "clearSearchAriaLabel": {
-        "message": "Hapus pencarian",
-        "description": "Accessibility label for the clear search button."
-    },
-    "settingsAriaLabel": {
-        "message": "Pengaturan",
-        "description": "Accessibility label for the settings toggle button."
-    },
-    "editBookmark": {
-        "message": "Edit bookmark",
-        "description": "Accessibility label for the edit bookmark button."
-    },
-    "deleteBookmark": {
-        "message": "Hapus bookmark",
-        "description": "Accessibility label for the delete bookmark button."
-    },
-    "editFolder": {
-        "message": "Edit nama folder",
-        "description": "Accessibility label for the edit folder button."
-    },
-    "addFolder": {
-        "message": "Tambah folder baru",
-        "description": "Accessibility label for the add folder button."
-    },
-    "deleteFolder": {
-        "message": "Hapus folder",
-        "description": "Accessibility label for the delete folder button."
-    },
-    "linkedTabsIcon": {
-        "message": "Tab tertaut",
-        "description": "Accessibility label for the linked tabs icon."
-    },
-    "aboutSectionHeader": {
-        "message": "Tentang",
-        "description": "Header for the about section in settings."
-    },
-    "aboutText": {
-        "message": "Proyek ini bersifat sumber terbuka. Anda dipersilakan untuk bergabung dalam pengembangan! Beri kami bintang di GitHub!",
-        "description": "Text describing the open source nature of the project."
-    },
-    "githubLinkText": {
-        "message": "Lihat di GitHub",
-        "description": "Link text to the GitHub repository."
-    },
-    "themeOptionCustom": {
-        "message": "Kustom",
-        "description": "Name for the Custom theme option."
-    },
-    "labelMainBgColor": {
-        "message": "Warna Latar Utama",
-        "description": "Label for the main background color picker."
-    },
-    "labelAccentColor": {
-        "message": "Warna Aksen",
-        "description": "Label for the accent color picker."
-    },
-    "labelPrimaryTextColor": {
-        "message": "Warna Teks Utama",
-        "description": "Label for the primary text color picker."
-    },
-    "buttonExportTheme": {
-        "message": "Ekspor Tema",
-        "description": "Text for the export theme button."
-    },
-    "buttonImportTheme": {
-        "message": "Impor Tema",
-        "description": "Text for the import theme button."
-    },
-    "buttonResetTheme": {
-        "message": "Atur Ulang ke Default",
-        "description": "Text for the reset theme button."
-    },
-    "warningLowContrast": {
-        "message": "Kontras rendah terdeteksi. Warna akan disesuaikan secara otomatis.",
-        "description": "Warning message when text and background contrast is insufficient."
-    },
-    "errorInvalidThemeFile": {
-        "message": "Format file tema tidak valid",
-        "description": "Error message when importing an invalid theme file."
-    },
-    "searchSearching": {
-        "message": "Mencari...",
-        "description": "Status text shown while search is in progress."
-    },
-    "emptyFolder": {
-        "message": "Folder kosong",
-        "description": "Text shown when a folder has no bookmarks"
-    },
-    "bgImageSectionHeader": {
-        "message": "Gambar Latar",
-        "description": "Header for background image section"
-    },
-    "labelBgSource": {
-        "message": "Sumber",
-        "description": "Label for background source"
-    },
-    "optionUpload": {
-        "message": "Unggah",
-        "description": "Upload option"
-    },
-    "optionUrl": {
-        "message": "URL",
-        "description": "URL option"
-    },
-    "buttonUploadImage": {
-        "message": "Pilih Gambar...",
-        "description": "Button to upload image"
-    },
-    "buttonApply": {
-        "message": "Terapkan",
-        "description": "Apply button"
-    },
-    "labelOpacity": {
-        "message": "Opasitas",
-        "description": "Opacity label"
-    },
-    "labelBlur": {
-        "message": "Blur",
-        "description": "Blur label"
-    },
-    "labelPositionX": {
-        "message": "Horizontal",
-        "description": "Horizontal position label"
-    },
-    "labelPositionY": {
-        "message": "Vertikal",
-        "description": "Vertical position label"
-    },
-    "buttonRemoveImage": {
-        "message": "Hapus Gambar",
-        "description": "Button to remove background image"
-    },
-    "labelProcessing": {
-        "message": "Memproses...",
-        "description": "Processing status"
-    },
-    "labelSuccess": {
-        "message": "Selesai!",
-        "description": "Success status"
-    },
-    "errorImageProcessing": {
-        "message": "Gagal memproses gambar.",
-        "description": "Error message for image processing"
-    },
-    "labelImageApplied": {
-        "message": "Gambar latar diterapkan",
-        "description": "Status text when background image is active"
-    },
-    "labelAdvancedSettings": {
-        "message": "Sesuaikan Pengaturan",
-        "description": "Label for collapsible settings section"
-    },
-    "alignLeft": {
-        "message": "Ratakan Kiri",
-        "description": "Tooltip for aligning background image to the left"
-    },
-    "alignCenter": {
-        "message": "Ratakan Tengah",
-        "description": "Tooltip for aligning background image to the center"
-    },
-    "alignRight": {
-        "message": "Ratakan Kanan",
-        "description": "Tooltip for aligning background image to the right"
-    },
-    "alignTop": {
-        "message": "Ratakan Atas",
-        "description": "Tooltip for aligning background image to the top"
-    },
-    "alignBottom": {
-        "message": "Ratakan Bawah",
-        "description": "Tooltip for aligning background image to the bottom"
-    },
-    "readingListHeader": {
-        "message": "Daftar Bacaan",
-        "description": "Header for the reading list section."
-    },
-    "readingListGroupName": {
-        "message": "Dari Daftar Bacaan",
-        "description": "Name for the tab group created when opening reading list items."
-    },
-    "addToReadingList": {
-        "message": "Tambahkan ke Daftar Bacaan",
-        "description": "Context menu option to add a tab to the reading list."
-    },
-    "alreadyInReadingList": {
-        "message": "Sudah ada di Daftar Bacaan",
-        "description": "Tooltip shown when URL is already in the reading list."
-    },
-    "markAsRead": {
-        "message": "Tandai sudah dibaca",
-        "description": "Button to mark a reading list item as read."
-    },
-    "markAsUnread": {
-        "message": "Tandai belum dibaca",
-        "description": "Button to mark a reading list item as unread."
-    },
-    "deleteReadingListItem": {
-        "message": "Hapus dari Daftar Bacaan",
-        "description": "Button to remove an item from the reading list."
-    },
-    "viewedDaysAgo": {
-        "message": "Dilihat $COUNT$ hari yang lalu",
-        "description": "Label showing how many days ago an item was viewed.",
-        "placeholders": {
-            "COUNT": {
-                "content": "$1",
-                "example": "3"
-            }
-        }
-    },
-    "readingListSettingsHeader": {
-        "message": "Daftar Bacaan",
-        "description": "Header for reading list settings section."
-    },
-    "showReadingListLabel": {
-        "message": "Tampilkan Daftar Bacaan",
-        "description": "Label for the toggle to show/hide reading list."
-    },
-    "rssSubscriptionHeader": {
-        "message": "Langganan RSS",
-        "description": "Header for RSS subscriptions section in settings."
-    },
-    "addRssSubscription": {
-        "message": "Tambah langganan",
-        "description": "Button to add a new RSS subscription."
-    },
-    "rssIntervalLabel": {
-        "message": "Interval pembaruan",
-        "description": "Label for RSS update interval selector."
-    },
-    "rssPauseButton": {
-        "message": "Jeda",
-        "description": "Button to pause an RSS subscription."
-    },
-    "rssResumeButton": {
-        "message": "Lanjutkan",
-        "description": "Button to resume a paused RSS subscription."
-    },
-    "rssDeleteButton": {
-        "message": "Hapus",
-        "description": "Button to remove an RSS subscription."
-    },
-    "rssNoSubscriptions": {
-        "message": "Belum ada langganan RSS.",
-        "description": "Message shown when there are no RSS subscriptions."
-    },
-    "rssErrorTimeout": {
-        "message": "Permintaan habis waktu. Silakan periksa URL.",
-        "description": "Error message when RSS fetch times out."
-    },
-    "rssErrorAlreadySubscribed": {
-        "message": "Anda sudah berlangganan feed ini.",
-        "description": "Error message when trying to add a duplicate subscription."
-    },
-    "rssErrorFetchFailed": {
-        "message": "Gagal mengambil feed. Silakan periksa URL.",
-        "description": "Error message when RSS fetch fails."
-    },
-    "confirmDeleteReadingListItem": {
-        "message": "Hapus item ini dari daftar bacaan?",
-        "description": "Confirmation dialog title when deleting a reading list item."
-    },
-    "readingListEmptyGuidance": {
-        "message": "Klik kanan pada tautan mana punเพื่อเพิ่มที่นี่",
-        "description": "Guidance text shown when reading list is empty."
-    },
-    "newItemBadge": {
-        "message": "BARU",
-        "description": "Badge shown on newly added reading list items."
-    },
-    "sortByDateNewest": {
-        "message": "Terbaru lebih dulu",
-        "description": "Sort option for reading list - newest items first."
-    },
-    "sortByDateOldest": {
-        "message": "Terlama lebih dulu",
-        "description": "Sort option for reading list - oldest items first."
-    },
-    "sortByTitle": {
-        "message": "Berdasarkan judul",
-        "description": "Sort option for reading list - alphabetical by title."
-    },
-    "clearAllRead": {
-        "message": "Hapus semua yang sudah dibaca",
-        "description": "Button to clear all read items from reading list."
-    },
-    "confirmClearAllRead": {
-        "message": "Hapus semua item yang đã đọc khỏi danh sách đọc?",
-        "description": "Confirmation dialog for clearing all read items."
-    },
-    "rssFetchNowButton": {
-        "message": "Perbarui sekarang",
-        "description": "Button to manually trigger RSS fetch."
-    },
-    "rssFetching": {
-        "message": "Memperbarui...",
-        "description": "Loading state text when fetching RSS."
-    },
-    "confirmDeleteRss": {
-        "message": "Apakah Anda yakin ingin menghapus langganan RSS \"$RSS_TITLE$\"?",
-        "description": "Confirmation message when deleting an RSS subscription.",
-        "placeholders": {
-            "RSS_TITLE": {
-                "content": "$1",
-                "example": "TechCrunch"
-            }
-        }
+  "extensionName": {
+    "message": "Bilah Sisi untuk Tab/Markah",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Ekstensi Chrome yang meniru tab vertikal dari peramban Arc.",
+    "description": "The description of the extension."
+  },
+  "searchPlaceholder": {
+    "message": "Cari tab atau markah...",
+    "description": "Placeholder text for the search box."
+  },
+  "tabsHeader": {
+    "message": "Tab",
+    "description": "Header for the tabs section."
+  },
+  "bookmarksHeader": {
+    "message": "Markah",
+    "description": "Header for the bookmarks section."
+  },
+  "deleteBookmarkConfirm": {
+    "message": "Apakah Anda yakin ingin menghapus markah \"$bookmark_title$\" secara permanen?",
+    "description": "Confirmation message for deleting a single bookmark.",
+    "placeholders": {
+      "bookmark_title": {
+        "content": "$1"
+      }
     }
+  },
+  "deleteFolderConfirm": {
+    "message": "Apakah Anda yakin ingin menghapus folder \"$folder_title$\" dan semua isinya secara permanen?\n\nTindakan ini tidak dapat dibatalkan!",
+    "description": "Confirmation message for deleting a bookmark folder.",
+    "placeholders": {
+      "folder_title": {
+        "content": "$1"
+      }
+    }
+  },
+  "addFolderPrompt": {
+    "message": "Silakan masukkan nama untuk folder baru di bawah \"$parent_folder$\":",
+    "description": "Prompt for adding a new bookmark folder.",
+    "placeholders": {
+      "parent_folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "editBookmarkFolderPromptForTitle": {
+    "message": "Edit Nama Folder:",
+    "description": "Prompt for the user to input or edit the name of a bookmark folder."
+  },
+  "editBookmarkPromptForTitle": {
+    "message": "Edit Nama Markah:",
+    "description": "Prompt for the user to input or edit the title/name of a specific bookmark."
+  },
+  "editBookmarkPromptForUrl": {
+    "message": "Edit URL Markah:",
+    "description": "Prompt for the user to input or edit the URL address of a specific bookmark."
+  },
+  "cancelButton": {
+    "message": "Batal",
+    "description": "Label for the cancel button in dialogs."
+  },
+  "deleteButton": {
+    "message": "Hapus",
+    "description": "Label for the delete button in dialogs."
+  },
+  "createButton": {
+    "message": "Buat",
+    "description": "Label for the create button in dialogs."
+  },
+  "saveButton": {
+    "message": "Simpan",
+    "description": "Label for the save button in dialogs."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Label for the close button in dialogs."
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for the settings dialog."
+  },
+  "themeSectionHeader": {
+    "message": "Appearance",
+    "description": "Header for the theme/appearance section in settings."
+  },
+  "themeOptionGeek": {
+    "message": "Geek (Default)",
+    "description": "Name for the Geek theme option."
+  },
+  "themeOptionGoogle": {
+    "message": "Google",
+    "description": "Name for the Google theme option."
+  },
+  "themeOptionDarcula": {
+    "message": "Darcula (JetBrains)",
+    "description": "Name for the Darcula (JetBrains) theme option."
+  },
+  "themeOptionGeekBlue": {
+    "message": "Geek Biru",
+    "description": "Name for the Geek Biru theme option."
+  },
+  "themeOptionChristmas": {
+    "message": "Natal",
+    "description": "Name for the Christmas theme option."
+  },
+  "shortcutSectionHeader": {
+    "message": "Pengaturan Pintasan Keyboard",
+    "description": "Header for the keyboard shortcut section in settings."
+  },
+  "shortcutExplanation": {
+    "message": "Anda dapat menyesuaikan pintasan ekstensi di halaman pengelolaan Chrome.",
+    "description": "Explanation text for how to set the extension's keyboard shortcuts."
+  },
+  "shortcutLinkText": {
+    "message": "Kelola Pintasan Ekstensi",
+    "description": "Link text to Chrome's shortcut management page."
+  },
+  "currentShortcutLabel": {
+    "message": "Pintasan Saat Ini:",
+    "description": "Label for displaying the current shortcut."
+  },
+  "sidePanelPositionSectionHeader": {
+    "message": "Posisi Panel Samping",
+    "description": "Header for the side panel position section in settings."
+  },
+  "sidePanelPositionExplanation": {
+    "message": "Chrome memiliki pengaturan bawaan untuk posisi panel samping. Anda dapat menyesuaikan apakah panel muncul di sisi kiri atau kanan browser di sini.",
+    "description": "Explanation text for how to set Chrome's built-in side panel position."
+  },
+  "sidePanelPositionLinkText": {
+    "message": "Ubah Posisi Panel Samping Chrome",
+    "description": "Link text to Chrome's side panel position setting."
+  },
+  "commandOpenSidePanel": {
+    "message": "Buka bilah sisi",
+    "description": "Command to open the sidebar."
+  },
+  "commandCreateNewTabRight": {
+    "message": "Buat tab baru di sebelah kanan tab saat ini",
+    "description": "Command to create a new tab to the right."
+  },
+  "settingsShortcutCreateTabRight": {
+    "message": "Buat tab baru di sebelah kanan:",
+    "description": "Description for the create new tab to the right shortcut in settings."
+  },
+  "closeTab": {
+    "message": "Tutup Tab",
+    "description": "Tooltip for the close button on a tab."
+  },
+  "addBookmark": {
+    "message": "Tambahkan ke bookmark",
+    "description": "Tooltip for the add-to-bookmark button on a tab."
+  },
+  "addBookmarkDialogTitle": {
+    "message": "Tambah Bookmark",
+    "description": "Title for the new dialog."
+  },
+  "addToGroup": {
+    "message": "Tambahkan tab ke grup baru",
+    "description": "Tooltip for the add to group button on a tab."
+  },
+  "createGroupDialogTitle": {
+    "message": "Buat Grup Baru",
+    "description": "Title for the create new group dialog."
+  },
+  "groupNameInputPlaceholder": {
+    "message": "Masukkan nama grup...",
+    "description": "Placeholder for the group name input in the create group dialog."
+  },
+  "createGroupButton": {
+    "message": "Buat Grup",
+    "description": "Label for the create button in the create group dialog."
+  },
+  "bookmarksBar": {
+    "message": "Bilah bookmark",
+    "description": "The name for the root bookmark folder."
+  },
+  "addButton": {
+    "message": "Tambah",
+    "description": "The confirm button text in the new dialog."
+  },
+  "linkedTabsTooltip": {
+    "message": "Bookmark ini tertaut ke $COUNT$ tab. Klik untuk melihat detail.",
+    "description": "Tooltip for the icon indicating that a bookmark is linked to open tabs.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "linkedTabsPanelTitle": {
+    "message": "Tab tertaut untuk",
+    "description": "Title for the panel that shows tabs linked to a bookmark."
+  },
+  "noLinkedTabs": {
+    "message": "Tidak ada tab tertaut yang ditemukan untuk bookmark ini.",
+    "description": "Message displayed when a bookmark has no active linked tabs."
+  },
+  "duplicateBookmarkConfirm": {
+    "message": "Halaman ini sudah ditandai sebagai \"$BOOKMARK_NAME$\".<br><br>Apakah Anda ingin menambahkannya lagi?",
+    "description": "Confirmation message shown when trying to add a bookmark that already exists.",
+    "placeholders": {
+      "BOOKMARK_NAME": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "searchResultCount": {
+    "message": "$TAB_COUNT$ tab, $BOOKMARK_COUNT$ bookmark ditemukan",
+    "description": "Pesan yang menampilkan jumlah hasil pencarian.",
+    "placeholders": {
+      "TAB_COUNT": {
+        "content": "$1",
+        "example": "5"
+      },
+      "BOOKMARK_COUNT": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "experimentalSectionHeader": {
+    "message": "Fitur Eksperimental",
+    "description": "Header for the experimental features section in settings"
+  },
+  "virtualScrollingSettingLabel": {
+    "message": "Aktifkan Pengguliran Virtual",
+    "description": "Label for the virtual scrolling toggle"
+  },
+  "virtualScrollingSettingDesc": {
+    "message": "Mengoptimalkan kinerja untuk daftar bookmark besar dengan hanya merender item yang terlihat. Mungkin memiliki gangguan visual kecil.",
+    "description": "Description for the virtual scrolling toggle"
+  },
+  "searchNoResults": {
+    "message": "Tidak ada hasil ditemukan",
+    "description": "Message displayed when search returns no results."
+  },
+  "copyUrl": {
+    "message": "Salin URL",
+    "description": "Context menu option to copy the tab URL."
+  },
+  "urlCopied": {
+    "message": "URL Disalin!",
+    "description": "Feedback message after copying URL."
+  },
+  "otherWindowsHeader": {
+    "message": "Jendela Lain",
+    "description": "Header for the other windows section."
+  },
+  "autoCloseDialog": {
+    "message": "Dialog ini akan tertutup dalam 5 detik...",
+    "description": "Message displayed when an auto-closing dialog is shown."
+  },
+  "renameWindow": {
+    "message": "Ganti Nama Jendela",
+    "description": "Tooltip for the rename window button."
+  },
+  "renameWindowDialogTitle": {
+    "message": "Ganti Nama Jendela",
+    "description": "Title of the dialog to rename a window."
+  },
+  "enterWindowName": {
+    "message": "Masukkan nama jendela baru:",
+    "description": "Prompt message in the rename window dialog."
+  },
+  "splitViewDetectionError": {
+    "message": "Gagal mendeteksi tab tampilan terpisah. Apakah Anda ingin melanjutkan dengan membuat grup untuk tab tunggal ini?",
+    "description": "Error message when split view tab detection fails."
+  },
+  "yesButton": {
+    "message": "Ya",
+    "description": "Label for the yes button in confirmation dialogs."
+  },
+  "searchAriaLabel": {
+    "message": "Cari tab dan bookmark",
+    "description": "Accessibility label for the search input box."
+  },
+  "clearSearchAriaLabel": {
+    "message": "Hapus pencarian",
+    "description": "Accessibility label for the clear search button."
+  },
+  "settingsAriaLabel": {
+    "message": "Pengaturan",
+    "description": "Accessibility label for the settings toggle button."
+  },
+  "editBookmark": {
+    "message": "Edit bookmark",
+    "description": "Accessibility label for the edit bookmark button."
+  },
+  "deleteBookmark": {
+    "message": "Hapus bookmark",
+    "description": "Accessibility label for the delete bookmark button."
+  },
+  "editFolder": {
+    "message": "Edit nama folder",
+    "description": "Accessibility label for the edit folder button."
+  },
+  "addFolder": {
+    "message": "Tambah folder baru",
+    "description": "Accessibility label for the add folder button."
+  },
+  "deleteFolder": {
+    "message": "Hapus folder",
+    "description": "Accessibility label for the delete folder button."
+  },
+  "linkedTabsIcon": {
+    "message": "Tab tertaut",
+    "description": "Accessibility label for the linked tabs icon."
+  },
+  "aboutSectionHeader": {
+    "message": "Tentang",
+    "description": "Header for the about section in settings."
+  },
+  "aboutText": {
+    "message": "Proyek ini bersifat sumber terbuka. Anda dipersilakan untuk bergabung dalam pengembangan! Beri kami bintang di GitHub!",
+    "description": "Text describing the open source nature of the project."
+  },
+  "githubLinkText": {
+    "message": "Lihat di GitHub",
+    "description": "Link text to the GitHub repository."
+  },
+  "themeOptionCustom": {
+    "message": "Kustom",
+    "description": "Name for the Custom theme option."
+  },
+  "labelMainBgColor": {
+    "message": "Warna Latar Utama",
+    "description": "Label for the main background color picker."
+  },
+  "labelAccentColor": {
+    "message": "Warna Aksen",
+    "description": "Label for the accent color picker."
+  },
+  "labelPrimaryTextColor": {
+    "message": "Warna Teks Utama",
+    "description": "Label for the primary text color picker."
+  },
+  "buttonExportTheme": {
+    "message": "Ekspor Tema",
+    "description": "Text for the export theme button."
+  },
+  "buttonImportTheme": {
+    "message": "Impor Tema",
+    "description": "Text for the import theme button."
+  },
+  "buttonResetTheme": {
+    "message": "Atur Ulang ke Default",
+    "description": "Text for the reset theme button."
+  },
+  "warningLowContrast": {
+    "message": "Kontras rendah terdeteksi. Warna akan disesuaikan secara otomatis.",
+    "description": "Warning message when text and background contrast is insufficient."
+  },
+  "errorInvalidThemeFile": {
+    "message": "Format file tema tidak valid",
+    "description": "Error message when importing an invalid theme file."
+  },
+  "searchSearching": {
+    "message": "Mencari...",
+    "description": "Status text shown while search is in progress."
+  },
+  "emptyFolder": {
+    "message": "Folder kosong",
+    "description": "Text shown when a folder has no bookmarks"
+  },
+  "bgImageSectionHeader": {
+    "message": "Gambar Latar",
+    "description": "Header for background image section"
+  },
+  "labelBgSource": {
+    "message": "Sumber",
+    "description": "Label for background source"
+  },
+  "optionUpload": {
+    "message": "Unggah",
+    "description": "Upload option"
+  },
+  "optionUrl": {
+    "message": "URL",
+    "description": "URL option"
+  },
+  "buttonUploadImage": {
+    "message": "Pilih Gambar...",
+    "description": "Button to upload image"
+  },
+  "buttonApply": {
+    "message": "Terapkan",
+    "description": "Apply button"
+  },
+  "labelOpacity": {
+    "message": "Opasitas",
+    "description": "Opacity label"
+  },
+  "labelBlur": {
+    "message": "Blur",
+    "description": "Blur label"
+  },
+  "labelPositionX": {
+    "message": "Horizontal",
+    "description": "Horizontal position label"
+  },
+  "labelPositionY": {
+    "message": "Vertikal",
+    "description": "Vertical position label"
+  },
+  "buttonRemoveImage": {
+    "message": "Hapus Gambar",
+    "description": "Button to remove background image"
+  },
+  "labelProcessing": {
+    "message": "Memproses...",
+    "description": "Processing status"
+  },
+  "labelSuccess": {
+    "message": "Selesai!",
+    "description": "Success status"
+  },
+  "errorImageProcessing": {
+    "message": "Gagal memproses gambar.",
+    "description": "Error message for image processing"
+  },
+  "labelImageApplied": {
+    "message": "Gambar latar diterapkan",
+    "description": "Status text when background image is active"
+  },
+  "labelAdvancedSettings": {
+    "message": "Sesuaikan Pengaturan",
+    "description": "Label for collapsible settings section"
+  },
+  "alignLeft": {
+    "message": "Ratakan Kiri",
+    "description": "Tooltip for aligning background image to the left"
+  },
+  "alignCenter": {
+    "message": "Ratakan Tengah",
+    "description": "Tooltip for aligning background image to the center"
+  },
+  "alignRight": {
+    "message": "Ratakan Kanan",
+    "description": "Tooltip for aligning background image to the right"
+  },
+  "alignTop": {
+    "message": "Ratakan Atas",
+    "description": "Tooltip for aligning background image to the top"
+  },
+  "alignBottom": {
+    "message": "Ratakan Bawah",
+    "description": "Tooltip for aligning background image to the bottom"
+  },
+  "readingListHeader": {
+    "message": "Daftar Bacaan",
+    "description": "Header for the reading list section."
+  },
+  "readingListGroupName": {
+    "message": "Dari Daftar Bacaan",
+    "description": "Name for the tab group created when opening reading list items."
+  },
+  "addToReadingList": {
+    "message": "Tambahkan ke Daftar Bacaan",
+    "description": "Context menu option to add a tab to the reading list."
+  },
+  "alreadyInReadingList": {
+    "message": "Sudah ada di Daftar Bacaan",
+    "description": "Tooltip shown when URL is already in the reading list."
+  },
+  "markAsRead": {
+    "message": "Tandai sudah dibaca",
+    "description": "Button to mark a reading list item as read."
+  },
+  "markAsUnread": {
+    "message": "Tandai belum dibaca",
+    "description": "Button to mark a reading list item as unread."
+  },
+  "deleteReadingListItem": {
+    "message": "Hapus dari Daftar Bacaan",
+    "description": "Button to remove an item from the reading list."
+  },
+  "viewedDaysAgo": {
+    "message": "Dilihat $COUNT$ hari yang lalu",
+    "description": "Label showing how many days ago an item was viewed.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "readingListSettingsHeader": {
+    "message": "Daftar Bacaan",
+    "description": "Header for reading list settings section."
+  },
+  "showReadingListLabel": {
+    "message": "Tampilkan Daftar Bacaan",
+    "description": "Label for the toggle to show/hide reading list."
+  },
+  "rssSubscriptionHeader": {
+    "message": "Langganan RSS",
+    "description": "Header for RSS subscriptions section in settings."
+  },
+  "addRssSubscription": {
+    "message": "Tambah langganan",
+    "description": "Button to add a new RSS subscription."
+  },
+  "rssIntervalLabel": {
+    "message": "Interval pembaruan",
+    "description": "Label for RSS update interval selector."
+  },
+  "rssPauseButton": {
+    "message": "Jeda",
+    "description": "Button to pause an RSS subscription."
+  },
+  "rssResumeButton": {
+    "message": "Lanjutkan",
+    "description": "Button to resume a paused RSS subscription."
+  },
+  "rssDeleteButton": {
+    "message": "Hapus",
+    "description": "Button to remove an RSS subscription."
+  },
+  "rssNoSubscriptions": {
+    "message": "Belum ada langganan RSS.",
+    "description": "Message shown when there are no RSS subscriptions."
+  },
+  "rssErrorTimeout": {
+    "message": "Permintaan habis waktu. Silakan periksa URL.",
+    "description": "Error message when RSS fetch times out."
+  },
+  "rssErrorAlreadySubscribed": {
+    "message": "Anda sudah berlangganan feed ini.",
+    "description": "Error message when trying to add a duplicate subscription."
+  },
+  "rssErrorFetchFailed": {
+    "message": "Gagal mengambil feed. Silakan periksa URL.",
+    "description": "Error message when RSS fetch fails."
+  },
+  "confirmDeleteReadingListItem": {
+    "message": "Hapus item ini dari daftar bacaan?",
+    "description": "Confirmation dialog title when deleting a reading list item."
+  },
+  "readingListEmptyGuidance": {
+    "message": "Klik kanan pada tautan mana punเพื่อเพิ่มที่นี่",
+    "description": "Guidance text shown when reading list is empty."
+  },
+  "newItemBadge": {
+    "message": "BARU",
+    "description": "Badge shown on newly added reading list items."
+  },
+  "sortByDateNewest": {
+    "message": "Terbaru lebih dulu",
+    "description": "Sort option for reading list - newest items first."
+  },
+  "sortByDateOldest": {
+    "message": "Terlama lebih dulu",
+    "description": "Sort option for reading list - oldest items first."
+  },
+  "sortByTitle": {
+    "message": "Berdasarkan judul",
+    "description": "Sort option for reading list - alphabetical by title."
+  },
+  "clearAllRead": {
+    "message": "Hapus semua yang sudah dibaca",
+    "description": "Button to clear all read items from reading list."
+  },
+  "confirmClearAllRead": {
+    "message": "Hapus semua item yang đã đọc khỏi danh sách đọc?",
+    "description": "Confirmation dialog for clearing all read items."
+  },
+  "rssFetchNowButton": {
+    "message": "Perbarui sekarang",
+    "description": "Button to manually trigger RSS fetch."
+  },
+  "rssFetching": {
+    "message": "Memperbarui...",
+    "description": "Loading state text when fetching RSS."
+  },
+  "confirmDeleteRss": {
+    "message": "Apakah Anda yakin ingin menghapus langganan RSS \"$RSS_TITLE$\"?",
+    "description": "Confirmation message when deleting an RSS subscription.",
+    "placeholders": {
+      "RSS_TITLE": {
+        "content": "$1",
+        "example": "TechCrunch"
+      }
+    }
+  },
+  "smartGroupingBtnText": {
+    "message": "✨ Pengelompokan Pintar"
+  },
+  "smartGroupingBtnTitle": {
+    "message": "✨ Kelompokkan Tab yang Belum Diklasifikasikan secara Pintar"
+  },
+  "toastUndoBtn": {
+    "message": "Batal"
+  },
+  "toastCloseBtn": {
+    "message": "Tutup"
+  },
+  "aiModelNotReady": {
+    "message": "Model AI belum siap. Pastikan Chrome Anda mendukung Gemini Nano."
+  },
+  "tooFewTabsToGroup": {
+    "message": "Terlalu sedikit tab yang belum diklasifikasikan untuk dikelompokkan ✨"
+  },
+  "autoGroupingSuccess": {
+    "message": "✨ Tab berhasil dikelompokkan!"
+  },
+  "noTabsGrouped": {
+    "message": "Tidak ada tab yang berhasil dikelompokkan."
+  },
+  "autoGroupingError": {
+    "message": "Terjadi kesalahan: "
+  },
+  "unknownCategory": {
+    "message": "📦 Kategori Tidak Diketahui"
+  }
 }

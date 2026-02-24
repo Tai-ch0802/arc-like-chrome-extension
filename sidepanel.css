@@ -2336,3 +2336,90 @@ mark.url-match {
     color: var(--danger-color);
     background: rgba(243, 139, 168, 0.1);
 }
+/* --- Smart Auto-Grouping UI --- */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--element-bg-active-color);
+    color: var(--text-color-primary);
+    padding: 10px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--modal-shadow-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+#toast-container.hidden {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    pointer-events: none;
+    display: flex !important; /* overrides standard .hidden */
+}
+
+#toast-message {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#toast-undo-btn {
+    background-color: var(--info-color);
+    color: var(--text-color-inverted);
+    border: none;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+#toast-undo-btn:hover {
+    filter: brightness(1.1);
+}
+
+#toast-undo-btn.hidden {
+    display: none;
+}
+
+#toast-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color-secondary);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+#toast-close-btn:hover {
+    color: var(--danger-color);
+}
+
+#ai-group-btn {
+    background-color: transparent;
+    border: 1px solid var(--info-color);
+    color: var(--info-color);
+}
+
+#ai-group-btn:hover {
+    background-color: var(--info-color);
+    color: var(--text-color-inverted);
+}
+
+#ai-group-btn.loading {
+    opacity: 0.7;
+    cursor: wait;
+    animation: flash 1.5s infinite;
+}
+
+@keyframes flash {
+    0% { opacity: 0.7; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
