@@ -1019,7 +1019,13 @@ mark.url-match {
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     transition: background-color 0.2s, color 0.2s;
 }
 
@@ -1882,8 +1888,9 @@ mark.url-match {
 
 /* Unified Button */
 .settings-button {
-    height: var(--settings-height);
-    padding: 0 14px;
+    min-height: var(--settings-height);
+    height: auto;
+    padding: 6px 14px;
     border: 1px solid var(--border-color);
     border-radius: var(--settings-radius);
     background: var(--element-bg-color);
@@ -1892,7 +1899,13 @@ mark.url-match {
     font-weight: 500;
     cursor: pointer;
     transition: var(--settings-transition);
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .settings-button:hover {
@@ -2333,6 +2346,9 @@ mark.url-match {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+    width: 90%;
+    max-width: 380px;
+    box-sizing: border-box;
     background-color: var(--element-bg-active-color);
     color: var(--text-color-primary);
     padding: 10px 16px;
@@ -2357,6 +2373,7 @@ mark.url-match {
 #toast-message {
     font-size: 13px;
     font-weight: 500;
+    flex: 1;
 }
 
 #toast-undo-btn {

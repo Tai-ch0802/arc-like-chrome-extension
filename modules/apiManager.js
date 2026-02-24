@@ -60,16 +60,49 @@ let customMessages = null;
 let currentCustomLang = 'auto';
 
 /**
- * Parses and replaces placeholders like $1, $2 in a message string.
+ * Resolves a custom-loaded message entry (with named placeholders) using substitutions.
+ *
+ * Chrome i18n messages.json uses named placeholders in the message string, e.g.:
+ *   "message": "Delete \"$bookmark_title$\"?"
+ *   "placeholders": { "bookmark_title": { "content": "$1" } }
+ *
+ * This function:
+ *  1. Builds a map from placeholder name -> positional index from the `placeholders` block.
+ *  2. Replaces each `$PLACEHOLDER_NAME$` in the message with the corresponding substitution.
+ *  3. As a fallback, also replaces bare `$1`, `$2`, etc. for simpler message formats.
+ *
+ * @param {object} entry - The full message entry object { message, placeholders? }
+ * @param {string|string[]} [substitutions] - Substitution values
+ * @returns {string}
  */
-function replacePlaceholders(message, substitutions) {
-    if (!substitutions) return message;
+function resolveCustomMessage(entry, substitutions) {
+    let msg = entry.message;
+    if (!substitutions) return msg;
+
     const subs = Array.isArray(substitutions) ? substitutions : [substitutions];
-    let result = message;
+
+    // Step 1: Resolve named placeholders via the "placeholders" block
+    if (entry.placeholders) {
+        for (const [name, def] of Object.entries(entry.placeholders)) {
+            if (!def || !def.content) continue;
+            // def.content is like "$1", "$2", etc. Extract the index.
+            const indexMatch = def.content.match(/^\$(\d+)$/);
+            if (indexMatch) {
+                const idx = parseInt(indexMatch[1], 10) - 1;
+                const value = idx >= 0 && idx < subs.length ? subs[idx] : '';
+                // Replace $name$ (case-insensitive, as Chrome does)
+                const pattern = new RegExp(`\\$${name}\\$`, 'gi');
+                msg = msg.replace(pattern, value);
+            }
+        }
+    }
+
+    // Step 2: Fallback — replace bare $1, $2, etc. directly (for simpler messages)
     subs.forEach((sub, index) => {
-        result = result.replace(new RegExp(`\\$${index + 1}`, 'g'), sub);
+        msg = msg.replace(new RegExp(`\\$${index + 1}`, 'g'), sub);
     });
-    return result;
+
+    return msg;
 }
 
 /**
@@ -114,7 +147,7 @@ export const getResolvedUILanguage = () => {
 export const getMessage = (key, substitutions) => {
     // 1. Try to get from custom loaded locale
     if (customMessages && customMessages[key] && customMessages[key].message !== undefined) {
-        return replacePlaceholders(customMessages[key].message, substitutions);
+        return resolveCustomMessage(customMessages[key], substitutions);
     }
     // 2. Fallback to native Chrome API
     return chrome.i18n.getMessage(key, substitutions);
