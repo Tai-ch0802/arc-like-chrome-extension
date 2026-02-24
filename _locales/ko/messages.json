@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": "를 참조하십시오."
+  },
+  "languageSectionHeader": {
+    "message": "언어 (Language)"
+  },
+  "languageAuto": {
+    "message": "자동 (브라우저 설정 따름)"
   }
 }

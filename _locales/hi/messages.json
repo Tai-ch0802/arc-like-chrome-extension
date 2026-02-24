@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " देखें।"
+  },
+  "languageSectionHeader": {
+    "message": "भाषा (Language)"
+  },
+  "languageAuto": {
+    "message": "स्वचालित (ब्राउज़र का अनुसरण करें)"
   }
 }

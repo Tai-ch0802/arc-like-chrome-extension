@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " untuk mengunduh model lokal dan mengaktifkan flag yang relevan."
+  },
+  "languageSectionHeader": {
+    "message": "Bahasa (Language)"
+  },
+  "languageAuto": {
+    "message": "Otomatis (Ikuti Browser)"
   }
 }

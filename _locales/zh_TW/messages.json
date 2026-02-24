@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " 下載 Local Model 並開啟相關 Flag 來啟用。"
+  },
+  "languageSectionHeader": {
+    "message": "介面語言 (Language)"
+  },
+  "languageAuto": {
+    "message": "自動 (跟隨瀏覽器)"
   }
 }

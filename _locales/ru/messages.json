@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": ", чтобы загрузить локальную модель и включить соответствующие флаги."
+  },
+  "languageSectionHeader": {
+    "message": "Язык (Language)"
+  },
+  "languageAuto": {
+    "message": "Авто (по браузеру)"
   }
 }

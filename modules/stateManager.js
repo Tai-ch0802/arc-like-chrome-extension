@@ -184,6 +184,38 @@ export async function setAiGroupingVisible(visible) {
   await setStorage('sync', { [AI_GROUPING_VISIBLE_KEY]: visible });
 }
 
+// --- UI Language Override State ---
+
+const UI_LANGUAGE_KEY = 'uiLanguage';
+let uiLanguage = 'auto'; // Default to 'auto' (follow browser)
+
+/**
+ * Loads the UI language override state from chrome.storage.sync.
+ * @returns {Promise<string>} The configured UI language code.
+ */
+export async function initUiLanguage() {
+  const result = await getStorage('sync', [UI_LANGUAGE_KEY]);
+  uiLanguage = result[UI_LANGUAGE_KEY] || 'auto';
+  return uiLanguage;
+}
+
+/**
+ * Gets the current UI language override state from in-memory cache.
+ * @returns {string} The configured UI language code.
+ */
+export function getUiLanguage() {
+  return uiLanguage;
+}
+
+/**
+ * Sets the UI language override state.
+ * @param {string} lang - The language code (e.g., 'en', 'zh_TW', 'auto').
+ */
+export async function setUiLanguage(lang) {
+  uiLanguage = lang;
+  await setStorage('sync', { [UI_LANGUAGE_KEY]: lang });
+}
+
 // --- Bookmark-Tab Linking State ---
 
 const LINKED_TABS_STORAGE_KEY = 'linkedTabs';

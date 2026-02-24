@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": "เพื่อดาวน์โหลดโมเดลในเครื่องและเปิดใช้งาน Flag ที่เกี่ยวข้อง"
+  },
+  "languageSectionHeader": {
+    "message": "ภาษา (Language)"
+  },
+  "languageAuto": {
+    "message": "อัตโนมัติ (ตามเบราว์เซอร์)"
   }
 }

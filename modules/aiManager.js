@@ -57,29 +57,37 @@ export async function generateGroups(tabsInfo) {
 
     const tabsData = cleanTabs.map(t => `ID: ${t.id} | Title: ${t.title} | URL: ${t.url}`).join('\n');
 
+    const currentLang = api.getResolvedUILanguage();
+
     // We use a strictly formatted prompt
-    const prompt = `你是一個專業的分頁整理助手。請將以下分頁清單，依據語意分類成 3 到 5 個群組。
-每個群組給予一個適合的 Emoji 與簡短主題名稱（純文字，如 "🛠️ 開發工具"）。
-請以 JSON 陣列格式回傳，格式必須如下（不要有其他敘述）：
+    const prompt = `You are a professional tab organization assistant. Please classify the following list of tabs into 3 to 5 groups based on semantics.
+Assign a suitable Emoji and a short theme name for each group. 
+CRITICAL: The theme name MUST be in the locale language '${currentLang}'.
+Please reply strictly in JSON array format, the format must be exactly as follows (no markdown format, no extra text):
 [
-  { "theme": "🛠️ 開發工具", "tabIds": [12, 15] }
+  { "theme": "🛠️ <Group Name in ${currentLang}>", "tabIds": [12, 15] }
 ]
 
-[分頁清單]
+[Tab List]
 ${tabsData}`;
 
     try {
         let session;
         // The capabilities check is already done in checkModelReadiness, but if we want to be extra safe
         // const capabilities = await globalThis.LanguageModel.capabilities();
+
         const options = {
-            systemPrompt: 'You are a helpful assistant that strictly outputs JSON arrays based on the requested format. Do NOT use markdown code blocks like ```json or ```.',
+            systemPrompt: `You are a helpful assistant that strictly outputs JSON arrays based on the requested format. Do NOT use markdown code blocks like \`\`\`json or \`\`\`. You MUST format the JSON correctly and translate the theme names into the ${currentLang} locale language.`,
             temperature: 0.1,
             topK: 1,
-            // To silence the "No output language was specified" warning, we provide supported codes
-            // using multiple property names to maintain compatibility with different Chrome versions
-            expectedOutputLanguage: 'en',
-            languages: ['en']
+            // Follow Chrome built-in AI API guidelines for Language Assignment
+            // We specify "en" for the system prompt and currentLang for user prompt and expected output
+            expectedInputs: [
+                { type: "text", languages: ["en"] }
+            ],
+            expectedOutputs: [
+                { type: "text", languages: ["en"] }
+            ]
         };
         // Chrome sometimes requires these options depending on the version
         session = await globalThis.LanguageModel.create(options);

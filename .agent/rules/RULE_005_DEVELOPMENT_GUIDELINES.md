@@ -45,6 +45,7 @@ description: 開發準則與脈絡工程
 
 ## 2. UI/UX Consistency
 - **Hover Effects**: Interactive elements like edit buttons should typically be revealed on hover to reduce visual clutter, unless they are primary actions.
+- **Settings Dropdowns (Select Menus)**: 凡是在 Settings / Modal 面板中實作的 `<select>` 下拉選單元件，請一律套用統一的 `modal-select` CSS 類別，以保持與其他選單（例如「佈景主題 Theme」的選擇選單）視覺的一致性。嚴禁為了單獨的選單設計客製化的 class（除非有明確特殊的設計需求）。
 
 ## 3. Consistency Maintenance
 - **AGENTS.md Synchronization**: `AGENTS.md` in the root directory acts as the master context. Any changes to development guidelines, architecture, or project structure in this `rules` directory **MUST** be reflected in `AGENTS.md` to maintain strong consistency.

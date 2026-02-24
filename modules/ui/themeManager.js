@@ -97,6 +97,35 @@ async function buildSettingsDialogContent(selectedTheme) {
             </div>
         </div>
 
+        <!-- Language Section -->
+        <div class="settings-section collapsible">
+            <button class="settings-section-header collapsible-toggle" aria-expanded="false">
+                ${chevronIcon}
+                <span>${api.getMessage('languageSectionHeader') || 'Language / 語言'}</span>
+            </button>
+            <div class="settings-section-content">
+                <div class="theme-options">
+                    <select id="ui-language-select" class="modal-select">
+                        <option value="auto" ${state.getUiLanguage() === 'auto' ? 'selected' : ''}>${api.getMessage('languageAuto') || 'Auto (Follow Browser)'}</option>
+                        <option value="en" ${state.getUiLanguage() === 'en' ? 'selected' : ''}>English</option>
+                        <option value="zh_TW" ${state.getUiLanguage() === 'zh_TW' ? 'selected' : ''}>繁體中文</option>
+                        <option value="zh_CN" ${state.getUiLanguage() === 'zh_CN' ? 'selected' : ''}>简体中文</option>
+                        <option value="ja" ${state.getUiLanguage() === 'ja' ? 'selected' : ''}>日本語</option>
+                        <option value="ko" ${state.getUiLanguage() === 'ko' ? 'selected' : ''}>한국어</option>
+                        <option value="fr" ${state.getUiLanguage() === 'fr' ? 'selected' : ''}>Français</option>
+                        <option value="de" ${state.getUiLanguage() === 'de' ? 'selected' : ''}>Deutsch</option>
+                        <option value="es" ${state.getUiLanguage() === 'es' ? 'selected' : ''}>Español</option>
+                        <option value="pt_BR" ${state.getUiLanguage() === 'pt_BR' ? 'selected' : ''}>Português (BR)</option>
+                        <option value="ru" ${state.getUiLanguage() === 'ru' ? 'selected' : ''}>Русский</option>
+                        <option value="id" ${state.getUiLanguage() === 'id' ? 'selected' : ''}>Bahasa Indonesia</option>
+                        <option value="th" ${state.getUiLanguage() === 'th' ? 'selected' : ''}>ไทย</option>
+                        <option value="vi" ${state.getUiLanguage() === 'vi' ? 'selected' : ''}>Tiếng Việt</option>
+                        <option value="hi" ${state.getUiLanguage() === 'hi' ? 'selected' : ''}>हिन्दी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <!-- Background Image Section -->
         <div class="settings-section collapsible">
             <button class="settings-section-header collapsible-toggle" aria-expanded="false">
@@ -254,6 +283,16 @@ function bindSettingsEventHandlers(modalContentElement) {
             document.dispatchEvent(new CustomEvent('readingListVisibilityChanged', {
                 detail: { visible: isVisible }
             }));
+        });
+    }
+
+    // UI Language Override handler
+    const uiLanguageSelect = modalContentElement.querySelector('#ui-language-select');
+    if (uiLanguageSelect) {
+        uiLanguageSelect.addEventListener('change', async (e) => {
+            await state.setUiLanguage(e.target.value);
+            // Reload sidepanel to fully apply the new locale
+            window.location.reload();
         });
     }
 

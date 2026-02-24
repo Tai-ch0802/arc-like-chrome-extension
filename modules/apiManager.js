@@ -52,7 +52,69 @@ export const getAllWindowsWithTabs = () => chrome.windows.getAll({ populate: tru
 export const getAllWindows = () => chrome.windows.getAll({ populate: false });
 
 // Wrappers for chrome.i18n API
-export const getMessage = (key, substitutions) => chrome.i18n.getMessage(key, substitutions);
+let customMessages = null;
+let currentCustomLang = 'auto';
+
+/**
+ * Parses and replaces placeholders like $1, $2 in a message string.
+ */
+function replacePlaceholders(message, substitutions) {
+    if (!substitutions) return message;
+    const subs = Array.isArray(substitutions) ? substitutions : [substitutions];
+    let result = message;
+    subs.forEach((sub, index) => {
+        result = result.replace(new RegExp(`\\$${index + 1}`, 'g'), sub);
+    });
+    return result;
+}
+
+/**
+ * Fetch and load custom i18n messages.json
+ * @param {string} lang 
+ */
+export async function loadCustomI18n(lang) {
+    currentCustomLang = lang || 'auto';
+    if (currentCustomLang === 'auto') {
+        customMessages = null;
+        return;
+    }
+    try {
+        const response = await fetch(chrome.runtime.getURL(`_locales/${currentCustomLang}/messages.json`));
+        if (response.ok) {
+            customMessages = await response.json();
+            console.log(`[i18n] Loaded custom language: ${currentCustomLang}`);
+        } else {
+            console.warn(`[i18n] Failed to load language: ${currentCustomLang}, falling back to auto.`);
+            customMessages = null;
+            currentCustomLang = 'auto';
+        }
+    } catch (e) {
+        console.error(`[i18n] Error loading language ${currentCustomLang}:`, e);
+        customMessages = null;
+        currentCustomLang = 'auto';
+    }
+}
+
+/**
+ * Gets the actual UI language being used (custom override or browser default).
+ * @returns {string} Language code (e.g., 'en', 'zh-TW')
+ */
+export const getResolvedUILanguage = () => {
+    if (currentCustomLang !== 'auto') {
+        // Return standard BCP-47 tag, e.g., zh_TW -> zh-TW
+        return currentCustomLang.replace('_', '-');
+    }
+    return chrome.i18n.getUILanguage();
+};
+
+export const getMessage = (key, substitutions) => {
+    // 1. Try to get from custom loaded locale
+    if (customMessages && customMessages[key] && customMessages[key].message !== undefined) {
+        return replacePlaceholders(customMessages[key].message, substitutions);
+    }
+    // 2. Fallback to native Chrome API
+    return chrome.i18n.getMessage(key, substitutions);
+};
 
 // Wrappers for chrome.storage API
 export const getStorage = (area, keys) => {

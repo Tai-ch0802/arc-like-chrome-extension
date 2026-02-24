@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " để tải xuống Mô hình cục bộ và bật các Flag liên quan."
+  },
+  "languageSectionHeader": {
+    "message": "Ngôn ngữ (Language)"
+  },
+  "languageAuto": {
+    "message": "Tự động (Theo trình duyệt)"
   }
 }

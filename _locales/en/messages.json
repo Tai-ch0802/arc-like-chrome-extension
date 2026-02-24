@@ -635,5 +635,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " to download the Local Model and enable the relevant Flags."
+  },
+  "languageSectionHeader": {
+    "message": "Language"
+  },
+  "languageAuto": {
+    "message": "Auto (Follow Browser)"
   }
 }

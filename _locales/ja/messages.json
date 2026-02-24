@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": "を参照してください。"
+  },
+  "languageSectionHeader": {
+    "message": "言語 (Language)"
+  },
+  "languageAuto": {
+    "message": "自動（ブラウザに従う）"
   }
 }

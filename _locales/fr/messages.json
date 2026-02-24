@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " pour télécharger le modèle local et activer les options (flags) correspondantes."
+  },
+  "languageSectionHeader": {
+    "message": "Langue (Language)"
+  },
+  "languageAuto": {
+    "message": "Auto (Suivre le navigateur)"
   }
 }

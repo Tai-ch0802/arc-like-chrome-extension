@@ -632,5 +632,11 @@
   },
   "aiGroupingDescription2_part2": {
     "message": " auf, um das lokale Modell herunterzuladen und die entsprechenden Flags zu aktivieren."
+  },
+  "languageSectionHeader": {
+    "message": "Sprache (Language)"
+  },
+  "languageAuto": {
+    "message": "Auto (Browser folgen)"
   }
 }
