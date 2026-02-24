@@ -856,16 +856,6 @@ mark.url-match {
     display: none;
 }
 
-/* --- i18n Styles --- */
-
-[data-i18n="tabsHeader"]::before {
-    content: '__MSG_tabsHeader__';
-}
-
-[data-i18n="bookmarksHeader"]::before {
-    content: '__MSG_bookmarksHeader__';
-}
-
 /* --- Modal Dialog Styles --- */
 .modal-overlay {
     position: fixed;
@@ -2336,6 +2326,7 @@ mark.url-match {
     color: var(--danger-color);
     background: rgba(243, 139, 168, 0.1);
 }
+
 /* --- Smart Auto-Grouping UI --- */
 #toast-container {
     position: fixed;
@@ -2359,7 +2350,8 @@ mark.url-match {
     opacity: 0;
     transform: translate(-50%, 20px);
     pointer-events: none;
-    display: flex !important; /* overrides standard .hidden */
+    display: flex !important;
+    /* overrides standard .hidden */
 }
 
 #toast-message {
@@ -2419,7 +2411,15 @@ mark.url-match {
 }
 
 @keyframes flash {
-    0% { opacity: 0.7; }
-    50% { opacity: 0.3; }
-    100% { opacity: 0.7; }
+    0% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
 }
