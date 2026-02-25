@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc-like Sidebar | 你的瀏覽器，理當井然有序</title>
+    <meta name="description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Arc-like Sidebar | 你的瀏覽器，理當井然有序">
+    <meta property="og:description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+    <meta property="og:url" content="https://github.com/Tai-ch0802/arc-like-chrome-extension">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="glow-blur top-glow"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="nav-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span class="brand-name">Arc-like Sidebar</span>
+                <span class="badge badge-version">v1.2</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" data-i18n="nav_features">特色功能</a>
+                <a href="#ai-setup" data-i18n="nav_ai_setup">AI 設定</a>
+                <a href="#privacy" data-i18n="nav_privacy">隱私承諾</a>
+                <a href="changelog.html" data-i18n="nav_changelog">更新日誌</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="nav_github">GitHub</a>
+
+                <!-- Language Switcher -->
+                <div class="lang-switcher">
+                    <button class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
+                        <i data-lucide="globe"></i>
+                    </button>
+                    <ul class="lang-switcher-dropdown lang-switcher-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                    target="_blank" rel="noopener" class="btn btn-primary btn-sm" data-i18n="nav_install">安裝擴充功能</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero container">
+        <div class="hero-content">
+            <div class="badge-pill pulse-border">
+                <span class="dot"></span> <span data-i18n="hero_badge">全新支援本機 AI 智慧整理</span>
+            </div>
+            <h1 class="hero-title" data-i18n="hero_title_1">你的瀏覽器，<br><span class="text-gradient">理當井然有序。</span></h1>
+            <p class="hero-subtitle" data-i18n="hero_subtitle">
+                將凌亂的分頁轉化為清晰的思緒。結合垂直分頁、無縫書籤、閱讀清單與 100% 本機端 AI，<br />打造專屬於你的終極資訊指揮中心。
+            </p>
+            <div class="hero-actions">
+                <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                    target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+                    <i data-lucide="chrome"></i> <span data-i18n="hero_btn_install">加到 Chrome</span>
+                    <span class="btn-subtext" data-i18n="hero_btn_free">完全免費</span>
+                </a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" class="btn btn-secondary btn-lg"
+                    target="_blank" rel="noopener">
+                    <i data-lucide="github"></i> <span data-i18n="hero_btn_source">查看原始碼</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="mockup-window" style="aspect-ratio: auto; line-height: 0;">
+                <img src="images/hero-mockup.jpeg" alt="Arc-like Sidebar UI Mockup"
+                    style="width: 100%; height: auto; display: block;">
+            </div>
+            <div class="glow-blur center-glow"></div>
+        </div>
+    </section>
+
+    <!-- Features Bento Box -->
+    <section id="features" class="features container">
+        <h2 class="section-title" data-i18n="features_title">重塑你的瀏覽體驗</h2>
+        <p class="section-subtitle" data-i18n="features_subtitle">我們將所有你需要的工具，整合在一個優雅的側邊欄中。</p>
+
+        <div class="bento-grid">
+            <!-- 大格：本機 AI -->
+            <div class="bento-card bento-large glow-card">
+                <div class="card-icon-wrapper ai-icon">
+                    <i data-lucide="brain-circuit"></i>
+                </div>
+                <h3 class="card-title" data-i18n="ai_title">本機 AI 智慧整理</h3>
+                <p class="card-desc" data-i18n="ai_desc">當你打開了幾十個分頁卻無從整理時，點擊一下按鈕，AI 自動為你將標籤頁分類歸檔。最重要的是，一切運算皆透過 Gemini
+                    Nano
+                    在你的設備上進行，<b>資料絕不上傳雲端</b>。</p>
+                <div class="card-visual ai-visual">
+                    <div class="ai-tab-group">
+                        <div class="ai-tab-header"><i data-lucide="folder"></i> <span
+                                data-i18n="ai_visual_header">開發資源</span></div>
+                        <div class="ai-tab-item" data-i18n="ai_visual_item1">GitHub - 專案原始碼</div>
+                        <div class="ai-tab-item" data-i18n="ai_visual_item2">MDN Web Docs</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中格：拖曳排版 -->
+            <div class="bento-card bento-medium glow-card">
+                <div class="card-icon-wrapper">
+                    <i data-lucide="move"></i>
+                </div>
+                <h3 class="card-title" data-i18n="drag_title">絲滑的拖曳排版</h3>
+                <p class="card-desc" data-i18n="drag_desc">我們將分頁與書籤的界線徹底模糊。將分頁拖曳到資料夾中，它就成了書籤；將書籤拉出來，它就成為活耀的分頁。</p>
+                <div class="card-visual fake-drag-visual">
+                    <div class="drag-item active" data-i18n="drag_visual_active">目前分頁</div>
+                    <div class="drag-item" data-i18n="drag_visual_dragging">被拖曳的分頁...</div>
+                </div>
+            </div>
+
+            <!-- 中格：極致客製化 -->
+            <div class="bento-card bento-medium glow-card">
+                <div class="card-icon-wrapper">
+                    <i data-lucide="palette"></i>
+                </div>
+                <h3 class="card-title" data-i18n="theme_title">畫布級的客製化</h3>
+                <p class="card-desc" data-i18n="theme_desc">內建多種精美主題配色，支援自訂 HSL 色彩，甚至可以上傳你專屬的背景圖片來打造絕無僅有的側邊欄風格。</p>
+                <div class="card-visual theme-visual">
+                    <div class="color-swatch c1"></div>
+                    <div class="color-swatch c2"></div>
+                    <div class="color-swatch c3"></div>
+                </div>
+            </div>
+
+            <!-- 小格：RSS 與閱讀清單 -->
+            <div class="bento-card bento-small glow-card">
+                <div class="card-icon-wrapper">
+                    <i data-lucide="bookmark-plus"></i>
+                </div>
+                <h3 class="card-title" data-i18n="reading_title">閱讀清單</h3>
+                <p class="card-desc" data-i18n="reading_desc">不再讓「稍後閱讀」變成「永遠不讀」。內建整合的文章暫存區，專注於資訊吸收。</p>
+            </div>
+
+            <div class="bento-card bento-small glow-card">
+                <div class="card-icon-wrapper">
+                    <i data-lucide="rss"></i>
+                </div>
+                <h3 class="card-title" data-i18n="rss_title">輕量 RSS 訂閱</h3>
+                <p class="card-desc" data-i18n="rss_desc">自動為你抓取追蹤網站的最新動態，無需額外安裝其他閱讀器。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Features -->
+    <section class="more-features container">
+        <h2 class="section-title" data-i18n="more_title">還有更多亮點</h2>
+        <p class="section-subtitle" data-i18n="more_subtitle">從搜尋到鍵盤操控，每一處細節都經過打磨。</p>
+        <div class="features-list">
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="link"></i></div>
+                <div>
+                    <h4 data-i18n="linked_title">Linked Tabs 連結分頁</h4>
+                    <p data-i18n="linked_desc">從側邊欄打開書籤時自動建立連結，避免重複分頁、雙向同步狀態。</p>
+                </div>
+            </div>
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="app-window"></i></div>
+                <div>
+                    <h4 data-i18n="cross_window_title">跨視窗管理</h4>
+                    <p data-i18n="cross_window_desc">不只是當前視窗，總覽所有 Chrome 視窗與分頁，跨視窗搜尋與切換。</p>
+                </div>
+            </div>
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="search"></i></div>
+                <div>
+                    <h4 data-i18n="search_title">專業級搜尋</h4>
+                    <p data-i18n="search_desc">多關鍵字過濾、Domain 搜尋、智慧即時高亮，瞬間找到目標。</p>
+                </div>
+            </div>
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="keyboard"></i></div>
+                <div>
+                    <h4 data-i18n="keyboard_title">完整鍵盤導覽</h4>
+                    <p data-i18n="keyboard_desc">方向鍵流暢導覽、F2 重命名、Delete 刪除、Cmd/Ctrl+I 切換側邊欄。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Setup Guide -->
+    <section id="ai-setup" class="ai-setup container">
+        <h2 class="section-title" data-i18n="setup_title">啟用本機 AI 功能</h2>
+        <p class="section-subtitle" data-i18n="setup_subtitle">只需三個步驟，即可在你的裝置上解鎖 AI 智慧整理的強大能力。</p>
+
+        <div class="setup-requirements glow-card">
+            <h4 data-i18n="setup_req_title">系統需求</h4>
+            <div class="req-grid">
+                <div class="req-item"><i data-lucide="chrome"></i><span data-i18n="setup_req_chrome">Chrome 140
+                        或更新版本</span></div>
+                <div class="req-item"><i data-lucide="hard-drive"></i><span data-i18n="setup_req_storage">≥ 22 GB
+                        可用磁碟空間</span></div>
+                <div class="req-item"><i data-lucide="cpu"></i><span data-i18n="setup_req_hardware">GPU VRAM > 4GB 或 RAM
+                        ≥ 16GB</span></div>
+                <div class="req-item"><i data-lucide="monitor"></i><span data-i18n="setup_req_os">Windows 10+, macOS
+                        13+, Linux</span></div>
+            </div>
+        </div>
+
+        <div class="setup-steps">
+            <div class="step-card glow-card">
+                <div class="step-number">1</div>
+                <h4 data-i18n="setup_step1_title">啟用本機模型</h4>
+                <p data-i18n="setup_step1_desc">在 Chrome 網址列輸入
+                    <code>chrome://flags/#optimization-guide-on-device-model</code>，將選項設為「已啟用」。
+                </p>
+            </div>
+            <div class="step-card glow-card">
+                <div class="step-number">2</div>
+                <h4 data-i18n="setup_step2_title">啟用 Prompt API</h4>
+                <p data-i18n="setup_step2_desc">同樣在網址列輸入
+                    <code>chrome://flags/#prompt-api-for-gemini-nano</code>，設為「已啟用」或「已啟用多國語言」。
+                </p>
+            </div>
+            <div class="step-card glow-card">
+                <div class="step-number">3</div>
+                <h4 data-i18n="setup_step3_title">重新啟動並驗證</h4>
+                <p data-i18n="setup_step3_desc">重新啟動 Chrome，開啟 DevTools Console 輸入
+                    <code>await LanguageModel.availability();</code> 確認回傳 <code>"available"</code>。
+                </p>
+            </div>
+        </div>
+
+        <div class="setup-note">
+            <i data-lucide="info"></i>
+            <p data-i18n="setup_note">官方文件列出支援英文、西班牙文與日文，但實際上其他語言也能正常使用。若你使用的語言不在官方清單中，仍然歡迎嘗試！</p>
+        </div>
+    </section>
+
+    <!-- Privacy Section -->
+    <section id="privacy" class="privacy container">
+        <div class="privacy-box glow-card">
+            <div class="privacy-content">
+                <h2 class="section-title text-left" data-i18n="privacy_title">你的數據，只屬於你。</h2>
+                <p class="privacy-desc" data-i18n="privacy_desc">我們相信好的工具不應該以隱私作為代價。這也是為什麼我們選擇接入 Chrome 的內建
+                    <code>LanguageModel</code> API，讓 AI
+                    整理功能 100% 在你的設備上離線運作，而不是將你的每一筆瀏覽紀錄都傳送到外部伺服器。
+                </p>
+                <div class="privacy-badges">
+                    <span class="badge badge-outline"><i data-lucide="shield-check"></i> <span
+                            data-i18n="privacy_badge_local">本機端處理</span></span>
+                    <span class="badge badge-outline"><i data-lucide="code-2"></i> <span
+                            data-i18n="privacy_badge_open">開源透明</span></span>
+                    <span class="badge badge-outline"><i data-lucide="wifi-off"></i> <span
+                            data-i18n="privacy_badge_offline">離線可用</span></span>
+                </div>
+                <div style="margin-top: 32px;">
+                    <a href="privacy.html" class="btn btn-secondary" data-i18n="btn_read_privacy_policy">閱讀完整隱私權政策</a>
+                </div>
+            </div>
+            <div class="privacy-icon-large">
+                <i data-lucide="shield"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span>Arc-like Sidebar</span>
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html" data-i18n="footer_privacy">隱私權政策</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/issues" target="_blank" rel="noopener"
+                    data-i18n="footer_report">問題回報</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="footer_license">開源授權 (MIT)</a>
+            </div>
+            <div class="footer-copy" data-i18n="footer_copy">
+                © 2024-2026 Arc-like Sidebar. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/version.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // 初始化 Lucide 圖示
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

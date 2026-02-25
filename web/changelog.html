@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="changelog_page_title">更新日誌 | Arc-like Sidebar</title>
+    <meta name="description" content="Arc-like Sidebar 更新日誌，查看我們近期的功能更新與錯誤修復。">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="更新日誌 | Arc-like Sidebar">
+    <meta property="og:description" content="Arc-like Sidebar 更新日誌，查看我們近期的功能更新與錯誤修復。">
+    <meta property="og:url" content="https://github.com/Tai-ch0802/arc-like-chrome-extension/releases">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .changelog-container {
+            padding-top: 60px;
+            padding-bottom: 100px;
+            max-width: 800px;
+        }
+
+        .changelog-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .changelog-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .changelog-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .release-item {
+            position: relative;
+            margin-bottom: 48px;
+        }
+
+        .release-dot {
+            position: absolute;
+            left: -37px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #a855f7;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+            border: 2px solid var(--bg-surface);
+        }
+
+        .release-item:first-child .release-dot {
+            background: #10b981;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+        }
+
+        .release-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .release-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .release-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .release-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .release-desc {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .release-item:first-child .release-title::after {
+            content: 'Latest';
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .more-releases {
+            text-align: center;
+            margin-top: 64px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline {
+                padding-left: 24px;
+            }
+
+            .release-dot {
+                left: -29px;
+            }
+
+            .release-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow-blur top-glow" style="height: 400px; opacity: 0.5;"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="nav-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span class="brand-name">Arc-like Sidebar</span>
+                <span class="badge badge-version" style="margin-left: 12px;">v1.2</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#features" data-i18n="nav_features">特色功能</a>
+                <a href="index.html#ai-setup" data-i18n="nav_ai_setup">AI 設定</a>
+                <a href="index.html#privacy" data-i18n="nav_privacy">隱私承諾</a>
+                <a href="#" class="active" data-i18n="nav_changelog">更新日誌</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="nav_github">GitHub</a>
+
+                <!-- Language Switcher -->
+                <div class="lang-switcher">
+                    <button class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
+                        <i data-lucide="globe"></i>
+                    </button>
+                    <ul class="lang-switcher-dropdown lang-switcher-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                    target="_blank" rel="noopener" class="btn btn-primary btn-sm" data-i18n="nav_install">安裝擴充功能</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Changelog Content -->
+    <main class="container changelog-container">
+
+        <div class="changelog-header reveal">
+            <h1 data-i18n="changelog_h1">更新日誌</h1>
+            <p data-i18n="changelog_subtitle">了解我們在近期版本中帶來的新功能、改善與錯誤修復。</p>
+        </div>
+
+        <div class="timeline">
+            <!-- v1.13.3 -->
+            <div class="release-item reveal">
+                <div class="release-dot"></div>
+                <span class="release-date" data-i18n="v1_13_3_date">2026年2月11日</span>
+                <div class="release-card">
+                    <h3 class="release-title" data-i18n="v1_13_3_title">版本 1.13.3</h3>
+                    <p class="release-desc" data-i18n="v1_13_3_desc">
+                        修復了在背景自動整理與更新 RSS 訂閱時，某些情況下會突然中斷連線的問題，確保您的訂閱內容能更穩定地送達。同時也優化了底層檔案的封裝流程。
+                    </p>
+                </div>
+            </div>
+
+            <!-- v1.13.2 -->
+            <div class="release-item reveal">
+                <div class="release-dot"></div>
+                <span class="release-date" data-i18n="v1_13_2_date">2026年2月10日</span>
+                <div class="release-card">
+                    <h3 class="release-title" data-i18n="v1_13_2_title">版本 1.13.2</h3>
+                    <p class="release-desc" data-i18n="v1_13_2_desc">
+                        優化了 RSS 訂閱的抓取機制，現在能夠更順暢地支援更多類型的網站（例如 Substack），讓您的資訊來源不再受限。
+                    </p>
+                </div>
+            </div>
+
+            <!-- v1.13.1 -->
+            <div class="release-item reveal">
+                <div class="release-dot"></div>
+                <span class="release-date" data-i18n="v1_13_1_date">2026年2月10日</span>
+                <div class="release-card">
+                    <h3 class="release-title" data-i18n="v1_13_1_title">版本 1.13.1</h3>
+                    <p class="release-desc" data-i18n="v1_13_1_desc">
+                        修復了在側邊欄新增 RSS 訂閱時偶發的「載入失敗」錯誤；同時大幅提升了書籤列表的顯示效能，讓清單整理過程更加絲滑。此外，我們也強化了側邊欄操作介面的安全性防護。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="more-releases reveal">
+            <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/releases" target="_blank" rel="noopener"
+                class="btn btn-secondary">
+                <i data-lucide="github"></i> <span data-i18n="changelog_read_more">在 GitHub 上閱讀完整開發者日誌</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <a href="index.html" class="footer-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span>Arc-like Sidebar</span>
+            </a>
+            <div class="footer-links">
+                <a href="privacy.html" data-i18n="footer_privacy">隱私權政策</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/issues" target="_blank" rel="noopener"
+                    data-i18n="footer_report">問題回報</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="footer_license">開源授權 (MIT)</a>
+            </div>
+            <div class="footer-copy" data-i18n="footer_copy">
+                © 2024-2026 Arc-like Sidebar. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/version.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Init Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

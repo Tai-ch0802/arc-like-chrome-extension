@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="privacy_page_title">隱私權政策 | Arc-like Sidebar</title>
+    <meta name="description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="隱私權政策 | Arc-like Sidebar">
+    <meta property="og:description" content="Arc-like Sidebar 隱私權聲明，我們相信好的工具不應以隱私為代價，100% 離線 AI 處理。">
+    <meta property="og:url" content="https://github.com/Tai-ch0802/arc-like-chrome-extension">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .privacy-doc-container {
+            padding-top: 60px;
+            padding-bottom: 100px;
+            max-width: 900px;
+        }
+
+        .privacy-document {
+            padding: 48px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .privacy-document h3 {
+            margin-top: 48px;
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .privacy-document p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .privacy-document ul {
+            margin-left: 24px;
+            margin-bottom: 24px;
+            color: var(--text-secondary);
+        }
+
+        .privacy-document li {
+            margin-bottom: 12px;
+        }
+
+        .privacy-document strong,
+        .privacy-document b {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .privacy-document code {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #fff;
+        }
+
+        .permissions-table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+            margin-top: 16px;
+        }
+
+        .permissions-table th,
+        .permissions-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .permissions-table th {
+            font-weight: 600;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .permissions-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .permissions-table code {
+            color: #d8b4fe;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .privacy-document a {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+
+        .privacy-document a:hover {
+            color: #93c5fd;
+        }
+
+        @media (max-width: 768px) {
+            .privacy-document {
+                padding: 24px;
+            }
+
+            .permissions-table th,
+            .permissions-table td {
+                padding: 12px 8px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow-blur top-glow" style="height: 400px; opacity: 0.5;"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="nav-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span class="brand-name">Arc-like Sidebar</span>
+                <span class="badge badge-version" style="margin-left: 12px;">v1.2</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#features" data-i18n="nav_features">特色功能</a>
+                <a href="index.html#ai-setup" data-i18n="nav_ai_setup">AI 設定</a>
+                <a href="index.html#privacy" data-i18n="nav_privacy">隱私承諾</a>
+                <a href="changelog.html" data-i18n="nav_changelog">更新日誌</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="nav_github">GitHub</a>
+
+                <!-- Language Switcher -->
+                <div class="lang-switcher">
+                    <button class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
+                        <i data-lucide="globe"></i>
+                    </button>
+                    <ul class="lang-switcher-dropdown lang-switcher-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                    target="_blank" rel="noopener" class="btn btn-primary btn-sm" data-i18n="nav_install">安裝擴充功能</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Privacy Content -->
+    <main class="container privacy-doc-container">
+        <h1 data-i18n="privacy_h1"
+            style="font-size: 2.5rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.02em;">隱私權政策</h1>
+        <p data-i18n="privacy_effective_date"
+            style="color: var(--text-secondary); margin-bottom: 40px; font-size: 1.1rem;">生效日期：2026年2月10日</p>
+
+        <article class="privacy-document glow-card">
+            <p data-i18n="privacy_intro">感謝您使用「Arc 風格側邊欄」Chrome 擴充功能（以下簡稱「本擴充功能」）。我們致力於保護您的個人隱私。本隱私權政策旨在說明我們如何處理您的資訊。
+            </p>
+
+            <h3 data-i18n="privacy_s1_title">1. 我們存取的資訊</h3>
+            <p data-i18n="privacy_s1_desc">本擴充功能為了實現其核心功能，需要向 Chrome 瀏覽器請求特定資料的讀取權限。我們存取的資訊類型如下：</p>
+            <ul>
+                <li data-i18n="privacy_s1_li1"><strong>分頁與分頁群組資訊：</strong>包括您開啟的分頁網址、標題，以及分頁群組的標題與顏色。</li>
+                <li data-i18n="privacy_s1_li2"><strong>書籤資訊：</strong>包括您所有書籤的網址、標題與資料夾結構。</li>
+                <li data-i18n="privacy_s1_li3"><strong>閱讀清單資訊：</strong>包括您 Chrome 閱讀清單中項目的網址、標題與已讀狀態。</li>
+                <li data-i18n="privacy_s1_li4"><strong>操作狀態資訊：</strong>包括「Linked Tabs」的關聯狀態、UI 展開狀態、RSS 訂閱設定與已抓取文章的雜湊值。
+                </li>
+            </ul>
+
+            <h3 data-i18n="privacy_s2_title">2. 資料儲存與同步</h3>
+            <p data-i18n="privacy_s2_desc">我們採用最小化資料收集原則，並根據資料類型採用不同的儲存方式：</p>
+            <ul>
+                <li data-i18n="privacy_s2_li1">
+                    <strong>本機資料：</strong>您的<strong>分頁</strong>、<strong>書籤</strong>、<strong>Linked Tabs 關聯狀態</strong>以及
+                    <strong>RSS 已抓取文章的雜湊值</strong>等核心操作資料，僅儲存於您裝置的 <code>chrome.storage.local</code>
+                    中。我們<strong>不會</strong>將這些資料上傳至任何伺服器。
+                </li>
+                <li data-i18n="privacy_s2_li2">
+                    <strong>設定同步：</strong>為了提供跨裝置的一致體驗，您的<strong>擴充功能偏好設定</strong>（例如：主題選擇、RSS 訂閱清單）會儲存於
+                    <code>chrome.storage.sync</code>。這將透過您的 Google 帳號在您登入的 Chrome 瀏覽器間進行同步。
+                </li>
+            </ul>
+
+            <h3 data-i18n="privacy_s3_title">3. 我們傳輸的資訊</h3>
+            <p data-i18n="privacy_s3_desc">一般情況下，本擴充功能不會將您的個人資訊對外傳輸。以下為涉及外部網路請求的功能：</p>
+            <ul>
+                <li data-i18n="privacy_s3_li1"><strong>書籤圖示：</strong>為了顯示您書籤列表中的網站圖示
+                    (Favicon)，本擴充功能會將書籤的「<strong>網域</strong>」(例如 <code>google.com</code>) 傳送至 Google 的公開 Favicon 服務
+                    (<code>https://www.google.com/s2/favicons</code>)
+                    以獲取對應的圖示。請注意，我們<strong>僅傳輸網域名稱</strong>，絕不會傳輸包含個人路徑或參數的完整網址。</li>
+                <li data-i18n="privacy_s3_li2"><strong>RSS 訂閱抓取：</strong>若您啟用 RSS 訂閱功能，本擴充功能會定期向您所訂閱的 RSS feed URL 發送
+                    HTTP 請求以取得最新文章。這些請求<strong>僅限於您主動訂閱的網址</strong>，且抓取的內容僅用於加入您的 Chrome 閱讀清單，不會傳送至任何第三方伺服器。</li>
+            </ul>
+
+            <h3 data-i18n="privacy_s4_title">4. 權限說明</h3>
+            <p data-i18n="privacy_s4_desc">本擴充功能使用以下 Chrome 權限，每項權限的用途說明如下：</p>
+
+            <div style="overflow-x: auto;">
+                <table class="permissions-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="privacy_s4_th1">權限</th>
+                            <th data-i18n="privacy_s4_th2">用途</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>tabs</code></td>
+                            <td data-i18n="privacy_s4_td1">讀取分頁資訊以在側邊欄中顯示和管理分頁</td>
+                        </tr>
+                        <tr>
+                            <td><code>tabGroups</code></td>
+                            <td data-i18n="privacy_s4_td2">讀取與管理分頁群組的標題和顏色</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmarks</code></td>
+                            <td data-i18n="privacy_s4_td3">讀取與管理書籤列表</td>
+                        </tr>
+                        <tr>
+                            <td><code>sidePanel</code></td>
+                            <td data-i18n="privacy_s4_td4">啟用側邊欄面板功能</td>
+                        </tr>
+                        <tr>
+                            <td><code>storage</code></td>
+                            <td data-i18n="privacy_s4_td5">儲存擴充功能的設定與操作狀態</td>
+                        </tr>
+                        <tr>
+                            <td><code>readingList</code></td>
+                            <td data-i18n="privacy_s4_td6">管理 Chrome 閱讀清單（新增/移除/標記已讀）</td>
+                        </tr>
+                        <tr>
+                            <td><code>alarms</code></td>
+                            <td data-i18n="privacy_s4_td7">排程 RSS 訂閱的定時抓取任務</td>
+                        </tr>
+                        <tr>
+                            <td><code>offscreen</code></td>
+                            <td data-i18n="privacy_s4_td8">在背景處理 RSS feed 的 XML 解析</td>
+                        </tr>
+                        <tr>
+                            <td><code>host_permissions</code></td>
+                            <td data-i18n="privacy_s4_td9">用於抓取 RSS feed 內容及顯示書籤圖示</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 data-i18n="privacy_s5_title">5. 資訊的使用</h3>
+            <p data-i18n="privacy_s5_desc">我們存取的所有資訊，其用途<strong>僅限於</strong>：</p>
+            <ul>
+                <li data-i18n="privacy_s5_li1">在側邊欄中渲染、呈現您的分頁與書籤列表。</li>
+                <li data-i18n="privacy_s5_li2">讓您能夠透過側邊欄進行搜尋、排序、分組、關閉分頁與刪除書籤等管理操作。</li>
+                <li data-i18n="privacy_s5_li3">管理您的 Chrome 閱讀清單與 RSS 訂閱內容。</li>
+            </ul>
+            <p data-i18n="privacy_s5_outro">您的資料絕不會被用於任何廣告、追蹤或分析等其他目的。</p>
+
+            <h3 data-i18n="privacy_s6_title">6. 開源與透明度</h3>
+            <p data-i18n="privacy_s6_desc">本擴充功能為 100% 開源軟體，採用 MIT
+                授權條款。我們相信完全的透明化，歡迎任何人檢視我們的原始程式碼，以驗證本隱私權政策的承諾。您可以在此處找到原始程式碼：<br>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank"
+                    rel="noopener">https://github.com/Tai-ch0802/arc-like-chrome-extension</a>
+            </p>
+
+            <h3 data-i18n="privacy_s7_title">7. 政策變更</h3>
+            <p data-i18n="privacy_s7_desc">我們可能會不時更新本隱私權政策。任何變更都將發布在此頁面上。</p>
+
+            <h3 data-i18n="privacy_s8_title">8. 聯絡我們</h3>
+            <p data-i18n="privacy_s8_desc">如果您對本隱私權政策有任何疑問，歡迎透過以下方式與我聯絡：</p>
+            <ul style="list-style: none; margin-left: 0;">
+                <li data-i18n="privacy_s8_li1"><strong>開發者：</strong>Tai-ch0802</li>
+                <li data-i18n="privacy_s8_li2"><strong>聯絡方式：</strong> <a
+                        href="mailto:tai@taislife.work">tai@taislife.work</a></li>
+            </ul>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <a href="index.html" class="footer-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span>Arc-like Sidebar</span>
+            </a>
+            <div class="footer-links">
+                <a href="privacy.html" data-i18n="footer_privacy">隱私權政策</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/issues" target="_blank" rel="noopener"
+                    data-i18n="footer_report">問題回報</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="footer_license">開源授權 (MIT)</a>
+            </div>
+            <div class="footer-copy" data-i18n="footer_copy">
+                © 2024-2026 Arc-like Sidebar. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/version.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Init Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
