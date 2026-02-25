@@ -120,5 +120,9 @@
     "v1_13_2_desc": "Enhanced our RSS fetcher to smoothly support more websites, including Substack. Your information flow is now less restricted than ever.",
     "v1_13_1_date": "February 10, 2026",
     "v1_13_1_title": "Version 1.13.1",
-    "v1_13_1_desc": "We solved a \"failed to load\" error that occurred when subscribing to new RSS feeds from the sidebar. We've also massively upgraded bookmark rendering performance, making list scrolling buttery smooth, alongside crucial UI security patches."
+    "v1_13_1_desc": "We solved a \"failed to load\" error that occurred when subscribing to new RSS feeds from the sidebar. We've also massively upgraded bookmark rendering performance, making list scrolling buttery smooth, alongside crucial UI security patches.",
+    "ai_folder_dev": "การพัฒนา",
+    "ai_folder_media": "สื่อ",
+    "ai_visual_item3": "YouTube - บทช่วยสอน CSS",
+    "ai_visual_item4": "Spotify - เสียงสีขาว"
 }
