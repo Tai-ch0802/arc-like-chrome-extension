@@ -7,12 +7,32 @@
     <title>Arc-like Sidebar | 你的瀏覽器，理當井然有序</title>
     <meta name="description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
 
-    <!-- Open Graph -->
+    <!-- SEO Meta Tags -->
+    <meta name="keywords"
+        content="Chrome extension, Arc browser, sidebar, vertical tabs, bookmark manager, AI tab organizer, Gemini Nano, extension">
+    <meta name="author" content="Tai">
+    <link rel="canonical" href="https://arc-sidebar.com/">
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="apple-touch-icon.png">
+
+    <!-- Open Graph / Web / Socials -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arc-sidebar.com/">
     <meta property="og:title" content="Arc-like Sidebar | 你的瀏覽器，理當井然有序">
     <meta property="og:description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
-    <meta property="og:url" content="https://github.com/Tai-ch0802/arc-like-chrome-extension">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://arc-sidebar.com/">
+    <meta name="twitter:title" content="Arc-like Sidebar | 你的瀏覽器，理當井然有序">
+    <meta name="twitter:description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -112,39 +132,66 @@
                     <div class="ai-anim-container">
                         <!-- 混亂的初始列表 -->
                         <div class="ai-list messy-list">
-                            <div class="ai-item tab"><i data-lucide="globe"></i> <span data-i18n="ai_tab5">YouTube - LoFi 白噪音</span></div>
-                            <div class="ai-item tab"><i data-lucide="github"></i> <span data-i18n="ai_tab1">GitHub - 專案原始碼</span></div>
-                            <div class="ai-item tab"><i data-lucide="mail"></i> <span data-i18n="ai_tab9">Gmail - 收件匣</span></div>
-                            <div class="ai-item tab"><i data-lucide="code"></i> <span data-i18n="ai_tab2">StackOverflow - CSS 問題</span></div>
-                            <div class="ai-item tab"><i data-lucide="music"></i> <span data-i18n="ai_tab6">Spotify - 專注歌單</span></div>
-                            <div class="ai-item tab"><i data-lucide="box"></i> <span data-i18n="ai_tab10">Notion - 衝刺進度表</span></div>
-                            <div class="ai-item tab"><i data-lucide="book"></i> <span data-i18n="ai_tab3">MDN Web Docs - flexbox</span></div>
-                            <div class="ai-item tab"><i data-lucide="video"></i> <span data-i18n="ai_tab7">Netflix</span></div>
-                            <div class="ai-item tab"><i data-lucide="message-square"></i> <span data-i18n="ai_tab11">Slack - 設計團隊</span></div>
-                            <div class="ai-item tab"><i data-lucide="cpu"></i> <span data-i18n="ai_tab4">Vercel - 部署狀態</span></div>
-                            <div class="ai-item tab"><i data-lucide="twitch"></i> <span data-i18n="ai_tab8">Twitch - 實況台</span></div>
-                            <div class="ai-item tab"><i data-lucide="layout"></i> <span data-i18n="ai_tab12">Figma - 介面設計</span></div>
+                            <div class="ai-item tab"><i data-lucide="globe"></i> <span data-i18n="ai_tab5">YouTube -
+                                    LoFi 白噪音</span></div>
+                            <div class="ai-item tab"><i data-lucide="github"></i> <span data-i18n="ai_tab1">GitHub -
+                                    專案原始碼</span></div>
+                            <div class="ai-item tab"><i data-lucide="mail"></i> <span data-i18n="ai_tab9">Gmail -
+                                    收件匣</span></div>
+                            <div class="ai-item tab"><i data-lucide="code"></i> <span data-i18n="ai_tab2">StackOverflow
+                                    - CSS 問題</span></div>
+                            <div class="ai-item tab"><i data-lucide="music"></i> <span data-i18n="ai_tab6">Spotify -
+                                    專注歌單</span></div>
+                            <div class="ai-item tab"><i data-lucide="box"></i> <span data-i18n="ai_tab10">Notion -
+                                    衝刺進度表</span></div>
+                            <div class="ai-item tab"><i data-lucide="book"></i> <span data-i18n="ai_tab3">MDN Web Docs -
+                                    flexbox</span></div>
+                            <div class="ai-item tab"><i data-lucide="video"></i> <span
+                                    data-i18n="ai_tab7">Netflix</span></div>
+                            <div class="ai-item tab"><i data-lucide="message-square"></i> <span
+                                    data-i18n="ai_tab11">Slack - 設計團隊</span></div>
+                            <div class="ai-item tab"><i data-lucide="cpu"></i> <span data-i18n="ai_tab4">Vercel -
+                                    部署狀態</span></div>
+                            <div class="ai-item tab"><i data-lucide="twitch"></i> <span data-i18n="ai_tab8">Twitch -
+                                    實況台</span></div>
+                            <div class="ai-item tab"><i data-lucide="layout"></i> <span data-i18n="ai_tab12">Figma -
+                                    介面設計</span></div>
                         </div>
 
                         <!-- 整理後的列表 (與雷射光同步出現) -->
                         <div class="ai-list sorted-list">
-                            <div class="ai-item folder folder-dev"><i data-lucide="folder"></i> <span data-i18n="ai_folder_dev">開發資源</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="github"></i> <span data-i18n="ai_tab1">GitHub - 專案原始碼</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="code"></i> <span data-i18n="ai_tab2">StackOverflow - CSS 問題</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="book"></i> <span data-i18n="ai_tab3">MDN Web Docs - flexbox</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="cpu"></i> <span data-i18n="ai_tab4">Vercel - 部署狀態</span></div>
-                            
-                            <div class="ai-item folder folder-media"><i data-lucide="folder"></i> <span data-i18n="ai_folder_media">影音娛樂</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="globe"></i> <span data-i18n="ai_tab5">YouTube - LoFi 白噪音</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="music"></i> <span data-i18n="ai_tab6">Spotify - 專注歌單</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="video"></i> <span data-i18n="ai_tab7">Netflix</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="twitch"></i> <span data-i18n="ai_tab8">Twitch - 實況台</span></div>
+                            <div class="ai-item folder folder-dev"><i data-lucide="folder"></i> <span
+                                    data-i18n="ai_folder_dev">開發資源</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="github"></i> <span
+                                    data-i18n="ai_tab1">GitHub - 專案原始碼</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="code"></i> <span
+                                    data-i18n="ai_tab2">StackOverflow - CSS 問題</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="book"></i> <span data-i18n="ai_tab3">MDN
+                                    Web Docs - flexbox</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="cpu"></i> <span data-i18n="ai_tab4">Vercel
+                                    - 部署狀態</span></div>
 
-                            <div class="ai-item folder folder-work"><i data-lucide="folder"></i> <span data-i18n="ai_folder_work">工作與專案</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="mail"></i> <span data-i18n="ai_tab9">Gmail - 收件匣</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="box"></i> <span data-i18n="ai_tab10">Notion - 衝刺進度表</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="message-square"></i> <span data-i18n="ai_tab11">Slack - 設計團隊</span></div>
-                            <div class="ai-item tab indented"><i data-lucide="layout"></i> <span data-i18n="ai_tab12">Figma - 介面設計</span></div>
+                            <div class="ai-item folder folder-media"><i data-lucide="folder"></i> <span
+                                    data-i18n="ai_folder_media">影音娛樂</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="globe"></i> <span
+                                    data-i18n="ai_tab5">YouTube - LoFi 白噪音</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="music"></i> <span
+                                    data-i18n="ai_tab6">Spotify - 專注歌單</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="video"></i> <span
+                                    data-i18n="ai_tab7">Netflix</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="twitch"></i> <span
+                                    data-i18n="ai_tab8">Twitch - 實況台</span></div>
+
+                            <div class="ai-item folder folder-work"><i data-lucide="folder"></i> <span
+                                    data-i18n="ai_folder_work">工作與專案</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="mail"></i> <span data-i18n="ai_tab9">Gmail
+                                    - 收件匣</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="box"></i> <span
+                                    data-i18n="ai_tab10">Notion - 衝刺進度表</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="message-square"></i> <span
+                                    data-i18n="ai_tab11">Slack - 設計團隊</span></div>
+                            <div class="ai-item tab indented"><i data-lucide="layout"></i> <span
+                                    data-i18n="ai_tab12">Figma - 介面設計</span></div>
                         </div>
 
                         <div class="ai-scanner"></div>
