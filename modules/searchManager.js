@@ -132,13 +132,13 @@ function updateGroupVisibility(header, content, visibleTabsCount, keywords) {
 
     const arrow = header.querySelector('.tab-group-arrow');
     if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
-        // 搜尋時展開群組
-        content.classList.remove('collapsed');
+        // 搜尋時展開群組（需使用 inline style 以覆蓋 tabRenderer 設定的 style.display）
+        content.style.display = 'block';
         if (arrow) arrow.textContent = '▼';
     } else if (keywords.length === 0) {
         // 無搜尋時恢復原狀態
         const isCollapsed = header.dataset.collapsed === 'true';
-        content.classList.toggle('collapsed', isCollapsed);
+        content.style.display = isCollapsed ? 'none' : 'block';
         if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
     }
 }
@@ -358,8 +358,17 @@ function filterReadingList(keywords, regexes = []) {
 // Search state to track if we are currently showing filtered results
 let isFiltering = false;
 
+// Search generation counter to prevent stale async results from overwriting newer ones.
+// Race condition: filterBookmarks(["test"]) awaits getBookmarkTree(), during which the user
+// clears search → filterBookmarks([]) fires refreshBookmarksRequired → full tree re-renders.
+// Without this guard, the stale filterBookmarks(["test"]) resolves and overwrites the full tree.
+let bookmarkSearchGeneration = 0;
+
 // 過濾書籤，回傳可見書籤數量 (使用 Cache 進行搜尋)
 async function filterBookmarks(keywords, regexes = []) {
+    // Increment generation for every call; capture it to detect staleness after await
+    const thisGeneration = ++bookmarkSearchGeneration;
+
     // 如果沒有關鍵字，直接返回（不重新渲染）
     // 書籤已經在 refreshBookmarks 中渲染好了
     // 如果沒有關鍵字，檢查是否需要重置視圖
@@ -398,7 +407,9 @@ async function filterBookmarks(keywords, regexes = []) {
 
     if (matchingItems.length === 0) {
         // 清空書籤列表，顯示無結果
-        ui.bookmarkListContainer.innerHTML = '';
+        if (thisGeneration === bookmarkSearchGeneration) {
+            ui.bookmarkListContainer.innerHTML = '';
+        }
         return 0;
     }
 
@@ -422,6 +433,12 @@ async function filterBookmarks(keywords, regexes = []) {
     if (!tree) {
         tree = await api.getBookmarkTree();
     }
+
+    // After await: check if a newer search has been initiated. If so, discard this stale result.
+    if (thisGeneration !== bookmarkSearchGeneration) {
+        return 0;
+    }
+
     if (!tree[0] || !tree[0].children) return 0;
 
     // 過濾樹：只保留 visibleIds 中的節點
@@ -432,12 +449,6 @@ async function filterBookmarks(keywords, regexes = []) {
     ui.renderBookmarks(filteredTree, ui.bookmarkListContainer, '1', () => {
         document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
     }, { forceExpandAll: true, highlightRegexes: regexes });
-
-    // 設定 URL 匹配的 dataset 以供 renderBookmarks (如果將來需要) 或其他邏輯使用
-    // 注意：因為現在高亮是在渲染時直接做的，這裡可能不需要再設定 dataset.urlMatch 給高亮函數用了，
-    // 但也許還有其他用途，先保留，但 matchedDomain 其實已經在高亮邏輯中處理了。
-    // 實際上，如果 renderBookmarks 處理了高亮和 domain 顯示，這裡的 loop 可能可以簡化或移除。
-    // 但為了保持資料一致性，保留無妨。
 
     return matchingItems.length;
 }
