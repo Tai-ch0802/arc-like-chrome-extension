@@ -122,7 +122,20 @@
     "v1_13_1_title": "版本 1.13.1",
     "v1_13_1_desc": "修復了在側邊欄新增 RSS 訂閱時偶發的「載入失敗」錯誤；同時大幅提升了書籤列表的顯示效能，讓清單整理過程更加絲滑。此外，我們也強化了側邊欄操作介面的安全性防護。",
     "ai_folder_dev": "開發資源",
-    "ai_folder_media": "影音媒體",
+    "ai_folder_media": "影音娛樂",
     "ai_visual_item3": "YouTube - CSS 教學",
-    "ai_visual_item4": "Spotify - 工作白噪音"
+    "ai_visual_item4": "Spotify - 工作白噪音",
+    "ai_folder_work": "工作與專案",
+    "ai_tab1": "GitHub - 專案原始碼",
+    "ai_tab2": "StackOverflow - CSS 問題",
+    "ai_tab3": "MDN Web Docs - flexbox",
+    "ai_tab4": "Vercel - 部署狀態",
+    "ai_tab5": "YouTube - LoFi 白噪音",
+    "ai_tab6": "Spotify - 專注歌單",
+    "ai_tab7": "Netflix",
+    "ai_tab8": "Twitch - 實況台",
+    "ai_tab9": "Gmail - 收件匣",
+    "ai_tab10": "Notion - 衝刺進度表",
+    "ai_tab11": "Slack - 設計團隊",
+    "ai_tab12": "Figma - 介面設計"
 }

@@ -124,5 +124,18 @@
     "ai_folder_dev": "개발 리소스",
     "ai_folder_media": "미디어",
     "ai_visual_item3": "YouTube - CSS 튜토리얼",
-    "ai_visual_item4": "Spotify - 백색 소음"
+    "ai_visual_item4": "Spotify - 백색 소음",
+    "ai_folder_work": "업무 & 프로젝트",
+    "ai_tab1": "GitHub - 프로젝트 리포지토리",
+    "ai_tab2": "StackOverflow - CSS 버그",
+    "ai_tab3": "MDN Web Docs - flexbox",
+    "ai_tab4": "Vercel - 배포",
+    "ai_tab5": "YouTube - LoFi 라디오",
+    "ai_tab6": "Spotify - 집중 믹스",
+    "ai_tab7": "Netflix",
+    "ai_tab8": "Twitch - 라이브 코딩",
+    "ai_tab9": "Gmail - 받은편지함",
+    "ai_tab10": "Notion - 스프린트 계획",
+    "ai_tab11": "Slack - 디자인 팀",
+    "ai_tab12": "Figma - UI 목업"
 }

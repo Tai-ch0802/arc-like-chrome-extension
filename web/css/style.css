@@ -485,21 +485,22 @@ a:hover {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
 .ai-item {
-    font-size: 0.75rem;
+    width: calc(50% - 6px);
+    margin: 3px;
+    font-size: 0.7rem;
     color: var(--text-secondary);
-    padding: 6px 10px;
+    padding: 4px 8px;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     transform-origin: left center;
     overflow: hidden;
     white-space: nowrap;
@@ -515,27 +516,14 @@ a:hover {
     color: #d8b4fe;
     background: rgba(168, 85, 247, 0.1);
     border-color: rgba(168, 85, 247, 0.2);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 500;
+    width: calc(100% - 6px);
     animation: folderAnimation 8s infinite ease-in-out;
 }
 
 .ai-item.tab {
     animation: tabAnimation 8s infinite ease-in-out;
-}
-
-/* Give tabs unique initial appearances to look like a messy list */
-.tab-1,
-.tab-3 {
-    margin-left: 0;
-}
-
-.tab-2 {
-    margin-left: 2px;
-}
-
-.tab-4 {
-    margin-left: -2px;
 }
 
 .ai-scanner {
@@ -585,7 +573,8 @@ a:hover {
         max-height: 0;
         padding-top: 0;
         padding-bottom: 0;
-        margin-bottom: 0px;
+        margin-top: 0;
+        margin-bottom: 0;
         border-width: 0;
         transform: translateY(-5px);
     }
@@ -594,9 +583,10 @@ a:hover {
     100% {
         opacity: 1;
         max-height: 40px;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        margin-bottom: 0;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-top: 3px;
+        margin-bottom: 3px;
         border-width: 1px;
         transform: translateY(0);
     }
@@ -609,20 +599,22 @@ a:hover {
         transform: translateX(0);
         opacity: 1;
         max-height: 40px;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        margin-bottom: 0;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-top: 3px;
+        margin-bottom: 3px;
         border-width: 1px;
     }
 
     45%,
     65% {
-        transform: translateX(16px);
+        transform: translateX(8px);
         opacity: 1;
         max-height: 40px;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        margin-bottom: 0;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-top: 3px;
+        margin-bottom: 3px;
         border-width: 1px;
     }
 
@@ -633,6 +625,7 @@ a:hover {
         max-height: 0;
         padding-top: 0;
         padding-bottom: 0;
+        margin-top: 0;
         margin-bottom: 0;
         border-width: 0;
     }

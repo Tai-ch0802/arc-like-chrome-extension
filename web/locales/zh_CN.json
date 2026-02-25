@@ -122,7 +122,20 @@
     "v1_13_1_title": "版本 1.13.1",
     "v1_13_1_desc": "修复了在侧边栏新增 RSS 订阅时偶发的“加载失败”错误；同时大幅提升了书签列表的显示性能，让列表整理过程更加顺滑。此外，我们还加强了侧边栏操作界面的安全防护。",
     "ai_folder_dev": "开发资源",
-    "ai_folder_media": "影音媒体",
+    "ai_folder_media": "影音娱乐",
     "ai_visual_item3": "YouTube - CSS 教程",
-    "ai_visual_item4": "Spotify - 工作白噪音"
+    "ai_visual_item4": "Spotify - 工作白噪音",
+    "ai_folder_work": "工作与项目",
+    "ai_tab1": "GitHub - 项目源码",
+    "ai_tab2": "StackOverflow - CSS 问题",
+    "ai_tab3": "MDN Web Docs - flexbox",
+    "ai_tab4": "Vercel - 部署状态",
+    "ai_tab5": "YouTube - LoFi 白噪音",
+    "ai_tab6": "Spotify - 专注歌单",
+    "ai_tab7": "Netflix",
+    "ai_tab8": "Twitch - 直播",
+    "ai_tab9": "Gmail - 收件箱",
+    "ai_tab10": "Notion - 冲刺进度",
+    "ai_tab11": "Slack - 设计团队",
+    "ai_tab12": "Figma - 界面设计"
 }

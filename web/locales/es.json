@@ -124,5 +124,18 @@
     "ai_folder_dev": "Desarrollo",
     "ai_folder_media": "Medios",
     "ai_visual_item3": "YouTube - Tutorial de CSS",
-    "ai_visual_item4": "Spotify - Ruido Blanco"
+    "ai_visual_item4": "Spotify - Ruido Blanco",
+    "ai_folder_work": "Trabajo y Proyectos",
+    "ai_tab1": "GitHub - Repo del proyecto",
+    "ai_tab2": "StackOverflow - Bug de CSS",
+    "ai_tab3": "MDN Web Docs - flexbox",
+    "ai_tab4": "Vercel - Despliegue",
+    "ai_tab5": "YouTube - LoFi Radio",
+    "ai_tab6": "Spotify - Mix Concentración",
+    "ai_tab7": "Netflix",
+    "ai_tab8": "Twitch - Live Coding",
+    "ai_tab9": "Gmail - Bandeja de entrada",
+    "ai_tab10": "Notion - Planificación Sprint",
+    "ai_tab11": "Slack - Equipo de Diseño",
+    "ai_tab12": "Figma - Mockups de UI"
 }

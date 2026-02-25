@@ -124,5 +124,18 @@
     "ai_folder_dev": "開発リソース",
     "ai_folder_media": "メディア",
     "ai_visual_item3": "YouTube - CSS チュートリアル",
-    "ai_visual_item4": "Spotify - 作業用BGM"
+    "ai_visual_item4": "Spotify - 作業用BGM",
+    "ai_folder_work": "仕事・プロジェクト",
+    "ai_tab1": "GitHub - ソースコード",
+    "ai_tab2": "StackOverflow - CSSバグ",
+    "ai_tab3": "MDN Web Docs - flexbox",
+    "ai_tab4": "Vercel - デプロイ",
+    "ai_tab5": "YouTube - LoFi BGM",
+    "ai_tab6": "Spotify - 集中プレイリスト",
+    "ai_tab7": "Netflix",
+    "ai_tab8": "Twitch - ライブ",
+    "ai_tab9": "Gmail - 受信トレイ",
+    "ai_tab10": "Notion - スプリント計画",
+    "ai_tab11": "Slack - デザインチーム",
+    "ai_tab12": "Figma - UIモックアップ"
 }
