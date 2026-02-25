@@ -528,7 +528,7 @@ a:hover {
     height: 24px;
 }
 
-.ai-list > .folder:first-child {
+.ai-list>.folder:first-child {
     margin-top: 0;
 }
 
@@ -1036,18 +1036,7 @@ a:hover {
     animation: messyWipe 8s infinite ease-in-out;
 }
 
-.messy-list > :nth-child(1) { transform: translate(6px, 2px) rotate(2deg); }
-.messy-list > :nth-child(2) { transform: translate(-8px, -2px) rotate(-3deg); }
-.messy-list > :nth-child(3) { transform: translate(12px, 4px) rotate(1.5deg); }
-.messy-list > :nth-child(4) { transform: translate(-5px, -3px) rotate(-2deg); }
-.messy-list > :nth-child(5) { transform: translate(10px, 1px) rotate(3deg); }
-.messy-list > :nth-child(6) { transform: translate(-15px, -4px) rotate(-1.5deg); }
-.messy-list > :nth-child(7) { transform: translate(4px, 5px) rotate(4deg); }
-.messy-list > :nth-child(8) { transform: translate(-10px, -1px) rotate(-4deg); }
-.messy-list > :nth-child(9) { transform: translate(8px, -3px) rotate(1deg); }
-.messy-list > :nth-child(10) { transform: translate(-6px, 4px) rotate(-2.5deg); }
-.messy-list > :nth-child(11) { transform: translate(14px, -5px) rotate(3.5deg); }
-.messy-list > :nth-child(12) { transform: translate(-4px, 2px) rotate(-1deg); }
+
 
 .sorted-list {
     position: relative;
@@ -1059,22 +1048,29 @@ a:hover {
 }
 
 @keyframes sortWipe {
-    0%, 15% { 
+
+    0%,
+    15% {
         -webkit-clip-path: inset(0 0 100% 0);
-        clip-path: inset(0 0 100% 0); 
+        clip-path: inset(0 0 100% 0);
         opacity: 1;
     }
-    40%, 80% { 
+
+    40%,
+    80% {
         -webkit-clip-path: inset(0 0 0 0);
-        clip-path: inset(0 0 0 0); 
+        clip-path: inset(0 0 0 0);
         opacity: 1;
     }
-    85%, 99% { 
+
+    85%,
+    99% {
         -webkit-clip-path: inset(0 0 0 0);
-        clip-path: inset(0 0 0 0); 
+        clip-path: inset(0 0 0 0);
         opacity: 0;
     }
-    100% { 
+
+    100% {
         -webkit-clip-path: inset(0 0 100% 0);
         clip-path: inset(0 0 100% 0);
         opacity: 0;
@@ -1082,22 +1078,29 @@ a:hover {
 }
 
 @keyframes messyWipe {
-    0%, 15% {
+
+    0%,
+    15% {
         -webkit-clip-path: inset(0 0 0 0);
         clip-path: inset(0 0 0 0);
         opacity: 1;
     }
-    40%, 80% {
+
+    40%,
+    80% {
         -webkit-clip-path: inset(100% 0 0 0);
         clip-path: inset(100% 0 0 0);
         opacity: 1;
     }
+
     80.1% {
         -webkit-clip-path: inset(0 0 0 0);
         clip-path: inset(0 0 0 0);
         opacity: 0;
     }
-    85%, 100% {
+
+    85%,
+    100% {
         -webkit-clip-path: inset(0 0 0 0);
         clip-path: inset(0 0 0 0);
         opacity: 1;
@@ -1105,8 +1108,26 @@ a:hover {
 }
 
 @keyframes scannerSweep {
-    0%, 12% { opacity: 0; top: 0; }
-    15% { opacity: 1; top: 0; }
-    40% { opacity: 1; top: 100%; }
-    43%, 100% { opacity: 0; top: 100%; }
+
+    0%,
+    12% {
+        opacity: 0;
+        top: 0;
+    }
+
+    15% {
+        opacity: 1;
+        top: 0;
+    }
+
+    40% {
+        opacity: 1;
+        top: 100%;
+    }
+
+    43%,
+    100% {
+        opacity: 0;
+        top: 100%;
+    }
 }
