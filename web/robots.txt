@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arc-sidebar.com/sitemap.xml
+Sitemap: https://sidebar-for-tabs-bookmarks.taislife.work/sitemap.xml
