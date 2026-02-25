@@ -5,6 +5,9 @@ Fatigué de vous perdre dans des dizaines d'onglets encombrés ? Vous rêvez de 
 
 Nous avons complètement réimaginé Chrome, en introduisant un panneau latéral moderne qui unifie **Onglets Verticaux**, **Groupes d'Onglets** et **Gestion des Favoris**. Dites adieu à la barre d'onglets horizontale traditionnelle et reprenez le contrôle de votre navigateur. Faites l'expérience d'une concentration et d'une efficacité comme jamais auparavant.
 
+
+🌐 **Site officiel**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Fonctionnalités Clés

@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "自動 (跟隨瀏覽器)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "官方網站",
+    "description": "Link text for the official website in the settings panel"
   }
 }

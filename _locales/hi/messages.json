@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "स्वचालित (ब्राउज़र का अनुसरण करें)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "आधिकारिक वेबसाइट",
+    "description": "Link text for the official website in the settings panel"
   }
 }

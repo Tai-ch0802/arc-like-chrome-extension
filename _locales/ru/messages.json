@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "Авто (по браузеру)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "Официальный сайт",
+    "description": "Link text for the official website in the settings panel"
   }
 }

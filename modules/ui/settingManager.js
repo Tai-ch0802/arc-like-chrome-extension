@@ -215,7 +215,8 @@ async function buildSettingsDialogContent(selectedTheme) {
             </button>
             <div class="settings-section-content">
                 <p>${api.getMessage('aboutText')}</p>
-                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" class="modal-link-button">${api.getMessage('githubLinkText')}</a>
+                <a href="https://sidebar-for-tabs-bookmarks.taislife.work/" target="_blank" class="modal-link-button">${api.getMessage('officialWebsiteLinkText')}</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" class="modal-link-button" style="margin-top: 8px;">${api.getMessage('githubLinkText')}</a>
             </div>
         </div>
     `;

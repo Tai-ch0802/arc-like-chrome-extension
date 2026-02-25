@@ -5,6 +5,9 @@ Tired of getting lost in dozens of cluttered tabs? Craving the sleek, vertical t
 
 We've completely reimagined Chrome, introducing a modern side panel that unifies **Vertical Tabs**, **Tab Groups**, and **Bookmark Management**. Say goodbye to the traditional horizontal tab bar and regain control of your browser. Experience focus and efficiency like never before.
 
+
+🌐 **Official Website**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Key Features

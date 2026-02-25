@@ -5,6 +5,9 @@ Bạn mệt mỏi vì bị lạc trong hàng chục tab lộn xộn? Khao khát 
 
 Chúng tôi đã hoàn toàn tái hiện lại Chrome, giới thiệu một bảng điều khiển bên hiện đại thống nhất **Tab Dọc**, **Nhóm Tab** và **Quản lý Dấu trang**. Nói lời tạm biệt với thanh tab ngang truyền thống và giành lại quyền kiểm soát trình duyệt của bạn. Trải nghiệm sự tập trung và hiệu quả chưa từng có.
 
+
+🌐 **Trang web chính thức**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Tính năng Chính

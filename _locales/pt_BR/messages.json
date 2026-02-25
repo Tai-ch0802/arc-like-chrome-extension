@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "Auto (Seguir o navegador)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "Site Oficial",
+    "description": "Link text for the official website in the settings panel"
   }
 }

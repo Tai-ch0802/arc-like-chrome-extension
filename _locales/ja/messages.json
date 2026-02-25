@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "自動（ブラウザに従う）"
+  },
+  "officialWebsiteLinkText": {
+    "message": "公式サイト",
+    "description": "Link text for the official website in the settings panel"
   }
 }

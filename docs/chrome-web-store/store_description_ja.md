@@ -5,6 +5,9 @@
 
 私たちはChromeを完全に再構築し、**垂直タブ**、**タブグループ**、**ブックマーク管理**を統合したモダンなサイドパネルを導入しました。従来の水平タブバーに別れを告げ、ブラウザのコントロールを取り戻しましょう。これまでにない集中力と効率性を体験してください。
 
+
+🌐 **公式サイト**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 主な機能

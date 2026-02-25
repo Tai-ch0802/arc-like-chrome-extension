@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "อัตโนมัติ (ตามเบราว์เซอร์)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "เว็บไซต์ทางการ",
+    "description": "Link text for the official website in the settings panel"
   }
 }

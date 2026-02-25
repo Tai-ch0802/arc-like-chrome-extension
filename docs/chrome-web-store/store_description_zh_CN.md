@@ -5,6 +5,9 @@
 
 我们将 Chrome 彻底改造，引入一个集 **垂直标签页**、**标签页组**、**书签管理** 于一体的现代化侧边面板。告别传统的水平标签栏，重新掌控您的浏览器，体验前所未有的专注与效率。
 
+
+🌐 **官方网站**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 核心亮点

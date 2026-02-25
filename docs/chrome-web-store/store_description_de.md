@@ -5,6 +5,9 @@ Sind Sie es leid, sich in Dutzenden von überladenen Tabs zu verlieren? Sehnen S
 
 Wir haben Chrome komplett neu konzipiert und eine moderne Seitenleiste eingeführt, die **vertikale Tabs**, **Tab-Gruppen** und **Lesezeichenverwaltung** vereint. Verabschieden Sie sich von der traditionellen horizontalen Tab-Leiste und gewinnen Sie die Kontrolle über Ihren Browser zurück. Erleben Sie Fokus und Effizienz wie nie zuvor.
 
+
+🌐 **Offizielle Website**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Hauptmerkmale

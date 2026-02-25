@@ -4,6 +4,7 @@
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "version": "1.14.0",
+  "homepage_url": "https://sidebar-for-tabs-bookmarks.taislife.work/",
   "permissions": [
     "tabs",
     "sidePanel",

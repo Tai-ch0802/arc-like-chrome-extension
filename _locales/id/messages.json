@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "Otomatis (Ikuti Browser)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "Situs Web Resmi",
+    "description": "Link text for the official website in the settings panel"
   }
 }

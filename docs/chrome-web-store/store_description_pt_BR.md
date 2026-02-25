@@ -5,6 +5,9 @@ Cansado de se perder em dezenas de abas desorganizadas? Deseja a experiência el
 
 Reimaginamos completamente o Chrome, introduzindo um painel lateral moderno que unifica **Abas Verticais**, **Grupos de Abas** e **Gerenciamento de Favoritos**. Diga adeus à tradicional barra de abas horizontal e recupere o controle do seu navegador. Experimente foco e eficiência como nunca antes.
 
+
+🌐 **Site Oficial**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Principais Recursos

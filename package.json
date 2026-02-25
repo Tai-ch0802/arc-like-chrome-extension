@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/Tai-ch0802/arc-like-chrome-extension/issues"
   },
-  "homepage": "https://github.com/Tai-ch0802/arc-like-chrome-extension#readme",
+  "homepage": "https://sidebar-for-tabs-bookmarks.taislife.work/",
   "devDependencies": {
     "baseline-browser-mapping": "^2.10.0",
     "esbuild": "^0.27.3",

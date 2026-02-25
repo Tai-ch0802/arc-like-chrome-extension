@@ -5,6 +5,9 @@
 
 Hemos reinventado Chrome por completo, introduciendo un panel lateral moderno que unifica **Pestañas Verticales**, **Grupos de Pestañas** y **Gestión de Marcadores**. Di adiós a la tradicional barra de pestañas horizontal y recupera el control de tu navegador. Experimenta un enfoque y eficiencia como nunca antes.
 
+
+🌐 **Sitio web oficial**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Características Principales

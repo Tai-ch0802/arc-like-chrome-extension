@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "Tự động (Theo trình duyệt)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "Trang web chính thức",
+    "description": "Link text for the official website in the settings panel"
   }
 }

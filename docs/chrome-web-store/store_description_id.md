@@ -5,6 +5,9 @@ Bosan tersesat dalam puluhan tab yang berantakan? Mendambakan pengalaman tab ver
 
 Kami telah sepenuhnya membayangkan kembali Chrome, memperkenalkan panel samping modern yang menyatukan **Tab Vertikal**, **Grup Tab**, dan **Manajemen Bookmark**. Ucapkan selamat tinggal pada bilah tab horizontal tradisional dan dapatkan kembali kendali atas browser Anda. Rasakan fokus dan efisiensi yang belum pernah ada sebelumnya.
 
+
+🌐 **Situs Web Resmi**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 Fitur Utama

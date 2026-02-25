@@ -5,6 +5,9 @@
 
 우리는 Chrome을 완전히 재구상하여 **수직 탭**, **탭 그룹**, **북마크 관리**를 통합하는 현대적인 사이드 패널을 도입했습니다. 전통적인 수평 탭 바와 작별하고 브라우저의 제어권을 되찾으세요. 이전에는 없었던 집중력과 효율성을 경험하세요.
 
+
+🌐 **공식 웹사이트**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
+
 ---
 
 ## 🔥 주요 기능

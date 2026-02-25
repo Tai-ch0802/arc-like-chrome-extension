@@ -642,5 +642,9 @@
   },
   "languageAuto": {
     "message": "자동 (브라우저 설정 따름)"
+  },
+  "officialWebsiteLinkText": {
+    "message": "공식 웹사이트",
+    "description": "Link text for the official website in the settings panel"
   }
 }
