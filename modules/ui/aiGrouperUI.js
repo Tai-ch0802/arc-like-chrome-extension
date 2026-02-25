@@ -46,8 +46,6 @@ async function handleGroupAction() {
             return;
         }
 
-        const currentWindowInfo = await api.getCurrentWindow();
-        const currentWindowId = currentWindowInfo.id;
         const allTabs = await api.getTabsInCurrentWindow();
 
         // Unclassified tabs are those not in a group
@@ -83,7 +81,7 @@ async function handleGroupAction() {
                 const colors = ['grey', 'blue', 'red', 'yellow', 'green', 'pink', 'purple', 'cyan', 'orange'];
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-                const newGroupId = await api.addTabToNewGroup(tabIdsToGroup, group.theme, randomColor, currentWindowId);
+                const newGroupId = await api.addTabToNewGroup(tabIdsToGroup, group.theme, randomColor);
                 affectedTabIds.push(...tabIdsToGroup);
                 createdGroupIds.push(newGroupId);
             }
