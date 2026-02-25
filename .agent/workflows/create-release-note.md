@@ -48,14 +48,21 @@ Analyze the commit messages:
   1. Use the `update-multilingual-docs` skill to update documentation.
   2. Commit the documentation changes before generating the release note.
 
-## 6. Generate RELEASE_NOTE.md
+## 6. Check Web Application & Translations
+- **Action**: Verify if the recent changes need to be reflected in the official static website (`web/` directory).
+- **Checklist**:
+  1. Are the new features or bug fixes mentioned in the **Changelog** (`web/changelog.html` and corresponding scripts)?
+  2. Are there any new UI text elements that require **localization** updates across all 14 languages in (`web/locales/*.json`)?
+  3. If updates are made to the `web/` directory, commit them before generating the release note.
+
+## 7. Generate RELEASE_NOTE.md
 Use the `release-notes` skill to:
 1. Categorize commits by type (`feat:` vs others).
 2. Format them in the bilingual template.
 3. Include contributor attributions with PR links where available.
 4. Write to `RELEASE_NOTE.md` in project root.
 
-## 7. Present to User
+## 8. Present to User
 Notify the user with:
 - The generated `RELEASE_NOTE.md` for review.
 - Any warnings (e.g., manifest version not updated).
