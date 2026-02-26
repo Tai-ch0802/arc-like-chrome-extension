@@ -1,6 +1,6 @@
 {
   "name": "arc-like-chrome-extension",
-  "version": "1.0.0",
+  "version": "1.14.1",
   "description": "這是一個 Chrome 擴充功能專案，旨在透過側邊欄介面，在 Chrome 瀏覽器中提供類似 Arc 瀏覽器的垂直分頁管理體驗，整合了分頁、群組與書籤的全功能管理面板。",
   "main": "background.js",
   "directories": {

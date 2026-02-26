@@ -3,7 +3,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "homepage_url": "https://sidebar-for-tabs-bookmarks.taislife.work/",
   "permissions": [
     "tabs",
