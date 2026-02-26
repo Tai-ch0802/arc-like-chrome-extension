@@ -147,6 +147,45 @@ a:hover {
     color: var(--text-secondary);
 }
 
+.nav-links a:not(.btn) {
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    transition: background var(--transition-normal);
+    position: relative;
+}
+
+.nav-links a:not(.btn):hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Hide text by default but animate on hover */
+.nav-links a:not(.btn) .nav-text {
+    max-width: 0;
+    opacity: 0;
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expand text on hover */
+.nav-links a:not(.btn):hover .nav-text {
+    max-width: 150px;
+    opacity: 1;
+    margin-left: 8px;
+}
+
+.nav-links i,
+.lang-switcher-btn i {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;
@@ -866,7 +905,38 @@ a:hover {
 }
 
 /* Responsive Adjustments */
+
+
 @media (max-width: 900px) {
+    .nav-links {
+        gap: 6px;
+    }
+
+    .nav-text,
+    .nav-brand .brand-name,
+    .nav-brand .badge-version {
+        display: none;
+    }
+
+    .nav-links a,
+    .lang-switcher-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 8px;
+        border-radius: var(--radius-sm);
+    }
+
+    .nav-links a:not(.btn):hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-sm {
+        padding: 0;
+    }
+
     .bento-grid {
         grid-template-columns: 1fr;
     }

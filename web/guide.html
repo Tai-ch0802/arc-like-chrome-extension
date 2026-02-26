@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="guide_page_title">使用指南 | Arc-like Sidebar</title>
+    <meta name="description" content="Arc-like Sidebar 完整使用教學：分頁管理、書籤連結、AI 智慧整理、閱讀清單、RSS、鍵盤導覽與客製化。">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords"
+        content="Chrome extension, Arc browser, sidebar, vertical tabs, bookmark manager, AI tab organizer, user guide, tutorial">
+    <meta name="author" content="Tai">
+    <link rel="canonical" href="https://sidebar-for-tabs-bookmarks.taislife.work/guide.html">
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="apple-touch-icon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/guide.html">
+    <meta property="og:title" content="使用指南 | Arc-like Sidebar">
+    <meta property="og:description" content="Arc-like Sidebar 完整使用教學">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/guide.html">
+    <meta name="twitter:title" content="使用指南 | Arc-like Sidebar">
+    <meta name="twitter:description" content="Arc-like Sidebar 完整使用教學">
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Guide Page Specific Styles */
+        .guide-container {
+            padding-top: 60px;
+            padding-bottom: 100px;
+            max-width: 800px;
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .guide-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Sidebar TOC - Desktop */
+        .guide-toc {
+            position: fixed;
+            top: 96px;
+            left: max(16px, calc(50% - 620px));
+            width: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 50;
+        }
+
+        .toc-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-left: 2px solid transparent;
+            transition: all var(--transition-fast);
+            line-height: 1.4;
+        }
+
+        .toc-link:hover {
+            color: var(--text-primary);
+            border-left-color: var(--border-hover);
+        }
+
+        .toc-link.active {
+            color: #fff;
+            border-left-color: #a855f7;
+        }
+
+        /* Guide Sections */
+        .guide-section {
+            margin-bottom: 56px;
+            scroll-margin-top: 80px;
+        }
+
+        .guide-section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .guide-section-title .section-icon {
+            width: 32px;
+            height: 32px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+        .guide-section-title .section-icon.purple {
+            color: #d8b4fe;
+            border-color: rgba(168, 85, 247, 0.3);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .guide-section p,
+        .guide-section li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .guide-section p {
+            margin-bottom: 16px;
+        }
+
+        .guide-section ul,
+        .guide-section ol {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .guide-section li {
+            margin-bottom: 8px;
+        }
+
+        .guide-section li strong {
+            color: var(--text-primary);
+        }
+
+        /* Subsection */
+        .guide-subsection {
+            margin-bottom: 32px;
+        }
+
+        .guide-subsection h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* Callout / Tip boxes */
+        .guide-callout {
+            background: rgba(168, 85, 247, 0.06);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .guide-callout i {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: #d8b4fe;
+        }
+
+        .guide-callout p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .guide-callout.blue {
+            background: rgba(59, 130, 246, 0.06);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .guide-callout.blue i {
+            color: #93c5fd;
+        }
+
+        .guide-callout.green {
+            background: rgba(16, 185, 129, 0.06);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .guide-callout.green i {
+            color: #6ee7b7;
+        }
+
+        /* Keyboard shortcut table */
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .shortcut-table th,
+        .shortcut-table td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .shortcut-table th {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .shortcut-table td {
+            color: var(--text-secondary);
+        }
+
+        kbd {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: 'Inter', monospace;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        /* Divider */
+        .guide-divider {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 48px 0;
+        }
+
+        /* Install CTA at bottom */
+        .guide-cta {
+            text-align: center;
+            margin-top: 64px;
+            padding: 48px 32px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+        }
+
+        .guide-cta h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .guide-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1200px) {
+            .guide-toc {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .guide-header h1 {
+                font-size: 2rem;
+            }
+
+            .guide-section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow-blur top-glow" style="height: 400px; opacity: 0.5;"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="nav-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span class="brand-name">Arc-like Sidebar</span>
+                <span class="badge badge-version" style="margin-left: 12px;">v1.2</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#features" aria-label="特色功能"><i data-lucide="sparkles"></i><span class="nav-text"
+                        data-i18n="nav_features">特色功能</span></a>
+                <a href="index.html#ai-setup" aria-label="AI 設定"><i data-lucide="bot"></i><span class="nav-text"
+                        data-i18n="nav_ai_setup">AI 設定</span></a>
+                <a href="index.html#privacy" aria-label="隱私承諾"><i data-lucide="shield-check"></i><span class="nav-text"
+                        data-i18n="nav_privacy">隱私承諾</span></a>
+                <a href="#" class="active" aria-label="使用指南"><i data-lucide="book-open"></i><span class="nav-text"
+                        data-i18n="nav_guide">使用指南</span></a>
+                <a href="changelog.html" aria-label="更新日誌"><i data-lucide="file-clock"></i><span class="nav-text"
+                        data-i18n="nav_changelog">更新日誌</span></a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    aria-label="GitHub"><i data-lucide="github"></i><span class="nav-text"
+                        data-i18n="nav_github">GitHub</span></a>
+
+                <!-- Language Switcher -->
+                <div class="lang-switcher">
+                    <button class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
+                        <i data-lucide="globe"></i>
+                    </button>
+                    <ul class="lang-switcher-dropdown lang-switcher-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                    target="_blank" rel="noopener" class="btn btn-primary btn-sm" aria-label="安裝擴充功能"><i
+                        data-lucide="download"></i><span class="nav-text" data-i18n="nav_install">安裝擴充功能</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TOC (Desktop) -->
+    <aside class="guide-toc" id="guideToc">
+        <a href="#getting-started" class="toc-link" data-i18n="guide_toc_start">快速開始</a>
+        <a href="#vertical-tabs" class="toc-link" data-i18n="guide_toc_tabs">垂直分頁</a>
+        <a href="#tab-groups" class="toc-link" data-i18n="guide_toc_groups">分頁群組</a>
+        <a href="#bookmarks" class="toc-link" data-i18n="guide_toc_bookmarks">書籤管理</a>
+        <a href="#linked-tabs" class="toc-link" data-i18n="guide_toc_linked">Linked Tabs</a>
+        <a href="#cross-window" class="toc-link" data-i18n="guide_toc_window">跨視窗</a>
+        <a href="#search" class="toc-link" data-i18n="guide_toc_search">搜尋功能</a>
+        <a href="#reading-list" class="toc-link" data-i18n="guide_toc_reading">閱讀清單</a>
+        <a href="#rss" class="toc-link" data-i18n="guide_toc_rss">RSS 訂閱</a>
+        <a href="#ai-grouping" class="toc-link" data-i18n="guide_toc_ai">AI 智慧整理</a>
+        <a href="#customization" class="toc-link" data-i18n="guide_toc_theme">客製化</a>
+        <a href="#keyboard" class="toc-link" data-i18n="guide_toc_keyboard">鍵盤導覽</a>
+    </aside>
+
+    <!-- Guide Content -->
+    <main class="container guide-container">
+
+        <div class="guide-header reveal">
+            <h1 data-i18n="guide_h1">使用指南</h1>
+            <p data-i18n="guide_subtitle">從安裝到進階操控，一步步掌握側邊欄的每一項功能。</p>
+        </div>
+
+        <!-- 1. Getting Started -->
+        <section class="guide-section" id="getting-started">
+            <h2 class="guide-section-title">
+                <i data-lucide="rocket" class="section-icon"></i>
+                <span data-i18n="guide_start_title">快速開始</span>
+            </h2>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_start_install_title">安裝擴充功能</h4>
+                <ol>
+                    <li data-i18n="guide_start_step1">前往 <a
+                            href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                            target="_blank" rel="noopener">Chrome 線上應用程式商店</a>，點擊「加到 Chrome」。</li>
+                    <li data-i18n="guide_start_step2">安裝完成後，點擊 Chrome 工具列右上角的擴充功能圖示（拼圖圖示），找到「Arc-like Sidebar」並釘選。</li>
+                    <li data-i18n="guide_start_step3">點擊圖示或使用快捷鍵 <kbd>Cmd/Ctrl + I</kbd> 開啟側邊欄。</li>
+                </ol>
+            </div>
+            <div class="guide-callout green">
+                <i data-lucide="lightbulb"></i>
+                <p data-i18n="guide_start_tip">小提示：首次開啟側邊欄後，按任意方向鍵即可自動取得焦點並開始鍵盤導覽。</p>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 2. Vertical Tabs -->
+        <section class="guide-section" id="vertical-tabs">
+            <h2 class="guide-section-title">
+                <i data-lucide="layout-list" class="section-icon"></i>
+                <span data-i18n="guide_tabs_title">垂直分頁管理</span>
+            </h2>
+            <p data-i18n="guide_tabs_desc">側邊欄會垂直顯示所有當前視窗的分頁，讓你一目了然地看到完整標題，不再像傳統水平標籤列那樣被壓縮成小圖示。</p>
+            <ul>
+                <li data-i18n="guide_tabs_li1"><strong>切換分頁</strong>：點擊任意分頁即可跳轉。</li>
+                <li data-i18n="guide_tabs_li2"><strong>關閉分頁</strong>：將滑鼠停在分頁上，右側會出現關閉按鈕。</li>
+                <li data-i18n="guide_tabs_li3"><strong>拖曳排序</strong>：長按並拖曳分頁來自由調整順序。</li>
+                <li data-i18n="guide_tabs_li4"><strong>建立新群組</strong>：將滑鼠停在分頁上，右側會出現以該分頁建立新群組按鈕。</li>
+                <li data-i18n="guide_tabs_li5"><strong>加入書籤</strong>：可選擇拖曳至書籤資料夾上，或是將滑鼠停在分頁上，右側會出現加入書籤按鈕。</li>
+                <li data-i18n="guide_tabs_li6"><strong>右鍵選單</strong>：在分頁上按右鍵可存取更多操作，包括「複製網址」、「加入閱讀清單」等。</li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 3. Tab Groups -->
+        <section class="guide-section" id="tab-groups">
+            <h2 class="guide-section-title">
+                <i data-lucide="folder" class="section-icon"></i>
+                <span data-i18n="guide_groups_title">分頁群組</span>
+            </h2>
+            <p data-i18n="guide_groups_desc">完整整合 Chrome 原生分頁群組功能。群組的名稱與顏色會即時同步呈現。</p>
+            <ul>
+                <li data-i18n="guide_groups_li2"><strong>展開/收合</strong>：點擊群組標題即可切換展開或收合狀態。</li>
+                <li data-i18n="guide_groups_li3"><strong>拖曳分頁進群組</strong>：將分頁直接拖入群組上方即可加入。</li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 4. Bookmarks -->
+        <section class="guide-section" id="bookmarks">
+            <h2 class="guide-section-title">
+                <i data-lucide="bookmark" class="section-icon"></i>
+                <span data-i18n="guide_bm_title">書籤管理</span>
+            </h2>
+            <p data-i18n="guide_bm_desc">側邊欄內建完整的書籤瀏覽器，直接顯示你的書籤資料夾結構，支援展開、搜尋與拖曳操作。</p>
+            <ul>
+                <li data-i18n="guide_bm_li1"><strong>瀏覽書籤</strong>：以樹狀結構展示所有書籤資料夾，點擊展開子資料夾。</li>
+                <li data-i18n="guide_bm_li2"><strong>開啟書籤</strong>：點擊書籤即開啟新分頁，並自動建立 Linked Tab 關聯。</li>
+                <li data-i18n="guide_bm_li3"><strong>拖曳變書籤</strong>：將分頁拖曳到書籤區域，它會立即被儲存為書籤。</li>
+                <li data-i18n="guide_bm_li4"><strong>智慧渲染</strong>：使用動態渲染技術，即使有上千筆書籤也能流暢滾動。</li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 5. Linked Tabs -->
+        <section class="guide-section" id="linked-tabs">
+            <h2 class="guide-section-title">
+                <i data-lucide="link" class="section-icon purple"></i>
+                <span data-i18n="guide_linked_title">Linked Tabs 連結分頁</span>
+            </h2>
+            <p data-i18n="guide_linked_desc">這是我們最獨特的功能！當你從側邊欄開啟書籤時，系統會自動建立書籤與分頁之間的「連結」，幫助你避免重複開啟，並即時同步狀態。</p>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_linked_how_title">運作方式</h4>
+                <ul>
+                    <li data-i18n="guide_linked_how_li1"><strong>自動建立</strong>：點擊書籤開啟分頁時自動記錄關聯；將分頁拖曳成為書籤時也會自動關聯。</li>
+                    <li data-i18n="guide_linked_how_li2"><strong>視覺指示</strong>：已連結的書籤旁會顯示連結圖示，讓你一眼辨識哪些已開啟。</li>
+                    <li data-i18n="guide_linked_how_li3"><strong>查看面板</strong>：點擊連結圖示可展開面板，顯示所有已開啟的相關分頁，支援快速跳轉。</li>
+                    <li data-i18n="guide_linked_how_li4"><strong>自動清理</strong>：分頁被關閉、URL 改變或書籤被刪除時，關聯會自動移除。</li>
+                </ul>
+            </div>
+            <div class="guide-callout">
+                <i data-lucide="info"></i>
+                <p data-i18n="guide_linked_tip">連結狀態會透過 Local Storage 持久保存，即使重新啟動瀏覽器也不會遺失。</p>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 6. Cross Window -->
+        <section class="guide-section" id="cross-window">
+            <h2 class="guide-section-title">
+                <i data-lucide="app-window" class="section-icon"></i>
+                <span data-i18n="guide_window_title">跨視窗管理</span>
+            </h2>
+            <p data-i18n="guide_window_desc">不只是當前視窗！側邊欄會在分頁列表下方顯示「其他視窗」區塊，讓你掌握所有 Chrome 視窗的分頁狀態。</p>
+            <ul>
+                <li data-i18n="guide_window_li1"><strong>視窗總覽</strong>：列出除目前視窗外的所有視窗與分頁，包含群組資訊。</li>
+                <li data-i18n="guide_window_li2"><strong>快速跳轉</strong>：點擊目標分頁，Chrome 會自動切換至該視窗並聚焦分頁。</li>
+                <li data-i18n="guide_window_li3"><strong>即時更新</strong>：其他視窗的分頁變動會自動反映在側邊欄中。</li>
+                <li data-i18n="guide_window_li4"><strong>唯讀安全</strong>：此區塊設計為唯讀模式，避免誤操作影響其他視窗的結構。</li>
+                <li data-i18n="guide_window_li5"><strong>視窗命名</strong>：為不同的 Chrome 視窗設定自訂名稱（例如「工作」、「個人」），讓多視窗管理更加一目了然。
+                </li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 7. Search -->
+        <section class="guide-section" id="search">
+            <h2 class="guide-section-title">
+                <i data-lucide="search" class="section-icon"></i>
+                <span data-i18n="guide_search_title">專業級搜尋</span>
+            </h2>
+            <p data-i18n="guide_search_desc">側邊欄頂部的搜尋框提供強隊的即時過濾功能，讓你在數十個分頁與上千筆書籤中瞬間鎖定目標。</p>
+            <ul>
+                <li data-i18n="guide_search_li1"><strong>多關鍵字</strong>：支援空格分隔的多關鍵字過濾（例如 <kbd>google docs
+                        work</kbd>），多詞精確搜尋。</li>
+                <li data-i18n="guide_search_li2"><strong>Domain 搜尋</strong>：輸入網域（如
+                    <kbd>github.com</kbd>）即可篩選出該網站的所有分頁與書籤。
+                </li>
+                <li data-i18n="guide_search_li3"><strong>即時高亮</strong>：搜尋結果會即時標記匹配的關鍵字，保持視覺焦點清晰。</li>
+                <li data-i18n="guide_search_li4"><strong>跨視窗</strong>：搜尋結果包含所有 Chrome 視窗的分頁，不限於當前視窗。</li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 8. Reading List -->
+        <section class="guide-section" id="reading-list">
+            <h2 class="guide-section-title">
+                <i data-lucide="bookmark-plus" class="section-icon"></i>
+                <span data-i18n="guide_reading_title">閱讀清單</span>
+            </h2>
+            <p data-i18n="guide_reading_desc">側邊欄將 Chrome 原生閱讀清單深度整合，讓你無需切換面板即可管理「稍後閱讀」的文章。</p>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_reading_ops_title">基本操作</h4>
+                <ul>
+                    <li data-i18n="guide_reading_li1"><strong>加入文章</strong>：在分頁右鍵選單中選擇「加入到閱讀清單」。如果 URL 已存在，選項會自動禁用。</li>
+                    <li data-i18n="guide_reading_li2">
+                        <strong>開啟閱讀</strong>：點擊清單項目會在新分頁中開啟，並自動標記為已讀。開啟的分頁會自動歸入「來自閱讀清單」群組。
+                    </li>
+                    <li data-i18n="guide_reading_li3"><strong>標記狀態</strong>：切換已讀/未讀狀態，方便追蹤閱讀進度。已讀項目會以較淡的樣式顯示。</li>
+                    <li data-i18n="guide_reading_li4"><strong>過期提醒</strong>：超過 3 天的已讀項目會顯示「已讀 X 天前」標籤，提醒你清理不再需要的文章。</li>
+                    <li data-i18n="guide_reading_li5"><strong>即時同步</strong>：與 Chrome 原生閱讀清單雙向同步，任何變動即時反映在 UI 上。</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 9. RSS -->
+        <section class="guide-section" id="rss">
+            <h2 class="guide-section-title">
+                <i data-lucide="rss" class="section-icon"></i>
+                <span data-i18n="guide_rss_title">RSS 訂閱</span>
+            </h2>
+            <p data-i18n="guide_rss_desc">不用額外安裝閱讀器！在設定面板中訂閱你感興趣的網站 RSS Feed，系統會自動排程抓取最新文章並加入閱讀清單。</p>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_rss_manage_title">管理訂閱</h4>
+                <ul>
+                    <li data-i18n="guide_rss_li1"><strong>新增訂閱</strong>：在側邊欄設定 → RSS 區塊中輸入 Feed URL 即可新增。</li>
+                    <li data-i18n="guide_rss_li2"><strong>更新間隔</strong>：每個訂閱可獨立設定抓取間隔，選項包含 1 小時、3 小時、8 小時、12 小時與 24 小時。
+                    </li>
+                    <li data-i18n="guide_rss_li3"><strong>暫停/恢復</strong>：可暫停特定訂閱的自動抓取，不影響其他訂閱。</li>
+                    <li data-i18n="guide_rss_li4"><strong>智慧去重</strong>：使用 hash 比對機制，確保同一篇文章不會重複加入閱讀清單。</li>
+                    <li data-i18n="guide_rss_li5"><strong>手動抓取</strong>：支援立即觸發抓取，不必等待排程。</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 10. AI Smart Grouping -->
+        <section class="guide-section" id="ai-grouping">
+            <h2 class="guide-section-title">
+                <i data-lucide="brain-circuit" class="section-icon purple"></i>
+                <span data-i18n="guide_ai_title">AI 智慧整理</span>
+            </h2>
+            <p data-i18n="guide_ai_desc">透過 Chrome 內建的 Gemini Nano 本機 AI，一鍵將散亂的分頁依語意自動分類成群組。所有處理 100% 在你的設備上進行，資料絕不上傳雲端。
+            </p>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_ai_how_title">使用方式</h4>
+                <ol>
+                    <li data-i18n="guide_ai_step1">確保你已完成 <a href="index.html#ai-setup">AI 功能設定</a>（需 Chrome 140+、22GB
+                        磁碟空間）。</li>
+                    <li data-i18n="guide_ai_step2">點擊側邊欄中的「✨ 智慧整理」按鈕。</li>
+                    <li data-i18n="guide_ai_step3">系統會掃描所有未分類的分頁（需至少 4 個），AI 將在數秒內完成分析。</li>
+                    <li data-i18n="guide_ai_step4">分頁會自動被移入帶有 Emoji 與描述性名稱的群組中。</li>
+                </ol>
+            </div>
+            <div class="guide-callout">
+                <i data-lucide="undo-2"></i>
+                <p data-i18n="guide_ai_undo_tip">不滿意分類結果？別擔心！整理完成後會顯示「復原 (Undo)」按鈕，點擊即可還原到整理前的狀態。</p>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 11. Customization -->
+        <section class="guide-section" id="customization">
+            <h2 class="guide-section-title">
+                <i data-lucide="palette" class="section-icon"></i>
+                <span data-i18n="guide_theme_title">外觀客製化</span>
+            </h2>
+            <p data-i18n="guide_theme_desc">側邊欄提供畫布級的視覺客製化能力，從預設主題到完全自訂，打造你獨一無二的工具。</p>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_theme_preset_title">預設主題</h4>
+                <p data-i18n="guide_theme_preset_desc">內建多種精美主題（Geek、Google、Darcula、Geek-Blue、Christmas 等），在設定中一鍵切換。</p>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_theme_custom_title">自訂配色</h4>
+                <p data-i18n="guide_theme_custom_desc">選擇「自訂 (Custom)」主題後，可透過色彩選擇器自由設定三大核心色——主背景色、強調色與文字色。系統會自動透過 HSL
+                    演算法衍生出和諧的輔助色票，確保 WCAG 對比度達標。</p>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_theme_bg_title">背景圖片</h4>
+                <ul>
+                    <li data-i18n="guide_theme_bg_li1"><strong>上傳圖片</strong>：支援 JPG、PNG、WebP 格式，自動壓縮為 WebP（最大 1920px）。
+                    </li>
+                    <li data-i18n="guide_theme_bg_li2"><strong>圖片網址</strong>：直接貼上圖片 URL，系統會自動抓取並快取。</li>
+                    <li data-i18n="guide_theme_bg_li3"><strong>微調控制</strong>：提供透明度 (0–100%)、模糊度 (0–20px)、水平/垂直位置對齊的精細調整。
+                    </li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_theme_share_title">社群分享</h4>
+                <p data-i18n="guide_theme_share_desc">將你的自訂配色匯出為 JSON 檔案分享給朋友，也可以載入別人分享的主題，快速套用社群熱門配色。</p>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 12. Keyboard Navigation -->
+        <section class="guide-section" id="keyboard">
+            <h2 class="guide-section-title">
+                <i data-lucide="keyboard" class="section-icon"></i>
+                <span data-i18n="guide_kb_title">鍵盤導覽與快捷鍵</span>
+            </h2>
+            <p data-i18n="guide_kb_desc">側邊欄支援完整的鍵盤操作體驗，讓進階使用者無需滑鼠也能完成所有操作。</p>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_kb_global_title">全域快捷鍵</h4>
+                <table class="shortcut-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="guide_kb_th_shortcut">快捷鍵</th>
+                            <th data-i18n="guide_kb_th_action">功能</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>Cmd/Ctrl</kbd> + <kbd>I</kbd></td>
+                            <td data-i18n="guide_kb_toggle">開啟/關閉側邊欄</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Alt/Opt</kbd> + <kbd>T</kbd></td>
+                            <td data-i18n="guide_kb_newtab">在當前分頁旁新建分頁</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_kb_nav_title">側邊欄內導覽</h4>
+                <table class="shortcut-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="guide_kb_th_shortcut">快捷鍵</th>
+                            <th data-i18n="guide_kb_th_action">功能</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>↑</kbd> / <kbd>↓</kbd></td>
+                            <td data-i18n="guide_kb_updown">在分頁、群組、書籤項目間移動焦點</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>←</kbd> / <kbd>→</kbd></td>
+                            <td data-i18n="guide_kb_leftright">進入/離開項目的操作按鈕（關閉、編輯等）</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
+                            <td data-i18n="guide_kb_enter">執行主要動作（切換分頁、展開資料夾）</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>F2</kbd></td>
+                            <td data-i18n="guide_kb_f2">重新命名書籤</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Delete</kbd></td>
+                            <td data-i18n="guide_kb_delete">刪除選中的項目</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="guide-callout blue">
+                <i data-lucide="zap"></i>
+                <p data-i18n="guide_kb_focus_tip">焦點小技巧：當焦點在列表最頂部時，按 <kbd>↑</kbd> 會自動跳至搜尋框；在搜尋框中按 <kbd>↓</kbd> 即回到列表首項。
+                </p>
+            </div>
+        </section>
+
+        <!-- Bottom CTA -->
+        <div class="guide-cta">
+            <h3 data-i18n="guide_cta_title">準備好了嗎？</h3>
+            <p data-i18n="guide_cta_desc">立即安裝，讓你的 Chrome 煥然一新。</p>
+            <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+                <i data-lucide="chrome"></i> <span data-i18n="guide_cta_btn">加到 Chrome — 完全免費</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <a href="index.html" class="footer-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span>Arc-like Sidebar</span>
+            </a>
+            <div class="footer-links">
+                <a href="privacy.html" data-i18n="footer_privacy">隱私權政策</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/issues" target="_blank" rel="noopener"
+                    data-i18n="footer_report">問題回報</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="footer_license">開源授權 (MIT)</a>
+            </div>
+            <div class="footer-copy" data-i18n="footer_copy">
+                © 2024-2026 Arc-like Sidebar. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/version.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Init Lucide icons
+        lucide.createIcons();
+
+        // TOC Active State
+        (function () {
+            const tocLinks = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('.guide-section');
+            if (!tocLinks.length || !sections.length) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        tocLinks.forEach(l => l.classList.remove('active'));
+                        const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                        if (activeLink) activeLink.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '-80px 0px -60% 0px', threshold: 0.1 });
+
+            sections.forEach(s => observer.observe(s));
+        })();
+    </script>
+</body>
+
+</html>
