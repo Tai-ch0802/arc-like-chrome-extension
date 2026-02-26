@@ -113,9 +113,43 @@
         </div>
 
         <div class="hero-visual">
-            <div class="mockup-window" style="aspect-ratio: auto; line-height: 0;">
-                <img src="images/hero-mockup.jpeg" alt="Arc-like Sidebar UI Mockup"
-                    style="width: 100%; height: auto; display: block;">
+            <div class="mockup-carousel">
+                <button class="carousel-btn prev-btn" aria-label="Previous slide">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+
+                <div class="carousel-track">
+                    <!-- Slide 1: Original Mockup -->
+                    <div class="carousel-slide mockup-window">
+                        <img src="images/hero-mockup.jpeg" alt="Arc-like Sidebar UI Mockup"
+                            style="width: 100%; height: auto; display: block;">
+                    </div>
+
+                    <!-- Slide 2: YouTube Video -->
+                    <div class="carousel-slide mockup-window">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/aRSQ1atlyCw?rel=0"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                            style="display: block; aspect-ratio: 16/9;"></iframe>
+                    </div>
+
+                    <!-- Slide 3: Release Info -->
+                    <div class="carousel-slide mockup-window">
+                        <img src="images/release-info.jpg" alt="Release Information"
+                            style="width: 100%; height: auto; display: block;">
+                    </div>
+                </div>
+
+                <button class="carousel-btn next-btn" aria-label="Next slide">
+                    <i data-lucide="chevron-right"></i>
+                </button>
+
+                <div class="carousel-indicators">
+                    <button class="indicator active" aria-label="Go to slide 1"></button>
+                    <button class="indicator" aria-label="Go to slide 2"></button>
+                    <button class="indicator" aria-label="Go to slide 3"></button>
+                </div>
             </div>
             <div class="glow-blur center-glow"></div>
         </div>

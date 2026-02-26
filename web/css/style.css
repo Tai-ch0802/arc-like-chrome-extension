@@ -337,6 +337,112 @@ a:hover {
     aspect-ratio: 16/9;
     display: flex;
     flex-direction: column;
+    /* Ensure the iframe/img stretch properly */
+    width: 100%;
+}
+
+/* Carousel Styles */
+.mockup-carousel {
+    position: relative;
+    width: 100%;
+    /* Same bounding box logic as original mockup window used to have */
+    border-radius: var(--radius-lg);
+}
+
+.carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    gap: 16px;
+    padding-bottom: 8px;
+    /* Room for indicators / visual space */
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    scroll-snap-align: center;
+    position: relative;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    opacity: 0;
+    pointer-events: none;
+    /* Hide buttons until hover */
+}
+
+.mockup-carousel:hover .carousel-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.carousel-btn:hover {
+    background: rgba(15, 23, 42, 0.9);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--accent-light);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+    left: -24px;
+}
+
+.next-btn {
+    right: -24px;
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    padding: 0;
+}
+
+.indicator:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.indicator.active {
+    background: var(--accent-color);
+    width: 24px;
+    border-radius: 4px;
+    box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .mockup-header {
