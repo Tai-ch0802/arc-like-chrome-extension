@@ -65,7 +65,8 @@ build-prod:
 	@npx esbuild sidepanel.css --minify --outfile=$(PROD_BUILD_DIR)/sidepanel.css
 	@echo "    - Preparing HTML for production..."
 	@cp sidepanel.html $(PROD_BUILD_DIR)/sidepanel.html
-	@sed -i '' 's/type="module" //' $(PROD_BUILD_DIR)/sidepanel.html
+	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/sidepanel.html
+	@rm -f $(PROD_BUILD_DIR)/*.bak
 
 zip-prod:
 	@echo "🗜️  Zipping production contents..."
