@@ -15,8 +15,8 @@
 
 Ini adalah proyek ekstensi Chrome yang bertujuan untuk menghadirkan pengalaman sidebar vertikal seperti browser Arc ke Google Chrome, menyediakan panel yang terpadu dan kuat untuk mengelola tab dan bookmark.
 
-## 🚀 Pembaruan Rilis Baru v1.13.0! 
-[![Video Demo](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
+## 🚀 Pembaruan Rilis Baru v1.14.0! 
+[![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
 
 ### ⚡️ Fitur
 - **Gambar Latar Kustom**: Atur latar belakang bilah sisi Anda sendiri melalui unggahan atau URL, dengan opasitas dan blur yang dapat disesuaikan.

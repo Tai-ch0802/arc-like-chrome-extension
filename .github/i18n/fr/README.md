@@ -15,8 +15,8 @@
 
 C'est un projet d'extension Chrome qui vise à apporter une expérience de barre latérale verticale de type navigateur Arc à Google Chrome, offrant un panneau unifié et puissant pour la gestion des onglets et des signets.
 
-## 🚀 Mise à jour v1.13.0 !
-[![Vidéo de démonstration](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
+## 🚀 Mise à jour v1.14.0 !
+[![Vidéo de démonstration](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
 
 ### ⚡️ Fonctionnalités
 - **Image d'arrière-plan personnalisée** : Définissez votre propre fond (upload ou URL), avec opacité et flou réglables.

@@ -15,8 +15,8 @@
 
 Đây là một dự án tiện ích mở rộng Chrome nhằm mang lại trải nghiệm thanh bên dọc giống trình duyệt Arc cho Google Chrome, cung cấp một bảng điều khiển thống nhất và mạnh mẽ để quản lý các tab và dấu trang (bookmarks).
 
-## 🚀 Cập nhật phiên bản mới v1.13.0! 
-[![Video Demo](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
+## 🚀 Cập nhật phiên bản mới v1.14.0! 
+[![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
 
 ### ⚡️ Tính năng
 - **Hình nền tùy chỉnh**: Thiết lập hình nền thanh bên bằng cách tải lên hoặc sử dụng URL, với độ mờ và độ nhòe có thể điều chỉnh.

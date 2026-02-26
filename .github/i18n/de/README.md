@@ -15,8 +15,8 @@
 
 Dies ist ein Chrome-Erweiterungsprojekt, das darauf abzielt, eine vertikale Seitenleiste im Stil des Arc-Browsers in Google Chrome zu integrieren und ein einheitliches, leistungsstarkes Panel für die Verwaltung von Tabs und Lesezeichen bereitzustellen.
 
-## 🚀 Neues Update v1.13.0!
-[![Demo-Video](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
+## 🚀 Neues Update v1.14.0!
+[![Demo-Video](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
 
 ### ⚡️ Funktionen
 - **Benutzerdefiniertes Hintergrundbild**: Legen Sie Ihren eigenen Hintergrund für die Sidebar fest (Upload oder URL), inkl. Deckkraft und Unschärfe.

@@ -15,8 +15,8 @@
 
 這是一個 Chrome 擴充功能專案，旨在為 Google Chrome 帶來類似 Arc 瀏覽器的垂直側邊欄體驗，提供一個統一且強大的面板來管理分頁和書籤。
 
-## 🚀 新版本 v1.13.0 更新！
-[![示範影片](http://img.youtube.com/vi/49VWZ-AszYc/0.jpg)](https://www.youtube.com/watch?v=49VWZ-AszYc)
+## 🚀 新版本 v1.14.0 更新！
+[![示範影片](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
 
 ### ⚡️ 功能特點
 - **自訂背景圖片**：支援透過上傳圖片或 URL 設定側邊欄背景，並可調整透明與模糊度。
