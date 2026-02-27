@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "官方網站",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Hover 智慧摘要",
+    "description": "Hover Summarize 功能開關的標籤。"
+  },
+  "hoverSummarizeDescription": {
+    "message": "滑鼠懸停在分頁上 2 秒後顯示頁面摘要 (需 Summarizer API 支援)",
+    "description": "Hover Summarize 功能的說明文字。"
   }
 }

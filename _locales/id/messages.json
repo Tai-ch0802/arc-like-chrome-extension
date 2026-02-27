@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Situs Web Resmi",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Ringkasan Cerdas Saat Disorot",
+    "description": "Label untuk pengalih Ringkasan Saat Disorot di setelan."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Menampilkan ringkasan halaman ketika menyorot tab selama 2 detik (memerlukan Summarizer API)",
+    "description": "Deskripsi untuk fitur Ringkasan Saat Disorot."
   }
 }

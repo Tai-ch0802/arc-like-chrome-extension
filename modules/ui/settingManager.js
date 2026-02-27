@@ -204,6 +204,16 @@ async function buildSettingsDialogContent(selectedTheme) {
                     <p>${api.getMessage('aiGroupingDescription1')}</p>
                     <p>${api.getMessage('aiGroupingDescription2_part1')}<a href="https://developer.chrome.com/docs/ai/get-started" target="_blank" style="color: var(--accent-color); text-decoration: underline;">${api.getMessage('aiGroupingDescription2_linkText')}</a>${api.getMessage('aiGroupingDescription2_part2')}</p>
                 </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
+
+                <label class="settings-toggle">
+                    <input type="checkbox" id="hover-summarize-toggle" ${state.isHoverSummarizeEnabled() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('hoverSummarizeToggle')}</span>
+                </label>
+                <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    <p>${api.getMessage('hoverSummarizeDescription')}</p>
+                </div>
             </div>
         </div>
 
@@ -307,6 +317,14 @@ function bindSettingsEventHandlers(modalContentElement) {
             document.dispatchEvent(new CustomEvent('aiGroupingVisibilityChanged', {
                 detail: { visible: isVisible }
             }));
+        });
+    }
+
+    // Hover Summarize toggle handler
+    const hoverSummarizeToggle = modalContentElement.querySelector('#hover-summarize-toggle');
+    if (hoverSummarizeToggle) {
+        hoverSummarizeToggle.addEventListener('change', async (e) => {
+            await state.setHoverSummarizeEnabled(e.target.checked);
         });
     }
 

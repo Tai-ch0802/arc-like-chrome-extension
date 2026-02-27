@@ -1,3 +1,28 @@
+/* --- Design Token 系統 (Opinionated Design) --- */
+:root {
+    /* Animation */
+    --arc-anim-duration-fast: 120ms;
+    --arc-anim-duration-normal: 250ms;
+    --arc-anim-duration-slow: 400ms;
+    --arc-anim-easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --arc-anim-easing-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --arc-anim-easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Shadows */
+    --arc-shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.12);
+    --arc-shadow-hover: 0 2px 8px hsl(0 0% 0% / 0.2);
+    --arc-shadow-drag: 0 8px 24px hsl(0 0% 0% / 0.3);
+
+    /* Glassmorphism */
+    --arc-glass-blur: 12px;
+    --arc-glass-bg: hsl(0 0% 15% / 0.7);
+    --arc-glass-border: hsl(0 0% 100% / 0.08);
+
+    /* Hover */
+    --arc-hover-shift: 3px;
+}
+
+
 /* --- 主題定義 --- */
 
 /* 1. 預設主題 (GEEK 黑) */
@@ -533,17 +558,23 @@ mark.url-match {
     padding: 6px 12px;
     border-radius: 0;
     cursor: default;
-    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out,
+        color 0.15s ease-in-out,
+        transform var(--arc-anim-duration-fast) var(--arc-anim-easing-out),
+        box-shadow var(--arc-anim-duration-fast) var(--arc-anim-easing-out);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
     border-left: 3px solid transparent;
+    will-change: transform;
 }
 
 .tab-item:hover,
 .tab-item.selected {
     background-color: var(--element-bg-hover-color);
+    transform: translateX(var(--arc-hover-shift));
+    box-shadow: var(--arc-shadow-hover);
 }
 
 /* :active cursor now handled by SortableJS classes (.sortable-chosen, etc.) */
@@ -728,11 +759,46 @@ mark.url-match {
     cursor: pointer !important;
 }
 
-/* --- SortableJS Drag Cursor --- */
-.sortable-chosen,
-.sortable-ghost,
+/* --- SortableJS Drag Effects (Opinionated Design) --- */
+.sortable-chosen {
+    cursor: grabbing !important;
+    transform: scale(1.03);
+    box-shadow: var(--arc-shadow-drag);
+    z-index: 100;
+    transition: transform var(--arc-anim-duration-fast) var(--arc-anim-easing-spring),
+        box-shadow var(--arc-anim-duration-fast) var(--arc-anim-easing-spring);
+}
+
+.sortable-ghost {
+    cursor: grabbing !important;
+    opacity: 0.4;
+    border: 2px dashed var(--accent-color) !important;
+    background: hsl(0 0% 50% / 0.08) !important;
+    border-radius: 4px;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
 .sortable-drag {
     cursor: grabbing !important;
+}
+
+/* Drop zone highlight for bookmark folders */
+.bookmark-folder.drop-target {
+    animation: arc-pulse 1s ease-in-out infinite;
+    background-color: hsl(0 0% 50% / 0.1);
+}
+
+@keyframes arc-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 hsl(0 0% 50% / 0.15);
+    }
+
+    50% {
+        box-shadow: 0 0 0 4px hsl(0 0% 50% / 0.15);
+    }
 }
 
 .bookmark-item:hover,
@@ -2349,7 +2415,9 @@ mark.url-match {
     width: 90%;
     max-width: 380px;
     box-sizing: border-box;
-    background-color: var(--element-bg-active-color);
+    background: var(--arc-glass-bg);
+    backdrop-filter: blur(var(--arc-glass-blur));
+    -webkit-backdrop-filter: blur(var(--arc-glass-blur));
     color: var(--text-color-primary);
     padding: 10px 16px;
     border-radius: 8px;
@@ -2359,7 +2427,7 @@ mark.url-match {
     gap: 12px;
     z-index: 1000;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--arc-glass-border);
 }
 
 #toast-container.hidden {
@@ -2489,4 +2557,95 @@ mark.url-match {
 .empty-state-action-btn svg {
     width: 14px;
     height: 14px;
+}
+
+/* --- Hover Summarize Tooltip --- */
+.hover-tooltip {
+    position: fixed;
+    z-index: 1000;
+    max-width: 280px;
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    /* Glassmorphism */
+    background: var(--arc-glass-bg);
+    backdrop-filter: blur(var(--arc-glass-blur));
+    -webkit-backdrop-filter: blur(var(--arc-glass-blur));
+    border: 1px solid var(--arc-glass-border);
+    box-shadow: var(--arc-shadow-hover);
+
+    /* Animation */
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity var(--arc-anim-duration-fast) var(--arc-anim-easing-out),
+        transform var(--arc-anim-duration-fast) var(--arc-anim-easing-out);
+    pointer-events: none;
+}
+
+.hover-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.hover-tooltip__shimmer {
+    height: 14px;
+    width: 80%;
+    border-radius: 4px;
+    background: linear-gradient(90deg,
+            var(--element-bg-color) 25%,
+            var(--element-bg-hover-color) 50%,
+            var(--element-bg-color) 75%);
+    background-size: 200% 100%;
+    animation: arc-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes arc-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.hover-tooltip__content {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.hover-tooltip__text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-color-light);
+    word-break: break-word;
+}
+
+.hover-tooltip__meta {
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--text-color-secondary);
+    opacity: 0.7;
+}
+
+/* --- Accessibility: Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* --- Glassmorphism Fallback --- */
+@supports not (backdrop-filter: blur(1px)) {
+    #toast-container {
+        background-color: var(--element-bg-active-color);
+        border: 1px solid var(--border-color);
+    }
 }

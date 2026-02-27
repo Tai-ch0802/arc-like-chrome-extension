@@ -184,6 +184,38 @@ export async function setAiGroupingVisible(visible) {
   await setStorage('sync', { [AI_GROUPING_VISIBLE_KEY]: visible });
 }
 
+// --- Hover Summarize State ---
+
+const HOVER_SUMMARIZE_KEY = 'hoverSummarizeEnabled';
+let hoverSummarizeEnabled = true; // Default to enabled
+
+/**
+ * Loads the Hover Summarize state from chrome.storage.sync.
+ * @returns {Promise<boolean>} The enabled state.
+ */
+export async function initHoverSummarize() {
+  const result = await getStorage('sync', [HOVER_SUMMARIZE_KEY]);
+  hoverSummarizeEnabled = result[HOVER_SUMMARIZE_KEY] !== false; // Default true if not set
+  return hoverSummarizeEnabled;
+}
+
+/**
+ * Gets the current Hover Summarize enabled state.
+ * @returns {boolean}
+ */
+export function isHoverSummarizeEnabled() {
+  return hoverSummarizeEnabled;
+}
+
+/**
+ * Sets the Hover Summarize enabled state.
+ * @param {boolean} enabled
+ */
+export async function setHoverSummarizeEnabled(enabled) {
+  hoverSummarizeEnabled = enabled;
+  await setStorage('sync', { [HOVER_SUMMARIZE_KEY]: enabled });
+}
+
 // --- UI Language Override State ---
 
 const UI_LANGUAGE_KEY = 'uiLanguage';

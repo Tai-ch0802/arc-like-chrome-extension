@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "आधिकारिक वेबसाइट",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "होवर स्मार्ट सारांश",
+    "description": "सेटिंग्स में होवर सारांश टॉगल के लिए लेबल।"
+  },
+  "hoverSummarizeDescription": {
+    "message": "किसी टैब पर 2 सेकंड तक होवर करने पर पेज का सारांश दिखाएँ (नये Summarizer API की आवश्यकता है)",
+    "description": "होवर सारांश सुविधा के लिए विवरण।"
   }
 }

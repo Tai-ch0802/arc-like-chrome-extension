@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Trang web chính thức",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Tóm tắt Thông minh Khi di chuột",
+    "description": "Nhãn cho tùy chọn tóm tắt khi di chuột trong phần cài đặt."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Hiển thị tóm tắt trang khi di chuột qua tab trong 2 giây (yêu cầu Summarizer API)",
+    "description": "Mô tả tính năng tóm tắt khi di chuột."
   }
 }

@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "เว็บไซต์ทางการ",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "สรุปอัจฉริยะเมื่อชี้เมาส์",
+    "description": "ป้ายกำกับสำหรับตัวสลับการสรุปเมื่อชี้เมาส์ในการตั้งค่า"
+  },
+  "hoverSummarizeDescription": {
+    "message": "แสดงสรุปหน้าเว็บเมื่อชี้เมาส์เหนือแท็บเป็นเวลา 2 วินาที (ต้องใช้ Summarizer API)",
+    "description": "คำอธิบายสำหรับฟังก์ชันการสรุปเมื่อชี้เมาส์"
   }
 }

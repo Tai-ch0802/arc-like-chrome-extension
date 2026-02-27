@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Site Oficial",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Resumo Inteligente ao Passar o Mouse",
+    "description": "Rótulo para a opção de Resumo ao Passar o Mouse nas configurações."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Mostra um resumo da página ao passar o mouse sobre uma guia por 2 segundos (requer a API do Summarizer)",
+    "description": "Descrição do recurso de Resumo ao Passar o Mouse."
   }
 }

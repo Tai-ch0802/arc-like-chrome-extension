@@ -1,8 +1,79 @@
 /**
  * AI Manager Module
- * Encapsulates interactions with the local window.ai (Gemini Nano) model.
+ * Encapsulates interactions with the local AI models:
+ * - LanguageModel (Prompt API) for tab grouping
+ * - Summarizer API for page summarization
  */
 import * as api from './apiManager.js';
+
+// === Summarizer API (Hover Summarize) ===
+
+/** @type {Summarizer|null} Lazily created and cached session */
+let summarizerSession = null;
+
+/** Supported output languages for Summarizer API (Chrome 140+) */
+const SUMMARIZER_SUPPORTED_LANGS = ['en', 'es', 'ja'];
+
+/**
+ * Checks if the Summarizer API is available.
+ * @returns {Promise<boolean>}
+ */
+export async function checkSummarizerReadiness() {
+    if (!('Summarizer' in self)) return false;
+    try {
+        const status = await Summarizer.availability();
+        return status !== 'unavailable';
+    } catch (e) {
+        console.warn('Summarizer availability check failed', e);
+        return false;
+    }
+}
+
+/**
+ * Gets or lazily creates a Summarizer session.
+ * Uses the user's UI language if supported, otherwise falls back to English.
+ * @returns {Promise<Summarizer|null>}
+ */
+export async function getOrCreateSummarizerSession() {
+    // Return cached session if available
+    if (summarizerSession) return summarizerSession;
+
+    if (!('Summarizer' in self)) return null;
+
+    const availability = await Summarizer.availability();
+    if (availability === 'unavailable') return null;
+
+    // Determine output language based on user's setting
+    const userLang = api.getResolvedUILanguage();
+    const outputLang = SUMMARIZER_SUPPORTED_LANGS.includes(userLang)
+        ? userLang
+        : 'en'; // Fallback to English
+
+    try {
+        summarizerSession = await Summarizer.create({
+            type: 'tldr',
+            format: 'plain-text',
+            length: 'short',
+            expectedInputLanguages: ['en', 'ja', 'es'],
+            outputLanguage: outputLang,
+            sharedContext: 'Summarize web page content for a browser sidebar tooltip. Keep it very concise, one sentence maximum.',
+        });
+        return summarizerSession;
+    } catch (err) {
+        console.warn('Failed to create Summarizer session:', err);
+        return null;
+    }
+}
+
+/**
+ * Destroys the cached Summarizer session (e.g., when settings change).
+ */
+export function destroySummarizerSession() {
+    if (summarizerSession) {
+        try { summarizerSession.destroy(); } catch { /* ignore */ }
+        summarizerSession = null;
+    }
+}
 
 /**
  * Checks if the LanguageModel is available and ready.

@@ -7,3 +7,5 @@ export * from './ui/searchUI.js';
 export * from './ui/tabRenderer.js';
 export * from './ui/bookmarkRenderer.js';
 export * from './ui/otherWindowRenderer.js'; export * from './ui/aiGrouperUI.js';
+export * from './ui/hoverSummarizeManager.js';
+export * from './ui/hoverTooltip.js';

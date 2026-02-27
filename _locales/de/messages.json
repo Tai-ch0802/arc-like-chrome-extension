@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Offizielle Website",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Smart-Hover-Zusammenfassung",
+    "description": "Bezeichnung für die Einstellung der Hover-Zusammenfassung."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Zeigt eine Seitenzusammenfassung an, wenn Sie 2 Sekunden lang über einem Tab verweilen (erfordert die Summarizer-API)",
+    "description": "Beschreibung für die Hover-Zusammenfassungsfunktion."
   }
 }

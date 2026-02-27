@@ -8,6 +8,7 @@ import * as keyboard from './modules/keyboardManager.js';
 import * as readingListManager from './modules/readingListManager.js';
 import * as readingListRenderer from './modules/ui/readingListRenderer.js';
 import * as rssManager from './modules/rssManager.js';
+import * as hoverSummarize from './modules/ui/hoverSummarizeManager.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 
@@ -113,13 +114,14 @@ function applyStaticTranslations() {
 }
 
 async function initialize() {
-    const [, , , readingListVisible, aiGroupingVisible, uiLang] = await Promise.all([
+    const [, , , readingListVisible, aiGroupingVisible, uiLang,] = await Promise.all([
         state.initLinkedTabs(), // Load linked tabs state first
         state.initWindowNames(), // Load window names
         state.loadBookmarkCache(), // Load cached bookmarks from storage
         state.initReadingListVisibility(), // Load Reading List visibility
         state.initAiGroupingVisibility(), // Load AI Grouping visibility
-        state.initUiLanguage() // Load UI Language Override state
+        state.initUiLanguage(), // Load UI Language Override state
+        state.initHoverSummarize() // Load Hover Summarize state
     ]);
 
     // Ensure custom language dictionary is loaded BEFORE applying any translations
@@ -146,9 +148,9 @@ async function initialize() {
     addEventListeners();
     initializeSearchUI();
 
-    // Initialize RSS Manager (load subscriptions and setup alarms)
     rssManager.initRssManager().catch(console.error);
     keyboard.initialize();
+    hoverSummarize.init(); // Initialize Hover Summarize feature
 
     // Listen for refresh request from settings
     document.addEventListener('refreshBookmarksRequired', () => {
@@ -177,12 +179,16 @@ function addEventListeners() {
     // onRemoved can fire rapidly when closing multiple tabs
     chrome.tabs.onRemoved.addListener(async (tabId) => {
         await state.removeLinkedTabByTabId(tabId);
+        hoverSummarize.removeFromCache(tabId); // Clean up hover summarize cache
         debouncedUpdateTabList();
         debouncedRefreshBookmarks(); // Refresh bookmarks to update icon state
     });
 
     // onUpdated fires frequently during page loads (title, favicon, loading status changes)
     chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+        if (changeInfo.url) {
+            hoverSummarize.invalidateCache(tabId); // Clear stale summary on URL change
+        }
         debouncedUpdateTabList();
         debouncedRefreshBookmarks(); // Refresh bookmarks to update icon state
     });

@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "公式サイト",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "ホバー スマート要約",
+    "description": "設定でのホバー要約のトグルラベル。"
+  },
+  "hoverSummarizeDescription": {
+    "message": "タブの上に2秒間カーソルを合わせるとページの要約を表示します（Summarizer APIが必要です）",
+    "description": "ホバー要約機能の説明。"
   }
 }

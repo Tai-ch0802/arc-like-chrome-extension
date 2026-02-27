@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Официальный сайт",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Умная сводка при наведении",
+    "description": "Ярлык для переключателя умной сводки при наведении в настройках."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Показывает сводку страницы при наведении курсора на вкладку в течение 2 секунд (требуется Summarizer API)",
+    "description": "Описание функции сводки при наведении курсора."
   }
 }

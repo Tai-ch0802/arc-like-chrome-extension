@@ -13,7 +13,8 @@
     "storage",
     "readingList",
     "alarms",
-    "offscreen"
+    "offscreen",
+    "scripting"
   ],
   "host_permissions": [
     "*://*/*"

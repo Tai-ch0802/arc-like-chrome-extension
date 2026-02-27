@@ -19,6 +19,7 @@ tech_stack:
     - chrome.storage
     - chrome.readingList
     - chrome.alarms
+    - chrome.scripting
   js_libraries:
     - Sortable.js
   build_tools:
@@ -69,9 +70,13 @@ key_files:
   - file_path: modules/icons.js
     description: "[UI] SVG 圖示集中管理。匯出所有 UI 使用的 SVG 圖示常數，避免重複定義。"
   - file_path: modules/aiManager.js
-    description: "[AI] 本機 AI 模型管理。負責封裝與 Chrome `globalThis.LanguageModel` (Gemini Nano) 的對接、Prompt 生成及防呆。"
+    description: "[AI] 本機 AI 模型管理。負責封裝 LanguageModel (Prompt API) 與 Summarizer API 的對接，提供 tab grouping 與頁面摘要功能。"
   - file_path: modules/ui/aiGrouperUI.js
     description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
+  - file_path: modules/ui/hoverSummarizeManager.js
+    description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、Summarizer API 串流摘要、記憶體快取。"
+  - file_path: modules/ui/hoverTooltip.js
+    description: "[UI] Hover Summarize 的 Tooltip UI 元件。提供 show/hide/updateStreamChunk API，含 shimmer 載入動畫與 glassmorphism 樣式。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

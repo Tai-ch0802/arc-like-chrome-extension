@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Site officiel",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Résumé Intelligent au Survol",
+    "description": "Étiquette pour l'option de résumé au survol dans les paramètres."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Affiche un résumé de la page après un survol de 2 secondes sur un onglet (nécessite l'API Summarizer)",
+    "description": "Description de la fonctionnalité de résumé au survol."
   }
 }

@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "Sitio web oficial",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Resumen Inteligente al Pasar el Ratón",
+    "description": "Etiqueta para alternar el resumen flotante en la configuración."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Muestra un resumen de la página al pasar el ratón sobre una pestaña durante 2 segundos (requiere la API de Summarizer)",
+    "description": "Descripción para la función de resumen al pasar el ratón."
   }
 }

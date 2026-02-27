@@ -649,5 +649,13 @@
   "officialWebsiteLinkText": {
     "message": "Official Website",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "Hover Smart Summary",
+    "description": "Label for the Hover Summarize toggle in settings."
+  },
+  "hoverSummarizeDescription": {
+    "message": "Show a page summary when hovering over a tab for 2 seconds (requires Summarizer API)",
+    "description": "Description for the Hover Summarize feature."
   }
 }

@@ -646,5 +646,13 @@
   "officialWebsiteLinkText": {
     "message": "공식 웹사이트",
     "description": "Link text for the official website in the settings panel"
+  },
+  "hoverSummarizeToggle": {
+    "message": "호버 스마트 요약",
+    "description": "설정의 호버 요약 토글 라벨."
+  },
+  "hoverSummarizeDescription": {
+    "message": "탭 위에 마우스를 2초 동안 올리면 페이지 요약을 표시합니다 (Summarizer API 필요)",
+    "description": "호버 요약 기능에 대한 설명."
   }
 }
