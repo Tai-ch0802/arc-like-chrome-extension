@@ -1307,3 +1307,25 @@ a:hover {
         top: 100%;
     }
 }
+
+/* ---------------- */
+/* Comparison Table */
+/* ---------------- */
+.comparison-table-wrapper {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+}
+
+.comparison-table th {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+}

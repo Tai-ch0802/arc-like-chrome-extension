@@ -9,9 +9,25 @@
 
     <!-- SEO Meta Tags -->
     <meta name="keywords"
-        content="Chrome extension, Arc browser, sidebar, vertical tabs, bookmark manager, AI tab organizer, Gemini Nano, extension">
+        content="arc browser chrome extension, vertical tabs chrome, AI tab manager, chrome sidebar bookmarks, Gemini Nano, extension">
     <meta name="author" content="Tai">
     <link rel="canonical" href="https://sidebar-for-tabs-bookmarks.taislife.work/">
+
+    <!-- Schema.org SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Arc-like Sidebar",
+      "operatingSystem": "Chrome",
+      "applicationCategory": "BrowserExtension",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 
     <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -60,6 +76,8 @@
             <div class="nav-links">
                 <a href="#features" aria-label="特色功能"><i data-lucide="sparkles"></i><span class="nav-text"
                         data-i18n="nav_features">特色功能</span></a>
+                <a href="features.html" aria-label="功能亮點"><i data-lucide="gem"></i><span class="nav-text"
+                        data-i18n="nav_compare">理念亮點</span></a>
                 <a href="#ai-setup" aria-label="AI 設定"><i data-lucide="bot"></i><span class="nav-text"
                         data-i18n="nav_ai_setup">AI 設定</span></a>
                 <a href="#privacy" aria-label="隱私承諾"><i data-lucide="shield-check"></i><span class="nav-text"
@@ -109,6 +127,16 @@
                     target="_blank" rel="noopener">
                     <i data-lucide="github"></i> <span data-i18n="hero_btn_source">查看原始碼</span>
                 </a>
+            </div>
+
+            <div class="trust-signals" style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                <span class="badge badge-outline" style="background: rgba(255,255,255,0.05);"><i
+                        data-lucide="shield-check" style="width: 14px; height: 14px; margin-right: 4px;"></i> <span
+                        data-i18n="privacy_badge_open">100% 開源</span></span>
+                <span class="badge badge-outline"
+                    style="background: rgba(255,255,255,0.05); border-color: transparent;"><i data-lucide="star"
+                        style="width: 14px; height: 14px; margin-right: 4px; fill: currentColor; color: #ffca28;"></i>
+                    <span>Loved by users</span></span>
             </div>
         </div>
 
@@ -292,6 +320,20 @@
         <h2 class="section-title" data-i18n="more_title">還有更多亮點</h2>
         <p class="section-subtitle" data-i18n="more_subtitle">從搜尋到鍵盤操控，每一處細節都經過打磨。</p>
         <div class="features-list">
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="message-square-text"></i></div>
+                <div>
+                    <h4 data-i18n="hover_summarize_title">Hover 智慧摘要</h4>
+                    <p data-i18n="hover_summarize_desc">游標懸停在分頁上 2 秒，AI 自動為您產出一句話重點摘要，找資料不再盲目點擊。</p>
+                </div>
+            </div>
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="layers"></i></div>
+                <div>
+                    <h4 data-i18n="modern_ui_title">Opinionated 美學</h4>
+                    <p data-i18n="modern_ui_desc">深度打磨的玻璃擬物 (Glassmorphism) 材質與絲滑微動畫，享受極致瀏覽品質。</p>
+                </div>
+            </div>
             <div class="feature-item glow-card">
                 <div class="card-icon-wrapper"><i data-lucide="link"></i></div>
                 <div>
