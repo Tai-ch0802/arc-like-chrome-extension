@@ -258,7 +258,7 @@
   "footer_privacy": "privacy policy",
   "nav_compare": "Philosophy",
   "hover_summarize_title": "Hover Smart Summarize",
-  "hover_summarize_desc": "Hover over a tab for 2 seconds and AI generates a one-sentence summary instantly. No more blind clicking.",
+  "hover_summarize_desc": "Not sure what a tab is about? Hover your cursor over any loaded tab in the sidebar for 2 seconds. The system will use local AI to read the page content in real-time and generate a concise one-sentence summary.",
   "modern_ui_title": "Opinionated Aesthetics",
   "modern_ui_desc": "Deeply polished glassmorphism design and silky micro-animations for the ultimate browsing experience.",
   "compare_page_title": "Philosophy & Features | Arc-like Sidebar",
