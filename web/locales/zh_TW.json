@@ -289,5 +289,14 @@
   "compare_row5_allinone": "<i data-lucide=\"minus\" style=\"color: #9e9e9e; width: 18px; margin-right: 8px; vertical-align: text-bottom;\"></i>不支援",
   "compare_row5_traditional": "<i data-lucide=\"minus\" style=\"color: #9e9e9e; width: 18px; margin-right: 8px; vertical-align: text-bottom;\"></i>不支援",
   "compare_cta_text": "我們相信好工具應該保持克制，為你過濾干擾，而不是塞滿不必要的開關。",
-  "compare_btn_install": "立即安裝，親自體驗差異"
+  "compare_btn_install": "立即安裝，親自體驗差異",
+  "guide_toc_ai_hover": "Hover 智慧摘要",
+  "guide_ai_hover_title": "Hover 智慧摘要",
+  "guide_ai_hover_desc": "不知道這個分頁裡面寫了什麼？將游標停留在側邊欄的任意分頁上停留 2 秒，系統便會利用本機 AI 即時讀取網頁內容，並生成一句話的重點摘要。",
+  "guide_ai_hover_how_title": "使用方式與限制",
+  "guide_ai_hover_step1": "確保你已完成 <a href=\"index.html#ai-setup\">AI 功能設定</a>。",
+  "guide_ai_hover_step2": "在側邊欄的設定面板的「實驗性功能」中啟用「Hover 智慧摘要」。",
+  "guide_ai_hover_step3": "將滑鼠游標停留在任何已載入完成的分頁上 2 秒鐘。",
+  "guide_ai_hover_step4": "摘要面板會優雅地浮現，並以文字串流的方式逐字顯示摘要結果。",
+  "guide_ai_hover_lang_limit": "語系支援限制：由於底層 Gemini Nano 模型目前的語言支援度，此功能僅能穩定回覆「日文」、「英文」、「西班牙文」。其他語系（如繁體中文）的使用者目前仍會收到英文的摘要結果。我們將在 Chrome 推出新模型更新時第一時間支援更多語系。"
 }

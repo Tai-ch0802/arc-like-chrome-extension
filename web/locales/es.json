@@ -289,5 +289,14 @@
   "compare_row5_allinone": "<i data-lucide=\"minus\" style=\"color: #9e9e9e; width: 18px; margin-right: 8px; vertical-align: text-bottom;\"></i>Unsupported",
   "compare_row5_traditional": "<i data-lucide=\"minus\" style=\"color: #9e9e9e; width: 18px; margin-right: 8px; vertical-align: text-bottom;\"></i>Unsupported",
   "compare_cta_text": "We believe good tools should filter distractions, not fill your screen with unnecessary switches.",
-  "compare_btn_install": "Install now to feel the difference"
+  "compare_btn_install": "Install now to feel the difference",
+  "guide_toc_ai_hover": "Hover Smart Summarize",
+  "guide_ai_hover_title": "Hover Smart Summarize",
+  "guide_ai_hover_desc": "Not sure what a tab is about? Hover your cursor over any loaded tab in the sidebar for 2 seconds. The system will use local AI to read the page content in real-time and generate a concise one-sentence summary.",
+  "guide_ai_hover_how_title": "How to Use & Limitations",
+  "guide_ai_hover_step1": "Ensure you have completed the <a href=\"index.html#ai-setup\">AI Setup</a>.",
+  "guide_ai_hover_step2": "Enable 'Hover Smart Summarize' in the 'Experimental Features' section of the sidebar's settings panel.",
+  "guide_ai_hover_step3": "Hover your cursor over any fully loaded tab for 2 seconds.",
+  "guide_ai_hover_step4": "The summary panel will elegantly appear, streaming the summary text word by word.",
+  "guide_ai_hover_lang_limit": "Language Support Limitation: Due to the current language support in the underlying Gemini Nano model, this feature can only reliably generate summaries in Japanese, English, and Spanish. Users of other languages will currently receive English summaries. We will support more languages as soon as Chrome rolls out new model updates."
 }

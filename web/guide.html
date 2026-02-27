@@ -357,6 +357,7 @@
         <a href="#reading-list" class="toc-link" data-i18n="guide_toc_reading">閱讀清單</a>
         <a href="#rss" class="toc-link" data-i18n="guide_toc_rss">RSS 訂閱</a>
         <a href="#ai-grouping" class="toc-link" data-i18n="guide_toc_ai">AI 智慧整理</a>
+        <a href="#ai-hover" class="toc-link" data-i18n="guide_toc_ai_hover">Hover 智慧摘要</a>
         <a href="#customization" class="toc-link" data-i18n="guide_toc_theme">客製化</a>
         <a href="#keyboard" class="toc-link" data-i18n="guide_toc_keyboard">鍵盤導覽</a>
     </aside>
@@ -573,6 +574,33 @@
             <div class="guide-callout">
                 <i data-lucide="undo-2"></i>
                 <p data-i18n="guide_ai_undo_tip">不滿意分類結果？別擔心！整理完成後會顯示「復原 (Undo)」按鈕，點擊即可還原到整理前的狀態。</p>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 10.5 AI Hover Summarize -->
+        <section class="guide-section" id="ai-hover">
+            <h2 class="guide-section-title">
+                <i data-lucide="message-square-text" class="section-icon purple"></i>
+                <span data-i18n="guide_ai_hover_title">Hover 智慧摘要</span>
+            </h2>
+            <p data-i18n="guide_ai_hover_desc">不知道這個分頁裡面寫了什麼？將游標停留在側邊欄的任意分頁上停留 2 秒，系統便會利用本機 AI 即時讀取網頁內容，並生成一句話的重點摘要。
+            </p>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_ai_hover_how_title">使用方式與限制</h4>
+                <ol>
+                    <li data-i18n="guide_ai_hover_step1">確保你已完成 <a href="index.html#ai-setup">AI 功能設定</a>。</li>
+                    <li data-i18n="guide_ai_hover_step2">在側邊欄的設定面板的「實驗性功能」中啟用「Hover 智慧摘要」。</li>
+                    <li data-i18n="guide_ai_hover_step3">將滑鼠游標停留在任何已載入完成的分頁上 2 秒鐘。</li>
+                    <li data-i18n="guide_ai_hover_step4">摘要面板會優雅地浮現，並以文字串流的方式逐字顯示摘要結果。</li>
+                </ol>
+            </div>
+            <div class="guide-callout blue">
+                <i data-lucide="languages"></i>
+                <p data-i18n="guide_ai_hover_lang_limit">語系支援限制：由於底層 Gemini Nano
+                    模型目前的語言支援度，此功能僅能穩定回覆「日文」、「英文」、「西班牙文」。其他語系（如繁體中文）的使用者目前仍會收到英文的摘要結果。我們將在 Chrome 推出新模型更新時第一時間支援更多語系。
+                </p>
             </div>
         </section>
 
