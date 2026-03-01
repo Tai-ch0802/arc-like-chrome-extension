@@ -25,7 +25,7 @@ let fetchedHashes = new Set();
  * @returns {string} Escaped string.
  */
 function escapeDelimiter(str) {
-    return str.replace(/\|/g, ESCAPE_CHAR);
+    return str.replace(/\\/g, '\\\\').replace(/\|/g, ESCAPE_CHAR);
 }
 
 /**
@@ -34,7 +34,7 @@ function escapeDelimiter(str) {
  * @returns {string} Unescaped string.
  */
 function unescapeDelimiter(str) {
-    return str.replace(/\\\|/g, '|');
+    return str.replace(/\\\|/g, '|').replace(/\\\\/g, '\\');
 }
 
 /**
