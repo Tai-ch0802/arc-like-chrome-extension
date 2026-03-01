@@ -486,13 +486,13 @@ function extractLinkFromGuid(xml) {
 function decodeXmlEntities(str) {
     if (!str) return '';
     return str
-        .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&apos;/g, "'")
         .replace(/&quot;/g, '"')
         .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)))
-        .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+        .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
+        .replace(/&amp;/g, '&');
 }
 
 /**
