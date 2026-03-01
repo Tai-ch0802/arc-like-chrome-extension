@@ -486,9 +486,9 @@ function extractLinkFromGuid(xml) {
 function decodeXmlEntities(str) {
     if (!str) return '';
     return str
+        .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
-        .replace(/&amp;/g, '&')
         .replace(/&apos;/g, "'")
         .replace(/&quot;/g, '"')
         .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)))
