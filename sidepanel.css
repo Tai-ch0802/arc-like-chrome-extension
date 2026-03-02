@@ -2605,6 +2605,10 @@ mark.url-match {
     margin-top: 8px;
 }
 
+.ai-settings-progress-wrap[hidden] {
+    display: none;
+}
+
 .ai-progress-text {
     font-size: 0.8em;
     opacity: 0.7;

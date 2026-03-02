@@ -11,8 +11,11 @@ import { tabListContainer } from './elements.js';
 
 // === State ===
 
-/** @type {Map<number, {summary: string, url: string}>} tabId → cached summary */
+/** @type {Map<number, {summary: string, url: string, timestamp: number}>} tabId → cached summary */
 const summaryCache = new Map();
+
+/** Cache TTL in milliseconds (5 minutes) */
+const CACHE_TTL_MS = 5 * 60 * 1000;
 
 /** @type {number|null} Hover debounce timer */
 let hoverTimerId = null;
@@ -249,12 +252,21 @@ async function extractPageContent(tabId) {
  */
 function getCachedSummary(tabId, currentUrl) {
     const cached = summaryCache.get(tabId);
-    if (cached && cached.url === currentUrl) {
-        return cached.summary;
-    }
+    if (!cached) return null;
+
     // URL changed → clear stale cache (FR-4.03)
-    if (cached) summaryCache.delete(tabId);
-    return null;
+    if (cached.url !== currentUrl) {
+        summaryCache.delete(tabId);
+        return null;
+    }
+
+    // TTL expired → clear and return null to trigger re-summarization
+    if (Date.now() - cached.timestamp > CACHE_TTL_MS) {
+        summaryCache.delete(tabId);
+        return null;
+    }
+
+    return cached.summary;
 }
 
 /**
@@ -263,7 +275,7 @@ function getCachedSummary(tabId, currentUrl) {
  * @param {string} summary 
  */
 function setCachedSummary(tabId, url, summary) {
-    summaryCache.set(tabId, { summary, url });
+    summaryCache.set(tabId, { summary, url, timestamp: Date.now() });
 }
 
 // === Helpers ===
