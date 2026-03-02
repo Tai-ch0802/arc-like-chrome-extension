@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Truy cập <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> và đặt thành \"Enabled\".",
   "guide_ai_setup_step3": "Khởi động lại Chrome.",
   "guide_ai_setup_step4": "Truy cập <code>chrome://on-device-internals</code> để kiểm tra trạng thái mô hình; cũng có thể kiểm tra <code>chrome://components</code> cho \"Optimization Guide On Device Model\".",
-  "guide_ai_setup_verify": "Xác minh: mở DevTools Console và chạy <code>await LanguageModel.availability();</code> — nếu trả về <code>\"available\"</code>, cài đặt hoàn tất."
+  "guide_ai_setup_verify": "Xác minh: mở DevTools Console và chạy <code>await LanguageModel.availability();</code> — nếu trả về <code>\"available\"</code>, cài đặt hoàn tất.",
+  "privacy_s4_td_scripting": "Dùng cho tính năng \"Hover Tóm tắt Thông minh\": khi bạn di chuột qua một tab, nó trích xuất nội dung văn bản hiển thị từ trang đó và gửi đến mô hình AI cục bộ trên thiết bị để tóm tắt. Văn bản trích xuất được xử lý hoàn toàn trên thiết bị của bạn và không bao giờ được tải lên bất kỳ máy chủ nào."
 }

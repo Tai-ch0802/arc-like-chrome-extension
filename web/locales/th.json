@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "ไปที่ <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> แล้วตั้งค่าเป็น \"Enabled\"",
   "guide_ai_setup_step3": "รีสตาร์ท Chrome",
   "guide_ai_setup_step4": "ไปที่ <code>chrome://on-device-internals</code> เพื่อตรวจสอบสถานะโมเดล; ตรวจสอบได้ที่ <code>chrome://components</code> สำหรับ \"Optimization Guide On Device Model\"",
-  "guide_ai_setup_verify": "การตรวจสอบ: เปิด DevTools Console แล้วรัน <code>await LanguageModel.availability();</code> — หากได้ <code>\"available\"</code> แสดงว่าตั้งค่าสำเร็จ"
+  "guide_ai_setup_verify": "การตรวจสอบ: เปิด DevTools Console แล้วรัน <code>await LanguageModel.availability();</code> — หากได้ <code>\"available\"</code> แสดงว่าตั้งค่าสำเร็จ",
+  "privacy_s4_td_scripting": "ใช้สำหรับฟีเจอร์ \"Hover สรุปอัจฉริยะ\": เมื่อวางเมาส์เหนือแท็บ จะดึงข้อความที่มองเห็นได้จากหน้านั้นแล้วส่งไปยังโมเดล AI ในเครื่องเพื่อสรุป ข้อความที่ดึงมาจะถูกประมวลผลในอุปกรณ์ของคุณเท่านั้น ไม่มีการอัปโหลดไปยังเซิร์ฟเวอร์ใดๆ"
 }

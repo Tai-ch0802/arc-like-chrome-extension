@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Buka <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> dan atur ke \"Enabled\".",
   "guide_ai_setup_step3": "Mulai ulang Chrome.",
   "guide_ai_setup_step4": "Buka <code>chrome://on-device-internals</code> untuk memverifikasi status model; periksa juga <code>chrome://components</code> untuk \"Optimization Guide On Device Model\".",
-  "guide_ai_setup_verify": "Verifikasi: buka DevTools Console dan jalankan <code>await LanguageModel.availability();</code> — jika hasilnya <code>\"available\"</code>, pengaturan selesai."
+  "guide_ai_setup_verify": "Verifikasi: buka DevTools Console dan jalankan <code>await LanguageModel.availability();</code> — jika hasilnya <code>\"available\"</code>, pengaturan selesai.",
+  "privacy_s4_td_scripting": "Digunakan untuk fitur \"Hover Ringkasan Cerdas\": saat Anda mengarahkan kursor ke tab, teks yang terlihat dari halaman tersebut diekstrak dan dikirim ke model AI lokal di perangkat untuk diringkas. Teks yang diekstrak diproses sepenuhnya di perangkat Anda dan tidak pernah diunggah ke server mana pun."
 }

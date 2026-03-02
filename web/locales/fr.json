@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Ouvrez <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> et définissez sur \"Enabled\".",
   "guide_ai_setup_step3": "Redémarrez Chrome.",
   "guide_ai_setup_step4": "Accédez à <code>chrome://on-device-internals</code> pour vérifier le statut du modèle ; vérifiez aussi <code>chrome://components</code> pour \"Optimization Guide On Device Model\".",
-  "guide_ai_setup_verify": "Vérification : ouvrez la console DevTools et exécutez <code>await LanguageModel.availability();</code> — si le résultat est <code>\"available\"</code>, la configuration est terminée."
+  "guide_ai_setup_verify": "Vérification : ouvrez la console DevTools et exécutez <code>await LanguageModel.availability();</code> — si le résultat est <code>\"available\"</code>, la configuration est terminée.",
+  "privacy_s4_td_scripting": "Utilisé pour la fonctionnalité « Résumé intelligent au survol » : lorsque vous survolez un onglet, le texte visible de la page est extrait et envoyé au modèle IA local sur votre appareil pour résumé. Le texte extrait est traité uniquement sur votre appareil et n'est jamais téléchargé vers un serveur."
 }

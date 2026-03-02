@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "<code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> पर जाएं और \"Enabled\" पर सेट करें।",
   "guide_ai_setup_step3": "Chrome को पुनः प्रारंभ करें।",
   "guide_ai_setup_step4": "मॉडल स्थिति जांचने के लिए <code>chrome://on-device-internals</code> पर जाएं; <code>chrome://components</code> पर \"Optimization Guide On Device Model\" प्रगति भी जांच सकते हैं।",
-  "guide_ai_setup_verify": "सत्यापन: DevTools Console खोलें और <code>await LanguageModel.availability();</code> चलाएं — अगर <code>\"available\"</code> लौटे, तो सेटअप पूरा है।"
+  "guide_ai_setup_verify": "सत्यापन: DevTools Console खोलें और <code>await LanguageModel.availability();</code> चलाएं — अगर <code>\"available\"</code> लौटे, तो सेटअप पूरा है।",
+  "privacy_s4_td_scripting": "\"Hover स्मार्ट सारांश\" सुविधा के लिए उपयोग किया जाता है: जब आप किसी टैब पर होवर करते हैं, तो यह उस पेज की दृश्यमान टेक्स्ट सामग्री निकालता है और सारांश के लिए डिवाइस पर स्थानीय AI मॉडल को भेजता है। निकाला गया टेक्स्ट पूरी तरह से आपके डिवाइस पर संसाधित होता है और कभी भी किसी सर्वर पर अपलोड नहीं किया जाता।"
 }

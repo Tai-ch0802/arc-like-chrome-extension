@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Navigate to <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> and set to \"Enabled\".",
   "guide_ai_setup_step3": "Restart Chrome.",
   "guide_ai_setup_step4": "Go to <code>chrome://on-device-internals</code> to verify model status; you can also check <code>chrome://components</code> for \"Optimization Guide On Device Model\" download progress.",
-  "guide_ai_setup_verify": "Verification: Open DevTools Console and run <code>await LanguageModel.availability();</code> — if it returns <code>\"available\"</code>, setup is complete."
+  "guide_ai_setup_verify": "Verification: Open DevTools Console and run <code>await LanguageModel.availability();</code> — if it returns <code>\"available\"</code>, setup is complete.",
+  "privacy_s4_td_scripting": "Used for the \"Hover Smart Summary\" feature: when you hover over a tab, it extracts the visible text content from that page and sends it to the on-device local AI model for summarization. The extracted text is processed entirely on your device and is never uploaded to any server."
 }

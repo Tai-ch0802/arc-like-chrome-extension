@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Acesse <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> e defina como \"Enabled\".",
   "guide_ai_setup_step3": "Reinicie o Chrome.",
   "guide_ai_setup_step4": "Acesse <code>chrome://on-device-internals</code> para verificar o status do modelo; verifique também <code>chrome://components</code> para \"Optimization Guide On Device Model\".",
-  "guide_ai_setup_verify": "Verificação: abra o Console DevTools e execute <code>await LanguageModel.availability();</code> — se retornar <code>\"available\"</code>, a configuração está completa."
+  "guide_ai_setup_verify": "Verificação: abra o Console DevTools e execute <code>await LanguageModel.availability();</code> — se retornar <code>\"available\"</code>, a configuração está completa.",
+  "privacy_s4_td_scripting": "Usado para a funcionalidade \"Resumo Inteligente ao Passar o Mouse\": ao passar o mouse sobre uma aba, extrai o texto visível da página e envia ao modelo de IA local do dispositivo para resumo. O texto extraído é processado inteiramente no seu dispositivo e nunca é enviado a nenhum servidor."
 }

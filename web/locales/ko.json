@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "<code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>을 열고 \"Enabled\"로 설정.",
   "guide_ai_setup_step3": "Chrome을 다시 시작합니다.",
   "guide_ai_setup_step4": "<code>chrome://on-device-internals</code>에서 모델 상태 확인; <code>chrome://components</code>에서 \"Optimization Guide On Device Model\" 다운로드 진행 상황도 확인 가능.",
-  "guide_ai_setup_verify": "확인 방법: DevTools Console에서 <code>await LanguageModel.availability();</code>를 실행하여 <code>\"available\"</code>이 반환되면 설정 완료입니다."
+  "guide_ai_setup_verify": "확인 방법: DevTools Console에서 <code>await LanguageModel.availability();</code>를 실행하여 <code>\"available\"</code>이 반환되면 설정 완료입니다.",
+  "privacy_s4_td_scripting": "\"Hover 스마트 요약\" 기능에 사용: 탭 위에 마우스를 올리면 해당 페이지의 표시 텍스트를 추출하여 기기 내 로컬 AI 모델로 요약합니다. 추출된 텍스트는 기기에서만 처리되며 서버로 업로드되지 않습니다."
 }

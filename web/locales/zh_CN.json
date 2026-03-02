@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "在地址栏输入 <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>，设为「Enabled」。",
   "guide_ai_setup_step3": "重新启动 Chrome。",
   "guide_ai_setup_step4": "前往 <code>chrome://on-device-internals</code> 确认模型状态；也可通过 <code>chrome://components</code> 查看「Optimization Guide On Device Model」下载进度。",
-  "guide_ai_setup_verify": "验证方式：打开 DevTools Console 输入 <code>await LanguageModel.availability();</code>，若返回 <code>\"available\"</code> 表示设定成功。"
+  "guide_ai_setup_verify": "验证方式：打开 DevTools Console 输入 <code>await LanguageModel.availability();</code>，若返回 <code>\"available\"</code> 表示设定成功。",
+  "privacy_s4_td_scripting": "用于「Hover 智慧摘要」功能：当用户悬停标签页时，提取该页面的可见文字内容，发送给设备端本地 AI 模型进行摘要。提取的文字仅在本机处理，绝不上传至任何服务器。"
 }

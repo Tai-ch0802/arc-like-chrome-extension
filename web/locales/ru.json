@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Перейдите на <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> и установите \"Enabled\".",
   "guide_ai_setup_step3": "Перезапустите Chrome.",
   "guide_ai_setup_step4": "Перейдите на <code>chrome://on-device-internals</code> для проверки статуса модели; также проверьте <code>chrome://components</code> для \"Optimization Guide On Device Model\".",
-  "guide_ai_setup_verify": "Проверка: откройте консоль DevTools и выполните <code>await LanguageModel.availability();</code> — если вернёт <code>\"available\"</code>, настройка завершена."
+  "guide_ai_setup_verify": "Проверка: откройте консоль DevTools и выполните <code>await LanguageModel.availability();</code> — если вернёт <code>\"available\"</code>, настройка завершена.",
+  "privacy_s4_td_scripting": "Используется для функции «Умное резюме при наведении»: при наведении на вкладку извлекается видимый текст страницы и отправляется локальной модели ИИ на устройстве для создания резюме. Извлечённый текст обрабатывается исключительно на вашем устройстве и никогда не загружается на сервер."
 }

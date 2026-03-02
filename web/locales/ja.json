@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "<code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> を開き「Enabled」に設定。",
   "guide_ai_setup_step3": "Chrome を再起動します。",
   "guide_ai_setup_step4": "<code>chrome://on-device-internals</code> でモデルの状態を確認。<code>chrome://components</code> で「Optimization Guide On Device Model」のダウンロード進捗も確認可能。",
-  "guide_ai_setup_verify": "確認方法：DevTools Console で <code>await LanguageModel.availability();</code> を実行し、<code>\"available\"</code> が返されれば設定完了です。"
+  "guide_ai_setup_verify": "確認方法：DevTools Console で <code>await LanguageModel.availability();</code> を実行し、<code>\"available\"</code> が返されれば設定完了です。",
+  "privacy_s4_td_scripting": "「Hover スマート要約」機能に使用：タブにホバーすると、そのページの表示テキストを抽出し、デバイス上のローカル AI モデルに送信して要約します。抽出されたテキストはデバイス上でのみ処理され、サーバーにアップロードされることはありません。"
 }

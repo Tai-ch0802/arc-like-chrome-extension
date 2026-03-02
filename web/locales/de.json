@@ -310,5 +310,6 @@
   "guide_ai_setup_step2b": "Öffnen Sie <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code> und setzen Sie auf \"Enabled\".",
   "guide_ai_setup_step3": "Starten Sie Chrome neu.",
   "guide_ai_setup_step4": "Öffnen Sie <code>chrome://on-device-internals</code> für den Modellstatus; prüfen Sie auch <code>chrome://components</code> für \"Optimization Guide On Device Model\".",
-  "guide_ai_setup_verify": "Überprüfung: Öffnen Sie die DevTools-Konsole und führen Sie <code>await LanguageModel.availability();</code> aus — wenn <code>\"available\"</code> zurückgegeben wird, ist die Einrichtung abgeschlossen."
+  "guide_ai_setup_verify": "Überprüfung: Öffnen Sie die DevTools-Konsole und führen Sie <code>await LanguageModel.availability();</code> aus — wenn <code>\"available\"</code> zurückgegeben wird, ist die Einrichtung abgeschlossen.",
+  "privacy_s4_td_scripting": "Verwendet für die Funktion „Hover Smart Summary\": Beim Überfahren eines Tabs wird der sichtbare Text der Seite extrahiert und an das lokale KI-Modell auf Ihrem Gerät zur Zusammenfassung gesendet. Der extrahierte Text wird ausschließlich auf Ihrem Gerät verarbeitet und niemals auf einen Server hochgeladen."
 }
