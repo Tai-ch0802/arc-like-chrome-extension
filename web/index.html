@@ -507,21 +507,36 @@
                 <div class="step-number">1</div>
                 <h4 data-i18n="setup_step1_title">啟用本機模型</h4>
                 <p data-i18n="setup_step1_desc">在 Chrome 網址列輸入
-                    <code>chrome://flags/#optimization-guide-on-device-model</code>，將選項設為「已啟用」。
+                    <code>chrome://flags/#optimization-guide-on-device-model</code>，將選項設為「Enabled」。
                 </p>
             </div>
             <div class="step-card glow-card">
                 <div class="step-number">2</div>
                 <h4 data-i18n="setup_step2_title">啟用 Prompt API</h4>
                 <p data-i18n="setup_step2_desc">同樣在網址列輸入
-                    <code>chrome://flags/#prompt-api-for-gemini-nano</code>，設為「已啟用」或「已啟用多國語言」。
+                    <code>chrome://flags/#prompt-api-for-gemini-nano</code>，設為「Enabled」或「Enabled（多國語言）」。
                 </p>
             </div>
             <div class="step-card glow-card">
                 <div class="step-number">3</div>
+                <h4 data-i18n="setup_step2b_title">啟用多模態輸入</h4>
+                <p data-i18n="setup_step2b_desc">在網址列輸入
+                    <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>，設為「Enabled」。
+                </p>
+            </div>
+            <div class="step-card glow-card">
+                <div class="step-number">4</div>
                 <h4 data-i18n="setup_step3_title">重新啟動並驗證</h4>
-                <p data-i18n="setup_step3_desc">重新啟動 Chrome，開啟 DevTools Console 輸入
-                    <code>await LanguageModel.availability();</code> 確認回傳 <code>"available"</code>。
+                <p data-i18n="setup_step3_desc">重新啟動 Chrome 後，前往
+                    <code>chrome://on-device-internals</code> 確認模型是否已成功下載。你也可以在
+                    <code>chrome://components</code> 中檢查「Optimization Guide On Device Model」的下載進度。
+                </p>
+            </div>
+            <div class="step-card glow-card">
+                <div class="step-number">5</div>
+                <h4 data-i18n="setup_step4_title">開始使用</h4>
+                <p data-i18n="setup_step4_desc">開啟 DevTools Console 輸入
+                    <code>await LanguageModel.availability();</code> 確認回傳 <code>"available"</code>，即可使用 AI 功能。
                 </p>
             </div>
         </div>

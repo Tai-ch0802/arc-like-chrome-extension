@@ -563,11 +563,34 @@
             </h2>
             <p data-i18n="guide_ai_desc">透過 Chrome 內建的 Gemini Nano 本機 AI，一鍵將散亂的分頁依語意自動分類成群組。所有處理 100% 在你的設備上進行，資料絕不上傳雲端。
             </p>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_ai_setup_title">前置設定</h4>
+                <p data-i18n="guide_ai_setup_desc">使用 AI 功能前，需先在 Chrome 中啟用以下實驗性 Flag：</p>
+                <ol>
+                    <li data-i18n="guide_ai_setup_step1">在網址列輸入
+                        <code>chrome://flags/#optimization-guide-on-device-model</code>，設為「Enabled」。</li>
+                    <li data-i18n="guide_ai_setup_step2">在網址列輸入
+                        <code>chrome://flags/#prompt-api-for-gemini-nano</code>，設為「Enabled」或「Enabled（Multi-language）」。
+                    </li>
+                    <li data-i18n="guide_ai_setup_step2b">在網址列輸入
+                        <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>，設為「Enabled」。</li>
+                    <li data-i18n="guide_ai_setup_step3">重新啟動 Chrome。</li>
+                    <li data-i18n="guide_ai_setup_step4">前往 <code>chrome://on-device-internals</code> 確認模型狀態；也可透過
+                        <code>chrome://components</code> 查看「Optimization Guide On Device Model」下載進度。</li>
+                </ol>
+            </div>
+
+            <div class="guide-callout green">
+                <i data-lucide="monitor-check"></i>
+                <p data-i18n="guide_ai_setup_verify">驗證方式：開啟 DevTools Console 輸入
+                    <code>await LanguageModel.availability();</code>，若回傳 <code>"available"</code> 表示設定成功。</p>
+            </div>
+
             <div class="guide-subsection">
                 <h4 data-i18n="guide_ai_how_title">使用方式</h4>
                 <ol>
-                    <li data-i18n="guide_ai_step1">確保你已完成 <a href="index.html#ai-setup">AI 功能設定</a>（需 Chrome 140+、22GB
-                        磁碟空間）。</li>
+                    <li data-i18n="guide_ai_step1">確保你已完成上方的前置設定（需 Chrome 140+、22GB 磁碟空間）。</li>
                     <li data-i18n="guide_ai_step2">點擊側邊欄中的「✨ 智慧整理」按鈕。</li>
                     <li data-i18n="guide_ai_step3">系統會掃描所有未分類的分頁（需至少 4 個），AI 將在數秒內完成分析。</li>
                     <li data-i18n="guide_ai_step4">分頁會自動被移入帶有 Emoji 與描述性名稱的群組中。</li>
