@@ -4,6 +4,7 @@ import * as state from '../stateManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 import * as rss from '../rssManager.js';
+import * as aiManager from '../aiManager.js';
 import { escapeHtml } from '../utils/textUtils.js';
 
 /**
@@ -214,6 +215,67 @@ async function buildSettingsDialogContent(selectedTheme) {
                 <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
                     <p>${api.getMessage('hoverSummarizeDescription')}</p>
                 </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
+
+                <!-- AI Model Status -->
+                <div class="ai-model-status-section">
+                    <div class="ai-model-status-header">Gemini Nano</div>
+                    <div class="ai-model-status-row">
+                        <span class="ai-model-status-label">LanguageModel</span>
+                        <span id="ai-lm-status-badge" class="ai-status-badge checking">⏳</span>
+                    </div>
+                    <div class="ai-model-status-row">
+                        <span class="ai-model-status-label">Summarizer</span>
+                        <span id="ai-sum-status-badge" class="ai-status-badge checking">⏳</span>
+                    </div>
+                    <div id="ai-settings-progress-container" class="ai-settings-progress-wrap" hidden>
+                        <div class="ai-progress">
+                            <div class="ai-progress__fill" id="ai-settings-progress-fill"></div>
+                        </div>
+                        <span id="ai-settings-progress-text" class="ai-progress-text"></span>
+                    </div>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
+
+                <!-- AI Setup Guide -->
+                <div class="ai-setup-guide">
+                    <div class="ai-setup-guide-title">${api.getMessage('aiSetupGuideTitle') || 'How to Enable Gemini Nano'}</div>
+                    <ol class="ai-setup-steps">
+                        <li>
+                            <span>${api.getMessage('aiSetupStep1')}</span>
+                            <button class="ai-setup-link-btn" data-chrome-url="chrome://flags/#optimization-guide-on-device-model">
+                                ${api.getMessage('aiSetupOpenLink') || 'Open'} ↗
+                            </button>
+                        </li>
+                        <li>
+                            <span>${api.getMessage('aiSetupStep2')}</span>
+                            <button class="ai-setup-link-btn" data-chrome-url="chrome://flags/#prompt-api-for-gemini-nano">
+                                ${api.getMessage('aiSetupOpenLink') || 'Open'} ↗
+                            </button>
+                        </li>
+                        <li>
+                            <span>${api.getMessage('aiSetupStep2b')}</span>
+                            <button class="ai-setup-link-btn" data-chrome-url="chrome://flags/#prompt-api-for-gemini-nano-multimodal-input">
+                                ${api.getMessage('aiSetupOpenLink') || 'Open'} ↗
+                            </button>
+                        </li>
+                        <li>
+                            <span>${api.getMessage('aiSetupStep3')}</span>
+                            <button class="ai-setup-link-btn" data-chrome-url="chrome://on-device-internals">
+                                ${api.getMessage('aiSetupOpenLink') || 'Open'} ↗
+                            </button>
+                        </li>
+                        <li>
+                            <span>${api.getMessage('aiSetupStep4')}</span>
+                            <button class="ai-setup-link-btn" data-chrome-url="chrome://components">
+                                ${api.getMessage('aiSetupOpenLink') || 'Open'} ↗
+                            </button>
+                        </li>
+                    </ol>
+                    <div class="ai-setup-restart-note">${api.getMessage('aiSetupRestartNote')}</div>
+                </div>
             </div>
         </div>
 
@@ -327,6 +389,17 @@ function bindSettingsEventHandlers(modalContentElement) {
             await state.setHoverSummarizeEnabled(e.target.checked);
         });
     }
+
+    // AI Setup Guide: chrome:// link buttons handler
+    modalContentElement.querySelectorAll('.ai-setup-link-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const url = btn.dataset.chromeUrl;
+            if (url) chrome.tabs.create({ url });
+        });
+    });
+
+    // AI Model Status detection (runs on dialog open)
+    detectAiModelStatus(modalContentElement);
 
     // RSS Subscriptions handlers
     const rssListContainer = modalContentElement.querySelector('#rss-subscriptions-list');
@@ -499,6 +572,99 @@ function bindSettingsEventHandlers(modalContentElement) {
     });
 }
 
+/**
+ * Maps availability status to badge display.
+ * @param {string} status - availability status string
+ * @returns {{emoji: string, className: string}}
+ */
+function getStatusBadge(status) {
+    switch (status) {
+        case 'available': return { emoji: '✅ Available', className: 'available' };
+        case 'downloading': return { emoji: '⏳ Downloading', className: 'downloading' };
+        case 'downloadable': return { emoji: '📥 Downloadable', className: 'downloadable' };
+        default: return { emoji: '❌ Unavailable', className: 'unavailable' };
+    }
+}
+
+/**
+ * Detects the current AI model availability and updates the status badges.
+ * If the model needs downloading, triggers create() with monitor for progress.
+ * @param {HTMLElement} container - The modal content element
+ */
+async function detectAiModelStatus(container) {
+    const lmBadge = container.querySelector('#ai-lm-status-badge');
+    const sumBadge = container.querySelector('#ai-sum-status-badge');
+    const progressContainer = container.querySelector('#ai-settings-progress-container');
+    const progressFill = container.querySelector('#ai-settings-progress-fill');
+    const progressText = container.querySelector('#ai-settings-progress-text');
+
+    // --- LanguageModel Status ---
+    const lmStatus = await aiManager.checkModelAvailability();
+    if (lmBadge) {
+        const badge = getStatusBadge(lmStatus);
+        lmBadge.textContent = badge.emoji;
+        lmBadge.className = `ai-status-badge ${badge.className}`;
+    }
+
+    // --- Summarizer Status ---
+    let sumStatus = 'unavailable';
+    if ('Summarizer' in self) {
+        try {
+            sumStatus = await Summarizer.availability() || 'unavailable';
+        } catch { /* ignore */ }
+    }
+    if (sumBadge) {
+        const badge = getStatusBadge(sumStatus);
+        sumBadge.textContent = badge.emoji;
+        sumBadge.className = `ai-status-badge ${badge.className}`;
+    }
+
+    // --- If LanguageModel needs download, try to trigger & show progress ---
+    if (lmStatus === 'downloadable' || lmStatus === 'downloading') {
+        if (progressContainer) {
+            progressContainer.hidden = false;
+            if (lmStatus === 'downloading') {
+                progressContainer.querySelector('.ai-progress')?.classList.add('shimmer');
+                if (progressText) progressText.textContent = 'Downloading...';
+            } else {
+                if (progressText) progressText.textContent = 'Waiting to download...';
+            }
+        }
+
+        try {
+            // Trigger session creation to start/monitor download.
+            // This uses the same pattern as the Prompt API docs.
+            // The created session will be cached by aiManager for later use.
+            await aiManager.triggerLanguageModelDownload({
+                onProgress(loaded) {
+                    if (!progressContainer) return;
+                    const progressBar = progressContainer.querySelector('.ai-progress');
+                    if (loaded >= 1) {
+                        progressBar?.classList.add('shimmer');
+                        if (progressText) progressText.textContent = 'Loading into memory...';
+                    } else {
+                        progressBar?.classList.remove('shimmer');
+                        if (progressFill) progressFill.style.width = `${Math.round(loaded * 100)}%`;
+                        if (progressText) progressText.textContent = `${Math.round(loaded * 100)}%`;
+                    }
+                }
+            });
+        } catch (err) {
+            console.warn('[AI] Download trigger failed:', err);
+        }
+
+        // After create() resolves (session ready), update badge
+        const newStatus = await aiManager.checkModelAvailability();
+        if (lmBadge) {
+            const badge = getStatusBadge(newStatus);
+            lmBadge.textContent = badge.emoji;
+            lmBadge.className = `ai-status-badge ${badge.className}`;
+        }
+        if (progressContainer) {
+            progressContainer.hidden = true;
+        }
+    }
+}
 
 /**
  * 初始化主題切換器。

@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "タブの上に2秒間カーソルを合わせるとページの要約を表示します（Summarizer APIが必要です）",
     "description": "ホバー要約機能の説明。"
+  },
+  "aiSetupGuideTitle": {
+    "message": "Gemini Nano を有効にする方法"
+  },
+  "aiSetupStep1": {
+    "message": "オンデバイスモデルのダウンロードを有効化：リンクを開き「Enabled」に設定してください。"
+  },
+  "aiSetupStep2": {
+    "message": "Prompt API を有効化：リンクを開き「Enabled」または「Enabled (Multi-language)」に設定してください。"
+  },
+  "aiSetupStep3": {
+    "message": "モデルのダウンロードが完了したか確認できます。"
+  },
+  "aiSetupStep4": {
+    "message": "「Optimization Guide On Device Model」のダウンロード状況を確認できます。"
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ 上記の設定を変更した後、Chrome を再起動してください。"
+  },
+  "aiSetupOpenLink": {
+    "message": "開く"
+  },
+  "aiSetupStep2b": {
+    "message": "Prompt API マルチモーダル入力を有効化：リンクを開き「Enabled」に設定してください。"
   }
 }

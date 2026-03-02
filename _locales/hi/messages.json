@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "किसी टैब पर 2 सेकंड तक होवर करने पर पेज का सारांश दिखाएँ (नये Summarizer API की आवश्यकता है)",
     "description": "होवर सारांश सुविधा के लिए विवरण।"
+  },
+  "aiSetupGuideTitle": {
+    "message": "Gemini Nano कैसे सक्षम करें"
+  },
+  "aiSetupStep1": {
+    "message": "ऑन-डिवाइस मॉडल डाउनलोड सक्षम करें: लिंक खोलें और \"Enabled\" पर सेट करें।"
+  },
+  "aiSetupStep2": {
+    "message": "Prompt API सक्षम करें: लिंक खोलें और \"Enabled\" या \"Enabled (Multi-language)\" पर सेट करें।"
+  },
+  "aiSetupStep3": {
+    "message": "सत्यापित करें कि मॉडल सफलतापूर्वक डाउनलोड हो गया है।"
+  },
+  "aiSetupStep4": {
+    "message": "\"Optimization Guide On Device Model\" की डाउनलोड प्रगति जाँचें।"
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ उपर दी गई सेटिंग बदलने के बाद Chrome को पुनः प्रारंभ करें।"
+  },
+  "aiSetupOpenLink": {
+    "message": "खोलें"
+  },
+  "aiSetupStep2b": {
+    "message": "Prompt API मल्टीमोडल इनपुट सक्षम करें: लिंक खोलें और \"Enabled\" पर सेट करें।"
   }
 }

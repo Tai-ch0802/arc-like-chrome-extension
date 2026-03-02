@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "滑鼠懸停在分頁上 2 秒後顯示頁面摘要 (需 Summarizer API 支援)",
     "description": "Hover Summarize 功能的說明文字。"
+  },
+  "aiSetupGuideTitle": {
+    "message": "如何啟用 Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "啟用裝置端模型下載：開啟連結並設為「Enabled」。"
+  },
+  "aiSetupStep2": {
+    "message": "啟用 Prompt API：開啟連結並設為「Enabled」或「Enabled (Multi-language)」。"
+  },
+  "aiSetupStep3": {
+    "message": "確認模型是否已成功下載完成。"
+  },
+  "aiSetupStep4": {
+    "message": "查看「Optimization Guide On Device Model」的下載進度。"
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ 更改以上設定後，請重新啟動 Chrome。"
+  },
+  "aiSetupOpenLink": {
+    "message": "開啟"
+  },
+  "aiSetupStep2b": {
+    "message": "啟用 Prompt API 多模態輸入：開啟連結並設為「Enabled」。"
   }
 }

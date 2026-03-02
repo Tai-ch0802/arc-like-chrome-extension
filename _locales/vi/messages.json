@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "Hiển thị tóm tắt trang khi di chuột qua tab trong 2 giây (yêu cầu Summarizer API)",
     "description": "Mô tả tính năng tóm tắt khi di chuột."
+  },
+  "aiSetupGuideTitle": {
+    "message": "Cách bật Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "Bật tải xuống mô hình trên thiết bị: mở liên kết và đặt thành \"Enabled\"."
+  },
+  "aiSetupStep2": {
+    "message": "Bật Prompt API: mở liên kết và đặt thành \"Enabled\" hoặc \"Enabled (Multi-language)\"."
+  },
+  "aiSetupStep3": {
+    "message": "Xác minh mô hình đã được tải xuống thành công."
+  },
+  "aiSetupStep4": {
+    "message": "Kiểm tra tiến trình tải xuống \"Optimization Guide On Device Model\"."
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ Khởi động lại Chrome sau khi thay đổi các cài đặt trên."
+  },
+  "aiSetupOpenLink": {
+    "message": "Mở"
+  },
+  "aiSetupStep2b": {
+    "message": "Bật đầu vào đa phương thức của Prompt API: mở liên kết và đặt thành \"Enabled\"."
   }
 }

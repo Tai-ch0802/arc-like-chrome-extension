@@ -2495,6 +2495,179 @@ mark.url-match {
     animation: flash 1.5s infinite;
 }
 
+/* --- AI Model Download Progress (div-based) --- */
+.ai-progress {
+    width: 80px;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--element-bg-color);
+    position: relative;
+    align-self: center;
+}
+
+.ai-progress__fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Indeterminate shimmer state */
+.ai-progress.shimmer .ai-progress__fill {
+    display: none;
+}
+
+.ai-progress.shimmer {
+    background: linear-gradient(90deg,
+            var(--element-bg-color) 0%,
+            var(--accent-color) 50%,
+            var(--element-bg-color) 100%);
+    background-size: 200% 100%;
+    animation: ai-progress-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes ai-progress-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* --- AI Model Status (Settings Panel) --- */
+.ai-model-status-section {
+    margin-top: 4px;
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--element-bg-color);
+    border: 1px solid var(--border-color);
+}
+
+.ai-model-status-header {
+    font-weight: 600;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.ai-model-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.ai-model-status-label {
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+.ai-status-badge {
+    font-size: 0.8em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.ai-status-badge.available {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.ai-status-badge.downloading {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+}
+
+.ai-status-badge.downloadable {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+.ai-status-badge.unavailable {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.ai-status-badge.checking {
+    opacity: 0.5;
+}
+
+.ai-settings-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.ai-progress-text {
+    font-size: 0.8em;
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+/* --- AI Setup Guide (Settings Panel) --- */
+.ai-setup-guide {
+    margin-top: 4px;
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--element-bg-color);
+    border: 1px solid var(--border-color);
+}
+
+.ai-setup-guide-title {
+    font-weight: 600;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.ai-setup-steps {
+    margin: 0;
+    padding-left: 20px;
+    list-style: decimal;
+}
+
+.ai-setup-steps li {
+    font-size: 0.85em;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    opacity: 0.85;
+}
+
+.ai-setup-link-btn {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 10px;
+    font-size: 0.85em;
+    color: var(--accent-color);
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-setup-link-btn:hover {
+    background: var(--accent-color);
+    color: var(--bg-color, #fff);
+}
+
+.ai-setup-restart-note {
+    margin-top: 8px;
+    font-size: 0.85em;
+    padding: 6px 8px;
+    border-radius: 4px;
+    background: rgba(234, 179, 8, 0.1);
+    border-left: 3px solid #eab308;
+    opacity: 0.9;
+}
+
 @keyframes flash {
     0% {
         opacity: 0.7;

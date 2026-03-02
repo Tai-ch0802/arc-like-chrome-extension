@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "แสดงสรุปหน้าเว็บเมื่อชี้เมาส์เหนือแท็บเป็นเวลา 2 วินาที (ต้องใช้ Summarizer API)",
     "description": "คำอธิบายสำหรับฟังก์ชันการสรุปเมื่อชี้เมาส์"
+  },
+  "aiSetupGuideTitle": {
+    "message": "วิธีเปิดใช้งาน Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "เปิดใช้งานการดาวน์โหลดโมเดลบนอุปกรณ์: เปิดลิงก์แล้วตั้งค่าเป็น \"Enabled\""
+  },
+  "aiSetupStep2": {
+    "message": "เปิดใช้งาน Prompt API: เปิดลิงก์แล้วตั้งค่าเป็น \"Enabled\" หรือ \"Enabled (Multi-language)\""
+  },
+  "aiSetupStep3": {
+    "message": "ตรวจสอบว่าโมเดลถูกดาวน์โหลดเรียบร้อยแล้ว"
+  },
+  "aiSetupStep4": {
+    "message": "ตรวจสอบความคืบหน้าการดาวน์โหลด \"Optimization Guide On Device Model\""
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ รีสตาร์ท Chrome หลังจากเปลี่ยนการตั้งค่าด้านบน"
+  },
+  "aiSetupOpenLink": {
+    "message": "เปิด"
+  },
+  "aiSetupStep2b": {
+    "message": "เปิดใช้งานอินพุตหลายรูปแบบของ Prompt API: เปิดลิงก์แล้วตั้งค่าเป็น \"Enabled\""
   }
 }

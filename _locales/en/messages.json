@@ -657,5 +657,29 @@
   "hoverSummarizeDescription": {
     "message": "Show a page summary when hovering over a tab for 2 seconds (requires Summarizer API)",
     "description": "Description for the Hover Summarize feature."
+  },
+  "aiSetupGuideTitle": {
+    "message": "How to Enable Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "Enable on-device model download: open the link and set to \"Enabled\"."
+  },
+  "aiSetupStep2": {
+    "message": "Enable Prompt API: open the link and set to \"Enabled\" or \"Enabled (Multi-language)\"."
+  },
+  "aiSetupStep3": {
+    "message": "Verify the model has been downloaded successfully."
+  },
+  "aiSetupStep4": {
+    "message": "Check \"Optimization Guide On Device Model\" download progress."
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ Restart Chrome after changing the flags above."
+  },
+  "aiSetupOpenLink": {
+    "message": "Open"
+  },
+  "aiSetupStep2b": {
+    "message": "Enable Prompt API multimodal input: open the link and set to \"Enabled\"."
   }
 }

@@ -36,12 +36,26 @@ export function initAiGrouper() {
 
 async function handleGroupAction() {
     const aiGroupBtn = document.getElementById('ai-group-btn');
+    const progressEl = document.getElementById('ai-download-progress');
+    const fillEl = progressEl?.querySelector('.ai-progress__fill');
     if (!aiGroupBtn || aiGroupBtn.classList.contains('loading')) return;
 
+    /** Hides and resets the progress bar, restores button text */
+    const originalBtnText = aiGroupBtn.textContent;
+    function resetProgress() {
+        if (progressEl) {
+            progressEl.hidden = true;
+            progressEl.classList.remove('shimmer');
+            if (fillEl) fillEl.style.width = '0%';
+        }
+        aiGroupBtn.textContent = originalBtnText;
+    }
+
     try {
-        // Step 1: Check availability and get unclassified tabs
-        const isAiReady = await aiManager.checkModelReadiness();
-        if (!isAiReady) {
+        // Step 1: Check detailed availability status
+        const availability = await aiManager.checkModelAvailability();
+        console.info('[AI] Model availability:', availability);
+        if (availability === 'unavailable') {
             showToast(api.getMessage('aiModelNotReady'));
             return;
         }
@@ -61,8 +75,45 @@ async function handleGroupAction() {
         aiGroupBtn.disabled = true;
         hideToast(); // Hide any previous toast
 
-        // Step 2: Call AI model
-        const mappingResults = await aiManager.generateGroups(unclassifiedTabs);
+        // Show download progress if model needs to be downloaded
+        const needsDownload = availability !== 'available';
+        console.info('[AI] Needs download:', needsDownload);
+        if (needsDownload) {
+            // Update button text to clearly inform the user
+            aiGroupBtn.textContent = '⏳ Downloading...';
+            if (progressEl) {
+                progressEl.hidden = false;
+                if (availability === 'downloading') {
+                    // Already downloading in background — show shimmer
+                    progressEl.classList.add('shimmer');
+                } else {
+                    // 'downloadable' — show 0% fill and wait for events
+                    progressEl.classList.remove('shimmer');
+                    if (fillEl) fillEl.style.width = '0%';
+                }
+            }
+        }
+
+        // Step 2: Call AI model with download progress callback
+        const mappingResults = await aiManager.generateGroups(unclassifiedTabs, {
+            onProgress(loaded) {
+                console.info('[AI] Download progress:', Math.round(loaded * 100) + '%');
+                if (loaded >= 1) {
+                    // Download complete — model is extracting/loading into memory
+                    aiGroupBtn.textContent = '⏳ Loading...';
+                    if (progressEl) progressEl.classList.add('shimmer');
+                } else {
+                    aiGroupBtn.textContent = `⏳ ${Math.round(loaded * 100)}%`;
+                    if (progressEl) {
+                        progressEl.classList.remove('shimmer');
+                        if (fillEl) fillEl.style.width = `${Math.round(loaded * 100)}%`;
+                    }
+                }
+            }
+        });
+
+        // Hide progress after session is created
+        resetProgress();
 
         // Map results to actual valid tab IDs again (just in case they closed them)
         const validUnclassifiedTabIds = new Set((await api.getTabsInCurrentWindow())
@@ -103,6 +154,7 @@ async function handleGroupAction() {
     } finally {
         aiGroupBtn.classList.remove('loading');
         aiGroupBtn.disabled = false;
+        resetProgress();
     }
 }
 

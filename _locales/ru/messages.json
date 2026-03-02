@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "Показывает сводку страницы при наведении курсора на вкладку в течение 2 секунд (требуется Summarizer API)",
     "description": "Описание функции сводки при наведении курсора."
+  },
+  "aiSetupGuideTitle": {
+    "message": "Как включить Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "Включить загрузку модели на устройстве: откройте ссылку и установите значение \"Enabled\"."
+  },
+  "aiSetupStep2": {
+    "message": "Включить Prompt API: откройте ссылку и установите значение \"Enabled\" или \"Enabled (Multi-language)\"."
+  },
+  "aiSetupStep3": {
+    "message": "Проверьте, была ли модель успешно загружена."
+  },
+  "aiSetupStep4": {
+    "message": "Проверьте прогресс загрузки \"Optimization Guide On Device Model\"."
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ Перезапустите Chrome после изменения указанных выше настроек."
+  },
+  "aiSetupOpenLink": {
+    "message": "Открыть"
+  },
+  "aiSetupStep2b": {
+    "message": "Включить мультимодальный ввод Prompt API: откройте ссылку и установите значение \"Enabled\"."
   }
 }

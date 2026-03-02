@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "Affiche un résumé de la page après un survol de 2 secondes sur un onglet (nécessite l'API Summarizer)",
     "description": "Description de la fonctionnalité de résumé au survol."
+  },
+  "aiSetupGuideTitle": {
+    "message": "Comment activer Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "Activer le téléchargement du modèle local : ouvrez le lien et définissez sur \"Enabled\"."
+  },
+  "aiSetupStep2": {
+    "message": "Activer le Prompt API : ouvrez le lien et définissez sur \"Enabled\" ou \"Enabled (Multi-language)\"."
+  },
+  "aiSetupStep3": {
+    "message": "Vérifiez que le modèle a bien été téléchargé."
+  },
+  "aiSetupStep4": {
+    "message": "Vérifiez la progression du téléchargement de \"Optimization Guide On Device Model\"."
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ Redémarrez Chrome après avoir modifié les paramètres ci-dessus."
+  },
+  "aiSetupOpenLink": {
+    "message": "Ouvrir"
+  },
+  "aiSetupStep2b": {
+    "message": "Activer l'entrée multimodale du Prompt API : ouvrez le lien et définissez sur \"Enabled\"."
   }
 }

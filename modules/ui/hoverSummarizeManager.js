@@ -183,8 +183,10 @@ async function triggerSummarize(tabId, anchorEl) {
         let fullSummary = '';
         for await (const chunk of stream) {
             if (signal.aborted) return;
-            fullSummary += chunk; // Accumulate delta chunks
-            tooltip.updateStreamChunk(fullSummary);
+            fullSummary += chunk; // Accumulate delta chunks for caching
+            // Best Practice: pass delta chunk directly for append()-based rendering
+            // @see https://developer.chrome.com/docs/ai/render-llm-responses
+            tooltip.updateStreamChunk(chunk);
         }
 
         // Stream complete — show final summary with domain meta + cache
@@ -196,6 +198,11 @@ async function triggerSummarize(tabId, anchorEl) {
     } catch (err) {
         if (err.name === 'AbortError') return;
         console.warn('Hover Summarize error:', err);
+
+        // Model may have been purged or updated mid-session.
+        // Destroy the cached session so it's rebuilt on next hover.
+        // @see https://developer.chrome.com/docs/ai/understand-built-in-model-management
+        aiManager.destroySummarizerSession();
 
         // Fallback on any error
         const fallback = buildFallbackText(tab);

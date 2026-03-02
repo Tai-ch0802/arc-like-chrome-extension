@@ -654,5 +654,29 @@
   "hoverSummarizeDescription": {
     "message": "Menampilkan ringkasan halaman ketika menyorot tab selama 2 detik (memerlukan Summarizer API)",
     "description": "Deskripsi untuk fitur Ringkasan Saat Disorot."
+  },
+  "aiSetupGuideTitle": {
+    "message": "Cara Mengaktifkan Gemini Nano"
+  },
+  "aiSetupStep1": {
+    "message": "Aktifkan unduhan model di perangkat: buka tautan dan atur ke \"Enabled\"."
+  },
+  "aiSetupStep2": {
+    "message": "Aktifkan Prompt API: buka tautan dan atur ke \"Enabled\" atau \"Enabled (Multi-language)\"."
+  },
+  "aiSetupStep3": {
+    "message": "Verifikasi apakah model telah berhasil diunduh."
+  },
+  "aiSetupStep4": {
+    "message": "Periksa kemajuan unduhan \"Optimization Guide On Device Model\"."
+  },
+  "aiSetupRestartNote": {
+    "message": "⚠️ Mulai ulang Chrome setelah mengubah pengaturan di atas."
+  },
+  "aiSetupOpenLink": {
+    "message": "Buka"
+  },
+  "aiSetupStep2b": {
+    "message": "Aktifkan input multimodal Prompt API: buka tautan dan atur ke \"Enabled\"."
   }
 }

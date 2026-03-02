@@ -90,10 +90,13 @@ export function showLoading(anchorEl) {
     const shimmer = tt.querySelector('.hover-tooltip__shimmer');
     const content = tt.querySelector('.hover-tooltip__content');
     const meta = tt.querySelector('.hover-tooltip__meta');
+    const textEl = tt.querySelector('.hover-tooltip__text');
 
     if (shimmer) shimmer.classList.remove('hidden');
     if (content) content.classList.add('hidden');
     if (meta) meta.classList.add('hidden');
+    // Clear previous text so append() starts fresh for new stream
+    if (textEl) textEl.textContent = '';
 
     positionTooltip(anchorEl);
 
@@ -141,8 +144,10 @@ export function showSummary(summary, domain, anchorEl) {
 }
 
 /**
- * Updates the tooltip text during streaming.
- * @param {string} chunk - The current accumulated text
+ * Updates the tooltip text during streaming by appending a delta chunk.
+ * Uses append() instead of textContent for better performance.
+ * @param {string} chunk - A delta text chunk from the stream
+ * @see https://developer.chrome.com/docs/ai/render-llm-responses
  */
 export function updateStreamChunk(chunk) {
     if (!tooltipEl) return;
@@ -152,7 +157,8 @@ export function updateStreamChunk(chunk) {
 
     if (shimmer) shimmer.classList.add('hidden');
     if (content) content.classList.remove('hidden');
-    if (textEl) textEl.textContent = chunk;
+    // Best Practice: use append() to avoid removing and rebuilding all child nodes
+    if (textEl) textEl.append(chunk);
 }
 
 /**
