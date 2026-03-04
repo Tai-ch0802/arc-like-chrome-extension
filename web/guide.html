@@ -11,7 +11,35 @@
     <meta name="keywords"
         content="Chrome extension, Arc browser, sidebar, vertical tabs, bookmark manager, AI tab organizer, user guide, tutorial">
     <meta name="author" content="Tai">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://sidebar-for-tabs-bookmarks.taislife.work/guide.html">
+
+    <!-- Schema.org TechArticle -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sidebar-for-tabs-bookmarks.taislife.work/guide.html"
+      },
+      "headline": "使用指南 | Arc-like Sidebar",
+      "description": "Arc-like Sidebar 完整使用教學：分頁管理、書籤連結、AI 智慧整理、閱讀清單、RSS、鍵盤導覽與客製化。",
+      "image": "https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg",
+      "author": {
+        "@type": "Person",
+        "name": "Tai"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Arc-like Sidebar",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://sidebar-for-tabs-bookmarks.taislife.work/favicon-32x32.png"
+        }
+      }
+    }
+    </script>
 
     <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -19,20 +47,24 @@
     <link rel="apple-touch-icon" sizes="128x128" href="apple-touch-icon.png">
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="article">
     <meta property="og:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/guide.html">
+    <meta property="og:site_name" content="Arc-like Sidebar">
     <meta property="og:title" content="使用指南 | Arc-like Sidebar">
-    <meta property="og:description" content="Arc-like Sidebar 完整使用教學">
+    <meta property="og:description" content="Arc-like Sidebar 完整使用教學：分頁管理、書籤連結、AI 智慧整理、閱讀清單、RSS、鍵盤導覽與客製化。">
     <meta property="og:image"
         content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+    <meta property="og:image:alt" content="Arc-like Sidebar 使用指南">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/guide.html">
     <meta name="twitter:title" content="使用指南 | Arc-like Sidebar">
-    <meta name="twitter:description" content="Arc-like Sidebar 完整使用教學">
+    <meta name="twitter:description" content="Arc-like Sidebar 完整使用教學：分頁管理、書籤連結、AI 智慧整理、閱讀清單、RSS、鍵盤導覽與客製化。">
     <meta name="twitter:image"
         content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+    <meta name="twitter:image:alt" content="Arc-like Sidebar 使用指南">
+    <meta name="twitter:site" content="@Tai">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -569,22 +601,26 @@
                 <p data-i18n="guide_ai_setup_desc">使用 AI 功能前，需先在 Chrome 中啟用以下實驗性 Flag：</p>
                 <ol>
                     <li data-i18n="guide_ai_setup_step1">在網址列輸入
-                        <code>chrome://flags/#optimization-guide-on-device-model</code>，設為「Enabled」。</li>
+                        <code>chrome://flags/#optimization-guide-on-device-model</code>，設為「Enabled」。
+                    </li>
                     <li data-i18n="guide_ai_setup_step2">在網址列輸入
                         <code>chrome://flags/#prompt-api-for-gemini-nano</code>，設為「Enabled」或「Enabled（Multi-language）」。
                     </li>
                     <li data-i18n="guide_ai_setup_step2b">在網址列輸入
-                        <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>，設為「Enabled」。</li>
+                        <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>，設為「Enabled」。
+                    </li>
                     <li data-i18n="guide_ai_setup_step3">重新啟動 Chrome。</li>
                     <li data-i18n="guide_ai_setup_step4">前往 <code>chrome://on-device-internals</code> 確認模型狀態；也可透過
-                        <code>chrome://components</code> 查看「Optimization Guide On Device Model」下載進度。</li>
+                        <code>chrome://components</code> 查看「Optimization Guide On Device Model」下載進度。
+                    </li>
                 </ol>
             </div>
 
             <div class="guide-callout green">
                 <i data-lucide="monitor-check"></i>
                 <p data-i18n="guide_ai_setup_verify">驗證方式：開啟 DevTools Console 輸入
-                    <code>await LanguageModel.availability();</code>，若回傳 <code>"available"</code> 表示設定成功。</p>
+                    <code>await LanguageModel.availability();</code>，若回傳 <code>"available"</code> 表示設定成功。
+                </p>
             </div>
 
             <div class="guide-subsection">
