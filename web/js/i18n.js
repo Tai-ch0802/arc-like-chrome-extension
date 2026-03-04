@@ -78,7 +78,10 @@ const i18n = {
 
     async loadTranslations(lang) {
         try {
-            const response = await fetch(`locales/${lang}.json`);
+            // Derive base path from the script's own location so it works from any subdirectory
+            const scriptEl = document.querySelector('script[src*="i18n.js"]');
+            const basePath = scriptEl ? scriptEl.src.substring(0, scriptEl.src.lastIndexOf('/js/')) + '/' : '';
+            const response = await fetch(`${basePath}locales/${lang}.json`);
             if (!response.ok) throw new Error('Network response was not ok');
             this.translations = await response.json();
         } catch (error) {
