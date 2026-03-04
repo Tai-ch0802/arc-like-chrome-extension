@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc-like Sidebar vs Standard Vertical Tabs | 2026 Comparison</title>
+    <meta name="description"
+        content="Why settle for a basic vertical tabs extension? See how Arc-like Sidebar brings the true Arc browser experience to Chrome with AI, reading lists, and native bookmarks.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords"
+        content="Chrome extension, Arc browser, sidebar, vertical tabs, bookmark manager, AI tab organizer, Gemini Nano, extension, alternative to Vertical Tabs">
+    <meta name="author" content="Tai">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://sidebar-for-tabs-bookmarks.taislife.work/vertical-tabs.html">
+
+    <!-- Schema.org WebPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Arc-like Sidebar vs Standard Vertical Tabs Extensions | 2026 Comparison",
+      "description": "Why settle for a basic vertical tabs extension? See how Arc-like Sidebar brings the true Arc browser experience to Chrome.",
+      "url": "https://sidebar-for-tabs-bookmarks.taislife.work/vertical-tabs.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Arc-like Sidebar",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://sidebar-for-tabs-bookmarks.taislife.work/favicon-32x32.png"
+        }
+      }
+    }
+    </script>
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="apple-touch-icon.png">
+
+    <!-- Open Graph / Web / Socials -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/vertical-tabs.html">
+    <meta property="og:site_name" content="Arc-like Sidebar">
+    <meta property="og:title" content="Arc-like Sidebar vs Vertical Tabs Extensions">
+    <meta property="og:description"
+        content="Why settle for a basic vertical tabs extension? See how Arc-like Sidebar compares to regular vertical tabs extensions.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+    <meta property="og:image:alt" content="Arc-like Sidebar Alternative Page">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/vertical-tabs.html">
+    <meta name="twitter:title" content="Arc-like Sidebar vs Vertical Tabs Extensions">
+    <meta name="twitter:description"
+        content="Why settle for a basic vertical tabs extension? See how Arc-like Sidebar compares to regular vertical tabs extensions.">
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+    <meta name="twitter:image:alt" content="Arc-like Sidebar Alternative Page">
+    <meta name="twitter:site" content="@Tai">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="js/i18n.js" as="script">
+    <link rel="preload" href="js/main.js" as="script">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+        rel="stylesheet">
+
+    <style>
+        .alternative-hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .alternative-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .alternative-hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .comparison-section {
+            max-width: 1000px;
+            margin: 0 auto 6rem;
+            padding: 0 2rem;
+        }
+
+        .comparison-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .comparison-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .comparison-side {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comparison-side h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .comparison-side .brand-us {
+            color: var(--text-primary);
+        }
+
+        .comparison-side .brand-them {
+            color: var(--text-tertiary);
+            opacity: 0.8;
+        }
+
+        .comparison-side i {
+            color: var(--accent-primary);
+        }
+
+        .comparison-side p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto 6rem;
+            padding: 0 2rem;
+        }
+
+        .faq-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .faq-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .faq-item p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="nav-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span class="brand-name">Arc-like Sidebar</span>
+                <span class="badge badge-version" style="margin-left: 12px;">v1.2</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#features" aria-label="特色功能"><i data-lucide="sparkles"></i><span class="nav-text"
+                        data-i18n="nav_features">特色功能</span></a>
+                <a href="index.html#philosophy" aria-label="理念亮點"><i data-lucide="gem"></i><span class="nav-text"
+                        data-i18n="nav_compare">理念亮點</span></a>
+                <a href="index.html#ai-setup" aria-label="AI 設定"><i data-lucide="bot"></i><span class="nav-text"
+                        data-i18n="nav_ai_setup">AI 設定</span></a>
+                <a href="index.html#privacy" aria-label="隱私承諾"><i data-lucide="shield-check"></i><span class="nav-text"
+                        data-i18n="nav_privacy">隱私承諾</span></a>
+                <a href="guide.html" aria-label="使用指南"><i data-lucide="book-open"></i><span class="nav-text"
+                        data-i18n="nav_guide">使用指南</span></a>
+                <a href="changelog.html" aria-label="更新日誌"><i data-lucide="file-clock"></i><span class="nav-text"
+                        data-i18n="nav_changelog">更新日誌</span></a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    aria-label="GitHub"><i data-lucide="github"></i><span class="nav-text"
+                        data-i18n="nav_github">GitHub</span></a>
+
+                <!-- Language Switcher -->
+                <div class="lang-switcher">
+                    <button class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
+                        <i data-lucide="globe"></i>
+                    </button>
+                    <ul class="lang-switcher-dropdown lang-switcher-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
+                    target="_blank" rel="noopener" class="btn btn-primary btn-sm" aria-label="安裝擴充功能"><i
+                        data-lucide="download"></i><span class="nav-text" data-i18n="nav_install">安裝擴充功能</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <section class="alternative-hero fade-up">
+            <h1 data-i18n="alt_vt_h1">不只是普通的垂直分頁</h1>
+            <p data-i18n="alt_vt_sub">用這個結合垂直分頁、書籤和 AI 的終極 Arc 風格側邊欄，來升級您的瀏覽器。</p>
+        </section>
+
+        <!-- Detailed Comparison Section -->
+        <section class="comparison-section fade-up" style="animation-delay: 0.1s">
+            <div class="section-badge"><i data-lucide="arrow-left-right"></i> <span data-i18n="alt_workona_badge">功能比較</span></div>
+            <h2 class="section-title" data-i18n="alt_vt_title">Arc-like Sidebar vs 一般垂直分頁外掛</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <div class="comparison-side">
+                        <h3 class="brand-us"><i data-lucide="layers"></i> <span data-i18n="alt_vt_card1_title">All-in-One 工作區</span></h3>
+                        <p data-i18n="alt_vt_card1_desc">在一個統一、設計精美的面板中管理垂直分頁、Chrome 書籤和閱讀清單。</p>
+                    </div>
+                    <div class="comparison-side">
+                        <h3 class="brand-them"><i data-lucide="x"></i> Standard Extensions</h3>
+                        <p data-i18n="alt_vt_card1_them_desc">通常只提供單純的垂直分頁列表，需要另外安裝管理書籤或閱讀清單的外掛。</p>
+                    </div>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-side">
+                        <h3 class="brand-us"><i data-lucide="sparkles"></i> <span data-i18n="alt_vt_card2_title">Arc 瀏覽器級別的美學</span></h3>
+                        <p data-i18n="alt_vt_card2_desc">精心設計的動態主題、玻璃擬物化，以及受到現代 Arc 瀏覽器體驗啟發的使用者介面。</p>
+                    </div>
+                    <div class="comparison-side">
+                        <h3 class="brand-them"><i data-lucide="x"></i> Standard</h3>
+                        <p data-i18n="alt_vt_card2_them_desc">介面設計通常較為過時，類似 Windows 原生樹狀選單。</p>
+                    </div>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-side">
+                        <h3 class="brand-us"><i data-lucide="cpu"></i> <span data-i18n="alt_vt_card3_title">本機端 AI 魔法</span></h3>
+                        <p data-i18n="alt_vt_card3_desc">懸停時立刻摘要頁面內容，或是透過完全隱私的離線 AI 自動根據脈絡將 50+ 個分頁進行群組歸檔。</p>
+                    </div>
+                    <div class="comparison-side">
+                        <h3 class="brand-them"><i data-lucide="x"></i> Native</h3>
+                        <p data-i18n="alt_vt_card3_them_desc">未包含任何 AI 輔助功能。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section fade-up" style="animation-delay: 0.2s">
+            <h2 class="section-title" style="margin-bottom: 2rem;" data-i18n="alt_workona_faq_title">常見問題</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h4 data-i18n="alt_vt_faq1_q">這和 Edge 內建的垂直分頁有什麼不一樣？</h4>
+                    <p data-i18n="alt_vt_faq1_a">既然 Edge 有內建垂直分頁，Chrome 也理當要有。我們透過整合書籤與隱私 AI 功能，讓它變得更加強大。</p>
+                </div>
+                <div class="faq-item">
+                    <h4 data-i18n="alt_vt_faq2_q">它支援無限層級的樹狀分頁嗎？</h4>
+                    <p data-i18n="alt_vt_faq2_a">我們選擇一種更簡潔的作法，使用 Chrome 原生的分頁群組結構，保持側邊欄乾淨且快速。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <i data-lucide="layout-panel-left" class="brand-icon"></i>
+                <span>Arc-like Sidebar</span>
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html" data-i18n="footer_privacy">隱私權政策</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension/issues" target="_blank" rel="noopener"
+                    data-i18n="footer_report">問題回報</a>
+                <a href="https://github.com/Tai-ch0802/arc-like-chrome-extension" target="_blank" rel="noopener"
+                    data-i18n="footer_license">開源授權 (MIT)</a>
+            </div>
+            <div class="footer-copy" data-i18n="footer_copy">
+                © 2024-2026 Arc-like Sidebar. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    <script src="js/analytics.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/version.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
