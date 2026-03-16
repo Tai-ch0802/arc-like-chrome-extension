@@ -5,7 +5,7 @@
  */
 
 import * as api from '../apiManager.js';
-import { showCustomDialog } from '../modalManager.js';
+import { showCustomDialog, showConfirm } from '../modalManager.js';
 import {
     calculateDerivedColors,
     DEFAULT_CORE_COLORS,
@@ -334,7 +334,18 @@ export function setupCustomThemePanel(container) {
     // Reset button
     const resetBtn = container.querySelector('#btn-reset-theme');
     if (resetBtn) {
-        resetBtn.addEventListener('click', () => resetCustomTheme(container));
+        resetBtn.addEventListener('click', async () => {
+            const confirmed = await showConfirm({
+                title: api.getMessage('buttonResetTheme') || 'Reset Theme',
+                message: api.getMessage('resetThemeConfirmMessage') || 'Are you sure you want to reset your custom theme to defaults? This action cannot be undone.',
+                confirmButtonText: api.getMessage('buttonResetTheme') || 'Reset',
+                confirmButtonClass: 'danger'
+            });
+
+            if (confirmed) {
+                await resetCustomTheme(container);
+            }
+        });
     }
 }
 
