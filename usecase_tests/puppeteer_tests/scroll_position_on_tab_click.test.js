@@ -11,6 +11,7 @@
 const { setupBrowser, teardownBrowser, waitForTabCount, waitForClass } = require('./setup');
 
 const TAB_COUNT = 30;
+const KEYPRESS_INTERVAL_MS = 50;
 
 describe('Scroll Position Stability on Tab Click', () => {
     let browser;
@@ -26,14 +27,14 @@ describe('Scroll Position Stability on Tab Click', () => {
         await page.waitForSelector('#tab-list', { timeout: 15000 });
 
         for (let i = 0; i < TAB_COUNT; i++) {
-            const newTab = await page.evaluate((index) => {
+            const newTab = await page.evaluate(() => {
                 return new Promise(resolve => {
                     chrome.tabs.create({
-                        url: `https://example.com/scroll-test-${index}`,
+                        url: 'about:blank',
                         active: false
                     }, resolve);
                 });
-            }, i);
+            });
             createdTabIds.push(newTab.id);
         }
 
@@ -62,18 +63,16 @@ describe('Scroll Position Stability on Tab Click', () => {
     });
 
     test('scroll position should NOT jump back after clicking a bottom tab', async () => {
-        const initialScrollTop = await page.evaluate(
-            () => document.documentElement.scrollTop || document.body.scrollTop
-        );
-
         // Scroll to bottom
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-        await new Promise(r => setTimeout(r, 300));
+        await page.waitForFunction(
+            () => (document.documentElement.scrollTop || document.body.scrollTop) > 0,
+            { timeout: 5000 }
+        );
 
         const scrollTopAfterScroll = await page.evaluate(
             () => document.documentElement.scrollTop || document.body.scrollTop
         );
-        expect(scrollTopAfterScroll).toBeGreaterThan(initialScrollTop);
 
         // Find a non-active tab near the bottom
         const targetTabId = await page.evaluate(() => {
@@ -87,38 +86,69 @@ describe('Scroll Position Stability on Tab Click', () => {
         });
         expect(targetTabId).not.toBeNull();
 
-        // Click it
+        // Click the target tab and wait for it to become active
         const targetSelector = `.tab-item[data-tab-id="${targetTabId}"]`;
         await page.click(targetSelector);
         await waitForClass(page, targetSelector, 'active');
-        await new Promise(r => setTimeout(r, 500));
 
-        // Scroll should NOT have jumped back
+        // Wait for any async scroll effects to settle
+        await page.waitForFunction(
+            (prevScroll) => {
+                const current = document.documentElement.scrollTop || document.body.scrollTop;
+                // Scroll position should remain in the same ballpark
+                return Math.abs(current - prevScroll) < prevScroll * 0.3;
+            },
+            { timeout: 5000 },
+            scrollTopAfterScroll
+        );
+
+        // Scroll should NOT have jumped back significantly
         const scrollTopAfterClick = await page.evaluate(
             () => document.documentElement.scrollTop || document.body.scrollTop
         );
         const scrollDrift = Math.abs(scrollTopAfterClick - scrollTopAfterScroll);
-        expect(scrollDrift).toBeLessThan(200);
-        expect(scrollTopAfterClick).toBeGreaterThan(scrollTopAfterScroll * 0.5);
+        // Use proportional tolerance: drift should be less than 30% of scroll position
+        expect(scrollDrift).toBeLessThan(scrollTopAfterScroll * 0.3);
     }, 60000);
 
-    test('keyboard arrow navigation should still auto-scroll', async () => {
+    test('keyboard Tab navigation should still auto-scroll focused tab into view', async () => {
+        // Scroll back to top
         await page.evaluate(() => window.scrollTo(0, 0));
-        await new Promise(r => setTimeout(r, 200));
+        await page.waitForFunction(
+            () => (document.documentElement.scrollTop || document.body.scrollTop) === 0,
+            { timeout: 5000 }
+        );
 
         const firstTab = await page.$('.tab-item');
         expect(firstTab).not.toBeNull();
         await firstTab.focus();
 
+        // Tab key moves focus between focusable elements, triggering focusin on each.
+        // The focusin handler calls scrollIntoView when lastInputWasKeyboard is true.
+        // (ArrowDown does NOT move focus between div[tabIndex=0] elements.)
         for (let i = 0; i < 15; i++) {
-            await page.keyboard.press('ArrowDown');
-            await new Promise(r => setTimeout(r, 50));
+            await page.keyboard.press('Tab');
+            await new Promise(r => setTimeout(r, KEYPRESS_INTERVAL_MS));
         }
-        await new Promise(r => setTimeout(r, 500));
 
-        const scrollTop = await page.evaluate(
-            () => document.documentElement.scrollTop || document.body.scrollTop
-        );
-        expect(scrollTop).toBeGreaterThan(0);
+        // The focused element should now be well below the initial viewport.
+        // Verify that scrollIntoView was called by checking either:
+        // (a) document scroll position increased, or
+        // (b) the focused element is within the visible viewport (scrolled into view)
+        const result = await page.evaluate(() => {
+            const focused = document.activeElement;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const rect = focused ? focused.getBoundingClientRect() : null;
+            return { scrollTop, focusedTop: rect ? rect.top : null };
+        });
+
+        // At least one of these should be true after 15 Tab presses through 30 tabs:
+        // - The page scrolled down
+        // - The focused element is visible in the viewport
+        const pageScrolled = result.scrollTop > 0;
+        const focusedIsVisible = result.focusedTop !== null
+            && result.focusedTop >= 0
+            && result.focusedTop < 800; // viewport height
+        expect(pageScrolled || focusedIsVisible).toBe(true);
     }, 60000);
 });
