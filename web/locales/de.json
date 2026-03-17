@@ -365,5 +365,14 @@
     "alternatives_section_title": "Suchen Sie nach den besten Alternativen zu anderen Lösungen?",
     "alt_workona": "vs Workona",
     "alt_toby": "vs Toby",
-    "alt_vertical_tabs": "vs Standard Vertikale Tabs"
+    "alt_vertical_tabs": "vs Standard Vertikale Tabs",
+    "v1_14_1_date": "26. Februar 2026",
+    "v1_14_1_title": "Version 1.14.1",
+    "v1_14_1_desc": "Eine umfassende Benutzerhandbuchseite mit neu gestaltetem Navigationsleiste hinzugefügt, offizielle Website-Links im Codebase und in der Dokumentation integriert und GitHub Actions für automatisierte Release-Builds eingerichtet.",
+    "v1_14_2_date": "1. März 2026",
+    "v1_14_2_title": "Version 1.14.2",
+    "v1_14_2_desc": "Schwerpunktverbesserungen bei KI-Funktionen und Sicherheit: Detaillierter Gemini Nano-Einrichtungsguide mit Best Practices hinzugefügt, Hover-Zusammenfassungs-Caching mit TTL und Fortschrittsbalken-Sichtbarkeit verbessert. Mehrere CodeQL-Sicherheitswarnungen behoben und die Lokalisierungsqualität aller Sprachen deutlich verbessert.",
+    "v1_14_3_date": "17. März 2026",
+    "v1_14_3_title": "Version 1.14.3",
+    "v1_14_3_desc": "Bestätigungsdialog beim Zurücksetzen benutzerdefinierter Themes hinzugefügt, um versehentlichen Verlust zu verhindern; Scrollposition-Sprung beim Klicken auf Tabs behoben; Barrierefreiheits-Labels für den Toast-Schließen-Button hinzugefügt; fehlende i18n-Schlüssel in allen Sprachen ergänzt; mehrere Entwicklungsabhängigkeiten aktualisiert."
 }

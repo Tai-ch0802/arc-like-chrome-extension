@@ -365,5 +365,14 @@
     "alternatives_section_title": "Vous cherchez les meilleures alternatives à d'autres solutions ?",
     "alt_workona": "vs Workona",
     "alt_toby": "vs Toby",
-    "alt_vertical_tabs": "vs Onglets Verticaux Standard"
+    "alt_vertical_tabs": "vs Onglets Verticaux Standard",
+    "v1_14_1_date": "26 février 2026",
+    "v1_14_1_title": "Version 1.14.1",
+    "v1_14_1_desc": "Ajout d'une page complète de guide utilisateur avec une barre de navigation repensée, intégration des liens vers le site officiel dans le code et la documentation, et mise en place de GitHub Actions pour les compilations automatisées.",
+    "v1_14_2_date": "1er mars 2026",
+    "v1_14_2_title": "Version 1.14.2",
+    "v1_14_2_desc": "Améliorations ciblées sur les fonctionnalités IA et la sécurité : ajout d'un guide détaillé de configuration Gemini Nano avec bonnes pratiques, amélioration du cache des résumés avec TTL et de la visibilité de la barre de progression. Correction de plusieurs alertes de sécurité CodeQL et amélioration significative de la qualité de localisation.",
+    "v1_14_3_date": "17 mars 2026",
+    "v1_14_3_title": "Version 1.14.3",
+    "v1_14_3_desc": "Ajout d'une boîte de dialogue de confirmation lors de la réinitialisation du thème personnalisé pour éviter les pertes accidentelles ; correction du saut de position de défilement lors du clic sur les onglets ; ajout d'étiquettes d'accessibilité au bouton de fermeture des notifications ; correction des clés i18n manquantes dans toutes les langues ; mise à jour de plusieurs dépendances de développement."
 }

@@ -365,5 +365,14 @@
     "alternatives_section_title": "Bạn đang tìm kiếm lựa chọn thay thế tốt nhất?",
     "alt_workona": "vs Workona",
     "alt_toby": "vs Toby",
-    "alt_vertical_tabs": "vs Tab Dọc Thường"
+    "alt_vertical_tabs": "vs Tab Dọc Thường",
+    "v1_14_1_date": "26 tháng 2, 2026",
+    "v1_14_1_title": "Phiên bản 1.14.1",
+    "v1_14_1_desc": "Thêm trang hướng dẫn sử dụng với thanh điều hướng được thiết kế lại, tích hợp liên kết trang web chính thức trong mã nguồn và tài liệu, đồng thời thiết lập GitHub Actions cho bản build phát hành tự động.",
+    "v1_14_2_date": "1 tháng 3, 2026",
+    "v1_14_2_title": "Phiên bản 1.14.2",
+    "v1_14_2_desc": "Cải tiến tập trung vào tính năng AI và bảo mật: thêm hướng dẫn cài đặt Gemini Nano chi tiết với các phương pháp tốt nhất, cải thiện bộ nhớ đệm tóm tắt hover với TTL và thanh tiến trình. Khắc phục nhiều cảnh báo bảo mật CodeQL và cải thiện đáng kể chất lượng bản địa hóa.",
+    "v1_14_3_date": "17 tháng 3, 2026",
+    "v1_14_3_title": "Phiên bản 1.14.3",
+    "v1_14_3_desc": "Thêm hộp thoại xác nhận khi đặt lại chủ đề tùy chỉnh để tránh mất cài đặt; sửa lỗi nhảy vị trí cuộn khi nhấp tab; thêm nhãn trợ năng cho nút đóng thông báo; sửa các khóa i18n bị thiếu trong tất cả ngôn ngữ; và cập nhật nhiều gói dependency phát triển."
 }
