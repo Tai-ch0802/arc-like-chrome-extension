@@ -81,8 +81,9 @@ function initTabListeners(container) {
     if (listenersInitialized) return;
     listenersInitialized = true;
 
-    // [FIX] Track input method to prevent mouse-triggered scrollIntoView
-    let lastInputWasKeyboard = false;
+    // Track input method: only auto-scroll on focusin for keyboard navigation.
+    // Mouse clicks skip scrollIntoView to prevent scroll jump after DOM reconciliation.
+    let lastInputWasKeyboard = true;
 
     // Create AbortController for cleanup support
     listenerAbortController = new AbortController();
@@ -162,14 +163,14 @@ function initTabListeners(container) {
         }
     }, { signal });
 
-    // --- [FIX] Track mouse input to distinguish from keyboard ---
+    // --- Mouse input tracking ---
     container.addEventListener('mousedown', () => {
         lastInputWasKeyboard = false;
     }, { signal });
-    lastInputWasKeyboard = true;  // [FIX] Mark as keyboard navigation
 
     // --- Keydown Delegation ---
     container.addEventListener('keydown', (e) => {
+        lastInputWasKeyboard = true;
         const tabItem = e.target.closest('.tab-item');
         const groupHeader = e.target.closest('.tab-group-header');
 
@@ -217,11 +218,11 @@ function initTabListeners(container) {
     }, { signal });
 
     // --- Focus In (scrolling) ---
-    // [FIX] Only auto-scroll when navigating via keyboard, not on mouse click.
+    // Only auto-scroll when navigating via keyboard, not on mouse click.
     // Without this guard, DOM reconciliation after onActivated triggers focusin,
     // which calls scrollIntoView and unexpectedly jumps the scroll position.
     container.addEventListener('focusin', (e) => {
-        if (!lastInputWasKeyboard) return;  // [FIX] Skip scroll for mouse clicks
+        if (!lastInputWasKeyboard) return;
         const tabItem = e.target.closest('.tab-item');
         if (tabItem) {
             setTimeout(() => {
