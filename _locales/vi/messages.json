@@ -352,6 +352,10 @@
     "message": "Đặt lại về mặc định",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Bạn có chắc chắn muốn đặt lại chủ đề tùy chỉnh về màu sắc mặc định không? Hành động này không thể hoàn tác.",
+    "description": "Thông báo xác nhận khi đặt lại chủ đề tùy chỉnh về màu sắc mặc định."
+  },
   "warningLowContrast": {
     "message": "Phát hiện độ tương phản thấp. Màu sắc sẽ được tự động điều chỉnh.",
     "description": "Warning message when text and background contrast is insufficient."

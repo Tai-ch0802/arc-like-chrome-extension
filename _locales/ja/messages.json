@@ -352,6 +352,10 @@
     "message": "デフォルトに戻す",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "カスタムテーマをデフォルトの配色に戻してもよろしいですか？この操作は元に戻せません。",
+    "description": "カスタムテーマをデフォルトの色にリセットする際の確認メッセージ。"
+  },
   "warningLowContrast": {
     "message": "コントラストが不足しています。色は自動的に調整されます。",
     "description": "Warning message when text and background contrast is insufficient."

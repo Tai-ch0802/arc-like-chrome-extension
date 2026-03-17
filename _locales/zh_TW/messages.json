@@ -352,6 +352,10 @@
     "message": "重設為預設",
     "description": "重設主題按鈕的文字。"
   },
+  "resetThemeConfirmMessage": {
+    "message": "你確定要將自訂主題重設為預設配色嗎？此操作無法復原。",
+    "description": "重設自訂主題為預設配色時的確認訊息。"
+  },
   "warningLowContrast": {
     "message": "偵測到對比度不足，顏色將自動調整。",
     "description": "當文字與背景對比度不足時顯示的警告訊息。"

@@ -355,6 +355,10 @@
     "message": "Reset to Default",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Are you sure you want to reset your custom theme to defaults? This action cannot be undone.",
+    "description": "Confirmation message when resetting the custom theme to default colors."
+  },
   "warningLowContrast": {
     "message": "Low contrast detected. Colors will be auto-adjusted.",
     "description": "Warning message when text and background contrast is insufficient."

@@ -352,6 +352,10 @@
     "message": "Auf Standard zurücksetzen",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Möchten Sie Ihr benutzerdefiniertes Thema wirklich auf die Standardfarben zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "description": "Bestätigungsmeldung beim Zurücksetzen des benutzerdefinierten Themas auf Standardfarben."
+  },
   "warningLowContrast": {
     "message": "Geringer Kontrast erkannt. Farben werden automatisch angepasst.",
     "description": "Warning message when text and background contrast is insufficient."

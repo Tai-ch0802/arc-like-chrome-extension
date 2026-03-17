@@ -352,6 +352,10 @@
     "message": "Сбросить по умолчанию",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Вы уверены, что хотите сбросить пользовательскую тему до цветов по умолчанию? Это действие нельзя отменить.",
+    "description": "Сообщение подтверждения при сбросе пользовательской темы к цветам по умолчанию."
+  },
   "warningLowContrast": {
     "message": "Обнаружен низкий контраст. Цвета будут настроены автоматически.",
     "description": "Warning message when text and background contrast is insufficient."

@@ -352,6 +352,10 @@
     "message": "重置为默认",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "您确定要将自定义主题重置为默认配色吗？此操作无法撤销。",
+    "description": "重置自定义主题为默认配色时的确认消息。"
+  },
   "warningLowContrast": {
     "message": "检测到对比度不足，颜色将自动调整。",
     "description": "Warning message when text and background contrast is insufficient."
