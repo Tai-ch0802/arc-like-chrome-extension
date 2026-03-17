@@ -352,6 +352,10 @@
     "message": "รีเซ็ตเป็นค่าเริ่มต้น",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตธีมที่กำหนดเองเป็นสีเริ่มต้น? การกระทำนี้ไม่สามารถเลิกทำได้",
+    "description": "ข้อความยืนยันเมื่อรีเซ็ตธีมที่กำหนดเองเป็นสีเริ่มต้น"
+  },
   "warningLowContrast": {
     "message": "ตรวจพบความคมชัดต่ำ สีจะได้รับการปรับโดยอัตโนมัติ",
     "description": "Warning message when text and background contrast is insufficient."

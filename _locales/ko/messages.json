@@ -352,6 +352,10 @@
     "message": "기본값으로 재설정",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "사용자 정의 테마를 기본 색상으로 재설정하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    "description": "사용자 정의 테마를 기본 색상으로 재설정할 때의 확인 메시지."
+  },
   "warningLowContrast": {
     "message": "낮은 대비가 감지되었습니다. 색상이 자동으로 조정됩니다.",
     "description": "Warning message when text and background contrast is insufficient."

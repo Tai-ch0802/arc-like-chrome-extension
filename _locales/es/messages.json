@@ -352,6 +352,10 @@
     "message": "Restablecer por defecto",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "¿Estás seguro de que deseas restablecer tu tema personalizado a los colores predeterminados? Esta acción no se puede deshacer.",
+    "description": "Mensaje de confirmación al restablecer el tema personalizado a los colores predeterminados."
+  },
   "warningLowContrast": {
     "message": "Contraste bajo detectado. Los colores se ajustarán automáticamente.",
     "description": "Warning message when text and background contrast is insufficient."

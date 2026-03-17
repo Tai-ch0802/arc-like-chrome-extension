@@ -352,6 +352,10 @@
     "message": "Réinitialiser par défaut",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Êtes-vous sûr de vouloir réinitialiser votre thème personnalisé aux couleurs par défaut ? Cette action est irréversible.",
+    "description": "Message de confirmation lors de la réinitialisation du thème personnalisé aux couleurs par défaut."
+  },
   "warningLowContrast": {
     "message": "Contraste faible détecté. Les couleurs seront ajustées automatiquement.",
     "description": "Warning message when text and background contrast is insufficient."

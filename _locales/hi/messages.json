@@ -352,6 +352,10 @@
     "message": "डिफ़ॉल्ट पर रीसेट करें",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "क्या आप वाकई अपनी कस्टम थीम को डिफ़ॉल्ट रंगों में रीसेट करना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+    "description": "कस्टम थीम को डिफ़ॉल्ट रंगों में रीसेट करते समय पुष्टिकरण संदेश।"
+  },
   "warningLowContrast": {
     "message": "कम कंट्रास्ट का पता चला। रंग स्वचालित रूप से समायोजित किए जाएंगे।",
     "description": "Warning message when text and background contrast is insufficient."

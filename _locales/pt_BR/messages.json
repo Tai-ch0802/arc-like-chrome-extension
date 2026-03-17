@@ -352,6 +352,10 @@
     "message": "Redefinir para o padrão",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Tem certeza de que deseja redefinir seu tema personalizado para as cores padrão? Esta ação não pode ser desfeita.",
+    "description": "Mensagem de confirmação ao redefinir o tema personalizado para as cores padrão."
+  },
   "warningLowContrast": {
     "message": "Baixo contraste detectado. As cores serão ajustadas automaticamente.",
     "description": "Warning message when text and background contrast is insufficient."

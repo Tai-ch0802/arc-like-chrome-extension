@@ -352,6 +352,10 @@
     "message": "Atur Ulang ke Default",
     "description": "Text for the reset theme button."
   },
+  "resetThemeConfirmMessage": {
+    "message": "Apakah Anda yakin ingin mengatur ulang tema kustom ke warna bawaan? Tindakan ini tidak dapat dibatalkan.",
+    "description": "Pesan konfirmasi saat mengatur ulang tema kustom ke warna bawaan."
+  },
   "warningLowContrast": {
     "message": "Kontras rendah terdeteksi. Warna akan disesuaikan secara otomatis.",
     "description": "Warning message when text and background contrast is insufficient."
