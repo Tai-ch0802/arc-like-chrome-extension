@@ -4,7 +4,7 @@
 import * as api from '../apiManager.js';
 import * as readingListManager from '../readingListManager.js';
 import * as modalManager from '../modalManager.js';
-import { CHECK_ICON_SVG, CLOCK_ICON_SVG } from '../icons.js';
+import { CHECK_ICON_SVG, CLOCK_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
 
 /**
  * Event delegation state
@@ -68,6 +68,20 @@ function initReadingListListeners(containerElement) {
             e.preventDefault();
             e.stopPropagation();
             const action = btn.dataset.action;
+
+            if (action === 'add-current-tab-reading-list') {
+                const tab = await api.getActiveTab();
+                if (tab && tab.url) {
+                    await api.addReadingListEntry({
+                        url: tab.url,
+                        title: tab.title || tab.url,
+                        hasBeenRead: false
+                    });
+                    handleRefresh();
+                }
+                return;
+            }
+
             const item = btn.closest('.reading-list-item');
             const url = item?.dataset.url;
 
@@ -111,7 +125,13 @@ function initReadingListListeners(containerElement) {
                     if (container && container.querySelectorAll('.reading-list-item').length === 0) {
                         const emptyMsg = document.createElement('div');
                         emptyMsg.className = 'reading-list-empty';
-                        emptyMsg.textContent = api.getMessage('readingListEmptyGuidance') || 'Right-click a link to add it here';
+                        const guidanceText = api.getMessage('readingListEmptyGuidance') || 'Right-click a link to add it here';
+                        emptyMsg.innerHTML = `
+                            <span>${guidanceText}</span>
+                            <button class="empty-state-action-btn" data-action="add-current-tab-reading-list">
+                                ${PLUS_ICON_SVG}<span>${api.getMessage("addCurrentTab") || 'Add Current Tab'}</span>
+                            </button>
+                        `;
                         container.appendChild(emptyMsg);
                     }
                 }, 150);
@@ -199,7 +219,13 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
     if (entries.length === 0) {
         const emptyMsg = document.createElement('div');
         emptyMsg.className = 'reading-list-empty';
-        emptyMsg.textContent = api.getMessage('readingListEmptyGuidance') || 'Right-click any link to add it here';
+        const guidanceText = api.getMessage('readingListEmptyGuidance') || 'Right-click any link to add it here';
+        emptyMsg.innerHTML = `
+            <span>${guidanceText}</span>
+            <button class="empty-state-action-btn" data-action="add-current-tab-reading-list">
+                ${PLUS_ICON_SVG}<span>${api.getMessage("addCurrentTab") || 'Add Current Tab'}</span>
+            </button>
+        `;
         containerElement.appendChild(emptyMsg);
         // Hide header clear button when empty
         updateClearAllReadButton(false);

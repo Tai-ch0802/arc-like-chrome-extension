@@ -2163,6 +2163,10 @@ mark.url-match {
     color: var(--text-color-secondary);
     font-style: italic;
     font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
 }
 
 .reading-list-item {
