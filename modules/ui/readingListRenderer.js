@@ -7,6 +7,36 @@ import * as modalManager from '../modalManager.js';
 import { CHECK_ICON_SVG, CLOCK_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
 
 /**
+ * Creates a reusable empty state element for the reading list.
+ * Uses DOM API to avoid innerHTML with user-facing text (security).
+ * @returns {HTMLElement} The empty state container
+ */
+function createReadingListEmptyState() {
+    const emptyMsg = document.createElement('div');
+    emptyMsg.className = 'reading-list-empty';
+
+    const guidanceSpan = document.createElement('span');
+    guidanceSpan.textContent = api.getMessage('readingListEmptyGuidance') || 'Right-click a link to add it here';
+    emptyMsg.appendChild(guidanceSpan);
+
+    const ctaBtn = document.createElement('button');
+    ctaBtn.className = 'empty-state-action-btn';
+    ctaBtn.dataset.action = 'add-current-tab-reading-list';
+    const ctaLabel = api.getMessage('addCurrentTab') || 'Add Current Tab';
+    ctaBtn.setAttribute('aria-label', ctaLabel);
+    ctaBtn.title = ctaLabel;
+    ctaBtn.innerHTML = PLUS_ICON_SVG;
+
+    const btnTextSpan = document.createElement('span');
+    btnTextSpan.textContent = ctaLabel;
+    ctaBtn.appendChild(btnTextSpan);
+
+    emptyMsg.appendChild(ctaBtn);
+
+    return emptyMsg;
+}
+
+/**
  * Event delegation state
  */
 let listenersInitialized = false;
@@ -70,14 +100,18 @@ function initReadingListListeners(containerElement) {
             const action = btn.dataset.action;
 
             if (action === 'add-current-tab-reading-list') {
-                const tab = await api.getActiveTab();
-                if (tab && tab.url) {
-                    await api.addReadingListEntry({
-                        url: tab.url,
-                        title: tab.title || tab.url,
-                        hasBeenRead: false
-                    });
-                    handleRefresh();
+                try {
+                    const tab = await api.getActiveTab();
+                    if (tab && tab.url && tab.url.startsWith('http')) {
+                        await api.addReadingListEntry({
+                            url: tab.url,
+                            title: tab.title || tab.url,
+                            hasBeenRead: false
+                        });
+                        handleRefresh();
+                    }
+                } catch (err) {
+                    console.error('Failed to add current tab to reading list:', err);
                 }
                 return;
             }
@@ -123,16 +157,7 @@ function initReadingListListeners(containerElement) {
                     item.remove();
                     // Show empty message if no items left
                     if (container && container.querySelectorAll('.reading-list-item').length === 0) {
-                        const emptyMsg = document.createElement('div');
-                        emptyMsg.className = 'reading-list-empty';
-                        const guidanceText = api.getMessage('readingListEmptyGuidance') || 'Right-click a link to add it here';
-                        emptyMsg.innerHTML = `
-                            <span>${guidanceText}</span>
-                            <button class="empty-state-action-btn" data-action="add-current-tab-reading-list">
-                                ${PLUS_ICON_SVG}<span>${api.getMessage("addCurrentTab") || 'Add Current Tab'}</span>
-                            </button>
-                        `;
-                        container.appendChild(emptyMsg);
+                        container.appendChild(createReadingListEmptyState());
                     }
                 }, 150);
             } else if (action === 'clear-all-read') {
@@ -217,16 +242,7 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
     containerElement.innerHTML = '';
 
     if (entries.length === 0) {
-        const emptyMsg = document.createElement('div');
-        emptyMsg.className = 'reading-list-empty';
-        const guidanceText = api.getMessage('readingListEmptyGuidance') || 'Right-click any link to add it here';
-        emptyMsg.innerHTML = `
-            <span>${guidanceText}</span>
-            <button class="empty-state-action-btn" data-action="add-current-tab-reading-list">
-                ${PLUS_ICON_SVG}<span>${api.getMessage("addCurrentTab") || 'Add Current Tab'}</span>
-            </button>
-        `;
-        containerElement.appendChild(emptyMsg);
+        containerElement.appendChild(createReadingListEmptyState());
         // Hide header clear button when empty
         updateClearAllReadButton(false);
         return;
