@@ -266,6 +266,15 @@ function initializeSearchUI() {
         search.handleSearch(); // 觸發搜尋以重置顯示
     });
 
+    if (ui.clearSearchCtaBtn) {
+        ui.clearSearchCtaBtn.addEventListener('click', () => {
+            ui.searchBox.value = '';
+            ui.clearSearchBtn.classList.add('hidden');
+            ui.searchBox.focus();
+            search.handleSearch(); // 觸發搜尋以重置顯示
+        });
+    }
+
     // 監聽搜尋結果更新事件
     document.addEventListener('searchResultUpdated', (e) => {
         ui.updateSearchResultCount(e.detail.tabCount, e.detail.bookmarkCount);

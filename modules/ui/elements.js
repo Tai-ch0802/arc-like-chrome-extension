@@ -6,5 +6,6 @@ export const clearSearchBtn = document.getElementById('clear-search-btn');
 export const searchResultCount = document.getElementById('search-result-count');
 export const otherWindowsList = document.getElementById('other-windows-list');
 export const noSearchResults = document.getElementById('no-search-results');
+export const clearSearchCtaBtn = document.getElementById('clear-search-cta');
 export const contentContainer = document.getElementById('content-container');
 export const readingListContainer = document.getElementById('reading-list');
