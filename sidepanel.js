@@ -258,21 +258,18 @@ function initializeSearchUI() {
         }
     });
 
-    // 清除按鈕事件
-    ui.clearSearchBtn.addEventListener('click', () => {
+    const clearSearch = () => {
         ui.searchBox.value = '';
         ui.clearSearchBtn.classList.add('hidden');
         ui.searchBox.focus();
         search.handleSearch(); // 觸發搜尋以重置顯示
-    });
+    };
+
+    // 清除按鈕事件
+    ui.clearSearchBtn.addEventListener('click', clearSearch);
 
     if (ui.clearSearchCtaBtn) {
-        ui.clearSearchCtaBtn.addEventListener('click', () => {
-            ui.searchBox.value = '';
-            ui.clearSearchBtn.classList.add('hidden');
-            ui.searchBox.focus();
-            search.handleSearch(); // 觸發搜尋以重置顯示
-        });
+        ui.clearSearchCtaBtn.addEventListener('click', clearSearch);
     }
 
     // 監聽搜尋結果更新事件
