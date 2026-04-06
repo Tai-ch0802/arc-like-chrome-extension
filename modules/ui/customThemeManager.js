@@ -13,7 +13,7 @@ import {
     meetsWcagAA
 } from '../utils/colorUtils.js';
 import { debounce } from '../utils/functionUtils.js';
-import { escapeHtml } from '../utils/textUtils.js';
+import { escapeHtml, sanitizeUrl } from '../utils/textUtils.js';
 
 // Storage keys
 const CUSTOM_THEME_STORAGE_KEY = 'customTheme';
@@ -203,7 +203,7 @@ export function exportTheme() {
     const filename = `arc-sidebar-theme-${timestamp}.json`;
 
     const a = document.createElement('a');
-    a.href = url;
+    a.href = sanitizeUrl(url);
     a.download = filename;
     a.click();
 

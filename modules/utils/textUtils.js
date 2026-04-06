@@ -38,6 +38,23 @@ export function escapeRegExp(string) {
  * @param {string} type - 'title' or 'url' to determine CSS class
  * @returns {string} The HTML string with highlights
  */
+/**
+ * Sanitizes a URL to ensure it uses a safe protocol.
+ * @param {string} url - The URL to sanitize
+ * @returns {string} The sanitized URL, or '#' if invalid
+ */
+export function sanitizeUrl(url) {
+    try {
+        const parsed = new URL(url);
+        if (!['http:', 'https:', 'blob:'].includes(parsed.protocol)) {
+            return '#';
+        }
+        return parsed.href;
+    } catch {
+        return '#';
+    }
+}
+
 export function highlightText(text, regexes, type) {
     // 1. 收集所有匹配區間
     const matches = [];
