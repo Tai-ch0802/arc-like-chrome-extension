@@ -439,7 +439,7 @@ function bindSettingsEventHandlers(modalContentElement) {
             info.appendChild(titleSpan);
 
             const select = document.createElement('select');
-            select.className = 'rss-interval-select';
+            select.className = 'modal-select rss-interval-select';
             select.title = api.getMessage('rssIntervalLabel');
             ['1h', '3h', '8h', '12h', '24h'].forEach(val => {
                 const opt = document.createElement('option');
