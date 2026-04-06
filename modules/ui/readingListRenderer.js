@@ -5,6 +5,7 @@ import * as api from '../apiManager.js';
 import * as readingListManager from '../readingListManager.js';
 import * as modalManager from '../modalManager.js';
 import { CHECK_ICON_SVG, CLOCK_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 /**
  * Creates a reusable empty state element for the reading list.
@@ -239,10 +240,9 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
     initToggleButton();
 
     currentRefreshCallback = refreshCallback;
-    containerElement.innerHTML = '';
 
     if (entries.length === 0) {
-        containerElement.appendChild(createReadingListEmptyState());
+        reconcileDOM(containerElement, [createReadingListEmptyState()]);
         // Hide header clear button when empty
         updateClearAllReadButton(false);
         return;
@@ -280,17 +280,17 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
             }
         });
 
-        const fragment = document.createDocumentFragment();
+        const children = [];
         // Calculate "new" threshold: items added within the last hour
         const newItemThreshold = Date.now() - (60 * 60 * 1000);
 
         for (const entry of sortedEntries) {
             const isNew = entry.creationTime && entry.creationTime > newItemThreshold && !entry.hasBeenRead;
             const item = createReadingListItem(entry, isNew);
-            fragment.appendChild(item);
+            children.push(item);
         }
 
-        containerElement.appendChild(fragment);
+        reconcileDOM(containerElement, children);
     }).catch(err => {
         console.warn('Failed to load reading list sort preference:', err);
     });
