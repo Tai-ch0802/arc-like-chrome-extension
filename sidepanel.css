@@ -763,6 +763,15 @@ mark.url-match {
     cursor: pointer !important;
 }
 
+/* --- Draggable items hover effect --- */
+.tab-item:not(.in-split-view),
+.bookmark-item,
+.bookmark-folder,
+.tab-group-header,
+.tab-split-group {
+    cursor: grab;
+}
+
 /* --- SortableJS Drag Effects (Opinionated Design) --- */
 .sortable-chosen {
     cursor: grabbing !important;
