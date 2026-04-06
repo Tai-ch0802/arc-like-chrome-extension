@@ -413,34 +413,74 @@ function bindSettingsEventHandlers(modalContentElement) {
 
         const subscriptions = rss.getSubscriptions();
 
+        rssListContainer.innerHTML = '';
+
         if (subscriptions.length === 0) {
-            rssListContainer.innerHTML = `<p class="rss-empty">${api.getMessage('rssNoSubscriptions') || 'No RSS subscriptions yet.'}</p>`;
+            const emptyMsg = document.createElement('p');
+            emptyMsg.className = 'rss-empty';
+            emptyMsg.textContent = api.getMessage('rssNoSubscriptions') || 'No RSS subscriptions yet.';
+            rssListContainer.appendChild(emptyMsg);
             return;
         }
 
-        rssListContainer.innerHTML = subscriptions.map(sub => `
-            <div class="rss-subscription-item" data-id="${escapeHtml(sub.id)}">
-                <div class="rss-subscription-info">
-                    <span class="rss-subscription-title">${escapeHtml(sub.title)}</span>
-                    <select class="rss-interval-select" title="${api.getMessage('rssIntervalLabel')}">
-                        <option value="1h" ${sub.interval === '1h' ? 'selected' : ''}>1h</option>
-                        <option value="3h" ${sub.interval === '3h' ? 'selected' : ''}>3h</option>
-                        <option value="8h" ${sub.interval === '8h' ? 'selected' : ''}>8h</option>
-                        <option value="12h" ${sub.interval === '12h' ? 'selected' : ''}>12h</option>
-                        <option value="24h" ${sub.interval === '24h' ? 'selected' : ''}>24h</option>
-                    </select>
-                </div>
-                <div class="rss-subscription-actions">
-                    <button class="rss-fetch-now-btn" title="${api.getMessage('rssFetchNowButton')}" aria-label="${api.getMessage('rssFetchNowButton')}">
-                        🔄
-                    </button>
-                    <button class="rss-toggle-btn" data-action="${sub.enabled ? 'pause' : 'resume'}" title="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}" aria-label="${sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton')}">
-                        ${sub.enabled ? '⏸' : '▶'}
-                    </button>
-                    <button class="rss-delete-btn" title="${api.getMessage('rssDeleteButton')}" aria-label="${api.getMessage('rssDeleteButton')}">×</button>
-                </div>
-            </div>
-        `).join('');
+        const fragment = document.createDocumentFragment();
+
+        subscriptions.forEach(sub => {
+            const item = document.createElement('div');
+            item.className = 'rss-subscription-item';
+            item.dataset.id = sub.id;
+
+            const info = document.createElement('div');
+            info.className = 'rss-subscription-info';
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'rss-subscription-title';
+            titleSpan.textContent = sub.title;
+            info.appendChild(titleSpan);
+
+            const select = document.createElement('select');
+            select.className = 'rss-interval-select';
+            select.title = api.getMessage('rssIntervalLabel');
+            ['1h', '3h', '8h', '12h', '24h'].forEach(val => {
+                const opt = document.createElement('option');
+                opt.value = val;
+                opt.textContent = val;
+                if (sub.interval === val) opt.selected = true;
+                select.appendChild(opt);
+            });
+            info.appendChild(select);
+
+            const actions = document.createElement('div');
+            actions.className = 'rss-subscription-actions';
+
+            const fetchBtn = document.createElement('button');
+            fetchBtn.className = 'rss-fetch-now-btn';
+            fetchBtn.title = api.getMessage('rssFetchNowButton');
+            fetchBtn.setAttribute('aria-label', api.getMessage('rssFetchNowButton'));
+            fetchBtn.textContent = '🔄';
+            actions.appendChild(fetchBtn);
+
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = 'rss-toggle-btn';
+            toggleBtn.dataset.action = sub.enabled ? 'pause' : 'resume';
+            toggleBtn.title = sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton');
+            toggleBtn.setAttribute('aria-label', sub.enabled ? api.getMessage('rssPauseButton') : api.getMessage('rssResumeButton'));
+            toggleBtn.textContent = sub.enabled ? '⏸' : '▶';
+            actions.appendChild(toggleBtn);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'rss-delete-btn';
+            deleteBtn.title = api.getMessage('rssDeleteButton');
+            deleteBtn.setAttribute('aria-label', api.getMessage('rssDeleteButton'));
+            deleteBtn.textContent = '×';
+            actions.appendChild(deleteBtn);
+
+            item.appendChild(info);
+            item.appendChild(actions);
+            fragment.appendChild(item);
+        });
+
+        rssListContainer.appendChild(fragment);
 
         // Bind event listeners
         rssListContainer.querySelectorAll('.rss-fetch-now-btn').forEach(btn => {

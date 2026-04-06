@@ -20,3 +20,15 @@
 - Code scan for XSS (`innerHTML`, `eval`, `new Function`) showed proper sanitization via `escapeHtml` and safe usage of trusted content (e.g., SVG constants, rendering safe HTML).
 - Checked URL assignments (`.href`) and found it used safely. `window.addEventListener('message'` and `postMessage` were not found in the extension source code.
 - Reviewed `manifest.json` permissions and CSP, they remain strictly configured and aligned with the least privilege principle except for `*://*/*` required for RSS.
+
+## 2026-04-06 - [URL Injection Fix]
+**Vulnerability:** Unsafe `.href` assignment allowing potential unsafe URIs in custom theme export.
+**Severity:** High
+**Fix:** Added URL protocol validation (`sanitizeUrl`) before assignment in `customThemeManager.js`.
+**Status:** Fixed
+
+## 2026-04-06 - [XSS Fix in settings]
+**Vulnerability:** innerHTML usage with potentially unsafe content in RSS settings.
+**Severity:** High
+**Fix:** Replaced innerHTML with textContent and document.createElement in `renderRssList` in `settingManager.js`.
+**Status:** Fixed
