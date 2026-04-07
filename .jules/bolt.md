@@ -15,7 +15,7 @@
 **Solution:** Replaced `innerHTML = ''` and `appendChild` with `reconcileDOM` in `modules/ui/bookmarkRenderer.js`. This allows the application to reuse the entire nested DOM tree for folders during updates and search filtering.
 **Impact:** `handleSearch` execution time improved by ~13% (135ms -> 118ms) in benchmarks. More importantly, it prevents large-scale DOM detachment and re-attachment for deep folder structures.
 
-## 2026-02-09 - Reading List DOM Reconciliation
-**Issue:** `renderReadingList` used synchronous `innerHTML = ''` to clear the list before an async storage fetch, causing UI flicker and potential duplicate rendering race conditions during rapid updates.
-**Solution:** Migrated from `innerHTML = ''` and `DocumentFragment` appending to the unified `reconcileDOM` pattern to update the DOM after the async data is fully prepared.
-**Impact:** Eliminated UI flicker, closed a latent race condition resulting in duplicate items, and improved rendering performance by reusing DOM nodes, while strictly adhering to the <100 line modification limit.
+## 2026-04-06 - Reading List DOM Reconciliation
+**Issue:** `renderReadingList` used synchronous `innerHTML = ''` to clear the list before an async storage fetch, causing UI flicker. Rapid successive calls could also result in stale async callbacks overwriting newer render results (race condition). Dead code (`const fragment`) and inconsistent DOM operations (delete handler using `appendChild` vs `reconcileDOM`) also needed cleanup.
+**Solution:** Migrated from `innerHTML = ''` and `DocumentFragment` to the unified `reconcileDOM` pattern. Introduced a `readingListSearchGeneration` counter (modeled after `searchManager.js`'s `bookmarkSearchGeneration`) to discard stale async results. Cached the empty state element via `getReadingListEmptyState()` (with `isConnected` check to handle detached nodes) for effective reconcileDOM reuse. Unified the delete-last-item fallback to use `reconcileDOM` with `updateClearAllReadButton(false)`. Removed dead code (`const fragment`).
+**Impact:** Eliminated UI flicker, properly guarded against race conditions from rapid re-renders, removed dead code, and unified DOM operation patterns across the module.
