@@ -45,6 +45,21 @@ let toggleInitialized = false;
 let listenerAbortController = null;
 let container = null;
 let currentRefreshCallback = null;
+let readingListSearchGeneration = 0;
+let cachedEmptyState = null;
+
+/**
+ * Returns a cached empty state element, recreating it if detached from DOM.
+ * The isConnected check prevents a detached node from being passed to
+ * reconcileDOM, which would force unnecessary DOM destruction/re-insertion.
+ * @returns {HTMLElement}
+ */
+function getReadingListEmptyState() {
+    if (!cachedEmptyState || !cachedEmptyState.isConnected) {
+        cachedEmptyState = createReadingListEmptyState();
+    }
+    return cachedEmptyState;
+}
 
 /**
  * Resets reading list listeners. Useful for re-initialization or cleanup.
@@ -158,7 +173,8 @@ function initReadingListListeners(containerElement) {
                     item.remove();
                     // Show empty message if no items left
                     if (container && container.querySelectorAll('.reading-list-item').length === 0) {
-                        container.appendChild(createReadingListEmptyState());
+                        reconcileDOM(container, [getReadingListEmptyState()]);
+                        updateClearAllReadButton(false);
                     }
                 }, 150);
             } else if (action === 'clear-all-read') {
@@ -241,8 +257,11 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
 
     currentRefreshCallback = refreshCallback;
 
+    // Increment generation counter for race condition prevention
+    const thisGeneration = ++readingListSearchGeneration;
+
     if (entries.length === 0) {
-        reconcileDOM(containerElement, [createReadingListEmptyState()]);
+        reconcileDOM(containerElement, [getReadingListEmptyState()]);
         // Hide header clear button when empty
         updateClearAllReadButton(false);
         return;
@@ -252,10 +271,11 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
     const hasReadItems = entries.some(e => e.hasBeenRead);
     updateClearAllReadButton(hasReadItems);
 
-    const fragment = document.createDocumentFragment();
-
     // Sort based on preference
     api.getStorage('sync', { readingListSortOrder: 'date-newest' }).then(result => {
+        // Guard against race conditions using generation
+        if (thisGeneration !== readingListSearchGeneration) return;
+
         const sortOrder = result.readingListSortOrder;
 
         // Update select value if it exists
