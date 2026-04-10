@@ -24,7 +24,7 @@
   },
   "homepage": "https://sidebar-for-tabs-bookmarks.taislife.work/",
   "devDependencies": {
-    "baseline-browser-mapping": "^2.10.16",
+    "baseline-browser-mapping": "^2.10.17",
     "esbuild": "^0.28.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
