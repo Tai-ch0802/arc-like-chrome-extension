@@ -32,3 +32,13 @@
 **Severity:** High
 **Fix:** Replaced innerHTML with textContent and document.createElement in `renderRssList` in `settingManager.js`.
 **Status:** Fixed
+
+## 2026-05-18 - Dependency Vulnerability Fix
+**Vulnerability:** Incomplete CRLF Injection Protection Allows Arbitrary FTP Command Execution via Credentials and MKD Commands (High severity) via `npm audit` for `basic-ftp <=5.2.1`.
+**Severity:** High
+**Fix:** Ran `npm audit fix` to update `basic-ftp` to `5.2.2`.
+**Status:** Fixed
+**Notes:**
+- `npm audit` showed 1 high vulnerability related to `basic-ftp`, which was successfully patched.
+- Code scan for XSS (`innerHTML`, `eval`, `new Function`) was performed. All user inputs are safely escaped using `textContent` or `escapeHtml` (e.g. `highlightText` function).
+- URL assignment (`.href`) remains safely guarded by `sanitizeUrl`.
