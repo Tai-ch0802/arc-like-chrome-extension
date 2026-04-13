@@ -561,7 +561,7 @@ mark.url-match {
     align-items: center;
     padding: 6px 12px;
     border-radius: 0;
-    cursor: default;
+    cursor: grab;
     transition: background-color 0.15s ease-in-out,
         color 0.15s ease-in-out,
         transform var(--arc-anim-duration-fast) var(--arc-anim-easing-out),
@@ -700,7 +700,7 @@ mark.url-match {
     display: flex;
     align-items: center;
     padding: 4px 8px;
-    cursor: default;
+    cursor: grab;
     border-radius: 2px;
     margin-top: 6px;
     background-color: var(--group-bg-color);
@@ -741,7 +741,7 @@ mark.url-match {
     display: flex;
     align-items: center;
     padding: 4px 8px;
-    cursor: default;
+    cursor: grab;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1366,7 +1366,7 @@ mark.url-match {
     position: relative;
     border-left: 3px solid transparent;
     /* Align with tab-item's border */
-    cursor: default;
+    cursor: grab;
     /* Allow the entire split group to be dragged */
 }
 

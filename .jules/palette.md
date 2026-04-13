@@ -5,3 +5,7 @@
 ## 2025-02-18 - Empty Folder State Improvement
 **Learning:** Empty states are opportunities for guidance. Users often create folders to immediately add content. Providing a "Add Current Tab" button reduces friction significantly compared to drag-and-drop or context menus.
 **Action:** Look for other empty states (e.g., Reading List, Search Results) where a primary action can be surfaced.
+
+## 2026-04-13 - Draggable Elements Cursor Style Improvement
+**Learning:** Draggable elements should explicitly provide visual feedback using `cursor: grab` before interaction to signal their interactive capability. Waiting until the element is actively dragged (`grabbing`) is often too late to convey this to the user.
+**Action:** When implementing or updating draggable UI components (like tabs, bookmarks, or groups), always set `cursor: grab` on the element's base class.
