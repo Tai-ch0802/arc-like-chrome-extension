@@ -42,3 +42,12 @@
 - `npm audit` showed 1 high vulnerability related to `basic-ftp`, which was successfully patched.
 - Code scan for XSS (`innerHTML`, `eval`, `new Function`) was performed. All user inputs are safely escaped using `textContent` or `escapeHtml` (e.g. `highlightText` function).
 - URL assignment (`.href`) remains safely guarded by `sanitizeUrl`.
+
+## 2026-04-20 - Dependency Vulnerability Fix
+**Vulnerability:** Denial of service via unbounded memory consumption in `Client.list()` (High severity) via `npm audit` for `basic-ftp <=5.2.2`.
+**Severity:** High
+**Fix:** Ran `npm audit fix` to update `basic-ftp` to a secure version.
+**Status:** Fixed
+**Notes:**
+- `npm audit` showed 1 high vulnerability related to `basic-ftp`, which was successfully patched.
+- Re-ran `npm test` and `make` and confirmed all passed.
