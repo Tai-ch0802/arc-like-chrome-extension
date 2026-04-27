@@ -51,3 +51,13 @@
 **Notes:**
 - `npm audit` showed 1 high vulnerability related to `basic-ftp`, which was successfully patched.
 - Re-ran `npm test` and `make` and confirmed all passed.
+
+## 2026-06-25 - Routine Security Scan
+**Vulnerability:** N/A
+**Severity:** Low
+**Fix:** N/A
+**Status:** Monitoring
+**Notes:**
+- `npm audit` passed with 0 vulnerabilities (dependencies are clean).
+- Code scan for XSS (`innerHTML`, `eval`, `new Function`) and URL injections (`.href`) verified that all usages are safe (wrapped in `escapeHtml` or `sanitizeUrl`, or injecting trusted SVG constants).
+- Security status: 🟢 綠燈 (Green Light)
