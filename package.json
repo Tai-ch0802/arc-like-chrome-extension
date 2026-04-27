@@ -28,7 +28,7 @@
     "esbuild": "^0.28.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
-    "puppeteer": "^24.41.0"
+    "puppeteer": "^24.42.0"
   },
   "overrides": {
     "test-exclude": "^7.0.1",
