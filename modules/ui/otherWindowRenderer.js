@@ -7,6 +7,7 @@ import * as state from '../stateManager.js';
 import { EDIT_ICON_SVG } from '../icons.js';
 import { otherWindowsList } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 /** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for other windows */
 let otherTabsCache = new Map();
@@ -156,9 +157,10 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
     // Filter out current window and windows with no tabs
     const windowsToShow = otherWindows.filter(w => w.id !== currentWindowId && w.tabs && w.tabs.length > 0);
 
-    otherWindowsList.innerHTML = '';
-
-    if (windowsToShow.length === 0) return;
+    if (windowsToShow.length === 0) {
+        reconcileDOM(otherWindowsList, []);
+        return;
+    }
 
     // Optimization: Pre-group all groups by windowId
     const groupsByWindow = new Map();
@@ -183,8 +185,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         });
     });
 
-    // Use DocumentFragment to batch DOM updates
-    const fragment = document.createDocumentFragment();
+    const topLevelChildren = [];
 
     windowsToShow.forEach((window, index) => {
         // Use bookmark-folder style
@@ -369,8 +370,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
             }
         });
 
-        fragment.appendChild(folderItem);
-        fragment.appendChild(folderContent);
+        topLevelChildren.push(folderItem);
+        topLevelChildren.push(folderContent);
     });
-    otherWindowsList.appendChild(fragment);
+
+    reconcileDOM(otherWindowsList, topLevelChildren);
 }
