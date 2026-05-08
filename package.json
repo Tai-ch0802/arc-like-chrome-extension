@@ -27,7 +27,7 @@
     "baseline-browser-mapping": "^2.10.25",
     "esbuild": "^0.28.0",
     "jest": "^30.3.0",
-    "jest-environment-jsdom": "^30.3.0",
+    "jest-environment-jsdom": "^30.4.1",
     "puppeteer": "^24.42.0"
   },
   "overrides": {
