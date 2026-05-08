@@ -20,7 +20,7 @@
 **Solution:** Migrated from `innerHTML = ''` and `DocumentFragment` to the unified `reconcileDOM` pattern. Introduced a `readingListSearchGeneration` counter (modeled after `searchManager.js`'s `bookmarkSearchGeneration`) to discard stale async results. Cached the empty state element via `getReadingListEmptyState()` (with `isConnected` check to handle detached nodes) for effective reconcileDOM reuse. Unified the delete-last-item fallback to use `reconcileDOM` with `updateClearAllReadButton(false)`. Removed dead code (`const fragment`).
 **Impact:** Eliminated UI flicker, properly guarded against race conditions from rapid re-renders, removed dead code, and unified DOM operation patterns across the module.
 
-## 2026-04-20 - Other Windows Reconciliation
+## 2026-04-20 - Other Windows Reconcile Optimization
 **Issue:** `renderOtherWindowsSection` used synchronous `innerHTML = ''` to clear the list before repopulating it, causing potential UI flicker and triggering unnecessary layout thrashing.
 **Solution:** Migrated from `innerHTML = ''` and `DocumentFragment` appending to the unified `reconcileDOM` pattern.
-**Impact:** Eliminated destructive DOM resets, allowing for node reuse, smoother updates and reduced layout thrashing in the Other Windows list view.
+**Impact:** Eliminated destructive DOM resets, implemented proper cache swapping and element reuse for DOM recycling and reduced layout thrashing in the Other Windows list view.
