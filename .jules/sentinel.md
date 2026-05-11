@@ -61,3 +61,13 @@
 - `npm audit` passed with 0 vulnerabilities (dependencies are clean).
 - Code scan for XSS (`innerHTML`, `eval`, `new Function`) and URL injections (`.href`) verified that all usages are safe (wrapped in `escapeHtml` or `sanitizeUrl`, or injecting trusted SVG constants).
 - Security status: 🟢 綠燈 (Green Light)
+
+## 2026-05-11 - Dependency Vulnerability Fix
+**Vulnerability:** `basic-ftp` (High severity) and `ip-address` (Moderate severity) via `npm audit`.
+**Severity:** High
+**Fix:** Ran `npm audit fix` to automatically patch dependency vulnerabilities.
+**Status:** Fixed
+**Notes:**
+- `npm audit` found 1 high and 1 moderate vulnerability.
+- Fixed by running `npm audit fix`.
+- `npm test` and `make` verified no regressions.
