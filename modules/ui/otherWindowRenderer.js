@@ -7,6 +7,7 @@ import * as state from '../stateManager.js';
 import { EDIT_ICON_SVG } from '../icons.js';
 import { otherWindowsList } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
+import { reconcileDOM } from '../utils/domUtils.js';
 
 /** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for other windows */
 let otherTabsCache = new Map();
@@ -70,6 +71,90 @@ export function resetOtherWindowCaches() {
     otherGroupContentElementsCache = new Map();
     otherWindowFolderElementsCache = new Map();
     otherWindowContentElementsCache = new Map();
+}
+
+function updateOtherWindowFolderElement(folderItem, folderContent, window, customName, tabCount) {
+    const titleText = customName || `Window ${window.id} (${tabCount})`;
+    if (folderItem.title !== `Window ${window.id}`) folderItem.title = `Window ${window.id}`;
+
+    const titleSpan = folderItem.querySelector('.window-title');
+    if (titleSpan && titleSpan.textContent !== titleText) {
+        titleSpan.textContent = titleText;
+    }
+}
+
+function updateOtherGroupHeaderElement(header, group) {
+    const isCollapsed = group.collapsed;
+    const wasCollapsed = header.dataset.collapsed === 'true';
+
+    if (isCollapsed !== wasCollapsed) {
+        header.setAttribute('aria-expanded', (!isCollapsed).toString());
+        header.dataset.collapsed = isCollapsed ? 'true' : 'false';
+        const arrow = header.querySelector('.tab-group-arrow');
+        if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
+    }
+
+    if (header.title !== group.title) header.title = group.title;
+
+    const titleSpan = header.querySelector('.tab-group-title');
+    if (titleSpan && titleSpan.textContent !== group.title) {
+        titleSpan.textContent = group.title;
+    }
+
+    const colorDot = header.querySelector('.tab-group-color-dot');
+    const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
+    if (colorDot) {
+        colorDot.style.backgroundColor = groupColorHex;
+        header.style.setProperty('--group-bg-color', hexToRgba(groupColorHex, 0.2));
+        header.style.setProperty('--group-bg-hover-color', hexToRgba(groupColorHex, 0.35));
+    }
+}
+
+function updateOtherWindowTabElement(tabItem, tab) {
+    if (tabItem.dataset.url !== tab.url) tabItem.dataset.url = tab.url;
+
+    const currentGroupId = tabItem.dataset.groupId ? parseInt(tabItem.dataset.groupId) : -1;
+    const newGroupId = tab.groupId > 0 ? tab.groupId : -1;
+    if (currentGroupId !== newGroupId) {
+        if (newGroupId > 0) tabItem.dataset.groupId = newGroupId;
+        else delete tabItem.dataset.groupId;
+    }
+
+    let urlPreview = tab.url;
+    if (urlPreview && urlPreview.length > 300) {
+        urlPreview = urlPreview.substring(0, 300) + '...';
+    }
+    const newTitleTooltip = `${tab.title}\n${urlPreview}`;
+    if (tabItem.title !== newTitleTooltip) {
+        tabItem.title = newTitleTooltip;
+        tabItem.setAttribute('aria-label', tab.title);
+    }
+
+    const titleSpan = tabItem._refs ? tabItem._refs.title : tabItem.querySelector('.tab-title');
+    if (titleSpan && titleSpan.textContent !== tab.title) {
+        titleSpan.textContent = tab.title || 'Loading...';
+        delete titleSpan.dataset.originalText;
+    }
+
+    const favicon = tabItem._refs ? tabItem._refs.favicon : tabItem.querySelector('.tab-favicon');
+    if (favicon) {
+        const newSrc = (tab.favIconUrl && tab.favIconUrl.startsWith('http')) ? tab.favIconUrl : 'icons/fallback-favicon.svg';
+        const currentSrc = favicon.getAttribute('src');
+        if (currentSrc !== newSrc && !currentSrc?.endsWith(newSrc)) {
+            favicon.src = newSrc;
+        }
+    }
+}
+
+function getOrCreateOtherWindowTabElement(tab, newOtherTabElementsCache) {
+    let tabElement = otherTabElementsCache.get(tab.id);
+    if (tabElement) {
+        updateOtherWindowTabElement(tabElement, tab);
+    } else {
+        tabElement = createOtherWindowTabElement(tab);
+    }
+    newOtherTabElementsCache.set(tab.id, tabElement);
+    return tabElement;
 }
 
 /**
@@ -156,9 +241,16 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
     // Filter out current window and windows with no tabs
     const windowsToShow = otherWindows.filter(w => w.id !== currentWindowId && w.tabs && w.tabs.length > 0);
 
-    otherWindowsList.innerHTML = '';
-
-    if (windowsToShow.length === 0) return;
+    if (windowsToShow.length === 0) {
+        otherTabsCache.clear();
+        otherTabElementsCache.clear();
+        otherGroupHeaderElementsCache.clear();
+        otherGroupContentElementsCache.clear();
+        otherWindowFolderElementsCache.clear();
+        otherWindowContentElementsCache.clear();
+        reconcileDOM(otherWindowsList, []);
+        return;
+    }
 
     // Optimization: Pre-group all groups by windowId
     const groupsByWindow = new Map();
@@ -169,85 +261,114 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         groupsByWindow.get(g.windowId).push(g);
     }
 
-    // Reset and rebuild cache
-    otherTabsCache.clear();
-    otherTabElementsCache.clear();
-    otherGroupHeaderElementsCache.clear();
-    otherGroupContentElementsCache.clear();
-    otherWindowFolderElementsCache.clear();
-    otherWindowContentElementsCache.clear();
+    const newOtherTabsCache = new Map();
+    const newOtherTabElementsCache = new Map();
+    const newOtherGroupHeaderElementsCache = new Map();
+    const newOtherGroupContentElementsCache = new Map();
+    const newOtherWindowFolderElementsCache = new Map();
+    const newOtherWindowContentElementsCache = new Map();
 
     windowsToShow.forEach(window => {
         window.tabs.forEach(tab => {
-            otherTabsCache.set(tab.id, tab);
+            newOtherTabsCache.set(tab.id, tab);
         });
     });
 
-    // Use DocumentFragment to batch DOM updates
-    const fragment = document.createDocumentFragment();
+    const topLevelChildren = [];
 
     windowsToShow.forEach((window, index) => {
-        // Use bookmark-folder style
-        const folderItem = document.createElement('div');
-        folderItem.className = 'window-folder';
-        folderItem.tabIndex = 0;
-        folderItem.setAttribute('role', 'button');
-        folderItem.setAttribute('aria-expanded', 'false');
-        folderItem.dataset.windowId = window.id;
-        folderItem.title = `Window ${index + 1}`;
-
-        const icon = document.createElement('span');
-        icon.className = 'window-icon';
-        icon.textContent = '▶';
-
         const customName = state.getWindowName(window.id);
-        const titleText = customName || `Window ${index + 1} (${window.tabs.length})`;
 
-        const title = document.createElement('span');
-        title.className = 'window-title';
-        title.textContent = titleText;
-        title.style.flex = '1';
+        let folderItem = otherWindowFolderElementsCache.get(window.id);
+        let folderContent = otherWindowContentElementsCache.get(window.id);
 
-        const editBtn = document.createElement('button');
-        editBtn.className = 'window-edit-btn';
-        editBtn.innerHTML = EDIT_ICON_SVG;
-        editBtn.style.marginLeft = '4px';
-        editBtn.tabIndex = -1;
-        const renameWindowLabel = api.getMessage('renameWindow') || 'Rename Window';
-        editBtn.title = renameWindowLabel;
-        editBtn.setAttribute('aria-label', renameWindowLabel);
+        if (!folderItem || !folderContent) {
+            folderItem = document.createElement('div');
+            folderItem.className = 'window-folder';
+            folderItem.tabIndex = 0;
+            folderItem.setAttribute('role', 'button');
+            folderItem.setAttribute('aria-expanded', 'false');
+            folderItem.dataset.windowId = window.id;
+            folderItem.title = `Window ${window.id}`;
 
-        editBtn.onclick = async (e) => {
-            e.stopPropagation();
-            const modal = await import('../modalManager.js');
-            const newName = await modal.showPrompt({
-                title: api.getMessage('renameWindowDialogTitle') || 'Rename Window',
-                confirmButtonText: api.getMessage('saveButton') || 'Save',
-                defaultValue: customName || ''
+            const icon = document.createElement('span');
+            icon.className = 'window-icon';
+            icon.textContent = '▶';
+
+            const titleText = customName || `Window ${window.id} (${window.tabs.length})`;
+
+            const title = document.createElement('span');
+            title.className = 'window-title';
+            title.textContent = titleText;
+            title.style.flex = '1';
+
+            const editBtn = document.createElement('button');
+            editBtn.className = 'window-edit-btn';
+
+            // Fix SVG rendering per best practices
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(EDIT_ICON_SVG, "image/svg+xml");
+            const svgNode = svgDoc.documentElement;
+            editBtn.appendChild(svgNode);
+
+            editBtn.style.marginLeft = '4px';
+            editBtn.tabIndex = -1;
+            const renameWindowLabel = api.getMessage('renameWindow') || 'Rename Window';
+            editBtn.title = renameWindowLabel;
+            editBtn.setAttribute('aria-label', renameWindowLabel);
+
+            editBtn.onclick = async (e) => {
+                e.stopPropagation();
+                const modal = await import('../modalManager.js');
+                const newName = await modal.showPrompt({
+                    title: api.getMessage('renameWindowDialogTitle') || 'Rename Window',
+                    confirmButtonText: api.getMessage('saveButton') || 'Save',
+                    defaultValue: customName || ''
+                });
+
+                if (newName !== null) {
+                    await state.setWindowName(window.id, newName);
+                    title.textContent = newName || `Window ${window.id} (${window.tabs.length})`;
+                }
+            };
+
+            editBtn.addEventListener('mouseenter', () => editBtn.style.opacity = '1');
+            editBtn.addEventListener('mouseleave', () => editBtn.style.opacity = '0.6');
+
+            folderItem.style.display = 'flex';
+            folderItem.style.alignItems = 'center';
+
+            folderItem.appendChild(icon);
+            folderItem.appendChild(title);
+            folderItem.appendChild(editBtn);
+
+            folderContent = document.createElement('div');
+            folderContent.className = 'folder-content';
+            folderContent.style.display = 'none';
+
+            // Toggle collapse on click
+            const toggleCollapse = () => {
+                const isExpanded = folderContent.style.display !== 'none';
+                folderContent.style.display = isExpanded ? 'none' : 'block';
+                icon.textContent = isExpanded ? '▶' : '▼';
+                folderItem.setAttribute('aria-expanded', !isExpanded);
+            };
+
+            folderItem.addEventListener('click', toggleCollapse);
+            folderItem.addEventListener('keydown', (e) => {
+                if (e.target !== e.currentTarget) return;
+
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleCollapse();
+                }
             });
+        } else {
+            updateOtherWindowFolderElement(folderItem, folderContent, window, customName, window.tabs.length);
+        }
 
-            if (newName !== null) {
-                await state.setWindowName(window.id, newName);
-                title.textContent = newName || `Window ${index + 1} (${window.tabs.length})`;
-            }
-        };
-
-        editBtn.addEventListener('mouseenter', () => editBtn.style.opacity = '1');
-        editBtn.addEventListener('mouseleave', () => editBtn.style.opacity = '0.6');
-
-        folderItem.style.display = 'flex';
-        folderItem.style.alignItems = 'center';
-
-        folderItem.appendChild(icon);
-        folderItem.appendChild(title);
-        folderItem.appendChild(editBtn);
-
-        otherWindowFolderElementsCache.set(window.id, folderItem);
-
-        const folderContent = document.createElement('div');
-        folderContent.className = 'folder-content';
-        folderContent.style.display = 'none';
-        otherWindowContentElementsCache.set(window.id, folderContent);
+        newOtherWindowFolderElementsCache.set(window.id, folderItem);
+        newOtherWindowContentElementsCache.set(window.id, folderContent);
 
         // Get groups for this window
         const windowGroups = groupsByWindow.get(window.id) || [];
@@ -266,6 +387,8 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
         const renderedTabIds = new Set();
 
+        const folderChildren = [];
+
         // Render tabs with group support
         for (const tab of window.tabs) {
             if (renderedTabIds.has(tab.id)) continue;
@@ -274,103 +397,104 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                 const group = groupsMap.get(tab.groupId);
                 if (!group) continue;
 
-                const groupHeader = document.createElement('div');
-                groupHeader.className = 'tab-group-header';
-                groupHeader.tabIndex = 0;
-                groupHeader.setAttribute('role', 'button');
-                groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
-                groupHeader.dataset.collapsed = group.collapsed;
-                groupHeader.dataset.groupId = group.id;
-                groupHeader.title = group.title;
+                let groupHeader = otherGroupHeaderElementsCache.get(group.id);
+                let groupContent = otherGroupContentElementsCache.get(group.id);
 
-                const arrow = document.createElement('span');
-                arrow.className = 'tab-group-arrow';
-                arrow.textContent = group.collapsed ? '▶' : '▼';
+                if (!groupHeader || !groupContent) {
+                    groupHeader = document.createElement('div');
+                    groupHeader.className = 'tab-group-header';
+                    groupHeader.tabIndex = 0;
+                    groupHeader.setAttribute('role', 'button');
+                    groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
+                    groupHeader.dataset.collapsed = group.collapsed;
+                    groupHeader.dataset.groupId = group.id;
+                    groupHeader.title = group.title;
 
-                const colorDot = document.createElement('div');
-                colorDot.className = 'tab-group-color-dot';
-                const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
-                colorDot.style.backgroundColor = groupColorHex;
+                    const arrow = document.createElement('span');
+                    arrow.className = 'tab-group-arrow';
+                    arrow.textContent = group.collapsed ? '▶' : '▼';
 
-                const groupTitle = document.createElement('span');
-                groupTitle.className = 'tab-group-title';
-                groupTitle.textContent = group.title;
+                    const colorDot = document.createElement('div');
+                    colorDot.className = 'tab-group-color-dot';
+                    const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
+                    colorDot.style.backgroundColor = groupColorHex;
 
-                groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
-                groupHeader.addEventListener('mouseenter', () => {
-                    groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.35);
-                });
-                groupHeader.addEventListener('mouseleave', () => {
+                    const groupTitle = document.createElement('span');
+                    groupTitle.className = 'tab-group-title';
+                    groupTitle.textContent = group.title;
+
                     groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
-                });
+                    groupHeader.addEventListener('mouseenter', () => {
+                        groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.35);
+                    });
+                    groupHeader.addEventListener('mouseleave', () => {
+                        groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
+                    });
 
-                groupHeader.appendChild(arrow);
-                groupHeader.appendChild(colorDot);
-                groupHeader.appendChild(groupTitle);
-                folderContent.appendChild(groupHeader);
-                otherGroupHeaderElementsCache.set(group.id, groupHeader);
+                    groupHeader.appendChild(arrow);
+                    groupHeader.appendChild(colorDot);
+                    groupHeader.appendChild(groupTitle);
 
-                const groupContent = document.createElement('div');
-                groupContent.className = 'tab-group-content';
-                groupContent.style.display = group.collapsed ? 'none' : 'block';
-                otherGroupContentElementsCache.set(group.id, groupContent);
+                    groupContent = document.createElement('div');
+                    groupContent.className = 'tab-group-content';
+                    groupContent.style.display = group.collapsed ? 'none' : 'block';
+
+                    groupHeader.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isCollapsed = groupContent.style.display === 'none';
+                        groupContent.style.display = isCollapsed ? 'block' : 'none';
+                        arrow.textContent = isCollapsed ? '▼' : '▶';
+                        groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
+                    });
+
+                    groupHeader.addEventListener('keydown', (e) => {
+                        if (e.target !== e.currentTarget) return;
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            groupHeader.click();
+                        }
+                    });
+                } else {
+                    updateOtherGroupHeaderElement(groupHeader, group);
+                }
+
+                newOtherGroupHeaderElementsCache.set(group.id, groupHeader);
+                newOtherGroupContentElementsCache.set(group.id, groupContent);
+
+                folderChildren.push(groupHeader);
+                folderChildren.push(groupContent);
 
                 // Optimization: Use pre-grouped tabs
                 const tabsInThisGroup = tabsByGroup.get(group.id) || [];
+                const groupChildren = [];
 
                 for (const groupTab of tabsInThisGroup) {
                     if (renderedTabIds.has(groupTab.id)) continue;
-                    const tabElement = createOtherWindowTabElement(groupTab);
-                    otherTabElementsCache.set(groupTab.id, tabElement);
-                    groupContent.appendChild(tabElement);
+                    const tabElement = getOrCreateOtherWindowTabElement(groupTab, newOtherTabElementsCache);
+                    groupChildren.push(tabElement);
                     renderedTabIds.add(groupTab.id);
                 }
-                folderContent.appendChild(groupContent);
-
-                groupHeader.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isCollapsed = groupContent.style.display === 'none';
-                    groupContent.style.display = isCollapsed ? 'block' : 'none';
-                    arrow.textContent = isCollapsed ? '▼' : '▶';
-                    groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
-                });
-
-                groupHeader.addEventListener('keydown', (e) => {
-                    if (e.target !== e.currentTarget) return;
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        groupHeader.click();
-                    }
-                });
+                reconcileDOM(groupContent, groupChildren);
             } else {
-                const tabElement = createOtherWindowTabElement(tab);
-                otherTabElementsCache.set(tab.id, tabElement);
-                folderContent.appendChild(tabElement);
+                const tabElement = getOrCreateOtherWindowTabElement(tab, newOtherTabElementsCache);
+                folderChildren.push(tabElement);
                 renderedTabIds.add(tab.id);
             }
         }
+        reconcileDOM(folderContent, folderChildren);
 
-        // Toggle collapse on click
-        const toggleCollapse = () => {
-            const isExpanded = folderContent.style.display !== 'none';
-            folderContent.style.display = isExpanded ? 'none' : 'block';
-            icon.textContent = isExpanded ? '▶' : '▼';
-            folderItem.setAttribute('aria-expanded', !isExpanded);
-        };
-
-        folderItem.addEventListener('click', toggleCollapse);
-        folderItem.addEventListener('keydown', (e) => {
-            if (e.target !== e.currentTarget) return;
-
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleCollapse();
-            }
-        });
-
-        fragment.appendChild(folderItem);
-        fragment.appendChild(folderContent);
+        topLevelChildren.push(folderItem);
+        topLevelChildren.push(folderContent);
     });
-    otherWindowsList.appendChild(fragment);
+
+    reconcileDOM(otherWindowsList, topLevelChildren);
+
+    // Swap caches
+    otherTabsCache = newOtherTabsCache;
+    otherTabElementsCache = newOtherTabElementsCache;
+    otherGroupHeaderElementsCache = newOtherGroupHeaderElementsCache;
+    otherGroupContentElementsCache = newOtherGroupContentElementsCache;
+    otherWindowFolderElementsCache = newOtherWindowFolderElementsCache;
+    otherWindowContentElementsCache = newOtherWindowContentElementsCache;
 }
