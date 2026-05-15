@@ -26,7 +26,7 @@
   "devDependencies": {
     "baseline-browser-mapping": "^2.10.28",
     "esbuild": "^0.28.0",
-    "jest": "^30.3.0",
+    "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "puppeteer": "^24.42.0"
   },
