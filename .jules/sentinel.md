@@ -71,3 +71,13 @@
 - `npm audit` found 1 high and 1 moderate vulnerability.
 - Fixed by running `npm audit fix`.
 - `npm test` and `make` verified no regressions.
+
+## 2026-05-18 - Routine Security Scan
+**Vulnerability:** N/A
+**Severity:** Low
+**Fix:** N/A
+**Status:** Monitoring
+**Notes:**
+- `npm audit` passed with 0 vulnerabilities.
+- Code scan confirmed safe usage of innerHTML with `escapeHtml` and `textContent`.
+- Security status: 🟢 綠燈 (Green Light)
