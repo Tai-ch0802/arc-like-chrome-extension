@@ -1,6 +1,6 @@
 ---
 name: update-multilingual-docs
-description: "Updates documentation (README and store descriptions) across multiple languages."
+description: 同步本專案多語系文件：.github/i18n/{lang}/{README,CONTRIBUTING}.md（根目錄為 symlink 指向 en/）與 docs/chrome-web-store/store_description_*.md (14 種語言)。當使用者提到「多語系、i18n 文件、翻譯文件、更新 README 多語、store description、Chrome Web Store 描述」時觸發。
 ---
 
 # Update Multilingual Documentation

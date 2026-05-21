@@ -1,6 +1,6 @@
 ---
 name: ui-ux-pro-max
-description: UI/UX design intelligence. 50 styles, 21 palettes, 50 font pairings, 20 charts, 9 stacks.
+description: UI/UX 設計參考資料庫 (CSV-based)：67 styles、96 palettes、56 font pairings、98 UX guidelines、25 chart types。對本專案 sidepanel UI 最相關的查詢是 colors.csv / typography.csv / ui-reasoning.csv / styles.csv。需 Python 3 跑 scripts/search.py。當使用者提到「配色、字型、palette、design system、UI 設計風格挑選」時觸發。
 ---
 # ui-ux-pro-max
 

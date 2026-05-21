@@ -1,6 +1,6 @@
 ---
 name: refactoring
-description: "Guidelines and techniques for identifying code smells and refactoring code, based on Refactoring.guru principles and adapted for Vanilla JS Chrome Extensions."
+description: 本專案 (vanilla JS Chrome extension) 的重構指南：辨識 code smell、應用 Refactoring.guru 原則於 ES Modules、Side Panel、modules/ui Facade 模式等場景。當使用者提到「refactor、重構、改善程式碼、code smell、拆模組」時觸發。
 ---
 
 # Refactoring Skill

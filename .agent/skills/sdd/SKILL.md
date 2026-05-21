@@ -1,6 +1,6 @@
 ---
 name: sdd
-description: "Spec-Driven Development (SDD): A structured workflow (Requirement -> Analysis -> Implementation) enforcing explicit documentation before coding."
+description: 本專案標準開發流程：Spec-Driven Development (SDD) — Phase 1 PRD → Phase 2 SA → Phase 3 實作。產出物放 /docs/specs/{type}/{ID-PREFIX}_{desc}/，目錄前綴採 ISSUE-/PR-/BASE- 三類。當使用者提到「新功能、修 bug、重構、SDD、規格驅動、要做一個 X、開新功能」時觸發；遵守 "No Spec, No Code"。
 ---
 
 # Spec-Driven Development (SDD) Skill

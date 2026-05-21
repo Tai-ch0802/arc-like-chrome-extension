@@ -1,6 +1,6 @@
 ---
 name: puppeteer-test
-description: Guide for writing Puppeteer-based end-to-end tests for Chrome Extensions. Use this skill when creating automated tests for extension popup, side panel, service worker, content scripts, or testing service worker termination. Covers Jest integration, browser launch configuration, and extension-specific testing patterns.
+description: 本專案 Puppeteer + Jest E2E 測試指南，涵蓋 side panel、service worker、content script、service worker termination、Chrome Extension 載入配置 (--load-extension)。當使用者提到「Puppeteer 測試、E2E 測試、寫測試、自動化測試、寫 puppeteer、test extension」時觸發。
 ---
 
 # Puppeteer Testing for Chrome Extensions

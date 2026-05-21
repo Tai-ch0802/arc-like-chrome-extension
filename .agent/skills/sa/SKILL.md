@@ -1,6 +1,6 @@
 ---
 name: sa
-description: "Methodologies for System Analysis (SA), focusing on technical architecture, data flow modeling, and API design."
+description: 撰寫本專案 (vanilla JS Chrome extension) 的 SA (系統分析) 文件，重點為模組架構、chrome.storage schema、message passing、Test Impact Analysis。本專案無 backend / 無 DB，SA 聚焦前端 module 切分與狀態流。當使用者提到「SA、系統分析、技術方案、架構設計、模組規劃、Test Impact」時觸發。SDD 流程的 Phase 2。
 ---
 
 # System Analysis (SA) Skill
@@ -48,3 +48,30 @@ description: "Methodologies for System Analysis (SA), focusing on technical arch
 *   [ ] 是否符合現有的程式碼風格與架構模式？
 *   [ ] 是否評估了性能影響 (Performance Impact)？
 *   [ ] **[Must]** 是否已識別所有受影響的測試案例，並規劃了與程式碼變更同步的測試修正？
+
+## 本專案 SA 重點（vanilla JS Chrome extension，無 backend）
+
+本專案沒有伺服器、沒有資料庫、沒有 REST API。SA 文件的「資料建模 / 介面設計」需轉譯為前端等價物：
+
+| 通用 SA 概念 | 本專案對應 |
+|---|---|
+| Database Schema | `chrome.storage.local` / `chrome.storage.sync` 的 key-value schema |
+| REST API | `chrome.runtime.sendMessage` / `onMessage` 的訊息協定 (Message Passing) |
+| Function Signatures | `modules/` 下各 module 的 export interface（JSDoc 標型） |
+| 後端服務切分 | `modules/{apiManager, stateManager, dragDropManager, ...}` 的職責劃分 |
+
+### 必填章節（本專案 SA_spec.md）
+
+1. **Module Impact Map**：列出受影響的 `modules/` 子模組（apiManager / stateManager / ui/* / utils/* / aiManager / rssManager / readingListManager）。
+2. **Message Flow**：若涉及 background ↔ sidepanel ↔ content script 通訊，畫 Mermaid sequence diagram。
+3. **Storage Schema Diff**：若改動 `chrome.storage` 結構，列出「before / after」JSON shape 與 migration 策略。
+4. **Manifest Diff**：若新增 permissions / host_permissions / commands，明確列出 manifest.json 變更。
+5. **Test Impact Analysis** ⭐：
+   - `tests/`（Jest 單元測試）：列出哪些檔案的測試需要修改。
+   - `usecase_tests/`（Puppeteer E2E）：列出 DOM 選擇器（`.tab-item[data-tab-id]` 等）若變動會影響哪些 E2E。
+   - `scripts/__tests__/`（build/script 測試）：列出 Makefile 或建置流程的測試影響。
+
+### 工具
+
+*   **Mermaid**：流程圖、sequence diagram、state diagram。詳見 `references/diagram_guide.md`。
+*   **JSDoc**：本專案無 TypeScript，型別契約靠 JSDoc 標註（`@typedef`、`@param`、`@returns`）。

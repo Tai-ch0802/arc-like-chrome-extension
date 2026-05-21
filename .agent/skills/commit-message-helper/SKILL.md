@@ -1,6 +1,6 @@
 ---
 name: commit-message-helper
-description: Helps write Git commit messages following the Conventional Commits specification. Use this skill when the user asks to commit changes, write commit messages, or mentions git commits.
+description: 本專案 (Manifest V3 Chrome extension) 的 commit 規範與範例：subject 使用英文 Conventional Commits、body 使用繁中說明背景與原因。當使用者提到「commit、提交訊息、commit message、寫 commit、commit 規範」時觸發。
 ---
 
 # Commit Message Helper
@@ -59,3 +59,11 @@ refactor: 模組化側邊欄邏輯以提升清晰度與可維護性
 
 Bad:
 updated stuff
+
+## 本專案約定
+
+- **Subject 語言**：英文（沿用 `GEMINI.md` 既有規範），body 繁中。subject 50 字內、imperative mood、不加句號。
+- **Scope 命名建議**：`sidepanel`、`modules/ui`、`modules/utils`、`modules/api`、`background`、`manifest`、`i18n`、`tests`、`makefile`、`docs`。
+- **Body 內容**：說明「為什麼改」與「實作關鍵」，不要只寫「what」。改動到 `key_files`（如 `sidepanel.js`、`modules/ui/elements.js`）時，body 提醒一句「同步更新 GEMINI.md key_files 描述」。
+- **Footer**：若對應 Issue / PR，加 `Closes #123` 或 `Refs #123`。
+- **多 commit 一份 PR**：合併採 squash merge，PR title 仍要遵守同規範（會成為最終 commit subject）。

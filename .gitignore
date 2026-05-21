@@ -7,3 +7,4 @@ tmp/
 jest-storage
 .vscode/settings.json
 scripts/action-runner/.env
+.envrc

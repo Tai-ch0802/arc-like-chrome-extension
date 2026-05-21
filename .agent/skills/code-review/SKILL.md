@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Reviews code changes for bugs, style issues, and best practices. Use when reviewing PRs or checking code quality.
+description: 審查本專案 (Manifest V3 Chrome extension) 的程式碼變更，含 Chrome API 用法、權限最小化、Puppeteer 測試 race condition、scripts/lint-check.sh 自動化檢查、references/{security-checklist,performance-patterns,style-guide}.md。當使用者提到「review PR、審查、code review、程式碼審查、檢查 PR、看一下這個 PR」時觸發。
 ---
 
 # Code Review Skill
