@@ -1,6 +1,6 @@
 ---
 name: pull-request
-description: "Guidelines and tools for creating high-quality Pull Requests using the gh CLI. Includes bilingual templates (zh-TW/en) and validation scripts."
+description: 建立本專案的 Pull Request：雙語描述 (zh-TW/en)、gh CLI、scripts/check-pr.sh 預驗證、references/pr_template.md 與 checklist.md。當使用者提到「開 PR、建 PR、create PR、pull request、提交變更、發 PR、新建 PR」時觸發。
 ---
 
 # Pull Request Skill

@@ -1,6 +1,6 @@
 ---
 name: release-notes
-description: "Generates bilingual (zh-TW/en) RELEASE_NOTE.md for GitHub releases."
+description: 產生本專案的雙語 RELEASE_NOTE.md (zh-TW/en)，沿用 .github/release.yml 的「✨ 新功能 / 🚀 改善與錯誤修復」區塊結構，含 contributor 標註。RELEASE_NOTE.md 為暫存預覽不入版控。當使用者提到「release note、發版說明、寫 release note、版本說明、出版本」時觸發。
 ---
 
 # Release Notes Generation

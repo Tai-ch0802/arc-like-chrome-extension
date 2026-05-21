@@ -57,6 +57,12 @@ make clean
 | `refactoring` | 重構技巧與程式碼異味辨識 | 程式碼改善時 |
 | `release-notes` | 雙語 Release Note 產生 | 發布版本時 |
 | `update-multilingual-docs` | 多語系文件更新 | 文件翻譯時 |
+| `puppeteer-test` | Puppeteer + Jest E2E 測試指南 | 撰寫 / 修 E2E 測試時 |
+| `cleanup-merged-branches` | 清理已合併的本地 / 遠端分支 | merge 後清理分支時 |
+| `image-master` | 影像格式 / WebP / 色彩 / WCAG 對比度 | 處理圖示 / 自訂背景圖 / Web Store 截圖時 |
+| `web-design-guidelines` | sidepanel UI 與無障礙審查 | 審查 UI 程式碼 / 檢查 accessibility 時 |
+| `ui-ux-pro-max` | UI/UX 設計參考資料庫 (CSV + Python) | 挑選配色 / 字型 / design pattern 時 |
+| `skill-creator` | 撰寫新 skill 的 meta 指南 | 新增 / 更新 skill 時 |
 
 ### 📝 Workflows (工作流程)
 位於 `.agent/workflows/`，定義標準化操作步驟。
@@ -69,6 +75,8 @@ make clean
 | `create-release-note.md` | `/create-release-note` | 產生 Release Note |
 | `update-docs.md` | `/update-docs` | 更新多語系文件 |
 | `cleanup-branches.md` | `/cleanup-branches` | 清理已合併分支 |
+| `puppeteer-test.md` | `/puppeteer-test` | 撰寫 E2E 測試流程 |
+| `create-skill.md` | `/create-skill` | 建立新 skill 的流程 |
 
 ### 📜 Rules (最高遵循方針)
 位於 `.agent/rules/`，**必須嚴格遵守**。

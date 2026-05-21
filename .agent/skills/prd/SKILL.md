@@ -1,6 +1,6 @@
 ---
 name: prd
-description: "Guidelines and templates for creating effective Product Requirement Documents (PRD), bridging the gap between business goals and technical implementation."
+description: 撰寫本專案的 PRD (產品需求文件)，位置為 /docs/specs/{type}/{ID-PREFIX}_{desc}/PRD_spec.md。當使用者提到「PRD、產品需求、需求文件、寫規格、新功能規劃、acceptance criteria」時觸發。SDD 流程的 Phase 1，產出物提供給 sa skill 銜接。
 ---
 
 # Product Requirement Document (PRD) Skill
@@ -39,3 +39,20 @@ description: "Guidelines and templates for creating effective Product Requiremen
 *   **使用清晰的語言**: 避免 "可能"、"應該" 等模糊詞彙，使用 "必須" (Shall/Must)、"可以" (Can) 等明確用語。
 *   **圖文並茂**: 盡量使用流程圖 (Mermaid) 來輔助文字說明。
 *   **保持更新**: PRD 是活的文件 (Living Document)，若需求變更，務必更新 PRD。
+
+## 本專案 PRD 慣例（呼應 sdd skill）
+
+- **檔案位置**：`/docs/specs/{type}/{ID-PREFIX}_{desc}/PRD_spec.md`
+  - `type`：`feature` / `fix` / `refactor` / `chore`
+  - `ID_PREFIX`：`ISSUE-{n}`（一般功能／bug，對應 GitHub Issue）／`PR-{n}`（外部貢獻無 Issue）／`BASE-{n}`（歷史補規格）
+- **Functional Requirements**：建議使用 **EARS syntax**（Event-driven / Unwanted / State / Optional / Complex）。
+- **Acceptance Criteria**：必須使用 **Given-When-Then** 三段式，每條 AC 都要可驗證。
+- **Out of Scope**：明確列出「這次不做」的項目，避免 scope creep；後續若補做，另立 PRD 版本。
+- **Living Document**：Frozen 後變更須 bump 版本（v1.0 → v1.1），在 Revision History 記原因。
+
+## Chrome Extension 專案的 PRD 重點
+
+- **使用者介面類型**：明確標註是 sidepanel / popup / content script / new tab override / context menu。
+- **權限申請**：列出新功能要 manifest.json 加哪些 `permissions` / `host_permissions`，並說明最小化策略。
+- **跨裝置同步**：若涉及 `chrome.storage.sync`，要評估 quota（每項 8KB，總計 100KB）。
+- **多語系影響**：若新增 UI 文案，要在 PRD 提醒「同步觸發 update-multilingual-docs」。
