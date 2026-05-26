@@ -9,6 +9,7 @@ import * as readingListManager from './modules/readingListManager.js';
 import * as readingListRenderer from './modules/ui/readingListRenderer.js';
 import * as rssManager from './modules/rssManager.js';
 import * as hoverSummarize from './modules/ui/hoverSummarizeManager.js';
+import { initCommandPalette } from './modules/commandPalette/index.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 
@@ -165,6 +166,7 @@ async function initialize() {
     rssManager.initRssManager().catch(console.error);
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
+    initCommandPalette(); // Cmd+K / Ctrl+K unified search & actions overlay
 
     // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,
     // windowNames affects the "Other Windows" section labels.
