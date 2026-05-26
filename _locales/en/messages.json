@@ -644,6 +644,45 @@
   "aiGroupingDescription2_part2": {
     "message": " to download the Local Model and enable the relevant Flags."
   },
+  "aiAutoNamingToggleLabel": {
+    "message": "Auto-name empty tab groups"
+  },
+  "aiAutoNamingDescription": {
+    "message": "When you create a new tab group without a title, AI suggests a short label (Emoji + name). Runs only when the local model is already downloaded."
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Show 🧹 Tab Cleanup button"
+  },
+  "aiCleanupDescription": {
+    "message": "Adds a button next to Smart Group that asks AI which tabs you can probably close."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Cleanup"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "AI-suggested tab cleanup"
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Tabs you might close"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Analyzing tabs..."
+  },
+  "aiCleanupEmpty": {
+    "message": "Your tabs look tidy — nothing to clean up."
+  },
+  "aiCleanupFound": {
+    "message": "AI suggests {count} tab(s) you can probably close. Uncheck any you want to keep."
+  },
+  "aiCleanupError": {
+    "message": "AI cleanup failed. Try again later."
+  },
+  "aiCleanupSelectAll": {
+    "message": "Select all"
+  },
+  "aiCleanupConfirm": {
+    "message": "Close selected"
+  },
   "languageSectionHeader": {
     "message": "Language"
   },

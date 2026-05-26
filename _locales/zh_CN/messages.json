@@ -641,6 +641,45 @@
   "aiGroupingDescription2_part2": {
     "message": "下载 Local Model 并开启相关 Flag 来启用。"
   },
+  "aiAutoNamingToggleLabel": {
+    "message": "自动命名未命名的标签页群组"
+  },
+  "aiAutoNamingDescription": {
+    "message": "当你创建一个没有名称的新标签页群组时，AI 会自动生成一个简短的标签（Emoji + 名称）。仅在本地模型已下载完成时生效。"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "显示 🧹 标签页清理按钮"
+  },
+  "aiCleanupDescription": {
+    "message": "在「智能整理」旁加一个按钮，让 AI 建议你可能可以关闭的标签页。"
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 清理"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "AI 标签页清理建议"
+  },
+  "aiCleanupSectionHeader": {
+    "message": "可考虑关闭的标签页"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "分析标签页中..."
+  },
+  "aiCleanupEmpty": {
+    "message": "你的标签页很整洁，没有需要清理的项目。"
+  },
+  "aiCleanupFound": {
+    "message": "AI 建议可关闭 {count} 个标签页，想保留的请取消勾选。"
+  },
+  "aiCleanupError": {
+    "message": "AI 清理失败，请稍后再试。"
+  },
+  "aiCleanupSelectAll": {
+    "message": "全选"
+  },
+  "aiCleanupConfirm": {
+    "message": "关闭所选"
+  },
   "languageSectionHeader": {
     "message": "界面语言 (Language)"
   },

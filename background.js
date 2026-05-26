@@ -1,6 +1,9 @@
 // background.js
 
 import { handleAlarm as handleRssAlarm } from './modules/rssManager.js';
+import { generateGroupName } from './modules/aiManager.js';
+
+const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
 
 // 監聽快捷鍵指令
 chrome.commands.onCommand.addListener(async (command) => {
@@ -33,6 +36,35 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // 監聯 RSS 定時抓取鬧鐘
 chrome.alarms.onAlarm.addListener(handleRssAlarm);
+
+// AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background
+// 統一處理避免多 sidepanel 重複觸發。generateGroupName 內部已限制只在
+// model === 'available' 時執行（不會 silent kick off model download）。
+chrome.tabGroups.onCreated.addListener(async (group) => {
+    try {
+        if (group.title && group.title.trim()) return; // user provided a title
+
+        const settings = await chrome.storage.sync.get([AI_AUTO_NAMING_KEY]);
+        if (settings[AI_AUTO_NAMING_KEY] === false) return; // disabled by user
+
+        const tabs = await chrome.tabs.query({ groupId: group.id });
+        if (!tabs || tabs.length === 0) return;
+
+        const label = await generateGroupName(tabs.map(t => ({ title: t.title, url: t.url })));
+        if (!label) return;
+
+        // Re-check before writing: the user may have typed a title while
+        // the AI request was in flight. Don't clobber human input.
+        const current = await chrome.tabGroups.get(group.id);
+        if (current.title && current.title.trim()) return;
+
+        await chrome.tabGroups.update(group.id, { title: label });
+    } catch (err) {
+        // Group may have been removed, or AI call may have failed.
+        // Naming is best-effort by design (PRD FR-1.06 silent skip).
+        console.warn('[AI naming] skipped:', err && err.message ? err.message : err);
+    }
+});
 
 // 監聽來自側邊面板的訊息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

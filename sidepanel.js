@@ -114,14 +114,16 @@ function applyStaticTranslations() {
 }
 
 async function initialize() {
-    const [, , , readingListVisible, aiGroupingVisible, uiLang,] = await Promise.all([
+    const [, , , readingListVisible, aiGroupingVisible, uiLang, , , ] = await Promise.all([
         state.initLinkedTabs(), // Load linked tabs state first
         state.initWindowNames(), // Load window names
         state.loadBookmarkCache(), // Load cached bookmarks from storage
         state.initReadingListVisibility(), // Load Reading List visibility
         state.initAiGroupingVisibility(), // Load AI Grouping visibility
         state.initUiLanguage(), // Load UI Language Override state
-        state.initHoverSummarize() // Load Hover Summarize state
+        state.initHoverSummarize(), // Load Hover Summarize state
+        state.initAiAutoNaming(), // Load AI Auto Naming state (drives bg listener gating via storage)
+        state.initAiCleanupVisibility() // Load AI Cleanup visibility state
     ]);
 
     // Ensure custom language dictionary is loaded BEFORE applying any translations
@@ -151,6 +153,7 @@ async function initialize() {
     search.initialize();
     ui.initThemeSwitcher();
     ui.initAiGrouper();
+    ui.initAiCleanup();
     await updateTabList();
 
     refreshBookmarks();
