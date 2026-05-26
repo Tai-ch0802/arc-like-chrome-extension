@@ -166,28 +166,39 @@ async function isHashFetched(url) {
     return fetchedHashes.has(hash);
 }
 
+// Serialises concurrent recordFetchFailure() calls. Without this, simultaneous
+// alarm failures could read the same baseline log, then overwrite each other on
+// write — losing entries. The chain stays fulfilled because the inner try/catch
+// never lets rejections propagate.
+let failureLogChain = Promise.resolve();
+
 /**
  * Records a fetch failure to chrome.storage.local as a ring buffer.
+ * Serialised — concurrent calls run sequentially via failureLogChain.
  * Surfaces silent alarm failures to settings UI; does not retry automatically.
  * @param {string} subscriptionId
  * @param {string} feedUrl
  * @param {Error|string} error
+ * @returns {Promise<void>} Resolves once this entry's write completes.
  */
-async function recordFetchFailure(subscriptionId, feedUrl, error) {
-    try {
-        const existing = await api.getStorage('local', [RSS_FETCH_FAILURES_KEY]);
-        const log = existing[RSS_FETCH_FAILURES_KEY] || [];
-        log.push({
-            subscriptionId,
-            feedUrl,
-            errorMessage: error && error.message ? error.message : String(error),
-            timestamp: Date.now()
-        });
-        const trimmed = log.length > MAX_FAILURE_LOG ? log.slice(-MAX_FAILURE_LOG) : log;
-        await api.setStorage('local', { [RSS_FETCH_FAILURES_KEY]: trimmed });
-    } catch (e) {
-        console.warn('RSS: failed to record fetch failure log', e);
-    }
+function recordFetchFailure(subscriptionId, feedUrl, error) {
+    failureLogChain = failureLogChain.then(async () => {
+        try {
+            const existing = await api.getStorage('local', [RSS_FETCH_FAILURES_KEY]);
+            const log = existing[RSS_FETCH_FAILURES_KEY] || [];
+            log.push({
+                subscriptionId,
+                feedUrl,
+                errorMessage: error && error.message ? error.message : String(error),
+                timestamp: Date.now()
+            });
+            const trimmed = log.length > MAX_FAILURE_LOG ? log.slice(-MAX_FAILURE_LOG) : log;
+            await api.setStorage('local', { [RSS_FETCH_FAILURES_KEY]: trimmed });
+        } catch (e) {
+            console.warn('RSS: failed to record fetch failure log', e);
+        }
+    });
+    return failureLogChain;
 }
 
 /**

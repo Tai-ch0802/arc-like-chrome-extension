@@ -6,6 +6,12 @@
 
 // 多關鍵字匹配檢查（OR 邏輯）
 export function matchesAnyKeyword(text, keywords) {
+    // 型別防禦：非 string 時直接視為不匹配，避免 toLowerCase() 在
+    // 未來新 caller 失誤時拋 TypeError 中斷 handleSearch。
+    // 注意：現有 caller (tab.title / textContent / extractDomain) 都保證 string，
+    // 這裡是對稱於 extractDomain 既有的 falsy 防禦，並非已知 bug 修補。
+    if (typeof text !== 'string') return false;
+
     // 防禦性檢查：如果 keywords 不是陣列，轉換為陣列
     // 確保 keywords 始終是一個字串陣列
     let processedKeywords = [];
