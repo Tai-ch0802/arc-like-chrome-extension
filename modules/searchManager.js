@@ -554,6 +554,13 @@ function initialize() {
         }
         debouncedSearch();
     });
+
+    // Re-run an active search after a warm-start cache rebuild produces fresh data.
+    document.addEventListener('bookmarkCacheReady', () => {
+        if (ui.searchBox.value.trim().length > 0) {
+            handleSearch();
+        }
+    });
 }
 
 export { initialize, handleSearch, filterTabsAndGroups, filterBookmarks };
