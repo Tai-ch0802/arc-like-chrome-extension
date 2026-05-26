@@ -452,3 +452,35 @@ export function getBookmarkCache() {
 export function getBookmarkTreeFromCache() {
   return bookmarkTreeCache;
 }
+
+// --- Cross-sidepanel sync ---
+
+/**
+ * Subscribes to chrome.storage.onChanged so multiple open sidepanels stay in sync.
+ * Reloads affected in-memory caches and fires the provided callbacks.
+ *
+ * Bookmark cache is intentionally not handled here — chrome.bookmarks.* events
+ * are already global, so each sidepanel rebuilds independently via its own listener.
+ *
+ * Same-sidepanel writes also fire onChanged; the redundant reload is cheap and
+ * does not cause infinite loops because reload itself does not write.
+ *
+ * @param {{
+ *   onLinkedTabsChanged?: () => void,
+ *   onWindowNamesChanged?: () => void,
+ * }} callbacks
+ */
+export function subscribeToStorageChanges(callbacks = {}) {
+  if (!chrome?.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener(async (changes, areaName) => {
+    if (areaName !== 'local') return;
+    if (changes[LINKED_TABS_STORAGE_KEY]) {
+      await initLinkedTabs();
+      callbacks.onLinkedTabsChanged?.();
+    }
+    if (changes[WINDOW_NAMES_STORAGE_KEY]) {
+      await initWindowNames();
+      callbacks.onWindowNamesChanged?.();
+    }
+  });
+}

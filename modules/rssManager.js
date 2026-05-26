@@ -7,7 +7,9 @@ import { addToReadingList } from './readingListManager.js';
 // --- Constants ---
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
 const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
+const RSS_FETCH_FAILURES_KEY = 'rssFetchFailures';
 const MAX_STORED_HASHES = 500; // Limit stored hashes to prevent storage bloat
+const MAX_FAILURE_LOG = 20; // Ring buffer for surfacing recent fetch failures to UI
 const DELIMITER = '|';
 const ESCAPE_CHAR = '\\|';
 const ALARM_PREFIX = 'rss_fetch_';
@@ -162,6 +164,46 @@ async function calculateHash(url) {
 async function isHashFetched(url) {
     const hash = await calculateHash(url);
     return fetchedHashes.has(hash);
+}
+
+/**
+ * Records a fetch failure to chrome.storage.local as a ring buffer.
+ * Surfaces silent alarm failures to settings UI; does not retry automatically.
+ * @param {string} subscriptionId
+ * @param {string} feedUrl
+ * @param {Error|string} error
+ */
+async function recordFetchFailure(subscriptionId, feedUrl, error) {
+    try {
+        const existing = await api.getStorage('local', [RSS_FETCH_FAILURES_KEY]);
+        const log = existing[RSS_FETCH_FAILURES_KEY] || [];
+        log.push({
+            subscriptionId,
+            feedUrl,
+            errorMessage: error && error.message ? error.message : String(error),
+            timestamp: Date.now()
+        });
+        const trimmed = log.length > MAX_FAILURE_LOG ? log.slice(-MAX_FAILURE_LOG) : log;
+        await api.setStorage('local', { [RSS_FETCH_FAILURES_KEY]: trimmed });
+    } catch (e) {
+        console.warn('RSS: failed to record fetch failure log', e);
+    }
+}
+
+/**
+ * Returns recent fetch failures, newest last. Intended for settings UI.
+ * @returns {Promise<Array<{subscriptionId: string, feedUrl: string, errorMessage: string, timestamp: number}>>}
+ */
+export async function getRecentFetchFailures() {
+    const result = await api.getStorage('local', [RSS_FETCH_FAILURES_KEY]);
+    return result[RSS_FETCH_FAILURES_KEY] || [];
+}
+
+/**
+ * Clears the recorded fetch failure log. Intended for settings UI.
+ */
+export async function clearFetchFailures() {
+    await api.setStorage('local', { [RSS_FETCH_FAILURES_KEY]: [] });
 }
 
 /**
@@ -667,6 +709,7 @@ export async function fetchNow(subscriptionId) {
         return addedCount;
     } catch (err) {
         console.error('Error fetching subscription:', subscriptionId, err);
+        await recordFetchFailure(subscriptionId, sub.url, err);
         return 0;
     }
 }
