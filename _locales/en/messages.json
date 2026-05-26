@@ -727,5 +727,50 @@
   },
   "aiSetupStep2b": {
     "message": "Enable Prompt API multimodal input: open the link and set to \"Enabled\"."
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Search tabs, bookmarks, or actions..."
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Command palette"
+  },
+  "cmdPaletteEmpty": {
+    "message": "No results"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Actions"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Tabs"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Bookmarks"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Reading List"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "navigate"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "select"
+  },
+  "cmdPaletteHintClose": {
+    "message": "close"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group all tabs"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "New tab to the right"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Refresh bookmarks"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Open settings"
   }
 }

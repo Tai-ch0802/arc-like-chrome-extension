@@ -724,5 +724,50 @@
   },
   "aiSetupStep2b": {
     "message": "启用 Prompt API 多模态输入：打开链接并设为「Enabled」。"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "搜索标签页、书签或动作..."
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "命令面板"
+  },
+  "cmdPaletteEmpty": {
+    "message": "没有结果"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "动作"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "标签页"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "书签"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "阅读清单"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "切换"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "选取"
+  },
+  "cmdPaletteHintClose": {
+    "message": "关闭"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "智能整理所有标签页"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI 标签页清理"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "在右侧新增标签页"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "重新加载书签"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "打开设置"
   }
 }

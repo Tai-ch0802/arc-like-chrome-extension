@@ -724,5 +724,50 @@
   },
   "aiSetupStep2b": {
     "message": "啟用 Prompt API 多模態輸入：開啟連結並設為「Enabled」。"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "搜尋分頁、書籤或動作..."
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "命令面板"
+  },
+  "cmdPaletteEmpty": {
+    "message": "沒有結果"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "動作"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "分頁"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "書籤"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "閱讀清單"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "切換"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "選取"
+  },
+  "cmdPaletteHintClose": {
+    "message": "關閉"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "智慧整理所有分頁"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI 分頁清理"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "在右側新增分頁"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "重新載入書籤"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "開啟設定"
   }
 }
