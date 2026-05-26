@@ -127,8 +127,17 @@ async function initialize() {
     // Ensure custom language dictionary is loaded BEFORE applying any translations
     await api.loadCustomI18n(uiLang);
 
-    state.pruneWindowNames().catch(console.error); // Prune stale window names on startup (non-blocking)
-    state.buildBookmarkCache().catch(console.error); // Build fresh cache on startup (non-blocking)
+    state.pruneWindowNames().catch(console.error); // Non-blocking: only removes stale window IDs
+
+    // Cold start (first install / cleared cache) must await so the first search isn't empty.
+    // Warm start stays non-blocking and notifies search to re-run with fresh data.
+    if (state.getBookmarkCache().length === 0) {
+        await state.buildBookmarkCache();
+    } else {
+        state.buildBookmarkCache()
+            .then(() => document.dispatchEvent(new CustomEvent('bookmarkCacheReady')))
+            .catch(console.error);
+    }
     applyStaticTranslations();
 
     // Inject centralized icons
