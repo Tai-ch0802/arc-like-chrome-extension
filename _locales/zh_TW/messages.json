@@ -665,6 +665,9 @@
   "aiCleanupAnalyzing": {
     "message": "分析分頁中..."
   },
+  "aiCleanupNeedsDownload": {
+    "message": "AI 模型尚未下載。請先點擊 ✨ 智慧整理 開始下載。"
+  },
   "aiCleanupEmpty": {
     "message": "你的分頁很整潔，沒有需要清理的項目。"
   },

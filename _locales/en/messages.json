@@ -668,6 +668,9 @@
   "aiCleanupAnalyzing": {
     "message": "Analyzing tabs..."
   },
+  "aiCleanupNeedsDownload": {
+    "message": "AI model is not downloaded yet. Click ✨ Smart Group first to start the download."
+  },
   "aiCleanupEmpty": {
     "message": "Your tabs look tidy — nothing to clean up."
   },

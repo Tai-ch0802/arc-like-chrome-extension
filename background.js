@@ -47,6 +47,15 @@ chrome.tabGroups.onCreated.addListener(async (group) => {
         const settings = await chrome.storage.sync.get([AI_AUTO_NAMING_KEY]);
         if (settings[AI_AUTO_NAMING_KEY] === false) return; // disabled by user
 
+        // Two reasons for an 800ms delay before querying tabs:
+        // 1. onCreated fires before Chrome finishes binding the dragged tabs'
+        //    groupId, so an immediate chrome.tabs.query would return [].
+        // 2. Gives the user a window to start typing a manual title in Chrome's
+        //    title-input popover. We can't detect input-focus on a group title
+        //    (no API for it), so a delay is the only mitigation against
+        //    overwriting in-progress typing.
+        await new Promise(resolve => setTimeout(resolve, 800));
+
         const tabs = await chrome.tabs.query({ groupId: group.id });
         if (!tabs || tabs.length === 0) return;
 

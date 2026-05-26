@@ -665,6 +665,9 @@
   "aiCleanupAnalyzing": {
     "message": "分析标签页中..."
   },
+  "aiCleanupNeedsDownload": {
+    "message": "AI 模型尚未下载。请先点击 ✨ 智能整理 开始下载。"
+  },
   "aiCleanupEmpty": {
     "message": "你的标签页很整洁，没有需要清理的项目。"
   },

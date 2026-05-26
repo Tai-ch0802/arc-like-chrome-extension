@@ -41,9 +41,15 @@ async function handleCleanupAction() {
     const btn = document.getElementById('ai-cleanup-btn');
     if (btn.classList.contains('loading')) return;
 
+    // Strict gate — same as background-driven naming. We don't implement a
+    // download progress UI here (Smart Auto-Grouping already does), so if the
+    // model isn't ready we surface a clear "needs download" hint instead of
+    // silently freezing on "Analyzing..." for minutes.
     const availability = await aiManager.checkModelAvailability();
-    if (availability === 'unavailable') {
-        showStatus(api.getMessage('aiModelNotReady'));
+    if (availability !== 'available') {
+        showStatus(api.getMessage(
+            availability === 'unavailable' ? 'aiModelNotReady' : 'aiCleanupNeedsDownload'
+        ));
         showSection();
         return;
     }
@@ -113,6 +119,7 @@ function renderList(suggestions, tabById) {
         cb.className = 'ai-cleanup-row__cb';
         cb.dataset.tabId = String(s.tabId);
         cb.checked = true;
+        cb.addEventListener('change', syncSelectAllState);
 
         const meta = document.createElement('div');
         meta.className = 'ai-cleanup-row__meta';
@@ -141,15 +148,43 @@ function handleSelectAll(e) {
     });
 }
 
+// Keep the "Select all" checkbox in sync with row checkboxes:
+// fully checked, fully unchecked, or mixed (indeterminate).
+function syncSelectAllState() {
+    const rowBoxes = Array.from(document.querySelectorAll('#ai-cleanup-list .ai-cleanup-row__cb'));
+    const selectAll = document.getElementById('ai-cleanup-select-all');
+    if (!selectAll || rowBoxes.length === 0) return;
+    const checkedCount = rowBoxes.filter(cb => cb.checked).length;
+    if (checkedCount === 0) {
+        selectAll.checked = false;
+        selectAll.indeterminate = false;
+    } else if (checkedCount === rowBoxes.length) {
+        selectAll.checked = true;
+        selectAll.indeterminate = false;
+    } else {
+        selectAll.checked = false;
+        selectAll.indeterminate = true;
+    }
+}
+
 async function handleConfirm() {
     const checked = Array.from(document.querySelectorAll('#ai-cleanup-list .ai-cleanup-row__cb:checked'));
-    const tabIds = checked.map(cb => parseInt(cb.dataset.tabId, 10)).filter(Boolean);
-    if (tabIds.length === 0) {
+    const targetIds = checked.map(cb => parseInt(cb.dataset.tabId, 10)).filter(Boolean);
+    if (targetIds.length === 0) {
         hideSection();
         return;
     }
     try {
-        await chrome.tabs.remove(tabIds);
+        // chrome.tabs.remove on an array is atomic — one missing ID aborts the
+        // whole batch. Filter against currently-live tabs so a tab the user
+        // manually closed during the AI delay doesn't sink the entire confirm.
+        const liveTabs = await api.getTabsInCurrentWindow();
+        const liveIds = new Set(liveTabs.map(t => t.id));
+        const validIds = targetIds.filter(id => liveIds.has(id));
+
+        if (validIds.length > 0) {
+            await chrome.tabs.remove(validIds);
+        }
         hideSection();
     } catch (err) {
         console.error('AI Cleanup close failed:', err);
@@ -182,7 +217,10 @@ function clearList() {
 function showFooter() {
     document.querySelector('#ai-cleanup-section .ai-cleanup-footer')?.classList.remove('hidden');
     const selectAll = document.getElementById('ai-cleanup-select-all');
-    if (selectAll) selectAll.checked = true;
+    if (selectAll) {
+        selectAll.checked = true;
+        selectAll.indeterminate = false;
+    }
 }
 
 function hideFooter() {
