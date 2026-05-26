@@ -29,6 +29,20 @@ describe('searchManager.matchesAnyKeyword', () => {
         expect(matchesAnyKeyword('anything', 42)).toBe(true);
         expect(matchesAnyKeyword('anything', null)).toBe(true);
     });
+
+    it('returns false when text is not a string (defensive)', () => {
+        // Real callers always pass strings; this guard exists so a future
+        // misuse cannot crash handleSearch via TypeError on toLowerCase().
+        expect(matchesAnyKeyword(null, ['x'])).toBe(false);
+        expect(matchesAnyKeyword(undefined, ['x'])).toBe(false);
+        expect(matchesAnyKeyword(123, ['x'])).toBe(false);
+        expect(matchesAnyKeyword({}, ['x'])).toBe(false);
+    });
+
+    it('returns true for empty string with empty keyword list', () => {
+        // Empty string is a valid string, so the "no keywords → match all" rule applies.
+        expect(matchesAnyKeyword('', [])).toBe(true);
+    });
 });
 
 describe('searchManager.extractDomain', () => {

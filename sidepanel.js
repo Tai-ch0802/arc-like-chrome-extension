@@ -131,7 +131,9 @@ async function initialize() {
 
     // Cold start (first install / cleared cache) must await so the first search isn't empty.
     // Warm start stays non-blocking and notifies search to re-run with fresh data.
-    if (state.getBookmarkCache().length === 0) {
+    // Check the init flag — not cache length — so users with zero bookmarks
+    // don't get treated as cold-start on every launch.
+    if (!state.isBookmarkCacheInitialized()) {
         await state.buildBookmarkCache();
     } else {
         state.buildBookmarkCache()

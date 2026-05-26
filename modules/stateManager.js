@@ -367,6 +367,9 @@ export const getAllLinkedTabs = () => {
 const BOOKMARK_CACHE_KEY = 'arc_sidebar_bookmark_cache';
 let bookmarkCache = []; // In-memory cache: [{ id, title, url, parentId, type, path }, ...]
 let bookmarkTreeCache = null; // In-memory cache of the full tree structure
+// Tracks whether the cache key was ever observed in storage. Distinguishes
+// "first install" from "user with zero bookmarks" (both have length 0).
+let bookmarkCacheInitialized = false;
 
 /**
  * Flattens a bookmark tree into a searchable array with path information.
@@ -415,6 +418,7 @@ export async function buildBookmarkCache() {
       bookmarkTreeCache = tree;
       bookmarkCache = flattenBookmarkTree(tree[0].children, [], []);
       await setStorage('local', { [BOOKMARK_CACHE_KEY]: bookmarkCache });
+      bookmarkCacheInitialized = true;
     }
   } catch (error) {
     console.error('[stateManager] Error building bookmark cache:', error);
@@ -427,14 +431,24 @@ export async function buildBookmarkCache() {
 export async function loadBookmarkCache() {
   try {
     const result = await getStorage('local', [BOOKMARK_CACHE_KEY]);
-    const cached = result[BOOKMARK_CACHE_KEY];
-    if (cached) {
-      bookmarkCache = cached;
+    if (result && BOOKMARK_CACHE_KEY in result) {
+      bookmarkCache = result[BOOKMARK_CACHE_KEY] || [];
+      bookmarkCacheInitialized = true;
     }
   } catch (error) {
     console.error('[stateManager] Error loading bookmark cache:', error);
     bookmarkCache = [];
   }
+}
+
+/**
+ * Returns true once the bookmark cache has been loaded from or written to storage.
+ * Use this — not getBookmarkCache().length === 0 — to detect a true first install,
+ * so users with zero bookmarks don't pay the cold-start cost on every launch.
+ * @returns {boolean}
+ */
+export function isBookmarkCacheInitialized() {
+  return bookmarkCacheInitialized;
 }
 
 /**
