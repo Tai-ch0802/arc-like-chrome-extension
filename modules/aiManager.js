@@ -292,3 +292,116 @@ ${tabsData}`;
         tabIds: processingTabs.map(t => t.id)
     }];
 }
+
+/**
+ * Generates a concise group name ("Emoji + ShortName") for a freshly-created tab group.
+ * Reuses the shared LanguageModel session (whose systemPrompt enforces JSON output),
+ * so we ask the model to reply with a JSON array carrying a single `label` field.
+ * @param {Array<{title: string, url: string}>} tabsInfo - Tabs in the new group.
+ * @returns {Promise<string|null>} The label "<Emoji> <ShortName>" or null on failure / AI unavailable.
+ */
+export async function generateGroupName(tabsInfo) {
+    if (!Array.isArray(tabsInfo) || tabsInfo.length === 0) return null;
+    // Stricter than checkModelReadiness: skip 'downloadable'/'downloading'.
+    // Naming runs in the background — we must not silently kick off a multi-GB
+    // download. Wait until the user explicitly triggers Smart Auto-Grouping.
+    if ((await checkModelAvailability()) !== 'available') return null;
+
+    const MAX_TABS = 10; // Group rarely has >10 tabs; cap for token budget
+    const sample = tabsInfo.slice(0, MAX_TABS).map(t => {
+        let cleanUrl = t.url || '';
+        try {
+            const u = new URL(cleanUrl);
+            cleanUrl = u.hostname + u.pathname;
+            if (cleanUrl.length > 80) cleanUrl = cleanUrl.substring(0, 80) + '...';
+        } catch { /* ignore non-URL */ }
+        let cleanTitle = t.title || 'No Title';
+        if (cleanTitle.length > 60) cleanTitle = cleanTitle.substring(0, 60) + '...';
+        return { title: cleanTitle, url: cleanUrl };
+    });
+    const tabsData = sample.map(t => `Title: ${t.title} | URL: ${t.url}`).join('\n');
+    const currentLang = api.getResolvedUILanguage();
+
+    const prompt = `You are a tab group naming assistant. Generate ONE concise label for the following tabs.
+Reply strictly in JSON array format (no markdown, no extra text):
+[
+  { "label": "<Emoji> <ShortName in locale '${currentLang}', max 15 chars>" }
+]
+
+[Tabs]
+${tabsData}`;
+
+    try {
+        const session = await getOrCreateLanguageModelSession();
+        const result = await session.prompt(prompt);
+        const jsonMatch = result.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+        const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : result);
+        const label = Array.isArray(parsed) && parsed[0] && typeof parsed[0].label === 'string'
+            ? parsed[0].label.trim()
+            : null;
+        return label || null;
+    } catch (err) {
+        console.warn('[AI] generateGroupName failed:', err);
+        destroyLanguageModelSession();
+        return null;
+    }
+}
+
+/**
+ * Asks the model which tabs are good cleanup candidates and why.
+ * @param {Array<{id: number, title: string, url: string, lastAccessedMinutesAgo: number}>} tabsInfo
+ * @returns {Promise<Array<{tabId: number, reason: string}>>} Empty array if AI declines, unavailable, or parsing fails.
+ */
+export async function generateCleanupSuggestions(tabsInfo) {
+    if (!Array.isArray(tabsInfo) || tabsInfo.length === 0) return [];
+    if (!(await checkModelReadiness())) return [];
+
+    const MAX_TABS = 30;
+    const sample = tabsInfo.slice(0, MAX_TABS).map(t => {
+        let cleanUrl = t.url || '';
+        try {
+            const u = new URL(cleanUrl);
+            cleanUrl = u.hostname + u.pathname;
+            if (cleanUrl.length > 80) cleanUrl = cleanUrl.substring(0, 80) + '...';
+        } catch { /* ignore */ }
+        let cleanTitle = t.title || 'No Title';
+        if (cleanTitle.length > 60) cleanTitle = cleanTitle.substring(0, 60) + '...';
+        return { id: t.id, title: cleanTitle, url: cleanUrl, idleMin: t.lastAccessedMinutesAgo };
+    });
+    const tabsData = sample
+        .map(t => `ID: ${t.id} | Title: ${t.title} | URL: ${t.url} | LastAccessedMinutesAgo: ${t.idleMin}`)
+        .join('\n');
+    const currentLang = api.getResolvedUILanguage();
+
+    const prompt = `You are a tab cleanup advisor. From the list below, identify tabs that the user can safely close.
+Criteria to consider:
+- LastAccessedMinutesAgo is large (e.g., > 60 minutes) AND content seems non-essential
+- Multiple tabs cover the same topic or duplicate URL
+- Tab appears to be a finished task (e.g., "Sign in" pages, completed search results)
+Be conservative — when in doubt, skip the tab.
+
+Reply strictly in JSON array format (no markdown, no extra text). Reasons MUST be in locale '${currentLang}', max 30 chars:
+[
+  { "tabId": 12, "reason": "<short reason in ${currentLang}>" }
+]
+
+If no tab is a good candidate, reply with: []
+
+[Tabs]
+${tabsData}`;
+
+    try {
+        const session = await getOrCreateLanguageModelSession();
+        const result = await session.prompt(prompt);
+        const jsonMatch = result.match(/\[[\s\S]*\]/);
+        const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : result);
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+            .filter(p => p && typeof p.tabId === 'number' && typeof p.reason === 'string')
+            .map(p => ({ tabId: p.tabId, reason: p.reason.trim().slice(0, 40) }));
+    } catch (err) {
+        console.warn('[AI] generateCleanupSuggestions failed:', err);
+        destroyLanguageModelSession();
+        return [];
+    }
+}
