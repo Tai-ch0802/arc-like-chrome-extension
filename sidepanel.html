@@ -45,6 +45,27 @@
                 <button id="ai-group-btn" class="header-action-btn" title="✨ Smart Auto-Grouping"
                     data-i18n-title="smartGroupingBtnTitle" aria-label="Smart Auto-Grouping"
                     data-i18n="smartGroupingBtnText">✨ 智慧整理</button>
+                <button id="ai-cleanup-btn" class="header-action-btn" title="🧹 AI Cleanup"
+                    data-i18n-title="aiCleanupBtnTitle" aria-label="AI Cleanup"
+                    data-i18n="aiCleanupBtnText">🧹 清理</button>
+            </div>
+        </div>
+
+        <!-- AI Cleanup Section (collapsed by default; expanded when the button is clicked) -->
+        <div id="ai-cleanup-section" class="ai-cleanup-section hidden" aria-live="polite">
+            <div class="ai-cleanup-header">
+                <h3 class="ai-cleanup-title" data-i18n="aiCleanupSectionHeader">AI Cleanup Suggestions</h3>
+                <button id="ai-cleanup-close" class="icon-btn" aria-label="Close">×</button>
+            </div>
+            <div id="ai-cleanup-status" class="ai-cleanup-status"></div>
+            <div id="ai-cleanup-list" class="ai-cleanup-list"></div>
+            <div class="ai-cleanup-footer hidden">
+                <label class="ai-cleanup-select-all">
+                    <input type="checkbox" id="ai-cleanup-select-all" checked>
+                    <span data-i18n="aiCleanupSelectAll">Select all</span>
+                </label>
+                <button id="ai-cleanup-confirm" class="ai-cleanup-confirm-btn"
+                    data-i18n="aiCleanupConfirm">Close selected</button>
             </div>
         </div>
 

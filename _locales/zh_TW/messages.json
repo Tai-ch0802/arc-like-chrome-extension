@@ -641,6 +641,45 @@
   "aiGroupingDescription2_part2": {
     "message": " 下載 Local Model 並開啟相關 Flag 來啟用。"
   },
+  "aiAutoNamingToggleLabel": {
+    "message": "自動命名未命名的分頁群組"
+  },
+  "aiAutoNamingDescription": {
+    "message": "當你建立一個沒有名稱的新分頁群組時，AI 會自動產生一個簡短的標籤（Emoji + 名稱）。僅在本地模型已下載完成時生效。"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "顯示 🧹 分頁清理按鈕"
+  },
+  "aiCleanupDescription": {
+    "message": "在「智慧整理」旁加一個按鈕，讓 AI 建議你可能可以關閉的分頁。"
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 清理"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "AI 分頁清理建議"
+  },
+  "aiCleanupSectionHeader": {
+    "message": "可考慮關閉的分頁"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "分析分頁中..."
+  },
+  "aiCleanupEmpty": {
+    "message": "你的分頁很整潔，沒有需要清理的項目。"
+  },
+  "aiCleanupFound": {
+    "message": "AI 建議可關閉 {count} 個分頁，想保留的請取消勾選。"
+  },
+  "aiCleanupError": {
+    "message": "AI 清理失敗，請稍後再試。"
+  },
+  "aiCleanupSelectAll": {
+    "message": "全選"
+  },
+  "aiCleanupConfirm": {
+    "message": "關閉所選"
+  },
   "languageSectionHeader": {
     "message": "介面語言 (Language)"
   },

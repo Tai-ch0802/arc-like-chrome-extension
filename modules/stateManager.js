@@ -184,6 +184,50 @@ export async function setAiGroupingVisible(visible) {
   await setStorage('sync', { [AI_GROUPING_VISIBLE_KEY]: visible });
 }
 
+// --- AI Auto Group Naming State ---
+
+const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
+let aiAutoNamingEnabled = true; // Default to enabled
+
+/**
+ * Loads the AI Auto Naming state from chrome.storage.sync.
+ * @returns {Promise<boolean>}
+ */
+export async function initAiAutoNaming() {
+  const result = await getStorage('sync', [AI_AUTO_NAMING_KEY]);
+  aiAutoNamingEnabled = result[AI_AUTO_NAMING_KEY] !== false; // Default true if not set
+  return aiAutoNamingEnabled;
+}
+
+export function isAiAutoNamingEnabled() {
+  return aiAutoNamingEnabled;
+}
+
+export async function setAiAutoNamingEnabled(enabled) {
+  aiAutoNamingEnabled = enabled;
+  await setStorage('sync', { [AI_AUTO_NAMING_KEY]: enabled });
+}
+
+// --- AI Cleanup Suggestion Visibility State ---
+
+const AI_CLEANUP_VISIBLE_KEY = 'aiCleanupVisible';
+let aiCleanupVisible = true; // Default to visible
+
+export async function initAiCleanupVisibility() {
+  const result = await getStorage('sync', [AI_CLEANUP_VISIBLE_KEY]);
+  aiCleanupVisible = result[AI_CLEANUP_VISIBLE_KEY] !== false;
+  return aiCleanupVisible;
+}
+
+export function isAiCleanupVisible() {
+  return aiCleanupVisible;
+}
+
+export async function setAiCleanupVisible(visible) {
+  aiCleanupVisible = visible;
+  await setStorage('sync', { [AI_CLEANUP_VISIBLE_KEY]: visible });
+}
+
 // --- Hover Summarize State ---
 
 const HOVER_SUMMARIZE_KEY = 'hoverSummarizeEnabled';

@@ -209,6 +209,26 @@ async function buildSettingsDialogContent(selectedTheme) {
                 <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
 
                 <label class="settings-toggle">
+                    <input type="checkbox" id="ai-auto-naming-toggle" ${state.isAiAutoNamingEnabled() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('aiAutoNamingToggleLabel')}</span>
+                </label>
+                <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    <p>${api.getMessage('aiAutoNamingDescription')}</p>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
+
+                <label class="settings-toggle">
+                    <input type="checkbox" id="ai-cleanup-toggle" ${state.isAiCleanupVisible() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('aiCleanupToggleLabel')}</span>
+                </label>
+                <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    <p>${api.getMessage('aiCleanupDescription')}</p>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
+
+                <label class="settings-toggle">
                     <input type="checkbox" id="hover-summarize-toggle" ${state.isHoverSummarizeEnabled() ? 'checked' : ''}>
                     <span class="toggle-label">${api.getMessage('hoverSummarizeToggle')}</span>
                 </label>
@@ -377,6 +397,26 @@ function bindSettingsEventHandlers(modalContentElement) {
             await state.setAiGroupingVisible(isVisible);
             // Dispatch custom event for sidepanel to react
             document.dispatchEvent(new CustomEvent('aiGroupingVisibilityChanged', {
+                detail: { visible: isVisible }
+            }));
+        });
+    }
+
+    // AI Auto Naming toggle handler
+    const aiAutoNamingToggle = modalContentElement.querySelector('#ai-auto-naming-toggle');
+    if (aiAutoNamingToggle) {
+        aiAutoNamingToggle.addEventListener('change', async (e) => {
+            await state.setAiAutoNamingEnabled(e.target.checked);
+        });
+    }
+
+    // AI Cleanup visibility toggle handler
+    const aiCleanupToggle = modalContentElement.querySelector('#ai-cleanup-toggle');
+    if (aiCleanupToggle) {
+        aiCleanupToggle.addEventListener('change', async (e) => {
+            const isVisible = e.target.checked;
+            await state.setAiCleanupVisible(isVisible);
+            document.dispatchEvent(new CustomEvent('aiCleanupVisibilityChanged', {
                 detail: { visible: isVisible }
             }));
         });
