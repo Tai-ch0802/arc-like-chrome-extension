@@ -161,6 +161,13 @@ async function initialize() {
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
 
+    // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,
+    // windowNames affects the "Other Windows" section labels.
+    state.subscribeToStorageChanges({
+        onLinkedTabsChanged: refreshBookmarks,
+        onWindowNamesChanged: updateTabList,
+    });
+
     // Listen for refresh request from settings
     document.addEventListener('refreshBookmarksRequired', () => {
         refreshBookmarks();
