@@ -3382,3 +3382,34 @@ mark.url-match {
     border-radius: 4px;
     background: rgba(217, 48, 37, 0.08);
 }
+
+/* === In-sidepanel shortcuts list (Phase 9 settings) === */
+.settings-shortcut-list {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0;
+}
+
+.settings-shortcut-list li {
+    padding: 4px 0;
+    font-size: 0.85em;
+    color: var(--text-color-primary);
+}
+
+.settings-shortcut-list kbd {
+    display: inline-block;
+    padding: 1px 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    background: var(--element-bg-color);
+    font-family: monospace;
+    font-size: 0.85em;
+    margin-right: 2px;
+}
+
+.settings-shortcut-note {
+    font-size: 0.75em;
+    color: var(--text-color-primary);
+    opacity: 0.6;
+    font-style: italic;
+}

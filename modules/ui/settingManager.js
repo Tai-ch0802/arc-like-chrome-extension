@@ -175,6 +175,19 @@ async function buildSettingsDialogContent(selectedTheme) {
                 <p>${api.getMessage('currentShortcutLabel')} <span id="current-shortcut">${currentShortcut}</span></p>
                 <p>${api.getMessage('settingsShortcutCreateTabRight')} <span id="create-new-tab-right-shortcut">${newTabRightShortcut}</span></p>
                 <button id="open-shortcuts-button" class="modal-button">${api.getMessage('shortcutLinkText')}</button>
+
+                <!-- In-sidepanel shortcuts: sidepanel-scoped key handlers that
+                     don't go through manifest commands (Chrome doesn't let
+                     extensions reassign these via the shortcuts page; documented
+                     here for discoverability). -->
+                <h4 class="settings-subsection-header" style="margin-top: 12px;">${api.getMessage('shortcutInSidepanelHeader') || 'In-sidepanel shortcuts'}</h4>
+                <ul class="settings-shortcut-list">
+                    <li><kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> — ${api.getMessage('shortcutDescCommandPalette') || 'Open Command Palette'}</li>
+                    <li><kbd>↑</kbd> <kbd>↓</kbd> — ${api.getMessage('shortcutDescPaletteNav') || 'Navigate Command Palette results'}</li>
+                    <li><kbd>Enter</kbd> — ${api.getMessage('shortcutDescPaletteSelect') || 'Activate selected result'}</li>
+                    <li><kbd>Esc</kbd> — ${api.getMessage('shortcutDescPaletteClose') || 'Close Command Palette'}</li>
+                </ul>
+                <p class="settings-shortcut-note">${api.getMessage('shortcutInSidepanelNote') || 'These run inside the sidepanel only and cannot be remapped via the Chrome shortcuts page.'}</p>
             </div>
         </div>
 
