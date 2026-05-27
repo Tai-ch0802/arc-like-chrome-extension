@@ -170,6 +170,32 @@ export const setStorage = (area, items) => {
     });
 };
 
+/**
+ * Strict variant of setStorage that surfaces Chrome storage errors (sync
+ * quota exceeded, runtime errors) by rejecting the Promise instead of
+ * silently resolving.
+ *
+ * Use when the caller MUST know whether the write succeeded — e.g. before
+ * deleting the only remaining backup of the same data (Phase 9 workspace
+ * migration).
+ *
+ * Existing setStorage stays silent-on-failure to avoid retroactively turning
+ * dozens of fire-and-forget callers into unhandled rejections.
+ *
+ * @param {'sync'|'local'} area
+ * @param {object} items
+ * @returns {Promise<void>}
+ */
+export const setStorageStrict = (area, items) => {
+    return new Promise((resolve, reject) => {
+        chrome.storage[area].set(items, () => {
+            const err = chrome.runtime.lastError;
+            if (err) reject(new Error(err.message || 'chrome.storage.set failed'));
+            else resolve();
+        });
+    });
+};
+
 // Wrappers for chrome.readingList API
 export const queryReadingList = (info = {}) => chrome.readingList.query(info);
 export const addReadingListEntry = (options) => chrome.readingList.addEntry(options);
