@@ -892,5 +892,17 @@
   },
   "cmdPaletteActionBookmarkTools": {
     "message": "Open Bookmark Tools"
+  },
+  "bmToolsOfflineWarning": {
+    "message": "You appear to be offline. Connect to the internet and try again — without a network the scan would falsely flag every bookmark as unreachable."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} of {total} failed ({pct}%) — this is unusually high and looks more like a network issue than dead links. Review carefully before removing."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Note: scanning sends a HEAD request to each bookmark's host."
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Note: in groups where every copy is checked, the first one is automatically kept."
   }
 }

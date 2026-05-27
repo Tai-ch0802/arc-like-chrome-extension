@@ -889,5 +889,17 @@
   },
   "cmdPaletteActionBookmarkTools": {
     "message": "打开书签工具"
+  },
+  "bmToolsOfflineWarning": {
+    "message": "当前似乎处于离线状态。连上网络后再试一次——没有网络连线时，扫描会把所有书签误判为无法连接。"
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} / {total} 失败（{pct}%）— 比例异常高，更像是网络问题而非死链。请仔细确认再移除。"
+  },
+  "bmToolsPrivacyNote": {
+    "message": "提示：扫描会对每个书签的主机发送 HEAD 请求。"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "提示：当某组重复内所有副本都被勾选时，会自动保留第一份。"
   }
 }

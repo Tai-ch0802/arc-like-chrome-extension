@@ -122,6 +122,11 @@ export async function removeTagFromBookmark(bookmarkId, tagId) {
  * @param {Array<{id: string, type: string}>} flatBookmarkCache
  */
 export async function pruneOrphanedBookmarkTags(flatBookmarkCache) {
+    // Empty cache could mean storage failure or cold start, not that the user
+    // really has zero bookmarks. Pruning here would silently delete every
+    // tag binding with no undo. Skip — next prune runs after a real cache.
+    if (!Array.isArray(flatBookmarkCache) || flatBookmarkCache.length === 0) return;
+
     const alive = new Set(flatBookmarkCache.map(b => String(b.id)));
     let changed = false;
     for (const bid of Object.keys(bookmarkTags)) {

@@ -889,5 +889,17 @@
   },
   "cmdPaletteActionBookmarkTools": {
     "message": "開啟書籤工具"
+  },
+  "bmToolsOfflineWarning": {
+    "message": "目前似乎處於離線狀態。連上網路後再試一次——沒有網路連線時，掃描會把所有書籤誤判為無法連線。"
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} / {total} 失敗（{pct}%）— 比例異常高，比較像網路問題而非死連結。請仔細確認再移除。"
+  },
+  "bmToolsPrivacyNote": {
+    "message": "提示：掃描會對每個書籤的主機發送 HEAD 請求。"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "提示：當某組重複內所有複本都被勾選時，會自動保留第一份。"
   }
 }
