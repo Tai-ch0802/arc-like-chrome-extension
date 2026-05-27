@@ -1,4 +1,4 @@
-# Barra lateral de Chrome al estilo Arc
+# Barra lateral de Chrome al estilo Arc · Tu espacio de trabajo de conocimiento para Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Este es un proyecto de extensión de Chrome que tiene como objetivo llevar una experiencia de barra lateral vertical similar al navegador Arc a Google Chrome, proporcionando un panel unificado y potente para gestionar pestañas y marcadores.
+Una barra lateral estilo Arc que va mucho más allá de las pestañas verticales nativas de Chrome: pestañas + marcadores + lista de lectura unificados, **IA local sin configuración** (nombrar grupos automáticamente, sugerencias de limpieza de pestañas, resúmenes al pasar el ratón, búsqueda en lenguaje natural), **Workspaces** (hibernación y restauración de grupos de pestañas, metadatos sincronizados entre dispositivos), una **paleta de comandos ⌘K**, y **herramientas para marcadores** (etiquetas, dedupe, enlaces rotos) — 100% local, sin clave API.
 
 ## 🚀 ¡Nueva actualización v1.14.0! 
 [![Video de demostración](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

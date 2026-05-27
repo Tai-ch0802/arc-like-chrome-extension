@@ -1,4 +1,4 @@
-# Sidebar Chrome bergaya Arc
+# Sidebar Chrome bergaya Arc · Knowledge Workspace Anda untuk Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Ini adalah proyek ekstensi Chrome yang bertujuan untuk menghadirkan pengalaman sidebar vertikal seperti browser Arc ke Google Chrome, menyediakan panel yang terpadu dan kuat untuk mengelola tab dan bookmark.
+Sidebar bergaya Arc yang jauh melampaui vertical tabs bawaan Chrome: tabs + bookmarks + reading list disatukan, **AI lokal tanpa konfigurasi** (penamaan grup otomatis, saran cleanup tab, ringkasan hover, pencarian bahasa natural), **Workspaces** (hibernate & restore kumpulan tab, sinkronisasi metadata antar device), **Command Palette ⌘K**, dan **Bookmark Tools** (tags, dedupe, dead-link cleanup) — semuanya 100% di device, tanpa API key.
 
 ## 🚀 Pembaruan Rilis Baru v1.14.0! 
 [![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

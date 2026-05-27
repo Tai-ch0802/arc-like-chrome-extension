@@ -1,4 +1,4 @@
-# Arc 风格 Chrome 侧边栏
+# Arc 风格 Chrome 侧边栏 · 你的 Chrome 知识工作台
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-这是一个 Chrome 扩展程序项目，旨在为 Google Chrome 带来类似 Arc 浏览器的垂直侧边栏体验，提供一个统一且强大的面板来管理标签页和书籤。
+超越 Chrome 原生垂直标签的 Arc 风格侧边栏：统一管理标签页、书签与阅读清单，**零设定本机 AI**（自动命名群组、标签页清理建议、悬停摘要、自然语言搜索），**工作区**（一键 hibernate 与 restore 标签集合，metadata 跨设备同步），**⌘K 命令面板**，以及 **书签工具**（多标签、重复检测、失效链接清理）—— 全部 100% 在设备上运算，无需 API key。
 
 ## 🚀 新版本 v1.14.0 更新！
 [![演示视频](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

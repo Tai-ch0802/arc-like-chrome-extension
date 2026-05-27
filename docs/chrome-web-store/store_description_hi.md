@@ -1,4 +1,8 @@
-# Arc-like Vertical Tabs & Bookmarks - Chrome को एक उत्पादकता पावरहाउस में बदलें
+# Arc-like Vertical Tabs & Bookmarks - Chrome को एक उत्पादकता पावरहाउस में बदलें · Chrome के लिए आपका Knowledge Workspace
+
+🔒 **100% local** · 🔑 **No API key** · 🤖 **Built-in Gemini Nano AI**
+
+Chrome के native vertical tabs (2025) सिर्फ tabs को vertical दिखाते हैं। **यह एक पूरा knowledge workspace है**: tabs + bookmarks + reading list एक साथ, AI (group auto-name, tab cleanup, hover summary, natural-language search), Workspaces एक click में hibernate-restore और devices के बीच sync, ⌘K Command Palette, Bookmark Tools (tags, dedupe, dead-link) —— सब कुछ device पर, कोई API key नहीं।
 
 क्या आप दर्जनों अव्यवस्थित टैब में खो जाने से थक गए हैं? क्या आप Arc ब्राउज़र के स्लीक, वर्टिकल टैब अनुभव की लालसा रखते हैं लेकिन Chrome इकोसिस्टम को नहीं छोड़ सकते?
 **Arc-like Vertical Tabs & Bookmarks** आपका अंतिम उत्तर है! 🚀
@@ -9,6 +13,17 @@
 🌐 **आधिकारिक वेबसाइट**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (नया)
+- **AI Auto Group Naming**: नए खाली tab groups को emoji + short label अपने आप मिलता है।
+- **AI Tab Cleanup Suggestions**: 🧹 button, AI बताता है कि कौन से tabs आप बंद कर सकते हैं।
+- **AI Hover Summary**: किसी tab पर 2s hover करें → एक वाक्य summary।
+- **AI Reading List Summary Memory**: जोड़ने पर AI summarize करता है, local में store, offline preview।
+- **Ask AI Natural-Language Search (⌘K)**: एक वाक्य से tabs / bookmarks / reading list search।
+- **Workspaces**: tab bundles को named workspaces में save, hibernate-restore, metadata sync।
+- **Command Palette (⌘K / Ctrl+K)**: unified search + actions overlay।
+- **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup।
+- **Zero config, No API key**: सारा AI Chrome के built-in Gemini Nano पर चलता है।
 
 ## 🔥 मुख्य विशेषताएं
 

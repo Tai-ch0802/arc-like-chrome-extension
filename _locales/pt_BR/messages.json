@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Uma extensão do Chrome que imita as guias verticais do navegador Arc.",
+    "message": "Barra lateral estilo Arc — abas, favoritos, lista de leitura unificados + IA local (nomeação de grupos, limpeza, resumo, busca NL), Workspaces, paleta ⌘K. Sem chave de API.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

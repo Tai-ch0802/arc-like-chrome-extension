@@ -1,4 +1,4 @@
-# Arc 風格 Chrome 側邊欄
+# Arc 風格 Chrome 側邊欄 · 你的 Chrome 知識工作台
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,10 +13,21 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-這是一個 Chrome 擴充功能專案，旨在為 Google Chrome 帶來類似 Arc 瀏覽器的垂直側邊欄體驗，提供一個統一且強大的面板來管理分頁和書籤。
+超越 Chrome 原生垂直分頁的 Arc 風格側邊欄：統一管理分頁、書籤與閱讀清單，**零設定本機 AI**（自動命名群組、分頁清理建議、滑鼠停留摘要、自然語言搜尋），**工作區**（一鍵 hibernate 與 restore 分頁集合，metadata 跨裝置同步），**⌘K 命令面板**，以及 **書籤工具**（多標籤、重複偵測、失效連結清理）—— 全部 100% 在裝置上運算，無需 API key。
 
 ## 🚀 新版本 v1.14.0 更新！
 [![示範影片](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
+
+### 🤖 知識工作台 2026 (新)
+- **AI 自動命名群組**：建立空白分頁群組時，Gemini Nano 自動產生 Emoji + 簡短標題。
+- **AI 分頁清理建議**：🧹 按鈕讓 AI 告訴你哪些分頁可以安全關閉，附簡短理由。
+- **AI 滑鼠停留摘要**：滑鼠停留分頁 2 秒，顯示頁面一句話摘要。
+- **AI 閱讀清單摘要記憶**：加入閱讀清單時 AI 摘要一次並存本地，之後即可離線預覽。
+- **Ask AI 自然語言搜尋** (⌘K)：用一句話搜尋 tabs / bookmarks / reading list（如「上週看的 React 文章」）。
+- **工作區**：把分頁綁成工作區，一鍵 hibernate 與 restore，metadata 跨裝置同步。
+- **命令面板** (⌘K / Ctrl+K)：Linear / Raycast 風格的統一搜尋 + 動作入口。
+- **書籤工具**：🛠️ 面板含多標籤、重複偵測、失效連結清理。
+- **零設定，免 API Key**：所有 AI 跑在 Chrome 內建 Gemini Nano，所有資料留在你的裝置。
 
 ### ⚡️ 功能特點
 - **自訂背景圖片**：支援透過上傳圖片或 URL 設定側邊欄背景，並可調整透明與模糊度。

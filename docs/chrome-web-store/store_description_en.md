@@ -1,7 +1,31 @@
-# Arc-like Vertical Tabs & Bookmarks - Transform Chrome into a Productivity Powerhouse
+# Arc-like Vertical Tabs & Bookmarks · Your Knowledge Workspace for Chrome
+
+🔒 **100% local** · 🔑 **Zero API key** · 🤖 **Built-in Gemini Nano AI**
+
+Chrome's native vertical tabs (2025) only show your tabs vertically. **This is a full knowledge workspace**: unified tabs + bookmarks + reading list, AI-powered (auto group naming, tab cleanup, hover summaries, natural-language search), Workspaces for hibernate-and-restore tab bundles synced across devices, a ⌘K Command Palette, and Bookmark Tools for tagging, deduping, and dead-link cleanup — all on-device, no API key required.
 
 Tired of getting lost in dozens of cluttered tabs? Craving the sleek, vertical tab experience of the Arc browser but can't leave the Chrome ecosystem?
 **Arc-like Vertical Tabs & Bookmarks** is your ultimate answer! 🚀
+
+## 🆚 Why not just Chrome's native vertical tabs?
+
+| Feature | Native Vertical Tabs | This Extension |
+| :--- | :---: | :---: |
+| Vertical tab list, tab groups | ✅ | ✅ |
+| Bookmarks in the same panel | ❌ | ✅ |
+| Reading List integrated | ❌ | ✅ |
+| RSS subscriptions | ❌ | ✅ |
+| Cross-window tab view | ❌ | ✅ |
+| **Workspaces (hibernate + restore, cross-device)** | ❌ | ✅ |
+| **AI Auto Group Naming** | ❌ | ✅ Local AI |
+| **AI Tab Cleanup Suggestions** | ❌ | ✅ Local AI |
+| **AI Hover Summary** | ❌ | ✅ Local AI |
+| **Ask AI Find (natural-language search)** | ❌ | ✅ Local AI |
+| **Bookmark Tools** (tags / dedupe / dead-link) | ❌ | ✅ |
+| **Command Palette (⌘K)** | ❌ | ✅ |
+| **Custom theme + background image** | ❌ | ✅ |
+| API key required | N/A | ❌ Zero |
+| 100% local & offline | ✅ | ✅ |
 
 We've completely reimagined Chrome, introducing a modern side panel that unifies **Vertical Tabs**, **Tab Groups**, and **Bookmark Management**. Say goodbye to the traditional horizontal tab bar and regain control of your browser. Experience focus and efficiency like never before.
 
@@ -11,6 +35,17 @@ We've completely reimagined Chrome, introducing a modern side panel that unifies
 ---
 
 ## 🔥 Key Features
+
+### 🤖 Knowledge Workspace 2026 (new)
+- **AI Auto Group Naming**: New empty tab groups get an emoji + short label automatically (Gemini Nano).
+- **AI Tab Cleanup Suggestions**: 🧹 button — AI tells you which tabs you can probably close, with short reasons.
+- **AI Hover Summary**: Hover any tab 2s for a one-sentence page summary.
+- **AI Reading List Summary Memory**: Added to Reading List? AI summarizes once and stores locally — preview later, even offline.
+- **Ask AI to Find (⌘K)**: Natural-language search across tabs, bookmarks, and reading list — "the React Hooks article I read last week" actually works.
+- **Workspaces**: Bundle tabs as named workspaces, hibernate-and-restore one-click, metadata sync across devices.
+- **Command Palette (⌘K / Ctrl+K)**: Linear/Raycast-style unified search + actions overlay.
+- **Bookmark Tools**: 🛠️ for multi-tag, duplicate finder, dead-link checker.
+- **Zero Config, No API Key**: All AI runs on Chrome's built-in Gemini Nano. Nothing leaves your machine.
 
 ### 🔗 Exclusive Innovation: Linked Tabs
 This is our most powerful feature! When you open a bookmark from the sidebar, we automatically create a **"Link"**.

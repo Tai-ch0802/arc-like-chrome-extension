@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "ส่วนขยายของ Chrome ที่เลียนแบบแท็บแนวตั้งของเบราว์เซอร์ Arc",
+    "message": "Sidebar สไตล์ Arc — tabs, bookmarks, reading list ในที่เดียว + AI ในเครื่อง (ตั้งชื่อกลุ่ม, cleanup, สรุป, NL search), Workspaces, ⌘K palette. ไม่ต้องใช้ API key",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

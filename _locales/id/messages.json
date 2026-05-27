@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Ekstensi Chrome yang meniru tab vertikal dari peramban Arc.",
+    "message": "Sidebar bergaya Arc — tabs, bookmarks, reading list dalam satu panel + AI lokal (penamaan grup, cleanup, ringkasan, NL search), Workspaces, ⌘K palette. Tanpa API key.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

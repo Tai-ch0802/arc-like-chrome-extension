@@ -1,4 +1,4 @@
-# आर्क-स्टाइल क्रोम साइडबार
+# आर्क-स्टाइल क्रोम साइडबार · Chrome के लिए आपका Knowledge Workspace
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-यह एक क्रोम एक्सटेंशन प्रोजेक्ट है जिसका उद्देश्य Google क्रोम में आर्क ब्राउज़र जैसा वर्टिकल साइडबार अनुभव लाना है, जो टैब और बुकमार्क प्रबंधित करने के लिए एक एकीकृत और शक्तिशाली पैनल प्रदान करता है।
+Chrome के native vertical tabs से कहीं आगे जाने वाला Arc-style sidebar: tabs + bookmarks + reading list एक साथ, **zero-config local AI** (group auto-name, tab cleanup सुझाव, hover summary, natural-language search), **Workspaces** (tab bundles को hibernate और restore करें, devices के बीच metadata sync), **⌘K Command Palette**, और **Bookmark Tools** (tags, dedupe, dead-link cleanup) — सब कुछ 100% device पर, कोई API key नहीं।
 
 ## 🚀 नया रिलीज़ v1.14.0 अपडेट! 
 [![डेमो वीडियो](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

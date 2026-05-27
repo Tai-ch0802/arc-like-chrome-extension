@@ -1,4 +1,8 @@
-# Tab Vertikal & Bookmark ala Arc - Ubah Chrome Menjadi Pusat Produktivitas
+# Tab Vertikal & Bookmark ala Arc - Ubah Chrome Menjadi Pusat Produktivitas · Knowledge Workspace Anda untuk Chrome
+
+🔒 **100% lokal** · 🔑 **Tanpa API key** · 🤖 **Gemini Nano AI bawaan**
+
+Vertical tabs bawaan Chrome (2025) hanya menampilkan tab secara vertikal. **Ini adalah knowledge workspace lengkap**: tabs + bookmarks + reading list disatukan, AI (penamaan grup otomatis, cleanup tab, ringkasan hover, pencarian bahasa natural), Workspaces hibernate-restore satu klik sinkron antar device, Command Palette ⌘K, Bookmark Tools (tags, dedupe, dead-link) — semuanya di device, tanpa API key.
 
 Bosan tersesat dalam puluhan tab yang berantakan? Mendambakan pengalaman tab vertikal yang ramping dari browser Arc tetapi tidak bisa meninggalkan ekosistem Chrome?
 **Arc-like Vertical Tabs & Bookmarks** adalah jawaban utama Anda! 🚀
@@ -9,6 +13,17 @@ Kami telah sepenuhnya membayangkan kembali Chrome, memperkenalkan panel samping 
 🌐 **Situs Web Resmi**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (baru)
+- **AI Auto Group Naming**: Grup tab kosong baru dapat emoji + label pendek otomatis.
+- **AI Tab Cleanup Suggestions**: tombol 🧹, AI menunjukkan tab mana yang bisa ditutup.
+- **AI Hover Summary**: hover tab 2 detik → ringkasan satu kalimat.
+- **AI Reading List Summary Memory**: AI ringkas saat ditambahkan, simpan lokal, baca offline.
+- **Ask AI Natural-Language Search (⌘K)**: satu kalimat untuk mencari tabs / bookmarks / reading list.
+- **Workspaces**: bundel tab bernama, hibernate-restore, metadata sinkron antar device.
+- **Command Palette (⌘K / Ctrl+K)**: pencarian + aksi terpadu.
+- **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup.
+- **Tanpa konfigurasi, tanpa API key**: semua AI berjalan di Gemini Nano bawaan Chrome.
 
 ## 🔥 Fitur Utama
 

@@ -1,4 +1,4 @@
-# แถบข้าง Chrome สไตล์ Arc
+# แถบข้าง Chrome สไตล์ Arc · พื้นที่ทำงานความรู้ของคุณบน Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-นี่คือโครงการส่วนขยายของ Chrome ที่มีเป้าหมายเพื่อนำประสบการณ์แถบข้างแนวตั้งแบบเบราว์เซอร์ Arc มาสู่ Google Chrome โดยให้แผงควบคุมที่รวมศูนย์และทรงพลังสำหรับการจัดการแท็บและบุ๊กมาร์ก
+Sidebar สไตล์ Arc ที่ก้าวข้าม vertical tabs ที่ Chrome มีมาให้: tabs + bookmarks + reading list รวมในที่เดียว, **AI ในเครื่อง zero-config** (ตั้งชื่อกลุ่มอัตโนมัติ, คำแนะนำ tab cleanup, hover summary, natural-language search), **Workspaces** (hibernate & restore tab bundles, ซิงค์ metadata ข้ามอุปกรณ์), **⌘K Command Palette**, และ **Bookmark Tools** (tags, dedupe, dead-link cleanup) — ทั้งหมด 100% บนเครื่อง ไม่ต้องใช้ API key
 
 ## 🚀 อัปเดตเวอร์ชันใหม่ v1.14.0! 
 [![วิดีโอสาธิต](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

@@ -1,4 +1,4 @@
-# Thanh bên Chrome phong cách Arc
+# Thanh bên Chrome phong cách Arc · Không gian làm việc tri thức của bạn cho Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Đây là một dự án tiện ích mở rộng Chrome nhằm mang lại trải nghiệm thanh bên dọc giống trình duyệt Arc cho Google Chrome, cung cấp một bảng điều khiển thống nhất và mạnh mẽ để quản lý các tab và dấu trang (bookmarks).
+Thanh bên phong cách Arc vượt xa vertical tabs có sẵn của Chrome: tabs + bookmarks + reading list tích hợp một chỗ, **AI cục bộ không cần cấu hình** (đặt tên nhóm tự động, gợi ý cleanup tab, hover summary, tìm kiếm ngôn ngữ tự nhiên), **Workspaces** (hibernate & restore bộ tab, đồng bộ metadata giữa các thiết bị), **⌘K Command Palette**, và **Bookmark Tools** (tags, dedupe, dead-link cleanup) — tất cả 100% trên thiết bị, không cần API key.
 
 ## 🚀 Cập nhật phiên bản mới v1.14.0! 
 [![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

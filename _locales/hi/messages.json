@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "एक क्रोम एक्सटेंशन जो आर्क ब्राउज़र के वर्टिकल टैब की नकल करता है।",
+    "message": "Arc-style sidebar — tabs, bookmarks, reading list एक साथ + local AI (group naming, cleanup, summary, NL search), Workspaces, ⌘K palette. कोई API key नहीं।",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

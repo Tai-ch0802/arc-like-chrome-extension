@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Eine Chrome-Erweiterung, die die vertikalen Tabs des Arc-Browsers nachahmt.",
+    "message": "Sidebar im Arc-Stil — vereinheitlichte Tabs, Lesezeichen, Leseliste + lokale KI (Gruppen-Benennung, Cleanup, Zusammenfassung, NL-Suche), Workspaces, ⌘K-Palette. Kein API-Schlüssel.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

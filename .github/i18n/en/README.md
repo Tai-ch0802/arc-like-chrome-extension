@@ -1,4 +1,4 @@
-# Arc-Style Chrome Sidebar
+# Arc-Style Chrome Sidebar · Your Knowledge Workspace for Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,12 +13,23 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](LICENSE)
 
-This is a Chrome extension project that aims to bring an Arc browser-like vertical sidebar experience to Google Chrome, providing a unified and powerful panel for managing tabs and bookmarks.
+An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: unified tabs + bookmarks + reading list, **zero-config local AI** (auto-name groups, tab cleanup suggestions, hover summaries, natural-language search), **Workspaces** (hibernate & restore tab bundles, sync metadata across devices), a **⌘K Command Palette**, and **Bookmark Tools** for tagging, deduping, and dead-link cleanup — all 100% on-device with no API key required.
 
 ## 🚀 New Release v1.14.0 update! 
 [![Demo Video](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
 
-### ⚡️ Features
+### 🤖 Knowledge Workspace 2026 (new)
+- **AI Auto Group Naming**: When you create a new empty tab group, Gemini Nano picks an emoji + short label automatically.
+- **AI Tab Cleanup Suggestions**: 🧹 button asks AI which tabs you can safely close, with short reasons.
+- **AI Hover Summarize**: Hover any tab for 2s to see a one-sentence summary of the page.
+- **AI Reading List Summary Memory**: Pages you add to Reading List get summarized once and stored locally — preview later, even offline.
+- **Ask AI to Find** (⌘K): Natural-language search across tabs, bookmarks, and reading-list entries.
+- **Workspaces**: Save bundles of tabs as named workspaces; one click hibernates current tabs and restores another workspace. Metadata syncs across devices.
+- **Command Palette** (⌘K / Ctrl+K): Unified search + actions overlay, Linear/Raycast-style.
+- **Bookmark Tools**: 🛠️ panel for multi-tag, duplicate finder, and dead-link checker.
+- **Zero Config, No API Key**: All AI runs on Chrome's built-in Gemini Nano. Nothing leaves your machine.
+
+### ⚡️ Established Features
 - **Custom Background Image**: Set your own sidebar background via upload or URL, with adjustable opacity and blur.
 - **Revamped Settings UI**: A cleaner, organized experience with a new collapsible accordion layout.
 - **Custom Theme Colors**: Full control over main background, accent, and text colors.
@@ -101,15 +112,30 @@ Your personal article curation hub, right in the sidebar.
 
 ## 🆚 Why Choose This Extension?
 
-| Feature | This Extension | Native Chrome | Traditional Sidebars |
+Chrome's native vertical tabs (rolled out 2025) handle "show tabs vertically" — that's it. This extension is a full knowledge workspace.
+
+| Feature | This Extension | Chrome Native Vertical Tabs | Traditional 3rd-party Sidebars |
 | :--- | :---: | :---: | :---: |
-| **Vertical Tabs** | ✅ Full Title | ❌ Compressed | ✅ |
+| **Vertical Tabs** | ✅ Full Title | ✅ | ✅ |
 | **Tab Groups** | ✅ Native Sync | ✅ | ⚠️ Partial |
-| **Bookmarks Integration** | ✅ Unified Panel | ❌ Separate Manager | ❌ Separate |
-| **Linked Tabs** | ✅ Indync | ❌ | ❌ |
-| **Reading List & RSS** | ✅ Built-in | ⚠️ Basic | ❌ |
+| **Bookmarks Integration** | ✅ Unified Panel | ❌ | ❌ |
+| **Reading List in panel** | ✅ Built-in | ❌ | ❌ |
+| **RSS Subscriptions** | ✅ | ❌ | ❌ |
 | **Cross-Window Search** | ✅ | ❌ | ⚠️ Varies |
-| **Performance** | ⚡️ Dynamic Rendering | N/A | 🐢 Virtual Scroll |
+| **Workspaces (hibernate + restore)** | ✅ Cross-device | ❌ | ⚠️ Varies |
+| **Linked Tabs** (bookmark ↔ open tab) | ✅ | ❌ | ❌ |
+| **AI Auto Group Naming** | ✅ Local Gemini Nano | ❌ | ❌ |
+| **AI Tab Cleanup Suggestions** | ✅ Local Gemini Nano | ❌ | ❌ |
+| **AI Hover Page Summary** | ✅ Local Gemini Nano | ❌ | ❌ |
+| **Ask AI Find (NL search)** | ✅ Local Gemini Nano | ❌ | ❌ |
+| **Bookmark Tools** (tags / dedupe / dead-link) | ✅ | ❌ | ❌ |
+| **Command Palette** (⌘K) | ✅ | ❌ | ⚠️ Some |
+| **Custom Theme + Background** | ✅ | ❌ | ⚠️ Varies |
+| **Performance for 1000+ bookmarks** | ⚡️ Dynamic Rendering | N/A | 🐢 Virtual Scroll |
+| **API Key Required** | ❌ Zero config | N/A | ⚠️ Many require |
+| **100% Local & Offline** | ✅ | ✅ | ⚠️ Varies |
+
+→ [Full comparison & why native isn't enough](https://sidebar-for-tabs-bookmarks.taislife.work/why-not-native/)
 
 ---
 

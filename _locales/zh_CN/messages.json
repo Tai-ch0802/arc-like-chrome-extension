@@ -4,7 +4,7 @@
     "description": "扩展程序的名称。"
   },
   "extensionDescription": {
-    "message": "一个模仿 Arc 浏览器垂直标签页的 Chrome 扩展程序。",
+    "message": "Arc 风格侧边栏 — 统一管理标签页、书签、阅读清单 + 本机 AI（群组命名、清理、摘要、NL 搜索）、Workspaces、⌘K 命令面板。免 API key。",
     "description": "扩展程序的描述。"
   },
   "searchPlaceholder": {

@@ -1,4 +1,4 @@
-# ArcスタイルのChromeサイドバー
+# ArcスタイルのChromeサイドバー · あなたの Chrome ナレッジワークスペース
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-これは、Google ChromeにArcブラウザのような垂直サイドバー体験をもたらすことを目的としたChrome拡張機能プロジェクトです。タブとブックマークを管理するための統一された強力なパネルを提供します。
+Chrome ネイティブの垂直タブをはるかに超える Arc スタイルのサイドバー：タブ・ブックマーク・リーディングリストを統合し、**ゼロ設定のローカル AI**（グループ自動命名・タブクリーンアップ提案・ホバー要約・自然言語検索）、**Workspaces**（タブ集合のハイバネート・復元、メタデータをデバイス間で同期）、**⌘K コマンドパレット**、そして **ブックマークツール**（タグ・重複検出・リンク切れチェック）—— すべて 100% デバイス上で動作、API キー不要。
 
 ## 🚀 新リリース v1.14.0 アップデート！
 [![デモビデオ](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

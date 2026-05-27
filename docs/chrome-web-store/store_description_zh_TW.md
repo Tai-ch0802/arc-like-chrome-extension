@@ -1,4 +1,8 @@
-# Arc-like Vertical Tabs & Bookmarks - 讓 Chrome 變身生產力神器
+# Arc-like Vertical Tabs & Bookmarks - 讓 Chrome 變身生產力神器 · 你的 Chrome 知識工作台
+
+🔒 **100% 本機** · 🔑 **零 API key** · 🤖 **內建 Gemini Nano AI**
+
+Chrome 原生垂直分頁（2025）只把分頁改成垂直顯示。**這是一個完整的知識工作台**：統一管理分頁 + 書籤 + 閱讀清單，AI 加持（自動命名群組、分頁清理、滑鼠停留摘要、自然語言搜尋），Workspaces 一鍵 hibernate-restore 跨裝置同步，⌘K 命令面板，Bookmark Tools（標籤、重複偵測、失效連結）—— 全部在本機運算，無需 API key。
 
 厭倦了在數十個雜亂無章的分頁中迷失方向嗎？渴望 Arc 瀏覽器那般流暢優雅的垂直分頁體驗，卻又離不開 Chrome 的生態？
 **Arc-like Vertical Tabs & Bookmarks** 是您的終極解答！🚀
@@ -9,6 +13,17 @@
 🌐 **官方網站**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (新)
+- **AI 自動命名群組**: 新建空白分頁群組時，Gemini Nano 自動產生 Emoji + 簡短標題。
+- **AI 分頁清理建議**: 🧹 按鈕讓 AI 告訴你哪些分頁可以安全關閉。
+- **AI 滑鼠停留摘要**: 停留分頁 2 秒顯示頁面一句話摘要。
+- **AI 閱讀清單摘要記憶**: 加入閱讀清單時 AI 摘要一次並存本地，離線可看。
+- **Ask AI 自然語言搜尋 (⌘K)**: 用一句話搜尋 tabs / bookmarks / reading list。
+- **Workspaces**: 把分頁綁成工作區，一鍵 hibernate 與 restore，metadata 跨裝置同步。
+- **Command Palette (⌘K / Ctrl+K)**: 統一搜尋 + 動作入口。
+- **Bookmark Tools**: 🛠️ 多標籤 / 重複偵測 / 失效連結清理。
+- **零設定，免 API Key**: 所有 AI 跑在 Chrome 內建 Gemini Nano。
 
 ## 🔥 核心亮點 (Key Features)
 
