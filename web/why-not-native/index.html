@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why not just Chrome's native vertical tabs? | Arc-like Sidebar</title>
+    <meta name="description"
+        content="Chrome's native vertical tabs (2025) only show your tabs vertically. Arc-like Sidebar is a full knowledge workspace: unified bookmarks + reading list, local AI, Workspaces, ⌘K Command Palette — all on-device with no API key.">
+
+    <meta name="keywords"
+        content="Chrome native vertical tabs, Arc-like sidebar, knowledge workspace, AI tab manager, Gemini Nano, Chrome extension, workspaces, command palette">
+    <meta name="author" content="Tai">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://sidebar-for-tabs-bookmarks.taislife.work/why-not-native/">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Why Arc-like Sidebar instead of Chrome's native vertical tabs",
+      "description": "Comparison and case for upgrading from Chrome's native vertical tabs to the Arc-like Sidebar knowledge workspace.",
+      "url": "https://sidebar-for-tabs-bookmarks.taislife.work/why-not-native/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Arc-like Sidebar",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://sidebar-for-tabs-bookmarks.taislife.work/favicon-32x32.png"
+        }
+      }
+    }
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="../apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/why-not-native/">
+    <meta property="og:title" content="Why not just Chrome's native vertical tabs?">
+    <meta property="og:description"
+        content="Native vertical tabs show your tabs vertically — that's it. Arc-like Sidebar is a full knowledge workspace.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .wnn-hero {
+            padding: 6rem 1.5rem 2rem;
+            text-align: center;
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        .wnn-hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(120deg, #fff, #67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .wnn-hero p.lead {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2rem;
+        }
+
+        .wnn-section {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .wnn-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .wnn-table-wrap {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .wnn-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .wnn-table thead {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .wnn-table th,
+        .wnn-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.92);
+            text-align: left;
+        }
+
+        .wnn-table th:nth-child(n+2),
+        .wnn-table td:nth-child(n+2) {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .wnn-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .wnn-table .winning {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .wnn-cta {
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .wnn-cta a {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 8px;
+            background: linear-gradient(120deg, #67e8f9, #818cf8);
+            color: #0a0e27;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .wnn-cta a:hover {
+            filter: brightness(1.1);
+        }
+
+        .wnn-back {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .wnn-back a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="wnn-hero">
+        <h1>Why not just Chrome's native vertical tabs?</h1>
+        <p class="lead">
+            Chrome rolled out native vertical tabs in 2025. They show your tabs vertically — and that's the whole story.
+            Arc-like Sidebar is a <strong>full knowledge workspace</strong>: AI, Workspaces, bookmarks, reading list,
+            and a ⌘K Command Palette — all 100% on-device, no API key.
+        </p>
+    </header>
+
+    <section class="wnn-section">
+        <h2>Feature comparison</h2>
+        <div class="wnn-table-wrap">
+            <table class="wnn-table">
+                <thead>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Chrome Native</th>
+                        <th>Arc-like Sidebar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Vertical tab list</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Tab groups</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Bookmarks in the same panel</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>Reading List integrated</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>RSS subscriptions</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>Cross-window tab view</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>Workspaces (hibernate + restore, cross-device)</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>AI auto group naming</td><td>❌</td><td class="winning">✅ Local Gemini Nano</td></tr>
+                    <tr><td>AI tab cleanup suggestions</td><td>❌</td><td class="winning">✅ Local Gemini Nano</td></tr>
+                    <tr><td>AI hover summary</td><td>❌</td><td class="winning">✅ Local Gemini Nano</td></tr>
+                    <tr><td>AI Reading List summary memory</td><td>❌</td><td class="winning">✅ Local Gemini Nano</td></tr>
+                    <tr><td>Ask AI (natural-language find)</td><td>❌</td><td class="winning">✅ Local Gemini Nano</td></tr>
+                    <tr><td>Bookmark Tools (tags / dedupe / dead-link)</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>Command Palette (⌘K)</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>Custom theme + background image</td><td>❌</td><td class="winning">✅</td></tr>
+                    <tr><td>Performance with 1000+ bookmarks</td><td>N/A</td><td class="winning">⚡️ Dynamic Rendering</td></tr>
+                    <tr><td>API key required</td><td>N/A</td><td class="winning">❌ None</td></tr>
+                    <tr><td>100% local & offline</td><td>✅</td><td>✅</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="wnn-section">
+        <h2>Three things native vertical tabs can't do</h2>
+        <ol style="color: rgba(255,255,255,0.92); line-height: 1.8;">
+            <li><strong>Unify your information sources.</strong> Native vertical tabs are tabs only.
+                Arc-like Sidebar puts tabs, bookmarks, and your reading list (with optional RSS subscriptions)
+                in one panel with one search, so you stop alt-tabbing between Chrome's separate bookmark / reading
+                managers.</li>
+            <li><strong>Hibernate-and-restore Workspaces.</strong> Save a bundle of tabs as a named workspace,
+                one click hibernates everything and opens another workspace's saved tabs. Workspace metadata
+                syncs across devices (snapshots stay on-device for performance + privacy).</li>
+            <li><strong>Free, zero-config local AI.</strong> Chrome ships Gemini Nano in 2025+; this extension
+                puts it to work — auto-name new tab groups, suggest tabs to close, hover a tab for a one-sentence
+                page summary, or ask the palette in natural language: "the React Hooks article I read last week."
+                No API key, nothing leaves your machine.</li>
+        </ol>
+    </section>
+
+    <div class="wnn-cta">
+        <a href="https://chromewebstore.google.com/detail/beoonblekmppafnjppedgpgfngghebji?utm_source=why-not-native">
+            Install from the Chrome Web Store
+        </a>
+    </div>
+
+    <div class="wnn-back">
+        <a href="../">← Back to home</a>
+    </div>
+</body>
+
+</html>
