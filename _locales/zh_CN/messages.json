@@ -794,6 +794,15 @@
   "workspaceSwitchConfirmMessage": {
     "message": "切换到「{ws}」会关闭这个窗口当前的 {n} 个标签页，并打开已保存的标签页。"
   },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "切换到「{ws}」— 当前的 {n} 个标签页尚未存于任何工作区，将先自动保存为「Untitled」工作区再切换。"
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "切换失败"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "无法切换工作区，当前的标签页未被更改。"
+  },
   "workspaceSwitchConfirmBtn": {
     "message": "切换"
   },

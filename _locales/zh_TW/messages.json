@@ -794,6 +794,15 @@
   "workspaceSwitchConfirmMessage": {
     "message": "切換到「{ws}」會關閉這個視窗目前的 {n} 個分頁，並開啟已儲存的分頁。"
   },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "切換到「{ws}」— 目前的 {n} 個分頁尚未存於任何工作區，將先自動儲存為「Untitled」工作區再切換。"
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "切換失敗"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "無法切換工作區，目前的分頁未被變更。"
+  },
   "workspaceSwitchConfirmBtn": {
     "message": "切換"
   },

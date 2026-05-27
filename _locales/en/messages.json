@@ -797,6 +797,15 @@
   "workspaceSwitchConfirmMessage": {
     "message": "Switching to \"{ws}\" will close {n} tab(s) in this window and open the saved tabs."
   },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Switching to \"{ws}\" — your current {n} tab(s) aren't in any workspace yet. They will be auto-saved to a new \"Untitled\" workspace before the switch."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Switch failed"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Could not switch workspace. Your current tabs were not changed."
+  },
   "workspaceSwitchConfirmBtn": {
     "message": "Switch"
   },
