@@ -829,5 +829,68 @@
   },
   "workspaceCreatePromptTitle": {
     "message": "Name this workspace"
+  },
+  "bmToolsTitle": {
+    "message": "Bookmark Tools"
+  },
+  "bmToolsTagsTab": {
+    "message": "Tags"
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Duplicates"
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Dead Links"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "No tags yet."
+  },
+  "bmToolsCreateTag": {
+    "message": "+ New tag"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "New tag name"
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Delete tag"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Delete tag \"{t}\"? Bookmarks will not be deleted, only the tag binding."
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "No duplicate bookmarks. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Found {n} duplicate group(s). Uncheck the copy you want to keep in each group."
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Remove selected"
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Remove bookmarks"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "Remove {n} bookmark(s)? This cannot be undone."
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Scan tries to reach every http(s) bookmark via HEAD. Only network-unreachable links are flagged (HTTP 404 cannot be detected without per-origin CORS, see notes)."
+  },
+  "bmToolsStartScan": {
+    "message": "Start scan"
+  },
+  "bmToolsNoBookmarks": {
+    "message": "No bookmarks to scan."
+  },
+  "bmToolsScanProgress": {
+    "message": "Checking… {done}/{total}"
+  },
+  "bmToolsScanDone": {
+    "message": "Scan complete: {n} unreachable link(s)."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Remove checked unreachable bookmarks"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Open Bookmark Tools"
   }
 }
