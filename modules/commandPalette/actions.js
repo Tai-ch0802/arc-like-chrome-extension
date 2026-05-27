@@ -1,15 +1,18 @@
 /**
  * Built-in action registry for the Command Palette.
  *
- * Each action exposes an i18n key for its label, an icon, and a handler.
- * Promote actions here only when they are high-value entry points that
- * would otherwise require clicking through a menu — don't mirror every
- * UI button. Most existing sidepanel features remain easier to use via
- * their dedicated button; the palette is for keyboard-driven shortcuts.
+ * Each action exposes an i18n key for its label, an icon, a handler, and an
+ * optional `isVisible()` predicate. Promote actions here only when they are
+ * high-value entry points — don't mirror every UI button.
+ *
+ * isVisible() lets the palette hide actions whose underlying feature the user
+ * has disabled in settings (otherwise the palette would silently bypass the
+ * setting by clicking the hidden button).
  */
+import * as state from '../stateManager.js';
 
 /**
- * @returns {Array<{id: string, type: 'action', icon: string, titleKey: string, handler: () => any}>}
+ * @returns {Array<{id: string, type: 'action', icon: string, titleKey: string, handler: () => any, isVisible?: () => boolean}>}
  */
 export function buildActions() {
     return [
@@ -18,6 +21,7 @@ export function buildActions() {
             type: 'action',
             icon: '✨',
             titleKey: 'cmdPaletteActionSmartGroup',
+            isVisible: () => state.isAiGroupingVisible(),
             handler: () => document.getElementById('ai-group-btn')?.click(),
         },
         {
@@ -25,6 +29,7 @@ export function buildActions() {
             type: 'action',
             icon: '🧹',
             titleKey: 'cmdPaletteActionAiCleanup',
+            isVisible: () => state.isAiCleanupVisible(),
             handler: () => document.getElementById('ai-cleanup-btn')?.click(),
         },
         {
