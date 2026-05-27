@@ -17,6 +17,10 @@ let overlayEl, inputEl, resultsEl;
 let currentResults = [];
 let activeIndex = 0;
 let isOpen = false;
+/** Element to restore focus to when the palette closes. */
+let lastFocusedElement = null;
+/** Monotonic id so a late-arriving stale refresh() doesn't overwrite a newer one. */
+let currentRequestId = 0;
 
 export function initCommandPalette() {
     overlayEl = document.getElementById('command-palette-overlay');
@@ -68,6 +72,7 @@ function toggle() {
 
 export function open() {
     isOpen = true;
+    lastFocusedElement = document.activeElement;
     overlayEl.hidden = false;
     inputEl.value = '';
     inputEl.focus();
@@ -78,16 +83,25 @@ export function close() {
     isOpen = false;
     overlayEl.hidden = true;
     inputEl.value = '';
+    inputEl.removeAttribute('aria-activedescendant');
     resultsEl.innerHTML = '';
     currentResults = [];
     activeIndex = 0;
+    // Restore focus to the element that had it before the palette opened.
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        try { lastFocusedElement.focus(); } catch { /* ignore */ }
+    }
+    lastFocusedElement = null;
 }
 
 const debouncedRefresh = debounce(() => refresh(), 100);
 
 async function refresh() {
+    const myId = ++currentRequestId;
     const query = inputEl.value;
     const groups = await searchAll(query);
+    // Discard stale results — a newer query has already started.
+    if (myId !== currentRequestId) return;
     renderGroups(groups);
 }
 
@@ -97,6 +111,7 @@ function renderGroups(groups) {
     activeIndex = 0;
 
     if (groups.length === 0) {
+        inputEl.removeAttribute('aria-activedescendant');
         const empty = document.createElement('div');
         empty.className = 'cmd-palette-empty';
         empty.textContent = api.getMessage('cmdPaletteEmpty') || 'No results';
@@ -125,7 +140,9 @@ function buildRow(item, index) {
     const row = document.createElement('div');
     row.className = 'cmd-palette-row';
     row.dataset.index = String(index);
+    row.id = `cmd-palette-row-${index}`;
     row.setAttribute('role', 'option');
+    row.setAttribute('aria-selected', 'false');
 
     const icon = document.createElement('span');
     icon.className = 'cmd-palette-icon';
@@ -172,9 +189,17 @@ function buildRow(item, index) {
 function setActive(index) {
     if (currentResults.length === 0) return;
     activeIndex = Math.max(0, Math.min(currentResults.length - 1, index));
-    currentResults.forEach((r, i) => r.row.classList.toggle('active', i === activeIndex));
+    currentResults.forEach((r, i) => {
+        const isActive = i === activeIndex;
+        r.row.classList.toggle('active', isActive);
+        r.row.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
     const active = currentResults[activeIndex];
-    if (active) active.row.scrollIntoView({ block: 'nearest' });
+    if (active) {
+        // Point screen readers to the active row even though focus stays in input.
+        inputEl.setAttribute('aria-activedescendant', active.row.id);
+        active.row.scrollIntoView({ block: 'nearest' });
+    }
 }
 
 function moveActive(delta) {

@@ -6,6 +6,7 @@
  * Empty groups are filtered out before returning.
  */
 import * as state from '../stateManager.js';
+import * as api from '../apiManager.js';
 import * as readingListManager from '../readingListManager.js';
 import { buildActions } from './actions.js';
 
@@ -91,12 +92,15 @@ async function getReadingListResults(q) {
 }
 
 function getActionResults(q) {
-    const actions = buildActions();
-    if (!q) return actions; // show all actions when query is empty
-    // Action titles are i18n keys, so match against the key for now.
-    // Renderer resolves the display text; for ranking purposes the key string
-    // is close enough (e.g., 'cmdPaletteActionSmartGroup' contains 'smart').
-    return scoreFilter(actions, q, a => a.titleKey || '');
+    // Filter by per-action visibility predicate so disabled features don't leak
+    // through the palette (the underlying button is just display:none, so a
+    // bare .click() would still trigger the action without this guard).
+    const actions = buildActions().filter(a => !a.isVisible || a.isVisible());
+    if (!q) return actions; // show all visible actions when query is empty
+    // Match against the resolved (localized) label so e.g. Chinese users
+    // searching for "清理" can find "AI 分頁清理" — the i18n key alone
+    // ('cmdPaletteActionAiCleanup') would never match.
+    return scoreFilter(actions, q, a => api.getMessage(a.titleKey) || a.titleKey || '');
 }
 
 /**
