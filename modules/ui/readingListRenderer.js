@@ -6,6 +6,7 @@ import * as readingListManager from '../readingListManager.js';
 import * as modalManager from '../modalManager.js';
 import { CHECK_ICON_SVG, CLOCK_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
 import { reconcileDOM } from '../utils/domUtils.js';
+import { getSummary as readSummary } from '../readingList/summaryStore.js';
 
 /**
  * Creates a reusable empty state element for the reading list.
@@ -388,7 +389,16 @@ function createReadingListItem(entry, isNew = false) {
     item.dataset.url = entry.url;
     item.dataset.title = entry.title;
     item.dataset.hasBeenRead = entry.hasBeenRead.toString();
-    item.title = `${entry.title}\n${entry.url}`;
+    // If we previously summarized this entry (Phase 8 summary memory),
+    // surface it in the hover tooltip so the user can preview content
+    // offline / after the page is gone. v1: tooltip only; inline subtitle
+    // would require row-layout changes covered by Phase 8 follow-up.
+    const summaryEntry = readSummary(entry.url);
+    const summaryText = summaryEntry ? summaryEntry.summary : '';
+    item.title = summaryText
+        ? `${entry.title}\n${entry.url}\n\n${summaryText}`
+        : `${entry.title}\n${entry.url}`;
+    if (summaryText) item.classList.add('has-summary');
 
     // Favicon
     const favicon = document.createElement('img');

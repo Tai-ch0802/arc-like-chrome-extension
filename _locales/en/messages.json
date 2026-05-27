@@ -904,5 +904,29 @@
   },
   "bmToolsKeepFirstNote": {
     "message": "Note: in groups where every copy is checked, the first one is automatically kept."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Remember AI summary for Reading List items"
+  },
+  "rlSummaryDescription": {
+    "message": "When you add a page that's open in a tab to your Reading List, AI summarizes it once and stores the result locally so you can preview it later — even offline. Requires the Summarizer model to be already available."
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Ask AI to find tabs or bookmarks"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Ask AI: find tabs or bookmarks"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Asking AI…"
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "AI suggestions"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "AI model is not downloaded yet. Trigger ✨ Smart Group first to download, then try again."
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI found no good matches."
   }
 }

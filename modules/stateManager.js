@@ -260,6 +260,26 @@ export async function setHoverSummarizeEnabled(enabled) {
   await setStorage('sync', { [HOVER_SUMMARIZE_KEY]: enabled });
 }
 
+// --- Reading List Summary Memory State ---
+
+const READING_LIST_SUMMARY_KEY = 'readingListSummaryEnabled';
+let readingListSummaryEnabled = true; // Default to enabled
+
+export async function initReadingListSummary() {
+  const result = await getStorage('sync', [READING_LIST_SUMMARY_KEY]);
+  readingListSummaryEnabled = result[READING_LIST_SUMMARY_KEY] !== false;
+  return readingListSummaryEnabled;
+}
+
+export function isReadingListSummaryEnabled() {
+  return readingListSummaryEnabled;
+}
+
+export async function setReadingListSummaryEnabled(enabled) {
+  readingListSummaryEnabled = enabled;
+  await setStorage('sync', { [READING_LIST_SUMMARY_KEY]: enabled });
+}
+
 // --- UI Language Override State ---
 
 const UI_LANGUAGE_KEY = 'uiLanguage';

@@ -901,5 +901,29 @@
   },
   "bmToolsKeepFirstNote": {
     "message": "提示：當某組重複內所有複本都被勾選時，會自動保留第一份。"
+  },
+  "rlSummaryToggleLabel": {
+    "message": "為閱讀清單項目記住 AI 摘要"
+  },
+  "rlSummaryDescription": {
+    "message": "當你將一個目前已開啟分頁的頁面加入閱讀清單時，AI 會摘要一次並把結果存在本地，之後即可離線預覽。需要 Summarizer 模型已下載完成。"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "問 AI 幫我找分頁或書籤"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "問 AI：找出分頁或書籤"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "AI 思考中…"
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "AI 建議"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "AI 模型尚未下載。請先點 ✨ 智慧整理 觸發下載後再試。"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI 找不到合適的結果。"
   }
 }

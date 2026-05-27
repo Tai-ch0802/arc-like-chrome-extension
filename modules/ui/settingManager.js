@@ -238,6 +238,16 @@ async function buildSettingsDialogContent(selectedTheme) {
 
                 <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
 
+                <label class="settings-toggle">
+                    <input type="checkbox" id="rl-summary-toggle" ${state.isReadingListSummaryEnabled() ? 'checked' : ''}>
+                    <span class="toggle-label">${api.getMessage('rlSummaryToggleLabel')}</span>
+                </label>
+                <div class="settings-subsection" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    <p>${api.getMessage('rlSummaryDescription')}</p>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 12px 0;">
+
                 <!-- AI Model Status -->
                 <div class="ai-model-status-section">
                     <div class="ai-model-status-header">Gemini Nano</div>
@@ -427,6 +437,14 @@ function bindSettingsEventHandlers(modalContentElement) {
     if (hoverSummarizeToggle) {
         hoverSummarizeToggle.addEventListener('change', async (e) => {
             await state.setHoverSummarizeEnabled(e.target.checked);
+        });
+    }
+
+    // Reading List Summary memory toggle handler
+    const rlSummaryToggle = modalContentElement.querySelector('#rl-summary-toggle');
+    if (rlSummaryToggle) {
+        rlSummaryToggle.addEventListener('change', async (e) => {
+            await state.setReadingListSummaryEnabled(e.target.checked);
         });
     }
 

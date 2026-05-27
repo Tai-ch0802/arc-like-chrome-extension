@@ -84,5 +84,15 @@ export function buildActions() {
             titleKey: 'cmdPaletteActionBookmarkTools',
             handler: () => document.getElementById('bookmark-tools-btn')?.click(),
         },
+        {
+            id: 'action-ask-ai-search',
+            type: 'action',
+            icon: '🤖',
+            titleKey: 'cmdPaletteActionAskAi',
+            handler: async () => {
+                const { openAskAiDialog } = await import('./nlSearch.js');
+                await openAskAiDialog();
+            },
+        },
     ];
 }
