@@ -176,9 +176,14 @@ async function initialize() {
     // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't watching).
     tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
         .catch(err => console.warn('[tags] prune failed:', err));
-    document.getElementById('bookmark-tools-btn')?.addEventListener('click', () => {
-        openBookmarkToolsDialog('tags');
-    });
+    const bookmarkToolsBtn = document.getElementById('bookmark-tools-btn');
+    if (bookmarkToolsBtn) {
+        // Mirror the workspace-manage-btn pattern: resolve aria-label at runtime
+        // instead of hard-coding English in the markup so it tracks UI language.
+        const bmToolsLabel = api.getMessage('bmToolsTitle') || 'Bookmark Tools';
+        bookmarkToolsBtn.setAttribute('aria-label', bmToolsLabel);
+        bookmarkToolsBtn.addEventListener('click', () => openBookmarkToolsDialog('tags'));
+    }
     initCommandPalette(); // Cmd+K / Ctrl+K unified search & actions overlay
 
     // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,

@@ -3374,3 +3374,11 @@ mark.url-match {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.bm-tools__warning {
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    padding: 6px 8px;
+    border-radius: 4px;
+    background: rgba(217, 48, 37, 0.08);
+}

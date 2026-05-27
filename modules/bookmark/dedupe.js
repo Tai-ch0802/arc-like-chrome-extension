@@ -48,22 +48,10 @@ export function findDuplicates() {
     return result;
 }
 
-/**
- * Bulk-delete the given bookmark ids via chrome.bookmarks.remove.
- * Returns the count successfully removed.
- */
-export async function bulkRemove(bookmarkIds) {
-    let removed = 0;
-    for (const id of bookmarkIds) {
-        try {
-            await chrome.bookmarks.remove(id);
-            removed++;
-        } catch (err) {
-            console.warn('[dedupe] failed to remove', id, err);
-        }
-    }
-    return removed;
-}
+// bulkRemove moved to ./bookmarkUtils.js so the dead-link cleanup path doesn't
+// reach into dedupe for an unrelated concern. Re-exported here for callers that
+// already import from dedupe.
+export { bulkRemove } from './bookmarkUtils.js';
 
 function normalizeUrl(rawUrl) {
     if (!rawUrl || typeof rawUrl !== 'string') return '';

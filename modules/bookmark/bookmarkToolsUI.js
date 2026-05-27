@@ -15,6 +15,7 @@ import * as state from '../stateManager.js';
 import * as tagManager from './tagManager.js';
 import * as dedupe from './dedupe.js';
 import * as deadLink from './deadLinkChecker.js';
+import { bulkRemove } from './bookmarkUtils.js';
 
 const TABS = ['tags', 'duplicates', 'deadLinks'];
 
@@ -207,15 +208,26 @@ function renderDuplicatesView(root) {
             for (const cb of safe) idsToRemove.push(cb.dataset.bookmarkId);
         }
         if (idsToRemove.length === 0) return;
+        // Surface the "auto-keep first when all checked" safety rail in the
+        // confirm message so the user knows why a fully-checked group still
+        // leaves one copy behind.
+        const anyAllChecked = Array.from(groupCheckboxes.values())
+            .some(cbList => cbList.every(cb => cb.checked));
+        const baseMessage = api.getMessage('bmToolsConfirmRemoveMessage')
+            || 'Remove {n} bookmark(s)? This cannot be undone.';
+        let message = baseMessage.replace('{n}', String(idsToRemove.length));
+        if (anyAllChecked) {
+            message += '\n\n' + (api.getMessage('bmToolsKeepFirstNote')
+                || 'Note: in groups where every copy is checked, the first one is automatically kept.');
+        }
         const ok = await modal.showConfirm({
             title: api.getMessage('bmToolsConfirmRemoveTitle') || 'Remove duplicates',
-            message: (api.getMessage('bmToolsConfirmRemoveMessage') || 'Remove {n} duplicate bookmark(s)? This cannot be undone.')
-                .replace('{n}', String(idsToRemove.length)),
+            message,
             confirmButtonText: api.getMessage('workspaceDelete') || 'Delete',
             confirmButtonClass: 'danger',
         });
         if (!ok) return;
-        await dedupe.bulkRemove(idsToRemove);
+        await bulkRemove(idsToRemove);
         document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
         // Re-render the duplicates view to show the leftover (possibly none).
         root.innerHTML = '';
@@ -233,9 +245,20 @@ function renderDeadLinksView(root) {
         || 'Scan tries to reach every http(s) bookmark via HEAD. Only network-unreachable links are flagged (not HTTP 404 — see notes).';
     root.appendChild(intro);
 
+    const privacy = document.createElement('p');
+    privacy.className = 'bm-tools__intro';
+    privacy.textContent = api.getMessage('bmToolsPrivacyNote')
+        || 'Note: scanning sends a HEAD request to each bookmark\'s host.';
+    root.appendChild(privacy);
+
     const status = document.createElement('div');
     status.className = 'bm-tools__status';
     root.appendChild(status);
+
+    const warning = document.createElement('div');
+    warning.className = 'bm-tools__status bm-tools__warning';
+    warning.style.display = 'none';
+    root.appendChild(warning);
 
     const list = document.createElement('div');
     list.className = 'bm-tools__list';
@@ -246,12 +269,11 @@ function renderDeadLinksView(root) {
     scanBtn.textContent = api.getMessage('bmToolsStartScan') || 'Start scan';
     root.appendChild(scanBtn);
 
-    let unreachableIds = [];
-
     scanBtn.addEventListener('click', async () => {
         scanBtn.disabled = true;
         list.innerHTML = '';
-        unreachableIds = [];
+        warning.style.display = 'none';
+        warning.textContent = '';
         const cache = state.getBookmarkCache() || [];
         const bookmarks = cache.filter(b => b.type === 'bookmark').map(b => ({
             id: String(b.id),
@@ -269,7 +291,18 @@ function renderDeadLinksView(root) {
                 || 'Checking… {done}/{total}')
                 .replace('{done}', String(done)).replace('{total}', String(total));
         });
+        // Offline pre-check fired — refuse to render anything that looks like
+        // "delete all your bookmarks" when the network is down.
+        if (results && results.offline) {
+            status.textContent = '';
+            warning.style.display = '';
+            warning.textContent = api.getMessage('bmToolsOfflineWarning')
+                || 'You appear to be offline. Connect to the internet and try again — without a network the scan would falsely flag every bookmark as unreachable.';
+            scanBtn.disabled = false;
+            return;
+        }
         const unreachable = results.filter(r => r.status === 'unreachable');
+        const totalScanned = results.filter(r => r.status !== 'skipped').length;
         status.textContent = (api.getMessage('bmToolsScanDone')
             || 'Scan complete: {n} unreachable link(s).')
             .replace('{n}', String(unreachable.length));
@@ -279,12 +312,30 @@ function renderDeadLinksView(root) {
             return;
         }
 
+        // If a suspiciously high ratio of bookmarks failed, the most likely
+        // explanation is "user's network is degraded" rather than "user's
+        // bookmarks all happen to be dead". Surface that hypothesis instead of
+        // silently encouraging deletion.
+        const failRatio = totalScanned > 0 ? unreachable.length / totalScanned : 0;
+        const suspiciousRatio = failRatio >= 0.5 && totalScanned >= 5;
+        if (suspiciousRatio) {
+            warning.style.display = '';
+            warning.textContent = (api.getMessage('bmToolsNetworkRatioWarning')
+                || '{n} of {total} failed ({pct}%) — this is unusually high and looks more like a network issue than dead links. Review carefully.')
+                .replace('{n}', String(unreachable.length))
+                .replace('{total}', String(totalScanned))
+                .replace('{pct}', String(Math.round(failRatio * 100)));
+        }
+
         for (const r of unreachable) {
             const row = document.createElement('label');
             row.className = 'bm-tools__row';
             const cb = document.createElement('input');
             cb.type = 'checkbox';
-            cb.checked = true;
+            // Default UNchecked — make the user opt into each deletion. Previous
+            // "checked-by-default" made a single confirm wipe the whole library
+            // if any transient network issue happened during scan.
+            cb.checked = false;
             cb.dataset.bookmarkId = r.bookmarkId;
             row.appendChild(cb);
             const meta = document.createElement('div');
@@ -299,7 +350,6 @@ function renderDeadLinksView(root) {
             meta.appendChild(u);
             row.appendChild(meta);
             list.appendChild(row);
-            unreachableIds.push(r.bookmarkId);
         }
 
         const removeBtn = document.createElement('button');
@@ -317,7 +367,7 @@ function renderDeadLinksView(root) {
                 confirmButtonClass: 'danger',
             });
             if (!ok) return;
-            await dedupe.bulkRemove(ids);
+            await bulkRemove(ids);
             document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
             root.innerHTML = '';
             renderDeadLinksView(root);
