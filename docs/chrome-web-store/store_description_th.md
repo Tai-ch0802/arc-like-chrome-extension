@@ -1,4 +1,8 @@
-# แท็บแนวตั้งและบุ๊กมาร์กสไตล์ Arc - เปลี่ยน Chrome ให้เป็นขุมพลังแห่งการทำงาน
+# แท็บแนวตั้งและบุ๊กมาร์กสไตล์ Arc - เปลี่ยน Chrome ให้เป็นขุมพลังแห่งการทำงาน · พื้นที่ทำงานความรู้ของคุณบน Chrome
+
+🔒 **100% บนเครื่อง** · 🔑 **ไม่ต้องใช้ API key** · 🤖 **Gemini Nano AI ในเครื่อง**
+
+Vertical tabs ของ Chrome (2025) แค่แสดงแท็บแนวตั้ง **นี่คือ knowledge workspace ที่สมบูรณ์**: tabs + bookmarks + reading list ในที่เดียว, AI (ตั้งชื่อกลุ่มอัตโนมัติ, cleanup tab, hover summary, natural-language search), Workspaces hibernate-restore คลิกเดียวซิงค์ข้ามอุปกรณ์, ⌘K Command Palette, Bookmark Tools (tags, dedupe, dead-link) — ทั้งหมดบนเครื่อง ไม่ต้องใช้ API key
 
 เบื่อกับการหลงทางในแท็บที่ยุ่งเหยิงนับสิบหรือไม่? ปรารถนาประสบการณ์แท็บแนวตั้งที่โฉบเฉี่ยวของเบราว์เซอร์ Arc แต่ไม่สามารถออกจากระบบนิเวศของ Chrome ได้ใช่ไหม?
 **Arc-like Vertical Tabs & Bookmarks** คือคำตอบสุดท้ายของคุณ! 🚀
@@ -9,6 +13,17 @@
 🌐 **เว็บไซต์ทางการ**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (ใหม่)
+- **AI Auto Group Naming**: กลุ่มแท็บว่างใหม่ได้ emoji + ป้ายสั้นอัตโนมัติ
+- **AI Tab Cleanup Suggestions**: ปุ่ม 🧹, AI บอกว่าแท็บไหนปิดได้
+- **AI Hover Summary**: hover บนแท็บ 2 วินาที → สรุปหนึ่งประโยค
+- **AI Reading List Summary Memory**: เมื่อเพิ่มแล้ว AI สรุปและบันทึกในเครื่อง อ่านได้แม้ออฟไลน์
+- **Ask AI Natural-Language Search (⌘K)**: ประโยคเดียวค้น tabs / bookmarks / reading list
+- **Workspaces**: ชุดแท็บที่ตั้งชื่อ, hibernate-restore, metadata ซิงค์ข้ามอุปกรณ์
+- **Command Palette (⌘K / Ctrl+K)**: ค้นหา + การกระทำในที่เดียว
+- **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup
+- **ไม่ต้องตั้งค่า ไม่ต้องใช้ API key**: AI ทั้งหมดทำงานบน Gemini Nano ที่ Chrome ติดมาให้
 
 ## 🔥 คุณสมบัติหลัก
 

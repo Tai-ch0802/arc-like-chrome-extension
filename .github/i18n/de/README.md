@@ -1,4 +1,4 @@
-# Sidebar im Arc-Stil für Chrome
+# Sidebar im Arc-Stil für Chrome · Ihr Wissens-Arbeitsplatz für Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Dies ist ein Chrome-Erweiterungsprojekt, das darauf abzielt, eine vertikale Seitenleiste im Stil des Arc-Browsers in Google Chrome zu integrieren und ein einheitliches, leistungsstarkes Panel für die Verwaltung von Tabs und Lesezeichen bereitzustellen.
+Eine Arc-artige Sidebar, die weit über Chromes native vertikale Tabs hinausgeht: vereinheitlichte Tabs + Lesezeichen + Leseliste, **Null-Konfiguration lokale KI** (automatische Gruppen-Benennung, Tab-Cleanup-Vorschläge, Hover-Zusammenfassungen, natürlichsprachliche Suche), **Workspaces** (Tab-Bündel ruhen und wiederherstellen, Metadaten geräteübergreifend synchronisiert), eine **⌘K-Befehlspalette** und **Lesezeichen-Tools** für Tags, Dedupe und Dead-Link-Bereinigung — alles 100% auf dem Gerät, kein API-Schlüssel erforderlich.
 
 ## 🚀 Neues Update v1.14.0!
 [![Demo-Video](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

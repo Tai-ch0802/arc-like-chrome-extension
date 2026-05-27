@@ -1,4 +1,4 @@
-# Barre latérale Chrome de style Arc
+# Barre latérale Chrome de style Arc · Votre espace de travail de connaissance pour Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-C'est un projet d'extension Chrome qui vise à apporter une expérience de barre latérale verticale de type navigateur Arc à Google Chrome, offrant un panneau unifié et puissant pour la gestion des onglets et des signets.
+Une barre latérale de style Arc qui va bien au-delà des onglets verticaux natifs de Chrome : onglets + signets + liste de lecture unifiés, **IA locale sans configuration** (nommage automatique des groupes, suggestions de nettoyage d'onglets, résumés au survol, recherche en langage naturel), **Workspaces** (hibernation et restauration de paquets d'onglets, synchronisation des métadonnées entre appareils), une **palette de commandes ⌘K**, et des **outils pour signets** (étiquettes, déduplication, liens morts) — 100% local, aucune clé API requise.
 
 ## 🚀 Mise à jour v1.14.0 !
 [![Vidéo de démonstration](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

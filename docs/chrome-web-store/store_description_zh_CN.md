@@ -1,4 +1,8 @@
-# Arc 风格垂直标签页与书签 - 将 Chrome 变身为生产力神器
+# Arc 风格垂直标签页与书签 - 将 Chrome 变身为生产力神器 · 你的 Chrome 知识工作台
+
+🔒 **100% 本机** · 🔑 **零 API key** · 🤖 **内建 Gemini Nano AI**
+
+Chrome 原生垂直标签页（2025）只把标签页改成垂直显示。**这是一个完整的知识工作台**：统一管理标签页 + 书签 + 阅读清单，AI 加持（自动命名群组、标签清理、悬停摘要、自然语言搜索），Workspaces 一键 hibernate-restore 跨设备同步，⌘K 命令面板，Bookmark Tools（标签、重复检测、失效链接）—— 全部在本机运算，无需 API key。
 
 厌倦了在数十个杂乱无章的标签页中迷失方向吗？渴望 Arc 浏览器那般流畅优雅的垂直标签页体验，却又离不开 Chrome 的生态？
 **Arc-like Vertical Tabs & Bookmarks** 是您的终极解答！🚀
@@ -9,6 +13,17 @@
 🌐 **官方网站**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (新)
+- **AI 自动命名群组**: 新建空白标签群组时，Gemini Nano 自动产生 Emoji + 简短标题。
+- **AI 标签清理建议**: 🧹 按钮让 AI 告诉你哪些标签可以安全关闭。
+- **AI 悬停摘要**: 悬停标签 2 秒显示页面一句话摘要。
+- **AI 阅读清单摘要记忆**: 加入阅读清单时 AI 摘要一次并存本地，离线可看。
+- **Ask AI 自然语言搜索 (⌘K)**: 一句话搜寻 tabs / bookmarks / reading list。
+- **Workspaces**: 把标签集合绑成工作区，一键 hibernate 与 restore，metadata 跨设备同步。
+- **Command Palette (⌘K / Ctrl+K)**: 统一搜索 + 动作入口。
+- **Bookmark Tools**: 🛠️ 多标签 / 重复检测 / 失效链接清理。
+- **零设定，免 API Key**: 所有 AI 跑在 Chrome 内建 Gemini Nano。
 
 ## 🔥 核心亮点
 

@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Một tiện ích mở rộng của Chrome mô phỏng các tab dọc của trình duyệt Arc.",
+    "message": "Thanh bên kiểu Arc — tabs, bookmarks, reading list trong một panel + AI cục bộ (đặt tên nhóm, cleanup, tóm tắt, NL search), Workspaces, ⌘K palette. Không cần API key.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

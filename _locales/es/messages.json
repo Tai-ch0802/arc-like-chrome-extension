@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Una extensión de Chrome que imita las pestañas verticales del navegador Arc.",
+    "message": "Barra lateral estilo Arc — pestañas, marcadores, lista de lectura unificados + IA local (nombrado de grupos, limpieza, resumen, búsqueda NL), Workspaces, paleta ⌘K. Sin clave API.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

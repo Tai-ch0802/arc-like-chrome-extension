@@ -1,4 +1,8 @@
-# Abas Verticais e Favoritos estilo Arc - Transforme o Chrome em uma Potência de Produtividade
+# Abas Verticais e Favoritos estilo Arc - Transforme o Chrome em uma Potência de Produtividade · Seu espaço de trabalho de conhecimento para Chrome
+
+🔒 **100% local** · 🔑 **Sem chave de API** · 🤖 **Gemini Nano AI integrado**
+
+As abas verticais nativas do Chrome (2025) só mostram abas verticalmente. **Isto é um espaço de trabalho de conhecimento completo**: abas + favoritos + lista de leitura unificadas, IA (nomeação automática de grupos, limpeza de abas, resumos ao passar o mouse, busca em linguagem natural), Workspaces hibernate-restore em um clique sincronizados entre dispositivos, paleta de comandos ⌘K, Bookmark Tools (tags, dedupe, links quebrados) — 100% no dispositivo, sem chave de API.
 
 Cansado de se perder em dezenas de abas desorganizadas? Deseja a experiência elegante de abas verticais do navegador Arc, mas não pode sair do ecossistema Chrome?
 **Arc-like Vertical Tabs & Bookmarks** é a sua resposta definitiva! 🚀
@@ -9,6 +13,17 @@ Reimaginamos completamente o Chrome, introduzindo um painel lateral moderno que 
 🌐 **Site Oficial**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (novo)
+- **AI nomeação automática de grupos**: Novos grupos vazios recebem emoji + label automaticamente.
+- **AI sugestões de limpeza de abas**: botão 🧹, IA indica abas que pode fechar.
+- **AI resumo ao passar o mouse**: 2 s sobre uma aba → resumo de uma frase.
+- **AI memória de resumos da lista de leitura**: IA resume ao adicionar, armazenado local, legível offline.
+- **Ask AI busca em linguagem natural (⌘K)**: uma frase para buscar tabs / bookmarks / reading list.
+- **Workspaces**: conjuntos de abas nomeados, hibernate-restore, metadados sincronizados entre dispositivos.
+- **Command Palette (⌘K / Ctrl+K)**: busca + ações unificadas.
+- **Bookmark Tools**: 🛠️ tags / dedupe / links quebrados.
+- **Zero configuração, sem chave de API**: toda IA roda em Gemini Nano integrado ao Chrome.
 
 ## 🔥 Principais Recursos
 

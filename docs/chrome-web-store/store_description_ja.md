@@ -1,4 +1,8 @@
-# Arc風垂直タブ＆ブックマーク - Chromeを生産性の要塞へ
+# Arc風垂直タブ＆ブックマーク - Chromeを生産性の要塞へ · あなたの Chrome ナレッジワークスペース
+
+🔒 **100% ローカル** · 🔑 **API キー不要** · 🤖 **内蔵 Gemini Nano AI**
+
+Chrome ネイティブの垂直タブ（2025）はタブを垂直に並べるだけ。**これは完全なナレッジワークスペース**：タブ・ブックマーク・リーディングリストを統合、AI 搭載（グループ自動命名・タブクリーンアップ・ホバー要約・自然言語検索）、Workspaces ハイバネート・復元しメタデータをデバイス間で同期、⌘K コマンドパレット、Bookmark Tools（タグ・重複検出・リンク切れ）—— すべてデバイス上で動作、API キー不要。
 
 散らかった大量のタブで迷子になるのにうんざりしていませんか？Arcブラウザの洗練された垂直タブ体験に憧れているけれど、Chromeのエコシステムからは離れられない？
 **Arc-like Vertical Tabs & Bookmarks** こそが、あなたの求めていた答えです！🚀
@@ -9,6 +13,17 @@
 🌐 **公式サイト**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (新)
+- **AI グループ自動命名**: 空のタブグループ作成時、Gemini Nano が絵文字 + 短いラベルを自動生成。
+- **AI タブクリーンアップ提案**: 🧹 ボタンで AI が閉じてよいタブを提案。
+- **AI ホバー要約**: タブに 2 秒ホバーで一文要約。
+- **AI リーディングリスト要約記憶**: 追加時 AI 要約してローカル保存、オフライン閲覧可。
+- **Ask AI 自然言語検索 (⌘K)**: 一文で tabs / bookmarks / reading list を検索。
+- **Workspaces**: タブ集合を名前付き Workspace に保存、ハイバネート・復元、メタデータをデバイス間で同期。
+- **Command Palette (⌘K / Ctrl+K)**: 統一検索 + アクションオーバーレイ。
+- **Bookmark Tools**: 🛠️ タグ / 重複検出 / リンク切れチェック。
+- **ゼロ設定、API キー不要**: すべての AI は Chrome 内蔵 Gemini Nano 上で動作。
 
 ## 🔥 主な機能
 

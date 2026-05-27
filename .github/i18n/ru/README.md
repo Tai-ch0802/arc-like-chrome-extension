@@ -1,4 +1,4 @@
-# Боковая панель Chrome в стиле Arc
+# Боковая панель Chrome в стиле Arc · Ваше рабочее пространство знаний для Chrome
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Это проект расширения Chrome, цель которого — перенести опыт использования вертикальной боковой панели браузера Arc в Google Chrome, предоставляя единую и мощную панель для управления вкладками и закладками.
+Боковая панель в стиле Arc, далеко выходящая за рамки родных вертикальных вкладок Chrome: вкладки + закладки + список чтения в одном месте, **локальный AI без настройки** (автоматическое именование групп, предложения по очистке вкладок, сводки при наведении, поиск на естественном языке), **Workspaces** (гибернация и восстановление наборов вкладок, синхронизация метаданных между устройствами), **палитра команд ⌘K** и **инструменты для закладок** (теги, удаление дубликатов, проверка мёртвых ссылок) — всё 100% на устройстве, ключ API не нужен.
 
 ## 🚀 Новое обновление v1.14.0! 
 [![Демо-видео](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

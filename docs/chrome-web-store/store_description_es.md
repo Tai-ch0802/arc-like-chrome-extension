@@ -1,4 +1,8 @@
-# Pestañas Verticales y Marcadores estilo Arc - Transforma Chrome en una Potencia de Productividad
+# Pestañas Verticales y Marcadores estilo Arc - Transforma Chrome en una Potencia de Productividad · Tu espacio de trabajo de conocimiento para Chrome
+
+🔒 **100% local** · 🔑 **Sin clave API** · 🤖 **Gemini Nano AI integrado**
+
+Las pestañas verticales nativas de Chrome (2025) solo muestran pestañas verticalmente. **Esto es un espacio de trabajo de conocimiento completo**: pestañas + marcadores + lista de lectura unificados, IA (nombrar grupos automáticamente, limpieza de pestañas, resúmenes al pasar el ratón, búsqueda en lenguaje natural), Workspaces de hibernación-restauración con un clic sincronizados entre dispositivos, paleta de comandos ⌘K, Bookmark Tools (etiquetas, dedupe, enlaces rotos) — 100% en el dispositivo, sin clave API.
 
 ¿Cansado de perderte en docenas de pestañas desordenadas? ¿Anhelas la experiencia elegante de pestañas verticales del navegador Arc pero no puedes dejar el ecosistema de Chrome?
 ¡**Arc-like Vertical Tabs & Bookmarks** es tu respuesta definitiva! 🚀
@@ -9,6 +13,17 @@ Hemos reinventado Chrome por completo, introduciendo un panel lateral moderno qu
 🌐 **Sitio web oficial**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (nuevo)
+- **AI nombrar grupos automáticamente**: Nuevos grupos vacíos reciben emoji + etiqueta automáticamente.
+- **AI sugerencias de limpieza de pestañas**: botón 🧹, IA dice qué pestañas puedes cerrar.
+- **AI resumen al pasar el ratón**: 2 s sobre una pestaña → resumen de una frase.
+- **AI memoria de resúmenes de lista de lectura**: IA resume al añadir, almacenado local, leíble offline.
+- **Ask AI búsqueda en lenguaje natural (⌘K)**: una frase para buscar tabs / bookmarks / reading list.
+- **Workspaces**: paquetes de pestañas nombrados, hibernate-restore, metadatos sincronizados entre dispositivos.
+- **Command Palette (⌘K / Ctrl+K)**: búsqueda + acciones unificadas.
+- **Bookmark Tools**: 🛠️ etiquetas / dedupe / enlaces rotos.
+- **Cero configuración, sin clave API**: toda la IA corre en Gemini Nano integrado en Chrome.
 
 ## 🔥 Características Principales
 

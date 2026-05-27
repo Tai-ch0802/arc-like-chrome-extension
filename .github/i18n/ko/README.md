@@ -1,4 +1,4 @@
-# Arc 스타일 Chrome 사이드바
+# Arc 스타일 Chrome 사이드바 · 당신의 Chrome 지식 작업 공간
 
 [English](/.github/i18n/en/README.md) | [繁體中文](/.github/i18n/zh_TW/README.md) | [简体中文](/.github/i18n/zh_CN/README.md) | [日本語](/.github/i18n/ja/README.md) | [한국어](/.github/i18n/ko/README.md) | [Deutsch](/.github/i18n/de/README.md) | [Español](/.github/i18n/es/README.md) | [Français](/.github/i18n/fr/README.md) | [हिन्दी](/.github/i18n/hi/README.md) | [Bahasa Indonesia](/.github/i18n/id/README.md) | [Português (Brasil)](/.github/i18n/pt_BR/README.md) | [Русский](/.github/i18n/ru/README.md) | [ไทย](/.github/i18n/th/README.md) | [Tiếng Việt](/.github/i18n/vi/README.md)
 
@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-이 프로젝트는 Google Chrome에 Arc 브라우저와 같은 수직 사이드바 경험을 제공하여 탭과 북마크를 관리할 수 있는 통합된 강력한 패널을 제공하는 Chrome 확장 프로그램입니다.
+Chrome 의 기본 수직 탭을 훨씬 뛰어넘는 Arc 스타일 사이드바: 탭 + 북마크 + 리딩 리스트 통합, **제로 설정 로컬 AI**(그룹 자동 명명, 탭 정리 제안, 호버 요약, 자연어 검색), **Workspaces**(탭 묶음 hibernate 및 restore, 기기 간 메타데이터 동기화), **⌘K 명령 팔레트**, **북마크 도구**(태그, 중복 감지, 죽은 링크 정리) —— 모두 100% 기기에서 작동, API 키 불필요.
 
 ## 🚀 새 릴리스 v1.14.0 업데이트! 
 [![데모 비디오](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc 브라우저의 수직 탭을 모방한 Chrome 확장 프로그램입니다.",
+    "message": "Arc 스타일 사이드바 — 탭, 북마크, 리딩 리스트 통합 + 로컬 AI(그룹 명명, 정리, 요약, NL 검색), Workspaces, ⌘K 팔레트. API 키 불필요.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

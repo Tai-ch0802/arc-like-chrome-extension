@@ -1,4 +1,8 @@
-# Arc 스타일 수직 탭 및 북마크 - Chrome을 생산성 강국으로 변모시키세요
+# Arc 스타일 수직 탭 및 북마크 - Chrome을 생산성 강국으로 변모시키세요 · 당신의 Chrome 지식 작업 공간
+
+🔒 **100% 로컬** · 🔑 **API 키 불필요** · 🤖 **내장 Gemini Nano AI**
+
+Chrome 의 네이티브 수직 탭(2025)은 탭을 수직으로 보여줄 뿐. **이것은 완전한 지식 작업 공간**: 탭 + 북마크 + 리딩 리스트 통합, AI(그룹 자동 명명, 탭 정리 제안, 호버 요약, 자연어 검색), Workspaces 한 번에 hibernate-restore 및 기기 간 동기화, ⌘K 명령 팔레트, Bookmark Tools(태그, 중복 감지, 죽은 링크) —— 모두 기기에서 작동, API 키 불필요.
 
 수십 개의 어수선한 탭에서 길을 잃는 것에 지치셨나요? Arc 브라우저의 세련된 수직 탭 경험을 갈망하지만 Chrome 생태계를 떠날 수 없으신가요?
 **Arc-like Vertical Tabs & Bookmarks**가 궁극적인 해답입니다! 🚀
@@ -9,6 +13,17 @@
 🌐 **공식 웹사이트**: [https://sidebar-for-tabs-bookmarks.taislife.work/](https://sidebar-for-tabs-bookmarks.taislife.work/)
 
 ---
+
+### 🤖 Knowledge Workspace 2026 (신규)
+- **AI 그룹 자동 명명**: 빈 탭 그룹 생성 시 Gemini Nano 가 이모지 + 짧은 레이블 자동 생성.
+- **AI 탭 정리 제안**: 🧹 버튼으로 AI 가 닫아도 되는 탭 제안.
+- **AI 호버 요약**: 탭에 2 초 호버 시 한 줄 요약.
+- **AI 리딩 리스트 요약 기억**: 추가 시 AI 요약 후 로컬 저장, 오프라인 열람 가능.
+- **Ask AI 자연어 검색 (⌘K)**: 한 문장으로 tabs / bookmarks / reading list 검색.
+- **Workspaces**: 탭 묶음을 명명된 workspace 로 저장, hibernate-restore, 메타데이터 기기 간 동기화.
+- **Command Palette (⌘K / Ctrl+K)**: 통합 검색 + 액션 오버레이.
+- **Bookmark Tools**: 🛠️ 태그 / 중복 감지 / 죽은 링크 체크.
+- **제로 설정, API 키 불필요**: 모든 AI 가 Chrome 내장 Gemini Nano 상에서 실행.
 
 ## 🔥 주요 기능
 
