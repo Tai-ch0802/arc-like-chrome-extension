@@ -178,10 +178,23 @@ async function initialize() {
     // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't watching).
     tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
         .catch(err => console.warn('[tags] prune failed:', err));
-    await state.initReadingListSummary();
-    await readingListSummaryStore.initSummaries();
+    // Parallelize the two independent storage reads (sync + local) so the
+    // total init time doesn't lengthen the critical path before refreshBookmarks
+    // settles — CI puppeteer tests were sensitive to even small init delays.
+    await Promise.all([
+        state.initReadingListSummary(),
+        readingListSummaryStore.initSummaries(),
+    ]);
     initSummaryRecorder();
     document.addEventListener('readingListSummaryAdded', () => refreshReadingList());
+    // Pick up summaries written by other open sidepanels.
+    readingListSummaryStore.subscribeToChanges(() => refreshReadingList());
+    // Drop summaries for URLs no longer in the Reading List. Run after a real
+    // entries fetch (empty list could mean "really empty" OR "fetch failed";
+    // the store guards against the latter case internally).
+    readingListManager.getAllEntries()
+        .then(entries => readingListSummaryStore.pruneOrphans(entries.map(e => e.url)))
+        .catch(err => console.warn('[rlSummary] prune failed:', err));
     const bookmarkToolsBtn = document.getElementById('bookmark-tools-btn');
     if (bookmarkToolsBtn) {
         // Mirror the workspace-manage-btn pattern: resolve aria-label at runtime

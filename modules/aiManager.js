@@ -239,13 +239,45 @@ export async function triggerLanguageModelDownload(callbacks = {}) {
     await getOrCreateLanguageModelSession(callbacks);
 }
 
+/** @type {LanguageModel|null} Dedicated session for runPrompt / NL search */
+let nlLanguageModelSession = null;
+
+async function getOrCreateNlSession() {
+    if (nlLanguageModelSession) return nlLanguageModelSession;
+    if ((await checkModelAvailability()) !== 'available') return null;
+    try {
+        nlLanguageModelSession = await globalThis.LanguageModel.create({
+            // Intentionally neutral — generic JSON-output assistant. The shared
+            // grouping session's systemPrompt mentions "theme names" which is
+            // tab-grouping specific and could bias unrelated rerank tasks.
+            systemPrompt: 'You are a helpful assistant. Output ONLY valid JSON arrays as instructed. Do not use markdown code blocks like ```json or ```.',
+            temperature: 0.1,
+            topK: 1,
+            ...LANGUAGE_MODEL_OPTIONS,
+        });
+        return nlLanguageModelSession;
+    } catch (err) {
+        console.warn('[ai] failed to create NL session:', err);
+        nlLanguageModelSession = null;
+        return null;
+    }
+}
+
+function destroyNlSession() {
+    if (nlLanguageModelSession) {
+        try { nlLanguageModelSession.destroy(); } catch { /* ignore */ }
+        nlLanguageModelSession = null;
+    }
+}
+
 /**
- * One-shot prompt against the shared LanguageModel session. Strict on
- * availability (`=== 'available'` only) so callers triggered from
+ * One-shot prompt for tasks unrelated to tab grouping (NL search, etc.).
+ * Strict on availability (`=== 'available'` only) so callers triggered from
  * non-user-initiated contexts can't silently start a multi-GB download.
  *
- * Callers should structure their prompt to ask for JSON (the session's
- * systemPrompt enforces JSON output), then parse on their side.
+ * Uses a DEDICATED session — separate from the tab-grouping session — so
+ * the grouping-specific systemPrompt doesn't bleed into unrelated tasks
+ * and concurrent `prompt()` calls can't interfere on the same session.
  *
  * @param {string} promptText
  * @returns {Promise<string|null>}
@@ -254,11 +286,12 @@ export async function runPrompt(promptText) {
     if (!promptText) return null;
     if ((await checkModelAvailability()) !== 'available') return null;
     try {
-        const session = await getOrCreateLanguageModelSession();
+        const session = await getOrCreateNlSession();
+        if (!session) return null;
         return await session.prompt(promptText);
     } catch (err) {
         console.warn('[ai] runPrompt failed:', err);
-        destroyLanguageModelSession();
+        destroyNlSession();
         return null;
     }
 }

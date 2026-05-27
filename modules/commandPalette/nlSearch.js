@@ -21,6 +21,40 @@ import * as readingListManager from '../readingListManager.js';
 const MAX_CANDIDATES = 30;
 const MAX_RESULTS = 8;
 
+/** Sanitize user-controlled strings so they can't break the prompt structure
+ *  (newlines would let a malicious title pretend to be a new instruction).
+ *  Cheap belt-and-suspenders — index validation downstream is the real guard.
+ */
+function sanitizeForPrompt(text) {
+    if (typeof text !== 'string') return '';
+    return text
+        // Newlines/tabs -> space so a malicious title can't fake a prompt break.
+        .replace(/[\r\n\t]/g, ' ')
+        // Strip ASCII control chars (0x00-0x1F and 0x7F) that could hide injection.
+        .replace(/[\x00-\x1F\x7F]/g, '')
+        .slice(0, 120);
+}
+
+/** Reduce candidates to a query-relevant subset before sending to the model.
+ *  Without this, "the first 30 by insertion order" gets sent, and a user with
+ *  many tabs would never see their bookmarks/reading-list make the cut — the
+ *  exact use case Ask-AI is supposed to serve.
+ */
+function preFilterByQuery(candidates, query) {
+    if (!query) return candidates.slice(0, MAX_CANDIDATES);
+    const q = query.toLowerCase();
+    const scored = candidates.map(c => {
+        const hay = ((c.title || '') + ' ' + (c.url || '')).toLowerCase();
+        const idx = hay.indexOf(q);
+        return { c, score: idx >= 0 ? idx : Number.MAX_SAFE_INTEGER };
+    });
+    scored.sort((a, b) => a.score - b.score);
+    // Mixed strategy: prefer items that literally match the query; if fewer
+    // than MAX_CANDIDATES match, fill the rest with the remaining items so
+    // the model still has context for semantic matches the literal scan misses.
+    return scored.slice(0, MAX_CANDIDATES).map(s => s.c);
+}
+
 /**
  * Builds a uniform candidate list across tabs / bookmarks / reading list.
  * Each candidate carries a `handler` so the result dialog can act on click.
@@ -78,12 +112,15 @@ export async function askAiToFind(query) {
     const candidates = await buildCandidates();
     if (candidates.length === 0) return { unavailable: false, items: [] };
 
-    const limited = candidates.slice(0, MAX_CANDIDATES);
+    // Pre-filter by query relevance BEFORE the 30-item cap. Without this, a
+    // user with 30+ tabs would never see their bookmarks/reading-list make
+    // it to the model — the exact use case Ask-AI is supposed to serve.
+    const limited = preFilterByQuery(candidates, query.trim());
     const lines = limited
-        .map((c, i) => `${i}. [${c.type}] ${c.title} — ${c.url}`)
+        .map((c, i) => `${i}. [${c.type}] ${sanitizeForPrompt(c.title)} — ${sanitizeForPrompt(c.url)}`)
         .join('\n');
 
-    const prompt = `User wants to find items matching: "${query}"
+    const prompt = `User wants to find items matching: "${sanitizeForPrompt(query)}"
 
 Below is a numbered list of tabs, bookmarks, and reading-list entries. Choose up to ${MAX_RESULTS} items that best match the user's intent. Reply ONLY with a JSON array of {index, reason} where reason is at most 25 chars in the user's locale; no other text:
 [
@@ -107,7 +144,9 @@ ${lines}`;
             .map(p => ({
                 ...limited[p.index],
                 aiReason: typeof p.reason === 'string' ? p.reason.slice(0, 30) : '',
-            }));
+            }))
+            // Hard-cap even if the model ignored "up to MAX_RESULTS" and returned more.
+            .slice(0, MAX_RESULTS);
         return { unavailable: false, items };
     } catch {
         return { unavailable: false, items: [] };
@@ -201,6 +240,11 @@ export async function openAskAiDialog() {
 /**
  * Wraps modal.showCustomDialog with an explicit `close()` so handlers can
  * close from outside the modal (e.g., after a result row is clicked).
+ *
+ * Uses the onOpen callback to capture THIS dialog's overlay element so
+ * close() targets the right modal even when another dialog stacks on top.
+ * (`document.querySelector('.modal-overlay')` would grab whichever overlay
+ * is first in the DOM, which is wrong as soon as anything else stacks.)
  */
 function openResultsDialog(initialContent) {
     return new Promise((resolveClose) => {
@@ -210,18 +254,19 @@ function openResultsDialog(initialContent) {
         container.style.overflowY = 'auto';
         container.appendChild(initialContent);
 
+        let overlayRef = null;
         const close = () => {
-            // Trigger modal's own close button (modalManager doesn't expose a
-            // programmatic close, so we click the standard #closeButton).
-            document.querySelector('.modal-overlay #closeButton')?.click();
+            // Close this specific overlay by clicking its own #closeButton.
+            overlayRef?.querySelector('#closeButton')?.click();
         };
 
         modal.showCustomDialog({
             title: api.getMessage('cmdPaletteAskAiResultsTitle') || 'AI suggestions',
             content: container,
+            onOpen: (modalContent) => {
+                overlayRef = modalContent.closest('.modal-overlay');
+                resolveClose(close);
+            },
         });
-
-        // Resolve next tick so the modal is in the DOM when caller uses `close()`.
-        setTimeout(() => resolveClose(close), 0);
     });
 }
