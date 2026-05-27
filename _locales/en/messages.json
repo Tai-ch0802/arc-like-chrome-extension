@@ -772,5 +772,53 @@
   },
   "cmdPaletteActionSettings": {
     "message": "Open settings"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Create workspace from current tabs"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Manage workspaces"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Active workspace"
+  },
+  "workspaceManageTitle": {
+    "message": "Manage workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— no workspace —"
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Switch workspace"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Switching to \"{ws}\" will close {n} tab(s) in this window and open the saved tabs."
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Switch"
+  },
+  "workspaceManageEmpty": {
+    "message": "No workspaces yet."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ New from current tabs"
+  },
+  "workspaceRename": {
+    "message": "Rename"
+  },
+  "workspaceDelete": {
+    "message": "Delete"
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Delete workspace"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "Delete \"{ws}\"? This cannot be undone."
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Name this workspace"
   }
 }

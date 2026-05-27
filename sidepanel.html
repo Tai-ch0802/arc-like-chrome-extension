@@ -8,6 +8,13 @@
 </head>
 
 <body>
+    <!-- Workspace switcher: per-window active workspace + manage button.
+         Labels are resolved at runtime by workspaceUI.initWorkspaceUI(). -->
+    <div id="workspace-row" class="workspace-row">
+        <select id="workspace-switcher" class="workspace-switcher"></select>
+        <button id="workspace-manage-btn" class="header-action-btn">⚙️</button>
+    </div>
+
     <div id="search-container">
         <div class="search-top-row">
             <div class="search-input-wrapper">

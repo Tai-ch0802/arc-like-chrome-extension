@@ -769,5 +769,53 @@
   },
   "cmdPaletteActionSettings": {
     "message": "開啟設定"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "工作區"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "從當前分頁建立工作區"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "管理工作區"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "目前工作區"
+  },
+  "workspaceManageTitle": {
+    "message": "管理工作區"
+  },
+  "workspaceNoActive": {
+    "message": "— 無工作區 —"
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "切換工作區"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "切換到「{ws}」會關閉這個視窗目前的 {n} 個分頁，並開啟已儲存的分頁。"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "切換"
+  },
+  "workspaceManageEmpty": {
+    "message": "尚無工作區。"
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ 從當前分頁建立"
+  },
+  "workspaceRename": {
+    "message": "重新命名"
+  },
+  "workspaceDelete": {
+    "message": "刪除"
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "刪除工作區"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "刪除「{ws}」？此動作無法復原。"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "為這個工作區命名"
   }
 }
