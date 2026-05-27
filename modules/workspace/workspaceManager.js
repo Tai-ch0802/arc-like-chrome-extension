@@ -38,7 +38,7 @@
  * @property {string} title
  * @property {boolean} [pinned]
  */
-import { getStorage, setStorage } from '../apiManager.js';
+import { getStorage, setStorage, setStorageStrict } from '../apiManager.js';
 
 const LEGACY_WORKSPACES_KEY = 'workspaces';            // pre-Phase-9 unified key
 const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // sync
@@ -72,13 +72,30 @@ export async function initWorkspaces() {
             metadata[id] = meta;
             snapshots[id] = tabSnapshot || [];
         }
-        await Promise.all([
-            setStorage('sync', { [WORKSPACE_METADATA_KEY]: metadata }),
-            setStorage('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
-        ]);
-        // Drop the legacy key so we don't keep migrating on every init.
-        try { await chrome.storage.local.remove(LEGACY_WORKSPACES_KEY); }
-        catch (err) { console.warn('[workspace] failed to drop legacy key:', err); }
+        try {
+            // Strict variant so a silent sync write failure (quota / sync
+            // unavailable) doesn't pretend the migration succeeded and end
+            // up with snapshots-only and no metadata on next init.
+            await Promise.all([
+                setStorageStrict('sync', { [WORKSPACE_METADATA_KEY]: metadata }),
+                setStorageStrict('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
+            ]);
+        } catch (err) {
+            // Roll back the in-memory view so the rebuild below uses legacy data,
+            // and KEEP legacy in storage so next launch can retry the migration.
+            console.warn('[workspace] migration write failed, keeping legacy:', err);
+            metadata = {};
+            snapshots = {};
+            for (const [id, ws] of Object.entries(legacy)) {
+                const { tabSnapshot, ...meta } = ws;
+                metadata[id] = meta;
+                snapshots[id] = tabSnapshot || [];
+            }
+        }
+        // INTENTIONALLY do NOT delete LEGACY_WORKSPACES_KEY here. The `noNewData`
+        // guard already prevents re-migration once new keys are populated; the
+        // ~few KB of disk used by the legacy backup is cheap insurance against
+        // ever losing the only complete copy of the user's workspace identity.
     }
 
     // Rebuild the in-memory full-object form so callers don't need to know
@@ -307,6 +324,12 @@ function formatTimestamp() {
  * on every mutation rather than tracking which side changed — simpler and the
  * workspace operations are low-frequency enough that the extra write is fine
  * relative to chrome.storage.sync's 120 writes/minute cap.
+ *
+ * Uses setStorageStrict for the sync write so that a quota-exceeded failure
+ * (single-key budget is 8KB → ~30 workspaces' metadata) is logged rather than
+ * silently swallowed. Local write is still silent (local quota is ~10MB and
+ * failure here would mean disk is in real trouble). Caller's await wraps the
+ * whole Promise.all so any reject surfaces as a rejected promise.
  */
 function persistWorkspaces() {
     const metadata = {};
@@ -317,7 +340,19 @@ function persistWorkspaces() {
         snapshots[id] = tabSnapshot || [];
     }
     return Promise.all([
-        setStorage('sync', { [WORKSPACE_METADATA_KEY]: metadata }),
+        setStorageStrict('sync', { [WORKSPACE_METADATA_KEY]: metadata })
+            .catch(err => {
+                // Don't propagate — the workspace mutation that triggered this
+                // is already locally applied via persistWorkspaces' caller;
+                // failing here would leave the in-memory state inconsistent
+                // with what local snapshots show. Log loudly so a follow-up
+                // can offer the user a retry / per-key migration. v2 todo.
+                console.warn(
+                    '[workspace] sync metadata write failed (sync disabled, quota, or ~30+ workspaces). '
+                    + 'Local snapshot still saved; cross-device sync is offline:',
+                    err
+                );
+            }),
         setStorage('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
     ]);
 }

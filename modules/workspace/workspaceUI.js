@@ -40,17 +40,23 @@ export async function initWorkspaceUI() {
     //   - local area: workspaceSnapshots / windowWorkspaceMap (this device's edits)
     //   - sync area:  workspaceMetadata (edits arriving from another device)
     // Phase 2 added cross-sidepanel sync; Phase 9 extends it to cross-device.
+    //
+    // Debounce: persistWorkspaces writes to BOTH areas on every mutation,
+    // so each user action fires this listener twice (once per area). Without
+    // debounce, initWorkspaces + renderSwitcher run twice back-to-back —
+    // harmless but wasteful, and the second run can race with the first.
+    let reloadTimer = null;
     chrome.storage.onChanged.addListener((changes, area) => {
         const localTouched = area === 'local'
             && (changes.workspaceSnapshots || changes.windowWorkspaceMap);
         const syncTouched = area === 'sync' && changes.workspaceMetadata;
         if (!localTouched && !syncTouched) return;
-        // Re-init the in-memory cache before re-render, otherwise we'd
-        // render against stale data. .catch so a transient storage error
-        // doesn't surface as an unhandled rejection.
-        wsManager.initWorkspaces()
-            .then(renderSwitcher)
-            .catch(err => console.warn('[workspace] sync reload failed:', err));
+        clearTimeout(reloadTimer);
+        reloadTimer = setTimeout(() => {
+            wsManager.initWorkspaces()
+                .then(renderSwitcher)
+                .catch(err => console.warn('[workspace] sync reload failed:', err));
+        }, 200);
     });
 
     installAutoSnapshot();
