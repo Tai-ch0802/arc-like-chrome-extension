@@ -826,5 +826,68 @@
   },
   "workspaceCreatePromptTitle": {
     "message": "为此工作区命名"
+  },
+  "bmToolsTitle": {
+    "message": "书签工具"
+  },
+  "bmToolsTagsTab": {
+    "message": "标签"
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "重复"
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "失效链接"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "尚无标签。"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ 新增标签"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "新标签名称"
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "删除标签"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "删除标签「{t}」？只会解除标签绑定，书签本身不会被删除。"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "没有重复的书签。🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "发现 {n} 组重复。请在每组中取消勾选想保留的那份。"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "移除已勾选"
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "移除书签"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "移除 {n} 个书签？此操作无法撤销。"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "扫描通过 HEAD 尝试连接所有 http(s) 书签，仅标记「无法连接」的（HTTP 404 因 CORS 限制无法检测，详见 notes）。"
+  },
+  "bmToolsStartScan": {
+    "message": "开始扫描"
+  },
+  "bmToolsNoBookmarks": {
+    "message": "没有可扫描的书签。"
+  },
+  "bmToolsScanProgress": {
+    "message": "检查中… {done}/{total}"
+  },
+  "bmToolsScanDone": {
+    "message": "扫描完成：{n} 个无法连接。"
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "移除已勾选的无法连接书签"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "打开书签工具"
   }
 }

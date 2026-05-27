@@ -3182,3 +3182,195 @@ mark.url-match {
     background: var(--element-bg-hover-color);
     border-style: solid;
 }
+
+/* === Bookmark Tools modal === */
+.bm-tools {
+    min-width: 320px;
+    max-width: 100%;
+}
+
+.bm-tools__tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.bm-tools__tab-btn {
+    padding: 6px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-color-primary);
+    font-size: 0.9em;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.bm-tools__tab-btn.active {
+    border-bottom-color: var(--accent-color);
+    opacity: 1;
+    font-weight: 600;
+}
+
+.bm-tools__content {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.bm-tools__intro,
+.bm-tools__status {
+    font-size: 0.85em;
+    color: var(--text-color-primary);
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.bm-tools__list {
+    margin-bottom: 12px;
+}
+
+.bm-tools__empty {
+    padding: 16px;
+    text-align: center;
+    color: var(--text-color-primary);
+    opacity: 0.55;
+    font-size: 0.9em;
+}
+
+.bm-tools__row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bm-tools__tag-chip {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    color: var(--main-bg-color);
+    background: var(--accent-color);
+    white-space: nowrap;
+}
+
+.bm-tools__tag-chip[data-color="grey"]    { background: #5f6368; color: #fff; }
+.bm-tools__tag-chip[data-color="blue"]    { background: #1a73e8; color: #fff; }
+.bm-tools__tag-chip[data-color="red"]     { background: #d93025; color: #fff; }
+.bm-tools__tag-chip[data-color="yellow"]  { background: #f9ab00; color: #000; }
+.bm-tools__tag-chip[data-color="green"]   { background: #1e8e3e; color: #fff; }
+.bm-tools__tag-chip[data-color="pink"]    { background: #f538a0; color: #fff; }
+.bm-tools__tag-chip[data-color="purple"]  { background: #a142f4; color: #fff; }
+.bm-tools__tag-chip[data-color="cyan"]    { background: #007b83; color: #fff; }
+
+.bm-tools__count {
+    flex: 1;
+    font-size: 0.85em;
+    color: var(--text-color-primary);
+    opacity: 0.7;
+    margin-left: 6px;
+}
+
+.bm-tools__btn {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--element-bg-color);
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.bm-tools__btn:hover {
+    background: var(--element-bg-hover-color);
+}
+
+.bm-tools__create {
+    width: 100%;
+    padding: 8px;
+    border: 1px dashed var(--border-color);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-color-primary);
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.bm-tools__create:hover {
+    background: var(--element-bg-hover-color);
+    border-style: solid;
+}
+
+.bm-tools__confirm {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    background: var(--accent-color);
+    color: var(--main-bg-color);
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.bm-tools__confirm:hover {
+    background: var(--accent-color-hover);
+}
+
+.bm-tools__dup-group {
+    margin-bottom: 10px;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.bm-tools__dup-header {
+    font-size: 0.8em;
+    font-family: monospace;
+    color: var(--text-color-primary);
+    opacity: 0.65;
+    margin-bottom: 4px;
+    word-break: break-all;
+}
+
+.bm-tools__dup-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 4px 0;
+    cursor: pointer;
+}
+
+.bm-tools__dup-label {
+    flex: 1;
+    font-size: 0.85em;
+    color: var(--text-color-primary);
+}
+
+.bm-tools__dup-path {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.bm-tools__meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.bm-tools__title {
+    font-size: 0.9em;
+    color: var(--text-color-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bm-tools__sub {
+    font-size: 0.75em;
+    opacity: 0.55;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

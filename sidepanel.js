@@ -12,6 +12,8 @@ import * as hoverSummarize from './modules/ui/hoverSummarizeManager.js';
 import { initCommandPalette } from './modules/commandPalette/index.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceUI } from './modules/workspace/workspaceUI.js';
+import * as tagManager from './modules/bookmark/tagManager.js';
+import { openBookmarkToolsDialog } from './modules/bookmark/bookmarkToolsUI.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 
@@ -170,6 +172,13 @@ async function initialize() {
     hoverSummarize.init(); // Initialize Hover Summarize feature
     await workspaceManager.initWorkspaces(); // Load workspace cache before UI uses it
     await initWorkspaceUI(); // Workspace switcher dropdown + manage dialog
+    await tagManager.initTags(); // Load bookmark tags before command palette / tools UI
+    // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't watching).
+    tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
+        .catch(err => console.warn('[tags] prune failed:', err));
+    document.getElementById('bookmark-tools-btn')?.addEventListener('click', () => {
+        openBookmarkToolsDialog('tags');
+    });
     initCommandPalette(); // Cmd+K / Ctrl+K unified search & actions overlay
 
     // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,

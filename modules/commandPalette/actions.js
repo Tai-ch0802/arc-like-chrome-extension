@@ -77,5 +77,12 @@ export function buildActions() {
             titleKey: 'cmdPaletteActionManageWorkspaces',
             handler: () => document.getElementById('workspace-manage-btn')?.click(),
         },
+        {
+            id: 'action-bookmark-tools',
+            type: 'action',
+            icon: '🛠️',
+            titleKey: 'cmdPaletteActionBookmarkTools',
+            handler: () => document.getElementById('bookmark-tools-btn')?.click(),
+        },
     ];
 }

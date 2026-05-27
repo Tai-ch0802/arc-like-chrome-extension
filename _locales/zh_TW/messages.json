@@ -826,5 +826,68 @@
   },
   "workspaceCreatePromptTitle": {
     "message": "為這個工作區命名"
+  },
+  "bmToolsTitle": {
+    "message": "書籤工具"
+  },
+  "bmToolsTagsTab": {
+    "message": "標籤"
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "重複"
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "失效連結"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "尚無標籤。"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ 新增標籤"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "新標籤名稱"
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "刪除標籤"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "刪除標籤「{t}」？只會解除標籤綁定，書籤本身不會被刪除。"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "沒有重複的書籤。🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "發現 {n} 組重複。請在每組中取消勾選想保留的那份。"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "移除已勾選"
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "移除書籤"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "移除 {n} 個書籤？此動作無法復原。"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "掃描透過 HEAD 嘗試連線所有 http(s) 書籤，只會標記「無法連線」的（HTTP 404 因 CORS 限制無法偵測，詳見 notes）。"
+  },
+  "bmToolsStartScan": {
+    "message": "開始掃描"
+  },
+  "bmToolsNoBookmarks": {
+    "message": "沒有可掃描的書籤。"
+  },
+  "bmToolsScanProgress": {
+    "message": "檢查中… {done}/{total}"
+  },
+  "bmToolsScanDone": {
+    "message": "掃描完成：{n} 個無法連線。"
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "移除已勾選的無法連線書籤"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "開啟書籤工具"
   }
 }
