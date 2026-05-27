@@ -36,18 +36,21 @@ export async function initWorkspaceUI() {
     switcher.addEventListener('change', handleSwitch);
     manageBtn?.addEventListener('click', openManageDialog);
 
-    // Re-render switcher when another sidepanel mutates the workspace list
-    // (Phase 2 cross-sidepanel sync uses chrome.storage.onChanged).
+    // Re-render switcher on:
+    //   - local area: workspaceSnapshots / windowWorkspaceMap (this device's edits)
+    //   - sync area:  workspaceMetadata (edits arriving from another device)
+    // Phase 2 added cross-sidepanel sync; Phase 9 extends it to cross-device.
     chrome.storage.onChanged.addListener((changes, area) => {
-        if (area !== 'local') return;
-        if (changes.workspaces || changes.windowWorkspaceMap) {
-            // Re-init the in-memory cache before re-render, otherwise we'd
-            // render against stale data. .catch so a transient storage error
-            // doesn't surface as an unhandled rejection.
-            wsManager.initWorkspaces()
-                .then(renderSwitcher)
-                .catch(err => console.warn('[workspace] sync reload failed:', err));
-        }
+        const localTouched = area === 'local'
+            && (changes.workspaceSnapshots || changes.windowWorkspaceMap);
+        const syncTouched = area === 'sync' && changes.workspaceMetadata;
+        if (!localTouched && !syncTouched) return;
+        // Re-init the in-memory cache before re-render, otherwise we'd
+        // render against stale data. .catch so a transient storage error
+        // doesn't surface as an unhandled rejection.
+        wsManager.initWorkspaces()
+            .then(renderSwitcher)
+            .catch(err => console.warn('[workspace] sync reload failed:', err));
     });
 
     installAutoSnapshot();

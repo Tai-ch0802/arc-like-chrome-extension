@@ -2,10 +2,27 @@
  * Workspace Manager
  *
  * A Workspace is a saved bundle of (tabs + optional bookmark folder hint) that
- * the user can hibernate and restore as a unit. Storage layout:
+ * the user can hibernate and restore as a unit.
  *
- *   chrome.storage.local.workspaces            → { [id]: Workspace }
- *   chrome.storage.local.windowWorkspaceMap    → { [windowId]: workspaceId }
+ * Storage layout (Phase 9: metadata cross-device sync):
+ *   chrome.storage.sync.workspaceMetadata     → { [id]: Metadata }
+ *   chrome.storage.local.workspaceSnapshots   → { [id]: TabSnapshot[] }
+ *   chrome.storage.local.windowWorkspaceMap   → { [windowId]: workspaceId }
+ *
+ * Why split:
+ * - sync has an 8KB-per-key budget; a workspace with 30 tabs is already
+ *   2-3KB, so we'd hit the cap with just a few workspaces.
+ * - The user-visible identity (name, color, icon, bookmark hint) IS small
+ *   and useful to mirror across devices.
+ * - tabSnapshot is per-device anyway — restoring on another machine should
+ *   open the user's CURRENT machine's tabs, not yesterday's laptop's.
+ * - windowWorkspaceMap uses ephemeral chrome window ids, useless on another
+ *   device. Stays local.
+ *
+ * Legacy migration:
+ *   Phase 6 stored a unified `chrome.storage.local.workspaces` key.
+ *   On first run after Phase 9, we split it into metadata + snapshots and
+ *   drop the legacy key.
  *
  * @typedef {Object} Workspace
  * @property {string} id
@@ -20,21 +37,13 @@
  * @property {string} url
  * @property {string} title
  * @property {boolean} [pinned]
- *
- * Design choices:
- * - Storage in `local` not `sync`: snapshots can hold dozens of tabs, far
- *   exceeding sync's 8KB-per-key budget. Phase 9 will add an opt-in sync
- *   variant for the workspace metadata (without snapshots).
- * - In-memory cache mirrors storage; CRUD writes through. Other sidepanels
- *   pick up changes via the cross-sidepanel storage subscriber (Phase 2).
- * - Group membership is intentionally NOT snapshotted in v1. Restoring group
- *   structure requires recreating chrome.tabGroups in a stable order, which
- *   we'll add in a follow-up if user feedback asks for it.
  */
 import { getStorage, setStorage } from '../apiManager.js';
 
-const WORKSPACES_KEY = 'workspaces';
-const WINDOW_WORKSPACE_MAP_KEY = 'windowWorkspaceMap';
+const LEGACY_WORKSPACES_KEY = 'workspaces';            // pre-Phase-9 unified key
+const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // sync
+const WORKSPACE_SNAPSHOTS_KEY = 'workspaceSnapshots';   // local
+const WINDOW_WORKSPACE_MAP_KEY = 'windowWorkspaceMap';  // local (per-device)
 
 const PRESET_COLORS = ['grey', 'blue', 'red', 'yellow', 'green', 'pink', 'purple', 'cyan'];
 const PRESET_ICONS = ['💼', '📚', '🎯', '🧪', '🎨', '🚀', '🏠', '🛒'];
@@ -45,9 +54,39 @@ let workspaces = {};
 let windowWorkspaceMap = {};
 
 export async function initWorkspaces() {
-    const result = await getStorage('local', [WORKSPACES_KEY, WINDOW_WORKSPACE_MAP_KEY]);
-    workspaces = result[WORKSPACES_KEY] || {};
-    windowWorkspaceMap = result[WINDOW_WORKSPACE_MAP_KEY] || {};
+    const [syncRes, localRes] = await Promise.all([
+        getStorage('sync', [WORKSPACE_METADATA_KEY]),
+        getStorage('local', [WORKSPACE_SNAPSHOTS_KEY, WINDOW_WORKSPACE_MAP_KEY, LEGACY_WORKSPACES_KEY]),
+    ]);
+
+    let metadata = syncRes[WORKSPACE_METADATA_KEY] || {};
+    let snapshots = localRes[WORKSPACE_SNAPSHOTS_KEY] || {};
+    windowWorkspaceMap = localRes[WINDOW_WORKSPACE_MAP_KEY] || {};
+
+    // One-time migration from Phase 6's unified `workspaces` key.
+    const legacy = localRes[LEGACY_WORKSPACES_KEY];
+    const noNewData = Object.keys(metadata).length === 0 && Object.keys(snapshots).length === 0;
+    if (legacy && Object.keys(legacy).length > 0 && noNewData) {
+        for (const [id, ws] of Object.entries(legacy)) {
+            const { tabSnapshot, ...meta } = ws;
+            metadata[id] = meta;
+            snapshots[id] = tabSnapshot || [];
+        }
+        await Promise.all([
+            setStorage('sync', { [WORKSPACE_METADATA_KEY]: metadata }),
+            setStorage('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
+        ]);
+        // Drop the legacy key so we don't keep migrating on every init.
+        try { await chrome.storage.local.remove(LEGACY_WORKSPACES_KEY); }
+        catch (err) { console.warn('[workspace] failed to drop legacy key:', err); }
+    }
+
+    // Rebuild the in-memory full-object form so callers don't need to know
+    // about the split storage.
+    workspaces = {};
+    for (const [id, meta] of Object.entries(metadata)) {
+        workspaces[id] = { ...meta, tabSnapshot: snapshots[id] || [] };
+    }
 }
 
 export function getAllWorkspaces() {
@@ -263,8 +302,24 @@ function formatTimestamp() {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+/**
+ * Persists both metadata (sync) and snapshots (local) in parallel. Writes both
+ * on every mutation rather than tracking which side changed — simpler and the
+ * workspace operations are low-frequency enough that the extra write is fine
+ * relative to chrome.storage.sync's 120 writes/minute cap.
+ */
 function persistWorkspaces() {
-    return setStorage('local', { [WORKSPACES_KEY]: workspaces });
+    const metadata = {};
+    const snapshots = {};
+    for (const [id, ws] of Object.entries(workspaces)) {
+        const { tabSnapshot, ...meta } = ws;
+        metadata[id] = meta;
+        snapshots[id] = tabSnapshot || [];
+    }
+    return Promise.all([
+        setStorage('sync', { [WORKSPACE_METADATA_KEY]: metadata }),
+        setStorage('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
+    ]);
 }
 
 function persistWindowMap() {
