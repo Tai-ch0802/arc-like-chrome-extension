@@ -925,5 +925,23 @@
   },
   "cmdPaletteAskAiNoMatch": {
     "message": "AI 找不到合适的结果。"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "侧边栏内快捷键"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "打开命令面板"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "在命令面板结果间移动"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "选择当前项目"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "关闭命令面板"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "这些快捷键仅在侧边栏内生效，无法透过 Chrome 快捷键页面重新指派。"
   }
 }

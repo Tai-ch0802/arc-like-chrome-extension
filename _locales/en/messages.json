@@ -928,5 +928,23 @@
   },
   "cmdPaletteAskAiNoMatch": {
     "message": "AI found no good matches."
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "In-sidepanel shortcuts"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Open Command Palette"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Navigate Command Palette results"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Activate selected result"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Close Command Palette"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "These run inside the sidepanel only and cannot be remapped via the Chrome shortcuts page."
   }
 }
