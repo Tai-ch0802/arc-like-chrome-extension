@@ -42,8 +42,73 @@ export async function initWorkspaceUI() {
         if (area !== 'local') return;
         if (changes.workspaces || changes.windowWorkspaceMap) {
             // Re-init the in-memory cache before re-render, otherwise we'd
-            // render against stale data.
-            wsManager.initWorkspaces().then(renderSwitcher);
+            // render against stale data. .catch so a transient storage error
+            // doesn't surface as an unhandled rejection.
+            wsManager.initWorkspaces()
+                .then(renderSwitcher)
+                .catch(err => console.warn('[workspace] sync reload failed:', err));
+        }
+    });
+
+    installAutoSnapshot();
+    installWindowCleanup();
+
+    // Prune entries for windows that no longer exist (id reuse across sessions
+    // would otherwise let a new window inherit a stale workspace binding).
+    wsManager.pruneWindowWorkspaceMap().catch(err =>
+        console.warn('[workspace] prune failed:', err));
+}
+
+/**
+ * Continuously snapshot the active workspace as the user opens/closes/navigates
+ * tabs in the current window. Without this, the workspace snapshot would only
+ * be updated at switch time — closing the window directly (or browser quit)
+ * would lose all changes since the last switch.
+ *
+ * 1.5s debounce: aggressive enough that a quick window-close still catches
+ * recent changes, gentle enough to avoid hammering chrome.storage on rapid
+ * navigation. There's still a race against the last ~1.5s before window close,
+ * but Chrome offers no "window about to close" hook, so this is the best we
+ * can do without persisting on every event.
+ */
+function installAutoSnapshot() {
+    let snapshotTimer = null;
+    const trigger = () => {
+        clearTimeout(snapshotTimer);
+        snapshotTimer = setTimeout(async () => {
+            const activeId = wsManager.getActiveWorkspaceId(currentWindowId);
+            if (!activeId) return;
+            try {
+                await wsManager.snapshotIntoWorkspace(activeId, currentWindowId);
+            } catch (err) {
+                console.warn('[workspace] auto-snapshot failed:', err);
+            }
+        }, 1500);
+    };
+    chrome.tabs.onCreated.addListener(tab => {
+        if (tab.windowId === currentWindowId) trigger();
+    });
+    chrome.tabs.onRemoved.addListener((_id, info) => {
+        if (info.windowId === currentWindowId) trigger();
+    });
+    chrome.tabs.onUpdated.addListener((_id, changeInfo, tab) => {
+        // Only URL changes matter for snapshot fidelity; title flicker and
+        // favicon updates would otherwise debounce-spam storage.
+        if (changeInfo.url && tab.windowId === currentWindowId) trigger();
+    });
+    chrome.tabs.onMoved.addListener((_id, info) => {
+        if (info.windowId === currentWindowId) trigger();
+    });
+}
+
+function installWindowCleanup() {
+    chrome.windows.onRemoved.addListener(async (closedWindowId) => {
+        // Clear that window's binding so the id (Chrome reuses them) can't
+        // resurrect a stale active workspace on a future, unrelated window.
+        try {
+            await wsManager.setActiveWorkspace(closedWindowId, null);
+        } catch (err) {
+            console.warn('[workspace] cleanup on window close failed:', err);
         }
     });
 }
@@ -83,11 +148,21 @@ async function handleSwitch(e) {
         return;
     }
     const currentTabs = await chrome.tabs.query({ windowId: currentWindowId });
+    const isUnbound = !wsManager.getActiveWorkspaceId(currentWindowId);
+
+    // Unbound windows would silently lose their tabs without an explicit hint.
+    // We auto-save them as "Untitled <ts>" in workspaceManager, but the user
+    // deserves to know that's happening before they confirm.
+    const messageKey = isUnbound && currentTabs.length > 0
+        ? 'workspaceSwitchConfirmMessageUnbound'
+        : 'workspaceSwitchConfirmMessage';
+    const fallback = isUnbound && currentTabs.length > 0
+        ? 'Switching to "{ws}" — your current {n} tab(s) aren\'t in any workspace yet. They will be auto-saved to a new "Untitled" workspace before the switch.'
+        : 'Switching to "{ws}" will close {n} tab(s) in this window and open the saved tabs.';
 
     const ok = await modal.showConfirm({
         title: api.getMessage('workspaceSwitchConfirmTitle') || 'Switch workspace',
-        message: (api.getMessage('workspaceSwitchConfirmMessage')
-            || 'Switching to "{ws}" will close {n} tab(s) in this window and open the saved tabs.')
+        message: (api.getMessage(messageKey) || fallback)
             .replace('{ws}', target.name)
             .replace('{n}', String(currentTabs.length)),
         confirmButtonText: api.getMessage('workspaceSwitchConfirmBtn') || 'Switch',
@@ -102,6 +177,13 @@ async function handleSwitch(e) {
         // storage.onChanged subscriber once setActiveWorkspace persists.
     } catch (err) {
         console.error('[workspace] switch failed:', err);
+        // Show the failure to the user so they know the window wasn't changed.
+        await modal.showConfirm({
+            title: api.getMessage('workspaceSwitchFailedTitle') || 'Switch failed',
+            message: api.getMessage('workspaceSwitchFailedMessage')
+                || 'Could not switch workspace. Your current tabs were not changed.',
+            confirmButtonText: api.getMessage('closeButton') || 'OK',
+        });
         renderSwitcher();
     }
 }

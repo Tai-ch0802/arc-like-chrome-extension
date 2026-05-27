@@ -159,19 +159,21 @@ async function snapshotWindowTabs(windowId) {
 
 /**
  * Hibernate-then-restore switch:
- *   1) snapshot current window tabs into the outgoing workspace (so they
- *      can be restored later);
+ *   1) ensure the outgoing tabs are saved somewhere — either the currently-
+ *      bound workspace, or (if the window is unbound) a fresh auto-created
+ *      "Untitled <timestamp>" workspace. NEVER discard unbound tabs silently;
  *   2) open the target workspace's snapshot in the same window;
- *   3) close the original tabs;
+ *   3) close the original tabs IFF we successfully opened at least one new
+ *      tab, otherwise abort to avoid emptying the window;
  *   4) bind window → target workspace.
  *
- * We open new tabs BEFORE closing old ones so Chrome doesn't auto-close the
- * window when the last tab is removed. Empty target snapshot opens one
- * blank tab for the same reason.
+ * Open before close: removing the last tab in a window auto-closes the
+ * window. Empty target snapshot opens one blank tab for the same reason.
  *
  * @param {string} targetId
  * @param {number} windowId
- * @returns {Promise<boolean>} true if switched, false if no-op or invalid.
+ * @returns {Promise<boolean>} true if switched.
+ * @throws if no target tab could be opened (window left untouched).
  */
 export async function switchWorkspace(targetId, windowId) {
     if (!workspaces[targetId]) return false;
@@ -180,6 +182,18 @@ export async function switchWorkspace(targetId, windowId) {
 
     if (currentActiveId) {
         await snapshotIntoWorkspace(currentActiveId, windowId);
+    } else {
+        // Unbound window: auto-save current tabs to a recovery workspace before
+        // we close them. Without this, the user's tabs would vanish on every
+        // first switch after a browser restart (windowWorkspaceMap uses
+        // ephemeral window ids and is not rebuilt on startup).
+        const oldTabs = await chrome.tabs.query({ windowId }).catch(() => []);
+        if (oldTabs.length > 0) {
+            await createWorkspace({
+                name: 'Untitled ' + formatTimestamp(),
+                snapshotWindowId: windowId,
+            });
+        }
     }
 
     const target = workspaces[targetId];
@@ -190,6 +204,7 @@ export async function switchWorkspace(targetId, windowId) {
     const oldTabs = await chrome.tabs.query({ windowId }).catch(() => []);
     const oldTabIds = oldTabs.map(t => t.id);
 
+    let createdCount = 0;
     // Sequential create keeps the restored tab order stable. ~30ms/tab × 30 tabs
     // ≈ 1s worst case, acceptable for an explicit user action behind a confirm.
     for (let i = 0; i < snapshotTabs.length; i++) {
@@ -201,9 +216,16 @@ export async function switchWorkspace(targetId, windowId) {
                 active: i === 0,
                 pinned: s.pinned || false,
             });
+            createdCount++;
         } catch (err) {
             console.warn('[workspace] failed to restore tab', s.url, err);
         }
+    }
+
+    if (createdCount === 0) {
+        // Don't close old tabs if we have nothing to replace them with —
+        // would leave the window empty and Chrome would auto-close it.
+        throw new Error('Could not open any tab from the target workspace snapshot.');
     }
 
     if (oldTabIds.length > 0) {
@@ -216,6 +238,29 @@ export async function switchWorkspace(targetId, windowId) {
 
     await setActiveWorkspace(windowId, targetId);
     return true;
+}
+
+/**
+ * Removes window→workspace entries for windows that no longer exist.
+ * Called on init to clean up ephemeral ids that pile up across sessions.
+ */
+export async function pruneWindowWorkspaceMap() {
+    const allWindows = await chrome.windows.getAll().catch(() => []);
+    const aliveIds = new Set(allWindows.map(w => String(w.id)));
+    let changed = false;
+    for (const wid of Object.keys(windowWorkspaceMap)) {
+        if (!aliveIds.has(wid)) {
+            delete windowWorkspaceMap[wid];
+            changed = true;
+        }
+    }
+    if (changed) await persistWindowMap();
+}
+
+function formatTimestamp() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function persistWorkspaces() {
