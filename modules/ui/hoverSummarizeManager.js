@@ -8,6 +8,7 @@ import * as aiManager from '../aiManager.js';
 import * as state from '../stateManager.js';
 import * as tooltip from './hoverTooltip.js';
 import { tabListContainer } from './elements.js';
+import { extractPageContent } from '../utils/pageContentExtractor.js';
 
 // === State ===
 
@@ -217,31 +218,8 @@ async function triggerSummarize(tabId, anchorEl) {
 
 // === Content Extraction ===
 
-/**
- * Extracts visible text from a tab's page content.
- * @param {number} tabId 
- * @returns {Promise<string|null>} Truncated text or null if extraction fails
- */
-async function extractPageContent(tabId) {
-    try {
-        const results = await chrome.scripting.executeScript({
-            target: { tabId },
-            func: () => {
-                const clone = document.body.cloneNode(true);
-                clone.querySelectorAll('script, style, nav, footer, header, aside, [role="navigation"], [role="banner"]')
-                    .forEach(el => el.remove());
-                return clone.innerText.replace(/\s+/g, ' ').trim();
-            }
-        });
-
-        const text = results?.[0]?.result || '';
-        if (text.length < 20) return null; // Too little content
-        return text.substring(0, 1500); // Token limit guard (FR-2.02)
-    } catch {
-        // chrome://, chrome-extension://, or restricted pages (FR-2.03)
-        return null;
-    }
-}
+// extractPageContent moved to modules/utils/pageContentExtractor.js so it can
+// be reused by the reading-list summary memory feature.
 
 // === Cache Management ===
 

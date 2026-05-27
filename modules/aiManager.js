@@ -114,6 +114,42 @@ export function destroySummarizerSession() {
     }
 }
 
+/**
+ * One-shot summarize. Non-streaming variant for callers that just want the
+ * final text (reading list summary memory). Stricter than checkSummarizerReadiness:
+ * `'available'` only, so we don't silently kick off a model download from a
+ * background event (chrome.readingList.onEntryAdded).
+ *
+ * @param {string} text
+ * @param {string} [domain] - Adds host context to the model prompt.
+ * @returns {Promise<string|null>}
+ */
+export async function summarizeText(text, domain = '') {
+    if (!text || typeof text !== 'string') return null;
+    if (!('Summarizer' in self)) return null;
+    try {
+        const langOpts = _buildSummarizerLangOptions();
+        const availability = await Summarizer.availability(langOpts);
+        if (availability !== 'available') return null;
+    } catch {
+        return null;
+    }
+    const session = await getOrCreateSummarizerSession();
+    if (!session) return null;
+    try {
+        const result = await session.summarize(text, {
+            context: domain
+                ? `Web page from ${domain}. Provide a concise one-sentence summary.`
+                : 'Provide a concise one-sentence summary.',
+        });
+        const out = (result || '').trim();
+        return out || null;
+    } catch (err) {
+        console.warn('[ai] summarizeText failed:', err);
+        return null;
+    }
+}
+
 // === LanguageModel API (Tab Grouping) ===
 
 /** @type {LanguageModel|null} Lazily created and cached session */
@@ -201,6 +237,30 @@ export function destroyLanguageModelSession() {
  */
 export async function triggerLanguageModelDownload(callbacks = {}) {
     await getOrCreateLanguageModelSession(callbacks);
+}
+
+/**
+ * One-shot prompt against the shared LanguageModel session. Strict on
+ * availability (`=== 'available'` only) so callers triggered from
+ * non-user-initiated contexts can't silently start a multi-GB download.
+ *
+ * Callers should structure their prompt to ask for JSON (the session's
+ * systemPrompt enforces JSON output), then parse on their side.
+ *
+ * @param {string} promptText
+ * @returns {Promise<string|null>}
+ */
+export async function runPrompt(promptText) {
+    if (!promptText) return null;
+    if ((await checkModelAvailability()) !== 'available') return null;
+    try {
+        const session = await getOrCreateLanguageModelSession();
+        return await session.prompt(promptText);
+    } catch (err) {
+        console.warn('[ai] runPrompt failed:', err);
+        destroyLanguageModelSession();
+        return null;
+    }
 }
 
 /**
