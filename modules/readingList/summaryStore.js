@@ -45,13 +45,16 @@ export async function deleteSummary(url) {
 
 /**
  * Remove summaries whose URL no longer appears in the live Reading List.
- * Called lazily; the cost of carrying a few stale entries is small but they
- * pile up if the user adds/removes lots of articles.
+ *
+ * Guards against an empty list (cold start, fetch failure) silently wiping
+ * every stored summary — same lesson as PR #143's pruneOrphanedBookmarkTags.
+ * Caller passes the live URL set; we never call chrome.readingList ourselves
+ * so this stays a pure function.
  *
  * @param {string[]} liveUrls
  */
 export async function pruneOrphans(liveUrls) {
-    if (!Array.isArray(liveUrls)) return;
+    if (!Array.isArray(liveUrls) || liveUrls.length === 0) return;
     const alive = new Set(liveUrls);
     let changed = false;
     for (const url of Object.keys(summaries)) {
@@ -61,6 +64,25 @@ export async function pruneOrphans(liveUrls) {
         }
     }
     if (changed) await persist();
+}
+
+/**
+ * Cross-sidepanel sync. When another sidepanel writes a new summary, our
+ * in-memory mirror would otherwise stay stale until the next page load.
+ *
+ * @param {() => void} [onChange]
+ */
+export function subscribeToChanges(onChange) {
+    if (!chrome?.storage?.onChanged) return;
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area !== 'local') return;
+        if (changes[STORAGE_KEY]) {
+            summaries = changes[STORAGE_KEY].newValue || {};
+            try { onChange?.(); } catch (err) {
+                console.warn('[rlSummary] sync callback failed:', err);
+            }
+        }
+    });
 }
 
 function persist() {
