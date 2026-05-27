@@ -901,5 +901,29 @@
   },
   "bmToolsKeepFirstNote": {
     "message": "提示：当某组重复内所有副本都被勾选时，会自动保留第一份。"
+  },
+  "rlSummaryToggleLabel": {
+    "message": "为阅读清单项目记住 AI 摘要"
+  },
+  "rlSummaryDescription": {
+    "message": "当你将一个目前已打开标签页的页面加入阅读清单时，AI 会摘要一次并把结果存在本地，之后即可离线预览。需要 Summarizer 模型已下载完成。"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "问 AI 帮我找标签页或书签"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "问 AI：找出标签页或书签"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "AI 思考中…"
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "AI 建议"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "AI 模型尚未下载。请先点 ✨ 智能整理 触发下载后再试。"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI 找不到合适的结果。"
   }
 }

@@ -14,6 +14,8 @@ import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceUI } from './modules/workspace/workspaceUI.js';
 import * as tagManager from './modules/bookmark/tagManager.js';
 import { openBookmarkToolsDialog } from './modules/bookmark/bookmarkToolsUI.js';
+import * as readingListSummaryStore from './modules/readingList/summaryStore.js';
+import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 
@@ -176,6 +178,10 @@ async function initialize() {
     // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't watching).
     tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
         .catch(err => console.warn('[tags] prune failed:', err));
+    await state.initReadingListSummary();
+    await readingListSummaryStore.initSummaries();
+    initSummaryRecorder();
+    document.addEventListener('readingListSummaryAdded', () => refreshReadingList());
     const bookmarkToolsBtn = document.getElementById('bookmark-tools-btn');
     if (bookmarkToolsBtn) {
         // Mirror the workspace-manage-btn pattern: resolve aria-label at runtime
