@@ -8,6 +8,7 @@
 import * as state from '../stateManager.js';
 import * as api from '../apiManager.js';
 import * as readingListManager from '../readingListManager.js';
+import * as wsManager from '../workspace/workspaceManager.js';
 import { buildActions } from './actions.js';
 
 const MAX_RESULTS_PER_GROUP = 8;
@@ -39,13 +40,31 @@ export async function searchAll(query) {
     ]);
     const bookmarks = getBookmarkResults(q);
     const actions = getActionResults(q);
+    const workspaces = getWorkspaceResults(q);
 
     return [
         { type: 'action', titleKey: 'cmdPaletteGroupActions', items: actions },
+        { type: 'workspace', titleKey: 'cmdPaletteGroupWorkspaces', items: workspaces },
         { type: 'tab', titleKey: 'cmdPaletteGroupTabs', items: tabs },
         { type: 'bookmark', titleKey: 'cmdPaletteGroupBookmarks', items: bookmarks },
         { type: 'reading-list', titleKey: 'cmdPaletteGroupReadingList', items: readingList },
     ].filter(g => g.items.length > 0);
+}
+
+function getWorkspaceResults(q) {
+    const workspaces = wsManager.getAllWorkspaces();
+    return scoreFilter(workspaces, q, w => w.name || '').map(w => ({
+        id: 'workspace-' + w.id,
+        type: 'workspace',
+        icon: w.icon,
+        title: w.name,
+        subtitle: `${(w.tabSnapshot || []).length} tab(s)`,
+        handler: async () => {
+            // Lazy-import to avoid circular dep with workspaceUI.
+            const { requestSwitchTo } = await import('../workspace/workspaceUI.js');
+            await requestSwitchTo(w.id);
+        },
+    }));
 }
 
 async function getTabResults(q) {

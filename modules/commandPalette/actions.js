@@ -60,5 +60,22 @@ export function buildActions() {
             titleKey: 'cmdPaletteActionSettings',
             handler: () => document.getElementById('settings-toggle')?.click(),
         },
+        {
+            id: 'action-create-workspace',
+            type: 'action',
+            icon: '💼',
+            titleKey: 'cmdPaletteActionCreateWorkspace',
+            handler: async () => {
+                const { createWorkspaceFromCurrent } = await import('../workspace/workspaceUI.js');
+                await createWorkspaceFromCurrent();
+            },
+        },
+        {
+            id: 'action-manage-workspaces',
+            type: 'action',
+            icon: '📦',
+            titleKey: 'cmdPaletteActionManageWorkspaces',
+            handler: () => document.getElementById('workspace-manage-btn')?.click(),
+        },
     ];
 }

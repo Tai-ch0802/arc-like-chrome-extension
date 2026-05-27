@@ -3085,3 +3085,100 @@ mark.url-match {
 .cmd-palette-hint-key + span {
     margin-right: 8px;
 }
+
+/* === Workspace Switcher (top of sidepanel) === */
+.workspace-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.workspace-switcher {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 6px;
+    font-size: 0.85em;
+    background: var(--element-bg-color);
+    color: var(--text-color-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.workspace-switcher:focus {
+    outline: 1px solid var(--accent-color);
+}
+
+.workspace-manage {
+    min-width: 280px;
+}
+
+.workspace-manage__list {
+    margin-bottom: 12px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.workspace-manage__empty {
+    padding: 14px;
+    text-align: center;
+    color: var(--text-color-primary);
+    opacity: 0.55;
+    font-size: 0.9em;
+}
+
+.workspace-manage__row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.workspace-manage__label {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-color-primary);
+}
+
+.workspace-manage__label.active {
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.workspace-manage__btn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--element-bg-color);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.workspace-manage__btn:hover {
+    background: var(--element-bg-hover-color);
+}
+
+.workspace-manage__create {
+    width: 100%;
+    padding: 8px;
+    border: 1px dashed var(--border-color);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-color-primary);
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.workspace-manage__create:hover {
+    background: var(--element-bg-hover-color);
+    border-style: solid;
+}

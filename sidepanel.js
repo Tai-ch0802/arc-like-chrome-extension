@@ -10,6 +10,8 @@ import * as readingListRenderer from './modules/ui/readingListRenderer.js';
 import * as rssManager from './modules/rssManager.js';
 import * as hoverSummarize from './modules/ui/hoverSummarizeManager.js';
 import { initCommandPalette } from './modules/commandPalette/index.js';
+import * as workspaceManager from './modules/workspace/workspaceManager.js';
+import { initWorkspaceUI } from './modules/workspace/workspaceUI.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 
@@ -166,6 +168,8 @@ async function initialize() {
     rssManager.initRssManager().catch(console.error);
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
+    await workspaceManager.initWorkspaces(); // Load workspace cache before UI uses it
+    await initWorkspaceUI(); // Workspace switcher dropdown + manage dialog
     initCommandPalette(); // Cmd+K / Ctrl+K unified search & actions overlay
 
     // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,
