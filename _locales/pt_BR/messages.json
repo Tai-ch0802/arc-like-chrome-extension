@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Ativar entrada multimodal do Prompt API: abra o link e defina como \"Enabled\"."
+  },
+  "aiAutoNamingDescription": {
+    "message": "Quando você cria um novo grupo de abas sem título, a IA sugere um rótulo curto (Emoji + nome). Funciona somente se o modelo local já estiver baixado."
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "Nomear automaticamente grupos de abas vazios"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Analisando abas..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Limpar"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "Limpeza de abas sugerida por IA"
+  },
+  "aiCleanupConfirm": {
+    "message": "Fechar seleção"
+  },
+  "aiCleanupDescription": {
+    "message": "Adiciona um botão ao lado do Smart Group que pergunta à IA quais abas você pode fechar."
+  },
+  "aiCleanupEmpty": {
+    "message": "Suas abas estão organizadas — nada para limpar."
+  },
+  "aiCleanupError": {
+    "message": "A limpeza IA falhou. Tente novamente mais tarde."
+  },
+  "aiCleanupFound": {
+    "message": "A IA sugere {count} aba(s) que você provavelmente pode fechar. Desmarque as que quiser manter."
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "O modelo IA ainda não foi baixado. Clique primeiro em ✨ Smart Group para iniciar o download."
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Abas que você poderia fechar"
+  },
+  "aiCleanupSelectAll": {
+    "message": "Selecionar tudo"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Mostrar botão 🧹 Limpeza de abas"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Remover selecionados"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "Remover {n} favorito(s)? Esta ação não pode ser desfeita."
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Remover favoritos"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ Nova tag"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "Nome da nova tag"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "A varredura tenta alcançar cada favorito http(s) via HEAD. Apenas links inacessíveis pela rede são sinalizados (HTTP 404 não pode ser detectado sem CORS por origem, ver notas)."
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Links mortos"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Excluir tag \"{t}\"? Os favoritos não serão excluídos, apenas a vinculação da tag."
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Excluir tag"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "Sem favoritos duplicados. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Encontrado(s) {n} grupo(s) de duplicados. Desmarque a cópia que quer manter em cada grupo."
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Duplicados"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Nota: em grupos onde todas as cópias estão marcadas, a primeira é mantida automaticamente."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} de {total} falharam ({pct}%) — incomumente alto e parece mais um problema de rede que links mortos. Revise com cuidado antes de remover."
+  },
+  "bmToolsNoBookmarks": {
+    "message": "Sem favoritos para varrer."
+  },
+  "bmToolsOfflineWarning": {
+    "message": "Você parece estar offline. Conecte-se à internet e tente novamente — sem rede, a varredura marcaria incorretamente cada favorito como inacessível."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Nota: a varredura envia uma requisição HEAD para o host de cada favorito."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Remover favoritos inacessíveis marcados"
+  },
+  "bmToolsScanDone": {
+    "message": "Varredura concluída: {n} link(s) inacessível(eis)."
+  },
+  "bmToolsScanProgress": {
+    "message": "Verificando… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Iniciar varredura"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "Ainda sem tags."
+  },
+  "bmToolsTagsTab": {
+    "message": "Tags"
+  },
+  "bmToolsTitle": {
+    "message": "Ferramentas para favoritos"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Pedir à IA para encontrar abas ou favoritos"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Abrir Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Criar Workspace a partir das abas atuais"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Gerenciar Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "Nova aba à direita"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Atualizar favoritos"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Abrir configurações"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group todas as abas"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Paleta de comandos"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "A IA não encontrou boas correspondências."
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "Sugestões da IA"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Perguntando à IA…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Pedir à IA: encontrar abas ou favoritos"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "O modelo IA ainda não foi baixado. Acione primeiro ✨ Smart Group para baixar, depois tente novamente."
+  },
+  "cmdPaletteEmpty": {
+    "message": "Sem resultados"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Ações"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Favoritos"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Lista de leitura"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Abas"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "fechar"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "navegar"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "selecionar"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Buscar abas, favoritos ou ações..."
+  },
+  "rlSummaryDescription": {
+    "message": "Quando você adiciona à sua lista de leitura uma página aberta em uma aba, a IA a resume uma vez e salva o resultado localmente para que você possa pré-visualizar mais tarde — mesmo offline. Requer que o modelo Summarizer já esteja disponível."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Lembrar o resumo IA para itens da lista de leitura"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Abrir paleta de comandos"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Fechar paleta de comandos"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Navegar pelos resultados da paleta"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Ativar resultado selecionado"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Atalhos do painel lateral"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "Estes funcionam apenas dentro do painel lateral e não podem ser remapeados pela página de atalhos do Chrome."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ Criar a partir das abas atuais"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Nomear este Workspace"
+  },
+  "workspaceDelete": {
+    "message": "Excluir"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "Excluir \"{ws}\"? Esta ação não pode ser desfeita."
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Excluir Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "Ainda sem Workspaces."
+  },
+  "workspaceManageTitle": {
+    "message": "Gerenciar Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— sem Workspace —"
+  },
+  "workspaceRename": {
+    "message": "Renomear"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Trocar"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Trocar para \"{ws}\" fechará {n} aba(s) nesta janela e abrirá as abas salvas."
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Trocar para \"{ws}\" — suas {n} aba(s) atuais não estão em nenhum Workspace. Serão salvas automaticamente em um novo Workspace \"Untitled\" antes da troca."
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Trocar de Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Não foi possível trocar de Workspace. Suas abas atuais não foram alteradas."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Troca falhou"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Workspace ativo"
   }
 }

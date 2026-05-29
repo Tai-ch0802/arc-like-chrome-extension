@@ -137,12 +137,14 @@ graph LR
 |------|------|------|
 | `sidepanel.js` | **[總指揮]** | 應用程式進入點，事件監聽與模組初始化 |
 | `modules/uiManager.js` | **[UI Facade]** | UI 模組入口，Facade 模式 |
-| `modules/apiManager.js` | **[通訊]** | Chrome API 封裝層 |
+| `modules/apiManager.js` | **[通訊]** | Chrome API 封裝層；含 `setStorageStrict`（Phase 9）回報 chrome.runtime.lastError，給關鍵 migration 用 |
 | `modules/stateManager.js` | **[狀態]** | UI 狀態與持久化關聯管理 |
 | `modules/modalManager.js` | **[互動]** | 客製化對話框 |
 | `modules/dragDropManager.js` | **[功能]** | SortableJS 拖曳邏輯 |
 | `modules/searchManager.js` | **[功能]** | 搜尋過濾邏輯 |
 | `modules/icons.js` | **[資源]** | 集中管理所有 SVG 圖示 |
+| `modules/aiManager.js` | **[AI]** | LanguageModel + Summarizer API；Phase 4/8 加 `generateGroupName` / `generateCleanupSuggestions` / `summarizeText` / `runPrompt` |
+| `modules/keyboardManager.js` | **[功能]** | sidepanel-only 鍵盤快捷鍵（Phase 9；繞過 chrome.commands 4-command 上限） |
 
 ### UI 子模組 (`modules/ui/`)
 | 檔案 | 職責 |
@@ -151,8 +153,58 @@ graph LR
 | `settingManager.js` | 設定與主題切換邏輯 |
 | `customThemeManager.js` | 自訂主題配色 |
 | `searchUI.js` | 搜尋介面更新 |
-| `tabRenderer.js` | 分頁渲染 |
+| `tabRenderer.js` | 分頁渲染（Phase 3 拆解後從 561 → 353 行） |
+| `tab/tabListeners.js` | 分頁事件監聽（Phase 3 拆出） |
+| `tab/splitViewRenderer.js` | Split View 分頁渲染（Phase 3 拆出） |
 | `bookmarkRenderer.js` | 書籤渲染 |
+| `aiGrouperUI.js` | ✨ Smart Group 介面 + Toast 復原 |
+| `aiCleanupUI.js` | 🧹 AI Tab Cleanup 介面（Phase 4b） |
+
+### Command Palette (`modules/commandPalette/`, Phase 5)
+| 檔案 | 職責 |
+|------|------|
+| `index.js` | ⌘K / Ctrl+K 入口 + overlay UI |
+| `dataProvider.js` | 多源（tabs / bookmarks / reading list / actions / workspaces）資料聚合與分組 |
+| `actions.js` | 可執行動作集合（new tab / smart group / AI cleanup / workspace 管理…） |
+| `nlSearch.js` | AI 自然語言搜尋（reranker；Phase 8b） |
+
+### Workspace (`modules/workspace/`, Phase 6, Phase 9 重構儲存)
+| 檔案 | 職責 |
+|------|------|
+| `workspaceManager.js` | CRUD + 儲存分離 (metadata→sync / tabSnapshot→local) + legacy 一次性遷移 + onChanged 跨裝置同步 |
+| `workspaceUI.js` | 切換器 / 管理 modal / 切換確認（unbound tabs 自動 auto-save） |
+
+### Bookmark Tools (`modules/bookmark/`, Phase 7)
+| 檔案 | 職責 |
+|------|------|
+| `bookmarkToolsUI.js` | Bookmark Tools modal（Tags / Duplicates / Dead Links 三 tab） |
+| `tagManager.js` | 多標籤管理（chrome.storage.local 自建 tag index） |
+| `dedupe.js` | 重複書籤偵測與批次清理 |
+| `deadLinkChecker.js` | 死連結 HEAD scan（navigator.onLine 預檢 + 預設未勾選 + suspicious-ratio 警告） |
+| `bookmarkUtils.js` | URL normalize / host 抽取等純函式 |
+
+### Reading List Summary (`modules/readingList/`, Phase 8a)
+| 檔案 | 職責 |
+|------|------|
+| `summaryStore.js` | 摘要本機儲存（含 pruneOrphans 空陣列守衛） |
+| `summaryRecorder.js` | 加入時自動摘要並存檔（離線可預覽） |
+
+### Utils (`modules/utils/`)
+| 檔案 | 職責 |
+|------|------|
+| `colorUtils.js` | HSL/HEX 轉換、WCAG 對比度 |
+| `imageUtils.js` | 圖片壓縮、WebP 轉換 |
+| `textUtils.js` | escapeHtml 等 XSS 防護 |
+| `domUtils.js` | DOM helper |
+| `functionUtils.js` | function helper |
+| `searchUtils.js` | 搜尋純函式（Phase 1.2 從 searchManager 提取，避免測試連帶 import elements.js） |
+| `pageContentExtractor.js` | 頁面內容擷取（Phase 8；給 reading list 摘要與 NL search 用） |
+
+### Testing 基礎建設
+| 檔案 | 職責 |
+|------|------|
+| `jest.config.js` | Jest 設定（jsdom 環境）— Phase 1.2 補骨架 |
+| `jest.esbuild-transform.cjs` | esbuild ESM → CJS transform，避免引入 babel-jest |
 
 ---
 
@@ -390,4 +442,4 @@ Jules 可自動掃描 `#TODO` 註解並提出改善建議。
 
 ---
 
-*Last updated: 2026-01-23*
+*Last updated: 2026-05-29 (Phase 11 — 同步 Phase 4-9 新模組與 i18n 全語對齊)*

@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Aktifkan input multimodal Prompt API: buka tautan dan atur ke \"Enabled\"."
+  },
+  "aiAutoNamingDescription": {
+    "message": "Saat Anda membuat tab group baru tanpa judul, AI menyarankan label pendek (Emoji + nama). Hanya berjalan jika model lokal sudah diunduh."
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "Beri nama otomatis tab group kosong"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Menganalisis tab..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Cleanup"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "Tab cleanup yang disarankan AI"
+  },
+  "aiCleanupConfirm": {
+    "message": "Tutup yang dipilih"
+  },
+  "aiCleanupDescription": {
+    "message": "Menambahkan tombol di sebelah Smart Group yang bertanya pada AI tab mana yang bisa Anda tutup."
+  },
+  "aiCleanupEmpty": {
+    "message": "Tab Anda rapi — tidak ada yang perlu dibersihkan."
+  },
+  "aiCleanupError": {
+    "message": "Cleanup AI gagal. Coba lagi nanti."
+  },
+  "aiCleanupFound": {
+    "message": "AI menyarankan {count} tab yang mungkin bisa Anda tutup. Hapus centang yang ingin Anda simpan."
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "Model AI belum diunduh. Klik ✨ Smart Group terlebih dahulu untuk memulai unduhan."
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Tab yang mungkin bisa ditutup"
+  },
+  "aiCleanupSelectAll": {
+    "message": "Pilih semua"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Tampilkan tombol 🧹 Tab Cleanup"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Hapus pilihan"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "Hapus {n} bookmark? Aksi ini tidak bisa dibatalkan."
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Hapus bookmark"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ Tag baru"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "Nama tag baru"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Scan mencoba menjangkau setiap bookmark http(s) via HEAD. Hanya link yang tidak terjangkau jaringan yang ditandai (HTTP 404 tidak dapat dideteksi tanpa per-origin CORS, lihat notes)."
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Dead Links"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Hapus tag \"{t}\"? Bookmark tidak akan dihapus, hanya binding tag."
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Hapus tag"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "Tidak ada bookmark duplikat. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Ditemukan {n} grup duplikat. Hapus centang salinan yang ingin Anda simpan di setiap grup."
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Duplikat"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Catatan: di grup di mana setiap salinan dicentang, yang pertama disimpan otomatis."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} dari {total} gagal ({pct}%) — sangat tinggi dan lebih terlihat seperti masalah jaringan daripada dead link. Tinjau dengan hati-hati sebelum menghapus."
+  },
+  "bmToolsNoBookmarks": {
+    "message": "Tidak ada bookmark untuk discan."
+  },
+  "bmToolsOfflineWarning": {
+    "message": "Anda tampaknya offline. Hubungkan ke internet dan coba lagi — tanpa jaringan, scan akan salah menandai setiap bookmark sebagai unreachable."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Catatan: scan mengirim HEAD request ke host setiap bookmark."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Hapus bookmark unreachable yang dicentang"
+  },
+  "bmToolsScanDone": {
+    "message": "Scan selesai: {n} link unreachable."
+  },
+  "bmToolsScanProgress": {
+    "message": "Memeriksa… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Mulai scan"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "Belum ada tag."
+  },
+  "bmToolsTagsTab": {
+    "message": "Tags"
+  },
+  "bmToolsTitle": {
+    "message": "Bookmark Tools"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Minta AI mencari tab atau bookmark"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Buka Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Buat Workspace dari tab saat ini"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Kelola Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "Tab baru di kanan"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Refresh bookmark"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Buka pengaturan"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group semua tab"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Command Palette"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI tidak menemukan kecocokan yang baik."
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "Saran AI"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Bertanya pada AI…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Minta AI: temukan tab atau bookmark"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "Model AI belum diunduh. Picu ✨ Smart Group terlebih dahulu untuk mengunduh, lalu coba lagi."
+  },
+  "cmdPaletteEmpty": {
+    "message": "Tidak ada hasil"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Aksi"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Bookmarks"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Reading List"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Tabs"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "tutup"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "navigasi"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "pilih"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Cari tabs, bookmarks atau aksi..."
+  },
+  "rlSummaryDescription": {
+    "message": "Saat Anda menambahkan halaman yang terbuka di tab ke Reading List, AI meringkasnya sekali dan menyimpan hasil secara lokal sehingga Anda bisa pratinjau nanti — bahkan offline. Membutuhkan model Summarizer sudah tersedia."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Ingat ringkasan AI untuk item Reading List"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Buka Command Palette"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Tutup Command Palette"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Navigasi hasil Command Palette"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Aktifkan hasil yang dipilih"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Shortcut di dalam sidepanel"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "Ini hanya berjalan di dalam sidepanel dan tidak dapat dipetakan ulang melalui halaman shortcut Chrome."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ Buat dari tab saat ini"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Beri nama Workspace ini"
+  },
+  "workspaceDelete": {
+    "message": "Hapus"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "Hapus \"{ws}\"? Aksi ini tidak bisa dibatalkan."
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Hapus Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "Belum ada Workspaces."
+  },
+  "workspaceManageTitle": {
+    "message": "Kelola Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— tidak ada Workspace —"
+  },
+  "workspaceRename": {
+    "message": "Ubah nama"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Ganti"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Beralih ke \"{ws}\" akan menutup {n} tab di window ini dan membuka tab yang disimpan."
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Beralih ke \"{ws}\" — {n} tab Anda saat ini tidak ada di Workspace mana pun. Akan auto-saved ke Workspace \"Untitled\" baru sebelum beralih."
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Ganti Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Tidak dapat ganti Workspace. Tab Anda saat ini tidak diubah."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Ganti gagal"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Workspace aktif"
   }
 }

@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Prompt API マルチモーダル入力を有効化：リンクを開き「Enabled」に設定してください。"
+  },
+  "aiAutoNamingDescription": {
+    "message": "タイトルなしの新しいタブグループを作成すると、AI が短いラベル（絵文字 + 名前）を提案します。ローカルモデルが既にダウンロードされている場合のみ動作します。"
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "空のタブグループを自動命名"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "タブを分析中..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 整理"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "AI タブ整理提案"
+  },
+  "aiCleanupConfirm": {
+    "message": "選択したタブを閉じる"
+  },
+  "aiCleanupDescription": {
+    "message": "Smart Group の隣にボタンを追加し、AI が閉じてよいタブを提案します。"
+  },
+  "aiCleanupEmpty": {
+    "message": "タブはきれいです — 整理する必要はありません。"
+  },
+  "aiCleanupError": {
+    "message": "AI 整理に失敗しました。後で再試行してください。"
+  },
+  "aiCleanupFound": {
+    "message": "AI は {count} 個のタブを閉じてよいと提案しています。残したいタブのチェックを外してください。"
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "AI モデルがまだダウンロードされていません。まず ✨ Smart Group をクリックしてダウンロードを開始してください。"
+  },
+  "aiCleanupSectionHeader": {
+    "message": "閉じてよいタブ"
+  },
+  "aiCleanupSelectAll": {
+    "message": "すべて選択"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "🧹 タブ整理ボタンを表示"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "選択を削除"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "{n} 個のブックマークを削除しますか？この操作は元に戻せません。"
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "ブックマークを削除"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ 新しいタグ"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "新しいタグ名"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "スキャンは HEAD ですべての http(s) ブックマークに接続を試みます。ネットワーク到達不可のリンクのみフラグされます（HTTP 404 は CORS なしでは検出不可、ノート参照）。"
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "リンク切れ"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "タグ「{t}」を削除しますか？ブックマーク自体は削除されず、タグ紐付けのみ解除されます。"
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "タグを削除"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "重複したブックマークはありません。🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "{n} 個の重複グループが見つかりました。各グループで残したい複本のチェックを外してください。"
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "重複"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "備考：グループ内のすべての複本がチェックされた場合、最初の複本は自動的に残されます。"
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} / {total} が失敗 ({pct}%) — 異常に高く、ネットワーク問題の可能性が高いです。削除前に注意深く確認してください。"
+  },
+  "bmToolsNoBookmarks": {
+    "message": "スキャンするブックマークがありません。"
+  },
+  "bmToolsOfflineWarning": {
+    "message": "オフラインのようです。インターネットに接続してから再試行してください — ネットワークなしではスキャンがすべてのブックマークを誤って到達不可とフラグします。"
+  },
+  "bmToolsPrivacyNote": {
+    "message": "注意：スキャンは各ブックマークのホストに HEAD リクエストを送信します。"
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "チェックされた到達不可なブックマークを削除"
+  },
+  "bmToolsScanDone": {
+    "message": "スキャン完了：{n} 個の到達不可なリンク。"
+  },
+  "bmToolsScanProgress": {
+    "message": "確認中… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "スキャン開始"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "タグはまだありません。"
+  },
+  "bmToolsTagsTab": {
+    "message": "タグ"
+  },
+  "bmToolsTitle": {
+    "message": "ブックマークツール"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI タブ整理"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "AI にタブやブックマークを探してもらう"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "ブックマークツールを開く"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "現在のタブから Workspace を作成"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Workspaces を管理"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "右に新しいタブ"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "ブックマークを更新"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "設定を開く"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "すべてのタブを Smart Group"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "コマンドパレット"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI は一致するものを見つけられませんでした。"
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "AI 提案"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "AI に問い合わせ中…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "AI に依頼：タブやブックマークを探す"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "AI モデルがまだダウンロードされていません。まず ✨ Smart Group でダウンロードしてから再試行してください。"
+  },
+  "cmdPaletteEmpty": {
+    "message": "結果なし"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "アクション"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "ブックマーク"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "リーディングリスト"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "タブ"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "閉じる"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "移動"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "選択"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "タブ、ブックマーク、アクションを検索..."
+  },
+  "rlSummaryDescription": {
+    "message": "タブで開かれているページをリーディングリストに追加すると、AI が一度要約してローカルに保存するので、後で（オフラインでも）プレビューできます。Summarizer モデルが既に利用可能である必要があります。"
+  },
+  "rlSummaryToggleLabel": {
+    "message": "リーディングリスト項目の AI 要約を記憶"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "コマンドパレットを開く"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "コマンドパレットを閉じる"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "コマンドパレットの結果を移動"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "選択された結果を有効化"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "サイドパネル内ショートカット"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "これらはサイドパネル内のみで動作し、Chrome のショートカットページから再マッピングはできません。"
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ 現在のタブから作成"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "この Workspace に名前を付ける"
+  },
+  "workspaceDelete": {
+    "message": "削除"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "「{ws}」を削除しますか？この操作は元に戻せません。"
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Workspace を削除"
+  },
+  "workspaceManageEmpty": {
+    "message": "Workspaces はまだありません。"
+  },
+  "workspaceManageTitle": {
+    "message": "Workspaces を管理"
+  },
+  "workspaceNoActive": {
+    "message": "— Workspace なし —"
+  },
+  "workspaceRename": {
+    "message": "名前を変更"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "切り替え"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "「{ws}」に切り替えると、このウィンドウの現在の {n} 個のタブが閉じられ、保存されたタブが開きます。"
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "「{ws}」に切り替え — 現在の {n} 個のタブはまだどの Workspace にも保存されていません。切り替え前に新しい「Untitled」Workspace に自動保存されます。"
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Workspace を切り替え"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Workspace の切り替えに失敗しました。現在のタブは変更されていません。"
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "切り替え失敗"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "アクティブな Workspace"
   }
 }

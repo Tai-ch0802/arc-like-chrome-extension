@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Включить мультимодальный ввод Prompt API: откройте ссылку и установите значение \"Enabled\"."
+  },
+  "aiAutoNamingDescription": {
+    "message": "Когда вы создаёте новую пустую группу вкладок, AI предлагает короткую метку (Эмодзи + название). Работает только если локальная модель уже загружена."
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "Автоматически именовать пустые группы вкладок"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Анализ вкладок..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Очистка"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "Очистка вкладок, предложенная AI"
+  },
+  "aiCleanupConfirm": {
+    "message": "Закрыть выбранные"
+  },
+  "aiCleanupDescription": {
+    "message": "Добавляет кнопку рядом с Smart Group, которая спрашивает AI, какие вкладки можно закрыть."
+  },
+  "aiCleanupEmpty": {
+    "message": "Ваши вкладки в порядке — ничего убирать."
+  },
+  "aiCleanupError": {
+    "message": "Очистка AI не удалась. Попробуйте позже."
+  },
+  "aiCleanupFound": {
+    "message": "AI предлагает {count} вкладку(вкладок) к закрытию. Снимите галочку с тех, что хотите оставить."
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "Модель AI ещё не загружена. Сначала нажмите ✨ Smart Group для запуска загрузки."
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Вкладки, которые можно закрыть"
+  },
+  "aiCleanupSelectAll": {
+    "message": "Выбрать всё"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Показать кнопку 🧹 Очистка вкладок"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Удалить выбранное"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "Удалить {n} закладку(закладок)? Это действие нельзя отменить."
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Удалить закладки"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ Новый тег"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "Имя нового тега"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Сканирование пытается достичь каждую http(s)-закладку через HEAD. Только сетево-недостижимые ссылки помечаются (HTTP 404 нельзя обнаружить без per-origin CORS, см. notes)."
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Мёртвые ссылки"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Удалить тег \"{t}\"? Закладки не будут удалены, только привязка тега."
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Удалить тег"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "Нет дубликатов закладок. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Найдено {n} групп(ы) дубликатов. Снимите галочку с копии, которую хотите оставить в каждой группе."
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Дубликаты"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Заметка: в группах, где все копии отмечены, первая копия оставляется автоматически."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} из {total} не удалось ({pct}%) — необычно высоко и больше похоже на проблему сети, чем мёртвые ссылки. Внимательно проверьте перед удалением."
+  },
+  "bmToolsNoBookmarks": {
+    "message": "Нет закладок для сканирования."
+  },
+  "bmToolsOfflineWarning": {
+    "message": "Похоже, вы офлайн. Подключитесь к интернету и попробуйте снова — без сети сканирование ошибочно пометит каждую закладку как недостижимую."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Заметка: сканирование отправляет HEAD-запрос на хост каждой закладки."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Удалить отмеченные недостижимые закладки"
+  },
+  "bmToolsScanDone": {
+    "message": "Сканирование завершено: {n} недостижимых ссылок."
+  },
+  "bmToolsScanProgress": {
+    "message": "Проверка… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Начать сканирование"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "Пока нет тегов."
+  },
+  "bmToolsTagsTab": {
+    "message": "Теги"
+  },
+  "bmToolsTitle": {
+    "message": "Инструменты для закладок"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Попросить AI найти вкладки или закладки"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Открыть Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Создать Workspace из текущих вкладок"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Управление Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "Новая вкладка справа"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Обновить закладки"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Открыть настройки"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group все вкладки"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Палитра команд"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI не нашёл хороших совпадений."
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "Предложения AI"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Спрашиваем AI…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Попросить AI: найти вкладки или закладки"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "Модель AI ещё не загружена. Сначала запустите ✨ Smart Group для загрузки и попробуйте снова."
+  },
+  "cmdPaletteEmpty": {
+    "message": "Нет результатов"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Действия"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Закладки"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Список чтения"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Вкладки"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "закрыть"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "навигация"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "выбрать"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Поиск вкладок, закладок или действий..."
+  },
+  "rlSummaryDescription": {
+    "message": "Когда вы добавляете в Список чтения страницу, открытую во вкладке, AI делает её краткое содержание один раз и сохраняет результат локально, чтобы вы могли просматривать его позже — даже офлайн. Требуется, чтобы модель Summarizer была уже доступна."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Запоминать AI-резюме для элементов Списка чтения"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Открыть палитру команд"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Закрыть палитру команд"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Навигация по результатам палитры"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Активировать выбранный результат"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Сочетания клавиш боковой панели"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "Эти работают только внутри боковой панели и не могут быть переназначены через страницу сочетаний Chrome."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ Создать из текущих вкладок"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Назвать этот Workspace"
+  },
+  "workspaceDelete": {
+    "message": "Удалить"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "Удалить \"{ws}\"? Это действие нельзя отменить."
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Удалить Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "Пока нет Workspaces."
+  },
+  "workspaceManageTitle": {
+    "message": "Управление Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— нет Workspace —"
+  },
+  "workspaceRename": {
+    "message": "Переименовать"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Переключить"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Переключение на \"{ws}\" закроет {n} вкладку(вкладок) в этом окне и откроет сохранённые вкладки."
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Переключение на \"{ws}\" — ваши текущие {n} вкладок не находятся ни в каком Workspace. Они будут автоматически сохранены в новом Workspace \"Untitled\" перед переключением."
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Переключить Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Не удалось переключить Workspace. Ваши текущие вкладки не были изменены."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Переключение не удалось"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Активный Workspace"
   }
 }
