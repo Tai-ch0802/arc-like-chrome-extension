@@ -1,4 +1,5 @@
 import { getStorage, setStorage, getAllWindows } from './apiManager.js';
+import { filterBookmarksUnderFolder } from './bookmark/bookmarkUtils.js';
 
 // --- Smart Auto-Grouping Undo State ---
 
@@ -521,6 +522,15 @@ export function isBookmarkCacheInitialized() {
  */
 export function getBookmarkCache() {
   return bookmarkCache;
+}
+
+/**
+ * 取得指定資料夾子樹下的所有書籤（供局部掃描用）。
+ * @param {string|null} folderId
+ * @returns {Array}
+ */
+export function getBookmarkCacheUnderFolder(folderId) {
+    return filterBookmarksUnderFolder(bookmarkCache, folderId);
 }
 
 /**
