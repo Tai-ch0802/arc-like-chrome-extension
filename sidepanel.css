@@ -3264,6 +3264,29 @@ mark.url-match {
 .bm-tools__tag-chip[data-color="purple"]  { background: #a142f4; color: #fff; }
 .bm-tools__tag-chip[data-color="cyan"]    { background: #007b83; color: #fff; }
 
+/* 書籤列上的標籤圓點 */
+.bookmark-tags { display: inline-flex; gap: 3px; align-items: center; margin: 0 6px; }
+.bookmark-tag-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.bookmark-tag-dot[data-color="grey"]   { background: #5f6368; }
+.bookmark-tag-dot[data-color="blue"]   { background: #1a73e8; }
+.bookmark-tag-dot[data-color="red"]    { background: #d93025; }
+.bookmark-tag-dot[data-color="yellow"] { background: #f9ab00; }
+.bookmark-tag-dot[data-color="green"]  { background: #1e8e3e; }
+.bookmark-tag-dot[data-color="pink"]   { background: #f538a0; }
+.bookmark-tag-dot[data-color="purple"] { background: #a142f4; }
+.bookmark-tag-dot[data-color="cyan"]   { background: #007b83; }
+
+/* Tag picker（編輯對話框內與右鍵 popover 共用） */
+.tag-picker__list { display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto; }
+.tag-picker__row { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.tag-picker__create { margin-top: 8px; background: none; border: none; color: var(--accent-color); cursor: pointer; padding: 4px 0; }
+.tag-picker--popover { padding: 8px; min-width: 180px; }
+
+/* 工具對話框範圍列 */
+.bm-tools__scope { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; }
+.bm-tools__scope-label { font-size: 0.85em; color: var(--secondary-text-color, #5f6368); }
+.bm-tools__scope-btn { background: none; border: 1px solid var(--border-color, #ccc); border-radius: 4px; padding: 2px 8px; cursor: pointer; }
+
 .bm-tools__count {
     flex: 1;
     font-size: 0.85em;
