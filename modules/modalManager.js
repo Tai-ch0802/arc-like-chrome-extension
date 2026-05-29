@@ -217,7 +217,15 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
         titleEl.textContent = title;
         form.appendChild(titleEl);
 
+        const customGetters = {}; // name → getValue()
         fields.forEach(field => {
+            if (field.type === 'custom') {
+                const { element, getValue } = field.render();
+                element.dataset.fieldName = field.name;
+                form.appendChild(element);
+                customGetters[field.name] = getValue;
+                return; // 跳過後續 select/text 處理
+            }
             if (field.type === 'select') {
                 const select = document.createElement('select');
                 select.name = field.name;
@@ -269,6 +277,9 @@ export function showFormDialog({ title, fields, confirmButtonText = 'Confirm' })
             const result = {};
             for (const [name, value] of formData.entries()) {
                 result[name] = value;
+            }
+            for (const [name, getValue] of Object.entries(customGetters)) {
+                result[name] = getValue();
             }
             cleanupAndResolve(result);
         };
