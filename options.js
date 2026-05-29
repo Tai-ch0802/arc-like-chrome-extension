@@ -108,6 +108,26 @@ async function renderAppearance(container) {
     bgImage.setupBackgroundPanelHandlers(bgWrap);
     // Ensure preview reflects current saved background on this page.
     await bgImage.loadAndApplyBackgroundImage();
+
+    // --- Side Panel Position helper (migrated from in-sidepanel dialog) ---
+    // chrome:// 連結透過 chrome.tabs.create({url}) 開啟，因為 <a href="chrome://..."> 被瀏覽器封鎖。
+    const spHeader = document.createElement('h4');
+    spHeader.className = 'settings-subsection-header';
+    spHeader.style.marginTop = '12px';
+    spHeader.textContent = api.getMessage('sidePanelPositionSectionHeader') || 'Side Panel Position';
+    container.appendChild(spHeader);
+
+    const spExplanation = document.createElement('p');
+    spExplanation.textContent = api.getMessage('sidePanelPositionExplanation') || '';
+    container.appendChild(spExplanation);
+
+    const spBtn = document.createElement('button');
+    spBtn.className = 'modal-btn';
+    spBtn.textContent = api.getMessage('sidePanelPositionLinkText') || 'Open Chrome Appearance Settings';
+    spBtn.addEventListener('click', () => {
+        chrome.tabs.create({ url: 'chrome://settings/appearance' });
+    });
+    container.appendChild(makeRow('', spBtn));
 }
 
 const LANGUAGE_OPTIONS = [
@@ -227,7 +247,25 @@ async function renderFeatures(container) {
         const labelText = api.getMessage(feat.labelKey) || feat.key;
         const descText  = feat.descKey ? (api.getMessage(feat.descKey) || '') : undefined;
 
-        container.appendChild(makeRow(labelText, checkbox, descText));
+        const row = makeRow(labelText, checkbox, descText);
+        container.appendChild(row);
+
+        // AI grouping toggle gets a second description line with an external docs link.
+        if (feat.key === 'aiGroupingVisible') {
+            const desc2 = document.createElement('div');
+            desc2.className = 'opt-row__desc';
+            // Build with DOM nodes (part1 + <a> + part2); textContent avoids injection.
+            desc2.appendChild(document.createTextNode(api.getMessage('aiGroupingDescription2_part1') || ''));
+            const docsLink = document.createElement('a');
+            docsLink.href = 'https://developer.chrome.com/docs/ai/get-started';
+            docsLink.target = '_blank';
+            docsLink.rel = 'noopener';
+            docsLink.textContent = api.getMessage('aiGroupingDescription2_linkText') || '';
+            desc2.appendChild(docsLink);
+            desc2.appendChild(document.createTextNode(api.getMessage('aiGroupingDescription2_part2') || ''));
+            // Append into the label/desc column (first child of the .opt-row).
+            row.firstChild.appendChild(desc2);
+        }
 
         checkbox.addEventListener('change', async (e) => {
             // NOTE: no CustomEvent dispatch — sidepanel reacts via D6 storage bridge.
