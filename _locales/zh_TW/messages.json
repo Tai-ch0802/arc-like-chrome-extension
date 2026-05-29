@@ -82,6 +82,27 @@
     "message": "設定",
     "description": "設定對話框的標題。"
   },
+  "settingsNavAppearance": {
+    "message": "外觀"
+  },
+  "settingsNavLanguage": {
+    "message": "語言"
+  },
+  "settingsNavFeatures": {
+    "message": "功能顯示"
+  },
+  "settingsNavAi": {
+    "message": "AI 與實驗"
+  },
+  "settingsNavRss": {
+    "message": "RSS"
+  },
+  "settingsNavShortcuts": {
+    "message": "快捷鍵"
+  },
+  "settingsNavAbout": {
+    "message": "關於"
+  },
   "themeSectionHeader": {
     "message": "外觀",
     "description": "設定中外觀區塊的標題。"

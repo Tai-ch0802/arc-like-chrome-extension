@@ -82,6 +82,27 @@
     "message": "Settings",
     "description": "Title for the settings dialog."
   },
+  "settingsNavAppearance": {
+    "message": "Внешний вид"
+  },
+  "settingsNavLanguage": {
+    "message": "Язык"
+  },
+  "settingsNavFeatures": {
+    "message": "Функции"
+  },
+  "settingsNavAi": {
+    "message": "ИИ и эксперименты"
+  },
+  "settingsNavRss": {
+    "message": "RSS"
+  },
+  "settingsNavShortcuts": {
+    "message": "Сочетания клавиш"
+  },
+  "settingsNavAbout": {
+    "message": "О программе"
+  },
   "themeSectionHeader": {
     "message": "Appearance",
     "description": "Header for the theme/appearance section in settings."

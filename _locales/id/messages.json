@@ -82,6 +82,27 @@
     "message": "Settings",
     "description": "Title for the settings dialog."
   },
+  "settingsNavAppearance": {
+    "message": "Tampilan"
+  },
+  "settingsNavLanguage": {
+    "message": "Bahasa"
+  },
+  "settingsNavFeatures": {
+    "message": "Fitur"
+  },
+  "settingsNavAi": {
+    "message": "AI & Eksperimental"
+  },
+  "settingsNavRss": {
+    "message": "RSS"
+  },
+  "settingsNavShortcuts": {
+    "message": "Pintasan"
+  },
+  "settingsNavAbout": {
+    "message": "Tentang"
+  },
   "themeSectionHeader": {
     "message": "Appearance",
     "description": "Header for the theme/appearance section in settings."
