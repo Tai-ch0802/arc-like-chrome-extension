@@ -18,6 +18,7 @@ import * as readingListSummaryStore from './modules/readingList/summaryStore.js'
 import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
+import { initSettingsBridge } from './modules/ui/settingsBridge.js';
 
 // --- 主要協調器 ---
 
@@ -168,6 +169,8 @@ async function initialize() {
     applyReadingListVisibility(state.isReadingListVisible());
     addEventListeners();
     initializeSearchUI();
+    // Options page writes only to chrome.storage; react to those changes here.
+    initSettingsBridge();
 
     rssManager.initRssManager().catch(console.error);
     keyboard.initialize();
