@@ -19,9 +19,33 @@ import { bulkRemove } from './bookmarkUtils.js';
 
 const TABS = ['tags', 'duplicates', 'deadLinks'];
 
-export function openBookmarkToolsDialog(initialTab = 'tags') {
+let currentScope = { id: null, path: '' };
+
+export function openBookmarkToolsDialog(initialTab = 'tags', { scopeFolderId = null } = {}) {
+    currentScope = { id: scopeFolderId, path: '' };
+
     const container = document.createElement('div');
     container.className = 'bm-tools';
+
+    // 範圍列（僅對 duplicates / deadLinks 有意義）
+    const scopeBar = document.createElement('div');
+    scopeBar.className = 'bm-tools__scope';
+    const scopeLabel = document.createElement('span');
+    scopeLabel.className = 'bm-tools__scope-label';
+    const scopeBtn = document.createElement('button');
+    scopeBtn.className = 'bm-tools__scope-btn';
+    scopeBtn.textContent = api.getMessage('bmToolsChangeScope') || 'Change scope';
+    scopeBtn.addEventListener('click', async () => {
+        const picked = await modal.pickFolder({});
+        if (picked) {
+            currentScope = { id: picked.id, path: picked.id ? picked.path : '' };
+            updateScopeLabel();
+            activateTab(getActiveTabName());
+        }
+    });
+    scopeBar.appendChild(scopeLabel);
+    scopeBar.appendChild(scopeBtn);
+    container.appendChild(scopeBar);
 
     const tabBar = document.createElement('div');
     tabBar.className = 'bm-tools__tabs';
@@ -41,14 +65,29 @@ export function openBookmarkToolsDialog(initialTab = 'tags') {
     content.className = 'bm-tools__content';
     container.appendChild(content);
 
+    let activeTabName = 'tags';
+    function getActiveTabName() { return activeTabName; }
+
+    function updateScopeLabel() {
+        const count = currentScope.id
+            ? state.getBookmarkCacheUnderFolder(currentScope.id).length
+            : (state.getBookmarkCache() || []).filter(b => b.type === 'bookmark').length;
+        const scopeName = currentScope.id
+            ? (currentScope.path || api.getMessage('bmToolsScopeFolder') || 'Selected folder')
+            : (api.getMessage('bmToolsScopeAll') || 'All bookmarks');
+        scopeLabel.textContent = (api.getMessage('bmToolsScopeStatus') || 'Scope: {name} ({n})')
+            .replace('{name}', scopeName).replace('{n}', String(count));
+        scopeBar.style.display = (activeTabName === 'tags') ? 'none' : 'flex';
+    }
+
     function activateTab(tab) {
-        for (const t of TABS) {
-            tabButtons[t].classList.toggle('active', t === tab);
-        }
+        activeTabName = tab;
+        for (const t of TABS) tabButtons[t].classList.toggle('active', t === tab);
         content.innerHTML = '';
         if (tab === 'tags') renderTagsView(content);
-        else if (tab === 'duplicates') renderDuplicatesView(content);
-        else if (tab === 'deadLinks') renderDeadLinksView(content);
+        else if (tab === 'duplicates') renderDuplicatesView(content, currentScope.id);
+        else if (tab === 'deadLinks') renderDeadLinksView(content, currentScope.id);
+        updateScopeLabel();
     }
 
     modal.showCustomDialog({
@@ -140,8 +179,11 @@ function buildTagRow(tag, listEl) {
 
 // === Duplicates tab ===
 
-function renderDuplicatesView(root) {
-    const groups = dedupe.findDuplicates();
+function renderDuplicatesView(root, scopeFolderId = null) {
+    const items = scopeFolderId
+        ? state.getBookmarkCacheUnderFolder(scopeFolderId)
+        : undefined;
+    const groups = dedupe.findDuplicates(items);
     if (groups.length === 0) {
         root.appendChild(makeEmpty(api.getMessage('bmToolsDuplicatesEmpty') || 'No duplicate bookmarks. 🎉'));
         return;
@@ -231,14 +273,14 @@ function renderDuplicatesView(root) {
         document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
         // Re-render the duplicates view to show the leftover (possibly none).
         root.innerHTML = '';
-        renderDuplicatesView(root);
+        renderDuplicatesView(root, scopeFolderId);
     });
     root.appendChild(confirmBtn);
 }
 
 // === Dead links tab ===
 
-function renderDeadLinksView(root) {
+function renderDeadLinksView(root, scopeFolderId = null) {
     const intro = document.createElement('p');
     intro.className = 'bm-tools__intro';
     intro.textContent = api.getMessage('bmToolsDeadLinksIntro')
@@ -274,7 +316,9 @@ function renderDeadLinksView(root) {
         list.innerHTML = '';
         warning.style.display = 'none';
         warning.textContent = '';
-        const cache = state.getBookmarkCache() || [];
+        const cache = scopeFolderId
+            ? state.getBookmarkCacheUnderFolder(scopeFolderId)
+            : (state.getBookmarkCache() || []);
         const bookmarks = cache.filter(b => b.type === 'bookmark').map(b => ({
             id: String(b.id),
             url: b.url,
@@ -370,7 +414,7 @@ function renderDeadLinksView(root) {
             await bulkRemove(ids);
             document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
             root.innerHTML = '';
-            renderDeadLinksView(root);
+            renderDeadLinksView(root, scopeFolderId);
         });
         root.appendChild(removeBtn);
         scanBtn.disabled = false;
