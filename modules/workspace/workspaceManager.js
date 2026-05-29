@@ -37,6 +37,9 @@
  * @property {string} url
  * @property {string} title
  * @property {boolean} [pinned]
+ * @property {number} [groupKey]    - 快照當下的原始 groupId，僅作同一快照內分群識別
+ * @property {string} [groupTitle]
+ * @property {string} [groupColor]
  */
 import { getStorage, setStorage, setStorageStrict } from '../apiManager.js';
 
@@ -251,16 +254,13 @@ export function clusterCreatedTabsByGroup(snapshotTabs, createdTabIds) {
 }
 
 async function snapshotWindowTabs(windowId) {
-    const tabs = await chrome.tabs.query({ windowId }).catch(() => []);
-    return tabs
-        // Don't snapshot chrome:// or about: pages — they often can't be
-        // re-opened in normal tabs and would clutter the restore set.
-        .filter(t => t.url && /^(https?|file|ftp):/i.test(t.url))
-        .map(t => ({
-            url: t.url,
-            title: t.title || '',
-            pinned: Boolean(t.pinned),
-        }));
+    const [tabs, groups] = await Promise.all([
+        chrome.tabs.query({ windowId }).catch(() => []),
+        chrome.tabGroups.query({ windowId }).catch(() => []),
+    ]);
+    const groupsById = new Map(groups.map(g => [g.id, { title: g.title, color: g.color }]));
+    // chrome:// / about: pages are filtered inside buildSnapshotFromTabs.
+    return buildSnapshotFromTabs(tabs, groupsById);
 }
 
 /**
