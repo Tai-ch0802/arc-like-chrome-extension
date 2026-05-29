@@ -902,6 +902,28 @@
   "bmToolsKeepFirstNote": {
     "message": "提示：当某组重复内所有副本都被勾选时，会自动保留第一份。"
   },
+  "bmCtxManageTags": {
+    "message": "管理标签"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "查找此文件夹的重复项"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "检查此文件夹的失效链接"
+  },
+  "bmToolsChangeScope": {
+    "message": "更改范围"
+  },
+  "bmToolsScopeAll": {
+    "message": "所有书签"
+  },
+  "bmToolsScopeFolder": {
+    "message": "选定的文件夹"
+  },
+  "bmToolsScopeStatus": {
+    "message": "范围：{name}（{n}）"
+  },
+
   "rlSummaryToggleLabel": {
     "message": "为阅读清单项目记住 AI 摘要"
   },

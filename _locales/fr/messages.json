@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Note : dans les groupes où chaque copie est cochée, la première est automatiquement gardée."
   },
+  "bmCtxManageTags": {
+    "message": "Gérer les étiquettes"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Rechercher les doublons dans ce dossier"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Vérifier les liens morts dans ce dossier"
+  },
+  "bmToolsChangeScope": {
+    "message": "Changer la portée"
+  },
+  "bmToolsScopeAll": {
+    "message": "Tous les favoris"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Dossier sélectionné"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Portée : {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} sur {total} échoués ({pct}%) — anormalement élevé et ressemble plus à un problème de réseau que des liens morts. Vérifiez attentivement avant de supprimer."
   },

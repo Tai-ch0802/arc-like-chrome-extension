@@ -905,6 +905,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Note: in groups where every copy is checked, the first one is automatically kept."
   },
+  "bmCtxManageTags": {
+    "message": "Manage tags"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Find duplicates in this folder"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Check dead links in this folder"
+  },
+  "bmToolsChangeScope": {
+    "message": "Change scope"
+  },
+  "bmToolsScopeAll": {
+    "message": "All bookmarks"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Selected folder"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Scope: {name} ({n})"
+  },
+
   "rlSummaryToggleLabel": {
     "message": "Remember AI summary for Reading List items"
   },

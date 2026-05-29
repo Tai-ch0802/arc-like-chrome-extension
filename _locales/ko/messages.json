@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "참고: 그룹에서 모든 사본이 선택된 경우, 첫 번째 사본은 자동으로 유지됩니다."
   },
+  "bmCtxManageTags": {
+    "message": "태그 관리"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "이 폴더에서 중복 찾기"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "이 폴더에서 끊긴 링크 확인"
+  },
+  "bmToolsChangeScope": {
+    "message": "범위 변경"
+  },
+  "bmToolsScopeAll": {
+    "message": "모든 북마크"
+  },
+  "bmToolsScopeFolder": {
+    "message": "선택한 폴더"
+  },
+  "bmToolsScopeStatus": {
+    "message": "범위: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} / {total} 실패 ({pct}%) — 비정상적으로 높으며 죽은 링크보다는 네트워크 문제로 보입니다. 삭제 전 신중히 확인하세요."
   },

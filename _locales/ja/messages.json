@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "備考：グループ内のすべての複本がチェックされた場合、最初の複本は自動的に残されます。"
   },
+  "bmCtxManageTags": {
+    "message": "タグを管理"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "このフォルダ内の重複を検索"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "このフォルダ内のリンク切れを確認"
+  },
+  "bmToolsChangeScope": {
+    "message": "範囲を変更"
+  },
+  "bmToolsScopeAll": {
+    "message": "すべてのブックマーク"
+  },
+  "bmToolsScopeFolder": {
+    "message": "選択したフォルダ"
+  },
+  "bmToolsScopeStatus": {
+    "message": "範囲: {name}（{n}）"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} / {total} が失敗 ({pct}%) — 異常に高く、ネットワーク問題の可能性が高いです。削除前に注意深く確認してください。"
   },
