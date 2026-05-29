@@ -3,6 +3,7 @@ import { applyTheme } from './modules/ui/settingManager.js';
 import * as customTheme from './modules/ui/customThemeManager.js';
 import * as bgImage from './modules/ui/backgroundImageManager.js';
 import * as rss from './modules/rssManager.js';
+import { checkModelAvailability, triggerLanguageModelDownload } from './modules/aiManager.js';
 
 const THEME_OPTIONS = [
     { value: 'geek', labelKey: 'themeOptionGeek' },
@@ -478,21 +479,319 @@ async function renderRss(container) {
     await renderList();
 }
 
+/**
+ * Maps an AI availability status string to a badge display object.
+ * Mirrors the same helper in settingManager.js (getStatusBadge).
+ * @param {string} status
+ * @returns {{emoji: string, className: string}}
+ */
+function getStatusBadge(status) {
+    switch (status) {
+        case 'available':   return { emoji: '✅ Available',   className: 'available' };
+        case 'downloading': return { emoji: '⏳ Downloading', className: 'downloading' };
+        case 'downloadable':return { emoji: '📥 Downloadable',className: 'downloadable' };
+        default:            return { emoji: '❌ Unavailable', className: 'unavailable' };
+    }
+}
+
+/**
+ * 渲染 AI 模型狀態區塊：LanguageModel + Summarizer 可用性標誌、下載進度條、
+ * 以及引導使用者開啟 chrome://flags 的設定指南。
+ * chrome:// 連結透過 chrome.tabs.create({url}) 開啟，因為 <a href="chrome://..."> 被瀏覽器封鎖。
+ * @param {HTMLElement} container
+ */
+async function renderAi(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('settingsNavAi') || 'AI & Experimental';
+    container.appendChild(h);
+
+    // --- Model status header ---
+    const statusSection = document.createElement('div');
+    statusSection.className = 'ai-model-status-section';
+
+    const statusHeader = document.createElement('div');
+    statusHeader.className = 'ai-model-status-header';
+    statusHeader.textContent = 'Gemini Nano';
+    statusSection.appendChild(statusHeader);
+
+    // LanguageModel row
+    const lmRow = document.createElement('div');
+    lmRow.className = 'ai-model-status-row';
+    const lmLabel = document.createElement('span');
+    lmLabel.className = 'ai-model-status-label';
+    lmLabel.textContent = 'LanguageModel';
+    const lmBadge = document.createElement('span');
+    lmBadge.id = 'ai-lm-status-badge';
+    lmBadge.className = 'ai-status-badge checking';
+    lmBadge.textContent = '⏳';
+    lmRow.appendChild(lmLabel);
+    lmRow.appendChild(lmBadge);
+    statusSection.appendChild(lmRow);
+
+    // Summarizer row
+    const sumRow = document.createElement('div');
+    sumRow.className = 'ai-model-status-row';
+    const sumLabel = document.createElement('span');
+    sumLabel.className = 'ai-model-status-label';
+    sumLabel.textContent = 'Summarizer';
+    const sumBadge = document.createElement('span');
+    sumBadge.id = 'ai-sum-status-badge';
+    sumBadge.className = 'ai-status-badge checking';
+    sumBadge.textContent = '⏳';
+    sumRow.appendChild(sumLabel);
+    sumRow.appendChild(sumBadge);
+    statusSection.appendChild(sumRow);
+
+    // Progress bar (hidden until download is in progress)
+    const progressContainer = document.createElement('div');
+    progressContainer.id = 'ai-settings-progress-container';
+    progressContainer.className = 'ai-settings-progress-wrap';
+    progressContainer.hidden = true;
+    const progressBar = document.createElement('div');
+    progressBar.className = 'ai-progress';
+    const progressFill = document.createElement('div');
+    progressFill.className = 'ai-progress__fill';
+    progressFill.id = 'ai-settings-progress-fill';
+    progressBar.appendChild(progressFill);
+    const progressText = document.createElement('span');
+    progressText.id = 'ai-settings-progress-text';
+    progressText.className = 'ai-progress-text';
+    progressContainer.appendChild(progressBar);
+    progressContainer.appendChild(progressText);
+    statusSection.appendChild(progressContainer);
+
+    container.appendChild(statusSection);
+
+    // --- Setup guide ---
+    const guide = document.createElement('div');
+    guide.className = 'ai-setup-guide';
+
+    const guideTitle = document.createElement('div');
+    guideTitle.className = 'ai-setup-guide-title';
+    guideTitle.textContent = api.getMessage('aiSetupGuideTitle') || 'How to Enable Gemini Nano';
+    guide.appendChild(guideTitle);
+
+    const steps = [
+        { textKey: 'aiSetupStep1',  url: 'chrome://flags/#optimization-guide-on-device-model' },
+        { textKey: 'aiSetupStep2',  url: 'chrome://flags/#prompt-api-for-gemini-nano' },
+        { textKey: 'aiSetupStep2b', url: 'chrome://flags/#prompt-api-for-gemini-nano-multimodal-input' },
+        { textKey: 'aiSetupStep3',  url: 'chrome://on-device-internals' },
+        { textKey: 'aiSetupStep4',  url: 'chrome://components' },
+    ];
+
+    const ol = document.createElement('ol');
+    ol.className = 'ai-setup-steps';
+    for (const step of steps) {
+        const li = document.createElement('li');
+        const stepText = document.createElement('span');
+        stepText.textContent = api.getMessage(step.textKey) || step.textKey;
+        li.appendChild(stepText);
+
+        const openBtn = document.createElement('button');
+        openBtn.className = 'ai-setup-link-btn';
+        openBtn.textContent = (api.getMessage('aiSetupOpenLink') || 'Open') + ' ↗';
+        openBtn.addEventListener('click', () => {
+            chrome.tabs.create({ url: step.url });
+        });
+        li.appendChild(openBtn);
+        ol.appendChild(li);
+    }
+    guide.appendChild(ol);
+
+    const restartNote = document.createElement('div');
+    restartNote.className = 'ai-setup-restart-note';
+    restartNote.textContent = api.getMessage('aiSetupRestartNote') || '⚠️ Restart Chrome after changing the flags above.';
+    guide.appendChild(restartNote);
+
+    container.appendChild(guide);
+
+    // --- Async status detection (mirrors detectAiModelStatus in settingManager.js) ---
+    (async () => {
+        // LanguageModel
+        const lmStatus = await checkModelAvailability();
+        const lmBadgeInfo = getStatusBadge(lmStatus);
+        lmBadge.textContent = lmBadgeInfo.emoji;
+        lmBadge.className = `ai-status-badge ${lmBadgeInfo.className}`;
+
+        // Summarizer — call Summarizer.availability() directly (same as settingManager)
+        let sumStatus = 'unavailable';
+        if ('Summarizer' in self) {
+            try { sumStatus = await Summarizer.availability() || 'unavailable'; } catch { /* ignore */ }
+        }
+        const sumBadgeInfo = getStatusBadge(sumStatus);
+        sumBadge.textContent = sumBadgeInfo.emoji;
+        sumBadge.className = `ai-status-badge ${sumBadgeInfo.className}`;
+
+        // Trigger download + show progress if needed
+        if (lmStatus === 'downloadable' || lmStatus === 'downloading') {
+            progressContainer.hidden = false;
+            if (lmStatus === 'downloading') {
+                progressBar.classList.add('shimmer');
+                progressText.textContent = 'Downloading...';
+            } else {
+                progressText.textContent = 'Waiting to download...';
+            }
+
+            try {
+                await triggerLanguageModelDownload({
+                    onProgress(loaded) {
+                        if (loaded >= 1) {
+                            progressBar.classList.add('shimmer');
+                            progressText.textContent = 'Loading into memory...';
+                        } else {
+                            progressBar.classList.remove('shimmer');
+                            progressFill.style.width = `${Math.round(loaded * 100)}%`;
+                            progressText.textContent = `${Math.round(loaded * 100)}%`;
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn('[AI] Download trigger failed:', err);
+            }
+
+            const newStatus = await checkModelAvailability();
+            const newBadge = getStatusBadge(newStatus);
+            lmBadge.textContent = newBadge.emoji;
+            lmBadge.className = `ai-status-badge ${newBadge.className}`;
+            progressContainer.hidden = true;
+        }
+    })();
+}
+
+/**
+ * 渲染快捷鍵設定區塊：顯示目前的 Chrome 命令快捷鍵，
+ * 以及側邊欄內部的鍵盤快捷鍵列表。
+ * 「管理快捷鍵」按鈕透過 chrome.tabs.create 開啟 chrome://extensions/shortcuts。
+ * @param {HTMLElement} container
+ */
+async function renderShortcuts(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('settingsNavShortcuts') || 'Shortcuts';
+    container.appendChild(h);
+
+    // --- Fetch current command shortcuts via chrome.commands.getAll() ---
+    let currentShortcut = 'N/A';
+    let newTabRightShortcut = 'N/A';
+    try {
+        const commands = await chrome.commands.getAll();
+        const toggleCmd = commands.find(cmd => cmd.name === '_execute_action');
+        if (toggleCmd && toggleCmd.shortcut) currentShortcut = toggleCmd.shortcut;
+        const newTabRightCmd = commands.find(cmd => cmd.name === 'create-new-tab-right');
+        if (newTabRightCmd && newTabRightCmd.shortcut) newTabRightShortcut = newTabRightCmd.shortcut;
+    } catch (err) {
+        console.error('Failed to get commands:', err);
+    }
+
+    // Explanation text
+    const explanation = document.createElement('p');
+    explanation.textContent = api.getMessage('shortcutExplanation') || 'You can customize the extension\'s shortcuts on Chrome\'s management page.';
+    container.appendChild(explanation);
+
+    // Current shortcut row
+    const openPanelLabel = document.createElement('span');
+    openPanelLabel.textContent = (api.getMessage('currentShortcutLabel') || 'Current Shortcut:') + ' ';
+    const openPanelKbd = document.createElement('kbd');
+    openPanelKbd.textContent = currentShortcut;
+    const openPanelP = document.createElement('p');
+    openPanelP.appendChild(openPanelLabel);
+    openPanelP.appendChild(openPanelKbd);
+    container.appendChild(openPanelP);
+
+    // New tab right shortcut row
+    const newTabLabel = document.createElement('span');
+    newTabLabel.textContent = (api.getMessage('settingsShortcutCreateTabRight') || 'Create new tab on the right:') + ' ';
+    const newTabKbd = document.createElement('kbd');
+    newTabKbd.textContent = newTabRightShortcut;
+    const newTabP = document.createElement('p');
+    newTabP.appendChild(newTabLabel);
+    newTabP.appendChild(newTabKbd);
+    container.appendChild(newTabP);
+
+    // Button to open chrome://extensions/shortcuts
+    const manageBtn = document.createElement('button');
+    manageBtn.className = 'modal-btn';
+    manageBtn.textContent = api.getMessage('shortcutLinkText') || 'Manage Extension Shortcuts';
+    manageBtn.addEventListener('click', () => {
+        chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+    });
+    container.appendChild(manageBtn);
+
+    // In-sidepanel shortcuts sub-section
+    const inPanelHeader = document.createElement('h4');
+    inPanelHeader.className = 'settings-subsection-header';
+    inPanelHeader.style.marginTop = '12px';
+    inPanelHeader.textContent = api.getMessage('shortcutInSidepanelHeader') || 'In-sidepanel shortcuts';
+    container.appendChild(inPanelHeader);
+
+    const shortcutItems = [
+        { keys: ['⌘K', 'Ctrl+K'],  descKey: 'shortcutDescCommandPalette', fallback: 'Open Command Palette' },
+        { keys: ['↑', '↓'],        descKey: 'shortcutDescPaletteNav',     fallback: 'Navigate Command Palette results' },
+        { keys: ['Enter'],          descKey: 'shortcutDescPaletteSelect',  fallback: 'Activate selected result' },
+        { keys: ['Esc'],            descKey: 'shortcutDescPaletteClose',   fallback: 'Close Command Palette' },
+    ];
+
+    const ul = document.createElement('ul');
+    ul.className = 'settings-shortcut-list';
+    for (const item of shortcutItems) {
+        const li = document.createElement('li');
+        for (const key of item.keys) {
+            const kbd = document.createElement('kbd');
+            kbd.textContent = key;
+            li.appendChild(kbd);
+            li.appendChild(document.createTextNode(' '));
+        }
+        li.appendChild(document.createTextNode('— ' + (api.getMessage(item.descKey) || item.fallback)));
+        ul.appendChild(li);
+    }
+    container.appendChild(ul);
+
+    const note = document.createElement('p');
+    note.className = 'settings-shortcut-note';
+    note.textContent = api.getMessage('shortcutInSidepanelNote') || 'These run inside the sidepanel only and cannot be remapped via the Chrome shortcuts page.';
+    container.appendChild(note);
+}
+
+/**
+ * 渲染「關於」區塊：專案說明文字、官方網站連結、GitHub 連結。
+ * 外部 https 連結使用正常 <a> 元素（target="_blank" rel="noopener"）。
+ * @param {HTMLElement} container
+ */
+function renderAbout(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('aboutSectionHeader') || 'About';
+    container.appendChild(h);
+
+    const aboutP = document.createElement('p');
+    aboutP.textContent = api.getMessage('aboutText') || 'This project is open source. You are welcome to join the development! Star us on GitHub!';
+    container.appendChild(aboutP);
+
+    const websiteLink = document.createElement('a');
+    websiteLink.href = 'https://sidebar-for-tabs-bookmarks.taislife.work/';
+    websiteLink.target = '_blank';
+    websiteLink.rel = 'noopener';
+    websiteLink.className = 'modal-link-button';
+    websiteLink.textContent = api.getMessage('officialWebsiteLinkText') || 'Official Website';
+    container.appendChild(websiteLink);
+
+    const githubLink = document.createElement('a');
+    githubLink.href = 'https://github.com/Tai-ch0802/arc-like-chrome-extension';
+    githubLink.target = '_blank';
+    githubLink.rel = 'noopener';
+    githubLink.className = 'modal-link-button';
+    githubLink.style.marginTop = '8px';
+    githubLink.textContent = api.getMessage('githubLinkText') || 'View on GitHub';
+    container.appendChild(githubLink);
+}
+
 const SECTIONS = [
     { id: 'appearance', labelKey: 'settingsNavAppearance', render: renderAppearance },
     { id: 'language',   labelKey: 'settingsNavLanguage',   render: renderLanguage },
     { id: 'features',   labelKey: 'settingsNavFeatures',   render: renderFeatures },
-    { id: 'ai',         labelKey: 'settingsNavAi',         render: c => placeholder(c, 'AI & Experimental') },
+    { id: 'ai',         labelKey: 'settingsNavAi',         render: renderAi },
     { id: 'rss',        labelKey: 'settingsNavRss',        render: renderRss },
-    { id: 'shortcuts',  labelKey: 'settingsNavShortcuts',  render: c => placeholder(c, 'Shortcuts') },
-    { id: 'about',      labelKey: 'settingsNavAbout',      render: c => placeholder(c, 'About') },
+    { id: 'shortcuts',  labelKey: 'settingsNavShortcuts',  render: renderShortcuts },
+    { id: 'about',      labelKey: 'settingsNavAbout',      render: renderAbout },
 ];
-
-function placeholder(container, text) {
-    const h = document.createElement('h2');
-    h.textContent = text;
-    container.appendChild(h);
-}
 
 async function applyOwnTheme() {
     try {
