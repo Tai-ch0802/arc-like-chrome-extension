@@ -82,6 +82,27 @@
     "message": "Settings",
     "description": "Title for the settings dialog."
   },
+  "settingsNavAppearance": {
+    "message": "외관"
+  },
+  "settingsNavLanguage": {
+    "message": "언어"
+  },
+  "settingsNavFeatures": {
+    "message": "기능 표시"
+  },
+  "settingsNavAi": {
+    "message": "AI 및 실험"
+  },
+  "settingsNavRss": {
+    "message": "RSS"
+  },
+  "settingsNavShortcuts": {
+    "message": "단축키"
+  },
+  "settingsNavAbout": {
+    "message": "정보"
+  },
   "themeSectionHeader": {
     "message": "Appearance",
     "description": "Header for the theme/appearance section in settings."

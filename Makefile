@@ -12,6 +12,9 @@ DEV_SRC_FILES = \
     sidepanel.html \
     sidepanel.css \
     sidepanel.js \
+    options.html \
+    options.css \
+    options.js \
     icons \
     lib \
     modules \
@@ -66,6 +69,10 @@ build-prod:
 	@echo "    - Preparing HTML for production..."
 	@cp sidepanel.html $(PROD_BUILD_DIR)/sidepanel.html
 	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/sidepanel.html
+	@npx esbuild options.js --bundle --minify --outfile=$(PROD_BUILD_DIR)/options.js
+	@npx esbuild options.css --minify --outfile=$(PROD_BUILD_DIR)/options.css
+	@cp options.html $(PROD_BUILD_DIR)/options.html
+	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/options.html
 	@rm -f $(PROD_BUILD_DIR)/*.bak
 
 zip-prod:

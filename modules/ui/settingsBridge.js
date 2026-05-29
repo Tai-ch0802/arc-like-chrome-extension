@@ -1,0 +1,89 @@
+/**
+ * Settings propagation bridge.
+ *
+ * The options page (separate context) only writes to chrome.storage. The
+ * sidepanel reacts to storage.onChanged. resolveSettingChangeActions maps a
+ * change set to a list of UI actions; applySettingChanges executes them.
+ */
+import { applyTheme } from './settingManager.js';
+import * as customTheme from './customThemeManager.js';
+import * as bgImage from './backgroundImageManager.js';
+import * as state from '../stateManager.js';
+
+/**
+ * Pure: map a storage change set to UI actions. No side effects.
+ * @param {Object} changes chrome.storage.onChanged changes object
+ * @param {string} areaName 'sync' | 'local'
+ * @returns {Array<object>}
+ */
+export function resolveSettingChangeActions(changes, areaName) {
+    const actions = [];
+    if (areaName === 'sync') {
+        if (changes.theme) actions.push({ type: 'applyTheme', value: changes.theme.newValue });
+        if (changes.customTheme) actions.push({ type: 'applyCustomTheme' });
+        if (changes.backgroundImageConfig) actions.push({ type: 'applyBackground' });
+        if (changes.uiLanguage) actions.push({ type: 'reload' });
+        const evMap = {
+            readingListVisible: 'readingListVisibilityChanged',
+            aiGroupingVisible: 'aiGroupingVisibilityChanged',
+            aiCleanupVisible: 'aiCleanupVisibilityChanged',
+        };
+        for (const [key, event] of Object.entries(evMap)) {
+            if (changes[key]) actions.push({ type: 'dispatch', event, detail: { visible: changes[key].newValue } });
+        }
+        const refreshKeys = [
+            'readingListVisible',
+            'aiGroupingVisible',
+            'aiCleanupVisible',
+            'aiAutoNamingEnabled',
+            'hoverSummarizeEnabled',
+            'readingListSummaryEnabled',
+        ];
+        for (const key of refreshKeys) {
+            if (changes[key]) actions.push({ type: 'refreshState', key });
+        }
+    } else if (areaName === 'local') {
+        if (changes.custom_bg_image_data) actions.push({ type: 'applyBackground' });
+    }
+    return actions;
+}
+
+/** Executes actions in the sidepanel context. */
+export async function applySettingChanges(actions) {
+    for (const a of actions) {
+        try {
+            if (a.type === 'applyTheme') {
+                if (a.value === 'custom') await customTheme.loadAndApplyCustomTheme();
+                else applyTheme(a.value);
+            } else if (a.type === 'applyCustomTheme') {
+                await customTheme.loadAndApplyCustomTheme();
+            } else if (a.type === 'applyBackground') {
+                await bgImage.loadAndApplyBackgroundImage();
+            } else if (a.type === 'reload') {
+                window.location.reload();
+            } else if (a.type === 'dispatch') {
+                document.dispatchEvent(new CustomEvent(a.event, { detail: a.detail }));
+            } else if (a.type === 'refreshState') {
+                const initByKey = {
+                    readingListVisible: state.initReadingListVisibility,
+                    aiGroupingVisible: state.initAiGroupingVisibility,
+                    aiCleanupVisible: state.initAiCleanupVisibility,
+                    aiAutoNamingEnabled: state.initAiAutoNaming,
+                    hoverSummarizeEnabled: state.initHoverSummarize,
+                    readingListSummaryEnabled: state.initReadingListSummary,
+                };
+                const fn = initByKey[a.key];
+                if (fn) await fn();
+            }
+        } catch (e) { console.warn('[settingsBridge] action failed', a, e); }
+    }
+}
+
+/** Subscribe in the sidepanel. */
+export function initSettingsBridge() {
+    if (!chrome?.storage?.onChanged) return;
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+        const actions = resolveSettingChangeActions(changes, areaName);
+        if (actions.length) applySettingChanges(actions);
+    });
+}

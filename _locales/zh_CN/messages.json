@@ -82,6 +82,27 @@
     "message": "设置",
     "description": "设置对话框的标题。"
   },
+  "settingsNavAppearance": {
+    "message": "外观"
+  },
+  "settingsNavLanguage": {
+    "message": "语言"
+  },
+  "settingsNavFeatures": {
+    "message": "功能显示"
+  },
+  "settingsNavAi": {
+    "message": "AI 与实验"
+  },
+  "settingsNavRss": {
+    "message": "RSS"
+  },
+  "settingsNavShortcuts": {
+    "message": "快捷键"
+  },
+  "settingsNavAbout": {
+    "message": "关于"
+  },
   "themeSectionHeader": {
     "message": "外观",
     "description": "设置中外观部分的标题。"

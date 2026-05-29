@@ -34,7 +34,13 @@ key_files:
   - file_path: modules/ui/elements.js
     description: "[UI] DOM 元素集中管理。負責匯出所有主要 UI 容器與控制元件的 DOM 引用。"
   - file_path: modules/ui/settingManager.js
-    description: "[UI] 設定與主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。"
+    description: "[UI] 主題套用。Phase 12(批D) 精簡為 ~52 行：export applyTheme + initThemeSwitcher（載入時套用 theme/customTheme/背景；齒輪鈕改 chrome.runtime.openOptionsPage 開設定頁）。原 818 行的設定 dialog 已移除，內容遷至 options.js。"
+  - file_path: options.html
+    description: "[UI] 獨立設定頁（options_ui + open_in_tab）。Phase 12(批D) 新增；左側導覽 + 內容區，載入 sidepanel.css(共用元件樣式) + options.css(頁面版面) + options.js。"
+  - file_path: options.js
+    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 7 區塊（外觀/語言/功能/AI/RSS/快捷鍵/關於），重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。"
+  - file_path: modules/ui/settingsBridge.js
+    description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。"
   - file_path: modules/ui/customThemeManager.js
     description: "[UI] 自訂主題管理。負責顏色選擇器面板 UI、使用者自訂配色儲存與載入、以及 JSON 匯出匯入功能。"
   - file_path: modules/ui/backgroundImageManager.js

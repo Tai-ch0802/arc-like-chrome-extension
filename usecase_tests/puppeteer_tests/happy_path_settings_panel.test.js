@@ -1,13 +1,24 @@
 const { setupBrowser, teardownBrowser } = require('./setup');
 
-describe('Settings Panel Use Case', () => {
+/**
+ * The in-sidepanel settings dialog was removed. Clicking the gear button
+ * (#settings-toggle) now calls chrome.runtime.openOptionsPage(), which opens
+ * options.html (options_ui + open_in_tab) in a NEW tab.
+ *
+ * This suite verifies the new behavior:
+ *   1. No .modal-overlay appears after clicking the gear (the old dialog is gone).
+ *   2. Clicking the gear opens a new tab/target whose URL ends with options.html.
+ */
+describe('Settings Panel Use Case (opens options page)', () => {
     let browser;
     let page;
+    let extensionId;
 
     beforeAll(async () => {
         const setup = await setupBrowser();
         browser = setup.browser;
         page = setup.page;
+        extensionId = setup.extensionId;
 
         // Wait for app initialization
         await page.waitForSelector('#tab-list', { timeout: 15000 });
@@ -18,130 +29,67 @@ describe('Settings Panel Use Case', () => {
         await teardownBrowser(browser);
     });
 
-    test('should open settings dialog when clicking settings button', async () => {
-        // Click settings button
-        await page.evaluate(() => document.getElementById('settings-toggle').click());
+    test('clicking the gear opens the options page in a new tab (no in-panel modal)', async () => {
+        const optionsUrl = `chrome-extension://${extensionId}/options.html`;
 
-        // Wait for modal to appear
-        await page.waitForSelector('.modal-overlay', { timeout: 10000 });
+        const matcher = t => /\/options\.html(?:[?#].*)?$/.test(t.url());
 
-        // Verify modal is visible
-        const modalVisible = await page.$('.modal-overlay');
-        expect(modalVisible).not.toBeNull();
+        // Record targets that already point at options.html (should be none).
+        const before = (await browser.targets()).filter(matcher);
+        expect(before.length).toBe(0);
 
-        // Verify theme section exists
-        const themeDropdown = await page.$('#theme-select-dropdown');
-        expect(themeDropdown).not.toBeNull();
+        // Ensure the sidepanel page has focus/visibility before clicking so the
+        // synthetic input event reliably counts as a user activation. Under
+        // concurrent load (maxWorkers) a background page can drop activation,
+        // making chrome.runtime.openOptionsPage() a silent no-op.
+        await page.bringToFront();
+        await page.waitForSelector('#settings-toggle', { visible: true, timeout: 15000 });
 
-        // Close modal for the next test
-        const closeBtn = await page.$('.modal-overlay #closeButton');
-        if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
-    }, 30000);
+        // Detect the options-page target with a generous overall budget. A single
+        // click can be dropped under load (lost user activation -> no-op), so we
+        // re-issue a TRUSTED page.click() on each attempt while the target has not
+        // yet appeared. We set up waitForTarget BEFORE clicking each round to avoid
+        // a race where the target is created before the wait begins.
+        //
+        // page.click() (NOT page.evaluate click) is required: openOptionsPage()
+        // needs real user activation; an untrusted programmatic click is ignored.
+        const OVERALL_TIMEOUT_MS = 20000;
+        const PER_ATTEMPT_MS = 5000;
+        const deadline = Date.now() + OVERALL_TIMEOUT_MS;
+        let optionsTarget = null;
 
-    test('should have collapsible sections in settings', async () => {
-        // Open settings
-        await page.click('#settings-toggle');
-        await page.waitForSelector('.modal-overlay', { timeout: 10000 });
+        while (Date.now() < deadline) {
+            const remaining = Math.max(1000, deadline - Date.now());
+            const waitMs = Math.min(PER_ATTEMPT_MS, remaining);
+            const optionsTargetPromise = browser
+                .waitForTarget(matcher, { timeout: waitMs })
+                .catch(() => null);
 
-        // Find collapsible toggles
-        const collapsibleToggles = await page.$$('.collapsible-toggle');
+            await page.click('#settings-toggle');
 
-        // Should have multiple sections (Theme, Background, Reading List, Shortcuts, Side Panel Position, About)
-        expect(collapsibleToggles.length).toBeGreaterThanOrEqual(3);
-
-        // Close modal for the next test
-        const closeBtn = await page.$('.modal-overlay #closeButton');
-        if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
-    }, 30000);
-
-    test('should expand/collapse sections when clicking headers', async () => {
-        // Open settings
-        await page.click('#settings-toggle');
-        await page.waitForSelector('.modal-overlay', { timeout: 10000 });
-
-        // Get all collapsible toggles
-        const collapsibleToggles = await page.$$('.collapsible-toggle');
-        expect(collapsibleToggles.length).toBeGreaterThan(1);
-
-        // Find a collapsed section (not the first one which is expanded by default)
-        const secondToggle = collapsibleToggles[1];
-
-        // Check initial state (should be collapsed)
-        const initiallyExpanded = await secondToggle.evaluate(el => {
-            return el.getAttribute('aria-expanded') === 'true';
-        });
-        expect(initiallyExpanded).toBe(false);
-
-        // Click to expand
-        await secondToggle.click();
-
-        // Wait for aria-expanded to become 'true'
-        await page.waitForFunction(
-            toggle => toggle.getAttribute('aria-expanded') === 'true',
-            { timeout: 3000 },
-            secondToggle
-        );
-
-        // Verify expanded
-        const afterClickExpanded = await secondToggle.evaluate(el => {
-            return el.getAttribute('aria-expanded') === 'true';
-        });
-        expect(afterClickExpanded).toBe(true);
-
-        // Click to collapse again
-        await secondToggle.click();
-
-        // Wait for aria-expanded to become 'false'
-        await page.waitForFunction(
-            toggle => toggle.getAttribute('aria-expanded') === 'false',
-            { timeout: 3000 },
-            secondToggle
-        );
-
-        // Verify collapsed
-        const finalExpanded = await secondToggle.evaluate(el => {
-            return el.getAttribute('aria-expanded') === 'true';
-        });
-        expect(finalExpanded).toBe(false);
-
-        // Close modal for the next test
-        const closeBtn = await page.$('.modal-overlay #closeButton');
-        if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
-    }, 30000);
-
-    test('should show shortcuts section with current shortcut', async () => {
-        // Open settings
-        await page.click('#settings-toggle');
-        await page.waitForSelector('.modal-overlay', { timeout: 10000 });
-
-        // Find and expand shortcuts section
-        const collapsibleToggles = await page.$$('.collapsible-toggle');
-
-        // Look for the shortcuts section by checking content
-        for (const toggle of collapsibleToggles) {
-            const text = await toggle.evaluate(el => el.textContent);
-            if (text.includes('Shortcut') || text.includes('快捷')) {
-                await toggle.click();
-                // Wait for aria-expanded to become 'true'
-                await page.waitForFunction(
-                    t => t.getAttribute('aria-expanded') === 'true',
-                    { timeout: 3000 },
-                    toggle
-                );
-                break;
-            }
+            optionsTarget = await optionsTargetPromise;
+            if (optionsTarget) break;
         }
 
-        // Check for shortcut display element
-        const shortcutElement = await page.$('#current-shortcut');
-        expect(shortcutElement).not.toBeNull();
+        // The gear MUST have opened the options page. If it never does, this
+        // assertion fails (the test stays meaningful: it breaks if the gear
+        // stops opening the options page).
+        expect(optionsTarget).toBeTruthy();
+        expect(matcher(optionsTarget)).toBe(true);
 
-        // Close modal
-        const closeBtn = await page.$('.modal-overlay #closeButton');
-        if (closeBtn) await closeBtn.click();
-        await page.waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 15000 });
+        // The legacy in-panel dialog must NOT appear in the sidepanel.
+        const modalInPanel = await page.$('.modal-overlay');
+        expect(modalInPanel).toBeNull();
+
+        // Clean up: close any options tab(s) so they don't leak into other
+        // assertions. openOptionsPage() reuses an existing tab, but close every
+        // matching target defensively.
+        try {
+            const optionTargets = (await browser.targets()).filter(matcher);
+            for (const t of optionTargets) {
+                const optPage = await t.page();
+                if (optPage) await optPage.close();
+            }
+        } catch (_) { /* target may already be detached */ }
     }, 30000);
-}, 180000);
+});
