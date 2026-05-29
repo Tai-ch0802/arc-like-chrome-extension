@@ -98,9 +98,13 @@ key_files:
   - file_path: modules/bookmark/deadLinkChecker.js
     description: "[功能] 死連結掃描。Phase 7 新增；用 HEAD 請求批次掃描 http(s) 書籤，含 navigator.onLine 預檢、預設未勾選、suspicious-ratio 警告三重防誤刪。"
   - file_path: modules/bookmark/bookmarkUtils.js
-    description: "[工具] 書籤共用工具。Phase 7 新增；URL normalize、host 抽取等純函式，方便單元測試。"
+    description: "[工具] 書籤共用工具。Phase 7 新增；URL normalize、host 抽取等純函式，方便單元測試。Phase 12 加入 filterBookmarksUnderFolder（依 parentId DFS 取資料夾子樹書籤，供局部掃描）。"
   - file_path: modules/bookmark/bookmarkToolsUI.js
-    description: "[UI] Bookmark Tools modal。Phase 7 新增；整合 Tags / Duplicates / Dead Links 三個 tab。"
+    description: "[UI] Bookmark Tools modal。Phase 7 新增；整合 Tags / Duplicates / Dead Links 三個 tab。Phase 12 加入範圍列（scope bar）+ pickFolder，可限定資料夾子樹做重複/死連結掃描。"
+  - file_path: modules/bookmark/tagPicker.js
+    description: "[UI/工具] 共用標籤勾選元件。Phase 12 新增；createTagPicker 回傳 {element, getSelectedTagIds} 只負責呈現與回傳選取（寫入由呼叫端決定），純函式 diffTagSelection 算 add/remove 差集。右鍵 popover 與編輯對話框共用。"
+  - file_path: modules/ui/bookmarkContextMenu.js
+    description: "[UI] 書籤/資料夾右鍵選單。Phase 12 新增；與分頁用 contextMenuManager 分離。書籤列→複製 URL/管理標籤(就地 tag popover，勾選即時寫入)；資料夾列→整理此資料夾(找重複/查死連結，帶 scopeFolderId)。document click 採 outside-only 關閉，nested modal 不誤關。"
   - file_path: modules/readingList/summaryStore.js
     description: "[功能] Reading List 摘要本機儲存。Phase 8a 新增；存於 chrome.storage.local，含 pruneOrphans 守衛防止空陣列誤刪全部。"
   - file_path: modules/readingList/summaryRecorder.js
