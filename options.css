@@ -1,0 +1,14 @@
+:root { color-scheme: light dark; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg-color, #fff); color: var(--text-color, #202124); }
+.opt-shell { display: flex; min-height: 100vh; max-width: 1000px; margin: 0 auto; }
+.opt-nav { width: 200px; flex: none; border-right: 1px solid var(--border-color, #e0e0e0); padding: 16px 8px; }
+.opt-nav__item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; border-radius: 6px; cursor: pointer; color: inherit; font-size: 14px; }
+.opt-nav__item:hover { background: var(--hover-bg, rgba(0,0,0,0.05)); }
+.opt-nav__item.active { background: var(--accent-color, #1a73e8); color: #fff; }
+.opt-content { flex: 1; padding: 24px 32px; }
+.opt-section { display: none; }
+.opt-section.active { display: block; }
+.opt-section h2 { margin-top: 0; font-size: 18px; }
+.opt-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border-color, #eee); }
+.opt-row__label { font-size: 14px; }
+.opt-row__desc { font-size: 12px; color: var(--secondary-text-color, #5f6368); margin-top: 2px; }
