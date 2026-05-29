@@ -32,6 +32,9 @@
  * @property {string} [bookmarkFolderId]  - optional Chrome bookmark folder hint
  * @property {TabSnapshot[]} tabSnapshot
  * @property {number} lastActiveAt
+ * @property {number} rev          - content revision, bumped on every CONTENT change (NOT on mere activation). Conflict ordering key for Drive sync.
+ * @property {number} updatedAt     - epoch ms of the last content change.
+ * @property {boolean} [syncEnabled] - whether this workspace participates in Google Drive sync (cross-device intent).
  *
  * @typedef {Object} TabSnapshot
  * @property {string} url
@@ -55,6 +58,12 @@ const PRESET_ICONS = ['💼', '📚', '🎯', '🧪', '🎨', '🚀', '🏠', '�
 let workspaces = {};
 /** @type {Object<string, string>} windowId → workspaceId. */
 let windowWorkspaceMap = {};
+
+/** Bump a workspace's content revision + timestamp. Call on CONTENT changes only (not activation). */
+function bumpRev(ws) {
+    ws.rev = (ws.rev || 0) + 1;
+    ws.updatedAt = Date.now();
+}
 
 export async function initWorkspaces() {
     const [syncRes, localRes] = await Promise.all([
@@ -106,6 +115,12 @@ export async function initWorkspaces() {
     workspaces = {};
     for (const [id, meta] of Object.entries(metadata)) {
         workspaces[id] = { ...meta, tabSnapshot: snapshots[id] || [] };
+        // Backward-compat: older stored workspaces lack the sync fields. Default
+        // them so the Drive sync engine never sees undefined. Lazy — no extra
+        // persist here; these defaults flush on the next real mutation.
+        if (typeof workspaces[id].rev !== 'number') workspaces[id].rev = 1;
+        if (typeof workspaces[id].updatedAt !== 'number') workspaces[id].updatedAt = workspaces[id].lastActiveAt || Date.now();
+        if (typeof workspaces[id].syncEnabled !== 'boolean') workspaces[id].syncEnabled = false;
     }
 }
 
@@ -141,6 +156,9 @@ export async function createWorkspace(args) {
         bookmarkFolderId: args.bookmarkFolderId || undefined,
         tabSnapshot: [],
         lastActiveAt: Date.now(),
+        rev: 1,
+        updatedAt: Date.now(),
+        syncEnabled: false,
     };
     if (typeof args.snapshotWindowId === 'number') {
         ws.tabSnapshot = await snapshotWindowTabs(args.snapshotWindowId);
@@ -161,6 +179,20 @@ export async function updateWorkspace(id, updates) {
     if (updates.color !== undefined && PRESET_COLORS.includes(updates.color)) ws.color = updates.color;
     if (updates.icon !== undefined && updates.icon.length <= 4) ws.icon = updates.icon;
     if (updates.bookmarkFolderId !== undefined) ws.bookmarkFolderId = updates.bookmarkFolderId || undefined;
+    bumpRev(ws);
+    await persistWorkspaces();
+    return ws;
+}
+
+/**
+ * Toggle whether a workspace participates in Drive sync. This is opt-in INTENT
+ * (cross-device via metadata), not a content change — does NOT bump rev.
+ * @param {string} id @param {boolean} enabled
+ */
+export async function setWorkspaceSyncEnabled(id, enabled) {
+    const ws = workspaces[id];
+    if (!ws) return null;
+    ws.syncEnabled = Boolean(enabled);
     await persistWorkspaces();
     return ws;
 }
@@ -185,6 +217,7 @@ export async function snapshotIntoWorkspace(id, windowId) {
     if (!ws) return null;
     ws.tabSnapshot = await snapshotWindowTabs(windowId);
     ws.lastActiveAt = Date.now();
+    bumpRev(ws);
     await persistWorkspaces();
     return ws;
 }
