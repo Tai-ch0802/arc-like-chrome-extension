@@ -78,13 +78,13 @@ export function showBookmarkContextMenu(x, y, node, originElement, handlers = {}
 
     function closeMenu() {
         menu.remove();
-        document.removeEventListener('click', closeMenu);
+        document.removeEventListener('click', handleOutside);
         document.removeEventListener('contextmenu', handleOutside);
         if (originElement) originElement.focus();
     }
     function handleOutside(e) { if (!menu.contains(e.target)) closeMenu(); }
     setTimeout(() => {
-        document.addEventListener('click', closeMenu);
+        document.addEventListener('click', handleOutside);
         document.addEventListener('contextmenu', handleOutside);
     }, 0);
 }
