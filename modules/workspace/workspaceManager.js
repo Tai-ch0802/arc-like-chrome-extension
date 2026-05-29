@@ -41,7 +41,7 @@
  * @property {string} [groupTitle]
  * @property {string} [groupColor]
  */
-import { getStorage, setStorage, setStorageStrict } from '../apiManager.js';
+import { getStorage, setStorage, setStorageStrict, addTabToNewGroup } from '../apiManager.js';
 
 const LEGACY_WORKSPACES_KEY = 'workspaces';            // pre-Phase-9 unified key
 const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // sync
@@ -311,19 +311,22 @@ export async function switchWorkspace(targetId, windowId) {
     const oldTabIds = oldTabs.map(t => t.id);
 
     let createdCount = 0;
+    const createdTabIds = [];
     // Sequential create keeps the restored tab order stable. ~30ms/tab × 30 tabs
     // ≈ 1s worst case, acceptable for an explicit user action behind a confirm.
     for (let i = 0; i < snapshotTabs.length; i++) {
         const s = snapshotTabs[i];
         try {
-            await chrome.tabs.create({
+            const newTab = await chrome.tabs.create({
                 windowId,
                 url: s.url,
                 active: i === 0,
                 pinned: s.pinned || false,
             });
+            createdTabIds.push(newTab.id);
             createdCount++;
         } catch (err) {
+            createdTabIds.push(null);
             console.warn('[workspace] failed to restore tab', s.url, err);
         }
     }
@@ -340,6 +343,21 @@ export async function switchWorkspace(targetId, windowId) {
         } catch (err) {
             console.warn('[workspace] failed to close old tabs', err);
         }
+    }
+
+    // Best-effort: rebuild the tab groups the snapshot captured. A failure here
+    // must NOT undo the successful tab restore, so it's fully wrapped.
+    try {
+        const clusters = clusterCreatedTabsByGroup(snapshotTabs, createdTabIds);
+        for (const c of clusters) {
+            try {
+                await addTabToNewGroup(c.tabIds, c.title, c.color, windowId);
+            } catch (err) {
+                console.warn('[workspace] failed to restore tab group', c.title, err);
+            }
+        }
+    } catch (err) {
+        console.warn('[workspace] group restore failed', err);
     }
 
     await setActiveWorkspace(windowId, targetId);
