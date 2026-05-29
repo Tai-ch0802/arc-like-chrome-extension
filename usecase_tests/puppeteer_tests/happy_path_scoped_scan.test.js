@@ -97,17 +97,19 @@ describe('Scoped Folder Duplicate Scan Use Case', () => {
         });
 
         // Modal appears, scoped to folder A's subtree. The context-menu entry
-        // only forwards scopeFolderId (no path), so the label renders the i18n
-        // "Selected folder" name rather than the literal "ScopedA". The
-        // deterministic, locale-agnostic scope signal is the count: A holds
-        // exactly 2 bookmarks. (Parens may be ASCII "(2)" or fullwidth "（2）"
-        // depending on the active UI locale, so match either.)
+        // now forwards the folder's real title, so the label renders the literal
+        // "ScopedA" (folder titles are not translated → locale-independent). The
+        // count is also a deterministic scope signal: A holds exactly 2 bookmarks.
+        // (Parens may be ASCII "(2)" or fullwidth "（2）" depending on the active
+        // UI locale, so match either.)
         await page.waitForSelector('.bm-tools', { timeout: 10000 });
         await page.waitForSelector('.bm-tools__scope-label', { timeout: 5000 });
         await page.waitForFunction(
             () => /[(（]\s*2\s*[)）]/.test(document.querySelector('.bm-tools__scope-label')?.textContent || ''),
             { timeout: 5000 }
         );
+        const scopeLabelText = await page.$eval('.bm-tools__scope-label', el => el.textContent || '');
+        expect(scopeLabelText).toContain('ScopedA');
 
         // 2. Duplicates list shows exactly one group, for DUP_URL — NOT OTHER_URL.
         await page.waitForSelector('.bm-tools__dup-group', { timeout: 5000 });

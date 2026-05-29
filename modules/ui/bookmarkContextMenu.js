@@ -10,7 +10,7 @@ import { createTagPicker } from '../bookmark/tagPicker.js';
  * @param {number} x @param {number} y
  * @param {{id:string,url?:string,title?:string,isFolder:boolean}} node
  * @param {HTMLElement} originElement
- * @param {{ onScanFolder?: (folderId:string, tool:'duplicates'|'deadLinks')=>void,
+ * @param {{ onScanFolder?: (folderId:string, tool:'duplicates'|'deadLinks', folderName?:string)=>void,
  *           onTagsChanged?: (bookmarkId:string)=>void }} handlers
  */
 export function showBookmarkContextMenu(x, y, node, originElement, handlers = {}) {
@@ -42,9 +42,9 @@ export function showBookmarkContextMenu(x, y, node, originElement, handlers = {}
 
     if (node.isFolder) {
         addItem(api.getMessage('bmCtxScanDuplicates') || 'Find duplicates here',
-            () => { handlers.onScanFolder?.(node.id, 'duplicates'); closeMenu(); });
+            () => { handlers.onScanFolder?.(node.id, 'duplicates', node.title); closeMenu(); });
         addItem(api.getMessage('bmCtxScanDeadLinks') || 'Check dead links here',
-            () => { handlers.onScanFolder?.(node.id, 'deadLinks'); closeMenu(); });
+            () => { handlers.onScanFolder?.(node.id, 'deadLinks', node.title); closeMenu(); });
     } else {
         if (node.url) {
             addItem(api.getMessage('copyUrl') || 'Copy URL', async () => {

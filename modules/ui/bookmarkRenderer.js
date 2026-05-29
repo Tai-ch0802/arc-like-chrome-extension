@@ -383,7 +383,7 @@ function initBookmarkListeners(container) {
             isFolder: !node.url,
         }, targetEl, {
             onTagsChanged: () => { if (currentRefreshCallback) currentRefreshCallback(); },
-            onScanFolder: (folderId, tool) => openBookmarkToolsDialog(tool, { scopeFolderId: folderId }),
+            onScanFolder: (folderId, tool, folderName) => openBookmarkToolsDialog(tool, { scopeFolderId: folderId, scopeFolderName: folderName }),
         });
     }, { signal });
 

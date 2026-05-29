@@ -21,8 +21,8 @@ const TABS = ['tags', 'duplicates', 'deadLinks'];
 
 let currentScope = { id: null, path: '' };
 
-export function openBookmarkToolsDialog(initialTab = 'tags', { scopeFolderId = null } = {}) {
-    currentScope = { id: scopeFolderId, path: '' };
+export function openBookmarkToolsDialog(initialTab = 'tags', { scopeFolderId = null, scopeFolderName = '' } = {}) {
+    currentScope = { id: scopeFolderId, path: scopeFolderName || '' };
 
     const container = document.createElement('div');
     container.className = 'bm-tools';
