@@ -191,4 +191,74 @@ describe('Bookmark Tagging Use Case', () => {
             } catch (e) { }
         }
     }, 120000);
+
+    test('should create a new tag via the right-click popover "+ New tag" flow', async () => {
+        const bookmark = await page.evaluate(() => {
+            return new Promise(resolve => {
+                chrome.bookmarks.create({
+                    parentId: '1',
+                    title: 'Tagging NewTag Bookmark',
+                    url: 'https://example.com/tagging-newtag'
+                }, resolve);
+            });
+        });
+        const testBookmarkId = bookmark.id;
+
+        try {
+            await page.reload();
+            await page.waitForSelector('#bookmark-list', { timeout: 10000 });
+            await expandBookmarksBar(page);
+
+            const bookmarkSelector = `.bookmark-item[data-bookmark-id="${testBookmarkId}"]`;
+            await page.waitForSelector(bookmarkSelector, { timeout: 10000 });
+
+            // Open the custom context menu and the manage-tags popover
+            await page.click(bookmarkSelector, { button: 'right' });
+            await page.waitForSelector('.custom-context-menu', { timeout: 5000 });
+            await page.evaluate(() => {
+                const items = Array.from(document.querySelectorAll('.custom-context-menu .context-menu-item'));
+                items[items.length - 1].click();
+            });
+            await page.waitForSelector('.custom-context-menu .tag-picker--popover', { timeout: 5000 });
+
+            // Click "+ New tag" -> opens a nested .modal-overlay prompt.
+            // The nested prompt is OUTSIDE .custom-context-menu, so handleOutside
+            // must ignore .modal-overlay clicks and keep the popover alive.
+            await page.click('.tag-picker--popover .tag-picker__create');
+            await page.waitForSelector('.modal-overlay .modal-input', { timeout: 5000 });
+
+            const newTagName = 'PopoverTag';
+            await page.type('.modal-overlay .modal-input', newTagName);
+            await page.click('.modal-overlay .confirm-btn');
+
+            // Fix 1: createTagPicker dispatches tagselectionchange after createTag,
+            // so the popover listener persists the new tag onto the bookmark.
+            // Assert the bookmark row gains a tag dot.
+            await page.waitForSelector(`${bookmarkSelector} .bookmark-tag-dot`, { timeout: 10000 });
+
+            // Assert storage bookmarkTags contains the newly created tag id for this bookmark.
+            const result = await page.evaluate((id, name) => {
+                return new Promise(resolve => {
+                    chrome.storage.local.get(['tags', 'bookmarkTags'], (res) => {
+                        const tags = res.tags || {};
+                        const newTag = Object.values(tags).find(t => t.name === name);
+                        const bound = (res.bookmarkTags || {})[id] || [];
+                        resolve({ newTagId: newTag ? newTag.id : null, bound });
+                    });
+                });
+            }, testBookmarkId, newTagName);
+
+            expect(result.newTagId).toBeTruthy();
+            expect(result.bound).toContain(result.newTagId);
+        } finally {
+            await cleanupTags();
+            try {
+                await page.evaluate((id) => {
+                    return new Promise(resolve => {
+                        chrome.bookmarks.remove(id, resolve);
+                    });
+                }, testBookmarkId);
+            } catch (e) { }
+        }
+    }, 120000);
 });
