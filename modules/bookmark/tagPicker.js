@@ -74,6 +74,9 @@ export function createTagPicker(initialTagIds = []) {
         const tag = await tagManager.createTag({ name: name.trim() });
         selected.add(tag.id);
         addRow(tag);
+        root.dispatchEvent(new CustomEvent('tagselectionchange', {
+            detail: { tagId: tag.id, checked: true },
+        }));
     });
     root.appendChild(createBtn);
 

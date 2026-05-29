@@ -82,7 +82,11 @@ export function showBookmarkContextMenu(x, y, node, originElement, handlers = {}
         document.removeEventListener('contextmenu', handleOutside);
         if (originElement) originElement.focus();
     }
-    function handleOutside(e) { if (!menu.contains(e.target)) closeMenu(); }
+    function handleOutside(e) {
+        if (menu.contains(e.target)) return;
+        if (e.target.closest && e.target.closest('.modal-overlay')) return; // nested prompt → keep menu
+        closeMenu();
+    }
     setTimeout(() => {
         document.addEventListener('click', handleOutside);
         document.addEventListener('contextmenu', handleOutside);
