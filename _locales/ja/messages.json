@@ -82,6 +82,27 @@
     "message": "Settings",
     "description": "Title for the settings dialog."
   },
+  "settingsNavAppearance": {
+    "message": "外観"
+  },
+  "settingsNavLanguage": {
+    "message": "言語"
+  },
+  "settingsNavFeatures": {
+    "message": "機能表示"
+  },
+  "settingsNavAi": {
+    "message": "AI と実験"
+  },
+  "settingsNavRss": {
+    "message": "RSS"
+  },
+  "settingsNavShortcuts": {
+    "message": "ショートカット"
+  },
+  "settingsNavAbout": {
+    "message": "概要"
+  },
   "themeSectionHeader": {
     "message": "Appearance",
     "description": "Header for the theme/appearance section in settings."
