@@ -224,6 +224,32 @@ export function buildSnapshotFromTabs(tabs, groupsById) {
         });
 }
 
+/**
+ * 把已成功建立的還原分頁依其原始 groupKey 分群，供 addTabToNewGroup 重建。
+ * 排除：建立失敗 (id 為 null/undefined)、未分組、pinned（無法進 group）。
+ * 純函式。
+ * @param {Array} snapshotTabs - TabSnapshot[]，與 createdTabIds 同 index 對齊
+ * @param {Array<number|null>} createdTabIds - 每個 index 對應的新分頁 id（失敗為 null）
+ * @returns {Array<{tabIds: number[], title: string, color: string}>}
+ */
+export function clusterCreatedTabsByGroup(snapshotTabs, createdTabIds) {
+    const order = [];
+    const byKey = new Map();
+    for (let i = 0; i < snapshotTabs.length; i++) {
+        const s = snapshotTabs[i];
+        const tabId = createdTabIds[i];
+        if (tabId == null) continue;
+        if (s.groupKey == null) continue;
+        if (s.pinned) continue;
+        if (!byKey.has(s.groupKey)) {
+            byKey.set(s.groupKey, { tabIds: [], title: s.groupTitle || '', color: s.groupColor });
+            order.push(s.groupKey);
+        }
+        byKey.get(s.groupKey).tabIds.push(tabId);
+    }
+    return order.map(k => byKey.get(k)).filter(c => c.tabIds.length > 0);
+}
+
 async function snapshotWindowTabs(windowId) {
     const tabs = await chrome.tabs.query({ windowId }).catch(() => []);
     return tabs

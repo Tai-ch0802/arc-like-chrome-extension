@@ -1,4 +1,4 @@
-import { buildSnapshotFromTabs } from '../../modules/workspace/workspaceManager.js';
+import { buildSnapshotFromTabs, clusterCreatedTabsByGroup } from '../../modules/workspace/workspaceManager.js';
 
 const groupsById = new Map([
   [100, { title: 'Docs', color: 'blue' }],
@@ -34,5 +34,47 @@ describe('buildSnapshotFromTabs', () => {
     expect(buildSnapshotFromTabs(tabs, groupsById)).toEqual([
       { url: 'https://d.com', title: 'D', pinned: false },
     ]);
+  });
+});
+
+describe('clusterCreatedTabsByGroup', () => {
+  it('依 groupKey 分群並保留出現順序', () => {
+    const snap = [
+      { url: 'a', groupKey: 1, groupTitle: 'G1', groupColor: 'blue' },
+      { url: 'b', groupKey: 2, groupTitle: 'G2', groupColor: 'red' },
+      { url: 'c', groupKey: 1, groupTitle: 'G1', groupColor: 'blue' },
+      { url: 'd' }, // 未分組
+    ];
+    const createdTabIds = [11, 12, 13, 14];
+    expect(clusterCreatedTabsByGroup(snap, createdTabIds)).toEqual([
+      { tabIds: [11, 13], title: 'G1', color: 'blue' },
+      { tabIds: [12], title: 'G2', color: 'red' },
+    ]);
+  });
+
+  it('略過建立失敗 (createdTabIds 為 null) 的 index', () => {
+    const snap = [
+      { url: 'a', groupKey: 1, groupTitle: 'G1', groupColor: 'blue' },
+      { url: 'b', groupKey: 1, groupTitle: 'G1', groupColor: 'blue' },
+    ];
+    const createdTabIds = [null, 22];
+    expect(clusterCreatedTabsByGroup(snap, createdTabIds)).toEqual([
+      { tabIds: [22], title: 'G1', color: 'blue' },
+    ]);
+  });
+
+  it('排除 pinned 分頁（無法進 group）', () => {
+    const snap = [
+      { url: 'a', groupKey: 1, groupTitle: 'G1', groupColor: 'blue', pinned: true },
+      { url: 'b', groupKey: 1, groupTitle: 'G1', groupColor: 'blue' },
+    ];
+    expect(clusterCreatedTabsByGroup(snap, [31, 32])).toEqual([
+      { tabIds: [32], title: 'G1', color: 'blue' },
+    ]);
+  });
+
+  it('沒有任何 group 時回傳空陣列', () => {
+    const snap = [{ url: 'a' }, { url: 'b' }];
+    expect(clusterCreatedTabsByGroup(snap, [41, 42])).toEqual([]);
   });
 });
