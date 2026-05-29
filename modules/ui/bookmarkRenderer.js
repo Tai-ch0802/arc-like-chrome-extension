@@ -5,6 +5,7 @@ import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, PLUS_ICON_SV
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
+import * as tagManager from '../bookmark/tagManager.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -455,6 +456,29 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
                 item.dataset.matchedDomain = domain;
             }
         } catch (e) { }
+    }
+
+    // Tag dots — reflect tags assigned to this bookmark.
+    let tagContainer = item.querySelector('.bookmark-tags');
+    const tags = tagManager.getTagsForBookmark(node.id);
+    if (tags.length > 0) {
+        if (!tagContainer) {
+            tagContainer = document.createElement('span');
+            tagContainer.className = 'bookmark-tags';
+            // 放在標題 wrapper 之後、actions 之前
+            const actions = item.querySelector('.bookmark-actions');
+            item.insertBefore(tagContainer, actions);
+        }
+        tagContainer.innerHTML = '';
+        for (const tag of tags) {
+            const dot = document.createElement('span');
+            dot.className = 'bookmark-tag-dot';
+            dot.dataset.color = tag.color;
+            dot.title = tag.name;
+            tagContainer.appendChild(dot);
+        }
+    } else if (tagContainer) {
+        tagContainer.remove();
     }
 
     // Linked Tabs Icon
