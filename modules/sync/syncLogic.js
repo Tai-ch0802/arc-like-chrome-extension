@@ -31,23 +31,31 @@
 export const SCHEMA_VERSION = 1;
 
 /**
- * Decide what to do when PUSHING a local synced workspace to Drive.
+ * Decide the sync action for ONE workspace present locally, given the remote
+ * state. Proper 3-way semantics: a conflict requires BOTH sides to have
+ * diverged from the common base (baseRev). A remote that advanced while WE made
+ * no local change is a clean fast-forward (pull), NOT a conflict — flagging it
+ * as one produced spurious conflicted-copy files on routine sync.
  *
  * @param {{rev:number, baseRev:number}} local  baseRev = the rev this device
  *        last synced from (0 if never synced).
  * @param {{rev:number}|null} remote  current remote state (null = no remote
  *        file yet).
- * @returns {'create'|'update'|'conflict'}
+ * @returns {'create'|'push'|'pull'|'conflict'|'in-sync'}
  *   - 'create'   no remote file exists; create it.
- *   - 'conflict' remote advanced beyond our baseRev (someone wrote since we
- *                synced).
- *   - 'update'   safe to write (remote unchanged since our base, or we're
- *                ahead).
+ *   - 'conflict' BOTH sides advanced beyond baseRev (genuine divergence).
+ *   - 'pull'     only the remote advanced (fast-forward; we're clean).
+ *   - 'push'     only we advanced (remote unchanged since our base).
+ *   - 'in-sync'  neither side advanced beyond baseRev.
  */
-export function decidePush(local, remote) {
+export function decideSync(local, remote) {
     if (remote == null) return 'create';
-    if (remote.rev > local.baseRev) return 'conflict';
-    return 'update';
+    const localChanged = local.rev > local.baseRev;
+    const remoteChanged = remote.rev > local.baseRev;
+    if (localChanged && remoteChanged) return 'conflict';
+    if (remoteChanged) return 'pull';        // remote advanced, we're clean → fast-forward
+    if (localChanged) return 'push';         // only we changed → push
+    return 'in-sync';
 }
 
 /**
@@ -60,10 +68,18 @@ export function decidePush(local, remote) {
  * two operands yields the same winning *device* and the same loser conflict
  * file name — so two devices resolving the same pair converge.
  *
+ * Precondition: the two sides MUST have distinct deviceIds — a device cannot
+ * conflict with itself. Passing `local.deviceId === remote.deviceId` is a
+ * programming error (the engine should never pit a device against its own
+ * write). Behavior in that degenerate case is left deterministic but
+ * meaningless: on a rev tie, `local.deviceId > remote.deviceId` is false, so
+ * 'remote' is declared the winner and the loser file is named after the (same)
+ * deviceId. See the matching test.
+ *
  * @param {string} workspaceId  caller-supplied workspace id (embedded in the
  *        conflict file name).
  * @param {{rev:number, deviceId:string}} local
- * @param {{rev:number, deviceId:string}} remote
+ * @param {{rev:number, deviceId:string}} remote  deviceId MUST differ from local's.
  * @returns {{winner:'local'|'remote', loser:'local'|'remote', loserConflictName:string}}
  *   winner = higher rev; tie -> higher deviceId (lexical) wins.
  *   loserConflictName = `ws_<workspaceId>.conflict-<loserDeviceId>.json`.
@@ -74,7 +90,9 @@ export function resolveConflict(workspaceId, local, remote) {
         localWins = local.rev > remote.rev;
     } else {
         // Tie on rev -> higher deviceId (lexical) wins. deviceIds are assumed
-        // unique per device, so strict > is well-defined here.
+        // unique per device, so strict > is well-defined here. Equal deviceIds
+        // (a device conflicting with itself) is a caller bug — see JSDoc;
+        // strict > then yields false, so 'remote' wins deterministically.
         localWins = local.deviceId > remote.deviceId;
     }
 
@@ -114,7 +132,7 @@ export function decidePull(local, remote) {
 
 /**
  * Three-way bootstrap/reconcile over the union of local and remote workspace
- * ids. Composes {@link decidePush} / {@link decidePull} per id.
+ * ids. Composes {@link decideSync} / {@link decidePull} per id.
  *
  * @param {Array<{id:string, rev:number, baseRev:number}>} localList  synced
  *        workspaces present locally.
@@ -164,15 +182,16 @@ export function reconcile(localList, remoteList) {
             return { id, action: 'delete-local' };
         }
 
-        const push = decidePush(local, remote);
-        if (push === 'conflict') {
-            return { id, action: 'conflict' };
+        // Proper 3-way: conflict only when BOTH sides diverged from baseRev.
+        // A remote-only advance is a clean fast-forward (update-local), NOT a
+        // conflict. ('create' cannot occur here since remote is present.)
+        const decision = decideSync(local, remote);
+        switch (decision) {
+            case 'conflict': return { id, action: 'conflict' };
+            case 'pull': return { id, action: 'update-local' };
+            case 'push': return { id, action: 'push-update' };
+            default: return { id, action: 'in-sync' }; // 'in-sync'
         }
-        // push === 'update': remote did not advance beyond our base, so it's
-        // safe to order by rev.
-        if (remote.rev > local.rev) return { id, action: 'update-local' };
-        if (local.rev > remote.rev) return { id, action: 'push-update' };
-        return { id, action: 'in-sync' };
     });
 }
 
