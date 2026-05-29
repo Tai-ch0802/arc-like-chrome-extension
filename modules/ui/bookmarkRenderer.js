@@ -6,6 +6,7 @@ import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
 import * as tagManager from '../bookmark/tagManager.js';
+import { createTagPicker, diffTagSelection } from '../bookmark/tagPicker.js';
 import { showBookmarkContextMenu } from './bookmarkContextMenu.js';
 import { openBookmarkToolsDialog } from '../bookmark/bookmarkToolsUI.js';
 
@@ -192,16 +193,31 @@ function initBookmarkListeners(container) {
                 try {
                     const node = await api.getBookmark(id);
                     if (!node) return;
+                    const originalTagIds = tagManager.getTagsForBookmark(id).map(t => t.id);
+                    let picker;
                     const result = await modal.showFormDialog({
                         title: api.getMessage("editBookmarkPromptForTitle"),
                         fields: [
                             { name: 'title', label: 'Name', defaultValue: node.title },
-                            { name: 'url', label: 'URL', defaultValue: node.url }
+                            { name: 'url', label: 'URL', defaultValue: node.url },
+                            {
+                                name: 'tags',
+                                type: 'custom',
+                                render: () => {
+                                    picker = createTagPicker(originalTagIds);
+                                    return { element: picker.element, getValue: () => picker.getSelectedTagIds() };
+                                },
+                            },
                         ],
                         confirmButtonText: api.getMessage("saveButton")
                     });
-                    if (result && (result.title !== node.title || result.url !== node.url)) {
-                        await api.updateBookmark(id, { title: result.title, url: result.url });
+                    if (result) {
+                        if (result.title !== node.title || result.url !== node.url) {
+                            await api.updateBookmark(id, { title: result.title, url: result.url });
+                        }
+                        const { toAdd, toRemove } = diffTagSelection(originalTagIds, result.tags || []);
+                        for (const t of toAdd) await tagManager.addTagToBookmark(id, t);
+                        for (const t of toRemove) await tagManager.removeTagFromBookmark(id, t);
                         handleRefresh();
                     }
                 } catch (err) { console.error(err); }
