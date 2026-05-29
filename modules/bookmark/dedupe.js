@@ -20,10 +20,11 @@ import * as state from '../stateManager.js';
  */
 
 /**
+ * @param {Array=} items 可選的限定書籤清單；省略時讀整個書籤快取。
  * @returns {DuplicateGroup[]} Groups with 2+ bookmarks each, sorted by group size desc.
  */
-export function findDuplicates() {
-    const cache = state.getBookmarkCache() || [];
+export function findDuplicates(items) {
+    const cache = items || state.getBookmarkCache() || [];
     const groups = new Map();
     for (const item of cache) {
         if (item.type !== 'bookmark') continue;
