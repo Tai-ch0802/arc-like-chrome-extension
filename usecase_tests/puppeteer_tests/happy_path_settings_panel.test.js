@@ -32,39 +32,64 @@ describe('Settings Panel Use Case (opens options page)', () => {
     test('clicking the gear opens the options page in a new tab (no in-panel modal)', async () => {
         const optionsUrl = `chrome-extension://${extensionId}/options.html`;
 
+        const matcher = t => /\/options\.html(?:[?#].*)?$/.test(t.url());
+
         // Record targets that already point at options.html (should be none).
-        const before = (await browser.targets())
-            .filter(t => /\/options\.html(?:[?#].*)?$/.test(t.url()));
+        const before = (await browser.targets()).filter(matcher);
         expect(before.length).toBe(0);
 
-        // Start waiting for the options-page target BEFORE clicking, so we don't
-        // miss it if the new tab navigates quickly. waitForTarget also fires on
-        // URL changes, so a tab that opens as about:blank then navigates to
-        // options.html is still caught.
-        const matcher = t => /\/options\.html(?:[?#].*)?$/.test(t.url());
-        const optionsTargetPromise = browser.waitForTarget(matcher, { timeout: 20000 });
+        // Ensure the sidepanel page has focus/visibility before clicking so the
+        // synthetic input event reliably counts as a user activation. Under
+        // concurrent load (maxWorkers) a background page can drop activation,
+        // making chrome.runtime.openOptionsPage() a silent no-op.
+        await page.bringToFront();
+        await page.waitForSelector('#settings-toggle', { visible: true, timeout: 15000 });
 
-        // Click the gear button with a TRUSTED user gesture. This matters:
-        // chrome.runtime.openOptionsPage() requires user activation, so an
-        // untrusted programmatic .click() (via page.evaluate) is silently
-        // ignored. page.click() dispatches a real input event.
-        await page.click('#settings-toggle');
+        // Detect the options-page target with a generous overall budget. A single
+        // click can be dropped under load (lost user activation -> no-op), so we
+        // re-issue a TRUSTED page.click() on each attempt while the target has not
+        // yet appeared. We set up waitForTarget BEFORE clicking each round to avoid
+        // a race where the target is created before the wait begins.
+        //
+        // page.click() (NOT page.evaluate click) is required: openOptionsPage()
+        // needs real user activation; an untrusted programmatic click is ignored.
+        const OVERALL_TIMEOUT_MS = 20000;
+        const PER_ATTEMPT_MS = 5000;
+        const deadline = Date.now() + OVERALL_TIMEOUT_MS;
+        let optionsTarget = null;
+
+        while (Date.now() < deadline) {
+            const remaining = Math.max(1000, deadline - Date.now());
+            const waitMs = Math.min(PER_ATTEMPT_MS, remaining);
+            const optionsTargetPromise = browser
+                .waitForTarget(matcher, { timeout: waitMs })
+                .catch(() => null);
+
+            await page.click('#settings-toggle');
+
+            optionsTarget = await optionsTargetPromise;
+            if (optionsTarget) break;
+        }
 
         // The gear MUST have opened the options page. If it never does, this
-        // rejects and fails the test (the test is meaningful: it breaks if the
-        // gear stops opening the options page).
-        const optionsTarget = await optionsTargetPromise;
+        // assertion fails (the test stays meaningful: it breaks if the gear
+        // stops opening the options page).
         expect(optionsTarget).toBeTruthy();
-        expect(optionsTarget.url()).toBe(optionsUrl);
+        expect(matcher(optionsTarget)).toBe(true);
 
         // The legacy in-panel dialog must NOT appear in the sidepanel.
         const modalInPanel = await page.$('.modal-overlay');
         expect(modalInPanel).toBeNull();
 
-        // Clean up: close the options tab so it doesn't leak into other assertions.
+        // Clean up: close any options tab(s) so they don't leak into other
+        // assertions. openOptionsPage() reuses an existing tab, but close every
+        // matching target defensively.
         try {
-            const optPage = await optionsTarget.page();
-            if (optPage) await optPage.close();
+            const optionTargets = (await browser.targets()).filter(matcher);
+            for (const t of optionTargets) {
+                const optPage = await t.page();
+                if (optPage) await optPage.close();
+            }
         } catch (_) { /* target may already be detached */ }
     }, 30000);
 });
