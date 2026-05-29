@@ -506,6 +506,84 @@ export function showAddToBookmarkDialog({ name, url }) {
     });
 }
 
+/**
+ * 顯示一個資料夾選擇對話框，回傳 { id, path } 或 null。
+ * 第一個選項固定為「全部」(id: null)。
+ */
+export function pickFolder({ title } = {}) {
+    return new Promise(async (resolve) => {
+        const form = document.createElement('form');
+        form.className = 'add-bookmark-form';
+        let selected = { id: null, path: api.getMessage('bmToolsScopeAll') || 'All bookmarks' };
+        let selectedEl = null;
+
+        const tree = await api.getBookmarkTree();
+        const rootFolders = tree[0]?.children || [];
+
+        form.innerHTML = `
+            <h3 class="modal-title">${escapeHtml(title || api.getMessage('bmToolsChangeScope') || 'Choose folder')}</h3>
+            <div class="modal-location-path"></div>
+            <div class="modal-bookmark-tree"></div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-button cancel-btn">${api.getMessage('cancelButton') || 'Cancel'}</button>
+                <button type="submit" class="modal-button confirm-btn primary">${api.getMessage('confirmButton') || api.getMessage('saveButton') || 'OK'}</button>
+            </div>`;
+
+        const pathDiv = form.querySelector('.modal-location-path');
+        const treeContainer = form.querySelector('.modal-bookmark-tree');
+        pathDiv.textContent = selected.path;
+
+        const pick = (id, path, el) => {
+            selected = { id, path };
+            pathDiv.textContent = path;
+            if (selectedEl) selectedEl.classList.remove('selected');
+            el.classList.add('selected');
+            selectedEl = el;
+        };
+
+        // 「全部」列
+        const allItem = document.createElement('div');
+        allItem.className = 'bookmark-folder selected';
+        allItem.tabIndex = 0;
+        allItem.setAttribute('role', 'button');
+        allItem.innerHTML = `<span class="bookmark-icon">▼</span><span class="bookmark-title"></span>`;
+        allItem.querySelector('.bookmark-title').textContent = selected.path;
+        allItem.addEventListener('click', () => pick(null, allItem.querySelector('.bookmark-title').textContent, allItem));
+        treeContainer.appendChild(allItem);
+        selectedEl = allItem;
+
+        const renderFolders = (nodes, container, parentPath) => {
+            nodes.forEach(node => {
+                if (!node.children) return;
+                const folderItem = document.createElement('div');
+                folderItem.className = 'bookmark-folder';
+                folderItem.dataset.bookmarkId = node.id;
+                folderItem.tabIndex = 0;
+                folderItem.setAttribute('role', 'button');
+                const titleText = node.title || api.getMessage('bookmarksBar') || 'Bookmarks Bar';
+                folderItem.innerHTML = `<span class="bookmark-icon">▼</span><span class="bookmark-title"></span>`;
+                folderItem.querySelector('.bookmark-title').textContent = titleText;
+                const newPath = parentPath ? `${parentPath} / ${titleText}` : titleText;
+                folderItem.addEventListener('click', () => pick(node.id, newPath, folderItem));
+                container.appendChild(folderItem);
+                const childBox = document.createElement('div');
+                childBox.className = 'folder-content';
+                childBox.style.display = 'block';
+                container.appendChild(childBox);
+                if (node.children.length) renderFolders(node.children, childBox, newPath);
+            });
+        };
+        renderFolders(rootFolders, treeContainer, '');
+
+        const { overlay, modalContent } = createModal(form);
+        const cancelBtn = modalContent.querySelector('.cancel-btn');
+        const done = (v) => { removeModal(overlay); resolve(v); };
+        form.onsubmit = (e) => { e.preventDefault(); done(selected); };
+        cancelBtn.onclick = () => done(null);
+        overlay.onclick = (e) => { if (e.target === overlay) done(null); };
+    });
+}
+
 
 export function showCreateGroupDialog() {
     return new Promise((resolve) => {
