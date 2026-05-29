@@ -2,6 +2,7 @@ import * as api from './modules/apiManager.js';
 import { applyTheme } from './modules/ui/settingManager.js';
 import * as customTheme from './modules/ui/customThemeManager.js';
 import * as bgImage from './modules/ui/backgroundImageManager.js';
+import * as rss from './modules/rssManager.js';
 
 const THEME_OPTIONS = [
     { value: 'geek', labelKey: 'themeOptionGeek' },
@@ -234,12 +235,255 @@ async function renderFeatures(container) {
     }
 }
 
+/**
+ * 渲染 RSS 訂閱設定區塊：列出現有訂閱（含 pause/resume、fetch-now、interval、刪除），
+ * 以及 inline 新增訂閱表單。所有資料透過 rssManager 持久化至 chrome.storage。
+ * NOTE: fetch-now 在 options 頁面執行後，sidepanel 的閱讀清單不會即時更新，
+ * 因為 options page 與 sidepanel 是不同的 context，CustomEvent 無法跨 context 傳遞。
+ * sidepanel 在下次開啟時會從 storage 中讀取最新資料，屬於可接受的行為。
+ * @param {HTMLElement} container
+ */
+async function renderRss(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('settingsNavRss') || 'RSS';
+    container.appendChild(h);
+
+    // Ensure subscriptions are loaded from storage
+    await rss.initRssManager();
+
+    // --- Add subscription row ---
+    const addWrap = document.createElement('div');
+    addWrap.className = 'opt-row opt-row--rss-add';
+
+    const addLabelWrap = document.createElement('div');
+    const addLabel = document.createElement('div');
+    addLabel.className = 'opt-row__label';
+    addLabel.textContent = api.getMessage('addRssSubscription') || 'Add RSS subscription';
+    addLabelWrap.appendChild(addLabel);
+    addWrap.appendChild(addLabelWrap);
+
+    const addControls = document.createElement('div');
+    addControls.className = 'rss-add-controls';
+
+    const urlInput = document.createElement('input');
+    urlInput.type = 'url';
+    urlInput.id = 'rss-url-input';
+    urlInput.className = 'modal-input';
+    urlInput.placeholder = 'https://example.com/feed.xml';
+    addControls.appendChild(urlInput);
+
+    const addBtn = document.createElement('button');
+    addBtn.id = 'rss-add-btn';
+    addBtn.className = 'modal-btn';
+    addBtn.textContent = api.getMessage('addRssSubscription') || 'Add';
+    addControls.appendChild(addBtn);
+
+    const errorMsg = document.createElement('div');
+    errorMsg.id = 'rss-error-message';
+    errorMsg.className = 'rss-error-message hidden';
+    addControls.appendChild(errorMsg);
+
+    addWrap.appendChild(addControls);
+    container.appendChild(addWrap);
+
+    // --- Subscription list container ---
+    const listContainer = document.createElement('div');
+    listContainer.id = 'rss-subscriptions-list';
+    container.appendChild(listContainer);
+
+    // --- Render subscription list ---
+    async function renderList() {
+        listContainer.innerHTML = '';
+        const subscriptions = rss.getSubscriptions();
+
+        if (subscriptions.length === 0) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.className = 'rss-empty';
+            emptyMsg.textContent = api.getMessage('rssNoSubscriptions') || 'No RSS subscriptions yet.';
+            listContainer.appendChild(emptyMsg);
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        subscriptions.forEach(sub => {
+            const item = document.createElement('div');
+            item.className = 'rss-subscription-item';
+            item.dataset.id = sub.id;
+
+            const info = document.createElement('div');
+            info.className = 'rss-subscription-info';
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'rss-subscription-title';
+            titleSpan.textContent = sub.title;
+            info.appendChild(titleSpan);
+
+            const urlSpan = document.createElement('span');
+            urlSpan.className = 'rss-subscription-url';
+            urlSpan.textContent = sub.url;
+            info.appendChild(urlSpan);
+
+            const intervalSelect = document.createElement('select');
+            intervalSelect.className = 'modal-select rss-interval-select';
+            intervalSelect.title = api.getMessage('rssIntervalLabel') || 'Fetch interval';
+            ['1h', '3h', '8h', '12h', '24h'].forEach(val => {
+                const opt = document.createElement('option');
+                opt.value = val;
+                opt.textContent = val;
+                if (sub.interval === val) opt.selected = true;
+                intervalSelect.appendChild(opt);
+            });
+            info.appendChild(intervalSelect);
+
+            const actions = document.createElement('div');
+            actions.className = 'rss-subscription-actions';
+
+            const fetchBtn = document.createElement('button');
+            fetchBtn.className = 'rss-fetch-now-btn';
+            fetchBtn.title = api.getMessage('rssFetchNowButton') || 'Fetch now';
+            fetchBtn.setAttribute('aria-label', api.getMessage('rssFetchNowButton') || 'Fetch now');
+            fetchBtn.textContent = '🔄';
+            actions.appendChild(fetchBtn);
+
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = 'rss-toggle-btn';
+            toggleBtn.dataset.action = sub.enabled ? 'pause' : 'resume';
+            toggleBtn.title = sub.enabled
+                ? (api.getMessage('rssPauseButton') || 'Pause')
+                : (api.getMessage('rssResumeButton') || 'Resume');
+            toggleBtn.setAttribute('aria-label', toggleBtn.title);
+            toggleBtn.textContent = sub.enabled ? '⏸' : '▶';
+            actions.appendChild(toggleBtn);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'rss-delete-btn';
+            deleteBtn.title = api.getMessage('rssDeleteButton') || 'Delete';
+            deleteBtn.setAttribute('aria-label', api.getMessage('rssDeleteButton') || 'Delete');
+            deleteBtn.textContent = '×';
+            actions.appendChild(deleteBtn);
+
+            item.appendChild(info);
+            item.appendChild(actions);
+            fragment.appendChild(item);
+        });
+
+        listContainer.appendChild(fragment);
+
+        // --- Bind event listeners ---
+
+        listContainer.querySelectorAll('.rss-fetch-now-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                const originalContent = btn.innerHTML;
+                btn.disabled = true;
+                btn.textContent = '...';
+
+                const statusMsg = document.createElement('div');
+                statusMsg.className = 'rss-fetch-status';
+                statusMsg.textContent = api.getMessage('rssFetching') || 'Fetching...';
+                item.appendChild(statusMsg);
+
+                try {
+                    await rss.fetchNow(id);
+                    statusMsg.textContent = api.getMessage('labelSuccess') || 'Success!';
+                    statusMsg.classList.add('success');
+                    // NOTE: no CustomEvent('readingListUpdated') dispatch — options page
+                    // and sidepanel run in separate contexts; CustomEvent cannot cross them.
+                    // The sidepanel will reflect new items on next open via storage.
+                    setTimeout(() => statusMsg.remove(), 2000);
+                } catch (err) {
+                    statusMsg.textContent = err.message;
+                    statusMsg.classList.add('error');
+                    setTimeout(() => statusMsg.remove(), 3000);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }
+            });
+        });
+
+        listContainer.querySelectorAll('.rss-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                const action = e.target.dataset.action;
+                await rss.updateSubscription(id, { enabled: action === 'resume' });
+                await renderList();
+            });
+        });
+
+        listContainer.querySelectorAll('.rss-interval-select').forEach(select => {
+            select.addEventListener('change', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                await rss.updateSubscription(id, { interval: e.target.value });
+            });
+        });
+
+        listContainer.querySelectorAll('.rss-delete-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const item = e.target.closest('.rss-subscription-item');
+                const id = item.dataset.id;
+                const title = item.querySelector('.rss-subscription-title').textContent;
+                const confirmed = window.confirm(
+                    (api.getMessage('confirmDeleteRss', title)) ||
+                    `Delete subscription "${title}"?`
+                );
+                if (confirmed) {
+                    await rss.removeSubscription(id);
+                    await renderList();
+                }
+            });
+        });
+    }
+
+    // --- Add subscription handler ---
+    addBtn.addEventListener('click', async () => {
+        const url = urlInput.value.trim();
+        if (!url) return;
+
+        addBtn.disabled = true;
+        addBtn.textContent = '...';
+        errorMsg.classList.add('hidden');
+
+        try {
+            await rss.addSubscription(url);
+            urlInput.value = '';
+            await renderList();
+        } catch (err) {
+            let msg;
+            if (err.message.includes('timeout')) {
+                msg = api.getMessage('rssErrorTimeout');
+            } else if (err.message.includes('Already subscribed')) {
+                msg = api.getMessage('rssErrorAlreadySubscribed');
+            } else {
+                msg = api.getMessage('rssErrorFetchFailed') || err.message;
+            }
+            errorMsg.textContent = msg;
+            errorMsg.classList.remove('hidden');
+        } finally {
+            addBtn.disabled = false;
+            addBtn.textContent = api.getMessage('addRssSubscription') || 'Add';
+        }
+    });
+
+    // Allow pressing Enter in the URL input to trigger Add
+    urlInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') addBtn.click();
+    });
+
+    // Initial render
+    await renderList();
+}
+
 const SECTIONS = [
     { id: 'appearance', labelKey: 'settingsNavAppearance', render: renderAppearance },
     { id: 'language',   labelKey: 'settingsNavLanguage',   render: renderLanguage },
     { id: 'features',   labelKey: 'settingsNavFeatures',   render: renderFeatures },
     { id: 'ai',         labelKey: 'settingsNavAi',         render: c => placeholder(c, 'AI & Experimental') },
-    { id: 'rss',        labelKey: 'settingsNavRss',        render: c => placeholder(c, 'RSS') },
+    { id: 'rss',        labelKey: 'settingsNavRss',        render: renderRss },
     { id: 'shortcuts',  labelKey: 'settingsNavShortcuts',  render: c => placeholder(c, 'Shortcuts') },
     { id: 'about',      labelKey: 'settingsNavAbout',      render: c => placeholder(c, 'About') },
 ];
