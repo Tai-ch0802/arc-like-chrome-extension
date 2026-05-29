@@ -10,6 +10,7 @@
 import * as api from '../apiManager.js';
 import * as aiManager from '../aiManager.js';
 import * as state from '../stateManager.js';
+import { GROUP_COLORS, resolveTabGroupBadge } from './groupColors.js';
 
 /** @type {Array<{tabId: number, reason: string}>} Last AI suggestions, kept for confirm step. */
 let currentSuggestions = [];
@@ -73,12 +74,19 @@ async function handleCleanupAction() {
                 lastAccessedMinutesAgo: t.lastAccessed
                     ? Math.round((now - t.lastAccessed) / 60000)
                     : 0,
+                groupId: t.groupId,
             }));
 
         if (tabsForAi.length === 0) {
             showStatus(api.getMessage('aiCleanupEmpty'));
             return;
         }
+
+        let groupMap = new Map();
+        try {
+            const groups = await api.getTabGroupsInCurrentWindow();
+            groupMap = new Map(groups.map(g => [g.id, g]));
+        } catch { /* 無 group 或 API 不可用 → 無 badge */ }
 
         const suggestions = await aiManager.generateCleanupSuggestions(tabsForAi);
         // Filter: only keep suggestions for tabs that still exist.
@@ -92,7 +100,7 @@ async function handleCleanupAction() {
         }
 
         showStatus(api.getMessage('aiCleanupFound').replace('{count}', currentSuggestions.length));
-        renderList(currentSuggestions, tabById);
+        renderList(currentSuggestions, tabById, groupMap);
         showFooter();
     } catch (err) {
         console.error('AI Cleanup error:', err);
@@ -102,7 +110,7 @@ async function handleCleanupAction() {
     }
 }
 
-function renderList(suggestions, tabById) {
+function renderList(suggestions, tabById, groupMap = new Map()) {
     const list = document.getElementById('ai-cleanup-list');
     if (!list) return;
     list.innerHTML = '';
@@ -132,6 +140,22 @@ function renderList(suggestions, tabById) {
         reason.className = 'ai-cleanup-row__reason';
         reason.textContent = s.reason;
 
+        const badge = resolveTabGroupBadge(tab, groupMap);
+        if (badge) {
+            const groupEl = document.createElement('span');
+            groupEl.className = 'ai-cleanup-row__group';
+            const dot = document.createElement('span');
+            dot.className = 'ai-cleanup-row__group-dot';
+            dot.style.background = GROUP_COLORS[badge.color] || GROUP_COLORS.grey;
+            groupEl.appendChild(dot);
+            if (badge.title) {
+                const name = document.createElement('span');
+                name.className = 'ai-cleanup-row__group-name';
+                name.textContent = badge.title;
+                groupEl.appendChild(name);
+            }
+            title.appendChild(groupEl);
+        }
         meta.appendChild(title);
         meta.appendChild(reason);
         row.appendChild(cb);
