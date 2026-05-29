@@ -74,7 +74,7 @@ key_files:
   - file_path: modules/ui/aiGrouperUI.js
     description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
   - file_path: modules/ui/aiCleanupUI.js
-    description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單，預設未勾選防止誤刪。"
+    description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單（預設勾選 + 全選控制）。Phase 12(批B) 每列加 tab group badge（彩色圓點 + 群組名，未分組不顯示），用 resolveTabGroupBadge 判定。"
   - file_path: modules/ui/hoverSummarizeManager.js
     description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、Summarizer API 串流摘要、記憶體快取。"
   - file_path: modules/ui/hoverTooltip.js
@@ -100,7 +100,7 @@ key_files:
   - file_path: modules/bookmark/bookmarkUtils.js
     description: "[工具] 書籤共用工具。Phase 7 新增；URL normalize、host 抽取等純函式，方便單元測試。Phase 12 加入 filterBookmarksUnderFolder（依 parentId DFS 取資料夾子樹書籤，供局部掃描）。"
   - file_path: modules/bookmark/bookmarkToolsUI.js
-    description: "[UI] Bookmark Tools modal。Phase 7 新增；整合 Tags / Duplicates / Dead Links 三個 tab。Phase 12 加入範圍列（scope bar）+ pickFolder，可限定資料夾子樹做重複/死連結掃描。"
+    description: "[UI] Bookmark Tools modal。Phase 7 新增；整合 Tags / Duplicates / Dead Links 三個 tab。Phase 12(批A) 加入範圍列（scope bar）+ pickFolder，可限定資料夾子樹做重複/死連結掃描。批B 死連結結果每列顯示完整資料夾路徑（pathById 查 .bm-tools__dup-path）。"
   - file_path: modules/bookmark/tagPicker.js
     description: "[UI/工具] 共用標籤勾選元件。Phase 12 新增；createTagPicker 回傳 {element, getSelectedTagIds} 只負責呈現與回傳選取（寫入由呼叫端決定），純函式 diffTagSelection 算 add/remove 差集。右鍵 popover 與編輯對話框共用。"
   - file_path: modules/ui/bookmarkContextMenu.js
