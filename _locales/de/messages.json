@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Hinweis: In Gruppen, in denen jedes Exemplar markiert ist, wird das erste automatisch behalten."
   },
+  "bmCtxManageTags": {
+    "message": "Tags verwalten"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Duplikate in diesem Ordner finden"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Tote Links in diesem Ordner prüfen"
+  },
+  "bmToolsChangeScope": {
+    "message": "Bereich ändern"
+  },
+  "bmToolsScopeAll": {
+    "message": "Alle Lesezeichen"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Ausgewählter Ordner"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Bereich: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} von {total} fehlgeschlagen ({pct}%) — ungewöhnlich hoch und sieht eher nach Netzwerkproblem als toten Links aus. Vor dem Entfernen sorgfältig prüfen."
   },

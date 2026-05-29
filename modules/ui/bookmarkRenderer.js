@@ -5,6 +5,10 @@ import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, PLUS_ICON_SV
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
+import * as tagManager from '../bookmark/tagManager.js';
+import { createTagPicker, diffTagSelection } from '../bookmark/tagPicker.js';
+import { showBookmarkContextMenu } from './bookmarkContextMenu.js';
+import { openBookmarkToolsDialog } from '../bookmark/bookmarkToolsUI.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -189,16 +193,31 @@ function initBookmarkListeners(container) {
                 try {
                     const node = await api.getBookmark(id);
                     if (!node) return;
+                    const originalTagIds = tagManager.getTagsForBookmark(id).map(t => t.id);
+                    let picker;
                     const result = await modal.showFormDialog({
                         title: api.getMessage("editBookmarkPromptForTitle"),
                         fields: [
                             { name: 'title', label: 'Name', defaultValue: node.title },
-                            { name: 'url', label: 'URL', defaultValue: node.url }
+                            { name: 'url', label: 'URL', defaultValue: node.url },
+                            {
+                                name: 'tags',
+                                type: 'custom',
+                                render: () => {
+                                    picker = createTagPicker(originalTagIds);
+                                    return { element: picker.element, getValue: () => picker.getSelectedTagIds() };
+                                },
+                            },
                         ],
                         confirmButtonText: api.getMessage("saveButton")
                     });
-                    if (result && (result.title !== node.title || result.url !== node.url)) {
-                        await api.updateBookmark(id, { title: result.title, url: result.url });
+                    if (result) {
+                        if (result.title !== node.title || result.url !== node.url) {
+                            await api.updateBookmark(id, { title: result.title, url: result.url });
+                        }
+                        const { toAdd, toRemove } = diffTagSelection(originalTagIds, result.tags || []);
+                        for (const t of toAdd) await tagManager.addTagToBookmark(id, t);
+                        for (const t of toRemove) await tagManager.removeTagFromBookmark(id, t);
                         handleRefresh();
                     }
                 } catch (err) { console.error(err); }
@@ -348,6 +367,26 @@ function initBookmarkListeners(container) {
         }
     }, { signal });
 
+    container.addEventListener('contextmenu', async (e) => {
+        const bookmarkEl = e.target.closest('.bookmark-item');
+        const folderEl = e.target.closest('.bookmark-folder');
+        const targetEl = bookmarkEl || folderEl;
+        if (!targetEl) return; // 空白處 → 用瀏覽器預設
+        e.preventDefault();
+        const id = targetEl.dataset.bookmarkId;
+        const node = await api.getBookmark(id).catch(() => null);
+        if (!node) return;
+        showBookmarkContextMenu(e.clientX, e.clientY, {
+            id,
+            url: node.url,
+            title: node.title,
+            isFolder: !node.url,
+        }, targetEl, {
+            onTagsChanged: () => { if (currentRefreshCallback) currentRefreshCallback(); },
+            onScanFolder: (folderId, tool, folderName) => openBookmarkToolsDialog(tool, { scopeFolderId: folderId, scopeFolderName: folderName }),
+        });
+    }, { signal });
+
     // Keydown Delegation
     container.addEventListener('keydown', (e) => {
         const item = e.target.closest('.bookmark-item, .bookmark-folder, .linked-tab-icon');
@@ -455,6 +494,29 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
                 item.dataset.matchedDomain = domain;
             }
         } catch (e) { }
+    }
+
+    // Tag dots — reflect tags assigned to this bookmark.
+    let tagContainer = item.querySelector('.bookmark-tags');
+    const tags = tagManager.getTagsForBookmark(node.id);
+    if (tags.length > 0) {
+        if (!tagContainer) {
+            tagContainer = document.createElement('span');
+            tagContainer.className = 'bookmark-tags';
+            // 放在標題 wrapper 之後、actions 之前
+            const actions = item.querySelector('.bookmark-actions');
+            item.insertBefore(tagContainer, actions);
+        }
+        tagContainer.innerHTML = '';
+        for (const tag of tags) {
+            const dot = document.createElement('span');
+            dot.className = 'bookmark-tag-dot';
+            dot.dataset.color = tag.color;
+            dot.title = tag.name;
+            tagContainer.appendChild(dot);
+        }
+    } else if (tagContainer) {
+        tagContainer.remove();
     }
 
     // Linked Tabs Icon

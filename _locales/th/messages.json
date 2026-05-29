@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "หมายเหตุ: ในกลุ่มที่ทุกสำเนาถูกเลือก สำเนาแรกจะถูกเก็บโดยอัตโนมัติ"
   },
+  "bmCtxManageTags": {
+    "message": "จัดการแท็ก"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "ค้นหารายการซ้ำในโฟลเดอร์นี้"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "ตรวจสอบลิงก์เสียในโฟลเดอร์นี้"
+  },
+  "bmToolsChangeScope": {
+    "message": "เปลี่ยนขอบเขต"
+  },
+  "bmToolsScopeAll": {
+    "message": "บุ๊กมาร์กทั้งหมด"
+  },
+  "bmToolsScopeFolder": {
+    "message": "โฟลเดอร์ที่เลือก"
+  },
+  "bmToolsScopeStatus": {
+    "message": "ขอบเขต: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} จาก {total} ล้มเหลว ({pct}%) — สูงผิดปกติและดูเหมือนเป็นปัญหา network มากกว่า dead links ตรวจสอบให้ดีก่อนลบ"
   },
