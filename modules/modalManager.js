@@ -549,6 +549,12 @@ export function pickFolder({ title } = {}) {
         allItem.innerHTML = `<span class="bookmark-icon">▼</span><span class="bookmark-title"></span>`;
         allItem.querySelector('.bookmark-title').textContent = selected.path;
         allItem.addEventListener('click', () => pick(null, allItem.querySelector('.bookmark-title').textContent, allItem));
+        allItem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                pick(null, allItem.querySelector('.bookmark-title').textContent, allItem);
+            }
+        });
         treeContainer.appendChild(allItem);
         selectedEl = allItem;
 
@@ -565,6 +571,12 @@ export function pickFolder({ title } = {}) {
                 folderItem.querySelector('.bookmark-title').textContent = titleText;
                 const newPath = parentPath ? `${parentPath} / ${titleText}` : titleText;
                 folderItem.addEventListener('click', () => pick(node.id, newPath, folderItem));
+                folderItem.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        pick(node.id, newPath, folderItem);
+                    }
+                });
                 container.appendChild(folderItem);
                 const childBox = document.createElement('div');
                 childBox.className = 'folder-content';
