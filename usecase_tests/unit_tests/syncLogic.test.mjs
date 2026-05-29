@@ -1,6 +1,6 @@
 import {
     SCHEMA_VERSION,
-    decidePush,
+    decideSync,
     resolveConflict,
     decidePull,
     reconcile,
@@ -19,29 +19,52 @@ describe('syncLogic — pure sync-decision logic', () => {
         });
     });
 
-    describe('decidePush(local, remote)', () => {
+    describe('decideSync(local, remote)', () => {
         it('remote == null -> create', () => {
-            expect(decidePush({ rev: 5, baseRev: 5 }, null)).toBe('create');
+            expect(decideSync({ rev: 5, baseRev: 5 }, null)).toBe('create');
         });
 
-        it('remote.rev > baseRev -> conflict (someone else wrote since we synced)', () => {
-            expect(decidePush({ rev: 6, baseRev: 5 }, { rev: 7 })).toBe('conflict');
+        it('localChanged && remoteChanged -> conflict (BOTH diverged from base)', () => {
+            // local advanced 5->6, remote advanced to 7, both beyond base 5.
+            expect(decideSync({ rev: 6, baseRev: 5 }, { rev: 7 })).toBe('conflict');
         });
 
-        it('remote.rev == baseRev -> update (remote unchanged since our base)', () => {
-            expect(decidePush({ rev: 6, baseRev: 5 }, { rev: 5 })).toBe('update');
+        it('only remote advanced (local clean) -> pull (fast-forward, NOT conflict)', () => {
+            // THE bug being fixed: local synced at base 5 and made no local
+            // change (rev 5); remote advanced to 6. This is a clean
+            // fast-forward, not a conflict.
+            expect(decideSync({ rev: 5, baseRev: 5 }, { rev: 6 })).toBe('pull');
         });
 
-        it('remote.rev < baseRev -> update (we are ahead)', () => {
-            expect(decidePush({ rev: 6, baseRev: 5 }, { rev: 4 })).toBe('update');
+        it('only local advanced (remote unchanged since base) -> push', () => {
+            expect(decideSync({ rev: 6, baseRev: 5 }, { rev: 5 })).toBe('push');
         });
 
-        it('fresh local never synced (baseRev 0) with remote present and ahead -> conflict', () => {
-            expect(decidePush({ rev: 1, baseRev: 0 }, { rev: 3 })).toBe('conflict');
+        it('neither side advanced beyond base -> in-sync', () => {
+            expect(decideSync({ rev: 5, baseRev: 5 }, { rev: 5 })).toBe('in-sync');
+        });
+
+        it('remote.rev < baseRev (stale remote) with local clean -> in-sync', () => {
+            // Neither changed relative to base (remote behind, we didn't edit).
+            expect(decideSync({ rev: 5, baseRev: 5 }, { rev: 4 })).toBe('in-sync');
+        });
+
+        it('local advanced, remote behind base -> push (only we changed)', () => {
+            expect(decideSync({ rev: 6, baseRev: 5 }, { rev: 4 })).toBe('push');
+        });
+
+        it('fresh local never synced (baseRev 0), local edited, remote ahead -> conflict', () => {
+            // local rev 1 > base 0 (we edited) AND remote rev 3 > base 0.
+            expect(decideSync({ rev: 1, baseRev: 0 }, { rev: 3 })).toBe('conflict');
+        });
+
+        it('fresh local never synced (baseRev 0), local unchanged, remote ahead -> pull', () => {
+            // local rev 0 == base 0 (no local edit); remote rev 3 > base 0.
+            expect(decideSync({ rev: 0, baseRev: 0 }, { rev: 3 })).toBe('pull');
         });
 
         it('baseRev 0 with no remote -> create', () => {
-            expect(decidePush({ rev: 1, baseRev: 0 }, null)).toBe('create');
+            expect(decideSync({ rev: 1, baseRev: 0 }, null)).toBe('create');
         });
     });
 
@@ -105,6 +128,20 @@ describe('syncLogic — pure sync-decision logic', () => {
             const r = resolveConflict('abc123', { rev: 1, deviceId: 'A' }, { rev: 2, deviceId: 'B' });
             expect(r.loserConflictName).toBe('ws_abc123.conflict-A.json');
         });
+
+        it('same-deviceId is a precondition violation but stays deterministic (documented)', () => {
+            // A device cannot conflict with itself — callers MUST pass distinct
+            // deviceIds. If they don't, behavior is meaningless but deterministic:
+            // on a rev tie, `local.deviceId > remote.deviceId` is false, so
+            // 'remote' wins and the loser file is named after the shared id.
+            const r = resolveConflict('w1', { rev: 7, deviceId: 'same' }, { rev: 7, deviceId: 'same' });
+            expect(r.winner).toBe('remote');
+            expect(r.loser).toBe('local');
+            expect(r.loserConflictName).toBe('ws_w1.conflict-same.json');
+            // Idempotent: same inputs always yield the same result.
+            const r2 = resolveConflict('w1', { rev: 7, deviceId: 'same' }, { rev: 7, deviceId: 'same' });
+            expect(r2).toEqual(r);
+        });
     });
 
     describe('decidePull(local, remote)', () => {
@@ -161,23 +198,22 @@ describe('syncLogic — pure sync-decision logic', () => {
             expect(byId(res)).toEqual({ c: 'delete-local' });
         });
 
-        it('both present, remote advanced past stale baseRev -> conflict (not blind update-local)', () => {
+        it('both present, remote advanced while local is CLEAN -> update-local (fast-forward, no phantom conflict)', () => {
+            // THE bug being fixed. local synced at base 3 and made NO local
+            // change (rev 3 == baseRev 3); remote advanced to 5. Only the remote
+            // diverged, so this is a clean fast-forward, NOT a conflict.
             const res = reconcile(
                 [{ id: 'd', rev: 3, baseRev: 3 }],
                 [{ id: 'd', rev: 5 }],
             );
-            // remote 5 > baseRev 3 -> decidePush sees divergence -> conflict.
-            // (Clean update-local requires remote.rev <= baseRev; see next test.)
-            expect(byId(res)).toEqual({ d: 'conflict' });
+            expect(byId(res)).toEqual({ d: 'update-local' });
         });
 
-        it('both present, remote newer with matching baseRev -> update-local', () => {
-            // local synced from rev 5 (baseRev 5), local hasn't changed (rev 5),
-            // remote advanced to 7 but we never diverged... still remote 7 > base 5 -> conflict.
-            // Clean update-local requires remote.rev > local.rev AND remote.rev <= baseRev,
-            // which only holds when baseRev tracks remote. Model: we already pulled base 7.
+        it('both present, remote newer with local clean at base -> update-local', () => {
+            // local synced from rev 5 (baseRev 5), local hasn't changed (rev 5);
+            // remote advanced to 7. Only remote diverged -> fast-forward.
             const res = reconcile(
-                [{ id: 'e', rev: 5, baseRev: 7 }],
+                [{ id: 'e', rev: 5, baseRev: 5 }],
                 [{ id: 'e', rev: 7 }],
             );
             expect(byId(res)).toEqual({ e: 'update-local' });
@@ -199,7 +235,8 @@ describe('syncLogic — pure sync-decision logic', () => {
             expect(byId(res)).toEqual({ g: 'in-sync' });
         });
 
-        it('both present, remote advanced beyond baseRev -> conflict', () => {
+        it('both present, BOTH sides advanced beyond baseRev -> conflict (genuine divergence)', () => {
+            // local edited 5->6 (rev 6 > base 5) AND remote advanced to 7 (> base 5).
             const res = reconcile(
                 [{ id: 'h', rev: 6, baseRev: 5 }],
                 [{ id: 'h', rev: 7 }],
@@ -207,14 +244,22 @@ describe('syncLogic — pure sync-decision logic', () => {
             expect(byId(res)).toEqual({ h: 'conflict' });
         });
 
+        it('headline fix: first action for a clean fast-forward is update-local, not conflict', () => {
+            const res = reconcile(
+                [{ id: 'a', rev: 5, baseRev: 5 }],
+                [{ id: 'a', rev: 6 }],
+            );
+            expect(res[0].action).toBe('update-local');
+        });
+
         it('mixed list exercising several ids at once (order-independent)', () => {
             const local = [
                 { id: 'local-only', rev: 2, baseRev: 0 },
                 { id: 'tomb', rev: 3, baseRev: 3 },
-                { id: 'pull-me', rev: 5, baseRev: 7 },
+                { id: 'pull-me', rev: 5, baseRev: 5 }, // clean: remote advances -> fast-forward
                 { id: 'push-me', rev: 6, baseRev: 5 },
                 { id: 'same', rev: 4, baseRev: 4 },
-                { id: 'clash', rev: 6, baseRev: 5 },
+                { id: 'clash', rev: 6, baseRev: 5 }, // both diverged from base 5 -> conflict
             ];
             const remote = [
                 { id: 'remote-only', rev: 9 },
