@@ -6,6 +6,8 @@ import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
 import * as tagManager from '../bookmark/tagManager.js';
+import { showBookmarkContextMenu } from './bookmarkContextMenu.js';
+import { openBookmarkToolsDialog } from '../bookmark/bookmarkToolsUI.js';
 
 export async function showLinkedTabsPanel(bookmarkId, refreshBookmarksCallback) {
     const [bookmark, allGroups] = await Promise.all([
@@ -347,6 +349,26 @@ function initBookmarkListeners(container) {
                 }
             }
         }
+    }, { signal });
+
+    container.addEventListener('contextmenu', async (e) => {
+        const bookmarkEl = e.target.closest('.bookmark-item');
+        const folderEl = e.target.closest('.bookmark-folder');
+        const targetEl = bookmarkEl || folderEl;
+        if (!targetEl) return; // 空白處 → 用瀏覽器預設
+        e.preventDefault();
+        const id = targetEl.dataset.bookmarkId;
+        const node = await api.getBookmark(id).catch(() => null);
+        if (!node) return;
+        showBookmarkContextMenu(e.clientX, e.clientY, {
+            id,
+            url: node.url,
+            title: node.title,
+            isFolder: !node.url,
+        }, targetEl, {
+            onTagsChanged: () => { if (currentRefreshCallback) currentRefreshCallback(); },
+            onScanFolder: (folderId, tool) => openBookmarkToolsDialog(tool, { scopeFolderId: folderId }),
+        });
     }, { signal });
 
     // Keydown Delegation
