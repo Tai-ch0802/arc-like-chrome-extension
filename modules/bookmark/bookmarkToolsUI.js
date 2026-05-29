@@ -319,6 +319,7 @@ function renderDeadLinksView(root, scopeFolderId = null) {
         const cache = scopeFolderId
             ? state.getBookmarkCacheUnderFolder(scopeFolderId)
             : (state.getBookmarkCache() || []);
+        const pathById = new Map(cache.map(b => [String(b.id), b.path || []]));
         const bookmarks = cache.filter(b => b.type === 'bookmark').map(b => ({
             id: String(b.id),
             url: b.url,
@@ -392,6 +393,13 @@ function renderDeadLinksView(root, scopeFolderId = null) {
             u.textContent = r.url;
             meta.appendChild(t);
             meta.appendChild(u);
+            const path = pathById.get(String(r.bookmarkId)) || [];
+            if (path.length) {
+                const p = document.createElement('div');
+                p.className = 'bm-tools__sub bm-tools__dup-path';
+                p.textContent = path.join(' / ');
+                meta.appendChild(p);
+            }
             row.appendChild(meta);
             list.appendChild(row);
         }
