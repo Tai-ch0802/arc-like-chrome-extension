@@ -200,6 +200,30 @@ export async function setActiveWorkspace(windowId, workspaceId) {
     await persistWindowMap();
 }
 
+/**
+ * 把 chrome.tabs.query 結果映射成 TabSnapshot[]，對分組分頁帶上 group 資訊。
+ * 純函式，便於單元測試。
+ * @param {Array<{url:string,title?:string,pinned?:boolean,groupId?:number}>} tabs
+ * @param {Map<number,{title?:string,color:string}>} groupsById
+ * @returns {Array}
+ */
+export function buildSnapshotFromTabs(tabs, groupsById) {
+    return tabs
+        .filter(t => t.url && /^(https?|file|ftp):/i.test(t.url))
+        .map(t => {
+            const snap = { url: t.url, title: t.title || '', pinned: Boolean(t.pinned) };
+            const g = (t.groupId != null && t.groupId !== -1 && groupsById)
+                ? groupsById.get(t.groupId)
+                : null;
+            if (g) {
+                snap.groupKey = t.groupId;
+                snap.groupTitle = g.title || '';
+                snap.groupColor = g.color;
+            }
+            return snap;
+        });
+}
+
 async function snapshotWindowTabs(windowId) {
     const tabs = await chrome.tabs.query({ windowId }).catch(() => []);
     return tabs
