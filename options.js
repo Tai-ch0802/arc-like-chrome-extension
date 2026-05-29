@@ -387,15 +387,19 @@ async function renderRss(container) {
                 item.appendChild(statusMsg);
 
                 try {
-                    await rss.fetchNow(id);
-                    statusMsg.textContent = api.getMessage('labelSuccess') || 'Success!';
-                    statusMsg.classList.add('success');
+                    const added = await rss.fetchNow(id);
+                    if (added > 0) {
+                        statusMsg.textContent = `Fetched ${added} new item${added === 1 ? '' : 's'}`;
+                        statusMsg.classList.add('success');
+                    } else {
+                        statusMsg.textContent = 'No new items';
+                    }
                     // NOTE: no CustomEvent('readingListUpdated') dispatch — options page
                     // and sidepanel run in separate contexts; CustomEvent cannot cross them.
                     // The sidepanel will reflect new items on next open via storage.
                     setTimeout(() => statusMsg.remove(), 2000);
                 } catch (err) {
-                    statusMsg.textContent = err.message;
+                    statusMsg.textContent = err.message || 'Fetch failed';
                     statusMsg.classList.add('error');
                     setTimeout(() => statusMsg.remove(), 3000);
                 } finally {
