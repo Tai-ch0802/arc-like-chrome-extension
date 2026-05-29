@@ -32,3 +32,16 @@ export function hexToRgba(hex, alpha) {
     const b = parseInt(hex.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+/**
+ * 判定某分頁該顯示的 tab group badge 資料。
+ * @param {{groupId?: number}} tab
+ * @param {Map<number, {title?: string, color: string}>} groupMap
+ * @returns {{color: string, title: string} | null} 未分組或查無群組時回傳 null
+ */
+export function resolveTabGroupBadge(tab, groupMap) {
+    if (!tab || tab.groupId == null || tab.groupId === -1) return null;
+    const g = groupMap.get(tab.groupId);
+    if (!g) return null;
+    return { color: g.color, title: g.title || '' };
+}
