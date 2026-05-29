@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Note: groups में जहां सभी copies checked हैं, पहली copy अपने आप रखी जाती है।"
   },
+  "bmCtxManageTags": {
+    "message": "टैग प्रबंधित करें"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "इस फ़ोल्डर में डुप्लिकेट खोजें"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "इस फ़ोल्डर में टूटे लिंक जांचें"
+  },
+  "bmToolsChangeScope": {
+    "message": "दायरा बदलें"
+  },
+  "bmToolsScopeAll": {
+    "message": "सभी बुकमार्क"
+  },
+  "bmToolsScopeFolder": {
+    "message": "चयनित फ़ोल्डर"
+  },
+  "bmToolsScopeStatus": {
+    "message": "दायरा: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} में से {total} fail हुए ({pct}%) — असामान्य रूप से ज्यादा और network problem जैसा लगता है dead links से अधिक। हटाने से पहले ध्यान से check करें।"
   },

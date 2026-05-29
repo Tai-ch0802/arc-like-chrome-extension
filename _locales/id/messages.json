@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Catatan: di grup di mana setiap salinan dicentang, yang pertama disimpan otomatis."
   },
+  "bmCtxManageTags": {
+    "message": "Kelola tag"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Cari duplikat di folder ini"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Periksa tautan mati di folder ini"
+  },
+  "bmToolsChangeScope": {
+    "message": "Ubah cakupan"
+  },
+  "bmToolsScopeAll": {
+    "message": "Semua markah"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Folder terpilih"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Cakupan: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} dari {total} gagal ({pct}%) — sangat tinggi dan lebih terlihat seperti masalah jaringan daripada dead link. Tinjau dengan hati-hati sebelum menghapus."
   },

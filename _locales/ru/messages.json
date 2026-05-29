@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Заметка: в группах, где все копии отмечены, первая копия оставляется автоматически."
   },
+  "bmCtxManageTags": {
+    "message": "Управление тегами"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Найти дубликаты в этой папке"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Проверить битые ссылки в этой папке"
+  },
+  "bmToolsChangeScope": {
+    "message": "Изменить область"
+  },
+  "bmToolsScopeAll": {
+    "message": "Все закладки"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Выбранная папка"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Область: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} из {total} не удалось ({pct}%) — необычно высоко и больше похоже на проблему сети, чем мёртвые ссылки. Внимательно проверьте перед удалением."
   },

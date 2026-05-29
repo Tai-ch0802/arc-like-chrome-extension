@@ -902,6 +902,28 @@
   "bmToolsKeepFirstNote": {
     "message": "提示：當某組重複內所有複本都被勾選時，會自動保留第一份。"
   },
+  "bmCtxManageTags": {
+    "message": "管理標籤"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "找出此資料夾的重複項"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "檢查此資料夾的失效連結"
+  },
+  "bmToolsChangeScope": {
+    "message": "變更範圍"
+  },
+  "bmToolsScopeAll": {
+    "message": "所有書籤"
+  },
+  "bmToolsScopeFolder": {
+    "message": "選定的資料夾"
+  },
+  "bmToolsScopeStatus": {
+    "message": "範圍：{name}（{n}）"
+  },
+
   "rlSummaryToggleLabel": {
     "message": "為閱讀清單項目記住 AI 摘要"
   },

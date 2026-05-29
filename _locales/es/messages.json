@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Nota: en grupos donde todas las copias están marcadas, la primera se conserva automáticamente."
   },
+  "bmCtxManageTags": {
+    "message": "Gestionar etiquetas"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Buscar duplicados en esta carpeta"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Comprobar enlaces rotos en esta carpeta"
+  },
+  "bmToolsChangeScope": {
+    "message": "Cambiar alcance"
+  },
+  "bmToolsScopeAll": {
+    "message": "Todos los marcadores"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Carpeta seleccionada"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Alcance: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} de {total} fallaron ({pct}%) — inusualmente alto y parece más un problema de red que enlaces muertos. Revisa cuidadosamente antes de eliminar."
   },

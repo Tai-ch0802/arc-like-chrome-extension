@@ -764,6 +764,28 @@
   "bmToolsKeepFirstNote": {
     "message": "Lưu ý: trong các nhóm mà mọi bản sao được chọn, bản đầu tiên được giữ tự động."
   },
+  "bmCtxManageTags": {
+    "message": "Quản lý thẻ"
+  },
+  "bmCtxScanDuplicates": {
+    "message": "Tìm mục trùng lặp trong thư mục này"
+  },
+  "bmCtxScanDeadLinks": {
+    "message": "Kiểm tra liên kết hỏng trong thư mục này"
+  },
+  "bmToolsChangeScope": {
+    "message": "Thay đổi phạm vi"
+  },
+  "bmToolsScopeAll": {
+    "message": "Tất cả dấu trang"
+  },
+  "bmToolsScopeFolder": {
+    "message": "Thư mục đã chọn"
+  },
+  "bmToolsScopeStatus": {
+    "message": "Phạm vi: {name} ({n})"
+  },
+
   "bmToolsNetworkRatioWarning": {
     "message": "{n} trên {total} thất bại ({pct}%) — cao bất thường và trông giống vấn đề mạng hơn là dead link. Xem kỹ trước khi xóa."
   },
