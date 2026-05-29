@@ -14,8 +14,13 @@
     "readingList",
     "alarms",
     "offscreen",
-    "scripting"
+    "scripting",
+    "identity"
   ],
+  "oauth2": {
+    "client_id": "REPLACE_WITH_YOUR_OAUTH_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
+  },
   "host_permissions": [
     "*://*/*"
   ],
