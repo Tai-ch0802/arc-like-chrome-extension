@@ -2906,6 +2906,10 @@ mark.url-match {
     margin-top: 2px;
 }
 
+.ai-cleanup-row__group { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; font-size: 0.8em; color: var(--secondary-text-color, #5f6368); vertical-align: middle; }
+.ai-cleanup-row__group-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+.ai-cleanup-row__group-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+
 .ai-cleanup-footer {
     display: flex;
     align-items: center;
