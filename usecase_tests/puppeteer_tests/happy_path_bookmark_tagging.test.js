@@ -152,26 +152,20 @@ describe('Bookmark Tagging Use Case', () => {
             await page.waitForSelector('.custom-context-menu .tag-picker--popover', { timeout: 5000 });
             await page.waitForSelector('.tag-picker__row input[type="checkbox"][value="t_read"]', { timeout: 5000 });
 
-            // Check the box -> immediate assign + row update.
-            // We toggle `checked` and dispatch `change` directly rather than a real
-            // mouse click: a real click bubbles to the document-level listener that
-            // closes the whole context menu, racing the assign handler. Dispatching
-            // `change` exercises the exact popover handler the UI relies on
-            // (tagselectionchange -> tagManager.addTagToBookmark) deterministically.
-            await page.evaluate(() => {
-                const cb = document.querySelector('.tag-picker__row input[type="checkbox"][value="t_read"]');
-                cb.checked = true;
-                cb.dispatchEvent(new Event('change', { bubbles: false }));
-            });
+            // Real click on the checkbox -> immediate assign + row update.
+            // The document-level click listener now only closes the menu on
+            // clicks OUTSIDE it (handleOutside), so an in-menu checkbox click no
+            // longer closes the popover. We assert via the dot/storage to absorb
+            // the onTagsChanged row re-render without a fixed delay.
+            const checkboxSelector = '.tag-picker--popover input[type="checkbox"][value="t_read"]';
+            await page.click(checkboxSelector);
             await page.waitForSelector(`${bookmarkSelector} .bookmark-tag-dot[data-color="green"]`, { timeout: 10000 });
+            // Popover must still be in the DOM after the in-menu click.
+            await page.waitForSelector('.custom-context-menu .tag-picker--popover', { timeout: 5000 });
 
-            // Uncheck the box -> immediate removal (popover survives the row re-render)
-            await page.waitForSelector('.tag-picker__row input[type="checkbox"][value="t_read"]', { timeout: 5000 });
-            await page.evaluate(() => {
-                const cb = document.querySelector('.tag-picker__row input[type="checkbox"][value="t_read"]');
-                cb.checked = false;
-                cb.dispatchEvent(new Event('change', { bubbles: false }));
-            });
+            // Uncheck via a second real click -> immediate removal (popover survives the row re-render)
+            await page.waitForSelector(checkboxSelector, { timeout: 5000 });
+            await page.click(checkboxSelector);
             await page.waitForFunction(
                 sel => !document.querySelector(sel),
                 { timeout: 10000 },
