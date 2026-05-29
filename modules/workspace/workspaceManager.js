@@ -37,8 +37,11 @@
  * @property {string} url
  * @property {string} title
  * @property {boolean} [pinned]
+ * @property {number} [groupKey]    - 快照當下的原始 groupId，僅作同一快照內分群識別
+ * @property {string} [groupTitle]
+ * @property {string} [groupColor]
  */
-import { getStorage, setStorage, setStorageStrict } from '../apiManager.js';
+import { getStorage, setStorage, setStorageStrict, addTabToNewGroup } from '../apiManager.js';
 
 const LEGACY_WORKSPACES_KEY = 'workspaces';            // pre-Phase-9 unified key
 const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // sync
@@ -200,17 +203,64 @@ export async function setActiveWorkspace(windowId, workspaceId) {
     await persistWindowMap();
 }
 
-async function snapshotWindowTabs(windowId) {
-    const tabs = await chrome.tabs.query({ windowId }).catch(() => []);
+/**
+ * 把 chrome.tabs.query 結果映射成 TabSnapshot[]，對分組分頁帶上 group 資訊。
+ * 純函式，便於單元測試。
+ * @param {Array<{url:string,title?:string,pinned?:boolean,groupId?:number}>} tabs
+ * @param {Map<number,{title?:string,color:string}>} groupsById
+ * @returns {Array}
+ */
+export function buildSnapshotFromTabs(tabs, groupsById) {
     return tabs
-        // Don't snapshot chrome:// or about: pages — they often can't be
-        // re-opened in normal tabs and would clutter the restore set.
         .filter(t => t.url && /^(https?|file|ftp):/i.test(t.url))
-        .map(t => ({
-            url: t.url,
-            title: t.title || '',
-            pinned: Boolean(t.pinned),
-        }));
+        .map(t => {
+            const snap = { url: t.url, title: t.title || '', pinned: Boolean(t.pinned) };
+            const g = (t.groupId != null && t.groupId !== -1 && groupsById)
+                ? groupsById.get(t.groupId)
+                : null;
+            if (g) {
+                snap.groupKey = t.groupId;
+                snap.groupTitle = g.title || '';
+                snap.groupColor = g.color;
+            }
+            return snap;
+        });
+}
+
+/**
+ * 把已成功建立的還原分頁依其原始 groupKey 分群，供 addTabToNewGroup 重建。
+ * 排除：建立失敗 (id 為 null/undefined)、未分組、pinned（無法進 group）。
+ * 純函式。
+ * @param {Array} snapshotTabs - TabSnapshot[]，與 createdTabIds 同 index 對齊
+ * @param {Array<number|null>} createdTabIds - 每個 index 對應的新分頁 id（失敗為 null）
+ * @returns {Array<{tabIds: number[], title: string, color: string}>}
+ */
+export function clusterCreatedTabsByGroup(snapshotTabs, createdTabIds) {
+    const order = [];
+    const byKey = new Map();
+    for (let i = 0; i < snapshotTabs.length; i++) {
+        const s = snapshotTabs[i];
+        const tabId = createdTabIds[i];
+        if (tabId == null) continue;
+        if (s.groupKey == null) continue;
+        if (s.pinned) continue;
+        if (!byKey.has(s.groupKey)) {
+            byKey.set(s.groupKey, { tabIds: [], title: s.groupTitle || '', color: s.groupColor });
+            order.push(s.groupKey);
+        }
+        byKey.get(s.groupKey).tabIds.push(tabId);
+    }
+    return order.map(k => byKey.get(k)).filter(c => c.tabIds.length > 0);
+}
+
+async function snapshotWindowTabs(windowId) {
+    const [tabs, groups] = await Promise.all([
+        chrome.tabs.query({ windowId }).catch(() => []),
+        chrome.tabGroups.query({ windowId }).catch(() => []),
+    ]);
+    const groupsById = new Map(groups.map(g => [g.id, { title: g.title, color: g.color }]));
+    // chrome:// / about: pages are filtered inside buildSnapshotFromTabs.
+    return buildSnapshotFromTabs(tabs, groupsById);
 }
 
 /**
@@ -261,19 +311,22 @@ export async function switchWorkspace(targetId, windowId) {
     const oldTabIds = oldTabs.map(t => t.id);
 
     let createdCount = 0;
+    const createdTabIds = [];
     // Sequential create keeps the restored tab order stable. ~30ms/tab × 30 tabs
     // ≈ 1s worst case, acceptable for an explicit user action behind a confirm.
     for (let i = 0; i < snapshotTabs.length; i++) {
         const s = snapshotTabs[i];
         try {
-            await chrome.tabs.create({
+            const newTab = await chrome.tabs.create({
                 windowId,
                 url: s.url,
                 active: i === 0,
                 pinned: s.pinned || false,
             });
+            createdTabIds.push(newTab.id);
             createdCount++;
         } catch (err) {
+            createdTabIds.push(null);
             console.warn('[workspace] failed to restore tab', s.url, err);
         }
     }
@@ -290,6 +343,21 @@ export async function switchWorkspace(targetId, windowId) {
         } catch (err) {
             console.warn('[workspace] failed to close old tabs', err);
         }
+    }
+
+    // Best-effort: rebuild the tab groups the snapshot captured. A failure here
+    // must NOT undo the successful tab restore, so it's fully wrapped.
+    try {
+        const clusters = clusterCreatedTabsByGroup(snapshotTabs, createdTabIds);
+        for (const c of clusters) {
+            try {
+                await addTabToNewGroup(c.tabIds, c.title, c.color, windowId);
+            } catch (err) {
+                console.warn('[workspace] failed to restore tab group', c.title, err);
+            }
+        }
+    } catch (err) {
+        console.warn('[workspace] group restore failed', err);
     }
 
     await setActiveWorkspace(windowId, targetId);
