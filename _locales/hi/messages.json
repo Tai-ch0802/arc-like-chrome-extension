@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Prompt API मल्टीमोडल इनपुट सक्षम करें: लिंक खोलें और \"Enabled\" पर सेट करें।"
+  },
+  "aiAutoNamingDescription": {
+    "message": "जब आप बिना title के नया tab group बनाते हैं, AI एक छोटा label (Emoji + name) सुझाता है। केवल तब काम करता है जब local model पहले से download हो।"
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "खाली tab groups को अपने आप name दें"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Tabs analyze हो रहे हैं..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Cleanup"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "AI द्वारा सुझाया Tab Cleanup"
+  },
+  "aiCleanupConfirm": {
+    "message": "चुने हुए बंद करें"
+  },
+  "aiCleanupDescription": {
+    "message": "Smart Group के बगल में एक button जोड़ता है जो AI से पूछता है कि कौन से tabs आप बंद कर सकते हैं।"
+  },
+  "aiCleanupEmpty": {
+    "message": "आपके tabs व्यवस्थित हैं — कुछ cleanup करने को नहीं।"
+  },
+  "aiCleanupError": {
+    "message": "AI cleanup विफल। बाद में फिर कोशिश करें।"
+  },
+  "aiCleanupFound": {
+    "message": "AI {count} tab(s) बंद करने का सुझाव देता है। जिन्हें रखना है उनसे tick हटा दें।"
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "AI model अभी download नहीं हुआ है। पहले ✨ Smart Group click करें download शुरू करने के लिए।"
+  },
+  "aiCleanupSectionHeader": {
+    "message": "जिन Tabs को आप बंद कर सकते हैं"
+  },
+  "aiCleanupSelectAll": {
+    "message": "सभी चुनें"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "🧹 Tab Cleanup button दिखाएं"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "चुने हुए हटाएं"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "{n} bookmark(s) हटाएं? इसे वापस नहीं किया जा सकता।"
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Bookmarks हटाएं"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ नया tag"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "नए tag का नाम"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Scan HEAD से हर http(s) bookmark तक पहुंचने की कोशिश करता है। केवल network-unreachable links flag होते हैं (HTTP 404 per-origin CORS के बिना detect नहीं हो सकता, notes देखें)।"
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Dead Links"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Tag \"{t}\" delete करें? Bookmarks नहीं delete होंगे, केवल tag binding।"
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Tag delete करें"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "कोई duplicate bookmarks नहीं। 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "{n} duplicate group(s) मिले। हर group में जिस copy को रखना है उससे tick हटा दें।"
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Duplicates"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Note: groups में जहां सभी copies checked हैं, पहली copy अपने आप रखी जाती है।"
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} में से {total} fail हुए ({pct}%) — असामान्य रूप से ज्यादा और network problem जैसा लगता है dead links से अधिक। हटाने से पहले ध्यान से check करें।"
+  },
+  "bmToolsNoBookmarks": {
+    "message": "Scan करने को bookmarks नहीं।"
+  },
+  "bmToolsOfflineWarning": {
+    "message": "आप offline लगते हैं। Internet से connect करें और फिर try करें — network के बिना scan हर bookmark को unreachable के रूप में गलत flag करेगा।"
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Note: scan हर bookmark के host को HEAD request भेजता है।"
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Checked unreachable bookmarks हटाएं"
+  },
+  "bmToolsScanDone": {
+    "message": "Scan पूरा: {n} unreachable link(s)।"
+  },
+  "bmToolsScanProgress": {
+    "message": "Check हो रहा है… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Scan शुरू करें"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "अभी कोई tags नहीं।"
+  },
+  "bmToolsTagsTab": {
+    "message": "Tags"
+  },
+  "bmToolsTitle": {
+    "message": "Bookmark Tools"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "AI से tabs या bookmarks ढूंढने को कहें"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Bookmark Tools खोलें"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "मौजूदा tabs से Workspace बनाएं"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Workspaces manage करें"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "दाहिनी तरफ नया tab"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Bookmarks refresh करें"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Settings खोलें"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "सभी tabs Smart Group"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Command Palette"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI को अच्छा match नहीं मिला।"
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "AI सुझाव"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "AI से पूछ रहे हैं…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "AI से पूछें: tabs या bookmarks ढूंढें"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "AI model अभी download नहीं हुआ है। पहले ✨ Smart Group से download trigger करें, फिर try करें।"
+  },
+  "cmdPaletteEmpty": {
+    "message": "कोई results नहीं"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Actions"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Bookmarks"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Reading List"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Tabs"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "बंद करें"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "navigate"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "चुनें"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Tabs, bookmarks या actions search करें..."
+  },
+  "rlSummaryDescription": {
+    "message": "जब आप एक page जो tab में खुला है उसे Reading List में add करते हैं, AI एक बार summarize करता है और result locally store करता है ताकि आप बाद में preview कर सकें — offline भी। Summarizer model का पहले से available होना जरूरी है।"
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Reading List items के लिए AI summary याद रखें"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Command Palette खोलें"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Command Palette बंद करें"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Command Palette results navigate करें"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "चुने हुए result को activate करें"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Sidepanel के अंदर के shortcuts"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "ये केवल sidepanel के अंदर काम करते हैं और Chrome shortcuts page से remap नहीं किए जा सकते।"
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ मौजूदा tabs से बनाएं"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "इस Workspace का नाम रखें"
+  },
+  "workspaceDelete": {
+    "message": "Delete"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "\"{ws}\" delete करें? इसे वापस नहीं किया जा सकता।"
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Workspace delete करें"
+  },
+  "workspaceManageEmpty": {
+    "message": "अभी कोई Workspaces नहीं।"
+  },
+  "workspaceManageTitle": {
+    "message": "Workspaces manage करें"
+  },
+  "workspaceNoActive": {
+    "message": "— कोई Workspace नहीं —"
+  },
+  "workspaceRename": {
+    "message": "Rename"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Switch"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "\"{ws}\" पर switch करने से इस window के मौजूदा {n} tab(s) बंद होंगे और save किए हुए tabs खुलेंगे।"
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "\"{ws}\" पर switch — आपके मौजूदा {n} tab(s) किसी Workspace में नहीं हैं। Switch से पहले एक नए \"Untitled\" Workspace में auto-save हो जाएंगे।"
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Workspace switch करें"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Workspace switch नहीं हो सका। आपके मौजूदा tabs में बदलाव नहीं हुआ।"
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Switch fail"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "सक्रिय Workspace"
   }
 }

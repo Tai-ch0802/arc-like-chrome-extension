@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "เปิดใช้งานอินพุตหลายรูปแบบของ Prompt API: เปิดลิงก์แล้วตั้งค่าเป็น \"Enabled\""
+  },
+  "aiAutoNamingDescription": {
+    "message": "เมื่อคุณสร้าง tab group ใหม่ที่ไม่มีชื่อ AI จะแนะนำ label สั้น (Emoji + ชื่อ) ทำงานเฉพาะเมื่อ local model ดาวน์โหลดแล้ว"
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "ตั้งชื่อ tab group ว่างอัตโนมัติ"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "กำลังวิเคราะห์ tabs..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Cleanup"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "AI แนะนำ Tab Cleanup"
+  },
+  "aiCleanupConfirm": {
+    "message": "ปิดที่เลือก"
+  },
+  "aiCleanupDescription": {
+    "message": "เพิ่มปุ่มข้าง Smart Group ที่ถาม AI ว่า tab ไหนปิดได้"
+  },
+  "aiCleanupEmpty": {
+    "message": "Tabs ของคุณเรียบร้อย — ไม่มีอะไรต้อง cleanup"
+  },
+  "aiCleanupError": {
+    "message": "AI cleanup ล้มเหลว ลองอีกครั้งภายหลัง"
+  },
+  "aiCleanupFound": {
+    "message": "AI แนะนำ {count} tab ที่ปิดได้ ยกเลิกการเลือก tab ที่ต้องการเก็บ"
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "AI model ยังไม่ดาวน์โหลด คลิก ✨ Smart Group ก่อนเพื่อเริ่มดาวน์โหลด"
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Tabs ที่อาจปิดได้"
+  },
+  "aiCleanupSelectAll": {
+    "message": "เลือกทั้งหมด"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "แสดงปุ่ม 🧹 Tab Cleanup"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "ลบที่เลือก"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "ลบ {n} bookmark? การกระทำนี้ไม่สามารถยกเลิกได้"
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "ลบ bookmarks"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ tag ใหม่"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "ชื่อ tag ใหม่"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Scan พยายามเข้าถึงทุก http(s) bookmark ผ่าน HEAD เฉพาะ link ที่ network unreachable ถูกระบุ (HTTP 404 ตรวจไม่ได้หากไม่มี per-origin CORS, ดู notes)"
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Dead Links"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "ลบ tag \"{t}\"? bookmarks จะไม่ถูกลบ เฉพาะ binding ของ tag"
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "ลบ tag"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "ไม่มี bookmarks ซ้ำ 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "พบ {n} กลุ่มซ้ำ ยกเลิกการเลือกสำเนาที่ต้องการเก็บในแต่ละกลุ่ม"
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "ซ้ำ"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "หมายเหตุ: ในกลุ่มที่ทุกสำเนาถูกเลือก สำเนาแรกจะถูกเก็บโดยอัตโนมัติ"
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} จาก {total} ล้มเหลว ({pct}%) — สูงผิดปกติและดูเหมือนเป็นปัญหา network มากกว่า dead links ตรวจสอบให้ดีก่อนลบ"
+  },
+  "bmToolsNoBookmarks": {
+    "message": "ไม่มี bookmarks ให้ scan"
+  },
+  "bmToolsOfflineWarning": {
+    "message": "คุณดูเหมือน offline เชื่อมต่อ internet แล้วลองใหม่ — ไม่มีเครือข่าย scan จะระบุ bookmark ทั้งหมดเป็น unreachable อย่างผิดพลาด"
+  },
+  "bmToolsPrivacyNote": {
+    "message": "หมายเหตุ: scan ส่ง HEAD request ไปยัง host ของแต่ละ bookmark"
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "ลบ bookmarks unreachable ที่เลือก"
+  },
+  "bmToolsScanDone": {
+    "message": "Scan เสร็จ: {n} link unreachable"
+  },
+  "bmToolsScanProgress": {
+    "message": "กำลังตรวจสอบ… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "เริ่ม scan"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "ยังไม่มี tags"
+  },
+  "bmToolsTagsTab": {
+    "message": "Tags"
+  },
+  "bmToolsTitle": {
+    "message": "Bookmark Tools"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "ถาม AI ให้หา tabs หรือ bookmarks"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "เปิด Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "สร้าง Workspace จาก tabs ปัจจุบัน"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "จัดการ Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "tab ใหม่ทางขวา"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "รีเฟรช bookmarks"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "เปิด settings"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group ทุก tabs"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Command Palette"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI ไม่พบผลลัพธ์ที่เหมาะสม"
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "คำแนะนำของ AI"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "กำลังถาม AI…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "ถาม AI: หา tabs หรือ bookmarks"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "AI model ยังไม่ดาวน์โหลด เรียก ✨ Smart Group ก่อนเพื่อดาวน์โหลด แล้วลองอีกครั้ง"
+  },
+  "cmdPaletteEmpty": {
+    "message": "ไม่มีผลลัพธ์"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Actions"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Bookmarks"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Reading List"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Tabs"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "ปิด"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "เลื่อน"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "เลือก"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "ค้นหา tabs, bookmarks หรือ actions..."
+  },
+  "rlSummaryDescription": {
+    "message": "เมื่อคุณเพิ่ม page ที่เปิดอยู่ใน tab ไปยัง Reading List, AI จะสรุปครั้งเดียวและเก็บผลลัพธ์ในเครื่องเพื่อให้คุณ preview ภายหลังได้ — แม้ offline ต้องการให้ Summarizer model พร้อมใช้งานแล้ว"
+  },
+  "rlSummaryToggleLabel": {
+    "message": "จดจำ AI summary สำหรับรายการ Reading List"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "เปิด Command Palette"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "ปิด Command Palette"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "เลื่อนผลลัพธ์ Command Palette"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "เปิดผลลัพธ์ที่เลือก"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Shortcuts ภายใน sidepanel"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "เหล่านี้ทำงานเฉพาะภายใน sidepanel และไม่สามารถ remap ผ่านหน้า shortcuts ของ Chrome"
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ สร้างจาก tabs ปัจจุบัน"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "ตั้งชื่อ Workspace นี้"
+  },
+  "workspaceDelete": {
+    "message": "ลบ"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "ลบ \"{ws}\"? การกระทำนี้ไม่สามารถยกเลิกได้"
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "ลบ Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "ยังไม่มี Workspaces"
+  },
+  "workspaceManageTitle": {
+    "message": "จัดการ Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— ไม่มี Workspace —"
+  },
+  "workspaceRename": {
+    "message": "เปลี่ยนชื่อ"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "สลับ"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "สลับไป \"{ws}\" จะปิด {n} tab ใน window นี้และเปิด tabs ที่บันทึกไว้"
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "สลับไป \"{ws}\" — {n} tab ปัจจุบันของคุณยังไม่อยู่ใน Workspace ใด จะถูก auto-save ไปยัง Workspace \"Untitled\" ใหม่ก่อนสลับ"
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "สลับ Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "ไม่สามารถสลับ Workspace ได้ tabs ปัจจุบันของคุณไม่ถูกเปลี่ยน"
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "สลับล้มเหลว"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Workspace ที่ใช้งาน"
   }
 }

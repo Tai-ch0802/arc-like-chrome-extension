@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Activar entrada multimodal del Prompt API: abre el enlace y configúralo como \"Enabled\"."
+  },
+  "aiAutoNamingDescription": {
+    "message": "Cuando creas un nuevo grupo de pestañas sin título, la IA sugiere una etiqueta corta (Emoji + nombre). Solo funciona si el modelo local ya está descargado."
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "Nombrar automáticamente los grupos vacíos"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Analizando pestañas..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Limpiar"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "Limpieza de pestañas sugerida por IA"
+  },
+  "aiCleanupConfirm": {
+    "message": "Cerrar selección"
+  },
+  "aiCleanupDescription": {
+    "message": "Añade un botón junto a Smart Group que pregunta a la IA qué pestañas puedes cerrar."
+  },
+  "aiCleanupEmpty": {
+    "message": "Tus pestañas están ordenadas — nada que limpiar."
+  },
+  "aiCleanupError": {
+    "message": "La limpieza IA falló. Inténtalo más tarde."
+  },
+  "aiCleanupFound": {
+    "message": "La IA sugiere {count} pestaña(s) que puedes cerrar. Desmarca las que quieras conservar."
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "El modelo IA aún no está descargado. Haz clic primero en ✨ Smart Group para iniciar la descarga."
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Pestañas que podrías cerrar"
+  },
+  "aiCleanupSelectAll": {
+    "message": "Seleccionar todo"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Mostrar botón 🧹 Limpieza de pestañas"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Eliminar selección"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "¿Eliminar {n} marcador(es)? Esta acción no se puede deshacer."
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Eliminar marcadores"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ Nueva etiqueta"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "Nombre de la nueva etiqueta"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "El escaneo intenta alcanzar cada marcador http(s) vía HEAD. Solo se marcan los enlaces inalcanzables por red (HTTP 404 no se puede detectar sin CORS por origen, ver notas)."
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Enlaces muertos"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "¿Eliminar la etiqueta \"{t}\"? Los marcadores no se eliminarán, solo la vinculación."
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Eliminar etiqueta"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "No hay marcadores duplicados. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Encontrados {n} grupo(s) duplicados. Desmarca la copia que quieras conservar en cada grupo."
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Duplicados"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Nota: en grupos donde todas las copias están marcadas, la primera se conserva automáticamente."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} de {total} fallaron ({pct}%) — inusualmente alto y parece más un problema de red que enlaces muertos. Revisa cuidadosamente antes de eliminar."
+  },
+  "bmToolsNoBookmarks": {
+    "message": "No hay marcadores que escanear."
+  },
+  "bmToolsOfflineWarning": {
+    "message": "Pareces estar sin conexión. Conéctate a internet e inténtalo de nuevo — sin red, el escaneo marcaría erróneamente cada marcador como inalcanzable."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Nota: el escaneo envía una solicitud HEAD al host de cada marcador."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Eliminar marcadores inalcanzables marcados"
+  },
+  "bmToolsScanDone": {
+    "message": "Escaneo completado: {n} enlace(s) inalcanzable(s)."
+  },
+  "bmToolsScanProgress": {
+    "message": "Comprobando… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Iniciar escaneo"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "Aún no hay etiquetas."
+  },
+  "bmToolsTagsTab": {
+    "message": "Etiquetas"
+  },
+  "bmToolsTitle": {
+    "message": "Herramientas para marcadores"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Pedir a la IA que encuentre pestañas o marcadores"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Abrir Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Crear Workspace desde las pestañas actuales"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Gestionar Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "Nueva pestaña a la derecha"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Actualizar marcadores"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Abrir configuración"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group todas las pestañas"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Paleta de comandos"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "La IA no encontró buenas coincidencias."
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "Sugerencias de IA"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Preguntando a la IA…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Pedir a la IA: encontrar pestañas o marcadores"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "El modelo IA aún no está descargado. Activa primero ✨ Smart Group para descargar y luego vuelve a intentarlo."
+  },
+  "cmdPaletteEmpty": {
+    "message": "Sin resultados"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Acciones"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Marcadores"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Lista de lectura"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Pestañas"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "cerrar"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "navegar"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "seleccionar"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Buscar pestañas, marcadores o acciones..."
+  },
+  "rlSummaryDescription": {
+    "message": "Cuando añades a tu lista de lectura una página abierta en una pestaña, la IA la resume una vez y guarda el resultado localmente para que puedas previsualizarlo más tarde — incluso sin conexión. Requiere que el modelo Summarizer ya esté disponible."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Recordar el resumen IA para los elementos de la lista de lectura"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Abrir la paleta de comandos"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Cerrar la paleta de comandos"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Navegar por los resultados de la paleta"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Activar el resultado seleccionado"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Atajos del panel lateral"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "Estos solo funcionan dentro del panel lateral y no se pueden reasignar a través de la página de atajos de Chrome."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ Crear desde pestañas actuales"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Nombrar este Workspace"
+  },
+  "workspaceDelete": {
+    "message": "Eliminar"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "¿Eliminar \"{ws}\"? Esta acción no se puede deshacer."
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Eliminar Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "Aún no hay Workspaces."
+  },
+  "workspaceManageTitle": {
+    "message": "Gestionar Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— sin Workspace —"
+  },
+  "workspaceRename": {
+    "message": "Renombrar"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Cambiar"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Cambiar a \"{ws}\" cerrará {n} pestaña(s) en esta ventana y abrirá las pestañas guardadas."
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Cambiar a \"{ws}\" — tus {n} pestaña(s) actuales no están en ningún Workspace. Se guardarán automáticamente en un nuevo Workspace \"Untitled\" antes del cambio."
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Cambiar de Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "No se pudo cambiar de Workspace. Tus pestañas actuales no fueron modificadas."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Cambio fallido"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Workspace activo"
   }
 }

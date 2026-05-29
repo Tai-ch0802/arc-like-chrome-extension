@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Bật đầu vào đa phương thức của Prompt API: mở liên kết và đặt thành \"Enabled\"."
+  },
+  "aiAutoNamingDescription": {
+    "message": "Khi bạn tạo một tab group mới không có tiêu đề, AI gợi ý một nhãn ngắn (Emoji + tên). Chỉ chạy nếu model cục bộ đã được tải xuống."
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "Tự động đặt tên tab group trống"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Đang phân tích tabs..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Cleanup"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "Tab cleanup do AI gợi ý"
+  },
+  "aiCleanupConfirm": {
+    "message": "Đóng đã chọn"
+  },
+  "aiCleanupDescription": {
+    "message": "Thêm một nút bên cạnh Smart Group hỏi AI tab nào có thể đóng."
+  },
+  "aiCleanupEmpty": {
+    "message": "Tabs của bạn gọn gàng — không có gì để cleanup."
+  },
+  "aiCleanupError": {
+    "message": "Cleanup AI thất bại. Thử lại sau."
+  },
+  "aiCleanupFound": {
+    "message": "AI gợi ý {count} tab có thể đóng. Bỏ chọn những cái bạn muốn giữ."
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "Model AI chưa được tải. Nhấn ✨ Smart Group trước để bắt đầu tải."
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Tabs có thể đóng"
+  },
+  "aiCleanupSelectAll": {
+    "message": "Chọn tất cả"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Hiển thị nút 🧹 Tab Cleanup"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Xóa đã chọn"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "Xóa {n} bookmark? Hành động này không thể hoàn tác."
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Xóa bookmarks"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ Tag mới"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "Tên tag mới"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Scan cố gắng tiếp cận mọi bookmark http(s) qua HEAD. Chỉ các link không thể tiếp cận qua mạng được đánh dấu (HTTP 404 không thể phát hiện mà không có per-origin CORS, xem notes)."
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Dead Links"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Xóa tag \"{t}\"? Bookmarks sẽ không bị xóa, chỉ binding của tag."
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Xóa tag"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "Không có bookmark trùng lặp. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Tìm thấy {n} nhóm trùng lặp. Bỏ chọn bản sao bạn muốn giữ trong mỗi nhóm."
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Trùng lặp"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Lưu ý: trong các nhóm mà mọi bản sao được chọn, bản đầu tiên được giữ tự động."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} trên {total} thất bại ({pct}%) — cao bất thường và trông giống vấn đề mạng hơn là dead link. Xem kỹ trước khi xóa."
+  },
+  "bmToolsNoBookmarks": {
+    "message": "Không có bookmarks để scan."
+  },
+  "bmToolsOfflineWarning": {
+    "message": "Bạn có vẻ offline. Kết nối internet và thử lại — không có mạng, scan sẽ đánh dấu sai mọi bookmark là unreachable."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Lưu ý: scan gửi HEAD request đến host của mỗi bookmark."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Xóa bookmarks unreachable đã chọn"
+  },
+  "bmToolsScanDone": {
+    "message": "Scan hoàn tất: {n} link unreachable."
+  },
+  "bmToolsScanProgress": {
+    "message": "Đang kiểm tra… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Bắt đầu scan"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "Chưa có tags."
+  },
+  "bmToolsTagsTab": {
+    "message": "Tags"
+  },
+  "bmToolsTitle": {
+    "message": "Bookmark Tools"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Yêu cầu AI tìm tabs hoặc bookmarks"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Mở Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Tạo Workspace từ tabs hiện tại"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Quản lý Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "Tab mới bên phải"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Làm mới bookmarks"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Mở cài đặt"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group tất cả tabs"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Command Palette"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "AI không tìm thấy kết quả phù hợp."
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "Gợi ý của AI"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Đang hỏi AI…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Yêu cầu AI: tìm tabs hoặc bookmarks"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "Model AI chưa được tải. Kích hoạt ✨ Smart Group trước để tải, rồi thử lại."
+  },
+  "cmdPaletteEmpty": {
+    "message": "Không có kết quả"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Hành động"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Bookmarks"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Reading List"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Tabs"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "đóng"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "điều hướng"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "chọn"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Tìm tabs, bookmarks hoặc hành động..."
+  },
+  "rlSummaryDescription": {
+    "message": "Khi bạn thêm một page đang mở trong tab vào Reading List, AI tóm tắt một lần và lưu kết quả cục bộ để bạn có thể preview sau — kể cả offline. Yêu cầu Summarizer model đã có sẵn."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Ghi nhớ AI summary cho các mục Reading List"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Mở Command Palette"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Đóng Command Palette"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Điều hướng kết quả Command Palette"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Kích hoạt kết quả đã chọn"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Shortcuts trong sidepanel"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "Các shortcut này chỉ chạy trong sidepanel và không thể remap qua trang shortcuts của Chrome."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ Tạo từ tabs hiện tại"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Đặt tên Workspace này"
+  },
+  "workspaceDelete": {
+    "message": "Xóa"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "Xóa \"{ws}\"? Hành động này không thể hoàn tác."
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Xóa Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "Chưa có Workspaces."
+  },
+  "workspaceManageTitle": {
+    "message": "Quản lý Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— không có Workspace —"
+  },
+  "workspaceRename": {
+    "message": "Đổi tên"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Chuyển"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Chuyển sang \"{ws}\" sẽ đóng {n} tab trong window này và mở các tabs đã lưu."
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Chuyển sang \"{ws}\" — {n} tab hiện tại của bạn chưa thuộc Workspace nào. Sẽ được auto-save vào Workspace \"Untitled\" mới trước khi chuyển."
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Chuyển Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Không thể chuyển Workspace. Tabs hiện tại của bạn không bị thay đổi."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Chuyển thất bại"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Workspace đang hoạt động"
   }
 }

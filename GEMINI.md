@@ -70,13 +70,55 @@ key_files:
   - file_path: modules/icons.js
     description: "[UI] SVG 圖示集中管理。匯出所有 UI 使用的 SVG 圖示常數，避免重複定義。"
   - file_path: modules/aiManager.js
-    description: "[AI] 本機 AI 模型管理。負責封裝 LanguageModel (Prompt API) 與 Summarizer API 的對接，提供 tab grouping 與頁面摘要功能。"
+    description: "[AI] 本機 AI 模型管理。封裝 LanguageModel (Prompt API) 與 Summarizer API；提供 tab grouping、頁面摘要、AI 群組自動命名 (generateGroupName)、AI tab cleanup 建議 (generateCleanupSuggestions)、reading-list 摘要 (summarizeText)、自然語言搜尋的 reranker (runPrompt，使用獨立 nlLanguageModelSession)。"
   - file_path: modules/ui/aiGrouperUI.js
     description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
+  - file_path: modules/ui/aiCleanupUI.js
+    description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單，預設未勾選防止誤刪。"
   - file_path: modules/ui/hoverSummarizeManager.js
     description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、Summarizer API 串流摘要、記憶體快取。"
   - file_path: modules/ui/hoverTooltip.js
     description: "[UI] Hover Summarize 的 Tooltip UI 元件。提供 show/hide/updateStreamChunk API，含 shimmer 載入動畫與 glassmorphism 樣式。"
+  - file_path: modules/commandPalette/index.js
+    description: "[功能] Command Palette (⌘K / Ctrl+K) 入口。Phase 5 新增；統一搜尋 tabs / bookmarks / reading list / actions / workspaces。"
+  - file_path: modules/commandPalette/dataProvider.js
+    description: "[功能] Command Palette 資料源。Phase 5 新增；聚合多個 source 的搜尋結果與分組顯示邏輯。"
+  - file_path: modules/commandPalette/actions.js
+    description: "[功能] Command Palette 動作集合。Phase 5 新增；包含 new tab / smart group / AI cleanup / workspace 管理等可執行動作。"
+  - file_path: modules/commandPalette/nlSearch.js
+    description: "[AI] 自然語言搜尋。Phase 8b 新增；使用 Chrome Prompt API 作 reranker（非 filter），透過 preFilterByQuery 用 indexOf scoring 降低候選後再送 LLM。"
+  - file_path: modules/workspace/workspaceManager.js
+    description: "[功能] Workspace 業務邏輯。Phase 6 新增、Phase 9 重構儲存架構；分離 metadata (chrome.storage.sync, 8KB/key 限制) 與 tabSnapshot (chrome.storage.local)，含 legacy windowNames 一次性遷移與 onChanged 跨裝置同步。"
+  - file_path: modules/workspace/workspaceUI.js
+    description: "[UI] Workspace 切換器與管理介面。Phase 6 新增；下拉切換 + 管理 modal + 切換確認 (含 unbound tabs 自動 auto-save 防資料遺失)。"
+  - file_path: modules/bookmark/tagManager.js
+    description: "[功能] 書籤多標籤管理。Phase 7 新增；用 chrome.storage.local 自建 tag index 突破 Chrome 內建單層資料夾限制。"
+  - file_path: modules/bookmark/dedupe.js
+    description: "[功能] 重複書籤偵測與批次清理。Phase 7 新增；以 normalized URL 分組，UI 允許每組保留任一份。"
+  - file_path: modules/bookmark/deadLinkChecker.js
+    description: "[功能] 死連結掃描。Phase 7 新增；用 HEAD 請求批次掃描 http(s) 書籤，含 navigator.onLine 預檢、預設未勾選、suspicious-ratio 警告三重防誤刪。"
+  - file_path: modules/bookmark/bookmarkUtils.js
+    description: "[工具] 書籤共用工具。Phase 7 新增；URL normalize、host 抽取等純函式，方便單元測試。"
+  - file_path: modules/bookmark/bookmarkToolsUI.js
+    description: "[UI] Bookmark Tools modal。Phase 7 新增；整合 Tags / Duplicates / Dead Links 三個 tab。"
+  - file_path: modules/readingList/summaryStore.js
+    description: "[功能] Reading List 摘要本機儲存。Phase 8a 新增；存於 chrome.storage.local，含 pruneOrphans 守衛防止空陣列誤刪全部。"
+  - file_path: modules/readingList/summaryRecorder.js
+    description: "[功能] Reading List 摘要錄製器。Phase 8a 新增；當使用者把開啟中分頁加入 Reading List 時，自動透過 Summarizer API 摘要並存檔，離線時可預覽。"
+  - file_path: modules/utils/searchUtils.js
+    description: "[工具] 搜尋純函式工具。Phase 1.2 提取自 searchManager；避免測試時連帶 import elements.js 觸發 DOM 存取，含 matchesAnyKeyword、extractDomain。"
+  - file_path: modules/utils/pageContentExtractor.js
+    description: "[工具] 頁面內容擷取。Phase 8 新增；給 reading list 摘要與 NL search 使用，透過 chrome.scripting 抓取頁面文字。"
+  - file_path: modules/keyboardManager.js
+    description: "[功能] 鍵盤快捷鍵管理。Phase 9 新增；管理 sidepanel 內 keyboard shortcuts（受限於 chrome.commands API 4-command 上限，sidepanel-only 快捷鍵走自管路線）。"
+  - file_path: modules/ui/tab/tabListeners.js
+    description: "[UI] 分頁事件監聽。Phase 3 重構自 tabRenderer.js；負責 click / drag / contextmenu 等事件綁定。"
+  - file_path: modules/ui/tab/splitViewRenderer.js
+    description: "[UI] Split View 分頁渲染。Phase 3 重構自 tabRenderer.js；專門處理 split-view 分頁顯示。"
+  - file_path: jest.config.js
+    description: "[Test] Jest 設定（Phase 1.2 補單元測試骨架）。設定 jsdom 環境、transform 使用 esbuild-jest。"
+  - file_path: jest.esbuild-transform.cjs
+    description: "[Test] Jest 自訂 transform。Phase 1.2 新增；用 esbuild 將 ESM .js 編譯為 CJS，避免引入 babel-jest 依賴。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

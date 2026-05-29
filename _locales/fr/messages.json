@@ -682,5 +682,266 @@
   },
   "aiSetupStep2b": {
     "message": "Activer l'entrée multimodale du Prompt API : ouvrez le lien et définissez sur \"Enabled\"."
+  },
+  "aiAutoNamingDescription": {
+    "message": "Lorsque vous créez un nouveau groupe d'onglets sans titre, l'IA suggère une étiquette courte (Emoji + nom). Fonctionne uniquement si le modèle local est déjà téléchargé."
+  },
+  "aiAutoNamingToggleLabel": {
+    "message": "Nommer automatiquement les groupes d'onglets vides"
+  },
+  "aiCleanupAnalyzing": {
+    "message": "Analyse des onglets..."
+  },
+  "aiCleanupBtnText": {
+    "message": "🧹 Nettoyer"
+  },
+  "aiCleanupBtnTitle": {
+    "message": "Nettoyage d'onglets suggéré par IA"
+  },
+  "aiCleanupConfirm": {
+    "message": "Fermer la sélection"
+  },
+  "aiCleanupDescription": {
+    "message": "Ajoute un bouton à côté de Smart Group qui demande à l'IA quels onglets vous pouvez fermer."
+  },
+  "aiCleanupEmpty": {
+    "message": "Vos onglets sont bien rangés — rien à nettoyer."
+  },
+  "aiCleanupError": {
+    "message": "Le nettoyage IA a échoué. Réessayez plus tard."
+  },
+  "aiCleanupFound": {
+    "message": "L'IA suggère {count} onglet(s) que vous pouvez fermer. Décochez ceux que vous voulez garder."
+  },
+  "aiCleanupNeedsDownload": {
+    "message": "Le modèle IA n'est pas encore téléchargé. Cliquez d'abord sur ✨ Smart Group pour démarrer le téléchargement."
+  },
+  "aiCleanupSectionHeader": {
+    "message": "Onglets que vous pourriez fermer"
+  },
+  "aiCleanupSelectAll": {
+    "message": "Tout sélectionner"
+  },
+  "aiCleanupToggleLabel": {
+    "message": "Afficher le bouton 🧹 Nettoyage d'onglets"
+  },
+  "bmToolsConfirmRemove": {
+    "message": "Supprimer la sélection"
+  },
+  "bmToolsConfirmRemoveMessage": {
+    "message": "Supprimer {n} signet(s) ? Cette action ne peut pas être annulée."
+  },
+  "bmToolsConfirmRemoveTitle": {
+    "message": "Supprimer les signets"
+  },
+  "bmToolsCreateTag": {
+    "message": "+ Nouvelle étiquette"
+  },
+  "bmToolsCreateTagPrompt": {
+    "message": "Nom de la nouvelle étiquette"
+  },
+  "bmToolsDeadLinksIntro": {
+    "message": "Le scan tente d'atteindre chaque signet http(s) via HEAD. Seuls les liens inaccessibles via le réseau sont signalés (HTTP 404 ne peut pas être détecté sans CORS par origine, voir notes)."
+  },
+  "bmToolsDeadLinksTab": {
+    "message": "Liens morts"
+  },
+  "bmToolsDeleteTagMessage": {
+    "message": "Supprimer l'étiquette \"{t}\" ? Les signets ne seront pas supprimés, seule la liaison d'étiquette."
+  },
+  "bmToolsDeleteTagTitle": {
+    "message": "Supprimer l'étiquette"
+  },
+  "bmToolsDuplicatesEmpty": {
+    "message": "Aucun signet en double. 🎉"
+  },
+  "bmToolsDuplicatesIntro": {
+    "message": "Trouvé {n} groupe(s) de doublons. Décochez la copie que vous voulez garder dans chaque groupe."
+  },
+  "bmToolsDuplicatesTab": {
+    "message": "Doublons"
+  },
+  "bmToolsKeepFirstNote": {
+    "message": "Note : dans les groupes où chaque copie est cochée, la première est automatiquement gardée."
+  },
+  "bmToolsNetworkRatioWarning": {
+    "message": "{n} sur {total} échoués ({pct}%) — anormalement élevé et ressemble plus à un problème de réseau que des liens morts. Vérifiez attentivement avant de supprimer."
+  },
+  "bmToolsNoBookmarks": {
+    "message": "Aucun signet à scanner."
+  },
+  "bmToolsOfflineWarning": {
+    "message": "Vous semblez être hors ligne. Connectez-vous à internet et réessayez — sans réseau, le scan marquerait à tort chaque signet comme inaccessible."
+  },
+  "bmToolsPrivacyNote": {
+    "message": "Note : le scan envoie une requête HEAD à l'hôte de chaque signet."
+  },
+  "bmToolsRemoveUnreachable": {
+    "message": "Supprimer les signets inaccessibles cochés"
+  },
+  "bmToolsScanDone": {
+    "message": "Scan terminé : {n} lien(s) inaccessible(s)."
+  },
+  "bmToolsScanProgress": {
+    "message": "Vérification… {done}/{total}"
+  },
+  "bmToolsStartScan": {
+    "message": "Démarrer le scan"
+  },
+  "bmToolsTagsEmpty": {
+    "message": "Pas encore d'étiquettes."
+  },
+  "bmToolsTagsTab": {
+    "message": "Étiquettes"
+  },
+  "bmToolsTitle": {
+    "message": "Outils pour signets"
+  },
+  "cmdPaletteActionAiCleanup": {
+    "message": "AI Tab Cleanup"
+  },
+  "cmdPaletteActionAskAi": {
+    "message": "Demander à l'IA de trouver des onglets ou signets"
+  },
+  "cmdPaletteActionBookmarkTools": {
+    "message": "Ouvrir Bookmark Tools"
+  },
+  "cmdPaletteActionCreateWorkspace": {
+    "message": "Créer un Workspace à partir des onglets actuels"
+  },
+  "cmdPaletteActionManageWorkspaces": {
+    "message": "Gérer les Workspaces"
+  },
+  "cmdPaletteActionNewTabRight": {
+    "message": "Nouvel onglet à droite"
+  },
+  "cmdPaletteActionRefreshBookmarks": {
+    "message": "Rafraîchir les signets"
+  },
+  "cmdPaletteActionSettings": {
+    "message": "Ouvrir les paramètres"
+  },
+  "cmdPaletteActionSmartGroup": {
+    "message": "Smart Group tous les onglets"
+  },
+  "cmdPaletteAriaLabel": {
+    "message": "Palette de commandes"
+  },
+  "cmdPaletteAskAiNoMatch": {
+    "message": "L'IA n'a pas trouvé de bonnes correspondances."
+  },
+  "cmdPaletteAskAiResultsTitle": {
+    "message": "Suggestions de l'IA"
+  },
+  "cmdPaletteAskAiThinking": {
+    "message": "Interrogation de l'IA…"
+  },
+  "cmdPaletteAskAiTitle": {
+    "message": "Demander à l'IA : trouver des onglets ou signets"
+  },
+  "cmdPaletteAskAiUnavailable": {
+    "message": "Le modèle IA n'est pas encore téléchargé. Déclenchez d'abord ✨ Smart Group pour télécharger, puis réessayez."
+  },
+  "cmdPaletteEmpty": {
+    "message": "Aucun résultat"
+  },
+  "cmdPaletteGroupActions": {
+    "message": "Actions"
+  },
+  "cmdPaletteGroupBookmarks": {
+    "message": "Signets"
+  },
+  "cmdPaletteGroupReadingList": {
+    "message": "Liste de lecture"
+  },
+  "cmdPaletteGroupTabs": {
+    "message": "Onglets"
+  },
+  "cmdPaletteGroupWorkspaces": {
+    "message": "Workspaces"
+  },
+  "cmdPaletteHintClose": {
+    "message": "fermer"
+  },
+  "cmdPaletteHintNavigate": {
+    "message": "naviguer"
+  },
+  "cmdPaletteHintSelect": {
+    "message": "sélectionner"
+  },
+  "cmdPalettePlaceholder": {
+    "message": "Rechercher onglets, signets ou actions..."
+  },
+  "rlSummaryDescription": {
+    "message": "Lorsque vous ajoutez à votre liste de lecture une page ouverte dans un onglet, l'IA la résume une fois et stocke le résultat localement afin que vous puissiez la prévisualiser plus tard — même hors ligne. Requiert que le modèle Summarizer soit déjà disponible."
+  },
+  "rlSummaryToggleLabel": {
+    "message": "Mémoriser le résumé IA pour les éléments de la liste de lecture"
+  },
+  "shortcutDescCommandPalette": {
+    "message": "Ouvrir la palette de commandes"
+  },
+  "shortcutDescPaletteClose": {
+    "message": "Fermer la palette de commandes"
+  },
+  "shortcutDescPaletteNav": {
+    "message": "Naviguer dans les résultats de la palette"
+  },
+  "shortcutDescPaletteSelect": {
+    "message": "Activer le résultat sélectionné"
+  },
+  "shortcutInSidepanelHeader": {
+    "message": "Raccourcis du panneau latéral"
+  },
+  "shortcutInSidepanelNote": {
+    "message": "Ces raccourcis ne fonctionnent que dans le panneau latéral et ne peuvent pas être remappés via la page des raccourcis Chrome."
+  },
+  "workspaceCreateFromCurrent": {
+    "message": "+ Créer à partir des onglets actuels"
+  },
+  "workspaceCreatePromptTitle": {
+    "message": "Nommer ce Workspace"
+  },
+  "workspaceDelete": {
+    "message": "Supprimer"
+  },
+  "workspaceDeleteConfirmMessage": {
+    "message": "Supprimer \"{ws}\" ? Cette action ne peut pas être annulée."
+  },
+  "workspaceDeleteConfirmTitle": {
+    "message": "Supprimer le Workspace"
+  },
+  "workspaceManageEmpty": {
+    "message": "Pas encore de Workspaces."
+  },
+  "workspaceManageTitle": {
+    "message": "Gérer les Workspaces"
+  },
+  "workspaceNoActive": {
+    "message": "— aucun Workspace —"
+  },
+  "workspaceRename": {
+    "message": "Renommer"
+  },
+  "workspaceSwitchConfirmBtn": {
+    "message": "Changer"
+  },
+  "workspaceSwitchConfirmMessage": {
+    "message": "Changer pour \"{ws}\" fermera {n} onglet(s) dans cette fenêtre et ouvrira les onglets enregistrés."
+  },
+  "workspaceSwitchConfirmMessageUnbound": {
+    "message": "Changer pour \"{ws}\" — vos {n} onglet(s) actuels ne sont dans aucun Workspace. Ils seront auto-enregistrés dans un nouveau Workspace \"Untitled\" avant le changement."
+  },
+  "workspaceSwitchConfirmTitle": {
+    "message": "Changer de Workspace"
+  },
+  "workspaceSwitchFailedMessage": {
+    "message": "Impossible de changer de Workspace. Vos onglets actuels n'ont pas été modifiés."
+  },
+  "workspaceSwitchFailedTitle": {
+    "message": "Changement échoué"
+  },
+  "workspaceSwitcherAriaLabel": {
+    "message": "Workspace actif"
   }
 }
