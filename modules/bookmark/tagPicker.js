@@ -74,8 +74,6 @@ export function createTagPicker(initialTagIds = []) {
         const tag = await tagManager.createTag({ name: name.trim() });
         selected.add(tag.id);
         addRow(tag);
-        const lastRow = list.lastElementChild;
-        if (lastRow) lastRow.querySelector('input').checked = true;
     });
     root.appendChild(createBtn);
 
