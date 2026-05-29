@@ -8,6 +8,7 @@
 import { applyTheme } from './settingManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
+import * as state from '../stateManager.js';
 
 /**
  * Pure: map a storage change set to UI actions. No side effects.
@@ -30,6 +31,17 @@ export function resolveSettingChangeActions(changes, areaName) {
         for (const [key, event] of Object.entries(evMap)) {
             if (changes[key]) actions.push({ type: 'dispatch', event, detail: { visible: changes[key].newValue } });
         }
+        const refreshKeys = [
+            'readingListVisible',
+            'aiGroupingVisible',
+            'aiCleanupVisible',
+            'aiAutoNamingEnabled',
+            'hoverSummarizeEnabled',
+            'readingListSummaryEnabled',
+        ];
+        for (const key of refreshKeys) {
+            if (changes[key]) actions.push({ type: 'refreshState', key });
+        }
     } else if (areaName === 'local') {
         if (changes.custom_bg_image_data) actions.push({ type: 'applyBackground' });
     }
@@ -51,6 +63,17 @@ export async function applySettingChanges(actions) {
                 window.location.reload();
             } else if (a.type === 'dispatch') {
                 document.dispatchEvent(new CustomEvent(a.event, { detail: a.detail }));
+            } else if (a.type === 'refreshState') {
+                const initByKey = {
+                    readingListVisible: state.initReadingListVisibility,
+                    aiGroupingVisible: state.initAiGroupingVisibility,
+                    aiCleanupVisible: state.initAiCleanupVisibility,
+                    aiAutoNamingEnabled: state.initAiAutoNaming,
+                    hoverSummarizeEnabled: state.initHoverSummarize,
+                    readingListSummaryEnabled: state.initReadingListSummary,
+                };
+                const fn = initByKey[a.key];
+                if (fn) await fn();
             }
         } catch (e) { console.warn('[settingsBridge] action failed', a, e); }
     }
