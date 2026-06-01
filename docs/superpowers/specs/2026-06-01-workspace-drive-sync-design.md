@@ -84,6 +84,10 @@
 - 控制項只 `setStorage`（無 CustomEvent，跨 context 靠 bridge）。
 
 ### E5 — 隱私 / i18n / 收尾
+- ✅ **E5b（隱私揭露）已完成**：
+  - `PRIVACY_POLICY.md`：新增「2.1 工作區 Google Drive 同步（選用，預設關閉）」小節（opt-in 逐工作區、上傳內容＝URL/標題/釘選/群組名稱與顏色、寫入使用者自己 Drive 的 `appDataFolder`／`drive.appdata`、不經開發者或第三方伺服器、`chrome.identity` 授權不存長期憑證、刪除途徑）；限定原「不上傳至任何伺服器」承諾為「開發者或第三方伺服器」；加入 **Limited Use 逐字聲明**；權限表新增 `identity` 列；生效日期加註更新。
+  - 官網（**in-repo**）：`web/privacy.html` 同步新增 2.1 區塊、`identity` 權限列、Limited Use 逐字聲明，並透過 `data-i18n` 對應 14 語系 `web/locales/*.json`（新增 9 個 key：`privacy_s2_1_title/desc/li1..li5`、`privacy_limited_use`、`privacy_s4_td_identity`；修訂 `privacy_s2_li1`、`privacy_effective_date`）。Limited Use 聲明英文本體**逐字不翻譯**，僅標籤本地化。
+  - ⚠️ **剩餘人工步驟（live site / OAuth brand verification）**：`web/` 為靜態官網原始碼，需在 OAuth 品牌驗證送審前**部署至 live 網域** `https://sidebar-for-tabs-bookmarks.taislife.work/privacy.html`，確認 Limited Use 逐字聲明於線上可見（Google 品牌驗證會檢查首頁／隱私頁是否刊載此聲明）。同時確認 Cloud Console 同意畫面填入此隱私頁 URL。
 - `PRIVACY_POLICY.md`：新增 Drive 上傳條款（opt-in 工作區的分頁 URL+標題寫入使用者自己的 Drive appDataFolder、不經開發者伺服器）；官網放 **Limited Use 逐字聲明**。
 - ~20 個新 i18n key × 14 語系（settingsNavSync、syncConnect/Disconnect、status、Sync now/Restore、隱私揭露、可還原、衝突檢視…）。
 - 更新 `GEMINI.md` key_files（sync 模組）；`.agent/notes/` 收尾筆記。

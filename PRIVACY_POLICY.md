@@ -1,6 +1,6 @@
 # 隱私權政策 (Privacy Policy) for Arc 風格側邊欄
 
-**生效日期：2026年2月10日**
+**生效日期：2026年2月10日**（最近更新：2026年6月1日 — 新增選用的「工作區 Google Drive 同步」揭露）
 
 感謝您使用「Arc 風格側邊欄」Chrome 擴充功能（以下簡稱「本擴充功能」）。我們致力於保護您的個人隱私。本隱私權政策旨在說明我們如何處理您的資訊。
 
@@ -17,8 +17,22 @@
 
 我們採用最小化資料收集原則，並根據資料類型採用不同的儲存方式：
 
-* **本機資料 (Local Data)**：您的**分頁**、**書籤**、**Linked Tabs 關聯狀態**以及 **RSS 已抓取文章的雜湊值**等核心操作資料，僅儲存於您裝置的 `chrome.storage.local` 中。我們**不會**將這些資料上傳至任何伺服器。
+* **本機資料 (Local Data)**：您的**分頁**、**書籤**、**Linked Tabs 關聯狀態**以及 **RSS 已抓取文章的雜湊值**等核心操作資料，僅儲存於您裝置的 `chrome.storage.local` 中。除了下方「2.1 工作區 Google Drive 同步」明確說明的選用功能外，我們**不會**將這些資料上傳至任何**開發者或第三方伺服器**。
 * **設定同步 (Settings Sync)**：為了提供跨裝置的一致體驗，您的**擴充功能偏好設定**（例如：主題選擇、RSS 訂閱清單）會儲存於 `chrome.storage.sync`。這將透過您的 Google 帳號在您登入的 Chrome 瀏覽器間進行同步。
+
+#### 2.1 工作區 Google Drive 同步（選用，預設關閉）
+
+為了讓您能在多台裝置間同步與還原「工作區 (Workspace)」中的分頁，本擴充功能提供一項**選用 (opt-in)** 的 Google Drive 同步功能。此功能的隱私設計如下：
+
+* **預設關閉、逐工作區授權**：此功能**預設為關閉**。除非您主動連結 Google Drive **並且**針對**特定工作區**開啟同步，否則**不會**有任何資料被上傳。未開啟同步的工作區，其行為與過去完全相同（僅存於本機）。
+* **上傳的內容**：對於您**主動開啟同步的工作區**，我們會上傳該工作區的分頁快照，內容包含：分頁的**網址 (URL)**、**標題 (title)**、**釘選狀態 (pinned state)**，以及**分頁群組的名稱與顏色 (tab-group name/color)**。這是本擴充功能首次將完整的分頁網址與標題傳出您的裝置，因此我們在此明確揭露。
+* **儲存位置**：上述資料只會寫入**您自己的 Google Drive**，存放於應用程式專屬的隱藏資料夾 `appDataFolder`（透過 `drive.appdata` OAuth 範圍存取）。此資料夾為應用程式私有：**只有本擴充功能能存取**、在您的 Drive 一般檔案清單中不可見，並且在您**解除安裝本擴充功能時會由 Google 自動刪除**。這些資料**絕不會**傳送至開發者的伺服器或任何第三方伺服器。
+* **授權方式**：我們透過 Chrome 內建的 `chrome.identity` API 取得存取您 Drive `appDataFolder` 的授權；**不會儲存任何長期憑證**。您隨時可在設定中點擊「中斷連結 Google Drive」，這會立即停止所有上傳並清除本機快取的存取權杖。
+* **刪除您的資料**：您可隨時刪除已同步的資料 — 中斷連結 Google Drive、關閉特定工作區的同步、或透過 Google Drive 的「管理應用程式 (Manage apps)」移除本應用程式的資料；解除安裝本擴充功能亦會一併移除。
+
+> **Google API 服務使用者資料政策 (Limited Use)**
+>
+> The use of information received from Google APIs will adhere to the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/limited-use/), including the Limited Use requirements.
 
 ### 3. 我們傳輸的資訊
 
@@ -41,6 +55,7 @@
 | `readingList` | 管理 Chrome 閱讀清單（新增/移除/標記已讀） |
 | `alarms` | 排程 RSS 訂閱的定時抓取任務 |
 | `offscreen` | 在背景處理 RSS feed 的 XML 解析 |
+| `identity` | 用於選用的「工作區 Google Drive 同步」功能：透過 Chrome 內建身分驗證取得存取您自己 Google Drive `appDataFolder` 的授權（`drive.appdata` 範圍）。僅在您主動連結 Google Drive 時使用 |
 | `host_permissions (*://*/*)` | 用於抓取 RSS feed 內容及顯示書籤圖示 |
 
 ### 5. 資訊的使用
