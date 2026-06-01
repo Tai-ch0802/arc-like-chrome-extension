@@ -567,7 +567,7 @@ function renderSync(container) {
 
     // --- 1. Account block (skeleton) ---
     const accountBlock = document.createElement('div');
-    accountBlock.className = 'opt-section sync-account-block';
+    accountBlock.className = 'sync-account-block';
     container.appendChild(accountBlock);
 
     // --- 2. Status row (skeleton) ---
