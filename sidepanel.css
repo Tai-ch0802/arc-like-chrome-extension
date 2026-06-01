@@ -3334,7 +3334,8 @@ mark.url-match {
 
 /* 書籤列上的標籤圓點 */
 .bookmark-tags { display: inline-flex; gap: 3px; align-items: center; margin: 0 6px; }
-.bookmark-tag-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.bookmark-tag-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; cursor: pointer; transition: transform 0.1s ease; }
+.bookmark-tag-dot:hover { transform: scale(1.25); }
 .bookmark-tag-dot[data-color="grey"]   { background: #5f6368; }
 .bookmark-tag-dot[data-color="blue"]   { background: #1a73e8; }
 .bookmark-tag-dot[data-color="red"]    { background: #d93025; }
