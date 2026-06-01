@@ -4,7 +4,7 @@ const { setupBrowser, teardownBrowser } = require('./setup');
  * The settings UI now lives in a dedicated options page (options.html), opened
  * via chrome.runtime.openOptionsPage(). This suite navigates directly to the
  * options page and verifies:
- *   1. The left nav renders 7 items, with the first section (appearance) active.
+ *   1. The left nav renders 8 items, with the first section (appearance) active.
  *   2. Clicking the "features" nav item activates the features section.
  *   3. Toggling a feature checkbox persists the value to chrome.storage.sync.
  */
@@ -30,9 +30,9 @@ describe('Options Page Use Case', () => {
         await teardownBrowser(browser);
     });
 
-    test('left nav renders 7 sections with appearance active by default', async () => {
+    test('left nav renders 8 sections with appearance active by default', async () => {
         const navItems = await page.$$('.opt-nav__item');
-        expect(navItems.length).toBe(7);
+        expect(navItems.length).toBe(8);
 
         // The appearance section is active on load.
         await page.waitForSelector('.opt-section.active', { timeout: 5000 });
