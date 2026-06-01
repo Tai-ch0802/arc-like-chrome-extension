@@ -94,7 +94,7 @@ key_files:
   - file_path: modules/commandPalette/nlSearch.js
     description: "[AI] 自然語言搜尋。Phase 8b 新增；使用 Chrome Prompt API 作 reranker（非 filter），透過 preFilterByQuery 用 indexOf scoring 降低候選後再送 LLM。"
   - file_path: modules/workspace/workspaceManager.js
-    description: "[功能] Workspace 業務邏輯。Phase 6 新增、Phase 9 重構儲存架構；分離 metadata (chrome.storage.sync, 8KB/key 限制) 與 tabSnapshot (chrome.storage.local)，含 legacy windowNames 一次性遷移與 onChanged 跨裝置同步。Phase 12(批C) 快照捕捉 tab group(groupKey/title/color)、切換時 best-effort 重建 group（純函式 buildSnapshotFromTabs / clusterCreatedTabsByGroup）。#5 分頁內容跨裝置同步延後，方向是用 Google Drive 當持久層。"
+    description: "[功能] Workspace 業務邏輯。Phase 6 新增、Phase 9 重構儲存架構；分離 metadata (chrome.storage.sync, 8KB/key 限制) 與 tabSnapshot (chrome.storage.local)，含 legacy windowNames 一次性遷移與 onChanged 跨裝置同步。Phase 12(批C) 快照捕捉 tab group(groupKey/title/color)、切換時 best-effort 重建 group（純函式 buildSnapshotFromTabs / clusterCreatedTabsByGroup）。Drive sync (批E) 新增 isWorkspaceBound(查 windowWorkspaceMap 是否綁定) 與 applyRemoteWorkspace(把 Drive 拉回的 workspace 寫入本地，不開分頁、不 bumpRev、rev/updatedAt 直接取自 remote)。"
   - file_path: modules/workspace/workspaceUI.js
     description: "[UI] Workspace 切換器與管理介面。Phase 6 新增；下拉切換 + 管理 modal + 切換確認 (含 unbound tabs 自動 auto-save 防資料遺失)。"
   - file_path: modules/bookmark/tagManager.js
@@ -129,6 +129,8 @@ key_files:
     description: "[Test] Jest 設定（Phase 1.2 補單元測試骨架）。設定 jsdom 環境、transform 使用 esbuild-jest。"
   - file_path: jest.esbuild-transform.cjs
     description: "[Test] Jest 自訂 transform。Phase 1.2 新增；用 esbuild 將 ESM .js 編譯為 CJS，避免引入 babel-jest 依賴。"
+  - file_path: background.js
+    description: "[Service Worker] MV3 背景腳本。處理快捷鍵指令、sidePanel 行為、AI 群組自動命名、RSS 鬧鐘。Drive sync (批E) 新增：用真實 deps 建立 syncEngine（GoogleDriveProvider + workspaceManager + chrome.storage.local 佇列/baseRev/restorable/status），觸發點 = onChanged(去抖 push)/alarms(driveSyncPull 週期、driveSyncFlush 一次性)/onStartup/onMessage(driveSyncNow|Connect|Disconnect|Restore|SetWorkspaceSync)；suppressSyncEnqueue flag 防 pull→push→pull 迴圈；離線(navigator.onLine===false)設 offline 狀態並略過；無 OAuth token 時 isConnected()=false → 引擎全程 inert。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
 

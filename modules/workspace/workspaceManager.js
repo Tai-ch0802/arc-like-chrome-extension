@@ -197,6 +197,81 @@ export async function setWorkspaceSyncEnabled(id, enabled) {
     return ws;
 }
 
+/**
+ * True if ANY live window is currently bound to this workspace id.
+ *
+ * Used by the Drive sync engine (via background's isWorkspaceLiveBound dep) to
+ * know whether a workspace is materialized into an open window. The engine only
+ * ever writes the stored snapshot — it never opens/replaces tabs — so this is an
+ * advisory signal, not a guard against destructive ops.
+ *
+ * @param {string} workspaceId
+ * @returns {boolean}
+ */
+export function isWorkspaceBound(workspaceId) {
+    for (const boundId of Object.values(windowWorkspaceMap)) {
+        if (boundId === workspaceId) return true;
+    }
+    return false;
+}
+
+/**
+ * Apply a workspace pulled from a remote (Drive) into local state WITHOUT
+ * opening tabs and WITHOUT bumping rev. The authoritative rev/updatedAt come
+ * from the remote payload (this is a downstream apply, not a local edit), so we
+ * set them directly rather than calling bumpRev.
+ *
+ * Two cases:
+ *  - Workspace already exists locally → overwrite its identity metadata
+ *    (name/color/icon/bookmarkFolderId/syncEnabled), replace its tabSnapshot,
+ *    and set rev/updatedAt from the remote.
+ *  - Workspace does NOT exist (e.g. restore on a fresh device) → create the
+ *    in-memory record with the given id + remote fields. lastActiveAt is seeded
+ *    to remote.updatedAt (falling back to now) so the new entry sorts sensibly
+ *    in the switcher; it is NOT a window binding (no windows/tabs are touched).
+ *
+ * NOTE (loop prevention): this persist fires chrome.storage.onChanged. The
+ * background onChanged handler must suppress re-enqueuing for engine-initiated
+ * writes; that suppression lives in background.js (it sets a flag around this
+ * call) so this module stays storage-agnostic.
+ *
+ * @param {string} id
+ * @param {{metadata: {name?:string, color?:string, icon?:string, bookmarkFolderId?:string, syncEnabled?:boolean}, tabSnapshot: TabSnapshot[], rev: number, updatedAt?: number}} remote
+ * @returns {Promise<Workspace>}
+ */
+export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = [], rev, updatedAt } = {}) {
+    const remoteUpdatedAt = (typeof updatedAt === 'number')
+        ? updatedAt
+        : (typeof metadata.updatedAt === 'number' ? metadata.updatedAt : Date.now());
+    const existing = workspaces[id];
+    if (existing) {
+        if (metadata.name !== undefined) existing.name = metadata.name;
+        if (metadata.color !== undefined) existing.color = metadata.color;
+        if (metadata.icon !== undefined) existing.icon = metadata.icon;
+        // bookmarkFolderId is intentionally allowed to be cleared (undefined).
+        existing.bookmarkFolderId = metadata.bookmarkFolderId || undefined;
+        if (metadata.syncEnabled !== undefined) existing.syncEnabled = Boolean(metadata.syncEnabled);
+        existing.tabSnapshot = Array.isArray(tabSnapshot) ? tabSnapshot : [];
+        if (typeof rev === 'number') existing.rev = rev;
+        existing.updatedAt = remoteUpdatedAt;
+    } else {
+        workspaces[id] = {
+            id,
+            name: metadata.name || 'Workspace',
+            color: metadata.color || 'blue',
+            icon: metadata.icon || '💼',
+            bookmarkFolderId: metadata.bookmarkFolderId || undefined,
+            tabSnapshot: Array.isArray(tabSnapshot) ? tabSnapshot : [],
+            lastActiveAt: remoteUpdatedAt,
+            rev: typeof rev === 'number' ? rev : 1,
+            updatedAt: remoteUpdatedAt,
+            syncEnabled: metadata.syncEnabled !== undefined ? Boolean(metadata.syncEnabled) : true,
+        };
+    }
+    await persistWorkspaces();
+    return workspaces[id];
+}
+
 export async function deleteWorkspace(id) {
     delete workspaces[id];
     // Detach any window currently bound to it.
