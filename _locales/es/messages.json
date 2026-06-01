@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Nombre de la nueva etiqueta"
   },
+  "bmToolsEditTag": {
+    "message": "Editar etiqueta"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "El escaneo intenta alcanzar cada marcador http(s) vía HEAD. Solo se marcan los enlaces inalcanzables por red (HTTP 404 no se puede detectar sin CORS por origen, ver notas)."
   },

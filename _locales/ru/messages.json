@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Имя нового тега"
   },
+  "bmToolsEditTag": {
+    "message": "Изменить тег"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Сканирование пытается достичь каждую http(s)-закладку через HEAD. Только сетево-недостижимые ссылки помечаются (HTTP 404 нельзя обнаружить без per-origin CORS, см. notes)."
   },

@@ -869,6 +869,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "新标签名称"
   },
+  "bmToolsEditTag": {
+    "message": "编辑标签"
+  },
   "bmToolsDeleteTagTitle": {
     "message": "删除标签"
   },

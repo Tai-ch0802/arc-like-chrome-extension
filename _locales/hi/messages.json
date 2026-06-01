@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "नए tag का नाम"
   },
+  "bmToolsEditTag": {
+    "message": "टैग संपादित करें"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Scan HEAD से हर http(s) bookmark तक पहुंचने की कोशिश करता है। केवल network-unreachable links flag होते हैं (HTTP 404 per-origin CORS के बिना detect नहीं हो सकता, notes देखें)।"
   },

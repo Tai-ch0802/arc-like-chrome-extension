@@ -872,6 +872,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "New tag name"
   },
+  "bmToolsEditTag": {
+    "message": "Edit tag"
+  },
   "bmToolsDeleteTagTitle": {
     "message": "Delete tag"
   },

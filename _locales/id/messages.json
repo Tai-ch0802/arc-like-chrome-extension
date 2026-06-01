@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Nama tag baru"
   },
+  "bmToolsEditTag": {
+    "message": "Edit tag"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Scan mencoba menjangkau setiap bookmark http(s) via HEAD. Hanya link yang tidak terjangkau jaringan yang ditandai (HTTP 404 tidak dapat dideteksi tanpa per-origin CORS, lihat notes)."
   },

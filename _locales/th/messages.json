@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "ชื่อ tag ใหม่"
   },
+  "bmToolsEditTag": {
+    "message": "แก้ไขแท็ก"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Scan พยายามเข้าถึงทุก http(s) bookmark ผ่าน HEAD เฉพาะ link ที่ network unreachable ถูกระบุ (HTTP 404 ตรวจไม่ได้หากไม่มี per-origin CORS, ดู notes)"
   },
