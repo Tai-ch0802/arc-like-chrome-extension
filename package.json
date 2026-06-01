@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
     "test:ci": "jest --maxWorkers=2 --bail --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
-    "test:full": "jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
+    "test:full": "jest --clearCache && jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
     "test:unit": "jest --maxWorkers=2 usecase_tests/unit_tests/"
   },
   "repository": {
