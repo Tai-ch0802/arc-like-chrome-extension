@@ -2,8 +2,286 @@
 
 import { handleAlarm as handleRssAlarm } from './modules/rssManager.js';
 import { generateGroupName } from './modules/aiManager.js';
+import { getStorage, setStorage } from './modules/apiManager.js';
+import * as workspaceManager from './modules/workspace/workspaceManager.js';
+import { createSyncEngine } from './modules/sync/syncEngine.js';
+import { createGoogleDriveProvider } from './modules/sync/googleDriveProvider.js';
+import * as driveAuth from './modules/sync/driveAuth.js';
 
 const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
+
+// ---------------------------------------------------------------------------
+// Drive sync wiring (E3b)
+// ---------------------------------------------------------------------------
+//
+// This block wires the (already-built, tested) sync engine into the service
+// worker with REAL deps: GoogleDriveProvider for I/O, workspaceManager for
+// local state, and chrome.storage.local for the engine's queue / baseRev /
+// restorable / status surfaces.
+//
+// Inert-when-not-connected: GoogleDriveProvider.isConnected() delegates to
+// driveAuth.isConnected(), which returns false whenever no OAuth token can be
+// obtained non-interactively (the default while manifest.json carries the
+// placeholder client_id). Every engine entry point guards on isConnected()
+// first, so with no token the engine returns early and nothing throws.
+
+// Storage keys owned by the sync layer (all chrome.storage.local).
+const DRIVE_DEVICE_ID_KEY = 'driveDeviceId';
+const DRIVE_BASE_REV_KEY = 'driveBaseRev';       // { [workspaceId]: rev }
+const DRIVE_SYNC_QUEUE_KEY = 'driveSyncQueue';   // Array<{type, workspaceId}>
+const DRIVE_RESTORABLE_KEY = 'driveRestorable';  // Array<{id, rev, metadata}>
+const DRIVE_SYNC_STATUS_KEY = 'driveSyncStatus'; // SyncStatus
+
+// Workspace storage keys (mirrors workspaceManager) — used to diff onChanged.
+const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // chrome.storage.sync
+const WORKSPACE_SNAPSHOTS_KEY = 'workspaceSnapshots';   // chrome.storage.local
+
+// Alarm names.
+const ALARM_PULL = 'driveSyncPull';     // periodic full runOnce
+const ALARM_FLUSH = 'driveSyncFlush';   // one-shot debounced push flush
+const PULL_PERIOD_MIN = 10;             // ~10 min periodic pull
+const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarms min granularity)
+
+/**
+ * Loop-suppression flag. When an ENGINE-INITIATED write touches local workspace
+ * state (applyRemoteSnapshot / removeLocalWorkspace), it fires
+ * chrome.storage.onChanged like any other write. Without a guard the onChanged
+ * handler below would re-enqueue a push for the very workspace we just pulled,
+ * causing a pull→push→pull loop.
+ *
+ * We own the suppression HERE (not in workspaceManager) so the manager stays
+ * storage-agnostic: set the flag before the engine-initiated persist, clear it
+ * after. The flag is a simple module-level boolean — engine writes are awaited
+ * sequentially within a single SW task, so there is no interleaving concern.
+ */
+let suppressSyncEnqueue = false;
+
+/** In-memory device-id cache (avoids a storage read per buildPushPayload). */
+let cachedDeviceId = null;
+
+/** Has workspaceManager been initialized in this SW lifetime? */
+let workspaceInitDone = false;
+
+/** Ensure workspaceManager's in-memory mirror is populated in the SW context. */
+async function ensureWorkspacesInit() {
+    if (workspaceInitDone) return;
+    await workspaceManager.initWorkspaces();
+    workspaceInitDone = true;
+}
+
+/** Stable per-install device id. Generated + persisted on first use, then cached. */
+async function getDeviceId() {
+    if (cachedDeviceId) return cachedDeviceId;
+    const res = await getStorage('local', [DRIVE_DEVICE_ID_KEY]);
+    let id = res[DRIVE_DEVICE_ID_KEY];
+    if (!id) {
+        id = crypto.randomUUID();
+        await setStorage('local', { [DRIVE_DEVICE_ID_KEY]: id });
+    }
+    cachedDeviceId = id;
+    return id;
+}
+
+const syncProvider = createGoogleDriveProvider();
+
+const syncEngine = createSyncEngine({
+    provider: syncProvider,
+
+    // getDeviceId is called synchronously inside buildPushPayload, so it must
+    // return a string. We prime cachedDeviceId via ensureDeviceId() before any
+    // runOnce/flush so the synchronous read always hits the cache.
+    getDeviceId: () => cachedDeviceId || '',
+
+    now: () => Date.now(),
+
+    /**
+     * ALL syncEnabled local workspaces, mapped to the engine's shape. The engine
+     * filters to syncEnabled itself, but we pre-filter here too (cheaper, and
+     * the contract only asks for synced ones to participate).
+     */
+    async listLocalWorkspaces() {
+        await ensureWorkspacesInit();
+        return workspaceManager.getAllWorkspaces()
+            .filter((w) => w.syncEnabled)
+            .map((w) => ({
+                id: w.id,
+                rev: w.rev,
+                syncEnabled: w.syncEnabled,
+                metadata: {
+                    name: w.name,
+                    color: w.color,
+                    icon: w.icon,
+                    bookmarkFolderId: w.bookmarkFolderId,
+                    syncEnabled: w.syncEnabled,
+                },
+                tabSnapshot: w.tabSnapshot,
+            }));
+    },
+
+    async getBaseRev(id) {
+        const res = await getStorage('local', [DRIVE_BASE_REV_KEY]);
+        const map = res[DRIVE_BASE_REV_KEY] || {};
+        return map[id] || 0;
+    },
+
+    async setBaseRev(id, rev) {
+        const res = await getStorage('local', [DRIVE_BASE_REV_KEY]);
+        const map = res[DRIVE_BASE_REV_KEY] || {};
+        map[id] = rev;
+        await setStorage('local', { [DRIVE_BASE_REV_KEY]: map });
+    },
+
+    /**
+     * Write a pulled file json into local state WITHOUT opening tabs. We suppress
+     * the onChanged re-enqueue around the persist so this engine-initiated write
+     * does not bounce back as a push.
+     */
+    async applyRemoteSnapshot(id, fileJson) {
+        await ensureWorkspacesInit();
+        suppressSyncEnqueue = true;
+        try {
+            await workspaceManager.applyRemoteWorkspace(id, {
+                metadata: fileJson.metadata,
+                tabSnapshot: fileJson.tabSnapshot,
+                rev: fileJson.rev,
+                updatedAt: fileJson.updatedAt,
+            });
+        } finally {
+            suppressSyncEnqueue = false;
+        }
+    },
+
+    async removeLocalWorkspace(id) {
+        await ensureWorkspacesInit();
+        suppressSyncEnqueue = true;
+        try {
+            await workspaceManager.deleteWorkspace(id);
+        } finally {
+            suppressSyncEnqueue = false;
+        }
+    },
+
+    async isWorkspaceLiveBound(id) {
+        await ensureWorkspacesInit();
+        return workspaceManager.isWorkspaceBound(id);
+    },
+
+    async readQueue() {
+        const res = await getStorage('local', [DRIVE_SYNC_QUEUE_KEY]);
+        return res[DRIVE_SYNC_QUEUE_KEY] || [];
+    },
+
+    async writeQueue(ops) {
+        await setStorage('local', { [DRIVE_SYNC_QUEUE_KEY]: ops });
+    },
+
+    async setRestorable(list) {
+        await setStorage('local', { [DRIVE_RESTORABLE_KEY]: list });
+    },
+
+    async setStatus(status) {
+        await setStorage('local', { [DRIVE_SYNC_STATUS_KEY]: status });
+    },
+});
+
+/**
+ * Prime the cached device id (so getDeviceId() returns synchronously inside the
+ * engine) and then run a full sync cycle.
+ *
+ * Offline vs needs-auth (E3a Minor): a NETWORK failure should surface as
+ * 'offline', not 'needs-auth'. We can't cleanly distinguish those inside the
+ * pure engine, so we short-circuit here: if the device is offline, set the
+ * offline status and skip the cycle entirely. When online, the engine's own
+ * guards set 'needs-auth' iff there's genuinely no token.
+ */
+async function runSyncOnce() {
+    try {
+        if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+            await setStorage('local', { [DRIVE_SYNC_STATUS_KEY]: { state: 'offline' } });
+            return;
+        }
+        await getDeviceId(); // prime cache for synchronous getDeviceId() in engine
+        await ensureWorkspacesInit();
+        await syncEngine.runOnce();
+    } catch (err) {
+        // The engine sets its own terminal status on provider errors; this catch
+        // is a last-resort guard so an unexpected throw never crashes the SW.
+        console.warn('[sync] runOnce failed:', err && err.message ? err.message : err);
+    }
+}
+
+/** (Re)create the periodic pull alarm. Alarms don't survive a browser restart. */
+function ensurePullAlarm() {
+    chrome.alarms.create(ALARM_PULL, { periodInMinutes: PULL_PERIOD_MIN });
+}
+
+// Recreate the periodic alarm at the TOP of every SW startup (cold start after
+// termination, browser restart, etc.). chrome.alarms.create with the same name
+// is idempotent — it just resets the schedule.
+ensurePullAlarm();
+
+/**
+ * Diff two id→value maps and return the set of ids whose value changed, was
+ * added, or was removed.
+ * @param {Object} oldMap
+ * @param {Object} newMap
+ * @returns {Set<string>}
+ */
+function changedIds(oldMap, newMap) {
+    const ids = new Set();
+    const o = oldMap || {};
+    const n = newMap || {};
+    for (const id of new Set([...Object.keys(o), ...Object.keys(n)])) {
+        if (JSON.stringify(o[id]) !== JSON.stringify(n[id])) ids.add(id);
+    }
+    return ids;
+}
+
+/**
+ * onChanged → enqueue pushes for changed synced workspaces + schedule a debounced
+ * flush. Skipped entirely while suppressSyncEnqueue is set (engine-initiated
+ * writes), which prevents the pull→push→pull loop.
+ */
+async function handleWorkspaceStorageChange(changes, areaName) {
+    if (suppressSyncEnqueue) return;
+
+    let ids = new Set();
+    if (areaName === 'sync' && changes[WORKSPACE_METADATA_KEY]) {
+        const c = changes[WORKSPACE_METADATA_KEY];
+        ids = changedIds(c.oldValue, c.newValue);
+    } else if (areaName === 'local' && changes[WORKSPACE_SNAPSHOTS_KEY]) {
+        const c = changes[WORKSPACE_SNAPSHOTS_KEY];
+        ids = changedIds(c.oldValue, c.newValue);
+    } else {
+        return;
+    }
+    if (ids.size === 0) return;
+
+    // Re-read storage into the SW's in-memory mirror. The mutating write almost
+    // always comes from ANOTHER context (the sidepanel), so the SW's mirror is
+    // stale; re-initializing makes the syncEnabled filter below reflect the
+    // authoritative just-changed state rather than a stale snapshot.
+    await workspaceManager.initWorkspaces();
+    workspaceInitDone = true;
+
+    // Only enqueue workspaces the user has opted into syncing. A changed id that
+    // is no longer a synced workspace (deleted, or sync turned off) is ignored
+    // here; deletes are handled explicitly via driveSetWorkspaceSync / delete.
+    const synced = new Set(
+        workspaceManager.getAllWorkspaces().filter((w) => w.syncEnabled).map((w) => w.id),
+    );
+    let enqueued = false;
+    for (const id of ids) {
+        if (!synced.has(id)) continue;
+        await syncEngine.enqueuePush(id);
+        enqueued = true;
+    }
+    if (enqueued) {
+        // Debounced one-shot flush: recreating the alarm pushes its fire time
+        // out, so a burst of changes collapses into a single flush.
+        chrome.alarms.create(ALARM_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+    }
+}
 
 // 監聽快捷鍵指令
 chrome.commands.onCommand.addListener(async (command) => {
@@ -32,10 +310,52 @@ chrome.runtime.onInstalled.addListener(() => {
   // 自動開關側邊欄。
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
     .catch((error) => console.error(error));
+  // (Re)create the periodic pull alarm on install/update as well as cold start.
+  ensurePullAlarm();
 });
 
-// 監聯 RSS 定時抓取鬧鐘
-chrome.alarms.onAlarm.addListener(handleRssAlarm);
+// onStartup (browser launch): alarms may have been cleared, so recreate the
+// periodic pull alarm and run one immediate sync cycle.
+chrome.runtime.onStartup.addListener(() => {
+  ensurePullAlarm();
+  runSyncOnce();
+});
+
+// 監聯 RSS 定時抓取鬧鐘 + Drive 同步鬧鐘（單一 onAlarm 監聽器分派）
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === ALARM_PULL) {
+    runSyncOnce();
+    return;
+  }
+  if (alarm.name === ALARM_FLUSH) {
+    // Debounced push flush. Guard offline the same way as runOnce so a flush
+    // while offline doesn't get misclassified as needs-auth.
+    (async () => {
+      try {
+        if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+          await setStorage('local', { [DRIVE_SYNC_STATUS_KEY]: { state: 'offline' } });
+          return;
+        }
+        await getDeviceId();
+        await ensureWorkspacesInit();
+        await syncEngine.flushQueue();
+      } catch (err) {
+        console.warn('[sync] flush failed:', err && err.message ? err.message : err);
+      }
+    })();
+    return;
+  }
+  // Anything else → RSS.
+  handleRssAlarm(alarm);
+});
+
+// chrome.storage.onChanged → derive sync pushes for changed workspaces.
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName !== 'sync' && areaName !== 'local') return;
+  handleWorkspaceStorageChange(changes, areaName).catch((err) => {
+    console.warn('[sync] onChanged handling failed:', err && err.message ? err.message : err);
+  });
+});
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background
 // 統一處理避免多 sidepanel 重複觸發。generateGroupName 內部已限制只在
@@ -83,6 +403,55 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.action === 'openAppearanceSettingsPage') {
     chrome.tabs.create({ url: 'chrome://settings/appearance' });
     return false;
+  } else if (message.action === 'driveSyncNow') {
+    // Manual "Sync now".
+    (async () => {
+      await runSyncOnce();
+      sendResponse({ ok: true });
+    })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
+    return true;
+  } else if (message.action === 'driveConnect') {
+    // Interactive connect (must be triggered from a user gesture in options UI),
+    // then run an immediate sync cycle.
+    (async () => {
+      const connected = await driveAuth.connect();
+      if (connected) await runSyncOnce();
+      sendResponse({ ok: connected });
+    })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
+    return true;
+  } else if (message.action === 'driveDisconnect') {
+    (async () => {
+      await driveAuth.disconnect();
+      // Clear sync surfaces so the UI doesn't show stale connected state.
+      await setStorage('local', {
+        [DRIVE_SYNC_STATUS_KEY]: { state: 'idle' },
+        [DRIVE_RESTORABLE_KEY]: [],
+      });
+      sendResponse({ ok: true });
+    })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
+    return true;
+  } else if (message.action === 'driveRestore') {
+    // Explicit "Restore from Drive" for one workspace.
+    (async () => {
+      await getDeviceId();
+      await ensureWorkspacesInit();
+      const result = await syncEngine.restoreWorkspace(message.workspaceId);
+      sendResponse(result);
+    })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
+    return true;
+  } else if (message.action === 'driveSetWorkspaceSync') {
+    // Toggle a workspace's sync opt-in; on enable, push it immediately.
+    (async () => {
+      await ensureWorkspacesInit();
+      await workspaceManager.setWorkspaceSyncEnabled(message.workspaceId, message.enabled);
+      if (message.enabled) {
+        await getDeviceId();
+        await syncEngine.enqueuePush(message.workspaceId);
+        chrome.alarms.create(ALARM_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+      }
+      sendResponse({ ok: true });
+    })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
+    return true;
   }
   // 不處理的 action：不攔截，讓 offscreen document 等其他 context 可以回應
 });
