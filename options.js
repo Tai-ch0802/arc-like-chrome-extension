@@ -815,6 +815,9 @@ function renderSync(container) {
                     } catch (err) {
                         console.warn('[sync] setWorkspaceSync failed:', err);
                     }
+                    // Re-hydrate so the checkbox reflects the actual persisted state
+                    // (a failed message would otherwise leave a stale optimistic tick).
+                    await hydrate();
                 });
                 const name = ws.name || ws.id;
                 optInBlock.appendChild(makeRow(

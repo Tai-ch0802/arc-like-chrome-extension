@@ -19,6 +19,7 @@ import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
 import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
+import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 
 // --- 主要協調器 ---
 
@@ -177,6 +178,9 @@ async function initialize() {
     hoverSummarize.init(); // Initialize Hover Summarize feature
     await workspaceManager.initWorkspaces(); // Load workspace cache before UI uses it
     await initWorkspaceUI(); // Workspace switcher dropdown + manage dialog
+    // Drive-sync status badge: non-blocking; reads initial status from storage
+    // and listens for driveSyncStatusChanged (dispatched by initSettingsBridge).
+    initDriveSyncBadge().catch(err => console.warn('[sync] badge init failed:', err));
     await tagManager.initTags(); // Load bookmark tags before command palette / tools UI
     // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't watching).
     tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])

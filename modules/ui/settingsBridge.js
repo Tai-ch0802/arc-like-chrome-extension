@@ -44,6 +44,9 @@ export function resolveSettingChangeActions(changes, areaName) {
         }
     } else if (areaName === 'local') {
         if (changes.custom_bg_image_data) actions.push({ type: 'applyBackground' });
+        // The background service worker writes Drive-sync status here; surface it
+        // to the sidepanel badge via a DOM event (applySettingChanges dispatches it).
+        if (changes.driveSyncStatus) actions.push({ type: 'dispatch', event: 'driveSyncStatusChanged', detail: changes.driveSyncStatus.newValue });
     }
     return actions;
 }
