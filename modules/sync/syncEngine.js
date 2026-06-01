@@ -345,6 +345,14 @@ export function createSyncEngine(deps) {
      * Process a delete op by writing a tombstone file the OTHER devices will see
      * via decidePull. The tombstone rev advances past the last known rev so it
      * wins ordering.
+     *
+     * The local workspace is typically GONE here: a user delete removes the
+     * workspace from local state, and only THEN does background.js enqueue the
+     * delete (C1). So `local.get(id)` is usually undefined. We recover the last
+     * known rev from, in priority order: the remote file's rev (if still
+     * present), the local record's rev (if somehow still here), or the persisted
+     * per-device baseRev (which survives the local delete) — guaranteeing a valid
+     * `baseRev+1` tombstone even with no local workspace object.
      * @param {string} id
      * @param {Map<string, any>} local
      */

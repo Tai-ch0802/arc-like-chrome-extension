@@ -264,3 +264,33 @@ export function tombstonesToGC(indexEntries, now, graceMs) {
 export function isSchemaTooNew(remoteSchemaVersion, supportedSchemaVersion) {
     return remoteSchemaVersion > supportedSchemaVersion;
 }
+
+/**
+ * Which previously-synced workspaces were DELETED, given the old and new
+ * `workspaceMetadata` maps. A workspace qualifies iff it was present in `oldMeta`
+ * with `syncEnabled === true` AND is now ABSENT from `newMeta` (i.e. the user
+ * deleted a synced workspace, removing its metadata entry entirely).
+ *
+ * This drives the soft-delete tombstone: when the user deletes a synced
+ * workspace its metadata disappears from chrome.storage.sync, but the Drive
+ * `ws_<id>.json` must be tombstoned so the deletion propagates to other devices
+ * (otherwise it resurrects as "restorable"). Turning OFF a workspace's sync
+ * (still present, syncEnabled flips to false) is NOT a delete — it only stops
+ * future uploads — so it is intentionally excluded here.
+ *
+ * Pure: no side effects, no chrome/Date/random.
+ *
+ * @param {Object<string,{syncEnabled?:boolean}>|null|undefined} oldMeta  previous map.
+ * @param {Object<string,{syncEnabled?:boolean}>|null|undefined} newMeta  new map.
+ * @returns {string[]} ids that were synced in oldMeta and are gone from newMeta.
+ */
+export function removedSyncedIds(oldMeta, newMeta) {
+    const o = oldMeta || {};
+    const n = newMeta || {};
+    return Object.keys(o).filter((id) => {
+        const entry = o[id];
+        const wasSynced = entry != null && entry.syncEnabled === true;
+        const stillPresent = Object.prototype.hasOwnProperty.call(n, id);
+        return wasSynced && !stillPresent;
+    });
+}

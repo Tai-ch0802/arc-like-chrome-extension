@@ -24,7 +24,7 @@ stays inert — `chrome.identity.getAuthToken` will fail gracefully and no data 
    - **User support email**: your maintainer address
    - **App logo**: use the 128 px extension icon
    - **Application homepage**: `https://sidebar-for-tabs-bookmarks.taislife.work/`
-   - **Privacy policy URL**: `https://sidebar-for-tabs-bookmarks.taislife.work/privacy-policy/`
+   - **Privacy policy URL**: `https://sidebar-for-tabs-bookmarks.taislife.work/privacy.html`
    - **Terms of service URL**: (optional)
 4. Click **Save and Continue** to reach **Scopes**.
 5. Click **Add or Remove Scopes** and add:

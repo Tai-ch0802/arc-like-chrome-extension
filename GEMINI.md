@@ -142,7 +142,7 @@ key_files:
   - file_path: jest.esbuild-transform.cjs
     description: "[Test] Jest 自訂 transform。Phase 1.2 新增；用 esbuild 將 ESM .js 編譯為 CJS，避免引入 babel-jest 依賴。"
   - file_path: background.js
-    description: "[Service Worker] MV3 背景腳本。處理快捷鍵指令、sidePanel 行為、AI 群組自動命名、RSS 鬧鐘。Drive sync (批E) 新增：用真實 deps 建立 syncEngine（GoogleDriveProvider + workspaceManager + chrome.storage.local 佇列/baseRev/restorable/status），觸發點 = onChanged(去抖 push)/alarms(driveSyncPull 週期、driveSyncFlush 一次性)/onStartup/onMessage(driveSyncNow|Connect|Disconnect|Restore|SetWorkspaceSync)；suppressSyncEnqueue flag 防 pull→push→pull 迴圈；離線(navigator.onLine===false)設 offline 狀態並略過；無 OAuth token 時 isConnected()=false → 引擎全程 inert。"
+    description: "[Service Worker] MV3 背景腳本。處理快捷鍵指令、sidePanel 行為、AI 群組自動命名、RSS 鬧鐘。Drive sync (批E) 新增：用真實 deps 建立 syncEngine（GoogleDriveProvider + workspaceManager + chrome.storage.local 佇列/baseRev/restorable/status），觸發點 = onChanged(去抖 push)/alarms(driveSyncPull 週期、driveSyncFlush 一次性)/onStartup/onMessage(driveSyncNow|Connect|Disconnect|Restore|SetWorkspaceSync)；engineWriteEcho Map（workspaceId→引擎剛寫入的 rev 或字串 'deleted'）防 pull→push→pull 迴圈，並讓使用者刪除已同步工作區時觸發 enqueueDelete 寫入 tombstone（engine-initiated 刪除帶 'deleted' echo 則略過，不重複 tombstone）；離線(navigator.onLine===false)設 offline 狀態並略過；無 OAuth token 時 isConnected()=false → runSyncOnce/flush 在寫任何狀態前先 early-return（不寫 driveSyncStatus，避免從未連線的安裝產生狀態抖動），引擎全程 inert。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。Phase 13(批E) 為 Drive sync 加入 identity 權限 + oauth2 區塊（client_id 目前為 placeholder，scopes 僅 drive.appdata 私有資料夾）；未填真實 client_id 前同步層維持 inert。"
 

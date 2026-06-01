@@ -232,8 +232,10 @@ export function isWorkspaceBound(workspaceId) {
  *
  * NOTE (loop prevention): this persist fires chrome.storage.onChanged. The
  * background onChanged handler must suppress re-enqueuing for engine-initiated
- * writes; that suppression lives in background.js (it sets a flag around this
- * call) so this module stays storage-agnostic.
+ * writes; that suppression lives in background.js, which records the rev it is
+ * about to write into its `engineWriteEcho` map keyed by workspace id (or the
+ * string 'deleted' for removals) and consumes the matching onChanged, so this
+ * module stays storage-agnostic.
  *
  * @param {string} id
  * @param {{metadata: {name?:string, color?:string, icon?:string, bookmarkFolderId?:string, syncEnabled?:boolean}, tabSnapshot: TabSnapshot[], rev: number, updatedAt?: number}} remote
