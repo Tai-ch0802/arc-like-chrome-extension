@@ -18,7 +18,7 @@
     "identity"
   ],
   "oauth2": {
-    "client_id": "849720332841-tvsdg1b7d5secqb9803i1h5vbmqiauk6.apps.googleusercontent.com",
+    "client_id": "849720332841-ouhe2qbugvd0skkf5sbjlm3ftnn9loop.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
   },
   "host_permissions": [
