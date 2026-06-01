@@ -257,6 +257,18 @@ function buildManageRow(ws, isActive, listEl) {
     if (isActive) label.classList.add('active');
     row.appendChild(label);
 
+    // Read-only Drive-sync indicator. The authoritative opt-in toggle lives in
+    // the options Sync section; this is purely a visual cue that the workspace
+    // participates in cross-device sync.
+    if (ws.syncEnabled === true) {
+        const cloud = document.createElement('span');
+        cloud.className = 'workspace-manage__sync-glyph';
+        cloud.textContent = '☁️';
+        cloud.title = api.getMessage('workspaceSyncedTitle') || 'Synced to Google Drive';
+        cloud.setAttribute('aria-label', cloud.title);
+        row.appendChild(cloud);
+    }
+
     const renameBtn = document.createElement('button');
     renameBtn.className = 'workspace-manage__btn';
     renameBtn.title = api.getMessage('workspaceRename') || 'Rename';

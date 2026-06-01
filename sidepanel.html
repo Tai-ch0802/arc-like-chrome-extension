@@ -12,6 +12,9 @@
          Labels are resolved at runtime by workspaceUI.initWorkspaceUI(). -->
     <div id="workspace-row" class="workspace-row">
         <select id="workspace-switcher" class="workspace-switcher"></select>
+        <!-- Drive-sync status indicator. Hidden until a status arrives; updated
+             live via the driveSyncStatusChanged event (see modules/ui/driveSyncBadge.js). -->
+        <span id="drive-sync-badge" class="drive-sync-badge" hidden aria-hidden="true"></span>
         <button id="workspace-manage-btn" class="header-action-btn">⚙️</button>
     </div>
 

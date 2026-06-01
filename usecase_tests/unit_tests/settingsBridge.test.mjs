@@ -17,6 +17,14 @@ describe('resolveSettingChangeActions', () => {
     expect(resolveSettingChangeActions({ custom_bg_image_data: { newValue: 'x' } }, 'local'))
       .toContainEqual({ type: 'applyBackground' });
   });
+  it('local driveSyncStatus → dispatch driveSyncStatusChanged action', () => {
+    expect(resolveSettingChangeActions({ driveSyncStatus: { newValue: { state: 'syncing' } } }, 'local'))
+      .toContainEqual({ type: 'dispatch', event: 'driveSyncStatusChanged', detail: { state: 'syncing' } });
+  });
+  it('local unrelated key → no driveSync action', () => {
+    const actions = resolveSettingChangeActions({ someOtherLocalKey: { newValue: 1 } }, 'local');
+    expect(actions.some(a => a.type === 'dispatch' && a.event === 'driveSyncStatusChanged')).toBe(false);
+  });
   it('unrelated key → no actions', () => {
     expect(resolveSettingChangeActions({ someOtherKey: { newValue: 1 } }, 'sync')).toEqual([]);
   });
