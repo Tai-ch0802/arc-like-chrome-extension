@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "ขอบเขต: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} จาก {total} ล้มเหลว ({pct}%) — สูงผิดปกติและดูเหมือนเป็นปัญหา network มากกว่า dead links ตรวจสอบให้ดีก่อนลบ"
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "Workspace ที่ใช้งาน"
+  },
+  "settingsNavSync": {
+    "message": "สำรองข้อมูลและซิงค์"
+  },
+  "syncAccountDesc": {
+    "message": "สำรองข้อมูลและซิงค์ Workspaces ของคุณข้ามอุปกรณ์ผ่าน Google ไดรฟ์ของคุณเอง"
+  },
+  "syncConflictLabel": {
+    "message": "ความขัดแย้งในการซิงค์"
+  },
+  "syncConflictNote": {
+    "message": "เก็บสำเนาที่ขัดแย้งกันไว้บนไดรฟ์สำหรับ: $names$ เวอร์ชันในเครื่องของคุณยังคงอยู่",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "เชื่อมต่อ Google ไดรฟ์"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "การดำเนินการนี้จะอัปโหลด URL ของแท็บ ชื่อ และข้อมูลกลุ่มของ Workspaces ที่คุณเลือกเข้าร่วมไปยัง Google ไดรฟ์ของคุณเอง (โฟลเดอร์ส่วนตัวของแอป) การซิงค์เป็นแบบเลือกเข้าร่วมต่อ Workspace และปิดอยู่โดยค่าเริ่มต้น การยกเลิกการเชื่อมต่อจะหยุดการอัปโหลดทั้งหมด"
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "เชื่อมต่อ Google ไดรฟ์"
+  },
+  "syncConnectFailedNote": {
+    "message": "ไม่สามารถเชื่อมต่อได้ การซิงค์ Google ไดรฟ์ต้องใช้ Google Chrome ที่สามารถลงชื่อเข้าใช้ได้"
+  },
+  "syncConnected": {
+    "message": "เชื่อมต่อกับ Google ไดรฟ์แล้ว"
+  },
+  "syncDisconnectButton": {
+    "message": "ยกเลิกการเชื่อมต่อ"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "การอัปโหลดจะหยุดลง Workspaces ที่อยู่บนไดรฟ์แล้วจะยังคงอยู่ ไม่มีการลบสิ่งใด"
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "ยกเลิกการเชื่อมต่อ Google ไดรฟ์ไหม"
+  },
+  "syncNoWorkspaces": {
+    "message": "ยังไม่มี Workspaces"
+  },
+  "syncNotConnected": {
+    "message": "ไม่ได้เชื่อมต่อ"
+  },
+  "syncNowButton": {
+    "message": "ซิงค์เดี๋ยวนี้"
+  },
+  "syncNowLabel": {
+    "message": "ซิงค์ด้วยตนเอง"
+  },
+  "syncPrivacyNote": {
+    "message": "URL ของแท็บ ชื่อ และข้อมูลกลุ่มของ Workspaces ที่เลือกเข้าร่วมจะถูกจัดเก็บไว้ใน Google ไดรฟ์ของคุณเองเท่านั้น (โฟลเดอร์ส่วนตัวของแอป) "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "นโยบายความเป็นส่วนตัว"
+  },
+  "syncRestorableHeader": {
+    "message": "พร้อมใช้งานบนไดรฟ์"
+  },
+  "syncRestoreButton": {
+    "message": "กู้คืน"
+  },
+  "syncRetryButton": {
+    "message": "ลองอีกครั้ง"
+  },
+  "syncStatusConflict": {
+    "message": "ตรวจพบความขัดแย้งในการซิงค์"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google ไดรฟ์เต็ม"
+  },
+  "syncStatusError": {
+    "message": "ข้อผิดพลาดในการซิงค์"
+  },
+  "syncStatusIdle": {
+    "message": "ซิงค์ไปยัง Google ไดรฟ์แล้ว"
+  },
+  "syncStatusIdleTitle": {
+    "message": "ซิงค์ไปยัง Google ไดรฟ์แล้ว"
+  },
+  "syncStatusLastSynced": {
+    "message": "ซิงค์ล่าสุด $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "ต้องลงชื่อเข้าใช้"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "ต้องอัปเดตเพื่อซิงค์"
+  },
+  "syncStatusNotConnected": {
+    "message": "ไม่ได้เชื่อมต่อ"
+  },
+  "syncStatusOffline": {
+    "message": "ออฟไลน์"
+  },
+  "syncStatusRowLabel": {
+    "message": "สถานะ"
+  },
+  "syncStatusSyncing": {
+    "message": "กำลังซิงค์…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ วันที่แล้ว",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ ชม. ที่แล้ว",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "เมื่อสักครู่"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ นาทีที่แล้ว",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "Workspaces ที่จะซิงค์"
+  },
+  "workspaceSyncedTitle": {
+    "message": "ซิงค์ไปยัง Google ไดรฟ์แล้ว"
   }
 }

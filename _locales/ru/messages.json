@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "Область: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} из {total} не удалось ({pct}%) — необычно высоко и больше похоже на проблему сети, чем мёртвые ссылки. Внимательно проверьте перед удалением."
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "Активный Workspace"
+  },
+  "settingsNavSync": {
+    "message": "Резервное копирование и синхронизация"
+  },
+  "syncAccountDesc": {
+    "message": "Создавайте резервные копии и синхронизируйте свои Workspaces между устройствами через собственный Google Диск."
+  },
+  "syncConflictLabel": {
+    "message": "Конфликты синхронизации"
+  },
+  "syncConflictNote": {
+    "message": "Конфликтующая копия сохранена на Диске для: $names$. Ваша локальная версия сохранена.",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Подключить Google Диск"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "При этом URL-адреса вкладок, заголовки и сведения о группах для выбранных вами Workspaces загружаются на ваш собственный Google Диск (приватную папку приложения). Синхронизация включается для каждого Workspace отдельно и по умолчанию ВЫКЛЮЧЕНА. Отключение останавливает все загрузки."
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Подключить Google Диск"
+  },
+  "syncConnectFailedNote": {
+    "message": "Не удалось подключиться. Для синхронизации с Google Диском требуется Google Chrome с доступным входом в аккаунт."
+  },
+  "syncConnected": {
+    "message": "Подключено к Google Диску"
+  },
+  "syncDisconnectButton": {
+    "message": "Отключить"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "Загрузки прекратятся. Workspaces, уже находящиеся на Диске, сохраняются; ничего не удаляется."
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Отключить Google Диск?"
+  },
+  "syncNoWorkspaces": {
+    "message": "Пока нет Workspaces."
+  },
+  "syncNotConnected": {
+    "message": "Не подключено"
+  },
+  "syncNowButton": {
+    "message": "Синхронизировать сейчас"
+  },
+  "syncNowLabel": {
+    "message": "Ручная синхронизация"
+  },
+  "syncPrivacyNote": {
+    "message": "URL-адреса вкладок, заголовки и сведения о группах для включённых Workspaces хранятся только на вашем собственном Google Диске (в приватной папке приложения). "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "Политика конфиденциальности"
+  },
+  "syncRestorableHeader": {
+    "message": "Доступно на Диске"
+  },
+  "syncRestoreButton": {
+    "message": "Восстановить"
+  },
+  "syncRetryButton": {
+    "message": "Повторить"
+  },
+  "syncStatusConflict": {
+    "message": "Обнаружен конфликт синхронизации"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google Диск заполнен"
+  },
+  "syncStatusError": {
+    "message": "Ошибка синхронизации"
+  },
+  "syncStatusIdle": {
+    "message": "Синхронизировано с Google Диском"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Синхронизировано с Google Диском"
+  },
+  "syncStatusLastSynced": {
+    "message": "Последняя синхронизация: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "Требуется вход"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "Для синхронизации требуется обновление"
+  },
+  "syncStatusNotConnected": {
+    "message": "Не подключено"
+  },
+  "syncStatusOffline": {
+    "message": "Не в сети"
+  },
+  "syncStatusRowLabel": {
+    "message": "Статус"
+  },
+  "syncStatusSyncing": {
+    "message": "Синхронизация…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ дн. назад",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ ч назад",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "только что"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ мин назад",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "Workspaces для синхронизации"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Синхронизировано с Google Диском"
   }
 }

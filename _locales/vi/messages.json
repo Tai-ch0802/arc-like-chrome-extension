@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "Phạm vi: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} trên {total} thất bại ({pct}%) — cao bất thường và trông giống vấn đề mạng hơn là dead link. Xem kỹ trước khi xóa."
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "Workspace đang hoạt động"
+  },
+  "settingsNavSync": {
+    "message": "Sao lưu & Đồng bộ"
+  },
+  "syncAccountDesc": {
+    "message": "Sao lưu và đồng bộ các Workspaces của bạn trên các thiết bị thông qua Google Drive của riêng bạn."
+  },
+  "syncConflictLabel": {
+    "message": "Xung đột đồng bộ"
+  },
+  "syncConflictNote": {
+    "message": "Một bản sao xung đột đã được giữ trên Drive cho: $names$. Phiên bản cục bộ của bạn đã được giữ nguyên.",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Kết nối Google Drive"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "Thao tác này tải URL của tab, tiêu đề và thông tin nhóm của các Workspaces bạn chọn tham gia lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng). Đồng bộ là tùy chọn theo từng Workspace và TẮT theo mặc định. Ngắt kết nối sẽ dừng mọi quá trình tải lên."
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Kết nối Google Drive"
+  },
+  "syncConnectFailedNote": {
+    "message": "Không thể kết nối. Đồng bộ Google Drive yêu cầu Google Chrome có thể đăng nhập."
+  },
+  "syncConnected": {
+    "message": "Đã kết nối với Google Drive"
+  },
+  "syncDisconnectButton": {
+    "message": "Ngắt kết nối"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "Quá trình tải lên sẽ dừng. Các Workspaces đã có trên Drive được giữ lại; không có gì bị xóa."
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Ngắt kết nối Google Drive?"
+  },
+  "syncNoWorkspaces": {
+    "message": "Chưa có Workspaces nào."
+  },
+  "syncNotConnected": {
+    "message": "Chưa kết nối"
+  },
+  "syncNowButton": {
+    "message": "Đồng bộ ngay"
+  },
+  "syncNowLabel": {
+    "message": "Đồng bộ thủ công"
+  },
+  "syncPrivacyNote": {
+    "message": "URL của tab, tiêu đề và thông tin nhóm của các Workspaces đã chọn tham gia chỉ được lưu trữ trên Google Drive của riêng bạn (một thư mục riêng của ứng dụng). "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "Chính sách quyền riêng tư"
+  },
+  "syncRestorableHeader": {
+    "message": "Có sẵn trên Drive"
+  },
+  "syncRestoreButton": {
+    "message": "Khôi phục"
+  },
+  "syncRetryButton": {
+    "message": "Thử lại"
+  },
+  "syncStatusConflict": {
+    "message": "Đã phát hiện xung đột đồng bộ"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google Drive đã đầy"
+  },
+  "syncStatusError": {
+    "message": "Lỗi đồng bộ"
+  },
+  "syncStatusIdle": {
+    "message": "Đã đồng bộ với Google Drive"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Đã đồng bộ với Google Drive"
+  },
+  "syncStatusLastSynced": {
+    "message": "Đồng bộ lần cuối $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "Cần đăng nhập"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "Cần cập nhật để đồng bộ"
+  },
+  "syncStatusNotConnected": {
+    "message": "Chưa kết nối"
+  },
+  "syncStatusOffline": {
+    "message": "Ngoại tuyến"
+  },
+  "syncStatusRowLabel": {
+    "message": "Trạng thái"
+  },
+  "syncStatusSyncing": {
+    "message": "Đang đồng bộ…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ ngày trước",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ giờ trước",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "vừa xong"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ phút trước",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "Workspaces cần đồng bộ"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Đã đồng bộ với Google Drive"
   }
 }

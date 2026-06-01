@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "Cakupan: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} dari {total} gagal ({pct}%) — sangat tinggi dan lebih terlihat seperti masalah jaringan daripada dead link. Tinjau dengan hati-hati sebelum menghapus."
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "Workspace aktif"
+  },
+  "settingsNavSync": {
+    "message": "Pencadangan & Sinkronisasi"
+  },
+  "syncAccountDesc": {
+    "message": "Cadangkan dan sinkronkan Workspaces Anda di seluruh perangkat melalui Google Drive Anda sendiri."
+  },
+  "syncConflictLabel": {
+    "message": "Konflik sinkronisasi"
+  },
+  "syncConflictNote": {
+    "message": "Salinan yang berkonflik disimpan di Drive untuk: $names$. Versi lokal Anda telah dipertahankan.",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Hubungkan Google Drive"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "Ini mengunggah URL tab, judul, dan info grup untuk Workspaces yang Anda ikutkan ke Google Drive Anda sendiri (folder privat aplikasi). Sinkronisasi bersifat opt-in per Workspace dan NONAKTIF secara default. Memutuskan koneksi menghentikan semua unggahan."
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Hubungkan Google Drive"
+  },
+  "syncConnectFailedNote": {
+    "message": "Tidak dapat terhubung. Sinkronisasi Google Drive memerlukan Google Chrome dengan login yang tersedia."
+  },
+  "syncConnected": {
+    "message": "Terhubung ke Google Drive"
+  },
+  "syncDisconnectButton": {
+    "message": "Putuskan"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "Unggahan akan berhenti. Workspaces yang sudah ada di Drive tetap dipertahankan; tidak ada yang dihapus."
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Putuskan koneksi Google Drive?"
+  },
+  "syncNoWorkspaces": {
+    "message": "Belum ada Workspaces."
+  },
+  "syncNotConnected": {
+    "message": "Tidak terhubung"
+  },
+  "syncNowButton": {
+    "message": "Sinkronkan sekarang"
+  },
+  "syncNowLabel": {
+    "message": "Sinkronisasi manual"
+  },
+  "syncPrivacyNote": {
+    "message": "URL tab, judul, dan info grup untuk Workspaces yang diikutkan hanya disimpan di Google Drive Anda sendiri (folder privat aplikasi). "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "Kebijakan Privasi"
+  },
+  "syncRestorableHeader": {
+    "message": "Tersedia di Drive"
+  },
+  "syncRestoreButton": {
+    "message": "Pulihkan"
+  },
+  "syncRetryButton": {
+    "message": "Coba lagi"
+  },
+  "syncStatusConflict": {
+    "message": "Konflik sinkronisasi terdeteksi"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google Drive penuh"
+  },
+  "syncStatusError": {
+    "message": "Kesalahan sinkronisasi"
+  },
+  "syncStatusIdle": {
+    "message": "Tersinkron ke Google Drive"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Tersinkron ke Google Drive"
+  },
+  "syncStatusLastSynced": {
+    "message": "Terakhir disinkronkan $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "Perlu login"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "Perlu pembaruan untuk sinkronisasi"
+  },
+  "syncStatusNotConnected": {
+    "message": "Tidak terhubung"
+  },
+  "syncStatusOffline": {
+    "message": "Offline"
+  },
+  "syncStatusRowLabel": {
+    "message": "Status"
+  },
+  "syncStatusSyncing": {
+    "message": "Menyinkronkan…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ hari lalu",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ jam lalu",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "baru saja"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ menit lalu",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "Workspaces untuk disinkronkan"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Tersinkron ke Google Drive"
   }
 }

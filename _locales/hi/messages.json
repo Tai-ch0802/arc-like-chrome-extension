@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "दायरा: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} में से {total} fail हुए ({pct}%) — असामान्य रूप से ज्यादा और network problem जैसा लगता है dead links से अधिक। हटाने से पहले ध्यान से check करें।"
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "सक्रिय Workspace"
+  },
+  "settingsNavSync": {
+    "message": "बैकअप और सिंक"
+  },
+  "syncAccountDesc": {
+    "message": "अपनी खुद की Google Drive के ज़रिए अपने Workspaces का बैकअप लें और उन्हें सभी डिवाइस पर सिंक करें।"
+  },
+  "syncConflictLabel": {
+    "message": "सिंक विरोध"
+  },
+  "syncConflictNote": {
+    "message": "इनके लिए Drive पर एक विरोधी प्रति रखी गई: $names$. आपका लोकल संस्करण सुरक्षित रखा गया है।",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Google Drive कनेक्ट करें"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "यह आपके द्वारा चुने गए Workspaces के टैब URL, शीर्षक और समूह जानकारी को आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) पर अपलोड करता है। सिंक प्रत्येक Workspace के लिए ऑप्ट-इन है और डिफ़ॉल्ट रूप से बंद है। कनेक्शन हटाने पर सभी अपलोड रुक जाते हैं।"
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Google Drive कनेक्ट करें"
+  },
+  "syncConnectFailedNote": {
+    "message": "कनेक्ट नहीं हो सका। Google Drive सिंक के लिए साइन-इन उपलब्ध वाला Google Chrome आवश्यक है।"
+  },
+  "syncConnected": {
+    "message": "Google Drive से कनेक्ट किया गया"
+  },
+  "syncDisconnectButton": {
+    "message": "डिस्कनेक्ट करें"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "अपलोड रुक जाएंगे। Drive पर पहले से मौजूद Workspaces बने रहते हैं; कुछ भी हटाया नहीं जाता।"
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Google Drive डिस्कनेक्ट करें?"
+  },
+  "syncNoWorkspaces": {
+    "message": "अभी तक कोई Workspaces नहीं।"
+  },
+  "syncNotConnected": {
+    "message": "कनेक्ट नहीं है"
+  },
+  "syncNowButton": {
+    "message": "अभी सिंक करें"
+  },
+  "syncNowLabel": {
+    "message": "मैन्युअल सिंक"
+  },
+  "syncPrivacyNote": {
+    "message": "ऑप्ट-इन किए गए Workspaces के टैब URL, शीर्षक और समूह जानकारी केवल आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) में संग्रहीत होती है। "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "गोपनीयता नीति"
+  },
+  "syncRestorableHeader": {
+    "message": "Drive पर उपलब्ध"
+  },
+  "syncRestoreButton": {
+    "message": "पुनर्स्थापित करें"
+  },
+  "syncRetryButton": {
+    "message": "पुनः प्रयास करें"
+  },
+  "syncStatusConflict": {
+    "message": "सिंक विरोध पाया गया"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google Drive भर गया है"
+  },
+  "syncStatusError": {
+    "message": "सिंक त्रुटि"
+  },
+  "syncStatusIdle": {
+    "message": "Google Drive से सिंक किया गया"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Google Drive से सिंक किया गया"
+  },
+  "syncStatusLastSynced": {
+    "message": "अंतिम सिंक $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "साइन-इन आवश्यक"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "सिंक करने के लिए अपडेट आवश्यक"
+  },
+  "syncStatusNotConnected": {
+    "message": "कनेक्ट नहीं है"
+  },
+  "syncStatusOffline": {
+    "message": "ऑफ़लाइन"
+  },
+  "syncStatusRowLabel": {
+    "message": "स्थिति"
+  },
+  "syncStatusSyncing": {
+    "message": "सिंक हो रहा है…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ दिन पहले",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ घंटे पहले",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "अभी-अभी"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ मिनट पहले",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "सिंक करने के लिए Workspaces"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Google Drive से सिंक किया गया"
   }
 }
