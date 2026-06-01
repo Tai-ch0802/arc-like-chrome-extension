@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Nome da nova tag"
   },
+  "bmToolsEditTag": {
+    "message": "Editar etiqueta"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "A varredura tenta alcançar cada favorito http(s) via HEAD. Apenas links inacessíveis pela rede são sinalizados (HTTP 404 não pode ser detectado sem CORS por origem, ver notas)."
   },

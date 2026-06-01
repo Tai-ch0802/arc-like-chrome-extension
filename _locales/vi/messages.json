@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Tên tag mới"
   },
+  "bmToolsEditTag": {
+    "message": "Sửa thẻ"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Scan cố gắng tiếp cận mọi bookmark http(s) qua HEAD. Chỉ các link không thể tiếp cận qua mạng được đánh dấu (HTTP 404 không thể phát hiện mà không có per-origin CORS, xem notes)."
   },

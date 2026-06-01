@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Nom de la nouvelle étiquette"
   },
+  "bmToolsEditTag": {
+    "message": "Modifier l'étiquette"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Le scan tente d'atteindre chaque signet http(s) via HEAD. Seuls les liens inaccessibles via le réseau sont signalés (HTTP 404 ne peut pas être détecté sans CORS par origine, voir notes)."
   },

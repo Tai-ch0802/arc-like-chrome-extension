@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "새 태그 이름"
   },
+  "bmToolsEditTag": {
+    "message": "태그 편집"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "스캔은 HEAD 로 모든 http(s) 북마크에 도달을 시도합니다. 네트워크 도달 불가 링크만 표시됩니다(HTTP 404 는 CORS 없이는 감지 불가, 노트 참조)."
   },

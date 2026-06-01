@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "Neuer Tag-Name"
   },
+  "bmToolsEditTag": {
+    "message": "Tag bearbeiten"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "Scan versucht jedes http(s)-Lesezeichen via HEAD zu erreichen. Nur netzwerk-unerreichbare Links werden markiert (HTTP 404 kann ohne pro-Origin CORS nicht erkannt werden, siehe Notes)."
   },

@@ -761,6 +761,9 @@
   "bmToolsCreateTagPrompt": {
     "message": "新しいタグ名"
   },
+  "bmToolsEditTag": {
+    "message": "タグを編集"
+  },
   "bmToolsDeadLinksIntro": {
     "message": "スキャンは HEAD ですべての http(s) ブックマークに接続を試みます。ネットワーク到達不可のリンクのみフラグされます（HTTP 404 は CORS なしでは検出不可、ノート参照）。"
   },
