@@ -5,16 +5,18 @@ import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from '.
 import { getOtherTabCache, getOtherTabElementsCache, getOtherGroupHeaderElementsCache, getOtherWindowFolderElementsCache } from './ui/otherWindowRenderer.js';
 import { highlightText, escapeRegExp } from './utils/textUtils.js';
 import { debounce } from './utils/functionUtils.js';
-import { matchesAnyKeyword, extractDomain } from './utils/searchUtils.js';
+import { matchesAnyKeyword, extractDomain, parseSearchQuery, bookmarkMatchesTags } from './utils/searchUtils.js';
+import * as tagManager from './bookmark/tagManager.js';
 
 // 主搜尋處理函式
 async function handleSearch() {
-    const query = ui.searchBox.value.trim();
-
-    // 將查詢字串分割成多個關鍵字（空白分隔）
-    const keywords = query.toLowerCase().split(/\s+/).filter(k => k.length > 0);
+    // 解析查詢：分離一般關鍵字與 tag: 篩選
+    // tag token 已被抽離，因此分頁／閱讀清單／其他視窗只會收到 keywords，
+    // 不受 tag: 查詢影響（tag 僅作用於書籤）。
+    const { keywords, tags } = parseSearchQuery(ui.searchBox.value.trim());
 
     // 預先編譯所有正則表達式，避免在迴圈中重複編譯
+    // 只用 keywords 編譯（tag 不需要高亮）
     let regexes = [];
     if (keywords.length > 0) {
         regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
@@ -24,7 +26,7 @@ async function handleSearch() {
     const tabCount = filterTabsAndGroups(keywords);
     const otherWindowsTabCount = filterOtherWindowsTabs(keywords);
     const readingListCount = filterReadingList(keywords, regexes);
-    const bookmarkCount = await filterBookmarks(keywords, regexes);
+    const bookmarkCount = await filterBookmarks(keywords, regexes, tags);
 
     // 高亮匹配文字
     if (keywords.length > 0) {
@@ -334,14 +336,15 @@ let isFiltering = false;
 let bookmarkSearchGeneration = 0;
 
 // 過濾書籤，回傳可見書籤數量 (使用 Cache 進行搜尋)
-async function filterBookmarks(keywords, regexes = []) {
+async function filterBookmarks(keywords, regexes = [], tags = []) {
     // Increment generation for every call; capture it to detect staleness after await
     const thisGeneration = ++bookmarkSearchGeneration;
 
-    // 如果沒有關鍵字，直接返回（不重新渲染）
+    // 如果沒有關鍵字也沒有 tag，直接返回（不重新渲染）
     // 書籤已經在 refreshBookmarks 中渲染好了
-    // 如果沒有關鍵字，檢查是否需要重置視圖
-    if (keywords.length === 0) {
+    // 只有在 keywords 與 tags 都為空時才重置視圖；
+    // 純 tag: 查詢（keywords 為空、tags 非空）需繼續往下走 tag 過濾。
+    if (keywords.length === 0 && tags.length === 0) {
         if (isFiltering) {
             // 從過濾狀態變為無過濾狀態（使用者清除了搜尋）
             isFiltering = false;
@@ -371,7 +374,14 @@ async function filterBookmarks(keywords, regexes = []) {
         // 記錄匹配類型
         item._titleMatches = titleMatches;
         item._urlMatches = urlMatches;
-        return titleMatches || urlMatches;
+        // 關鍵字與 tag 採 AND 邏輯：
+        // - 無 keywords 時 kwOk 對所有書籤為 true（純 tag: 查詢列出全部該標籤書籤）
+        // - 無 tags 時 tagOk 對所有書籤為 true（一般關鍵字查詢不受 tag 影響）
+        const kwOk = keywords.length === 0 ? true : (titleMatches || urlMatches);
+        const tagOk = tags.length === 0 ? true : bookmarkMatchesTags(
+            tagManager.getTagsForBookmark(item.id).map(t => t.name), tags
+        );
+        return kwOk && tagOk;
     });
 
     if (matchingItems.length === 0) {
