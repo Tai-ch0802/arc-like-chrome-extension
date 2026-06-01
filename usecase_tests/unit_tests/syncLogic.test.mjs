@@ -7,6 +7,7 @@ import {
     coalesceQueue,
     tombstonesToGC,
     isSchemaTooNew,
+    removedSyncedIds,
 } from '../../modules/sync/syncLogic.js';
 
 // Helper: order-independent comparison of reconcile result arrays.
@@ -411,6 +412,73 @@ describe('syncLogic — pure sync-decision logic', () => {
 
         it('remote < supported -> false', () => {
             expect(isSchemaTooNew(1, 2)).toBe(false);
+        });
+    });
+
+    describe('removedSyncedIds(oldMeta, newMeta)', () => {
+        it('id removed and was syncEnabled -> included', () => {
+            const oldMeta = { a: { syncEnabled: true } };
+            const newMeta = {};
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual(['a']);
+        });
+
+        it('id removed but was NOT syncEnabled -> excluded', () => {
+            const oldMeta = { a: { syncEnabled: false } };
+            const newMeta = {};
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual([]);
+        });
+
+        it('id removed with no syncEnabled flag (undefined) -> excluded', () => {
+            const oldMeta = { a: { name: 'X' } };
+            const newMeta = {};
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual([]);
+        });
+
+        it('id still present (synced) -> excluded', () => {
+            const oldMeta = { a: { syncEnabled: true } };
+            const newMeta = { a: { syncEnabled: true } };
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual([]);
+        });
+
+        it('id still present but sync turned OFF -> excluded (disable is not a delete)', () => {
+            const oldMeta = { a: { syncEnabled: true } };
+            const newMeta = { a: { syncEnabled: false } };
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual([]);
+        });
+
+        it('id added (only in newMeta) -> excluded', () => {
+            const oldMeta = {};
+            const newMeta = { a: { syncEnabled: true } };
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual([]);
+        });
+
+        it('mixed: only removed-and-synced ids returned', () => {
+            const oldMeta = {
+                gone: { syncEnabled: true },
+                goneUnsynced: { syncEnabled: false },
+                kept: { syncEnabled: true },
+                turnedOff: { syncEnabled: true },
+            };
+            const newMeta = {
+                kept: { syncEnabled: true },
+                turnedOff: { syncEnabled: false },
+                added: { syncEnabled: true },
+            };
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual(['gone']);
+        });
+
+        it('empty / missing inputs -> []', () => {
+            expect(removedSyncedIds({}, {})).toEqual([]);
+            expect(removedSyncedIds(null, null)).toEqual([]);
+            expect(removedSyncedIds(undefined, undefined)).toEqual([]);
+            expect(removedSyncedIds(null, { a: { syncEnabled: true } })).toEqual([]);
+            expect(removedSyncedIds({ a: { syncEnabled: true } }, null)).toEqual(['a']);
+        });
+
+        it('null entry value in oldMeta -> excluded (no crash)', () => {
+            const oldMeta = { a: null };
+            const newMeta = {};
+            expect(removedSyncedIds(oldMeta, newMeta)).toEqual([]);
         });
     });
 });

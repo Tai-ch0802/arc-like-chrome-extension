@@ -5,6 +5,7 @@ import { generateGroupName } from './modules/aiManager.js';
 import { getStorage, setStorage } from './modules/apiManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { createSyncEngine } from './modules/sync/syncEngine.js';
+import { removedSyncedIds } from './modules/sync/syncLogic.js';
 import { createGoogleDriveProvider } from './modules/sync/googleDriveProvider.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 
@@ -199,6 +200,13 @@ const syncEngine = createSyncEngine({
  */
 async function runSyncOnce() {
     try {
+        // Inert-when-never-connected (I2): if no OAuth token can be obtained
+        // (the default while manifest.json carries the placeholder client_id),
+        // skip the WHOLE cycle WITHOUT writing any status. runOnce() would
+        // otherwise write 'syncing' then 'needs-auth', causing storage churn and
+        // a "Syncing…" badge flicker on every alarm for an install that has
+        // never connected Drive. We early-return here BEFORE any status write.
+        if (!(await syncProvider.isConnected())) return;
         if (typeof navigator !== 'undefined' && navigator.onLine === false) {
             await setStorage('local', { [DRIVE_SYNC_STATUS_KEY]: { state: 'offline' } });
             return;
@@ -264,6 +272,31 @@ async function handleWorkspaceStorageChange(changes, areaName) {
     if (areaName === 'sync' && changes[WORKSPACE_METADATA_KEY]) {
         const c = changes[WORKSPACE_METADATA_KEY];
         ids = changedIds(c.oldValue, c.newValue);
+
+        // Soft-delete tombstone wiring (C1): a synced workspace whose metadata
+        // entry vanished from chrome.storage.sync was DELETED by the user. We
+        // must tombstone its Drive file so the deletion propagates to other
+        // devices (otherwise it resurrects as "restorable"). Disabling a
+        // workspace's sync (still present, syncEnabled→false) is NOT a delete
+        // and is excluded by removedSyncedIds.
+        //
+        // Echo guard: an ENGINE-initiated remove (pull-driven delete-local) sets
+        // engineWriteEcho.set(id, 'deleted'). For such ids we consume the echo
+        // and SKIP enqueueDelete — the engine removed it because of a REMOTE
+        // tombstone, so re-tombstoning here would be redundant/looping. A genuine
+        // user delete has no echo → enqueueDelete proceeds.
+        let deleteEnqueued = false;
+        for (const id of removedSyncedIds(c.oldValue || {}, c.newValue || {})) {
+            if (engineWriteEcho.get(id) === 'deleted') {
+                engineWriteEcho.delete(id);
+                continue;
+            }
+            await syncEngine.enqueueDelete(id);
+            deleteEnqueued = true;
+        }
+        if (deleteEnqueued) {
+            chrome.alarms.create(ALARM_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+        }
     } else if (areaName === 'local' && changes[WORKSPACE_SNAPSHOTS_KEY]) {
         const c = changes[WORKSPACE_SNAPSHOTS_KEY];
         ids = changedIds(c.oldValue, c.newValue);
@@ -365,6 +398,9 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     // while offline doesn't get misclassified as needs-auth.
     (async () => {
       try {
+        // Inert guard (I2): never-connected installs skip the flush WITHOUT a
+        // status write (flushQueue would otherwise set 'needs-auth' status churn).
+        if (!(await syncProvider.isConnected())) return;
         if (typeof navigator !== 'undefined' && navigator.onLine === false) {
           await setStorage('local', { [DRIVE_SYNC_STATUS_KEY]: { state: 'offline' } });
           return;
