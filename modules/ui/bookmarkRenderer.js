@@ -180,6 +180,24 @@ function initBookmarkListeners(container) {
     };
 
     container.addEventListener('click', async (e) => {
+        // 0. Handle Tag Dot Click (filter search by that tag)
+        const tagDot = e.target.closest('.bookmark-tag-dot');
+        if (tagDot) {
+            e.preventDefault();
+            e.stopPropagation();
+            const name = tagDot.dataset.tagName || '';
+            if (name) {
+                const token = /\s/.test(name) ? `tag:"${name}"` : `tag:${name}`;
+                const box = document.getElementById('search-box');
+                if (box) {
+                    box.value = token;
+                    box.dispatchEvent(new Event('input', { bubbles: true }));
+                    box.focus();
+                }
+            }
+            return;
+        }
+
         // 1. Handle Action Buttons (Edit, Delete, Add Folder)
         const btn = getActionBtn(e.target);
         if (btn) {
@@ -512,6 +530,7 @@ function updateBookmarkElement(item, node, { highlightRegexes = [] } = {}) {
             const dot = document.createElement('span');
             dot.className = 'bookmark-tag-dot';
             dot.dataset.color = tag.color;
+            dot.dataset.tagName = tag.name;
             dot.title = tag.name;
             tagContainer.appendChild(dot);
         }
