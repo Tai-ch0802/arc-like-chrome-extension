@@ -944,7 +944,6 @@
   "bmToolsScopeStatus": {
     "message": "范围：{name}（{n}）"
   },
-
   "rlSummaryToggleLabel": {
     "message": "为阅读清单项目记住 AI 摘要"
   },
@@ -986,5 +985,152 @@
   },
   "shortcutInSidepanelNote": {
     "message": "这些快捷键仅在侧边栏内生效，无法透过 Chrome 快捷键页面重新指派。"
+  },
+  "settingsNavSync": {
+    "message": "备份与同步"
+  },
+  "syncAccountDesc": {
+    "message": "通过你自己的 Google 云端硬盘，跨设备备份并同步你的工作区。"
+  },
+  "syncConflictLabel": {
+    "message": "同步冲突"
+  },
+  "syncConflictNote": {
+    "message": "已在云端硬盘保留一份冲突副本：$names$。你的本地版本已被保留。",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "连接 Google 云端硬盘"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "这会将你选择加入的工作区的标签页网址、标题和分组信息上传到你自己的 Google 云端硬盘（应用专属文件夹）。同步需逐个工作区选择加入，且默认关闭。断开连接会停止所有上传。"
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "连接 Google 云端硬盘"
+  },
+  "syncConnectFailedNote": {
+    "message": "无法连接。Google 云端硬盘同步需要可登录的 Google Chrome。"
+  },
+  "syncConnected": {
+    "message": "已连接 Google 云端硬盘"
+  },
+  "syncDisconnectButton": {
+    "message": "断开连接"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "上传将会停止。已在云端硬盘上的工作区会被保留，不会删除任何内容。"
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "要断开 Google 云端硬盘连接吗？"
+  },
+  "syncNoWorkspaces": {
+    "message": "尚无工作区。"
+  },
+  "syncNotConnected": {
+    "message": "未连接"
+  },
+  "syncNowButton": {
+    "message": "立即同步"
+  },
+  "syncNowLabel": {
+    "message": "手动同步"
+  },
+  "syncPrivacyNote": {
+    "message": "你选择加入的工作区的标签页网址、标题和分组信息，仅存储在你自己的 Google 云端硬盘（应用专属文件夹）中。"
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "隐私政策"
+  },
+  "syncRestorableHeader": {
+    "message": "云端硬盘上可用"
+  },
+  "syncRestoreButton": {
+    "message": "恢复"
+  },
+  "syncRetryButton": {
+    "message": "重试"
+  },
+  "syncStatusConflict": {
+    "message": "检测到同步冲突"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google 云端硬盘已满"
+  },
+  "syncStatusError": {
+    "message": "同步错误"
+  },
+  "syncStatusIdle": {
+    "message": "已同步至 Google 云端硬盘"
+  },
+  "syncStatusIdleTitle": {
+    "message": "已同步至 Google 云端硬盘"
+  },
+  "syncStatusLastSynced": {
+    "message": "上次同步于 $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "需要登录"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "需要更新才能同步"
+  },
+  "syncStatusNotConnected": {
+    "message": "未连接"
+  },
+  "syncStatusOffline": {
+    "message": "离线"
+  },
+  "syncStatusRowLabel": {
+    "message": "状态"
+  },
+  "syncStatusSyncing": {
+    "message": "同步中…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ 天前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ 小时前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "刚刚"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ 分钟前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "要同步的工作区"
+  },
+  "workspaceSyncedTitle": {
+    "message": "已同步至 Google 云端硬盘"
   }
 }

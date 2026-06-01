@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "範囲: {name}（{n}）"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} / {total} が失敗 ({pct}%) — 異常に高く、ネットワーク問題の可能性が高いです。削除前に注意深く確認してください。"
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "アクティブな Workspace"
+  },
+  "settingsNavSync": {
+    "message": "バックアップと同期"
+  },
+  "syncAccountDesc": {
+    "message": "ご自身の Google ドライブを使って、Workspaces をデバイス間でバックアップ・同期します。"
+  },
+  "syncConflictLabel": {
+    "message": "同期の競合"
+  },
+  "syncConflictNote": {
+    "message": "競合するコピーをドライブに保持しました：$names$。ローカル版はそのまま保持されています。",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Google ドライブに接続"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "これは、オプトインした Workspaces のタブ URL、タイトル、グループ情報をご自身の Google ドライブ（アプリ専用フォルダ）にアップロードします。同期は Workspaces ごとのオプトインで、既定ではオフです。接続を解除するとすべてのアップロードが停止します。"
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Google ドライブに接続"
+  },
+  "syncConnectFailedNote": {
+    "message": "接続できませんでした。Google ドライブの同期にはサインイン可能な Google Chrome が必要です。"
+  },
+  "syncConnected": {
+    "message": "Google ドライブに接続済み"
+  },
+  "syncDisconnectButton": {
+    "message": "接続を解除"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "アップロードが停止します。すでにドライブにある Workspaces は保持され、何も削除されません。"
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Google ドライブの接続を解除しますか？"
+  },
+  "syncNoWorkspaces": {
+    "message": "まだ Workspaces がありません。"
+  },
+  "syncNotConnected": {
+    "message": "未接続"
+  },
+  "syncNowButton": {
+    "message": "今すぐ同期"
+  },
+  "syncNowLabel": {
+    "message": "手動同期"
+  },
+  "syncPrivacyNote": {
+    "message": "オプトインした Workspaces のタブ URL、タイトル、グループ情報は、ご自身の Google ドライブ（アプリ専用フォルダ）にのみ保存されます。"
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "プライバシーポリシー"
+  },
+  "syncRestorableHeader": {
+    "message": "ドライブで利用可能"
+  },
+  "syncRestoreButton": {
+    "message": "復元"
+  },
+  "syncRetryButton": {
+    "message": "再試行"
+  },
+  "syncStatusConflict": {
+    "message": "同期の競合が検出されました"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google ドライブの空き容量がありません"
+  },
+  "syncStatusError": {
+    "message": "同期エラー"
+  },
+  "syncStatusIdle": {
+    "message": "Google ドライブに同期済み"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Google ドライブに同期済み"
+  },
+  "syncStatusLastSynced": {
+    "message": "最終同期：$time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "サインインが必要です"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "同期するには更新が必要です"
+  },
+  "syncStatusNotConnected": {
+    "message": "未接続"
+  },
+  "syncStatusOffline": {
+    "message": "オフライン"
+  },
+  "syncStatusRowLabel": {
+    "message": "ステータス"
+  },
+  "syncStatusSyncing": {
+    "message": "同期中…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ 日前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ 時間前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "たった今"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ 分前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "同期する Workspaces"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Google ドライブに同期済み"
   }
 }

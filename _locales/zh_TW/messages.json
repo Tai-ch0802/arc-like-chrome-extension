@@ -944,7 +944,6 @@
   "bmToolsScopeStatus": {
     "message": "範圍：{name}（{n}）"
   },
-
   "rlSummaryToggleLabel": {
     "message": "為閱讀清單項目記住 AI 摘要"
   },
@@ -986,5 +985,152 @@
   },
   "shortcutInSidepanelNote": {
     "message": "這些快捷鍵僅在側邊欄內生效，無法透過 Chrome 快捷鍵頁面重新指派。"
+  },
+  "settingsNavSync": {
+    "message": "備份與同步"
+  },
+  "syncAccountDesc": {
+    "message": "透過你自己的 Google 雲端硬碟，跨裝置備份並同步你的工作區。"
+  },
+  "syncConflictLabel": {
+    "message": "同步衝突"
+  },
+  "syncConflictNote": {
+    "message": "已在雲端硬碟保留一份衝突副本：$names$。你的本機版本已被保留。",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "連結 Google 雲端硬碟"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "這會將你選擇加入的工作區的分頁網址、標題與群組資訊上傳到你自己的 Google 雲端硬碟（應用程式專屬資料夾）。同步需逐一工作區選擇加入，且預設為關閉。中斷連結會停止所有上傳。"
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "連結 Google 雲端硬碟"
+  },
+  "syncConnectFailedNote": {
+    "message": "無法連結。Google 雲端硬碟同步需要可登入的 Google Chrome。"
+  },
+  "syncConnected": {
+    "message": "已連結 Google 雲端硬碟"
+  },
+  "syncDisconnectButton": {
+    "message": "中斷連結"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "上傳將會停止。已在雲端硬碟上的工作區會被保留，不會刪除任何內容。"
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "要中斷連結 Google 雲端硬碟嗎？"
+  },
+  "syncNoWorkspaces": {
+    "message": "尚無工作區。"
+  },
+  "syncNotConnected": {
+    "message": "未連結"
+  },
+  "syncNowButton": {
+    "message": "立即同步"
+  },
+  "syncNowLabel": {
+    "message": "手動同步"
+  },
+  "syncPrivacyNote": {
+    "message": "你選擇加入的工作區的分頁網址、標題與群組資訊，僅儲存在你自己的 Google 雲端硬碟（應用程式專屬資料夾）中。"
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "隱私權政策"
+  },
+  "syncRestorableHeader": {
+    "message": "雲端硬碟上可用"
+  },
+  "syncRestoreButton": {
+    "message": "還原"
+  },
+  "syncRetryButton": {
+    "message": "重試"
+  },
+  "syncStatusConflict": {
+    "message": "偵測到同步衝突"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google 雲端硬碟已滿"
+  },
+  "syncStatusError": {
+    "message": "同步錯誤"
+  },
+  "syncStatusIdle": {
+    "message": "已同步至 Google 雲端硬碟"
+  },
+  "syncStatusIdleTitle": {
+    "message": "已同步至 Google 雲端硬碟"
+  },
+  "syncStatusLastSynced": {
+    "message": "上次同步於 $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "需要登入"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "需要更新才能同步"
+  },
+  "syncStatusNotConnected": {
+    "message": "未連結"
+  },
+  "syncStatusOffline": {
+    "message": "離線"
+  },
+  "syncStatusRowLabel": {
+    "message": "狀態"
+  },
+  "syncStatusSyncing": {
+    "message": "同步中…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ 天前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ 小時前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "剛剛"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ 分鐘前",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "要同步的工作區"
+  },
+  "workspaceSyncedTitle": {
+    "message": "已同步至 Google 雲端硬碟"
   }
 }

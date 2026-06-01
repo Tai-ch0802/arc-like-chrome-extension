@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "범위: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} / {total} 실패 ({pct}%) — 비정상적으로 높으며 죽은 링크보다는 네트워크 문제로 보입니다. 삭제 전 신중히 확인하세요."
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "활성 Workspace"
+  },
+  "settingsNavSync": {
+    "message": "백업 및 동기화"
+  },
+  "syncAccountDesc": {
+    "message": "본인의 Google 드라이브를 통해 Workspaces를 여러 기기에서 백업하고 동기화합니다."
+  },
+  "syncConflictLabel": {
+    "message": "동기화 충돌"
+  },
+  "syncConflictNote": {
+    "message": "충돌하는 사본을 드라이브에 보관했습니다: $names$. 로컬 버전은 그대로 유지되었습니다.",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Google 드라이브 연결"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "선택한 Workspaces의 탭 URL, 제목, 그룹 정보를 본인의 Google 드라이브(앱 전용 폴더)에 업로드합니다. 동기화는 Workspaces별 옵트인이며 기본값은 꺼짐입니다. 연결을 해제하면 모든 업로드가 중지됩니다."
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Google 드라이브 연결"
+  },
+  "syncConnectFailedNote": {
+    "message": "연결할 수 없습니다. Google 드라이브 동기화에는 로그인 가능한 Google Chrome이 필요합니다."
+  },
+  "syncConnected": {
+    "message": "Google 드라이브에 연결됨"
+  },
+  "syncDisconnectButton": {
+    "message": "연결 해제"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "업로드가 중지됩니다. 이미 드라이브에 있는 Workspaces는 유지되며 아무것도 삭제되지 않습니다."
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Google 드라이브 연결을 해제할까요?"
+  },
+  "syncNoWorkspaces": {
+    "message": "아직 Workspaces가 없습니다."
+  },
+  "syncNotConnected": {
+    "message": "연결되지 않음"
+  },
+  "syncNowButton": {
+    "message": "지금 동기화"
+  },
+  "syncNowLabel": {
+    "message": "수동 동기화"
+  },
+  "syncPrivacyNote": {
+    "message": "선택한 Workspaces의 탭 URL, 제목, 그룹 정보는 본인의 Google 드라이브(앱 전용 폴더)에만 저장됩니다."
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "개인정보처리방침"
+  },
+  "syncRestorableHeader": {
+    "message": "드라이브에서 사용 가능"
+  },
+  "syncRestoreButton": {
+    "message": "복원"
+  },
+  "syncRetryButton": {
+    "message": "다시 시도"
+  },
+  "syncStatusConflict": {
+    "message": "동기화 충돌이 감지됨"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google 드라이브가 가득 참"
+  },
+  "syncStatusError": {
+    "message": "동기화 오류"
+  },
+  "syncStatusIdle": {
+    "message": "Google 드라이브에 동기화됨"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Google 드라이브에 동기화됨"
+  },
+  "syncStatusLastSynced": {
+    "message": "마지막 동기화: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "로그인 필요"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "동기화하려면 업데이트가 필요합니다"
+  },
+  "syncStatusNotConnected": {
+    "message": "연결되지 않음"
+  },
+  "syncStatusOffline": {
+    "message": "오프라인"
+  },
+  "syncStatusRowLabel": {
+    "message": "상태"
+  },
+  "syncStatusSyncing": {
+    "message": "동기화 중…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$일 전",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$시간 전",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "방금"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$분 전",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "동기화할 Workspaces"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Google 드라이브에 동기화됨"
   }
 }

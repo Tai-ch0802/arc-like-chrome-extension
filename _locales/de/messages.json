@@ -806,7 +806,6 @@
   "bmToolsScopeStatus": {
     "message": "Bereich: {name} ({n})"
   },
-
   "bmToolsNetworkRatioWarning": {
     "message": "{n} von {total} fehlgeschlagen ({pct}%) — ungewöhnlich hoch und sieht eher nach Netzwerkproblem als toten Links aus. Vor dem Entfernen sorgfältig prüfen."
   },
@@ -986,5 +985,152 @@
   },
   "workspaceSwitcherAriaLabel": {
     "message": "Aktiver Workspace"
+  },
+  "settingsNavSync": {
+    "message": "Sicherung und Synchronisierung"
+  },
+  "syncAccountDesc": {
+    "message": "Sichere und synchronisiere deine Workspaces geräteübergreifend über dein eigenes Google Drive."
+  },
+  "syncConflictLabel": {
+    "message": "Synchronisierungskonflikte"
+  },
+  "syncConflictNote": {
+    "message": "Eine in Konflikt stehende Kopie wurde auf Drive aufbewahrt für: $names$. Deine lokale Version wurde beibehalten.",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Google Drive verbinden"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "Dies lädt Tab-URLs, Titel und Gruppeninformationen der von dir aktivierten Workspaces in dein eigenes Google Drive (einen app-privaten Ordner) hoch. Die Synchronisierung erfolgt pro Workspace per Opt-in und ist standardmäßig AUS. Beim Trennen werden alle Uploads gestoppt."
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Google Drive verbinden"
+  },
+  "syncConnectFailedNote": {
+    "message": "Verbindung fehlgeschlagen. Die Google-Drive-Synchronisierung erfordert Google Chrome mit verfügbarer Anmeldung."
+  },
+  "syncConnected": {
+    "message": "Mit Google Drive verbunden"
+  },
+  "syncDisconnectButton": {
+    "message": "Trennen"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "Uploads werden gestoppt. Bereits auf Drive vorhandene Workspaces bleiben erhalten; nichts wird gelöscht."
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Google Drive trennen?"
+  },
+  "syncNoWorkspaces": {
+    "message": "Noch keine Workspaces."
+  },
+  "syncNotConnected": {
+    "message": "Nicht verbunden"
+  },
+  "syncNowButton": {
+    "message": "Jetzt synchronisieren"
+  },
+  "syncNowLabel": {
+    "message": "Manuelle Synchronisierung"
+  },
+  "syncPrivacyNote": {
+    "message": "Tab-URLs, Titel und Gruppeninformationen der aktivierten Workspaces werden nur in deinem eigenen Google Drive (einem app-privaten Ordner) gespeichert. "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "Datenschutzerklärung"
+  },
+  "syncRestorableHeader": {
+    "message": "Auf Drive verfügbar"
+  },
+  "syncRestoreButton": {
+    "message": "Wiederherstellen"
+  },
+  "syncRetryButton": {
+    "message": "Wiederholen"
+  },
+  "syncStatusConflict": {
+    "message": "Synchronisierungskonflikt erkannt"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google Drive ist voll"
+  },
+  "syncStatusError": {
+    "message": "Synchronisierungsfehler"
+  },
+  "syncStatusIdle": {
+    "message": "Mit Google Drive synchronisiert"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Mit Google Drive synchronisiert"
+  },
+  "syncStatusLastSynced": {
+    "message": "Zuletzt synchronisiert $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "Anmeldung erforderlich"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "Update zum Synchronisieren erforderlich"
+  },
+  "syncStatusNotConnected": {
+    "message": "Nicht verbunden"
+  },
+  "syncStatusOffline": {
+    "message": "Offline"
+  },
+  "syncStatusRowLabel": {
+    "message": "Status"
+  },
+  "syncStatusSyncing": {
+    "message": "Synchronisierung…"
+  },
+  "syncTimeDayAgo": {
+    "message": "vor $count$ Tagen",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "vor $count$ Std.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "gerade eben"
+  },
+  "syncTimeMinAgo": {
+    "message": "vor $count$ Min.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "Zu synchronisierende Workspaces"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Mit Google Drive synchronisiert"
   }
 }

@@ -947,7 +947,6 @@
   "bmToolsScopeStatus": {
     "message": "Scope: {name} ({n})"
   },
-
   "rlSummaryToggleLabel": {
     "message": "Remember AI summary for Reading List items"
   },
@@ -989,5 +988,152 @@
   },
   "shortcutInSidepanelNote": {
     "message": "These run inside the sidepanel only and cannot be remapped via the Chrome shortcuts page."
+  },
+  "settingsNavSync": {
+    "message": "Backup & Sync"
+  },
+  "syncAccountDesc": {
+    "message": "Back up and sync your workspaces across devices via your own Google Drive."
+  },
+  "syncConflictLabel": {
+    "message": "Sync conflicts"
+  },
+  "syncConflictNote": {
+    "message": "A conflicting copy was kept on Drive for: $names$. Your local version was preserved.",
+    "placeholders": {
+      "names": {
+        "content": "$1",
+        "example": "Work, Personal"
+      }
+    }
+  },
+  "syncConnectButton": {
+    "message": "Connect Google Drive"
+  },
+  "syncConnectDisclosureMessage": {
+    "message": "This uploads tab URLs, titles, and group info for the workspaces you opt in to your own Google Drive (an app-private folder). Sync is opt-in per workspace and OFF by default. Disconnecting stops all uploads."
+  },
+  "syncConnectDisclosureTitle": {
+    "message": "Connect Google Drive"
+  },
+  "syncConnectFailedNote": {
+    "message": "Could not connect. Google Drive sync requires Google Chrome with sign-in available."
+  },
+  "syncConnected": {
+    "message": "Connected to Google Drive"
+  },
+  "syncDisconnectButton": {
+    "message": "Disconnect"
+  },
+  "syncDisconnectConfirmMessage": {
+    "message": "Uploads will stop. Workspaces already on Drive are kept; nothing is deleted."
+  },
+  "syncDisconnectConfirmTitle": {
+    "message": "Disconnect Google Drive?"
+  },
+  "syncNoWorkspaces": {
+    "message": "No workspaces yet."
+  },
+  "syncNotConnected": {
+    "message": "Not connected"
+  },
+  "syncNowButton": {
+    "message": "Sync now"
+  },
+  "syncNowLabel": {
+    "message": "Manual sync"
+  },
+  "syncPrivacyNote": {
+    "message": "Your tab URLs, titles, and group info for opted-in workspaces are stored only in your own Google Drive (an app-private folder). "
+  },
+  "syncPrivacyPolicyLink": {
+    "message": "Privacy Policy"
+  },
+  "syncRestorableHeader": {
+    "message": "Available on Drive"
+  },
+  "syncRestoreButton": {
+    "message": "Restore"
+  },
+  "syncRetryButton": {
+    "message": "Retry"
+  },
+  "syncStatusConflict": {
+    "message": "Sync conflict detected"
+  },
+  "syncStatusDriveFull": {
+    "message": "Google Drive is full"
+  },
+  "syncStatusError": {
+    "message": "Sync error"
+  },
+  "syncStatusIdle": {
+    "message": "Synced to Google Drive"
+  },
+  "syncStatusIdleTitle": {
+    "message": "Synced to Google Drive"
+  },
+  "syncStatusLastSynced": {
+    "message": "Last synced $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5 min ago"
+      }
+    }
+  },
+  "syncStatusNeedsAuth": {
+    "message": "Sign-in required"
+  },
+  "syncStatusNeedsUpdate": {
+    "message": "Update required to sync"
+  },
+  "syncStatusNotConnected": {
+    "message": "Not connected"
+  },
+  "syncStatusOffline": {
+    "message": "Offline"
+  },
+  "syncStatusRowLabel": {
+    "message": "Status"
+  },
+  "syncStatusSyncing": {
+    "message": "Syncing…"
+  },
+  "syncTimeDayAgo": {
+    "message": "$count$ days ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "syncTimeHrAgo": {
+    "message": "$count$ hr ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "syncTimeJustNow": {
+    "message": "just now"
+  },
+  "syncTimeMinAgo": {
+    "message": "$count$ min ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "syncWorkspacesHeader": {
+    "message": "Workspaces to sync"
+  },
+  "workspaceSyncedTitle": {
+    "message": "Synced to Google Drive"
   }
 }
