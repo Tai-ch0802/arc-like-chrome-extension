@@ -41,3 +41,33 @@ export function extractDomain(url) {
         return match ? match[1] : '';
     }
 }
+
+/**
+ * 將搜尋字串拆成一般關鍵字與 tag: 篩選。
+ * 支援 tag:單詞 與 tag:"含空白名稱"；tag 名稱去引號、小寫化。其餘空白分隔詞為關鍵字（小寫）。
+ * @param {string} query
+ * @returns {{keywords: string[], tags: string[]}}
+ */
+export function parseSearchQuery(query) {
+    const tags = [];
+    if (typeof query !== 'string') return { keywords: [], tags };
+    const rest = query.replace(/tag:"([^"]*)"|tag:(\S+)/gi, (_, quoted, bare) => {
+        const name = (quoted !== undefined ? quoted : bare).trim().toLowerCase();
+        if (name) tags.push(name);
+        return ' ';
+    });
+    const keywords = rest.toLowerCase().split(/\s+/).filter(k => k.length > 0);
+    return { keywords, tags };
+}
+
+/**
+ * 書籤是否含全部 required 標籤（AND、大小寫不敏感、精確名稱比對）。
+ * @param {string[]} bookmarkTagNames 書籤目前的標籤名稱
+ * @param {string[]} requiredTagNames 查詢要求的標籤名稱
+ * @returns {boolean}
+ */
+export function bookmarkMatchesTags(bookmarkTagNames, requiredTagNames) {
+    if (!requiredTagNames || requiredTagNames.length === 0) return true;
+    const have = new Set((bookmarkTagNames || []).map(n => String(n).toLowerCase()));
+    return requiredTagNames.every(req => have.has(String(req).toLowerCase()));
+}
