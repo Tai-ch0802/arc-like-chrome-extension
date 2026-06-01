@@ -4,6 +4,9 @@ import * as customTheme from './modules/ui/customThemeManager.js';
 import * as bgImage from './modules/ui/backgroundImageManager.js';
 import * as rss from './modules/rssManager.js';
 import { checkModelAvailability, triggerLanguageModelDownload } from './modules/aiManager.js';
+import * as modalManager from './modules/modalManager.js';
+import * as driveAuth from './modules/sync/driveAuth.js';
+import * as workspaceManager from './modules/workspace/workspaceManager.js';
 
 const THEME_OPTIONS = [
     { value: 'geek', labelKey: 'themeOptionGeek' },
@@ -521,6 +524,361 @@ async function renderRss(container) {
     await renderList();
 }
 
+// Privacy policy (data goes to the user's OWN Drive app-private folder).
+const PRIVACY_POLICY_URL = 'https://sidebar-for-tabs-bookmarks.taislife.work/privacy.html';
+
+/**
+ * Formats a timestamp as a coarse relative time ("just now", "5 min ago",
+ * "3 hr ago", "2 days ago"). Intentionally tiny — used only for the sync
+ * status line, so day-level granularity is plenty.
+ * @param {number} ts epoch ms
+ * @returns {string}
+ */
+function relativeTime(ts) {
+    if (!ts || typeof ts !== 'number') return '';
+    const diffSec = Math.max(0, Math.round((Date.now() - ts) / 1000));
+    if (diffSec < 60) return api.getMessage('syncTimeJustNow') || 'just now';
+    const min = Math.round(diffSec / 60);
+    if (min < 60) return (api.getMessage('syncTimeMinAgo', String(min)) || `${min} min ago`);
+    const hr = Math.round(min / 60);
+    if (hr < 24) return (api.getMessage('syncTimeHrAgo', String(hr)) || `${hr} hr ago`);
+    const day = Math.round(hr / 24);
+    return (api.getMessage('syncTimeDayAgo', String(day)) || `${day} day${day === 1 ? '' : 's'} ago`);
+}
+
+/**
+ * 渲染「備份與同步」(Backup & Sync) 區塊：Google Drive 連線、同步狀態、
+ * 立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、
+ * 衝突提示與隱私聲明。
+ *
+ * 渲染策略：mirror renderAi —— 同步先畫出 skeleton（不做任何 I/O / identity 呼叫），
+ * 然後在 async IIFE 內 hydrate（isConnected / storage 讀取 / workspace 清單）。
+ * 這是因為 buildNav 在頁面載入時就 eager 呼叫所有 render()，若在 render 內同步呼叫
+ * chrome.identity.getAuthToken，每次開啟 options 都會觸發 OAuth 流程。
+ *
+ * 持久化：UI 只送 message + 讀 storage，不 dispatch CustomEvent。狀態變更由
+ * background → storage 流動（E4b 加入 sidepanel bridge）。
+ * @param {HTMLElement} container
+ */
+function renderSync(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('settingsNavSync') || 'Backup & Sync';
+    container.appendChild(h);
+
+    // --- 1. Account block (skeleton) ---
+    const accountBlock = document.createElement('div');
+    accountBlock.className = 'opt-section sync-account-block';
+    container.appendChild(accountBlock);
+
+    // --- 2. Status row (skeleton) ---
+    const statusBlock = document.createElement('div');
+    container.appendChild(statusBlock);
+
+    // --- 3. Actions (skeleton) ---
+    const actionsBlock = document.createElement('div');
+    container.appendChild(actionsBlock);
+
+    // --- 4. Per-workspace opt-in list (skeleton) ---
+    const optInHeader = document.createElement('h4');
+    optInHeader.className = 'settings-subsection-header';
+    optInHeader.style.marginTop = '12px';
+    optInHeader.textContent = api.getMessage('syncWorkspacesHeader') || 'Workspaces to sync';
+    container.appendChild(optInHeader);
+    const optInBlock = document.createElement('div');
+    container.appendChild(optInBlock);
+
+    // --- 5. Restorable list (skeleton) ---
+    const restoreHeader = document.createElement('h4');
+    restoreHeader.className = 'settings-subsection-header';
+    restoreHeader.style.marginTop = '12px';
+    restoreHeader.textContent = api.getMessage('syncRestorableHeader') || 'Available on Drive';
+    container.appendChild(restoreHeader);
+    const restoreBlock = document.createElement('div');
+    container.appendChild(restoreBlock);
+
+    // --- 6. Conflict review (skeleton) ---
+    const conflictBlock = document.createElement('div');
+    container.appendChild(conflictBlock);
+
+    // --- 7. Privacy fine-print (persistent) ---
+    const fineprint = document.createElement('p');
+    fineprint.className = 'opt-row__desc sync-privacy-note';
+    fineprint.style.marginTop = '16px';
+    fineprint.appendChild(document.createTextNode(
+        (api.getMessage('syncPrivacyNote') ||
+            'Your tab URLs, titles, and group info for opted-in workspaces are stored only in your own Google Drive (an app-private folder). ') + ' '
+    ));
+    const policyLink = document.createElement('a');
+    policyLink.href = PRIVACY_POLICY_URL;
+    policyLink.target = '_blank';
+    policyLink.rel = 'noopener';
+    policyLink.textContent = api.getMessage('syncPrivacyPolicyLink') || 'Privacy Policy';
+    fineprint.appendChild(policyLink);
+    container.appendChild(fineprint);
+
+    /**
+     * Hydrate all dynamic blocks from identity + storage + workspace state.
+     * Called after the skeleton paints and re-called after any mutating action.
+     */
+    async function hydrate() {
+        let connected = false;
+        try {
+            connected = await driveAuth.isConnected();
+        } catch { connected = false; }
+
+        // workspaceManager runs in its own module instance in this page context;
+        // ensure the in-memory store is loaded before getAllWorkspaces().
+        try { await workspaceManager.initWorkspaces(); } catch { /* best-effort */ }
+
+        const { driveSyncStatus, driveRestorable } = await api.getStorage('local', {
+            driveSyncStatus: { state: 'idle' },
+            driveRestorable: [],
+        });
+        const status = driveSyncStatus || { state: 'idle' };
+        const restorable = Array.isArray(driveRestorable) ? driveRestorable : [];
+
+        // ===== 1. Account block =====
+        accountBlock.innerHTML = '';
+        if (connected) {
+            const connectedLabel = document.createElement('div');
+            connectedLabel.className = 'opt-row__label';
+            connectedLabel.textContent = api.getMessage('syncConnected') || 'Connected to Google Drive';
+            const disconnectBtn = document.createElement('button');
+            disconnectBtn.className = 'modal-btn';
+            disconnectBtn.textContent = api.getMessage('syncDisconnectButton') || 'Disconnect';
+            disconnectBtn.addEventListener('click', async () => {
+                const confirmed = await modalManager.showConfirm({
+                    title: api.getMessage('syncDisconnectConfirmTitle') || 'Disconnect Google Drive?',
+                    message: api.getMessage('syncDisconnectConfirmMessage') ||
+                        'Uploads will stop. Workspaces already on Drive are kept; nothing is deleted.',
+                    confirmButtonText: api.getMessage('syncDisconnectButton') || 'Disconnect',
+                });
+                if (!confirmed) return;
+                disconnectBtn.disabled = true;
+                try {
+                    await chrome.runtime.sendMessage({ action: 'driveDisconnect' });
+                } catch (err) {
+                    console.warn('[sync] disconnect failed:', err);
+                }
+                await hydrate();
+            });
+            accountBlock.appendChild(makeRow(connectedLabel.textContent, disconnectBtn));
+        } else {
+            const connectBtn = document.createElement('button');
+            connectBtn.className = 'modal-btn';
+            connectBtn.textContent = api.getMessage('syncConnectButton') || 'Connect Google Drive';
+            const connectNote = document.createElement('div');
+            connectNote.className = 'opt-row__desc sync-connect-note';
+            connectNote.hidden = true;
+
+            connectBtn.addEventListener('click', async () => {
+                // Privacy disclosure gated BEFORE any auth call.
+                const confirmed = await modalManager.showConfirm({
+                    title: api.getMessage('syncConnectDisclosureTitle') || 'Connect Google Drive',
+                    message: api.getMessage('syncConnectDisclosureMessage') ||
+                        'This uploads tab URLs, titles, and group info for the workspaces you opt in to your own Google Drive (an app-private folder). Sync is opt-in per workspace and OFF by default. Disconnecting stops all uploads.',
+                    confirmButtonText: api.getMessage('syncConnectButton') || 'Connect Google Drive',
+                });
+                if (!confirmed) return;
+
+                connectBtn.disabled = true;
+                connectNote.hidden = true;
+                let resp;
+                try {
+                    resp = await chrome.runtime.sendMessage({ action: 'driveConnect' });
+                } catch (err) {
+                    resp = { ok: false, error: err && err.message };
+                }
+                connectBtn.disabled = false;
+
+                if (!resp || !resp.ok) {
+                    // Graceful failure: most commonly a missing/placeholder OAuth
+                    // client_id, or this is not Google Chrome. Surface a note
+                    // rather than hanging.
+                    connectNote.hidden = false;
+                    connectNote.textContent = api.getMessage('syncConnectFailedNote') ||
+                        'Could not connect. Google Drive sync requires Google Chrome with sign-in available.';
+                }
+                await hydrate();
+            });
+
+            accountBlock.appendChild(makeRow(
+                api.getMessage('syncNotConnected') || 'Not connected',
+                connectBtn,
+                api.getMessage('syncAccountDesc') || 'Back up and sync your workspaces across devices via your own Google Drive.'
+            ));
+            accountBlock.appendChild(connectNote);
+        }
+
+        // ===== 2. Status row =====
+        statusBlock.innerHTML = '';
+        let statusText;
+        let retryBtn = null;
+        if (!connected) {
+            statusText = api.getMessage('syncStatusNotConnected') || 'Not connected';
+        } else {
+            switch (status.state) {
+                case 'syncing':
+                    statusText = api.getMessage('syncStatusSyncing') || 'Syncing…';
+                    break;
+                case 'error':
+                    statusText = (api.getMessage('syncStatusError') || 'Error') +
+                        (status.message ? `: ${status.message}` : '');
+                    retryBtn = document.createElement('button');
+                    retryBtn.className = 'modal-btn';
+                    retryBtn.textContent = api.getMessage('syncRetryButton') || 'Retry';
+                    break;
+                case 'conflict':
+                    statusText = api.getMessage('syncStatusConflict') || 'Conflict detected';
+                    break;
+                case 'offline':
+                    statusText = api.getMessage('syncStatusOffline') || 'Offline';
+                    break;
+                case 'needs-auth':
+                    statusText = api.getMessage('syncStatusNeedsAuth') || 'Sign-in required';
+                    break;
+                case 'drive-full':
+                    statusText = api.getMessage('syncStatusDriveFull') || 'Google Drive is full';
+                    break;
+                case 'idle':
+                default: {
+                    if (status.lastSyncedAt) {
+                        statusText = (api.getMessage('syncStatusLastSynced',
+                            relativeTime(status.lastSyncedAt)) ||
+                            `Last synced ${relativeTime(status.lastSyncedAt)}`);
+                    } else {
+                        statusText = api.getMessage('syncStatusIdle') || 'Idle';
+                    }
+                    break;
+                }
+            }
+        }
+        const statusLabel = document.createElement('span');
+        statusLabel.className = 'sync-status-label';
+        statusLabel.textContent = statusText;
+        statusBlock.appendChild(makeRow(
+            api.getMessage('syncStatusRowLabel') || 'Status',
+            retryBtn || statusLabel,
+            retryBtn ? statusText : undefined
+        ));
+        if (retryBtn) {
+            retryBtn.addEventListener('click', async () => {
+                retryBtn.disabled = true;
+                try {
+                    await chrome.runtime.sendMessage({ action: 'driveSyncNow' });
+                } catch (err) { console.warn('[sync] retry failed:', err); }
+                await hydrate();
+            });
+        }
+
+        // ===== 3. Actions =====
+        actionsBlock.innerHTML = '';
+        const syncNowBtn = document.createElement('button');
+        syncNowBtn.className = 'modal-btn';
+        syncNowBtn.textContent = api.getMessage('syncNowButton') || 'Sync now';
+        syncNowBtn.disabled = !connected;
+        syncNowBtn.addEventListener('click', async () => {
+            syncNowBtn.disabled = true;
+            try {
+                await chrome.runtime.sendMessage({ action: 'driveSyncNow' });
+            } catch (err) { console.warn('[sync] sync now failed:', err); }
+            await hydrate();
+        });
+        actionsBlock.appendChild(makeRow(
+            api.getMessage('syncNowLabel') || 'Manual sync',
+            syncNowBtn
+        ));
+
+        // ===== 4. Per-workspace opt-in list =====
+        optInBlock.innerHTML = '';
+        const workspaces = workspaceManager.getAllWorkspaces();
+        if (workspaces.length === 0) {
+            const empty = document.createElement('p');
+            empty.className = 'rss-empty';
+            empty.textContent = api.getMessage('syncNoWorkspaces') || 'No workspaces yet.';
+            optInBlock.appendChild(empty);
+        } else {
+            for (const ws of workspaces) {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `sync-ws-${ws.id}`;
+                checkbox.checked = ws.syncEnabled === true;
+                checkbox.disabled = !connected;
+                checkbox.addEventListener('change', async (e) => {
+                    // UI only sends a message; background persists + flushes.
+                    try {
+                        await chrome.runtime.sendMessage({
+                            action: 'driveSetWorkspaceSync',
+                            workspaceId: ws.id,
+                            enabled: e.target.checked,
+                        });
+                    } catch (err) {
+                        console.warn('[sync] setWorkspaceSync failed:', err);
+                    }
+                });
+                const name = ws.name || ws.id;
+                optInBlock.appendChild(makeRow(
+                    `${ws.icon ? ws.icon + ' ' : ''}${name}`,
+                    checkbox
+                ));
+            }
+        }
+
+        // ===== 5. Restorable list =====
+        restoreBlock.innerHTML = '';
+        const localIds = new Set(workspaces.map((w) => w.id));
+        const restorableNotLocal = restorable.filter((r) => r && r.id && !localIds.has(r.id));
+        restoreHeader.hidden = restorableNotLocal.length === 0;
+        if (restorableNotLocal.length === 0) {
+            restoreBlock.hidden = true;
+        } else {
+            restoreBlock.hidden = false;
+            for (const entry of restorableNotLocal) {
+                const name = (entry.metadata && entry.metadata.name) || entry.name || entry.id;
+                const restoreBtn = document.createElement('button');
+                restoreBtn.className = 'modal-btn';
+                restoreBtn.textContent = api.getMessage('syncRestoreButton') || 'Restore';
+                restoreBtn.addEventListener('click', async () => {
+                    restoreBtn.disabled = true;
+                    try {
+                        await chrome.runtime.sendMessage({
+                            action: 'driveRestore',
+                            workspaceId: entry.id,
+                        });
+                    } catch (err) {
+                        console.warn('[sync] restore failed:', err);
+                    }
+                    await hydrate();
+                });
+                restoreBlock.appendChild(makeRow(name, restoreBtn));
+            }
+        }
+
+        // ===== 6. Conflict review =====
+        conflictBlock.innerHTML = '';
+        const conflicts = Array.isArray(status.conflicts) ? status.conflicts : [];
+        if (conflicts.length > 0) {
+            const wsById = new Map(workspaces.map((w) => [w.id, w]));
+            const names = conflicts.map((id) => {
+                const w = wsById.get(id);
+                return w ? (w.name || id) : id;
+            });
+            const note = document.createElement('div');
+            note.className = 'opt-row__desc';
+            note.textContent = (api.getMessage('syncConflictNote', names.join(', ')) ||
+                `A conflicting copy was kept on Drive for: ${names.join(', ')}. Your local version was preserved.`);
+            conflictBlock.appendChild(makeRow(
+                api.getMessage('syncConflictLabel') || 'Sync conflicts',
+                null
+            ));
+            conflictBlock.appendChild(note);
+        }
+    }
+
+    // Defer ALL I/O (identity / storage / workspace load) to after the skeleton paints.
+    hydrate();
+}
+
 /**
  * Maps an AI availability status string to a badge display object.
  * Mirrors the same helper in settingManager.js (getStatusBadge).
@@ -829,6 +1187,7 @@ const SECTIONS = [
     { id: 'appearance', labelKey: 'settingsNavAppearance', render: renderAppearance },
     { id: 'language',   labelKey: 'settingsNavLanguage',   render: renderLanguage },
     { id: 'features',   labelKey: 'settingsNavFeatures',   render: renderFeatures },
+    { id: 'sync',       labelKey: 'settingsNavSync',       render: renderSync, labelFallback: 'Backup & Sync' },
     { id: 'ai',         labelKey: 'settingsNavAi',         render: renderAi },
     { id: 'rss',        labelKey: 'settingsNavRss',        render: renderRss },
     { id: 'shortcuts',  labelKey: 'settingsNavShortcuts',  render: renderShortcuts },
@@ -849,7 +1208,7 @@ function buildNav(navEl, contentEl) {
         const btn = document.createElement('button');
         btn.className = 'opt-nav__item';
         btn.dataset.section = s.id;
-        btn.textContent = api.getMessage(s.labelKey) || s.id;
+        btn.textContent = api.getMessage(s.labelKey) || s.labelFallback || s.id;
         btn.addEventListener('click', () => activate(s.id));
         navEl.appendChild(btn);
 
