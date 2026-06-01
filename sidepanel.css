@@ -1221,6 +1221,17 @@ mark.url-match {
     border-color: var(--accent-color);
 }
 
+/* Tag color swatches (showTagDialog). Reuse .color-swatch shape + .selected ring;
+   backgrounds mirror the .bm-tools__tag-chip[data-color] palette. */
+.tag-color-swatch[data-color="grey"]   { background: #5f6368; }
+.tag-color-swatch[data-color="blue"]   { background: #1a73e8; }
+.tag-color-swatch[data-color="red"]    { background: #d93025; }
+.tag-color-swatch[data-color="yellow"] { background: #f9ab00; }
+.tag-color-swatch[data-color="green"]  { background: #1e8e3e; }
+.tag-color-swatch[data-color="pink"]   { background: #f538a0; }
+.tag-color-swatch[data-color="purple"] { background: #a142f4; }
+.tag-color-swatch[data-color="cyan"]   { background: #007b83; }
+
 /* --- Linked Tabs Panel Styles --- */
 .linked-tabs-list {
     display: flex;

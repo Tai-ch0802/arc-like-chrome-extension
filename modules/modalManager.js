@@ -1,6 +1,9 @@
 import * as api from './apiManager.js';
 import { escapeHtml } from './utils/textUtils.js';
 import { GROUP_COLORS } from './ui/groupColors.js';
+// tagManager only imports apiManager (no modalManager/tagManager cycle), so this
+// import is safe. We only need the preset color name list here.
+import { getPresetColors } from './bookmark/tagManager.js';
 
 /**
  * 追蹤目前開啟的 Modal 相關資訊，用於 Focus 管理
@@ -691,6 +694,121 @@ export function showCreateGroupDialog() {
             const title = input.value.trim();
             if (title) {
                 cleanupAndResolve({ title, color: selectedColor });
+            } else {
+                input.focus();
+            }
+        };
+
+        const cancelBtn = modalContent.querySelector('.cancel-btn');
+        cancelBtn.onclick = () => cleanupAndResolve(null);
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                cleanupAndResolve(null);
+            }
+        };
+    });
+}
+
+/**
+ * Name + color picker dialog for creating / editing a bookmark tag.
+ * Mirrors showCreateGroupDialog: a name input plus a row of color swatches with
+ * click + keyboard (Enter/Space to select, arrows to move) selection.
+ *
+ * @param {{ title: string, defaultName?: string, defaultColor?: string }} args
+ * @returns {Promise<{name: string, color: string} | null>}
+ */
+export function showTagDialog({ title, defaultName = '', defaultColor = 'blue' }) {
+    return new Promise((resolve) => {
+        const presetColors = getPresetColors();
+        let selectedColor = presetColors.includes(defaultColor) ? defaultColor : presetColors[0];
+
+        const form = document.createElement('form');
+        form.noValidate = true;
+        form.className = 'create-group-form';
+
+        const colorSwatches = presetColors.map((colorName) => `
+            <div class="color-swatch tag-color-swatch ${colorName === selectedColor ? 'selected' : ''}"
+                 data-color="${colorName}"
+                 tabindex="0"
+                 role="radio"
+                 aria-checked="${colorName === selectedColor}"
+                 aria-label="${colorName}"
+                 title="${colorName}"></div>
+        `).join('');
+
+        form.innerHTML = `
+            <h3 class="modal-title">${escapeHtml(title)}</h3>
+            <input type="text" class="modal-input" value="${escapeHtml(defaultName)}">
+            <div class="color-swatches-container" role="radiogroup">${colorSwatches}</div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
+                <button type="submit" class="modal-button confirm-btn primary">${api.getMessage("saveButton") || api.getMessage("confirmButton") || 'Save'}</button>
+            </div>
+        `;
+
+        const { overlay, modalContent } = createModal(form);
+
+        const input = modalContent.querySelector('.modal-input');
+        input.focus();
+        input.select();
+
+        const swatchesContainer = modalContent.querySelector('.color-swatches-container');
+
+        const selectSwatch = (target) => {
+            const previouslySelected = swatchesContainer.querySelector('.selected');
+            if (previouslySelected) {
+                previouslySelected.classList.remove('selected');
+                previouslySelected.setAttribute('aria-checked', 'false');
+            }
+            target.classList.add('selected');
+            target.setAttribute('aria-checked', 'true');
+            selectedColor = target.dataset.color;
+        };
+
+        swatchesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('color-swatch')) {
+                selectSwatch(e.target);
+            }
+        });
+
+        swatchesContainer.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('color-swatch')) {
+                e.preventDefault();
+                selectSwatch(e.target);
+            }
+
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) && e.target.classList.contains('color-swatch')) {
+                e.preventDefault();
+                e.stopPropagation(); // Stop global handler
+
+                const allSwatches = Array.from(swatchesContainer.querySelectorAll('.color-swatch'));
+                const index = allSwatches.indexOf(e.target);
+                let nextIndex = index;
+
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextIndex = index + 1;
+                    if (nextIndex >= allSwatches.length) nextIndex = 0;
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    nextIndex = index - 1;
+                    if (nextIndex < 0) nextIndex = allSwatches.length - 1;
+                }
+
+                if (nextIndex >= 0 && nextIndex < allSwatches.length) {
+                    allSwatches[nextIndex].focus();
+                }
+            }
+        });
+
+        const cleanupAndResolve = (value) => {
+            removeModal(overlay);
+            resolve(value);
+        };
+
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const name = input.value.trim();
+            if (name) {
+                cleanupAndResolve({ name, color: selectedColor });
             } else {
                 input.focus();
             }
