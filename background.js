@@ -43,18 +43,26 @@ const PULL_PERIOD_MIN = 10;             // ~10 min periodic pull
 const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarms min granularity)
 
 /**
- * Loop-suppression flag. When an ENGINE-INITIATED write touches local workspace
- * state (applyRemoteSnapshot / removeLocalWorkspace), it fires
+ * Loop-suppression echo map. When an ENGINE-INITIATED write touches local
+ * workspace state (applyRemoteSnapshot / removeLocalWorkspace), it fires
  * chrome.storage.onChanged like any other write. Without a guard the onChanged
  * handler below would re-enqueue a push for the very workspace we just pulled,
  * causing a pull→push→pull loop.
  *
+ * A module boolean cleared in finally() is racy: chrome.storage.onChanged for
+ * the engine's write is typically delivered in a LATER task — after the flag is
+ * already cleared — so the handler never sees the suppression. Instead we record
+ * the exact rev the engine wrote (or the string 'deleted' for removals) keyed by
+ * workspace id. The onChanged handler consumes the entry by comparing it against
+ * the workspace's NEW rev: a match means engine-initiated → skip + delete the
+ * entry; a mismatch (or no entry) means a genuine user edit → enqueue.
+ *
  * We own the suppression HERE (not in workspaceManager) so the manager stays
- * storage-agnostic: set the flag before the engine-initiated persist, clear it
- * after. The flag is a simple module-level boolean — engine writes are awaited
- * sequentially within a single SW task, so there is no interleaving concern.
+ * storage-agnostic. The map self-bounds: per-id set overwrites, and entries are
+ * deleted on consumption. A lingering entry only occurs if onChanged never
+ * arrives for a write (rare); it self-heals on the next engine write to that id.
  */
-let suppressSyncEnqueue = false;
+const engineWriteEcho = new Map(); // workspaceId -> rev the engine just wrote (or the string 'deleted')
 
 /** In-memory device-id cache (avoids a storage read per buildPushPayload). */
 let cachedDeviceId = null;
@@ -132,33 +140,28 @@ const syncEngine = createSyncEngine({
     },
 
     /**
-     * Write a pulled file json into local state WITHOUT opening tabs. We suppress
-     * the onChanged re-enqueue around the persist so this engine-initiated write
-     * does not bounce back as a push.
+     * Write a pulled file json into local state WITHOUT opening tabs. We record
+     * the rev being written into engineWriteEcho BEFORE the persist so the
+     * (later-delivered) onChanged for this engine-initiated write is recognized
+     * by the handler and does not bounce back as a push. applyRemoteWorkspace
+     * sets the workspace's rev to fileJson.rev, so the handler's new-rev compare
+     * will match this echo entry exactly.
      */
     async applyRemoteSnapshot(id, fileJson) {
         await ensureWorkspacesInit();
-        suppressSyncEnqueue = true;
-        try {
-            await workspaceManager.applyRemoteWorkspace(id, {
-                metadata: fileJson.metadata,
-                tabSnapshot: fileJson.tabSnapshot,
-                rev: fileJson.rev,
-                updatedAt: fileJson.updatedAt,
-            });
-        } finally {
-            suppressSyncEnqueue = false;
-        }
+        engineWriteEcho.set(id, fileJson.rev);
+        await workspaceManager.applyRemoteWorkspace(id, {
+            metadata: fileJson.metadata,
+            tabSnapshot: fileJson.tabSnapshot,
+            rev: fileJson.rev,
+            updatedAt: fileJson.updatedAt,
+        });
     },
 
     async removeLocalWorkspace(id) {
         await ensureWorkspacesInit();
-        suppressSyncEnqueue = true;
-        try {
-            await workspaceManager.deleteWorkspace(id);
-        } finally {
-            suppressSyncEnqueue = false;
-        }
+        engineWriteEcho.set(id, 'deleted');
+        await workspaceManager.deleteWorkspace(id);
     },
 
     async isWorkspaceLiveBound(id) {
@@ -237,14 +240,26 @@ function changedIds(oldMap, newMap) {
     return ids;
 }
 
+/** Read one workspace's persisted base rev (same storage the engine deps use). */
+async function readBaseRev(id) {
+    const res = await getStorage('local', [DRIVE_BASE_REV_KEY]);
+    const map = res[DRIVE_BASE_REV_KEY] || {};
+    return map[id] || 0;
+}
+
 /**
  * onChanged → enqueue pushes for changed synced workspaces + schedule a debounced
- * flush. Skipped entirely while suppressSyncEnqueue is set (engine-initiated
- * writes), which prevents the pull→push→pull loop.
+ * flush.
+ *
+ * Engine-write suppression is timing-independent via engineWriteEcho (see its
+ * declaration): for each changed id we compare the workspace's NEW rev against
+ * the recorded echo. A match (or 'deleted' for a removed id) means the change was
+ * engine-initiated → skip enqueue AND delete the echo entry, so a genuine future
+ * user edit landing at the same rev is not wrongly suppressed. No entry / a
+ * mismatch means a real user edit → enqueue. A defensive rev>baseRev guard then
+ * skips ids already in sync (nothing to push), avoiding wasted flushes.
  */
 async function handleWorkspaceStorageChange(changes, areaName) {
-    if (suppressSyncEnqueue) return;
-
     let ids = new Set();
     if (areaName === 'sync' && changes[WORKSPACE_METADATA_KEY]) {
         const c = changes[WORKSPACE_METADATA_KEY];
@@ -259,22 +274,40 @@ async function handleWorkspaceStorageChange(changes, areaName) {
 
     // Re-read storage into the SW's in-memory mirror. The mutating write almost
     // always comes from ANOTHER context (the sidepanel), so the SW's mirror is
-    // stale; re-initializing makes the syncEnabled filter below reflect the
-    // authoritative just-changed state rather than a stale snapshot.
+    // stale; re-initializing makes the syncEnabled filter + rev reads below
+    // reflect the authoritative just-changed state rather than a stale snapshot.
     await workspaceManager.initWorkspaces();
     workspaceInitDone = true;
 
-    // Only enqueue workspaces the user has opted into syncing. A changed id that
-    // is no longer a synced workspace (deleted, or sync turned off) is ignored
-    // here; deletes are handled explicitly via driveSetWorkspaceSync / delete.
-    const synced = new Set(
-        workspaceManager.getAllWorkspaces().filter((w) => w.syncEnabled).map((w) => w.id),
-    );
     let enqueued = false;
     for (const id of ids) {
-        if (!synced.has(id)) continue;
-        await syncEngine.enqueuePush(id);
-        enqueued = true;
+        const ws = workspaceManager.getWorkspace(id);
+
+        // Engine-write echo: a removed id whose echo is 'deleted', or a present
+        // id whose new rev equals the echoed rev, is an engine-initiated write.
+        // Consume (delete) the entry and skip enqueue.
+        if (engineWriteEcho.has(id)) {
+            const echoed = engineWriteEcho.get(id);
+            const isEngineWrite = ws
+                ? echoed === ws.rev
+                : echoed === 'deleted';
+            if (isEngineWrite) {
+                engineWriteEcho.delete(id);
+                continue;
+            }
+        }
+
+        // Only enqueue workspaces the user has opted into syncing. A changed id
+        // no longer a synced workspace (deleted, or sync turned off) is ignored
+        // here; deletes are handled explicitly via driveSetWorkspaceSync.
+        if (!ws || !ws.syncEnabled) continue;
+
+        // Defensive no-op avoidance: a workspace already in sync (rev <= baseRev)
+        // has nothing to push, so skip it rather than enqueue a no-op flush.
+        if (ws.rev > await readBaseRev(id)) {
+            await syncEngine.enqueuePush(id);
+            enqueued = true;
+        }
     }
     if (enqueued) {
         // Debounced one-shot flush: recreating the alarm pushes its fire time
@@ -440,13 +473,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
     return true;
   } else if (message.action === 'driveSetWorkspaceSync') {
-    // Toggle a workspace's sync opt-in; on enable, push it immediately.
+    // Toggle a workspace's sync opt-in; on enable, flush promptly. The persist
+    // above fires onChanged, and handleWorkspaceStorageChange enqueues the push
+    // itself (a newly-enabled workspace with local changes has rev > baseRev), so
+    // an explicit enqueuePush here would be redundant. We still schedule the
+    // debounced flush directly so the queued push syncs promptly even if the
+    // onChanged-driven flush scheduling were to race; if the workspace is already
+    // in sync (rev === baseRev) nothing is queued and the flush is a cheap no-op.
     (async () => {
       await ensureWorkspacesInit();
       await workspaceManager.setWorkspaceSyncEnabled(message.workspaceId, message.enabled);
       if (message.enabled) {
         await getDeviceId();
-        await syncEngine.enqueuePush(message.workspaceId);
         chrome.alarms.create(ALARM_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
       }
       sendResponse({ ok: true });
