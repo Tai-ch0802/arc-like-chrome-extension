@@ -38,9 +38,9 @@ key_files:
   - file_path: options.html
     description: "[UI] 獨立設定頁（options_ui + open_in_tab）。Phase 12(批D) 新增；左側導覽 + 內容區，載入 sidepanel.css(共用元件樣式) + options.css(頁面版面) + options.js。"
   - file_path: options.js
-    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 7 區塊（外觀/語言/功能/AI/RSS/快捷鍵/關於），重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。"
+    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（共 8 區塊：外觀/語言/功能/同步/AI/RSS/快捷鍵/關於）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
   - file_path: modules/ui/settingsBridge.js
-    description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。"
+    description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。Phase 13(批E) 加入 driveSyncStatus 分支：local 區的 driveSyncStatus 變更映射成 dispatch driveSyncStatusChanged 事件，供 driveSyncBadge 即時更新徽章。"
   - file_path: modules/ui/customThemeManager.js
     description: "[UI] 自訂主題管理。負責顏色選擇器面板 UI、使用者自訂配色儲存與載入、以及 JSON 匯出匯入功能。"
   - file_path: modules/ui/backgroundImageManager.js
@@ -97,6 +97,18 @@ key_files:
     description: "[功能] Workspace 業務邏輯。Phase 6 新增、Phase 9 重構儲存架構；分離 metadata (chrome.storage.sync, 8KB/key 限制) 與 tabSnapshot (chrome.storage.local)，含 legacy windowNames 一次性遷移與 onChanged 跨裝置同步。Phase 12(批C) 快照捕捉 tab group(groupKey/title/color)、切換時 best-effort 重建 group（純函式 buildSnapshotFromTabs / clusterCreatedTabsByGroup）。Drive sync (批E) 新增 isWorkspaceBound(查 windowWorkspaceMap 是否綁定) 與 applyRemoteWorkspace(把 Drive 拉回的 workspace 寫入本地，不開分頁、不 bumpRev、rev/updatedAt 直接取自 remote)。"
   - file_path: modules/workspace/workspaceUI.js
     description: "[UI] Workspace 切換器與管理介面。Phase 6 新增；下拉切換 + 管理 modal + 切換確認 (含 unbound tabs 自動 auto-save 防資料遺失)。"
+  - file_path: modules/sync/syncProvider.js
+    description: "[同步] SyncProvider 介面定義（版本化 KV：isConnected/list/read/write/remove，read/write 帶 server version 樂觀鎖）。Phase 13(批E) 新增；提供 NoopSyncProvider（同步關閉時的 inert 預設，全部安全 no-op，保留 local-only 行為）與 createFakeSyncProvider（純 Map 記憶體模擬 + __failNext 故障注入，供單元/整合測試在 Node 跑、無 chrome/fetch/OAuth 依賴）。"
+  - file_path: modules/sync/driveAuth.js
+    description: "[同步] Google Drive OAuth 封裝。Phase 13(批E) 新增；用 chrome.identity.getAuthToken 管理 token 生命週期（MV3 不持久化 refresh token），提供 getToken/isConnected/connect(互動式，需 user gesture)/disconnect(flush + best-effort server revoke) 與 authedFetch(注入 Bearer、401 時 flush stale token 重取一次)。無真實 oauth2 client_id 時 getAuthToken reject → isConnected()=false → 整個同步層維持 inert。"
+  - file_path: modules/sync/syncLogic.js
+    description: "[同步] 純函式同步決策核心。Phase 13(批E) 新增；無 chrome/fetch/Date/Math.random/模組狀態，時間一律由 now 參數傳入，可在 Node 全量單元測試。含 decideSync(3-way：須兩端皆超過 baseRev 才算 conflict，避免乾淨 fast-forward 被誤判)、resolveConflict(rev-LWW + deviceId 字典序 tiebreak，loser 永不丟棄→保留為 conflicted copy ws_<id>.conflict-<loserDeviceId>.json)、decidePull、reconcile(union 三方對賬)、coalesceQueue(每 workspace 收斂單一 op，delete 為終態)、tombstonesToGC(grace window 過期墓碑)、isSchemaTooNew(遠端 schema 較新時不回寫降級)。"
+  - file_path: modules/sync/googleDriveProvider.js
+    description: "[同步] Drive v3 appDataFolder 的 SyncProvider 實作。Phase 13(批E) 新增；用注入式 authedFetch/isConnected（預設取自 driveAuth，測試可換 mock fetch），對 app-private、使用者不可見、解除安裝即自動清除的 appDataFolder 做 list/read(alt=media + version metadata)/write(multipart 建檔 / media PATCH 更新)/remove(404 視為冪等已刪)；name→fileId 快取；只負責建請求/解析/非 ok 拋錯，backoff/quota 分類交給引擎，絕不記錄 token 或完整檔案 body。"
+  - file_path: modules/sync/syncEngine.js
+    description: "[同步] 同步引擎（編排核心）。Phase 13(批E) 新增；以 DI 驅動 syncLogic 純函式對 SyncProvider 做 push/pull/衝突物化/tombstone GC。所有外部效果（provider I/O、本地 workspace 狀態、佇列、now、deviceId）一律經 deps 注入，引擎本身不碰 chrome/fetch/Date/crypto → 整合測試可直接對 FakeSyncProvider 端到端跑。disk-first 佇列冪等；remote 權威來源採 provider.list() + 逐檔讀（index 僅 advisory 優化）；所有衝突/排序決策用 payload 的 app-controlled rev、非 Drive server version。"
+  - file_path: modules/ui/driveSyncBadge.js
+    description: "[UI] sidepanel 同步狀態徽章。Phase 13(批E) 新增；非侵入式指示器置於 workspace 切換器旁，唯讀（連線/opt-in 控制在 options Sync 區塊）。純函式 resolveBadgeView 把 SyncStatus 映射成 view-model（needs-auth/無狀態→隱藏，不在 sidepanel 嘮叨）；初始一次性讀 chrome.storage.local.driveSyncStatus 繪製，之後反應 settingsBridge 派發的 driveSyncStatusChanged DOM 事件；只用 textContent、不 innerHTML。"
   - file_path: modules/bookmark/tagManager.js
     description: "[功能] 書籤多標籤管理。Phase 7 新增；用 chrome.storage.local 自建 tag index 突破 Chrome 內建單層資料夾限制。"
   - file_path: modules/bookmark/dedupe.js
@@ -132,7 +144,7 @@ key_files:
   - file_path: background.js
     description: "[Service Worker] MV3 背景腳本。處理快捷鍵指令、sidePanel 行為、AI 群組自動命名、RSS 鬧鐘。Drive sync (批E) 新增：用真實 deps 建立 syncEngine（GoogleDriveProvider + workspaceManager + chrome.storage.local 佇列/baseRev/restorable/status），觸發點 = onChanged(去抖 push)/alarms(driveSyncPull 週期、driveSyncFlush 一次性)/onStartup/onMessage(driveSyncNow|Connect|Disconnect|Restore|SetWorkspaceSync)；suppressSyncEnqueue flag 防 pull→push→pull 迴圈；離線(navigator.onLine===false)設 offline 狀態並略過；無 OAuth token 時 isConnected()=false → 引擎全程 inert。"
   - file_path: manifest.json
-    description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。"
+    description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。Phase 13(批E) 為 Drive sync 加入 identity 權限 + oauth2 區塊（client_id 目前為 placeholder，scopes 僅 drive.appdata 私有資料夾）；未填真實 client_id 前同步層維持 inert。"
 
 # 主要語言：與 Gemini CLI 互動時偏好的自然語言
 language: zh-TW
