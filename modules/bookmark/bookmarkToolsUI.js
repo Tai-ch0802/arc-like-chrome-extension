@@ -114,12 +114,11 @@ function renderTagsView(root) {
     createBtn.className = 'bm-tools__create';
     createBtn.textContent = api.getMessage('bmToolsCreateTag') || '+ New tag';
     createBtn.addEventListener('click', async () => {
-        const name = await modal.showPrompt({
-            title: api.getMessage('bmToolsCreateTagPrompt') || 'New tag name',
-            defaultValue: '',
+        const res = await modal.showTagDialog({
+            title: api.getMessage('bmToolsCreateTagPrompt') || 'New tag',
         });
-        if (!name || !name.trim()) return;
-        const tag = await tagManager.createTag({ name: name.trim() });
+        if (!res || !res.name) return;
+        const tag = await tagManager.createTag({ name: res.name, color: res.color });
         const empty = list.querySelector('.bm-tools__empty');
         if (empty) empty.remove();
         list.appendChild(buildTagRow(tag, list));
@@ -143,18 +142,22 @@ function buildTagRow(tag, listEl) {
     count.textContent = `${bookmarkCount} bookmark(s)`;
     row.appendChild(count);
 
-    const renameBtn = iconBtn('✏️', api.getMessage('workspaceRename') || 'Rename', async () => {
-        const newName = await modal.showPrompt({
-            title: api.getMessage('workspaceRename') || 'Rename',
-            defaultValue: tag.name,
+    const editBtn = iconBtn('✏️', api.getMessage('bmToolsEditTag') || 'Edit tag', async () => {
+        const res = await modal.showTagDialog({
+            title: api.getMessage('bmToolsEditTag') || 'Edit tag',
+            defaultName: tag.name,
+            defaultColor: tag.color,
         });
-        if (newName && newName.trim()) {
-            await tagManager.updateTag(tag.id, { name: newName.trim() });
-            tag.name = newName.trim();
-            chip.textContent = tag.name;
-        }
+        if (!res || !res.name) return;
+        await tagManager.updateTag(tag.id, { name: res.name, color: res.color });
+        tag.name = res.name;
+        tag.color = res.color;
+        chip.textContent = tag.name;
+        chip.dataset.color = tag.color;
+        // Re-render bookmark rows so their tag dots pick up the new color.
+        document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
     });
-    row.appendChild(renameBtn);
+    row.appendChild(editBtn);
 
     const deleteBtn = iconBtn('🗑️', api.getMessage('workspaceDelete') || 'Delete', async () => {
         const ok = await modal.showConfirm({
