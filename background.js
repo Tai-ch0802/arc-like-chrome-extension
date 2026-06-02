@@ -349,8 +349,68 @@ async function handleWorkspaceStorageChange(changes, areaName) {
     }
 }
 
+// --- Spotlight popup window (Cmd+Shift+K) ---------------------------------
+const SPOTLIGHT_URL = 'spotlight.html';
+const SPOTLIGHT_W = 640;
+const SPOTLIGHT_H = 480;
+let spotlightWindowId = null;
+// 防重入:連按/key-repeat 可能在第一次 windows.create 解析前二次進入,
+// 兩次皆見 spotlightWindowId==null 而各開一個視窗。此旗標確保同時間只開一個。
+let spotlightCreating = false;
+
+/** SW 重啟會遺失 spotlightWindowId;以 popup 視窗 url 比對找回既有 Spotlight。 */
+async function findExistingSpotlight() {
+    try {
+        const wins = await chrome.windows.getAll({ windowTypes: ['popup'], populate: true });
+        const url = chrome.runtime.getURL(SPOTLIGHT_URL);
+        for (const w of wins) {
+            if ((w.tabs || []).some(t => t.url && t.url.startsWith(url))) return w.id;
+        }
+    } catch { /* ignore */ }
+    return null;
+}
+
+async function openSpotlight() {
+    if (spotlightCreating) return;
+    spotlightCreating = true;
+    try {
+        if (spotlightWindowId == null) spotlightWindowId = await findExistingSpotlight();
+        if (spotlightWindowId != null) {
+            try { await chrome.windows.update(spotlightWindowId, { focused: true }); return; }
+            catch { spotlightWindowId = null; }
+        }
+        const origin = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
+        await chrome.storage.session.set({
+            spotlightOriginWindowId: origin && typeof origin.id === 'number' ? origin.id : null
+        });
+        const opts = { url: SPOTLIGHT_URL, type: 'popup', focused: true, width: SPOTLIGHT_W, height: SPOTLIGHT_H };
+        if (origin && typeof origin.left === 'number' && typeof origin.width === 'number') {
+            // 以 origin 視窗的左上為下限(非 0),避免左側副螢幕(origin.left 為負)時被推回主螢幕。
+            opts.left = Math.max(origin.left, origin.left + Math.round((origin.width - SPOTLIGHT_W) / 2));
+            opts.top = Math.max(origin.top, origin.top + Math.round((origin.height - SPOTLIGHT_H) / 3));
+        }
+        const win = await chrome.windows.create(opts);
+        spotlightWindowId = win && typeof win.id === 'number' ? win.id : null;
+    } catch (err) {
+        console.warn('[spotlight] open failed:', err && err.message ? err.message : err);
+    } finally {
+        spotlightCreating = false;
+    }
+}
+
+// 失焦自動關閉(排除短暫無焦點 WINDOW_ID_NONE)
+chrome.windows.onFocusChanged.addListener((winId) => {
+    if (spotlightWindowId != null && winId !== spotlightWindowId && winId !== chrome.windows.WINDOW_ID_NONE) {
+        chrome.windows.remove(spotlightWindowId).catch(() => {});
+    }
+});
+chrome.windows.onRemoved.addListener((winId) => {
+    if (winId === spotlightWindowId) spotlightWindowId = null;
+});
+
 // 監聽快捷鍵指令
 chrome.commands.onCommand.addListener(async (command) => {
+  if (command === 'open-search') { await openSpotlight(); return; }
   if (command === 'create-new-tab-right') {
     // 查詢當前作用中的分頁
     const [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });
