@@ -10,6 +10,7 @@
  * setting by clicking the hidden button).
  */
 import * as state from '../stateManager.js';
+import { requestPanelAction, resolveTargetWindowId } from './panelBridge.js';
 
 /**
  * @returns {Array<{id: string, type: 'action', icon: string, titleKey: string, handler: () => any, isVisible?: () => boolean}>}
@@ -22,7 +23,7 @@ export function buildActions() {
             icon: '✨',
             titleKey: 'cmdPaletteActionSmartGroup',
             isVisible: () => state.isAiGroupingVisible(),
-            handler: () => document.getElementById('ai-group-btn')?.click(),
+            handler: () => requestPanelAction('smart-group'),
         },
         {
             id: 'action-ai-cleanup',
@@ -30,7 +31,7 @@ export function buildActions() {
             icon: '🧹',
             titleKey: 'cmdPaletteActionAiCleanup',
             isVisible: () => state.isAiCleanupVisible(),
-            handler: () => document.getElementById('ai-cleanup-btn')?.click(),
+            handler: () => requestPanelAction('ai-cleanup'),
         },
         {
             id: 'action-new-tab-right',
@@ -38,12 +39,12 @@ export function buildActions() {
             icon: '➕',
             titleKey: 'cmdPaletteActionNewTabRight',
             handler: async () => {
-                const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-                if (!tab) return;
-                const newTab = await chrome.tabs.create({ index: tab.index + 1, active: true });
-                if (tab.groupId > 0) {
-                    await chrome.tabs.group({ groupId: tab.groupId, tabIds: newTab.id });
-                }
+                const winId = await resolveTargetWindowId();
+                if (typeof winId !== 'number') return;
+                const [active] = await chrome.tabs.query({ active: true, windowId: winId });
+                if (!active) return;
+                const newTab = await chrome.tabs.create({ windowId: winId, index: active.index + 1, active: true });
+                if (active.groupId > 0) await chrome.tabs.group({ groupId: active.groupId, tabIds: newTab.id });
             },
         },
         {
@@ -51,48 +52,42 @@ export function buildActions() {
             type: 'action',
             icon: '🔄',
             titleKey: 'cmdPaletteActionRefreshBookmarks',
-            handler: () => document.dispatchEvent(new CustomEvent('refreshBookmarksRequired')),
+            handler: () => requestPanelAction('refresh-bookmarks'),
         },
         {
             id: 'action-open-settings',
             type: 'action',
             icon: '⚙️',
             titleKey: 'cmdPaletteActionSettings',
-            handler: () => document.getElementById('settings-toggle')?.click(),
+            handler: () => chrome.runtime.openOptionsPage(),
         },
         {
             id: 'action-create-workspace',
             type: 'action',
             icon: '💼',
             titleKey: 'cmdPaletteActionCreateWorkspace',
-            handler: async () => {
-                const { createWorkspaceFromCurrent } = await import('../workspace/workspaceUI.js');
-                await createWorkspaceFromCurrent();
-            },
+            handler: () => requestPanelAction('create-workspace'),
         },
         {
             id: 'action-manage-workspaces',
             type: 'action',
             icon: '📦',
             titleKey: 'cmdPaletteActionManageWorkspaces',
-            handler: () => document.getElementById('workspace-manage-btn')?.click(),
+            handler: () => requestPanelAction('manage-workspaces'),
         },
         {
             id: 'action-bookmark-tools',
             type: 'action',
             icon: '🛠️',
             titleKey: 'cmdPaletteActionBookmarkTools',
-            handler: () => document.getElementById('bookmark-tools-btn')?.click(),
+            handler: () => requestPanelAction('bookmark-tools'),
         },
         {
             id: 'action-ask-ai-search',
             type: 'action',
             icon: '🤖',
             titleKey: 'cmdPaletteActionAskAi',
-            handler: async () => {
-                const { openAskAiDialog } = await import('./nlSearch.js');
-                await openAskAiDialog();
-            },
+            handler: () => requestPanelAction('ask-ai-search'),
         },
     ];
 }
