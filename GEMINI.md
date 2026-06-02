@@ -92,9 +92,9 @@ key_files:
   - file_path: modules/spotlight/spotlightController.js
     description: "[功能] Spotlight 搜尋控制器。管理置中搜尋彈窗的生命週期（開啟/關閉）、輸入處理、結果渲染，以及透過 panelBridge 與 sidepanel context 溝通。"
   - file_path: modules/commandPalette/searchContext.js
-    description: "[功能] Command Palette / Spotlight 共用搜尋上下文。封裝跨 context 的搜尋狀態（query、結果集、focus 管理），供 sidepanel 內的 Command Palette 與獨立 Spotlight 彈窗共同使用。"
+    description: "[功能] Spotlight 來源視窗上下文。儲存 Spotlight 啟動時的「來源 normal 視窗 id」（setOriginWindowId / getOriginWindowId）；因 Spotlight 為獨立 popup 視窗，item handler 須作用於使用者的瀏覽器視窗而非 popup，故由此提供作用目標視窗。"
   - file_path: modules/commandPalette/panelBridge.js
-    description: "[通訊] Spotlight ↔ sidepanel 橋接器。透過 chrome.runtime.sendMessage / onMessage 在 spotlight popup context 與 sidepanel context 之間傳遞搜尋請求與結果，解決跨 window context 的資料存取限制。"
+    description: "[通訊] Spotlight → sidepanel 橋接器（非 runtime messaging）。requestPanelAction 將 UI 類動作以 chrome.storage.session 旗標 pendingPanelAction 寫入並 sidePanel.open(來源視窗)，交由 sidepanel.js 的 consumePendingPanelAction 在正確 context 執行；openUrlInOrigin / resolveTargetWindowId 負責在來源 normal 視窗開分頁。"
   - file_path: modules/commandPalette/dataProvider.js
     description: "[功能] Command Palette / Spotlight 資料源。Phase 5 新增；聚合多個 source 的搜尋結果與分組顯示邏輯；index.js 已移除，資料/動作層（dataProvider/actions/nlSearch）現直接供獨立 Spotlight 彈窗（Cmd+Shift+K）使用。"
   - file_path: modules/commandPalette/actions.js
