@@ -7,6 +7,7 @@ import * as api from '../apiManager.js';
 import { searchAll } from '../commandPalette/dataProvider.js';
 import { debounce } from '../utils/functionUtils.js';
 import { isImageSrc } from '../utils/iconUtils.js';
+import { renderIcon, renderIconEl, hasIcon } from '../icons.js';
 
 let inputEl, resultsEl;
 /** @type {Array<{item: object, row: HTMLElement}>} */
@@ -93,13 +94,17 @@ function buildRow(item, index) {
     // (http/https/chrome/chrome-extension/data/blob/file)都以圖片渲染;其餘才當文字。
     // 漏掉 data: 等 scheme 會讓 data URI favicon(分頁常見)被當成 textContent,在固定寬度的
     // 圖示框內水平溢出而與相鄰列文字重疊。
+    // dispatch 順序固定:① favicon URL/URI → <img>(real favicon 優先,且避免 data: URI 被
+    // 當文字溢出);② 已註冊的 Material Symbols icon-id → 內嵌 SVG;③ 其餘 → 文字(emoji/glyph)。
     const iconStr = typeof item.icon === 'string' ? item.icon : '';
     if (isImageSrc(iconStr)) {
         const img = document.createElement('img');
         img.src = iconStr;
         img.alt = '';
-        img.onerror = () => { img.replaceWith(document.createTextNode('🌐')); };
+        img.onerror = () => { img.replaceWith(renderIconEl('language', { size: 16 })); };
         icon.appendChild(img);
+    } else if (hasIcon(iconStr)) {
+        icon.innerHTML = renderIcon(iconStr, { size: 16 });
     } else {
         icon.textContent = iconStr || '•';
     }

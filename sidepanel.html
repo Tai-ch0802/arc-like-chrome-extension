@@ -22,16 +22,9 @@
         <div class="search-top-row">
             <div class="search-input-wrapper">
                 <input type="text" id="search-box" placeholder="">
-                <button id="clear-search-btn" class="hidden" title="Clear search" aria-label="Clear search">×</button>
+                <button id="clear-search-btn" class="hidden" title="Clear search" aria-label="Clear search" data-icon="close"></button>
             </div>
-            <button id="settings-toggle" title="Settings" aria-label="Settings">
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-                    <circle cx="12" cy="12" r="3" />
-                </svg>
-            </button>
+            <button id="settings-toggle" title="Settings" aria-label="Settings" data-icon="settings"></button>
         </div>
         <div id="search-result-count" class="hidden" aria-live="polite"></div>
     </div>
@@ -52,12 +45,14 @@
                 <div id="ai-download-progress" class="ai-progress" hidden>
                     <div class="ai-progress__fill"></div>
                 </div>
-                <button id="ai-group-btn" class="header-action-btn" title="✨ Smart Auto-Grouping"
-                    data-i18n-title="smartGroupingBtnTitle" aria-label="Smart Auto-Grouping"
-                    data-i18n="smartGroupingBtnText">✨ 智慧整理</button>
-                <button id="ai-cleanup-btn" class="header-action-btn" title="🧹 AI Cleanup"
-                    data-i18n-title="aiCleanupBtnTitle" aria-label="AI Cleanup"
-                    data-i18n="aiCleanupBtnText">🧹 清理</button>
+                <button id="ai-group-btn" class="header-action-btn" title="Smart Auto-Grouping"
+                    data-i18n-title="smartGroupingBtnTitle" aria-label="Smart Auto-Grouping"><span
+                        class="btn-icon" data-icon="auto_awesome"></span><span class="btn-label"
+                        data-i18n="smartGroupingBtnText"></span></button>
+                <button id="ai-cleanup-btn" class="header-action-btn" title="AI Cleanup"
+                    data-i18n-title="aiCleanupBtnTitle" aria-label="AI Cleanup"><span class="btn-icon"
+                        data-icon="cleaning_services"></span><span class="btn-label"
+                        data-i18n="aiCleanupBtnText"></span></button>
             </div>
         </div>
 
@@ -65,7 +60,7 @@
         <div id="ai-cleanup-section" class="ai-cleanup-section hidden" aria-live="polite">
             <div class="ai-cleanup-header">
                 <h3 class="ai-cleanup-title" data-i18n="aiCleanupSectionHeader">AI Cleanup Suggestions</h3>
-                <button id="ai-cleanup-close" class="icon-btn" aria-label="Close">×</button>
+                <button id="ai-cleanup-close" class="icon-btn" aria-label="Close" data-icon="close"></button>
             </div>
             <div id="ai-cleanup-status" class="ai-cleanup-status"></div>
             <div id="ai-cleanup-list" class="ai-cleanup-list"></div>
@@ -113,7 +108,7 @@
             <h2 class="section-header" data-i18n="bookmarksHeader"></h2>
             <div class="header-controls-right">
                 <button id="bookmark-tools-btn" class="header-action-btn"
-                    title="" data-i18n-title="bmToolsTitle">🛠️</button>
+                    title="" data-i18n-title="bmToolsTitle" data-icon="build"></button>
             </div>
         </div>
         <div id="bookmark-list"></div>
@@ -124,7 +119,7 @@
         <span id="toast-message"></span>
         <button id="toast-undo-btn" class="hidden" title="Undo" data-i18n-title="toastUndoBtn"
             data-i18n="toastUndoBtn">復原 (Undo)</button>
-        <button id="toast-close-btn" title="Close" data-i18n-title="toastCloseBtn" aria-label="Close">×</button>
+        <button id="toast-close-btn" title="Close" data-i18n-title="toastCloseBtn" aria-label="Close" data-icon="close"></button>
     </div>
 
     <script src="lib/Sortable.min.js" defer></script>

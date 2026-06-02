@@ -20,7 +20,7 @@ export function buildActions() {
         {
             id: 'action-smart-group',
             type: 'action',
-            icon: '✨',
+            icon: 'auto_awesome',
             titleKey: 'cmdPaletteActionSmartGroup',
             isVisible: () => state.isAiGroupingVisible(),
             handler: () => requestPanelAction('smart-group'),
@@ -28,7 +28,7 @@ export function buildActions() {
         {
             id: 'action-ai-cleanup',
             type: 'action',
-            icon: '🧹',
+            icon: 'cleaning_services',
             titleKey: 'cmdPaletteActionAiCleanup',
             isVisible: () => state.isAiCleanupVisible(),
             handler: () => requestPanelAction('ai-cleanup'),
@@ -36,7 +36,7 @@ export function buildActions() {
         {
             id: 'action-new-tab-right',
             type: 'action',
-            icon: '➕',
+            icon: 'add',
             titleKey: 'cmdPaletteActionNewTabRight',
             handler: async () => {
                 const winId = await resolveTargetWindowId();
@@ -50,42 +50,42 @@ export function buildActions() {
         {
             id: 'action-refresh-bookmarks',
             type: 'action',
-            icon: '🔄',
+            icon: 'refresh',
             titleKey: 'cmdPaletteActionRefreshBookmarks',
             handler: () => requestPanelAction('refresh-bookmarks'),
         },
         {
             id: 'action-open-settings',
             type: 'action',
-            icon: '⚙️',
+            icon: 'settings',
             titleKey: 'cmdPaletteActionSettings',
             handler: () => chrome.runtime.openOptionsPage(),
         },
         {
             id: 'action-create-workspace',
             type: 'action',
-            icon: '💼',
+            icon: 'work',
             titleKey: 'cmdPaletteActionCreateWorkspace',
             handler: () => requestPanelAction('create-workspace'),
         },
         {
             id: 'action-manage-workspaces',
             type: 'action',
-            icon: '📦',
+            icon: 'inventory_2',
             titleKey: 'cmdPaletteActionManageWorkspaces',
             handler: () => requestPanelAction('manage-workspaces'),
         },
         {
             id: 'action-bookmark-tools',
             type: 'action',
-            icon: '🛠️',
+            icon: 'build',
             titleKey: 'cmdPaletteActionBookmarkTools',
             handler: () => requestPanelAction('bookmark-tools'),
         },
         {
             id: 'action-ask-ai-search',
             type: 'action',
-            icon: '🤖',
+            icon: 'smart_toy',
             titleKey: 'cmdPaletteActionAskAi',
             handler: () => requestPanelAction('ask-ai-search'),
         },

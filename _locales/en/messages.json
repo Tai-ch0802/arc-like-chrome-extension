@@ -625,10 +625,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Smart Group"
+    "message": "Smart Group"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Smart Auto-Group Unclassified Tabs"
+    "message": "Smart Auto-Group Unclassified Tabs"
   },
   "toastUndoBtn": {
     "message": "Undo"
@@ -640,10 +640,10 @@
     "message": "AI model is not ready. Please ensure your Chrome supports Gemini Nano."
   },
   "tooFewTabsToGroup": {
-    "message": "Too few unclassified tabs to group ✨"
+    "message": "Too few unclassified tabs to group"
   },
   "autoGroupingSuccess": {
-    "message": "✨ Tabs grouped successfully!"
+    "message": "Tabs grouped successfully!"
   },
   "noTabsGrouped": {
     "message": "No tabs were successfully grouped."
@@ -652,7 +652,7 @@
     "message": "Error occurred: "
   },
   "unknownCategory": {
-    "message": "📦 Unknown Category"
+    "message": "Unknown Category"
   },
   "aiGroupingToggleLabel": {
     "message": "Smart Auto-Grouping (Requires Gemini Nano)"
@@ -676,13 +676,13 @@
     "message": "When you create a new tab group without a title, AI suggests a short label (Emoji + name). Runs only when the local model is already downloaded."
   },
   "aiCleanupToggleLabel": {
-    "message": "Show 🧹 Tab Cleanup button"
+    "message": "Show Tab Cleanup button"
   },
   "aiCleanupDescription": {
     "message": "Adds a button next to Smart Group that asks AI which tabs you can probably close."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Cleanup"
+    "message": "Cleanup"
   },
   "aiCleanupBtnTitle": {
     "message": "AI-suggested tab cleanup"
@@ -694,7 +694,7 @@
     "message": "Analyzing tabs..."
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI model is not downloaded yet. Click ✨ Smart Group first to start the download."
+    "message": "AI model is not downloaded yet. Click Smart Group first to start the download."
   },
   "aiCleanupEmpty": {
     "message": "Your tabs look tidy — nothing to clean up."
@@ -745,7 +745,7 @@
     "message": "Check \"Optimization Guide On Device Model\" download progress."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Restart Chrome after changing the flags above."
+    "message": "Restart Chrome after changing the flags above."
   },
   "aiSetupOpenLink": {
     "message": "Open"
@@ -973,7 +973,7 @@
     "message": "AI suggestions"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI model is not downloaded yet. Trigger ✨ Smart Group first to download, then try again."
+    "message": "AI model is not downloaded yet. Trigger Smart Group first to download, then try again."
   },
   "cmdPaletteAskAiNoMatch": {
     "message": "AI found no good matches."

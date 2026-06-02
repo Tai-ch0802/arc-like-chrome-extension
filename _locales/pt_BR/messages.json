@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Agrupamento Inteligente"
+    "message": "Agrupamento Inteligente"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Agrupar guias não classificadas de forma inteligente"
+    "message": "Agrupar guias não classificadas de forma inteligente"
   },
   "toastUndoBtn": {
     "message": "Desfazer"
@@ -637,10 +637,10 @@
     "message": "O modelo de IA não está pronto. Certifique-se de que seu Chrome suporta Gemini Nano."
   },
   "tooFewTabsToGroup": {
-    "message": "Muito poucas guias não classificadas para agrupar ✨"
+    "message": "Muito poucas guias não classificadas para agrupar"
   },
   "autoGroupingSuccess": {
-    "message": "✨ Guias agrupadas com sucesso!"
+    "message": "Guias agrupadas com sucesso!"
   },
   "noTabsGrouped": {
     "message": "Nenhuma guia foi agrupada com sucesso."
@@ -649,7 +649,7 @@
     "message": "Ocorreu um erro: "
   },
   "unknownCategory": {
-    "message": "📦 Categoria Desconhecida"
+    "message": "Categoria Desconhecida"
   },
   "aiGroupingToggleLabel": {
     "message": "Agrupamento automático inteligente (Requer Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "Verifique o progresso do download de \"Optimization Guide On Device Model\"."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Reinicie o Chrome após alterar as configurações acima."
+    "message": "Reinicie o Chrome após alterar as configurações acima."
   },
   "aiSetupOpenLink": {
     "message": "Abrir"
@@ -718,7 +718,7 @@
     "message": "Analisando abas..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Limpar"
+    "message": "Limpar"
   },
   "aiCleanupBtnTitle": {
     "message": "Limpeza de abas sugerida por IA"
@@ -739,7 +739,7 @@
     "message": "A IA sugere {count} aba(s) que você provavelmente pode fechar. Desmarque as que quiser manter."
   },
   "aiCleanupNeedsDownload": {
-    "message": "O modelo IA ainda não foi baixado. Clique primeiro em ✨ Smart Group para iniciar o download."
+    "message": "O modelo IA ainda não foi baixado. Clique primeiro em Smart Group para iniciar o download."
   },
   "aiCleanupSectionHeader": {
     "message": "Abas que você poderia fechar"
@@ -748,7 +748,7 @@
     "message": "Selecionar tudo"
   },
   "aiCleanupToggleLabel": {
-    "message": "Mostrar botão 🧹 Limpeza de abas"
+    "message": "Mostrar botão Limpeza de abas"
   },
   "bmToolsConfirmRemove": {
     "message": "Remover selecionados"
@@ -889,7 +889,7 @@
     "message": "Pedir à IA: encontrar abas ou favoritos"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "O modelo IA ainda não foi baixado. Acione primeiro ✨ Smart Group para baixar, depois tente novamente."
+    "message": "O modelo IA ainda não foi baixado. Acione primeiro Smart Group para baixar, depois tente novamente."
   },
   "cmdPaletteEmpty": {
     "message": "Sem resultados"

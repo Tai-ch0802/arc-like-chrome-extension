@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Agrupación Inteligente"
+    "message": "Agrupación Inteligente"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Agrupar pestañas no clasificadas inteligentemente"
+    "message": "Agrupar pestañas no clasificadas inteligentemente"
   },
   "toastUndoBtn": {
     "message": "Deshacer"
@@ -637,10 +637,10 @@
     "message": "El modelo de IA no está listo. Asegúrese de que su Chrome admita Gemini Nano."
   },
   "tooFewTabsToGroup": {
-    "message": "Muy pocas pestañas no clasificadas para agrupar ✨"
+    "message": "Muy pocas pestañas no clasificadas para agrupar"
   },
   "autoGroupingSuccess": {
-    "message": "✨ ¡Pestañas agrupadas con éxito!"
+    "message": "¡Pestañas agrupadas con éxito!"
   },
   "noTabsGrouped": {
     "message": "Ninguna pestaña fue agrupada con éxito."
@@ -649,7 +649,7 @@
     "message": "Ocurrió un error: "
   },
   "unknownCategory": {
-    "message": "📦 Categoría Desconocida"
+    "message": "Categoría Desconocida"
   },
   "aiGroupingToggleLabel": {
     "message": "Agrupación automática inteligente (Requiere Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "Comprueba el progreso de descarga de \"Optimization Guide On Device Model\"."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Reinicia Chrome después de cambiar la configuración anterior."
+    "message": "Reinicia Chrome después de cambiar la configuración anterior."
   },
   "aiSetupOpenLink": {
     "message": "Abrir"
@@ -718,7 +718,7 @@
     "message": "Analizando pestañas..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Limpiar"
+    "message": "Limpiar"
   },
   "aiCleanupBtnTitle": {
     "message": "Limpieza de pestañas sugerida por IA"
@@ -739,7 +739,7 @@
     "message": "La IA sugiere {count} pestaña(s) que puedes cerrar. Desmarca las que quieras conservar."
   },
   "aiCleanupNeedsDownload": {
-    "message": "El modelo IA aún no está descargado. Haz clic primero en ✨ Smart Group para iniciar la descarga."
+    "message": "El modelo IA aún no está descargado. Haz clic primero en Smart Group para iniciar la descarga."
   },
   "aiCleanupSectionHeader": {
     "message": "Pestañas que podrías cerrar"
@@ -748,7 +748,7 @@
     "message": "Seleccionar todo"
   },
   "aiCleanupToggleLabel": {
-    "message": "Mostrar botón 🧹 Limpieza de pestañas"
+    "message": "Mostrar botón Limpieza de pestañas"
   },
   "bmToolsConfirmRemove": {
     "message": "Eliminar selección"
@@ -889,7 +889,7 @@
     "message": "Pedir a la IA: encontrar pestañas o marcadores"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "El modelo IA aún no está descargado. Activa primero ✨ Smart Group para descargar y luego vuelve a intentarlo."
+    "message": "El modelo IA aún no está descargado. Activa primero Smart Group para descargar y luego vuelve a intentarlo."
   },
   "cmdPaletteEmpty": {
     "message": "Sin resultados"

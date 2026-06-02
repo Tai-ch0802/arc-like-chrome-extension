@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ 智能整理"
+    "message": "智能整理"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ 智能整理未分类标签页"
+    "message": "智能整理未分类标签页"
   },
   "toastUndoBtn": {
     "message": "撤销 (Undo)"
@@ -637,10 +637,10 @@
     "message": "AI 模型尚未准备好，请确认您的 Chrome 支持 Gemini Nano。"
   },
   "tooFewTabsToGroup": {
-    "message": "未分类的标签页数量过少，无需整理 ✨"
+    "message": "未分类的标签页数量过少，无需整理"
   },
   "autoGroupingSuccess": {
-    "message": "✨ 标签页整理完成！"
+    "message": "标签页整理完成！"
   },
   "noTabsGrouped": {
     "message": "没有标签页被成功归类。"
@@ -649,7 +649,7 @@
     "message": "发生错误："
   },
   "unknownCategory": {
-    "message": "📦 未知分类"
+    "message": "未知分类"
   },
   "aiGroupingToggleLabel": {
     "message": "智能自动分组 (需 Gemini Nano)"
@@ -673,13 +673,13 @@
     "message": "当你创建一个没有名称的新标签页群组时，AI 会自动生成一个简短的标签（Emoji + 名称）。仅在本地模型已下载完成时生效。"
   },
   "aiCleanupToggleLabel": {
-    "message": "显示 🧹 标签页清理按钮"
+    "message": "显示 标签页清理按钮"
   },
   "aiCleanupDescription": {
     "message": "在「智能整理」旁加一个按钮，让 AI 建议你可能可以关闭的标签页。"
   },
   "aiCleanupBtnText": {
-    "message": "🧹 清理"
+    "message": "清理"
   },
   "aiCleanupBtnTitle": {
     "message": "AI 标签页清理建议"
@@ -691,7 +691,7 @@
     "message": "分析标签页中..."
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI 模型尚未下载。请先点击 ✨ 智能整理 开始下载。"
+    "message": "AI 模型尚未下载。请先点击 智能整理 开始下载。"
   },
   "aiCleanupEmpty": {
     "message": "你的标签页很整洁，没有需要清理的项目。"
@@ -742,7 +742,7 @@
     "message": "查看「Optimization Guide On Device Model」的下载进度。"
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ 更改以上设置后，请重新启动 Chrome。"
+    "message": "更改以上设置后，请重新启动 Chrome。"
   },
   "aiSetupOpenLink": {
     "message": "打开"
@@ -970,7 +970,7 @@
     "message": "AI 建议"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI 模型尚未下载。请先点 ✨ 智能整理 触发下载后再试。"
+    "message": "AI 模型尚未下载。请先点 智能整理 触发下载后再试。"
   },
   "cmdPaletteAskAiNoMatch": {
     "message": "AI 找不到合适的结果。"

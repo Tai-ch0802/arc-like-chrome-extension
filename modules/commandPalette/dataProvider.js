@@ -70,7 +70,7 @@ async function getTabResults(q) {
         .map(t => ({
             id: 'tab-' + t.id,
             type: 'tab',
-            icon: t.favIconUrl || '🌐',
+            icon: t.favIconUrl || 'language',
             title: t.title || '(untitled)',
             subtitle: t.url,
             handler: async () => {
@@ -87,7 +87,7 @@ function getBookmarkResults(q) {
         .map(b => ({
             id: 'bookmark-' + b.id,
             type: 'bookmark',
-            icon: '🔖',
+            icon: 'bookmark',
             title: b.title || '(untitled)',
             subtitle: b.url,
             handler: () => openUrlInOrigin(b.url),
@@ -100,7 +100,7 @@ async function getReadingListResults(q) {
         .map(e => ({
             id: 'reading-' + e.url,
             type: 'reading-list',
-            icon: '📚',
+            icon: 'menu_book',
             title: e.title || '(untitled)',
             subtitle: e.url,
             handler: () => openUrlInOrigin(e.url),

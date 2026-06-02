@@ -1,5 +1,5 @@
 import * as api from '../apiManager.js';
-import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG } from '../icons.js';
+import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG, renderIcon } from '../icons.js';
 import { tabListContainer } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 import { reconcileDOM } from '../utils/domUtils.js';
@@ -117,7 +117,7 @@ function updateGroupHeaderElement(header, group) {
         header.setAttribute('aria-expanded', (!isCollapsed).toString());
         header.dataset.collapsed = isCollapsed ? 'true' : 'false';
         const arrow = header.querySelector('.tab-group-arrow');
-        if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
+        if (arrow) arrow.classList.toggle('is-collapsed', isCollapsed);
     }
 
     if (header.title !== group.title) header.title = group.title;
@@ -298,7 +298,8 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 groupHeader.setAttribute('role', 'button');
 
                 const arrow = document.createElement('span');
-                arrow.className = 'tab-group-arrow';
+                arrow.className = 'tab-group-arrow is-chevron';
+                arrow.innerHTML = renderIcon('expand_more', { size: 16 });
 
                 const colorDot = document.createElement('div');
                 colorDot.className = 'tab-group-color-dot';

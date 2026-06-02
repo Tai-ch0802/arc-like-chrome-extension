@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Умная группировка"
+    "message": "Умная группировка"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Умная группировка неклассифицированных вкладок"
+    "message": "Умная группировка неклассифицированных вкладок"
   },
   "toastUndoBtn": {
     "message": "Отменить"
@@ -637,10 +637,10 @@
     "message": "Модель ИИ не готова. Убедитесь, что ваш Chrome поддерживает Gemini Nano."
   },
   "tooFewTabsToGroup": {
-    "message": "Слишком мало неклассифицированных вкладок для группировки ✨"
+    "message": "Слишком мало неклассифицированных вкладок для группировки"
   },
   "autoGroupingSuccess": {
-    "message": "✨ Вкладки успешно сгруппированы!"
+    "message": "Вкладки успешно сгруппированы!"
   },
   "noTabsGrouped": {
     "message": "Ни одна вкладка не была успешно сгруппирована."
@@ -649,7 +649,7 @@
     "message": "Произошла ошибка: "
   },
   "unknownCategory": {
-    "message": "📦 Неизвестная категория"
+    "message": "Неизвестная категория"
   },
   "aiGroupingToggleLabel": {
     "message": "Умная автоматическая группировка (Требуется Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "Проверьте прогресс загрузки \"Optimization Guide On Device Model\"."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Перезапустите Chrome после изменения указанных выше настроек."
+    "message": "Перезапустите Chrome после изменения указанных выше настроек."
   },
   "aiSetupOpenLink": {
     "message": "Открыть"
@@ -718,7 +718,7 @@
     "message": "Анализ вкладок..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Очистка"
+    "message": "Очистка"
   },
   "aiCleanupBtnTitle": {
     "message": "Очистка вкладок, предложенная AI"
@@ -739,7 +739,7 @@
     "message": "AI предлагает {count} вкладку(вкладок) к закрытию. Снимите галочку с тех, что хотите оставить."
   },
   "aiCleanupNeedsDownload": {
-    "message": "Модель AI ещё не загружена. Сначала нажмите ✨ Smart Group для запуска загрузки."
+    "message": "Модель AI ещё не загружена. Сначала нажмите Smart Group для запуска загрузки."
   },
   "aiCleanupSectionHeader": {
     "message": "Вкладки, которые можно закрыть"
@@ -748,7 +748,7 @@
     "message": "Выбрать всё"
   },
   "aiCleanupToggleLabel": {
-    "message": "Показать кнопку 🧹 Очистка вкладок"
+    "message": "Показать кнопку Очистка вкладок"
   },
   "bmToolsConfirmRemove": {
     "message": "Удалить выбранное"
@@ -889,7 +889,7 @@
     "message": "Попросить AI: найти вкладки или закладки"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "Модель AI ещё не загружена. Сначала запустите ✨ Smart Group для загрузки и попробуйте снова."
+    "message": "Модель AI ещё не загружена. Сначала запустите Smart Group для загрузки и попробуйте снова."
   },
   "cmdPaletteEmpty": {
     "message": "Нет результатов"

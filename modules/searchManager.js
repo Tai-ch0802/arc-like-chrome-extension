@@ -111,12 +111,12 @@ function updateGroupVisibility(header, content, visibleTabsCount, keywords) {
     if ((hasVisibleChildren || groupTitleMatches) && keywords.length > 0) {
         // 搜尋時展開群組（需使用 inline style 以覆蓋 tabRenderer 設定的 style.display）
         content.style.display = 'block';
-        if (arrow) arrow.textContent = '▼';
+        if (arrow) arrow.classList.remove('is-collapsed');
     } else if (keywords.length === 0) {
         // 無搜尋時恢復原狀態
         const isCollapsed = header.dataset.collapsed === 'true';
         content.style.display = isCollapsed ? 'none' : 'block';
-        if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
+        if (arrow) arrow.classList.toggle('is-collapsed', isCollapsed);
     }
 }
 
@@ -217,12 +217,12 @@ function filterOtherWindowsTabs(keywords) {
         if (windowCount > 0 && keywords.length > 0) {
             // 有搜尋結果時：展開並顯示
             content.classList.remove('collapsed');
-            if (icon) icon.textContent = '▼';
+            if (icon) icon.classList.remove('is-collapsed');
             folder.setAttribute('aria-expanded', 'true');
         } else if (keywords.length === 0) {
             // 清除搜尋時：收合
             content.classList.add('collapsed');
-            if (icon) icon.textContent = '▶';
+            if (icon) icon.classList.add('is-collapsed');
             folder.setAttribute('aria-expanded', 'false');
         }
     }

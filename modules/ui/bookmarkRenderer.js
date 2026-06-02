@@ -1,7 +1,7 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as modal from '../modalManager.js';
-import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
+import { EDIT_ICON_SVG, LINKED_TAB_ICON_SVG, EMPTY_FOLDER_ICON_SVG, PLUS_ICON_SVG, renderIcon } from '../icons.js';
 import { GROUP_COLORS } from './groupColors.js';
 import { highlightText } from '../utils/textUtils.js';
 import { reconcileDOM } from '../utils/domUtils.js';
@@ -353,7 +353,7 @@ function initBookmarkListeners(container) {
             const icon = folderItem.querySelector('.bookmark-icon');
             const content = folderItem.nextElementSibling; // folder-content
 
-            if (icon) icon.textContent = isNowExpanded ? '▼' : '▶';
+            if (icon) icon.classList.toggle('is-collapsed', !isNowExpanded);
             if (content) {
                 content.style.display = isNowExpanded ? 'block' : 'none';
 
@@ -634,7 +634,7 @@ function updateFolderElement(item, node, { forceExpandAll = false, highlightRege
     if (item.getAttribute('aria-expanded') !== isExpanded.toString()) {
         item.setAttribute('aria-expanded', isExpanded.toString());
         const icon = item.querySelector('.bookmark-icon');
-        if (icon) icon.textContent = isExpanded ? '▼' : '▶';
+        if (icon) icon.classList.toggle('is-collapsed', !isExpanded);
     }
 
     const titleSpan = item.querySelector('.bookmark-title');
@@ -661,8 +661,9 @@ function createFolderItem(node, options) {
     folderItem.setAttribute('role', 'button');
 
     const icon = document.createElement('span');
-    icon.className = 'bookmark-icon';
-    // Text content set in update
+    icon.className = 'bookmark-icon is-chevron';
+    icon.innerHTML = renderIcon('expand_more', { size: 16 });
+    // 收合狀態(is-collapsed)由 updateFolderElement 依 aria-expanded 設定
     folderItem.appendChild(icon);
 
     const title = document.createElement('span');

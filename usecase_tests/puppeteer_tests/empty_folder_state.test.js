@@ -42,7 +42,7 @@ describe('Empty Folder State', () => {
         const folderElement = await page.$(folderSelector);
 
         // Check if it is collapsed (it should be initially)
-        const isCollapsed = await page.evaluate(el => el.querySelector('.bookmark-icon').textContent.includes('▶'), folderElement);
+        const isCollapsed = await page.evaluate(el => el.querySelector('.bookmark-icon').classList.contains('is-collapsed'), folderElement);
         if (isCollapsed) {
             await folderElement.click();
         }

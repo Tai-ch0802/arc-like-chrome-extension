@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Nhóm Thông Minh"
+    "message": "Nhóm Thông Minh"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Nhóm các thẻ chưa phân loại một cách thông minh"
+    "message": "Nhóm các thẻ chưa phân loại một cách thông minh"
   },
   "toastUndoBtn": {
     "message": "Hoàn tác"
@@ -637,10 +637,10 @@
     "message": "Mô hình AI chưa sẵn sàng. Vui lòng đảm bảo Chrome của bạn hỗ trợ Gemini Nano."
   },
   "tooFewTabsToGroup": {
-    "message": "Quá ít thẻ chưa phân loại để nhóm ✨"
+    "message": "Quá ít thẻ chưa phân loại để nhóm"
   },
   "autoGroupingSuccess": {
-    "message": "✨ Các thẻ đã được nhóm thành công!"
+    "message": "Các thẻ đã được nhóm thành công!"
   },
   "noTabsGrouped": {
     "message": "Không có thẻ nào được nhóm thành công."
@@ -649,7 +649,7 @@
     "message": "Đã xảy ra lỗi: "
   },
   "unknownCategory": {
-    "message": "📦 Danh mục không xác định"
+    "message": "Danh mục không xác định"
   },
   "aiGroupingToggleLabel": {
     "message": "Gom nhóm tự động thông minh (Yêu cầu Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "Kiểm tra tiến trình tải xuống \"Optimization Guide On Device Model\"."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Khởi động lại Chrome sau khi thay đổi các cài đặt trên."
+    "message": "Khởi động lại Chrome sau khi thay đổi các cài đặt trên."
   },
   "aiSetupOpenLink": {
     "message": "Mở"
@@ -718,7 +718,7 @@
     "message": "Đang phân tích tabs..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Cleanup"
+    "message": "Cleanup"
   },
   "aiCleanupBtnTitle": {
     "message": "Tab cleanup do AI gợi ý"
@@ -739,7 +739,7 @@
     "message": "AI gợi ý {count} tab có thể đóng. Bỏ chọn những cái bạn muốn giữ."
   },
   "aiCleanupNeedsDownload": {
-    "message": "Model AI chưa được tải. Nhấn ✨ Smart Group trước để bắt đầu tải."
+    "message": "Model AI chưa được tải. Nhấn Smart Group trước để bắt đầu tải."
   },
   "aiCleanupSectionHeader": {
     "message": "Tabs có thể đóng"
@@ -748,7 +748,7 @@
     "message": "Chọn tất cả"
   },
   "aiCleanupToggleLabel": {
-    "message": "Hiển thị nút 🧹 Tab Cleanup"
+    "message": "Hiển thị nút Tab Cleanup"
   },
   "bmToolsConfirmRemove": {
     "message": "Xóa đã chọn"
@@ -889,7 +889,7 @@
     "message": "Yêu cầu AI: tìm tabs hoặc bookmarks"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "Model AI chưa được tải. Kích hoạt ✨ Smart Group trước để tải, rồi thử lại."
+    "message": "Model AI chưa được tải. Kích hoạt Smart Group trước để tải, rồi thử lại."
   },
   "cmdPaletteEmpty": {
     "message": "Không có kết quả"

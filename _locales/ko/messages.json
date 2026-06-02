@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ 스마트 그룹화"
+    "message": "스마트 그룹화"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ 분류되지 않은 탭 스마트 그룹화"
+    "message": "분류되지 않은 탭 스마트 그룹화"
   },
   "toastUndoBtn": {
     "message": "실행 취소"
@@ -637,10 +637,10 @@
     "message": "AI 모델이 준비되지 않았습니다. Chrome에서 Gemini Nano를 지원하는지 확인하세요."
   },
   "tooFewTabsToGroup": {
-    "message": "그룹화할 분류되지 않은 탭이 너무 적습니다 ✨"
+    "message": "그룹화할 분류되지 않은 탭이 너무 적습니다"
   },
   "autoGroupingSuccess": {
-    "message": "✨ 탭이 성공적으로 그룹화되었습니다!"
+    "message": "탭이 성공적으로 그룹화되었습니다!"
   },
   "noTabsGrouped": {
     "message": "성공적으로 그룹화된 탭이 없습니다."
@@ -649,7 +649,7 @@
     "message": "오류가 발생했습니다: "
   },
   "unknownCategory": {
-    "message": "📦 알 수 없는 카테고리"
+    "message": "알 수 없는 카테고리"
   },
   "aiGroupingToggleLabel": {
     "message": "스마트 자동 그룹화 (Gemini Nano 필요)"
@@ -700,7 +700,7 @@
     "message": "\"Optimization Guide On Device Model\" 다운로드 진행 상황을 확인할 수 있습니다."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ 위 설정을 변경한 후 Chrome을 다시 시작하세요."
+    "message": "위 설정을 변경한 후 Chrome을 다시 시작하세요."
   },
   "aiSetupOpenLink": {
     "message": "열기"
@@ -718,7 +718,7 @@
     "message": "탭 분석 중..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 정리"
+    "message": "정리"
   },
   "aiCleanupBtnTitle": {
     "message": "AI 탭 정리 제안"
@@ -739,7 +739,7 @@
     "message": "AI 가 닫을 수 있는 탭 {count} 개를 제안합니다. 유지하고 싶은 항목의 체크를 해제하세요."
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI 모델이 아직 다운로드되지 않았습니다. 먼저 ✨ Smart Group 을 클릭해서 다운로드를 시작하세요."
+    "message": "AI 모델이 아직 다운로드되지 않았습니다. 먼저 Smart Group 을 클릭해서 다운로드를 시작하세요."
   },
   "aiCleanupSectionHeader": {
     "message": "닫을 수 있는 탭"
@@ -748,7 +748,7 @@
     "message": "모두 선택"
   },
   "aiCleanupToggleLabel": {
-    "message": "🧹 탭 정리 버튼 표시"
+    "message": "탭 정리 버튼 표시"
   },
   "bmToolsConfirmRemove": {
     "message": "선택 삭제"
@@ -889,7 +889,7 @@
     "message": "AI 에게 요청: 탭이나 북마크 찾기"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI 모델이 아직 다운로드되지 않았습니다. 먼저 ✨ Smart Group 으로 다운로드를 트리거하고 다시 시도하세요."
+    "message": "AI 모델이 아직 다운로드되지 않았습니다. 먼저 Smart Group 으로 다운로드를 트리거하고 다시 시도하세요."
   },
   "cmdPaletteEmpty": {
     "message": "결과 없음"

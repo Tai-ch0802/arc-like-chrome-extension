@@ -70,7 +70,7 @@ async function expandBookmarksBar(page) {
     await page.waitForSelector(bookmarksBarSelector, { timeout: 10000 });
 
     const isCollapsed = await page.$eval(bookmarksBarSelector, el =>
-        el.querySelector('.bookmark-icon').textContent.includes('▶')
+        el.querySelector('.bookmark-icon').classList.contains('is-collapsed')
     );
 
     if (isCollapsed) {
@@ -80,7 +80,10 @@ async function expandBookmarksBar(page) {
             await page.click(bookmarksBarSelector);
             try {
                 await page.waitForFunction(
-                    s => document.querySelector(s)?.querySelector('.bookmark-icon')?.textContent?.includes('▼'),
+                    s => {
+                        const ic = document.querySelector(s)?.querySelector('.bookmark-icon');
+                        return !!ic && !ic.classList.contains('is-collapsed');
+                    },
                     { timeout: 5000 },
                     bookmarksBarSelector
                 );
@@ -182,6 +185,21 @@ async function waitForTheme(page, expectedTheme, timeout = 5000) {
     );
 }
 
+/**
+ * Wait for a chevron element's collapsed state (is-collapsed class presence).
+ * @param {boolean} collapsed - true to wait until collapsed, false until expanded
+ */
+async function waitForChevron(page, selector, collapsed, timeout = 5000) {
+    await page.waitForFunction(
+        (sel, want) => {
+            const el = document.querySelector(sel);
+            return !!el && el.classList.contains('is-collapsed') === want;
+        },
+        { timeout },
+        selector, collapsed
+    );
+}
+
 module.exports = {
     setupBrowser,
     teardownBrowser,
@@ -191,5 +209,6 @@ module.exports = {
     waitForTextContent,
     waitForElementRemoved,
     waitForClass,
+    waitForChevron,
     waitForTheme
 };

@@ -40,15 +40,19 @@ async function handleGroupAction() {
     const fillEl = progressEl?.querySelector('.ai-progress__fill');
     if (!aiGroupBtn || aiGroupBtn.classList.contains('loading')) return;
 
+    // #ai-group-btn 由 sidepanel.html 結構化為 .btn-icon + .btn-label;更新 label 文字而非
+    // 整顆按鈕 textContent,以免洗掉圖示。
+    const aiGroupLabel = aiGroupBtn.querySelector('.btn-label');
+    const setLabel = (t) => { if (aiGroupLabel) aiGroupLabel.textContent = t; else aiGroupBtn.textContent = t; };
     /** Hides and resets the progress bar, restores button text */
-    const originalBtnText = aiGroupBtn.textContent;
+    const originalBtnText = aiGroupLabel ? aiGroupLabel.textContent : aiGroupBtn.textContent;
     function resetProgress() {
         if (progressEl) {
             progressEl.hidden = true;
             progressEl.classList.remove('shimmer');
             if (fillEl) fillEl.style.width = '0%';
         }
-        aiGroupBtn.textContent = originalBtnText;
+        setLabel(originalBtnText);
     }
 
     try {
@@ -80,7 +84,7 @@ async function handleGroupAction() {
         console.info('[AI] Needs download:', needsDownload);
         if (needsDownload) {
             // Update button text to clearly inform the user
-            aiGroupBtn.textContent = '⏳ Downloading...';
+            setLabel('Downloading...');
             if (progressEl) {
                 progressEl.hidden = false;
                 if (availability === 'downloading') {
@@ -100,10 +104,10 @@ async function handleGroupAction() {
                 console.info('[AI] Download progress:', Math.round(loaded * 100) + '%');
                 if (loaded >= 1) {
                     // Download complete — model is extracting/loading into memory
-                    aiGroupBtn.textContent = '⏳ Loading...';
+                    setLabel('Loading...');
                     if (progressEl) progressEl.classList.add('shimmer');
                 } else {
-                    aiGroupBtn.textContent = `⏳ ${Math.round(loaded * 100)}%`;
+                    setLabel(`${Math.round(loaded * 100)}%`);
                     if (progressEl) {
                         progressEl.classList.remove('shimmer');
                         if (fillEl) fillEl.style.width = `${Math.round(loaded * 100)}%`;

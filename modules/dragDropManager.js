@@ -70,7 +70,7 @@ function initializeBookmarkSortable(refreshBookmarks, updateTabList) {
             const { related } = evt;
             if (related && related.classList) {
                 const isCollapsedFolder = related.classList.contains('bookmark-folder') &&
-                    related.querySelector('.bookmark-icon')?.textContent === '▶';
+                    related.getAttribute('aria-expanded') === 'false';
                 if (isCollapsedFolder) {
                     folderOpenTimer = setTimeout(() => {
                         related.click();

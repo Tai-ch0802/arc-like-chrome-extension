@@ -381,7 +381,7 @@ ${tabsData}`;
 
     // Fallback if parsing fails or all retries exhausted
     return [{
-        theme: api.getMessage('unknownCategory') || "📦 未知分類",
+        theme: api.getMessage('unknownCategory') || "未知分類",
         tabIds: processingTabs.map(t => t.id)
     }];
 }

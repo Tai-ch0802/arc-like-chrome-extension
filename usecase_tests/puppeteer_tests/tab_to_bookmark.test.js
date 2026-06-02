@@ -69,18 +69,18 @@ describe('Tab to Bookmark Use Case', () => {
 
         const bookmarksBarSelector = `.bookmark-folder[data-bookmark-id="1"]`;
         await page.waitForSelector(bookmarksBarSelector);
-        const isBookmarksBarCollapsed = await page.$eval(bookmarksBarSelector, el => el.querySelector('.bookmark-icon').textContent.includes('▶'));
+        const isBookmarksBarCollapsed = await page.$eval(bookmarksBarSelector, el => el.querySelector('.bookmark-icon').classList.contains('is-collapsed'));
         if (isBookmarksBarCollapsed) {
             await page.click(bookmarksBarSelector);
-            await page.waitForFunction(s => document.querySelector(s).querySelector('.bookmark-icon').textContent.includes('▼'), {}, bookmarksBarSelector);
+            await page.waitForFunction(s => !document.querySelector(s).querySelector('.bookmark-icon').classList.contains('is-collapsed'), {}, bookmarksBarSelector);
         }
 
         const targetFolderSelector = `.bookmark-folder[data-bookmark-id="${targetFolderId}"]`;
         await page.waitForSelector(targetFolderSelector);
-        const isTargetFolderCollapsed = await page.$eval(targetFolderSelector, el => el.querySelector('.bookmark-icon').textContent.includes('▶'));
+        const isTargetFolderCollapsed = await page.$eval(targetFolderSelector, el => el.querySelector('.bookmark-icon').classList.contains('is-collapsed'));
         if (isTargetFolderCollapsed) {
             await page.click(targetFolderSelector);
-            await page.waitForFunction(s => document.querySelector(s).querySelector('.bookmark-icon').textContent.includes('▼'), {}, targetFolderSelector);
+            await page.waitForFunction(s => !document.querySelector(s).querySelector('.bookmark-icon').classList.contains('is-collapsed'), {}, targetFolderSelector);
         }
 
         const dropTargetSelector = `.bookmark-folder[data-bookmark-id="${targetFolderId}"] + .folder-content`;

@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ 智慧整理"
+    "message": "智慧整理"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ 智慧整理未分類分頁"
+    "message": "智慧整理未分類分頁"
   },
   "toastUndoBtn": {
     "message": "復原 (Undo)"
@@ -637,10 +637,10 @@
     "message": "AI 模型尚未準備好，請確認您的 Chrome 支援 Gemini Nano。"
   },
   "tooFewTabsToGroup": {
-    "message": "未分類的分頁數量過少，無需整理 ✨"
+    "message": "未分類的分頁數量過少，無需整理"
   },
   "autoGroupingSuccess": {
-    "message": "✨ 分頁整理完成！"
+    "message": "分頁整理完成！"
   },
   "noTabsGrouped": {
     "message": "沒有分頁被成功歸類。"
@@ -649,7 +649,7 @@
     "message": "發生錯誤："
   },
   "unknownCategory": {
-    "message": "📦 未知分類"
+    "message": "未知分類"
   },
   "aiGroupingToggleLabel": {
     "message": "Smart Auto-Grouping (需 Gemini Nano)"
@@ -673,13 +673,13 @@
     "message": "當你建立一個沒有名稱的新分頁群組時，AI 會自動產生一個簡短的標籤（Emoji + 名稱）。僅在本地模型已下載完成時生效。"
   },
   "aiCleanupToggleLabel": {
-    "message": "顯示 🧹 分頁清理按鈕"
+    "message": "顯示 分頁清理按鈕"
   },
   "aiCleanupDescription": {
     "message": "在「智慧整理」旁加一個按鈕，讓 AI 建議你可能可以關閉的分頁。"
   },
   "aiCleanupBtnText": {
-    "message": "🧹 清理"
+    "message": "清理"
   },
   "aiCleanupBtnTitle": {
     "message": "AI 分頁清理建議"
@@ -691,7 +691,7 @@
     "message": "分析分頁中..."
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI 模型尚未下載。請先點擊 ✨ 智慧整理 開始下載。"
+    "message": "AI 模型尚未下載。請先點擊 智慧整理 開始下載。"
   },
   "aiCleanupEmpty": {
     "message": "你的分頁很整潔，沒有需要清理的項目。"
@@ -742,7 +742,7 @@
     "message": "查看「Optimization Guide On Device Model」的下載進度。"
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ 更改以上設定後，請重新啟動 Chrome。"
+    "message": "更改以上設定後，請重新啟動 Chrome。"
   },
   "aiSetupOpenLink": {
     "message": "開啟"
@@ -970,7 +970,7 @@
     "message": "AI 建議"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI 模型尚未下載。請先點 ✨ 智慧整理 觸發下載後再試。"
+    "message": "AI 模型尚未下載。請先點 智慧整理 觸發下載後再試。"
   },
   "cmdPaletteAskAiNoMatch": {
     "message": "AI 找不到合適的結果。"

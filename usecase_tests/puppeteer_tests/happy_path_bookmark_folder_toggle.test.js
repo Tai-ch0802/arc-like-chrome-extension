@@ -1,4 +1,4 @@
-const { setupBrowser, teardownBrowser, expandBookmarksBar, waitForTextContent } = require('./setup');
+const { setupBrowser, teardownBrowser, expandBookmarksBar, waitForChevron } = require('./setup');
 
 describe('Bookmark Folder Toggle Use Case', () => {
     let browser;
@@ -48,17 +48,17 @@ describe('Bookmark Folder Toggle Use Case', () => {
 
             const isCollapsed = await page.$eval(folderSelector, el => {
                 const icon = el.querySelector('.bookmark-icon');
-                return icon && icon.textContent.includes('▶');
+                return icon && icon.classList.contains('is-collapsed');
             });
             expect(isCollapsed).toBe(true);
 
             await page.click(folderSelector);
 
-            await waitForTextContent(page, `${folderSelector} .bookmark-icon`, '▼');
+            await waitForChevron(page, `${folderSelector} .bookmark-icon`, false);
 
             const isExpanded = await page.$eval(folderSelector, el => {
                 const icon = el.querySelector('.bookmark-icon');
-                return icon && icon.textContent.includes('▼');
+                return icon && !icon.classList.contains('is-collapsed');
             });
             expect(isExpanded).toBe(true);
 
@@ -106,21 +106,21 @@ describe('Bookmark Folder Toggle Use Case', () => {
 
             // First expand the folder
             await page.click(folderSelector);
-            await waitForTextContent(page, `${folderSelector} .bookmark-icon`, '▼');
+            await waitForChevron(page, `${folderSelector} .bookmark-icon`, false);
 
             const isExpanded = await page.$eval(folderSelector, el => {
                 const icon = el.querySelector('.bookmark-icon');
-                return icon && icon.textContent.includes('▼');
+                return icon && !icon.classList.contains('is-collapsed');
             });
             expect(isExpanded).toBe(true);
 
             // Now click to collapse
             await page.click(folderSelector);
-            await waitForTextContent(page, `${folderSelector} .bookmark-icon`, '▶');
+            await waitForChevron(page, `${folderSelector} .bookmark-icon`, true);
 
             const isCollapsed = await page.$eval(folderSelector, el => {
                 const icon = el.querySelector('.bookmark-icon');
-                return icon && icon.textContent.includes('▶');
+                return icon && icon.classList.contains('is-collapsed');
             });
             expect(isCollapsed).toBe(true);
         } finally {

@@ -7,6 +7,7 @@ import { checkModelAvailability, triggerLanguageModelDownload } from './modules/
 import * as modalManager from './modules/modalManager.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
+import { renderIcon } from './modules/icons.js';
 
 const THEME_OPTIONS = [
     { value: 'geek', labelKey: 'themeOptionGeek' },
@@ -385,7 +386,7 @@ async function renderRss(container) {
             fetchBtn.className = 'rss-fetch-now-btn';
             fetchBtn.title = api.getMessage('rssFetchNowButton') || 'Fetch now';
             fetchBtn.setAttribute('aria-label', api.getMessage('rssFetchNowButton') || 'Fetch now');
-            fetchBtn.textContent = '🔄';
+            fetchBtn.innerHTML = renderIcon('refresh', { size: 16 });
             actions.appendChild(fetchBtn);
 
             const toggleBtn = document.createElement('button');
@@ -395,14 +396,14 @@ async function renderRss(container) {
                 ? (api.getMessage('rssPauseButton') || 'Pause')
                 : (api.getMessage('rssResumeButton') || 'Resume');
             toggleBtn.setAttribute('aria-label', toggleBtn.title);
-            toggleBtn.textContent = sub.enabled ? '⏸' : '▶';
+            toggleBtn.innerHTML = renderIcon(sub.enabled ? 'pause' : 'play_arrow', { size: 16 });
             actions.appendChild(toggleBtn);
 
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'rss-delete-btn';
             deleteBtn.title = api.getMessage('rssDeleteButton') || 'Delete';
             deleteBtn.setAttribute('aria-label', api.getMessage('rssDeleteButton') || 'Delete');
-            deleteBtn.textContent = '×';
+            deleteBtn.innerHTML = renderIcon('close', { size: 16 });
             actions.appendChild(deleteBtn);
 
             item.appendChild(info);
@@ -886,14 +887,14 @@ function renderSync(container) {
  * Maps an AI availability status string to a badge display object.
  * Mirrors the same helper in settingManager.js (getStatusBadge).
  * @param {string} status
- * @returns {{emoji: string, className: string}}
+ * @returns {{icon: string, label: string, className: string}}
  */
 function getStatusBadge(status) {
     switch (status) {
-        case 'available':   return { emoji: '✅ Available',   className: 'available' };
-        case 'downloading': return { emoji: '⏳ Downloading', className: 'downloading' };
-        case 'downloadable':return { emoji: '📥 Downloadable',className: 'downloadable' };
-        default:            return { emoji: '❌ Unavailable', className: 'unavailable' };
+        case 'available':   return { icon: 'check_circle',    label: 'Available',    className: 'available' };
+        case 'downloading': return { icon: 'hourglass_empty', label: 'Downloading',  className: 'downloading' };
+        case 'downloadable':return { icon: 'download',        label: 'Downloadable', className: 'downloadable' };
+        default:            return { icon: 'cancel',          label: 'Unavailable',  className: 'unavailable' };
     }
 }
 
@@ -926,7 +927,7 @@ async function renderAi(container) {
     const lmBadge = document.createElement('span');
     lmBadge.id = 'ai-lm-status-badge';
     lmBadge.className = 'ai-status-badge checking';
-    lmBadge.textContent = '⏳';
+    lmBadge.innerHTML = renderIcon('hourglass_empty', { size: 14 });
     lmRow.appendChild(lmLabel);
     lmRow.appendChild(lmBadge);
     statusSection.appendChild(lmRow);
@@ -940,7 +941,7 @@ async function renderAi(container) {
     const sumBadge = document.createElement('span');
     sumBadge.id = 'ai-sum-status-badge';
     sumBadge.className = 'ai-status-badge checking';
-    sumBadge.textContent = '⏳';
+    sumBadge.innerHTML = renderIcon('hourglass_empty', { size: 14 });
     sumRow.appendChild(sumLabel);
     sumRow.appendChild(sumBadge);
     statusSection.appendChild(sumRow);
@@ -992,7 +993,8 @@ async function renderAi(container) {
 
         const openBtn = document.createElement('button');
         openBtn.className = 'ai-setup-link-btn';
-        openBtn.textContent = (api.getMessage('aiSetupOpenLink') || 'Open') + ' ↗';
+        openBtn.textContent = (api.getMessage('aiSetupOpenLink') || 'Open') + ' ';
+        openBtn.insertAdjacentHTML('beforeend', renderIcon('open_in_new', { size: 14 }));
         openBtn.addEventListener('click', () => {
             chrome.tabs.create({ url: step.url });
         });
@@ -1003,7 +1005,8 @@ async function renderAi(container) {
 
     const restartNote = document.createElement('div');
     restartNote.className = 'ai-setup-restart-note';
-    restartNote.textContent = api.getMessage('aiSetupRestartNote') || '⚠️ Restart Chrome after changing the flags above.';
+    restartNote.textContent = api.getMessage('aiSetupRestartNote') || 'Restart Chrome after changing the flags above.';
+    restartNote.insertAdjacentHTML('afterbegin', renderIcon('warning', { size: 14 }) + ' ');
     guide.appendChild(restartNote);
 
     container.appendChild(guide);
@@ -1013,7 +1016,7 @@ async function renderAi(container) {
         // LanguageModel
         const lmStatus = await checkModelAvailability();
         const lmBadgeInfo = getStatusBadge(lmStatus);
-        lmBadge.textContent = lmBadgeInfo.emoji;
+        lmBadge.innerHTML = renderIcon(lmBadgeInfo.icon, { size: 14 }) + ' ' + lmBadgeInfo.label;
         lmBadge.className = `ai-status-badge ${lmBadgeInfo.className}`;
 
         // Summarizer — call Summarizer.availability() directly (same as settingManager)
@@ -1022,7 +1025,7 @@ async function renderAi(container) {
             try { sumStatus = await Summarizer.availability() || 'unavailable'; } catch { /* ignore */ }
         }
         const sumBadgeInfo = getStatusBadge(sumStatus);
-        sumBadge.textContent = sumBadgeInfo.emoji;
+        sumBadge.innerHTML = renderIcon(sumBadgeInfo.icon, { size: 14 }) + ' ' + sumBadgeInfo.label;
         sumBadge.className = `ai-status-badge ${sumBadgeInfo.className}`;
 
         // Trigger download + show progress if needed
@@ -1054,7 +1057,7 @@ async function renderAi(container) {
 
             const newStatus = await checkModelAvailability();
             const newBadge = getStatusBadge(newStatus);
-            lmBadge.textContent = newBadge.emoji;
+            lmBadge.innerHTML = renderIcon(newBadge.icon, { size: 14 }) + ' ' + newBadge.label;
             lmBadge.className = `ai-status-badge ${newBadge.className}`;
             progressContainer.hidden = true;
         }
