@@ -2959,31 +2959,29 @@ mark.url-match {
 }
 
 /* === Command Palette (Cmd+K / Ctrl+K) === */
-.cmd-palette-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: 9999;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 10vh;
-}
 
-.cmd-palette-overlay[hidden] {
-    display: none;
-}
-
-.cmd-palette-modal {
-    width: min(92%, 480px);
-    max-height: 70vh;
+/* Spotlight popup window layout (spotlight.html) */
+.spotlight-body {
+    margin: 0;
     background: var(--main-bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    color: var(--text-color-primary);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.spotlight-shell {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    height: 100vh;
+    padding: 12px;
+    box-sizing: border-box;
+    gap: 8px;
+}
+
+.spotlight-shell .cmd-palette-results {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    max-height: none;
 }
 
 .cmd-palette-input {
@@ -3075,30 +3073,6 @@ mark.url-match {
     color: var(--text-color-primary);
     opacity: 0.55;
     font-size: 0.9em;
-}
-
-.cmd-palette-hint {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    font-size: 0.7em;
-    color: var(--text-color-primary);
-    opacity: 0.55;
-    border-top: 1px solid var(--border-color);
-    background-color: var(--element-bg-color);
-}
-
-.cmd-palette-hint-key {
-    padding: 1px 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 3px;
-    font-family: monospace;
-    margin-right: 2px;
-}
-
-.cmd-palette-hint-key + span {
-    margin-right: 8px;
 }
 
 /* === Workspace Switcher (top of sidepanel) === */
