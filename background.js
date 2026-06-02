@@ -374,12 +374,22 @@ async function openSpotlight() {
     if (spotlightCreating) return;
     spotlightCreating = true;
     try {
+        const origin = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
+
+        // 全螢幕 fallback:macOS 原生全螢幕下 Chrome 自成一個 Space,開新 popup 會被系統丟到
+        // 別的 Space(畫面整個切走)。改開側邊欄並聚焦其搜尋框(側邊欄屬瀏覽器視窗內、不跨
+        // Space)。windows API 無法把 popup 釘進全螢幕 Space,故以此 fallback。
+        if (origin && (origin.state === 'fullscreen' || origin.state === 'locked-fullscreen')) {
+            await chrome.storage.session.set({ pendingSearchFocus: { ts: Date.now() } });
+            if (typeof origin.id === 'number') await chrome.sidePanel.open({ windowId: origin.id });
+            return;
+        }
+
         if (spotlightWindowId == null) spotlightWindowId = await findExistingSpotlight();
         if (spotlightWindowId != null) {
             try { await chrome.windows.update(spotlightWindowId, { focused: true }); return; }
             catch { spotlightWindowId = null; }
         }
-        const origin = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
         await chrome.storage.session.set({
             spotlightOriginWindowId: origin && typeof origin.id === 'number' ? origin.id : null
         });

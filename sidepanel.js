@@ -62,9 +62,29 @@ async function consumePendingPanelAction() {
     catch (err) { console.warn('[panel-action] failed:', err && err.message ? err.message : err); }
 }
 
+// 全螢幕 fallback:background 偵測來源視窗為全螢幕時不開 Spotlight popup(會跳 Space),
+// 改開側邊欄並寫此旗標 → 側邊欄聚焦搜尋框,提供等效的「快速搜尋」入口。
+async function consumePendingSearchFocus() {
+    if (!panelReady) return;
+    let pending;
+    try {
+        ({ pendingSearchFocus: pending } = await chrome.storage.session.get('pendingSearchFocus'));
+    } catch { return; }
+    if (!pending) return;
+    try { await chrome.storage.session.remove('pendingSearchFocus'); } catch { /* ignore */ }
+    const box = document.getElementById('search-box');
+    if (box) {
+        box.focus();
+        if (typeof box.select === 'function') box.select();
+    }
+}
+
 chrome.storage.session.onChanged.addListener((changes) => {
     if (changes.pendingPanelAction && changes.pendingPanelAction.newValue) {
         consumePendingPanelAction();
+    }
+    if (changes.pendingSearchFocus && changes.pendingSearchFocus.newValue) {
+        consumePendingSearchFocus();
     }
 });
 
@@ -257,9 +277,10 @@ async function initialize() {
         bookmarkToolsBtn.setAttribute('aria-label', bmToolsLabel);
         bookmarkToolsBtn.addEventListener('click', () => openBookmarkToolsDialog('tags'));
     }
-    // 初始化完成、按鈕已接線:開放消費並處理本次開啟時已存在的轉送動作。
+    // 初始化完成、按鈕已接線:開放消費並處理本次開啟時已存在的轉送動作 / 搜尋聚焦請求。
     panelReady = true;
     consumePendingPanelAction();
+    consumePendingSearchFocus();
 
     // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,
     // windowNames affects the "Other Windows" section labels.
