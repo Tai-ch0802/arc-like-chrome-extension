@@ -11,7 +11,7 @@ export async function resolveTargetWindowId() {
 /**
  * 從 Spotlight(獨立視窗)請求側邊欄執行 UI 類動作:
  * 寫 session 旗標 → 在來源視窗開側邊欄 → 關閉 Spotlight。
- * 旗標 pendingPanelAction 由側邊欄的 storage.session onChanged 監聽消費(見 sidepanel.js,後續任務)。
+ * 旗標 pendingPanelAction 由側邊欄的 storage.session onChanged 監聽消費(見 sidepanel.js consumePendingPanelAction)。
  * @param {string} id
  * @param {object} [extra]
  */

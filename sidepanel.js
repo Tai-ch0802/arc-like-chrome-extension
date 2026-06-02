@@ -9,7 +9,6 @@ import * as readingListManager from './modules/readingListManager.js';
 import * as readingListRenderer from './modules/ui/readingListRenderer.js';
 import * as rssManager from './modules/rssManager.js';
 import * as hoverSummarize from './modules/ui/hoverSummarizeManager.js';
-import { initCommandPalette } from './modules/commandPalette/index.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceUI } from './modules/workspace/workspaceUI.js';
 import * as tagManager from './modules/bookmark/tagManager.js';
@@ -20,6 +19,54 @@ import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
+
+// --- Spotlight 轉送動作處理 ---
+
+// 側邊欄完成初始化(按鈕等事件已綁定)前不消費轉送動作,避免點到尚未接線的按鈕。
+let panelReady = false;
+
+// Spotlight(獨立視窗)轉送來的 UI 類動作:在側邊欄正確情境執行。
+const PANEL_ACTION_HANDLERS = {
+    'smart-group': () => document.getElementById('ai-group-btn')?.click(),
+    'ai-cleanup': () => document.getElementById('ai-cleanup-btn')?.click(),
+    'bookmark-tools': () => document.getElementById('bookmark-tools-btn')?.click(),
+    'manage-workspaces': () => document.getElementById('workspace-manage-btn')?.click(),
+    'refresh-bookmarks': () => document.dispatchEvent(new CustomEvent('refreshBookmarksRequired')),
+    'ask-ai-search': async () => {
+        const { openAskAiDialog } = await import('./modules/commandPalette/nlSearch.js');
+        await openAskAiDialog();
+    },
+    'create-workspace': async () => {
+        const { createWorkspaceFromCurrent } = await import('./modules/workspace/workspaceUI.js');
+        await createWorkspaceFromCurrent();
+    },
+    'switch-workspace': async (extra) => {
+        const { requestSwitchTo } = await import('./modules/workspace/workspaceUI.js');
+        if (extra && extra.workspaceId) await requestSwitchTo(extra.workspaceId);
+    },
+};
+
+async function consumePendingPanelAction() {
+    // 初始化尚未完成時不消費:旗標保留,待 initialize 末端設定 panelReady 後再讀取,
+    // 避免在按鈕事件接線前觸發動作而被吞掉(亦不漏動作)。
+    if (!panelReady) return;
+    let pending;
+    try {
+        ({ pendingPanelAction: pending } = await chrome.storage.session.get('pendingPanelAction'));
+    } catch { return; }
+    if (!pending || !pending.id) return;
+    try { await chrome.storage.session.remove('pendingPanelAction'); } catch { /* ignore */ }
+    const fn = PANEL_ACTION_HANDLERS[pending.id];
+    if (!fn) { console.warn('[panel-action] unknown id:', pending.id); return; }
+    try { await fn(pending); }
+    catch (err) { console.warn('[panel-action] failed:', err && err.message ? err.message : err); }
+}
+
+chrome.storage.session.onChanged.addListener((changes) => {
+    if (changes.pendingPanelAction && changes.pendingPanelAction.newValue) {
+        consumePendingPanelAction();
+    }
+});
 
 // --- 主要協調器 ---
 
@@ -210,7 +257,9 @@ async function initialize() {
         bookmarkToolsBtn.setAttribute('aria-label', bmToolsLabel);
         bookmarkToolsBtn.addEventListener('click', () => openBookmarkToolsDialog('tags'));
     }
-    initCommandPalette(); // Cmd+K / Ctrl+K unified search & actions overlay
+    // 初始化完成、按鈕已接線:開放消費並處理本次開啟時已存在的轉送動作。
+    panelReady = true;
+    consumePendingPanelAction();
 
     // Keep multiple open sidepanels in sync: linkedTabs affects bookmark icons,
     // windowNames affects the "Other Windows" section labels.
