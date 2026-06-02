@@ -166,6 +166,10 @@
     "message": "Create a new tab to the right of the current tab",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "Open search",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "Create new tab on the right:",
     "description": "Description for the create new tab to the right shortcut in settings."

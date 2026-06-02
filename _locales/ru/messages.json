@@ -163,6 +163,10 @@
     "message": "Создать новую вкладку справа от текущей",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "Открыть поиск",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "Создать новую вкладку справа:",
     "description": "Description for the create new tab to the right shortcut in settings."

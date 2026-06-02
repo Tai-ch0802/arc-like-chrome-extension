@@ -163,6 +163,10 @@
     "message": "Crear una nueva pestaña a la derecha de la pestaña actual",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "Abrir búsqueda",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "Crear nueva pestaña a la derecha:",
     "description": "Description for the create new tab to the right shortcut in settings."

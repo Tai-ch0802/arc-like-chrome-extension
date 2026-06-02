@@ -163,6 +163,10 @@
     "message": "वर्तमान टैब के दाईं ओर एक नया टैब बनाएं",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "खोज खोलें",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "दाईं ओर नया टैब बनाएं:",
     "description": "Description for the create new tab to the right shortcut in settings."

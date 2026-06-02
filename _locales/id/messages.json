@@ -163,6 +163,10 @@
     "message": "Buat tab baru di sebelah kanan tab saat ini",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "Buka pencarian",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "Buat tab baru di sebelah kanan:",
     "description": "Description for the create new tab to the right shortcut in settings."

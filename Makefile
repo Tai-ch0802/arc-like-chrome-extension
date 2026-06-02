@@ -15,6 +15,8 @@ DEV_SRC_FILES = \
     options.html \
     options.css \
     options.js \
+    spotlight.html \
+    spotlight.js \
     icons \
     lib \
     modules \
@@ -73,6 +75,9 @@ build-prod:
 	@npx esbuild options.css --minify --outfile=$(PROD_BUILD_DIR)/options.css
 	@cp options.html $(PROD_BUILD_DIR)/options.html
 	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/options.html
+	@npx esbuild spotlight.js --bundle --minify --outfile=$(PROD_BUILD_DIR)/spotlight.js
+	@cp spotlight.html $(PROD_BUILD_DIR)/spotlight.html
+	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/spotlight.html
 	@rm -f $(PROD_BUILD_DIR)/*.bak
 
 zip-prod:

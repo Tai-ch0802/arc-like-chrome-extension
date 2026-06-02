@@ -163,6 +163,10 @@
     "message": "在当前标签页右侧新建一个标签页",
     "description": "在当前标签页右侧新建一个标签页的命令。"
   },
+  "commandOpenSearch": {
+    "message": "打开搜索",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "在右侧新建标签页：",
     "description": "在设置中，“在右侧新建标签页”快捷键的说明。"

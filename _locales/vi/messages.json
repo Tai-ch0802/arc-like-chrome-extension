@@ -163,6 +163,10 @@
     "message": "Tạo tab mới ở bên phải tab hiện tại",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "Mở tìm kiếm",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "Tạo tab mới ở bên phải:",
     "description": "Description for the create new tab to the right shortcut in settings."
