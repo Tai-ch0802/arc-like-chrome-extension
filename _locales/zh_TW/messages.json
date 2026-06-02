@@ -163,6 +163,10 @@
     "message": "在當前分頁右側新增一個分頁",
     "description": "在當前分頁右側新增一個分頁的指令。"
   },
+  "commandOpenSearch": {
+    "message": "開啟搜尋",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "在右側新增分頁：",
     "description": "在設定中，『在右側新增分頁』快捷鍵的說明。"

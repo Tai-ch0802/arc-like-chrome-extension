@@ -163,6 +163,10 @@
     "message": "สร้างแท็บใหม่ทางด้านขวาของแท็บปัจจุบัน",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "เปิดการค้นหา",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "สร้างแท็บใหม่ทางด้านขวา:",
     "description": "Description for the create new tab to the right shortcut in settings."

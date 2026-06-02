@@ -163,6 +163,10 @@
     "message": "Criar uma nova guia à direita da guia atual",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "Abrir pesquisa",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "Criar nova guia à direita:",
     "description": "Description for the create new tab to the right shortcut in settings."

@@ -163,6 +163,10 @@
     "message": "현재 탭의 오른쪽에 새 탭 만들기",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "검색 열기",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "오른쪽에 새 탭 만들기:",
     "description": "Description for the create new tab to the right shortcut in settings."

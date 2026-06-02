@@ -163,6 +163,10 @@
     "message": "現在のタブの右側に新しいタブを作成",
     "description": "Command to create a new tab to the right."
   },
+  "commandOpenSearch": {
+    "message": "検索を開く",
+    "description": "Command to open the centered Spotlight search window."
+  },
   "settingsShortcutCreateTabRight": {
     "message": "右側に新しいタブを作成:",
     "description": "Description for the create new tab to the right shortcut in settings."

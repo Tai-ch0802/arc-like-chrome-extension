@@ -85,10 +85,18 @@ key_files:
     description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、Summarizer API 串流摘要、記憶體快取。"
   - file_path: modules/ui/hoverTooltip.js
     description: "[UI] Hover Summarize 的 Tooltip UI 元件。提供 show/hide/updateStreamChunk API，含 shimmer 載入動畫與 glassmorphism 樣式。"
-  - file_path: modules/commandPalette/index.js
-    description: "[功能] Command Palette (⌘K / Ctrl+K) 入口。Phase 5 新增；統一搜尋 tabs / bookmarks / reading list / actions / workspaces。"
+  - file_path: spotlight.html
+    description: "[UI] Spotlight 搜尋彈窗頁面。以置中彈窗形式呈現，由 Cmd+Shift+K 快捷鍵（commandOpenSearch）開啟；連結 sidepanel.css（共用元件樣式）+ spotlight.js（ESM 入口）。無獨立 CSS 檔案。"
+  - file_path: spotlight.js
+    description: "[UI] Spotlight 頁面的 ESM 入口。初始化 spotlightController，串連搜尋 UI 與資料層；prod build 由 esbuild bundle + minify。"
+  - file_path: modules/spotlight/spotlightController.js
+    description: "[功能] Spotlight 搜尋控制器。管理置中搜尋彈窗的生命週期（開啟/關閉）、輸入處理、結果渲染，以及透過 panelBridge 與 sidepanel context 溝通。"
+  - file_path: modules/commandPalette/searchContext.js
+    description: "[功能] Command Palette / Spotlight 共用搜尋上下文。封裝跨 context 的搜尋狀態（query、結果集、focus 管理），供 sidepanel 內的 Command Palette 與獨立 Spotlight 彈窗共同使用。"
+  - file_path: modules/commandPalette/panelBridge.js
+    description: "[通訊] Spotlight ↔ sidepanel 橋接器。透過 chrome.runtime.sendMessage / onMessage 在 spotlight popup context 與 sidepanel context 之間傳遞搜尋請求與結果，解決跨 window context 的資料存取限制。"
   - file_path: modules/commandPalette/dataProvider.js
-    description: "[功能] Command Palette 資料源。Phase 5 新增；聚合多個 source 的搜尋結果與分組顯示邏輯。"
+    description: "[功能] Command Palette / Spotlight 資料源。Phase 5 新增；聚合多個 source 的搜尋結果與分組顯示邏輯；index.js 已移除，資料/動作層（dataProvider/actions/nlSearch）現直接供獨立 Spotlight 彈窗（Cmd+Shift+K）使用。"
   - file_path: modules/commandPalette/actions.js
     description: "[功能] Command Palette 動作集合。Phase 5 新增；包含 new tab / smart group / AI cleanup / workspace 管理等可執行動作。"
   - file_path: modules/commandPalette/nlSearch.js
