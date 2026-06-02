@@ -1082,26 +1082,24 @@ mark.url-match {
     overscroll-behavior: contain;
 }
 
-/* --- Styled Scrollbar for Modals --- */
-.modal-content::-webkit-scrollbar,
-.modal-custom-content::-webkit-scrollbar {
+/* --- 全域細捲軸:統一所有捲動區(modal、分頁/書籤/閱讀清單、Spotlight 結果、設定頁、
+   書籤工具掃描結果等)。bare ::-webkit-scrollbar 即套用至所有具捲軸的元素。
+   不混用標準 scrollbar-width/scrollbar-color,以免 Chrome 121+ 忽略此 webkit 樣式。 --- */
+::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
 
-.modal-content::-webkit-scrollbar-track,
-.modal-custom-content::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.modal-content::-webkit-scrollbar-thumb,
-.modal-custom-content::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: var(--text-color-secondary);
     border-radius: 3px;
 }
 
-.modal-content::-webkit-scrollbar-thumb:hover,
-.modal-custom-content::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background-color: var(--text-color-primary);
 }
 
@@ -3146,26 +3144,7 @@ mark.url-match {
     padding: 4px 0;
 }
 
-/* Spotlight 結果列表捲軸:比照 .modal-content 的細捲軸樣式。
-   注意:.cmd-palette-results / .cmd-palette-icon 亦由側邊欄 Ask-AI 對話框(nlSearch.js)
-   共用,故此處與 .cmd-palette-icon 的調整會一併套用至該對話框(視覺一致、無害)。 */
-.cmd-palette-results::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-.cmd-palette-results::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.cmd-palette-results::-webkit-scrollbar-thumb {
-    background-color: var(--text-color-secondary);
-    border-radius: 3px;
-}
-
-.cmd-palette-results::-webkit-scrollbar-thumb:hover {
-    background-color: var(--text-color-primary);
-}
+/* Spotlight 結果列表捲軸已由全域 ::-webkit-scrollbar 統一處理(見頂部捲軸區塊)。 */
 
 .cmd-palette-group-header {
     padding: 6px 12px 2px;
