@@ -20,6 +20,50 @@
 
     /* Hover */
     --arc-hover-shift: 3px;
+
+    /* === Material 3 token 層 (M3 UI 重構) === */
+    /* Shape scale — 適配 compact 側邊欄 (M3 4/8/12/16/full 壓縮版) */
+    --arc-radius-xs: 4px;       /* chips / 小徽章 / 文字高亮 */
+    --arc-radius-sm: 8px;       /* 按鈕 / 輸入框 / 列 / 下拉 */
+    --arc-radius-md: 12px;      /* 卡片 / context menu / 區段 */
+    --arc-radius-lg: 16px;      /* modal / dialog / spotlight 容器 */
+    --arc-radius-full: 9999px;  /* 圓點 / 圓形 icon 鈕 / pill */
+
+    /* State layer 不透明度 (M3 規格) */
+    --arc-state-hover: 0.08;
+    --arc-state-focus: 0.10;
+    --arc-state-pressed: 0.10;
+    --arc-state-drag: 0.16;
+    /* State layer 覆蓋色 — color-mix over 主題 token,使用時依當前主題解析
+       (同 settings-input 既有 color-mix 模式;主題切換於 :root 變更 token 即重算) */
+    --arc-state-layer-hover: color-mix(in srgb, var(--text-color-primary) 8%, transparent);
+    --arc-state-layer-pressed: color-mix(in srgb, var(--text-color-primary) 12%, transparent);
+    --arc-state-layer-accent: color-mix(in srgb, var(--accent-color) 14%, transparent);
+
+    /* Elevation 階 (M3-ish);1/3/5 alias 既有 shadow,不改舊名以免破壞既有引用 */
+    --arc-elevation-0: none;
+    --arc-elevation-1: var(--arc-shadow-sm);
+    --arc-elevation-2: 0 2px 6px hsl(0 0% 0% / 0.16);
+    --arc-elevation-3: var(--arc-shadow-hover);
+    --arc-elevation-4: 0 8px 24px hsl(0 0% 0% / 0.28);
+    --arc-elevation-5: var(--arc-shadow-drag);
+
+    /* 統一 focus ring */
+    --arc-focus-ring: 0 0 0 2px color-mix(in srgb, var(--accent-color) 40%, transparent);
+
+    /* Motion 語意 alias (指向既有 anim token,沿用既有曲線) */
+    --arc-motion-short: var(--arc-anim-duration-fast);
+    --arc-motion-medium: var(--arc-anim-duration-normal);
+    --arc-motion-long: var(--arc-anim-duration-slow);
+    --arc-easing-standard: var(--arc-anim-easing-out);
+    --arc-easing-emphasized: var(--arc-anim-easing-spring);
+}
+
+/* Material Symbols icon 基礎:inline 對齊、不隨 flex 壓縮。色彩由父層 color 繼承。 */
+.m3-icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 
