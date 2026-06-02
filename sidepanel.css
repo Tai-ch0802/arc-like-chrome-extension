@@ -80,6 +80,27 @@
     transform: rotate(-90deg);
 }
 
+/* M3 統一 focus ring(僅 <button>):鍵盤聚焦時以 accent 環取代雜亂 outline。
+   清單列(tab/bookmark/folder)沿用既有的 inset outline(在 overflow 容器內不被裁切),
+   不納入此 outset box-shadow 環以免重疊或被裁切。:focus-visible 僅鍵盤聚焦觸發。 */
+button:focus-visible {
+    outline: none;
+    box-shadow: var(--arc-focus-ring);
+}
+
+/* M3 state layer:按下(pressed)回饋。hover 沿用各元件既有底色;此處僅 :active 疊加
+   半透明 pressed 覆蓋,提供按壓回饋(排除 .header-action-btn 等有自訂 hover 反白的元件)。 */
+.tab-item:active,
+.bookmark-item:active,
+.bookmark-folder:active,
+.cmd-palette-row:active,
+.modal-button:active,
+.context-menu-item:active,
+.workspace-switch-btn:active,
+.workspace-manage__switch:active {
+    background-color: var(--arc-state-layer-pressed);
+}
+
 
 /* --- 主題定義 --- */
 
@@ -348,6 +369,7 @@ body::before {
     box-sizing: border-box;
     background-color: var(--element-bg-color);
     border: 1px solid var(--border-color);
+    border-radius: var(--arc-radius-sm);
     color: var(--text-color-light);
     font-family: inherit;
     font-size: 14px;
@@ -356,6 +378,7 @@ body::before {
 #search-box:focus {
     outline: none;
     border-color: var(--border-color-accent);
+    box-shadow: var(--arc-focus-ring);
 }
 
 #search-box::placeholder {
@@ -459,13 +482,17 @@ body::before {
     background-color: var(--element-bg-hover-color);
 }
 
-#settings-toggle svg {
-    stroke: var(--text-color-secondary);
-    transition: stroke 0.2s ease;
+/* Material Symbols 為 fill 型,色彩經 currentColor 繼承(舊 stroke 無效)。 */
+#settings-toggle {
+    color: var(--text-color-secondary);
 }
 
-#settings-toggle:hover svg {
-    stroke: var(--text-color-primary);
+#settings-toggle svg {
+    transition: color var(--arc-motion-short) var(--arc-easing-standard);
+}
+
+#settings-toggle:hover {
+    color: var(--text-color-primary);
 }
 
 /* --- 通用隱藏 Class --- */
@@ -526,9 +553,9 @@ mark.url-match {
     background: transparent;
     border: 1px solid var(--danger-color);
     color: var(--danger-color);
-    border-radius: 3px;
+    border-radius: var(--arc-radius-sm);
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all var(--arc-motion-short) var(--arc-easing-standard);
     white-space: nowrap;
 }
 
@@ -1006,9 +1033,10 @@ mark.url-match {
     background-color: var(--element-bg-color);
     padding: 20px;
     border: 1px solid var(--border-color);
+    border-radius: var(--arc-radius-lg);
     width: 85%;
     max-width: 400px;
-    box-shadow: 0 5px 25px var(--modal-shadow-color);
+    box-shadow: var(--arc-elevation-4);
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -1142,6 +1170,7 @@ mark.url-match {
 .modal-button {
     padding: 8px 16px;
     border: 1px solid var(--border-color);
+    border-radius: var(--arc-radius-sm);
     background-color: transparent;
     color: var(--text-color-light);
     cursor: pointer;
@@ -1367,8 +1396,8 @@ mark.url-match {
     z-index: 10000;
     background-color: var(--element-bg-color);
     border: 1px solid var(--border-color);
-    box-shadow: 0 2px 10px var(--modal-shadow-color);
-    border-radius: 4px;
+    box-shadow: var(--arc-elevation-2);
+    border-radius: var(--arc-radius-md);
     padding: 4px 0;
     min-width: 150px;
     display: flex;
@@ -1980,7 +2009,7 @@ mark.url-match {
 
 /* Design Tokens */
 :root {
-    --settings-radius: 6px;
+    --settings-radius: var(--arc-radius-sm);
     --settings-height: 32px;
     --settings-height-sm: 24px;
     --settings-transition: all 0.15s ease;
@@ -3305,7 +3334,7 @@ mark.url-match {
 }
 
 .ws-emoji-icon {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1;
 }
 

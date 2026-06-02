@@ -3,7 +3,7 @@ import { resolveBadgeView } from '../../modules/ui/driveSyncBadge.js';
 /**
  * Unit tests for the PURE view-model resolver behind the sidepanel drive-sync
  * badge. resolveBadgeView() takes a driveSyncStatus object and returns a compact
- * descriptor { hidden, glyph?, text?, title?, stateClass? } with no DOM / I/O.
+ * descriptor { hidden, iconId?, text?, title?, stateClass? } with no DOM / I/O.
  *
  * driveSyncBadge.js imports apiManager.js, which references chrome.i18n at CALL
  * time (not module-load time). The node-side chrome stub in
@@ -40,7 +40,7 @@ describe('resolveBadgeView', () => {
     it('visible with the syncing indicator + label', () => {
       const view = resolveBadgeView({ state: 'syncing' });
       expect(view.hidden).toBe(false);
-      expect(view.glyph).toBe('↻');
+      expect(view.iconId).toBe('sync');
       expect(view.text).toBe('Syncing…');
       expect(view.stateClass).toBe('is-syncing');
     });
@@ -50,7 +50,7 @@ describe('resolveBadgeView', () => {
     it('visible with the synced (cloud) indicator + title, empty text', () => {
       const view = resolveBadgeView({ state: 'idle' });
       expect(view.hidden).toBe(false);
-      expect(view.glyph).toBe('☁︎');
+      expect(view.iconId).toBe('cloud');
       expect(view.text).toBe('');
       expect(view.title).toBe('Synced to Google Drive');
       expect(view.stateClass).toBe('is-idle');
@@ -74,7 +74,7 @@ describe('resolveBadgeView', () => {
     it.each(cases)('%s → visible warning with the base title', (state, baseTitle) => {
       const view = resolveBadgeView({ state });
       expect(view.hidden).toBe(false);
-      expect(view.glyph).toBe('⚠');
+      expect(view.iconId).toBe('warning');
       expect(view.text).toBe('');
       expect(view.title).toBe(baseTitle);
       expect(view.stateClass).toBe('is-warning');

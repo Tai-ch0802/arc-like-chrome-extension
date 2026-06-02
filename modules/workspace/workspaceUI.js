@@ -186,6 +186,10 @@ function openManageDialog() {
     const container = document.createElement('div');
     container.className = 'workspace-manage';
 
+    // 本 dialog 專屬的關閉控制(於 showCustomDialog onOpen 設定):避免以 document-global
+    // 查找 #closeButton 而可能命中其他 modal(見 nlSearch.js 對同模式的警示)。
+    const dialogRef = { close: () => {} };
+
     const list = document.createElement('div');
     list.className = 'workspace-manage__list';
     if (all.length === 0) {
@@ -195,7 +199,7 @@ function openManageDialog() {
         list.appendChild(empty);
     } else {
         for (const ws of all) {
-            list.appendChild(buildManageRow(ws, ws.id === activeId, list));
+            list.appendChild(buildManageRow(ws, ws.id === activeId, list, dialogRef));
         }
     }
     container.appendChild(list);
@@ -209,7 +213,7 @@ function openManageDialog() {
             // Replace the "empty" placeholder if present, then append new row.
             const empty = list.querySelector('.workspace-manage__empty');
             if (empty) empty.remove();
-            list.appendChild(buildManageRow(ws, true, list));
+            list.appendChild(buildManageRow(ws, true, list, dialogRef));
             renderSwitchButton();
         }
     });
@@ -218,10 +222,14 @@ function openManageDialog() {
     modal.showCustomDialog({
         title: api.getMessage('workspaceManageTitle') || 'Manage workspaces',
         content: container,
+        onOpen: (modalContent) => {
+            const closeBtn = modalContent.querySelector('#closeButton');
+            if (closeBtn) dialogRef.close = () => closeBtn.click();
+        },
     });
 }
 
-function buildManageRow(ws, isActive, listEl) {
+function buildManageRow(ws, isActive, listEl, dialogRef) {
     const row = document.createElement('div');
     row.className = 'workspace-manage__row';
 
@@ -248,7 +256,7 @@ function buildManageRow(ws, isActive, listEl) {
 
     switchEl.addEventListener('click', async () => {
         const switched = await performSwitch(ws.id);
-        if (switched) document.getElementById('closeButton')?.click();
+        if (switched) dialogRef.close();
     });
     row.appendChild(switchEl);
 
