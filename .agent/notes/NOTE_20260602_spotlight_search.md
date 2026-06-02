@@ -50,3 +50,43 @@
 1. **手動驗證 Cmd+Shift+K**：在真實 Chrome 分別於 `chrome://newtab`、`chrome://extensions`（受限頁無效，正常）、一般網頁（`https://example.com`）觸發快捷鍵，確認 popup 正確開啟 + 搜尋 + Enter 執行。
 2. **Rebase + PR**：`git rebase main`（若有 main 更新）→ 開 PR `feat/spotlight-search` → main，使用 `pull-request` skill 產出雙語描述。
 3. **T2 M2 follow-up**（可選）：視 UI 品質決定是否補 `section-header`/`divider` 的隱藏邏輯。
+
+---
+
+## 追記 — 修正 Cmd+Shift+K 在全螢幕下失效（gesture-first fallback）
+
+### 症狀
+接手 PR#151 後發現:`21766ed`(全螢幕 fallback commit)之後,Cmd+Shift+K「開啟搜尋」在
+macOS 原生全螢幕(綠燈)下完全無反應。
+
+### 根因
+`chrome.sidePanel.open()` 需要 user gesture,而 **MV3 service worker 中 `chrome.commands.onCommand`
+的 user activation 無法穩定撐過 `await`**(Chromium 已知限制:~127 回歸、128/129+ 修復,官方建議
+永不依賴)。`21766ed` 的全螢幕分支在 `await getLastFocused` + `await storage.session.set` 兩個 await
+之後才呼叫 `sidePanel.open` → gesture 已失效 → reject 被外層 `catch` 靜默 `console.warn` 吞掉 →
+使用者看到「快捷鍵沒反應」。macOS 綠燈全螢幕為常見預設,故全螢幕使用者幾乎每次都中招。
+(非全螢幕走 `chrome.windows.create` popup,不需 gesture,不受影響。)
+
+### 修法(`background.js` / `sidepanel.js`)
+- **gesture-first**:`openSpotlight()` 改為**非 async**,由 `onCommand` **同步呼叫(其前不可有 await)**。
+  全螢幕分支以**同步可得的記憶體快取** `lastFocusedNormal`(由 `chrome.windows.onFocusChanged`
+  維護:查 `windows.get(winId)`、只快取 `type==='normal'`、記 `id` 與 `fullscreen`)判斷全螢幕,
+  讓 `sidePanel.open` 能在任何 await 之前同步呼叫;`storage.session.set(pendingSearchFocus)` 採
+  fire-and-forget(不 await)。非全螢幕委派給 `openSpotlightPopup()`(原 popup 邏輯原封保留)。
+- **失敗保護**:`sidePanel.open` 若 reject → 清除旗標 + 退回 popup,確保快捷鍵不會靜默無反應。
+- **自我修正**:`openSpotlightPopup()` 與全螢幕分支 open 後皆 `refreshLastFocusedNormal()`,
+  讓 stale 快取(冷啟動首按、悄悄離開全螢幕無 focus 變更)於次按修正。
+- **TTL 過期保護**:`sidepanel.js` `consumePendingSearchFocus` 加 `SEARCH_FOCUS_TTL_MS=10000`,
+  丟棄先前失敗 open 殘留的舊旗標,避免下次開側邊欄誤搶焦點。
+
+### 已知取捨(對抗式 review 確認,皆自限、非阻斷)
+- **冷啟動 SW 首按**:快取為初始值,全螢幕使用者首按落 popup(可能跳 Space),次按修正。
+  仍**優於修正前「完全無反應」**。
+- **stale-true**:離開全螢幕未觸發 onFocusChanged 時,下次開側邊欄而非 popup(等效搜尋入口);
+  open 後的 refresh 會於再次按鍵修正。
+
+### 驗證
+- `node --check`/esbuild parse 兩檔 OK;`test:unit` 232→236 綠(含原 4 spotlight E2E);
+  `npm test`(full)**41 passed / 2 skipped / 0 failed,106 tests**;`make` dev build OK。
+- **仍需手動驗證**:真實 Cmd+Shift+K(headless 無法注入 OS 快捷鍵)——請於 macOS **全螢幕**
+  與**非全螢幕**各觸發:全螢幕應開側邊欄並聚焦搜尋框、非全螢幕應開置中 popup。
