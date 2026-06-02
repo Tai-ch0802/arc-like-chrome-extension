@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Tersinkron ke Google Drive"
+  },
+  "densitySectionHeader": {
+    "message": "Jarak daftar"
+  },
+  "densityOptionCompact": {
+    "message": "Padat"
+  },
+  "densityOptionCozy": {
+    "message": "Normal (default)"
+  },
+  "densityOptionComfortable": {
+    "message": "Lega"
   }
 }

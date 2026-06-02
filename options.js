@@ -18,6 +18,12 @@ const THEME_OPTIONS = [
     { value: 'custom', labelKey: 'themeOptionCustom' }
 ];
 
+const DENSITY_OPTIONS = [
+    { value: 'compact', labelKey: 'densityOptionCompact' },
+    { value: 'cozy', labelKey: 'densityOptionCozy' },
+    { value: 'comfortable', labelKey: 'densityOptionComfortable' }
+];
+
 /**
  * 建立一個 .opt-row 容器：左側 label（含選用說明），右側 control。
  * @param {string} labelText
@@ -99,6 +105,26 @@ async function renderAppearance(container) {
         }
         // NOTE: no CustomEvent dispatch — sidepanel reacts via D6 storage bridge.
     });
+
+    // --- List density select ---
+    const { listDensity: storedDensity } = await api.getStorage('sync', { listDensity: 'cozy' });
+    const densitySelect = document.createElement('select');
+    densitySelect.id = 'density-select-dropdown';
+    densitySelect.className = 'modal-select';
+    for (const opt of DENSITY_OPTIONS) {
+        const o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = api.getMessage(opt.labelKey) || opt.value;
+        if (opt.value === (storedDensity || 'cozy')) o.selected = true;
+        densitySelect.appendChild(o);
+    }
+    // 只寫 storage;側邊欄透過 settingsBridge 的 storage.onChanged 即時套用密度。
+    densitySelect.addEventListener('change', async (event) => {
+        await api.setStorage('sync', { listDensity: event.target.value });
+    });
+    container.appendChild(
+        makeRow(api.getMessage('densitySectionHeader') || 'List spacing', densitySelect)
+    );
 
     // --- Background image panel (reuse backgroundImageManager) ---
     const bgConfig = await bgImage.loadBackgroundConfig();

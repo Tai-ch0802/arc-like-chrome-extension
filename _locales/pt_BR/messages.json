@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Sincronizado com o Google Drive"
+  },
+  "densitySectionHeader": {
+    "message": "Espaçamento da lista"
+  },
+  "densityOptionCompact": {
+    "message": "Compacto"
+  },
+  "densityOptionCozy": {
+    "message": "Normal (padrão)"
+  },
+  "densityOptionComfortable": {
+    "message": "Confortável"
   }
 }

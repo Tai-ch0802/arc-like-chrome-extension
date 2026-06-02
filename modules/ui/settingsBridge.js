@@ -5,7 +5,7 @@
  * sidepanel reacts to storage.onChanged. resolveSettingChangeActions maps a
  * change set to a list of UI actions; applySettingChanges executes them.
  */
-import { applyTheme } from './settingManager.js';
+import { applyTheme, applyDensity } from './settingManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 import * as state from '../stateManager.js';
@@ -20,6 +20,7 @@ export function resolveSettingChangeActions(changes, areaName) {
     const actions = [];
     if (areaName === 'sync') {
         if (changes.theme) actions.push({ type: 'applyTheme', value: changes.theme.newValue });
+        if (changes.listDensity) actions.push({ type: 'applyDensity', value: changes.listDensity.newValue });
         if (changes.customTheme) actions.push({ type: 'applyCustomTheme' });
         if (changes.backgroundImageConfig) actions.push({ type: 'applyBackground' });
         if (changes.uiLanguage) actions.push({ type: 'reload' });
@@ -58,6 +59,8 @@ export async function applySettingChanges(actions) {
             if (a.type === 'applyTheme') {
                 if (a.value === 'custom') await customTheme.loadAndApplyCustomTheme();
                 else applyTheme(a.value);
+            } else if (a.type === 'applyDensity') {
+                applyDensity(a.value);
             } else if (a.type === 'applyCustomTheme') {
                 await customTheme.loadAndApplyCustomTheme();
             } else if (a.type === 'applyBackground') {

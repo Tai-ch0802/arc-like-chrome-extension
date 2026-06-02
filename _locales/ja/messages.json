@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Google ドライブに同期済み"
+  },
+  "densitySectionHeader": {
+    "message": "行間隔"
+  },
+  "densityOptionCompact": {
+    "message": "コンパクト"
+  },
+  "densityOptionCozy": {
+    "message": "標準（既定）"
+  },
+  "densityOptionComfortable": {
+    "message": "ゆったり"
   }
 }

@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "已同步至 Google 雲端硬碟"
+  },
+  "densitySectionHeader": {
+    "message": "列表間距"
+  },
+  "densityOptionCompact": {
+    "message": "緊湊"
+  },
+  "densityOptionCozy": {
+    "message": "適中（預設）"
+  },
+  "densityOptionComfortable": {
+    "message": "寬鬆"
   }
 }

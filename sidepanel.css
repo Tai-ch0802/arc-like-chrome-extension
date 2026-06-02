@@ -57,6 +57,20 @@
     --arc-motion-long: var(--arc-anim-duration-slow);
     --arc-easing-standard: var(--arc-anim-easing-out);
     --arc-easing-emphasized: var(--arc-anim-easing-spring);
+
+    /* 列垂直間距(密度設定 listDensity;預設 = cozy = 現狀)。水平 padding 維持各列原值。 */
+    --list-row-py: 6px;      /* 分頁 / 閱讀清單 */
+    --bookmark-row-py: 4px;  /* 書籤 / 視窗資料夾 */
+}
+
+/* 列間距密度:body[data-density] 由 settingManager.applyDensity 設定。cozy 為預設(不需 override)。 */
+body[data-density="compact"] {
+    --list-row-py: 3px;
+    --bookmark-row-py: 2px;
+}
+body[data-density="comfortable"] {
+    --list-row-py: 10px;
+    --bookmark-row-py: 8px;
 }
 
 /* Material Symbols icon 基礎:inline 對齊、不隨 flex 壓縮。色彩由父層 color 繼承。 */
@@ -644,7 +658,7 @@ mark.url-match {
 .tab-item {
     display: flex;
     align-items: center;
-    padding: 6px 12px;
+    padding: var(--list-row-py) 12px;
     border-radius: 0;
     cursor: default;
     transition: background-color 0.15s ease-in-out,
@@ -825,7 +839,7 @@ mark.url-match {
 .window-folder {
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    padding: var(--bookmark-row-py) 8px;
     cursor: default;
     white-space: nowrap;
     overflow: hidden;
@@ -2274,7 +2288,7 @@ mark.url-match {
 .reading-list-item {
     display: flex;
     align-items: center;
-    padding: 6px 8px;
+    padding: var(--list-row-py) 8px;
     cursor: pointer;
     transition: background-color 0.15s ease-in-out;
     border-left: 3px solid transparent;
@@ -3203,7 +3217,7 @@ mark.url-match {
     justify-content: center;
     gap: 6px;
     padding: 6px 10px;
-    font-size: 0.85em;
+    font-size: 1em;
     background: var(--element-bg-color);
     color: var(--text-color-primary);
     border: 1px solid var(--border-color);
@@ -3227,6 +3241,7 @@ mark.url-match {
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
+    font-weight: 500;
 }
 
 /* Drive-sync status badge: tiny, read-only indicator beside the switcher. */

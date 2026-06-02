@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "已同步至 Google 云端硬盘"
+  },
+  "densitySectionHeader": {
+    "message": "列表间距"
+  },
+  "densityOptionCompact": {
+    "message": "紧凑"
+  },
+  "densityOptionCozy": {
+    "message": "适中（默认）"
+  },
+  "densityOptionComfortable": {
+    "message": "宽松"
   }
 }
