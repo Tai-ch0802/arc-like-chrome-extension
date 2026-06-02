@@ -66,6 +66,20 @@
     flex-shrink: 0;
 }
 
+/* Chevron 狀態化:單一 expand_more(▼) SVG;收合時旋轉 -90deg 指向右(▶)。
+   取代原本以 textContent '▶'/'▼' 切換的做法,讓拖曳判斷與測試改用 class/aria 狀態。 */
+.is-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.is-chevron .m3-icon {
+    transition: transform var(--arc-motion-short) var(--arc-easing-standard);
+}
+.is-chevron.is-collapsed .m3-icon {
+    transform: rotate(-90deg);
+}
+
 
 /* --- 主題定義 --- */
 

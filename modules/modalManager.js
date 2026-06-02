@@ -1,6 +1,7 @@
 import * as api from './apiManager.js';
 import { escapeHtml } from './utils/textUtils.js';
 import { GROUP_COLORS } from './ui/groupColors.js';
+import { renderIcon } from './icons.js';
 // tagManager only imports apiManager (no modalManager/tagManager cycle), so this
 // import is safe. We only need the preset color name list here.
 import { getPresetColors } from './bookmark/tagManager.js';
@@ -391,8 +392,8 @@ export function showAddToBookmarkDialog({ name, url }) {
                     folderItem.setAttribute('role', 'button'); // Accessibility role
 
                     const icon = document.createElement('span');
-                    icon.className = 'bookmark-icon';
-                    icon.textContent = '▼'; // Always expanded
+                    icon.className = 'bookmark-icon is-chevron'; // 樹狀挑選器恆展開
+                    icon.innerHTML = renderIcon('expand_more', { size: 16 });
 
                     const title = document.createElement('span');
                     title.className = 'bookmark-title';
@@ -549,7 +550,7 @@ export function pickFolder({ title } = {}) {
         allItem.className = 'bookmark-folder selected';
         allItem.tabIndex = 0;
         allItem.setAttribute('role', 'button');
-        allItem.innerHTML = `<span class="bookmark-icon">▼</span><span class="bookmark-title"></span>`;
+        allItem.innerHTML = `<span class="bookmark-icon is-chevron">${renderIcon('expand_more', { size: 16 })}</span><span class="bookmark-title"></span>`;
         allItem.querySelector('.bookmark-title').textContent = selected.path;
         allItem.addEventListener('click', () => pick(null, allItem.querySelector('.bookmark-title').textContent, allItem));
         allItem.addEventListener('keydown', (e) => {
@@ -570,7 +571,7 @@ export function pickFolder({ title } = {}) {
                 folderItem.tabIndex = 0;
                 folderItem.setAttribute('role', 'button');
                 const titleText = node.title || api.getMessage('bookmarksBar') || 'Bookmarks Bar';
-                folderItem.innerHTML = `<span class="bookmark-icon">▼</span><span class="bookmark-title"></span>`;
+                folderItem.innerHTML = `<span class="bookmark-icon is-chevron">${renderIcon('expand_more', { size: 16 })}</span><span class="bookmark-title"></span>`;
                 folderItem.querySelector('.bookmark-title').textContent = titleText;
                 const newPath = parentPath ? `${parentPath} / ${titleText}` : titleText;
                 folderItem.addEventListener('click', () => pick(node.id, newPath, folderItem));

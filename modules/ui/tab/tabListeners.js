@@ -79,7 +79,7 @@ export function initTabListeners(container, deps) {
 
             const newCollapsedState = !groupData.collapsed;
             content.style.display = newCollapsedState ? 'none' : 'block';
-            arrow.textContent = newCollapsedState ? '▶' : '▼';
+            if (arrow) arrow.classList.toggle('is-collapsed', newCollapsedState);
             header.setAttribute('aria-expanded', (!newCollapsedState).toString());
             header.dataset.collapsed = newCollapsedState ? 'true' : 'false';
 

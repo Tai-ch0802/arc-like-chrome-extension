@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ स्मार्ट ग्रुप"
+    "message": "स्मार्ट ग्रुप"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ अवर्गीकृत टैब को स्मार्ट तरीके से ग्रुप करें"
+    "message": "अवर्गीकृत टैब को स्मार्ट तरीके से ग्रुप करें"
   },
   "toastUndoBtn": {
     "message": "पूर्ववत करें"
@@ -637,10 +637,10 @@
     "message": "AI मॉडल तैयार नहीं है। कृपया सुनिश्चित करें कि आपका Chrome Gemini Nano का समर्थन करता है।"
   },
   "tooFewTabsToGroup": {
-    "message": "ग्रुप करने के लिए बहुत कम अवर्गीकृत टैब ✨"
+    "message": "ग्रुप करने के लिए बहुत कम अवर्गीकृत टैब"
   },
   "autoGroupingSuccess": {
-    "message": "✨ टैब सफलतापूर्वक ग्रुप किए गए!"
+    "message": "टैब सफलतापूर्वक ग्रुप किए गए!"
   },
   "noTabsGrouped": {
     "message": "किसी भी टैब को सफलतापूर्वक ग्रुप नहीं किया गया।"
@@ -649,7 +649,7 @@
     "message": "त्रुटि हुई: "
   },
   "unknownCategory": {
-    "message": "📦 अज्ञात श्रेणी"
+    "message": "अज्ञात श्रेणी"
   },
   "aiGroupingToggleLabel": {
     "message": "स्मार्ट ऑटो-ग्रुपिंग (Gemini Nano की आवश्यकता है)"
@@ -700,7 +700,7 @@
     "message": "\"Optimization Guide On Device Model\" की डाउनलोड प्रगति जाँचें।"
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ उपर दी गई सेटिंग बदलने के बाद Chrome को पुनः प्रारंभ करें।"
+    "message": "उपर दी गई सेटिंग बदलने के बाद Chrome को पुनः प्रारंभ करें।"
   },
   "aiSetupOpenLink": {
     "message": "खोलें"
@@ -718,7 +718,7 @@
     "message": "Tabs analyze हो रहे हैं..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Cleanup"
+    "message": "Cleanup"
   },
   "aiCleanupBtnTitle": {
     "message": "AI द्वारा सुझाया Tab Cleanup"
@@ -739,7 +739,7 @@
     "message": "AI {count} tab(s) बंद करने का सुझाव देता है। जिन्हें रखना है उनसे tick हटा दें।"
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI model अभी download नहीं हुआ है। पहले ✨ Smart Group click करें download शुरू करने के लिए।"
+    "message": "AI model अभी download नहीं हुआ है। पहले Smart Group click करें download शुरू करने के लिए।"
   },
   "aiCleanupSectionHeader": {
     "message": "जिन Tabs को आप बंद कर सकते हैं"
@@ -748,7 +748,7 @@
     "message": "सभी चुनें"
   },
   "aiCleanupToggleLabel": {
-    "message": "🧹 Tab Cleanup button दिखाएं"
+    "message": "Tab Cleanup button दिखाएं"
   },
   "bmToolsConfirmRemove": {
     "message": "चुने हुए हटाएं"
@@ -889,7 +889,7 @@
     "message": "AI से पूछें: tabs या bookmarks ढूंढें"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI model अभी download नहीं हुआ है। पहले ✨ Smart Group से download trigger करें, फिर try करें।"
+    "message": "AI model अभी download नहीं हुआ है। पहले Smart Group से download trigger करें, फिर try करें।"
   },
   "cmdPaletteEmpty": {
     "message": "कोई results नहीं"

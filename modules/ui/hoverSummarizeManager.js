@@ -279,5 +279,5 @@ function getDomain(url) {
 function buildFallbackText(tab) {
     const domain = getDomain(tab.url);
     const title = tab.title || '';
-    return `🌐 ${domain}\n${title}`;
+    return `${domain}\n${title}`;
 }

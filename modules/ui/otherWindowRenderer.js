@@ -4,7 +4,7 @@
  */
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
-import { EDIT_ICON_SVG } from '../icons.js';
+import { EDIT_ICON_SVG, renderIcon } from '../icons.js';
 import { otherWindowsList } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 
@@ -197,8 +197,8 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         folderItem.title = `Window ${index + 1}`;
 
         const icon = document.createElement('span');
-        icon.className = 'window-icon';
-        icon.textContent = '▶';
+        icon.className = 'window-icon is-chevron is-collapsed';
+        icon.innerHTML = renderIcon('expand_more', { size: 16 });
 
         const customName = state.getWindowName(window.id);
         const titleText = customName || `Window ${index + 1} (${window.tabs.length})`;
@@ -284,8 +284,9 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                 groupHeader.title = group.title;
 
                 const arrow = document.createElement('span');
-                arrow.className = 'tab-group-arrow';
-                arrow.textContent = group.collapsed ? '▶' : '▼';
+                arrow.className = 'tab-group-arrow is-chevron';
+                arrow.innerHTML = renderIcon('expand_more', { size: 16 });
+                arrow.classList.toggle('is-collapsed', group.collapsed);
 
                 const colorDot = document.createElement('div');
                 colorDot.className = 'tab-group-color-dot';
@@ -331,7 +332,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                     e.stopPropagation();
                     const isCollapsed = groupContent.style.display === 'none';
                     groupContent.style.display = isCollapsed ? 'block' : 'none';
-                    arrow.textContent = isCollapsed ? '▼' : '▶';
+                    arrow.classList.toggle('is-collapsed', !isCollapsed);
                     groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
                 });
 
@@ -355,7 +356,7 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         const toggleCollapse = () => {
             const isExpanded = folderContent.style.display !== 'none';
             folderContent.style.display = isExpanded ? 'none' : 'block';
-            icon.textContent = isExpanded ? '▶' : '▼';
+            icon.classList.toggle('is-collapsed', isExpanded);
             folderItem.setAttribute('aria-expanded', !isExpanded);
         };
 

@@ -13,6 +13,7 @@ import {
     meetsWcagAA
 } from '../utils/colorUtils.js';
 import { debounce } from '../utils/functionUtils.js';
+import { renderIcon } from '../icons.js';
 import { escapeHtml, sanitizeUrl } from '../utils/textUtils.js';
 
 // Storage keys
@@ -116,7 +117,7 @@ function createColorPickerPanelHtml(currentColors) {
                 <input type="color" id="color-text-primary" value="${escapeHtml(colors.primaryTextColor)}" />
             </div>
             <div id="contrast-warning" class="contrast-warning hidden">
-                ⚠️ ${api.getMessage('warningLowContrast') || 'Low contrast detected. Colors will be auto-adjusted.'}
+                ${renderIcon('warning', { size: 14 })} ${api.getMessage('warningLowContrast') || 'Low contrast detected. Colors will be auto-adjusted.'}
             </div>
             <div class="custom-theme-buttons">
                 <button id="btn-export-theme" class="modal-button">${api.getMessage('buttonExportTheme') || 'Export'}</button>

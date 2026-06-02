@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Pengelompokan Pintar"
+    "message": "Pengelompokan Pintar"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Kelompokkan Tab yang Belum Diklasifikasikan secara Pintar"
+    "message": "Kelompokkan Tab yang Belum Diklasifikasikan secara Pintar"
   },
   "toastUndoBtn": {
     "message": "Batal"
@@ -637,10 +637,10 @@
     "message": "Model AI belum siap. Pastikan Chrome Anda mendukung Gemini Nano."
   },
   "tooFewTabsToGroup": {
-    "message": "Terlalu sedikit tab yang belum diklasifikasikan untuk dikelompokkan ✨"
+    "message": "Terlalu sedikit tab yang belum diklasifikasikan untuk dikelompokkan"
   },
   "autoGroupingSuccess": {
-    "message": "✨ Tab berhasil dikelompokkan!"
+    "message": "Tab berhasil dikelompokkan!"
   },
   "noTabsGrouped": {
     "message": "Tidak ada tab yang berhasil dikelompokkan."
@@ -649,7 +649,7 @@
     "message": "Terjadi kesalahan: "
   },
   "unknownCategory": {
-    "message": "📦 Kategori Tidak Diketahui"
+    "message": "Kategori Tidak Diketahui"
   },
   "aiGroupingToggleLabel": {
     "message": "Pengelompokan Otomatis Cerdas (Memerlukan Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "Periksa kemajuan unduhan \"Optimization Guide On Device Model\"."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Mulai ulang Chrome setelah mengubah pengaturan di atas."
+    "message": "Mulai ulang Chrome setelah mengubah pengaturan di atas."
   },
   "aiSetupOpenLink": {
     "message": "Buka"
@@ -718,7 +718,7 @@
     "message": "Menganalisis tab..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Cleanup"
+    "message": "Cleanup"
   },
   "aiCleanupBtnTitle": {
     "message": "Tab cleanup yang disarankan AI"
@@ -739,7 +739,7 @@
     "message": "AI menyarankan {count} tab yang mungkin bisa Anda tutup. Hapus centang yang ingin Anda simpan."
   },
   "aiCleanupNeedsDownload": {
-    "message": "Model AI belum diunduh. Klik ✨ Smart Group terlebih dahulu untuk memulai unduhan."
+    "message": "Model AI belum diunduh. Klik Smart Group terlebih dahulu untuk memulai unduhan."
   },
   "aiCleanupSectionHeader": {
     "message": "Tab yang mungkin bisa ditutup"
@@ -748,7 +748,7 @@
     "message": "Pilih semua"
   },
   "aiCleanupToggleLabel": {
-    "message": "Tampilkan tombol 🧹 Tab Cleanup"
+    "message": "Tampilkan tombol Tab Cleanup"
   },
   "bmToolsConfirmRemove": {
     "message": "Hapus pilihan"
@@ -889,7 +889,7 @@
     "message": "Minta AI: temukan tab atau bookmark"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "Model AI belum diunduh. Picu ✨ Smart Group terlebih dahulu untuk mengunduh, lalu coba lagi."
+    "message": "Model AI belum diunduh. Picu Smart Group terlebih dahulu untuk mengunduh, lalu coba lagi."
   },
   "cmdPaletteEmpty": {
     "message": "Tidak ada hasil"

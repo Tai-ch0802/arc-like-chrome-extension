@@ -17,6 +17,7 @@ import * as state from '../stateManager.js';
 import * as aiManager from '../aiManager.js';
 import * as modal from '../modalManager.js';
 import * as readingListManager from '../readingListManager.js';
+import { renderIcon } from '../icons.js';
 
 const MAX_CANDIDATES = 30;
 const MAX_RESULTS = 8;
@@ -182,7 +183,7 @@ export async function openAskAiDialog() {
         const msg = document.createElement('div');
         msg.className = 'cmd-palette-empty';
         msg.textContent = api.getMessage('cmdPaletteAskAiUnavailable')
-            || 'AI model is not downloaded yet. Trigger ✨ Smart Group first to download, then try again.';
+            || 'AI model is not downloaded yet. Trigger Smart Group first to download, then try again.';
         root.appendChild(msg);
         return;
     }
@@ -203,7 +204,10 @@ export async function openAskAiDialog() {
 
         const icon = document.createElement('span');
         icon.className = 'cmd-palette-icon';
-        icon.textContent = item.type === 'tab' ? '🌐' : item.type === 'bookmark' ? '🔖' : '📚';
+        icon.innerHTML = renderIcon(
+            item.type === 'tab' ? 'language' : item.type === 'bookmark' ? 'bookmark' : 'menu_book',
+            { size: 16 }
+        );
 
         const meta = document.createElement('div');
         meta.className = 'cmd-palette-meta';

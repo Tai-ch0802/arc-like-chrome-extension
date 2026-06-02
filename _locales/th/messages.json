@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ จัดกลุ่มอัจฉริยะ"
+    "message": "จัดกลุ่มอัจฉริยะ"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ จัดกลุ่มแท็บที่ยังไม่แยกประเภทอย่างอัจฉริยะ"
+    "message": "จัดกลุ่มแท็บที่ยังไม่แยกประเภทอย่างอัจฉริยะ"
   },
   "toastUndoBtn": {
     "message": "เลิกทำ"
@@ -637,10 +637,10 @@
     "message": "โมเดล AI ยังไม่พร้อมใช้งาน โปรดตรวจสอบว่า Chrome ของคุณรองรับ Gemini Nano"
   },
   "tooFewTabsToGroup": {
-    "message": "มีแท็บที่ยังไม่แยกประเภทน้อยเกินไปที่จะจัดกลุ่ม ✨"
+    "message": "มีแท็บที่ยังไม่แยกประเภทน้อยเกินไปที่จะจัดกลุ่ม"
   },
   "autoGroupingSuccess": {
-    "message": "✨ จัดกลุ่มแท็บสำเร็จแล้ว!"
+    "message": "จัดกลุ่มแท็บสำเร็จแล้ว!"
   },
   "noTabsGrouped": {
     "message": "ไม่มีแท็บที่จัดกลุ่มสำเร็จ"
@@ -649,7 +649,7 @@
     "message": "เกิดข้อผิดพลาด: "
   },
   "unknownCategory": {
-    "message": "📦 หมวดหมู่ที่ไม่รู้จัก"
+    "message": "หมวดหมู่ที่ไม่รู้จัก"
   },
   "aiGroupingToggleLabel": {
     "message": "การจัดกลุ่มอัตโนมัติอัจฉริยะ (ต้องการ Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "ตรวจสอบความคืบหน้าการดาวน์โหลด \"Optimization Guide On Device Model\""
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ รีสตาร์ท Chrome หลังจากเปลี่ยนการตั้งค่าด้านบน"
+    "message": "รีสตาร์ท Chrome หลังจากเปลี่ยนการตั้งค่าด้านบน"
   },
   "aiSetupOpenLink": {
     "message": "เปิด"
@@ -718,7 +718,7 @@
     "message": "กำลังวิเคราะห์ tabs..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Cleanup"
+    "message": "Cleanup"
   },
   "aiCleanupBtnTitle": {
     "message": "AI แนะนำ Tab Cleanup"
@@ -739,7 +739,7 @@
     "message": "AI แนะนำ {count} tab ที่ปิดได้ ยกเลิกการเลือก tab ที่ต้องการเก็บ"
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI model ยังไม่ดาวน์โหลด คลิก ✨ Smart Group ก่อนเพื่อเริ่มดาวน์โหลด"
+    "message": "AI model ยังไม่ดาวน์โหลด คลิก Smart Group ก่อนเพื่อเริ่มดาวน์โหลด"
   },
   "aiCleanupSectionHeader": {
     "message": "Tabs ที่อาจปิดได้"
@@ -748,7 +748,7 @@
     "message": "เลือกทั้งหมด"
   },
   "aiCleanupToggleLabel": {
-    "message": "แสดงปุ่ม 🧹 Tab Cleanup"
+    "message": "แสดงปุ่ม Tab Cleanup"
   },
   "bmToolsConfirmRemove": {
     "message": "ลบที่เลือก"
@@ -889,7 +889,7 @@
     "message": "ถาม AI: หา tabs หรือ bookmarks"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI model ยังไม่ดาวน์โหลด เรียก ✨ Smart Group ก่อนเพื่อดาวน์โหลด แล้วลองอีกครั้ง"
+    "message": "AI model ยังไม่ดาวน์โหลด เรียก Smart Group ก่อนเพื่อดาวน์โหลด แล้วลองอีกครั้ง"
   },
   "cmdPaletteEmpty": {
     "message": "ไม่มีผลลัพธ์"

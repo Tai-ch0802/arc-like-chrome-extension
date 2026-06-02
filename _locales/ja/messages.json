@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ スマートグループ化"
+    "message": "スマートグループ化"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ 未分類のタブをスマートにグループ化"
+    "message": "未分類のタブをスマートにグループ化"
   },
   "toastUndoBtn": {
     "message": "元に戻す"
@@ -637,10 +637,10 @@
     "message": "AIモデルの準備ができていません。ChromeがGemini Nanoをサポートしているか確認してください。"
   },
   "tooFewTabsToGroup": {
-    "message": "グループ化する未分類のタブが少なすぎます ✨"
+    "message": "グループ化する未分類のタブが少なすぎます"
   },
   "autoGroupingSuccess": {
-    "message": "✨ タブが正常にグループ化されました！"
+    "message": "タブが正常にグループ化されました！"
   },
   "noTabsGrouped": {
     "message": "正常にグループ化されたタブはありませんでした。"
@@ -649,7 +649,7 @@
     "message": "エラーが発生しました: "
   },
   "unknownCategory": {
-    "message": "📦 不明なカテゴリ"
+    "message": "不明なカテゴリ"
   },
   "aiGroupingToggleLabel": {
     "message": "スマート自動グループ化 (Gemini Nanoが必要)"
@@ -700,7 +700,7 @@
     "message": "「Optimization Guide On Device Model」のダウンロード状況を確認できます。"
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ 上記の設定を変更した後、Chrome を再起動してください。"
+    "message": "上記の設定を変更した後、Chrome を再起動してください。"
   },
   "aiSetupOpenLink": {
     "message": "開く"
@@ -718,7 +718,7 @@
     "message": "タブを分析中..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 整理"
+    "message": "整理"
   },
   "aiCleanupBtnTitle": {
     "message": "AI タブ整理提案"
@@ -739,7 +739,7 @@
     "message": "AI は {count} 個のタブを閉じてよいと提案しています。残したいタブのチェックを外してください。"
   },
   "aiCleanupNeedsDownload": {
-    "message": "AI モデルがまだダウンロードされていません。まず ✨ Smart Group をクリックしてダウンロードを開始してください。"
+    "message": "AI モデルがまだダウンロードされていません。まず Smart Group をクリックしてダウンロードを開始してください。"
   },
   "aiCleanupSectionHeader": {
     "message": "閉じてよいタブ"
@@ -748,7 +748,7 @@
     "message": "すべて選択"
   },
   "aiCleanupToggleLabel": {
-    "message": "🧹 タブ整理ボタンを表示"
+    "message": "タブ整理ボタンを表示"
   },
   "bmToolsConfirmRemove": {
     "message": "選択を削除"
@@ -889,7 +889,7 @@
     "message": "AI に依頼：タブやブックマークを探す"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "AI モデルがまだダウンロードされていません。まず ✨ Smart Group でダウンロードしてから再試行してください。"
+    "message": "AI モデルがまだダウンロードされていません。まず Smart Group でダウンロードしてから再試行してください。"
   },
   "cmdPaletteEmpty": {
     "message": "結果なし"

@@ -622,10 +622,10 @@
     }
   },
   "smartGroupingBtnText": {
-    "message": "✨ Smart-Gruppierung"
+    "message": "Smart-Gruppierung"
   },
   "smartGroupingBtnTitle": {
-    "message": "✨ Nicht klassifizierte Tabs intelligent gruppieren"
+    "message": "Nicht klassifizierte Tabs intelligent gruppieren"
   },
   "toastUndoBtn": {
     "message": "Rückgängig"
@@ -637,10 +637,10 @@
     "message": "AI-Modell ist nicht bereit. Bitte stellen Sie sicher, dass Ihr Chrome Gemini Nano unterstützt."
   },
   "tooFewTabsToGroup": {
-    "message": "Zu wenige nicht klassifizierte Tabs zum Gruppieren ✨"
+    "message": "Zu wenige nicht klassifizierte Tabs zum Gruppieren"
   },
   "autoGroupingSuccess": {
-    "message": "✨ Tabs erfolgreich gruppiert!"
+    "message": "Tabs erfolgreich gruppiert!"
   },
   "noTabsGrouped": {
     "message": "Es wurden keine Tabs erfolgreich gruppiert."
@@ -649,7 +649,7 @@
     "message": "Ein Fehler ist aufgetreten: "
   },
   "unknownCategory": {
-    "message": "📦 Unbekannte Kategorie"
+    "message": "Unbekannte Kategorie"
   },
   "aiGroupingToggleLabel": {
     "message": "Intelligente automatische Gruppierung (Erfordert Gemini Nano)"
@@ -700,7 +700,7 @@
     "message": "Überprüfen Sie den Download-Fortschritt von \"Optimization Guide On Device Model\"."
   },
   "aiSetupRestartNote": {
-    "message": "⚠️ Starten Sie Chrome nach der Änderung der obigen Einstellungen neu."
+    "message": "Starten Sie Chrome nach der Änderung der obigen Einstellungen neu."
   },
   "aiSetupOpenLink": {
     "message": "Öffnen"
@@ -718,7 +718,7 @@
     "message": "Tabs werden analysiert..."
   },
   "aiCleanupBtnText": {
-    "message": "🧹 Aufräumen"
+    "message": "Aufräumen"
   },
   "aiCleanupBtnTitle": {
     "message": "KI-vorgeschlagene Tab-Bereinigung"
@@ -739,7 +739,7 @@
     "message": "KI schlägt {count} Tab(s) zum Schließen vor. Deaktivieren Sie die, die Sie behalten möchten."
   },
   "aiCleanupNeedsDownload": {
-    "message": "KI-Modell ist noch nicht heruntergeladen. Klicken Sie zuerst ✨ Smart Group, um den Download zu starten."
+    "message": "KI-Modell ist noch nicht heruntergeladen. Klicken Sie zuerst Smart Group, um den Download zu starten."
   },
   "aiCleanupSectionHeader": {
     "message": "Tabs, die Sie schließen könnten"
@@ -748,7 +748,7 @@
     "message": "Alle auswählen"
   },
   "aiCleanupToggleLabel": {
-    "message": "🧹 Tab-Bereinigung-Schaltfläche anzeigen"
+    "message": "Tab-Bereinigung-Schaltfläche anzeigen"
   },
   "bmToolsConfirmRemove": {
     "message": "Ausgewählte entfernen"
@@ -889,7 +889,7 @@
     "message": "KI fragen: Tabs oder Lesezeichen finden"
   },
   "cmdPaletteAskAiUnavailable": {
-    "message": "KI-Modell ist noch nicht heruntergeladen. Lösen Sie zuerst ✨ Smart Group zum Herunterladen aus und versuchen Sie es erneut."
+    "message": "KI-Modell ist noch nicht heruntergeladen. Lösen Sie zuerst Smart Group zum Herunterladen aus und versuchen Sie es erneut."
   },
   "cmdPaletteEmpty": {
     "message": "Keine Ergebnisse"

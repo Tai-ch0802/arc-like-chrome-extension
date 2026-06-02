@@ -197,9 +197,9 @@ describe('Search Group Auto-Expand', () => {
             });
             expect(isCollapsedAgain).toBe(true);
 
-            // Verify arrow is ▶
-            const arrow = await page.$eval(groupHeaderSelector + ' .tab-group-arrow', el => el.textContent);
-            expect(arrow).toBe('▶');
+            // Verify arrow is collapsed (chevron rotated via is-collapsed class)
+            const arrowCollapsed = await page.$eval(groupHeaderSelector + ' .tab-group-arrow', el => el.classList.contains('is-collapsed'));
+            expect(arrowCollapsed).toBe(true);
 
         } finally {
             await clearSearch();

@@ -15,7 +15,7 @@ import * as tagManager from './modules/bookmark/tagManager.js';
 import { openBookmarkToolsDialog } from './modules/bookmark/bookmarkToolsUI.js';
 import * as readingListSummaryStore from './modules/readingList/summaryStore.js';
 import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
-import { SEARCH_NO_RESULTS_ICON_SVG } from './modules/icons.js';
+import { SEARCH_NO_RESULTS_ICON_SVG, renderIcon } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
@@ -194,6 +194,13 @@ function applyStaticTranslations() {
         if (message) {
             el.textContent = message;
         }
+    });
+
+    // 注入 Material Symbols 圖示:[data-icon] 元素(icon-only 按鈕或 .btn-icon span)。
+    // 與 data-i18n 分離(label 在 .btn-label),故文字在地化不會洗掉圖示。
+    document.querySelectorAll('[data-icon]').forEach(el => {
+        const size = parseInt(el.dataset.iconSize, 10) || 16;
+        el.innerHTML = renderIcon(el.dataset.icon, { size });
     });
 }
 
