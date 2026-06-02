@@ -73,6 +73,7 @@ describe('Performance Benchmark', () => {
                 allGroups.push(...groups);
                 otherWindows.push({
                     id: i,
+                    type: 'normal', // chrome.windows.getAll always returns type; renderer filters type==='normal'
                     tabs: tabs,
                     focused: false
                 });

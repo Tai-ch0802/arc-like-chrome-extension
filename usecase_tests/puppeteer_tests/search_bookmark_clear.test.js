@@ -170,4 +170,44 @@ describe('Bookmark Search Clear', () => {
         const searchValue = await page.$eval('#search-box', el => el.value);
         expect(searchValue).toBe('');
     });
+
+    it('clearing search leaves no stale highlights in a COLLAPSED folder (regression)', async () => {
+        const folderId = testBookmarkIds[0];
+        const folderSel = `.bookmark-folder[data-bookmark-id="${folderId}"]`;
+        const isCollapsed = (sel) => {
+            const f = document.querySelector(sel);
+            return f && f.getAttribute('aria-expanded') === 'false';
+        };
+
+        // Ensure the folder is COLLAPSED before searching (beforeAll expanded it).
+        await page.evaluate((sel) => {
+            const f = document.querySelector(sel);
+            if (f && f.getAttribute('aria-expanded') === 'true') f.click();
+        }, folderSel);
+        await page.waitForFunction(isCollapsed, { timeout: 5000 }, folderSel);
+
+        // Search for a bookmark INSIDE the collapsed folder: forceExpandAll renders it
+        // with <mark> highlights into the folder's (otherwise collapsed) cached content.
+        await page.type('#search-box', 'ClearTestBeta');
+        await page.waitForFunction(
+            () => document.querySelectorAll('#bookmark-list mark').length > 0,
+            { timeout: 5000 }
+        );
+
+        // Clear the search; the folder should return to its collapsed state.
+        await page.click('#clear-search-btn');
+        await page.waitForFunction(isCollapsed, { timeout: 5000 }, folderSel);
+
+        // Re-expand the folder: with the fix, stale highlighted children are purged on
+        // clear so this lazy-loads fresh, mark-free rows. Without the fix, the stale
+        // <mark> rows resurface here.
+        await page.click(folderSel);
+        await page.waitForFunction(
+            (sel) => { const f = document.querySelector(sel); return f && f.getAttribute('aria-expanded') === 'true'; },
+            { timeout: 5000 }, folderSel
+        );
+        await new Promise(r => setTimeout(r, 300));
+        const highlights = await page.evaluate(() => document.querySelectorAll('#bookmark-list mark').length);
+        expect(highlights).toBe(0);
+    });
 });
