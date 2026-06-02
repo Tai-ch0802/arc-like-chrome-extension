@@ -249,7 +249,9 @@ export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = []
     if (existing) {
         if (metadata.name !== undefined) existing.name = metadata.name;
         if (metadata.color !== undefined) existing.color = metadata.color;
-        if (metadata.icon !== undefined) existing.icon = metadata.icon;
+        // icon 與本機 create/update 一致限為單一 emoji(length<=4):防止損毀/惡意的遠端
+        // 資料帶入超長字串,污染各處圖示渲染(workspace 標籤、Spotlight 結果列)。
+        if (metadata.icon !== undefined && metadata.icon.length <= 4) existing.icon = metadata.icon;
         // bookmarkFolderId is intentionally allowed to be cleared (undefined).
         existing.bookmarkFolderId = metadata.bookmarkFolderId || undefined;
         if (metadata.syncEnabled !== undefined) existing.syncEnabled = Boolean(metadata.syncEnabled);
@@ -261,7 +263,7 @@ export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = []
             id,
             name: metadata.name || 'Workspace',
             color: metadata.color || 'blue',
-            icon: metadata.icon || '💼',
+            icon: (metadata.icon && metadata.icon.length <= 4) ? metadata.icon : '💼',
             bookmarkFolderId: metadata.bookmarkFolderId || undefined,
             tabSnapshot: Array.isArray(tabSnapshot) ? tabSnapshot : [],
             lastActiveAt: remoteUpdatedAt,

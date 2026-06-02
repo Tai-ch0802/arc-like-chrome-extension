@@ -6,6 +6,7 @@
 import * as api from '../apiManager.js';
 import { searchAll } from '../commandPalette/dataProvider.js';
 import { debounce } from '../utils/functionUtils.js';
+import { isImageSrc } from '../utils/iconUtils.js';
 
 let inputEl, resultsEl;
 /** @type {Array<{item: object, row: HTMLElement}>} */
@@ -88,16 +89,19 @@ function buildRow(item, index) {
 
     const icon = document.createElement('span');
     icon.className = 'cmd-palette-icon';
-    const isUrlIcon = typeof item.icon === 'string'
-        && (item.icon.startsWith('http://') || item.icon.startsWith('https://') || item.icon.startsWith('chrome://'));
-    if (isUrlIcon) {
+    // item.icon 可能是 favicon URL/URI 或短字串(emoji/glyph)。凡可作 <img> 來源的 scheme
+    // (http/https/chrome/chrome-extension/data/blob/file)都以圖片渲染;其餘才當文字。
+    // 漏掉 data: 等 scheme 會讓 data URI favicon(分頁常見)被當成 textContent,在固定寬度的
+    // 圖示框內水平溢出而與相鄰列文字重疊。
+    const iconStr = typeof item.icon === 'string' ? item.icon : '';
+    if (isImageSrc(iconStr)) {
         const img = document.createElement('img');
-        img.src = item.icon;
+        img.src = iconStr;
         img.alt = '';
         img.onerror = () => { img.replaceWith(document.createTextNode('🌐')); };
         icon.appendChild(img);
     } else {
-        icon.textContent = item.icon || '•';
+        icon.textContent = iconStr || '•';
     }
 
     const meta = document.createElement('div');
