@@ -153,8 +153,9 @@ function createOtherWindowTabElement(tab) {
 export function renderOtherWindowsSection(otherWindows, currentWindowId, allGroups = []) {
     if (!otherWindowsList) return;
 
-    // Filter out current window and windows with no tabs
-    const windowsToShow = otherWindows.filter(w => w.id !== currentWindowId && w.tabs && w.tabs.length > 0);
+    // Filter out: current window, non-normal windows (popup/devtools/app — e.g. the
+    // Spotlight popup should not appear here), and windows with no tabs.
+    const windowsToShow = otherWindows.filter(w => w.id !== currentWindowId && w.type === 'normal' && w.tabs && w.tabs.length > 0);
 
     otherWindowsList.innerHTML = '';
 

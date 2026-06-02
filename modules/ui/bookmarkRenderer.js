@@ -791,6 +791,11 @@ export function renderBookmarks(bookmarkNodes, container, parentId, refreshBookm
             const isExpanded = currentOptions.forceExpandAll || state.isFolderExpanded(node.id);
             if (isExpanded && node.children) {
                 renderBookmarks(node.children, content, node.id, refreshBookmarksCallback, currentOptions);
+            } else if (content.children.length > 0) {
+                // 收合的資料夾若殘留先前 forceExpandAll 搜尋渲染的子節點(含 <mark> 高亮),
+                // 在此清空,讓下次展開時 lazy-load 重新渲染為無高亮列。否則清除搜尋後再展開
+                // 該資料夾會顯示舊高亮殘影/卡在過濾狀態(因 lazy-load guard 見到殘留節點而不重繪)。
+                content.replaceChildren();
             }
 
             newChildren.push(item);
