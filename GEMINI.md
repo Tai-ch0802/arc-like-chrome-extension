@@ -74,7 +74,7 @@ key_files:
   - file_path: modules/ui/readingListRenderer.js
     description: "[UI] 閱讀清單渲染。負責閱讀清單項目的 DOM 生成、事件處理（點擊/刪除/切換已讀）、展開收合、鍵盤導航、新項目標籤、排序功能 (日期/標題)。"
   - file_path: modules/icons.js
-    description: "[UI] SVG 圖示集中管理。匯出所有 UI 使用的 SVG 圖示常數，避免重複定義。"
+    description: "[UI] Icon 系統(M3)。以 Material Symbols Outlined(viewBox 0 -960 960 960, fill=currentColor)集中管理；ICONS map(~40 icon)+ renderIcon/renderIconEl/hasIcon helper;既有 *_ICON_SVG 常數沿用同名匯出(改以 Material Symbols 重繪)。全 UI emoji 圖示改用此系統(inline SVG via innerHTML)。"
   - file_path: modules/aiManager.js
     description: "[AI] 本機 AI 模型管理。封裝 LanguageModel (Prompt API) 與 Summarizer API；提供 tab grouping、頁面摘要、AI 群組自動命名 (generateGroupName)、AI tab cleanup 建議 (generateCleanupSuggestions)、reading-list 摘要 (summarizeText)、自然語言搜尋的 reranker (runPrompt，使用獨立 nlLanguageModelSession)。"
   - file_path: modules/ui/aiGrouperUI.js
@@ -102,9 +102,9 @@ key_files:
   - file_path: modules/commandPalette/nlSearch.js
     description: "[AI] 自然語言搜尋。Phase 8b 新增；使用 Chrome Prompt API 作 reranker（非 filter），透過 preFilterByQuery 用 indexOf scoring 降低候選後再送 LLM。"
   - file_path: modules/workspace/workspaceManager.js
-    description: "[功能] Workspace 業務邏輯。Phase 6 新增、Phase 9 重構儲存架構；分離 metadata (chrome.storage.sync, 8KB/key 限制) 與 tabSnapshot (chrome.storage.local)，含 legacy windowNames 一次性遷移與 onChanged 跨裝置同步。Phase 12(批C) 快照捕捉 tab group(groupKey/title/color)、切換時 best-effort 重建 group（純函式 buildSnapshotFromTabs / clusterCreatedTabsByGroup）。Drive sync (批E) 新增 isWorkspaceBound(查 windowWorkspaceMap 是否綁定) 與 applyRemoteWorkspace(把 Drive 拉回的 workspace 寫入本地，不開分頁、不 bumpRev、rev/updatedAt 直接取自 remote)。"
+    description: "[功能] Workspace 業務邏輯。Phase 6 新增、Phase 9 重構儲存架構；分離 metadata (chrome.storage.sync, 8KB/key 限制) 與 tabSnapshot (chrome.storage.local)，含 legacy windowNames 一次性遷移與 onChanged 跨裝置同步。Phase 12(批C) 快照捕捉 tab group(groupKey/title/color)、切換時 best-effort 重建 group（純函式 buildSnapshotFromTabs / clusterCreatedTabsByGroup）。Drive sync (批E) 新增 isWorkspaceBound(查 windowWorkspaceMap 是否綁定) 與 applyRemoteWorkspace(把 Drive 拉回的 workspace 寫入本地，不開分頁、不 bumpRev、rev/updatedAt 直接取自 remote)。M3 重構:icon 改存 Material Symbols icon-id(PRESET_ICONS),resolveWorkspaceIcon 相容舊版 emoji(icon-id→SVG/舊 emoji→跳脫文字),isValidWorkspaceIcon 守衛接受 icon-id 或 <=4 emoji。"
   - file_path: modules/workspace/workspaceUI.js
-    description: "[UI] Workspace 切換器與管理介面。Phase 6 新增；下拉切換 + 管理 modal + 切換確認 (含 unbound tabs 自動 auto-save 防資料遺失)。"
+    description: "[UI] Workspace 切換器與管理介面。M3 重構後:工作區列為單一 #workspace-switch-btn(名稱置中、無 emoji)→開管理 dialog;切換在 dialog 內(每列 .workspace-manage__switch 點擊即切換 performSwitch + 確認,含 unbound tabs auto-save 防資料遺失);rename/delete/cloud 用 Material Symbols。"
   - file_path: modules/sync/syncProvider.js
     description: "[同步] SyncProvider 介面定義（版本化 KV：isConnected/list/read/write/remove，read/write 帶 server version 樂觀鎖）。Phase 13(批E) 新增；提供 NoopSyncProvider（同步關閉時的 inert 預設，全部安全 no-op，保留 local-only 行為）與 createFakeSyncProvider（純 Map 記憶體模擬 + __failNext 故障注入，供單元/整合測試在 Node 跑、無 chrome/fetch/OAuth 依賴）。"
   - file_path: modules/sync/driveAuth.js
