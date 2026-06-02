@@ -10,6 +10,7 @@ import * as api from '../apiManager.js';
 import * as readingListManager from '../readingListManager.js';
 import * as wsManager from '../workspace/workspaceManager.js';
 import { buildActions } from './actions.js';
+import { requestPanelAction, openUrlInOrigin } from './panelBridge.js';
 
 const MAX_RESULTS_PER_GROUP = 8;
 
@@ -59,11 +60,7 @@ function getWorkspaceResults(q) {
         icon: w.icon,
         title: w.name,
         subtitle: `${(w.tabSnapshot || []).length} tab(s)`,
-        handler: async () => {
-            // Lazy-import to avoid circular dep with workspaceUI.
-            const { requestSwitchTo } = await import('../workspace/workspaceUI.js');
-            await requestSwitchTo(w.id);
-        },
+        handler: () => requestPanelAction('switch-workspace', { workspaceId: w.id }),
     }));
 }
 
@@ -93,7 +90,7 @@ function getBookmarkResults(q) {
             icon: '🔖',
             title: b.title || '(untitled)',
             subtitle: b.url,
-            handler: () => chrome.tabs.create({ url: b.url }),
+            handler: () => openUrlInOrigin(b.url),
         }));
 }
 
@@ -106,7 +103,7 @@ async function getReadingListResults(q) {
             icon: '📚',
             title: e.title || '(untitled)',
             subtitle: e.url,
-            handler: () => chrome.tabs.create({ url: e.url }),
+            handler: () => openUrlInOrigin(e.url),
         }));
 }
 
