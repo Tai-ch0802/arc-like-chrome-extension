@@ -9,6 +9,7 @@
 import * as wsManager from './workspaceManager.js';
 import * as modal from '../modalManager.js';
 import * as api from '../apiManager.js';
+import { renderIcon } from '../icons.js';
 
 let currentWindowId = null;
 
@@ -20,21 +21,16 @@ export async function initWorkspaceUI() {
         currentWindowId = chrome.windows.WINDOW_ID_CURRENT;
     }
 
-    const switcher = document.getElementById('workspace-switcher');
-    const manageBtn = document.getElementById('workspace-manage-btn');
-    if (!switcher) return;
+    const switchBtn = document.getElementById('workspace-switch-btn');
+    if (!switchBtn) return;
 
-    switcher.setAttribute('aria-label', api.getMessage('workspaceSwitcherAriaLabel') || 'Active workspace');
-    if (manageBtn) {
-        const manageLabel = api.getMessage('workspaceManageTitle') || 'Manage workspaces';
-        manageBtn.title = manageLabel;
-        manageBtn.setAttribute('aria-label', manageLabel);
-    }
+    const manageLabel = api.getMessage('workspaceManageTitle') || 'Manage workspaces';
+    switchBtn.title = manageLabel;
+    switchBtn.setAttribute('aria-label', manageLabel);
 
-    renderSwitcher();
+    renderSwitchButton();
 
-    switcher.addEventListener('change', handleSwitch);
-    manageBtn?.addEventListener('click', openManageDialog);
+    switchBtn.addEventListener('click', openManageDialog);
 
     // Re-render switcher on:
     //   - local area: workspaceSnapshots / windowWorkspaceMap (this device's edits)
@@ -54,7 +50,7 @@ export async function initWorkspaceUI() {
         clearTimeout(reloadTimer);
         reloadTimer = setTimeout(() => {
             wsManager.initWorkspaces()
-                .then(renderSwitcher)
+                .then(renderSwitchButton)
                 .catch(err => console.warn('[workspace] sync reload failed:', err));
         }, 200);
     });
@@ -122,40 +118,26 @@ function installWindowCleanup() {
     });
 }
 
-function renderSwitcher() {
-    const switcher = document.getElementById('workspace-switcher');
-    if (!switcher) return;
+function renderSwitchButton() {
+    const btn = document.getElementById('workspace-switch-btn');
+    if (!btn) return;
+    const label = btn.querySelector('.workspace-switch-label');
+    if (!label) return;
     const activeId = wsManager.getActiveWorkspaceId(currentWindowId);
-    const all = wsManager.getAllWorkspaces();
-
-    switcher.innerHTML = '';
-
-    const blank = document.createElement('option');
-    blank.value = '';
-    blank.textContent = api.getMessage('workspaceNoActive') || '— no workspace —';
-    if (!activeId) blank.selected = true;
-    switcher.appendChild(blank);
-
-    for (const ws of all) {
-        const opt = document.createElement('option');
-        opt.value = ws.id;
-        opt.textContent = `${ws.icon} ${ws.name}`;
-        if (ws.id === activeId) opt.selected = true;
-        switcher.appendChild(opt);
-    }
+    const active = activeId ? wsManager.getWorkspace(activeId) : null;
+    // 名稱置中、無前置 emoji(見 .workspace-switch-btn CSS)。
+    label.textContent = active ? active.name : (api.getMessage('workspaceNoActive') || '— no workspace —');
 }
 
-async function handleSwitch(e) {
-    const targetId = e.target.value;
-    if (!targetId) {
-        renderSwitcher();
-        return;
-    }
-    const target = wsManager.getWorkspace(targetId);
-    if (!target) {
-        renderSwitcher();
-        return;
-    }
+/**
+ * 切換到指定工作區(沿用確認流程)。回傳是否實際切換(供呼叫端決定是否關閉管理 dialog)。
+ * 不在此重繪按鈕——切換成功後 storage.onChanged 訂閱會觸發 renderSwitchButton。
+ * @param {string} targetId
+ * @returns {Promise<boolean>}
+ */
+async function performSwitch(targetId) {
+    const target = targetId ? wsManager.getWorkspace(targetId) : null;
+    if (!target) return false;
     const currentTabs = await chrome.tabs.query({ windowId: currentWindowId });
     const isUnbound = !wsManager.getActiveWorkspaceId(currentWindowId);
 
@@ -176,14 +158,10 @@ async function handleSwitch(e) {
             .replace('{n}', String(currentTabs.length)),
         confirmButtonText: api.getMessage('workspaceSwitchConfirmBtn') || 'Switch',
     });
-    if (!ok) {
-        renderSwitcher();
-        return;
-    }
+    if (!ok) return false;
     try {
         await wsManager.switchWorkspace(targetId, currentWindowId);
-        // tabs are about to be replaced; renderSwitcher will run from the
-        // storage.onChanged subscriber once setActiveWorkspace persists.
+        return true;
     } catch (err) {
         console.error('[workspace] switch failed:', err);
         // Show the failure to the user so they know the window wasn't changed.
@@ -193,7 +171,7 @@ async function handleSwitch(e) {
                 || 'Could not switch workspace. Your current tabs were not changed.',
             confirmButtonText: api.getMessage('closeButton') || 'OK',
         });
-        renderSwitcher();
+        return false;
     }
 }
 
@@ -232,7 +210,7 @@ function openManageDialog() {
             const empty = list.querySelector('.workspace-manage__empty');
             if (empty) empty.remove();
             list.appendChild(buildManageRow(ws, true, list));
-            renderSwitcher();
+            renderSwitchButton();
         }
     });
     container.appendChild(createBtn);
@@ -247,15 +225,32 @@ function buildManageRow(ws, isActive, listEl) {
     const row = document.createElement('div');
     row.className = 'workspace-manage__row';
 
+    // 主區為切換按鈕:點擊即切換工作區(沿用確認流程),成功後關閉管理 dialog。
+    // rename/delete 為同層獨立按鈕(非巢狀),點擊不會冒泡到切換按鈕。
+    const switchEl = document.createElement('button');
+    switchEl.className = 'workspace-manage__switch';
+    if (isActive) switchEl.classList.add('active');
+    switchEl.title = api.getMessage('workspaceSwitchConfirmBtn') || 'Switch';
+
+    const iconEl = document.createElement('span');
+    iconEl.className = 'workspace-manage__icon';
+    iconEl.innerHTML = wsManager.resolveWorkspaceIcon(ws.icon, { size: 18 });
+    switchEl.appendChild(iconEl);
+
     const label = document.createElement('span');
     label.className = 'workspace-manage__label';
     const updateLabel = () => {
         const tabCount = ws.tabSnapshot ? ws.tabSnapshot.length : 0;
-        label.textContent = `${ws.icon} ${ws.name} — ${tabCount} tab(s)`;
+        label.textContent = `${ws.name} — ${tabCount} tab(s)`;
     };
     updateLabel();
-    if (isActive) label.classList.add('active');
-    row.appendChild(label);
+    switchEl.appendChild(label);
+
+    switchEl.addEventListener('click', async () => {
+        const switched = await performSwitch(ws.id);
+        if (switched) document.getElementById('closeButton')?.click();
+    });
+    row.appendChild(switchEl);
 
     // Read-only Drive-sync indicator. The authoritative opt-in toggle lives in
     // the options Sync section; this is purely a visual cue that the workspace
@@ -263,7 +258,7 @@ function buildManageRow(ws, isActive, listEl) {
     if (ws.syncEnabled === true) {
         const cloud = document.createElement('span');
         cloud.className = 'workspace-manage__sync-glyph';
-        cloud.textContent = '☁️';
+        cloud.innerHTML = renderIcon('cloud', { size: 14 });
         cloud.title = api.getMessage('workspaceSyncedTitle') || 'Synced to Google Drive';
         cloud.setAttribute('aria-label', cloud.title);
         row.appendChild(cloud);
@@ -272,7 +267,8 @@ function buildManageRow(ws, isActive, listEl) {
     const renameBtn = document.createElement('button');
     renameBtn.className = 'workspace-manage__btn';
     renameBtn.title = api.getMessage('workspaceRename') || 'Rename';
-    renameBtn.textContent = '✏️';
+    renameBtn.setAttribute('aria-label', renameBtn.title);
+    renameBtn.innerHTML = renderIcon('edit', { size: 16 });
     renameBtn.addEventListener('click', async () => {
         const newName = await modal.showPrompt({
             title: api.getMessage('workspaceRename') || 'Rename workspace',
@@ -283,7 +279,7 @@ function buildManageRow(ws, isActive, listEl) {
             // Mutate the in-place snapshot used by closures and refresh just this row.
             ws.name = newName.trim();
             updateLabel();
-            renderSwitcher();
+            renderSwitchButton();
         }
     });
     row.appendChild(renameBtn);
@@ -291,7 +287,8 @@ function buildManageRow(ws, isActive, listEl) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'workspace-manage__btn';
     deleteBtn.title = api.getMessage('workspaceDelete') || 'Delete';
-    deleteBtn.textContent = '🗑️';
+    deleteBtn.setAttribute('aria-label', deleteBtn.title);
+    deleteBtn.innerHTML = renderIcon('delete', { size: 16 });
     deleteBtn.addEventListener('click', async () => {
         const ok = await modal.showConfirm({
             title: api.getMessage('workspaceDeleteConfirmTitle') || 'Delete workspace',
@@ -310,7 +307,7 @@ function buildManageRow(ws, isActive, listEl) {
                 empty.textContent = api.getMessage('workspaceManageEmpty') || 'No workspaces yet.';
                 listEl.appendChild(empty);
             }
-            renderSwitcher();
+            renderSwitchButton();
         }
     });
     row.appendChild(deleteBtn);
@@ -339,8 +336,5 @@ export async function createWorkspaceFromCurrent() {
 
 /** Exposed so the Command Palette can prompt switch to a workspace by id. */
 export async function requestSwitchTo(workspaceId) {
-    const switcher = document.getElementById('workspace-switcher');
-    if (!switcher) return;
-    switcher.value = workspaceId;
-    handleSwitch({ target: switcher });
+    await performSwitch(workspaceId);
 }

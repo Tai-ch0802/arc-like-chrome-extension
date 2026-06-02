@@ -3165,20 +3165,39 @@ mark.url-match {
     border-bottom: 1px solid var(--border-color);
 }
 
-.workspace-switcher {
+/* 工作區列:單一按鈕,名稱置中、無 emoji;點擊開管理 dialog。 */
+.workspace-switch-btn {
     flex: 1;
     min-width: 0;
-    padding: 4px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 10px;
     font-size: 0.85em;
     background: var(--element-bg-color);
     color: var(--text-color-primary);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--arc-radius-sm);
     cursor: pointer;
+    transition: background-color var(--arc-motion-short) var(--arc-easing-standard);
 }
 
-.workspace-switcher:focus {
-    outline: 1px solid var(--accent-color);
+.workspace-switch-btn:hover {
+    background: var(--element-bg-hover-color);
+}
+
+.workspace-switch-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--arc-focus-ring);
+}
+
+.workspace-switch-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
 }
 
 /* Drive-sync status badge: tiny, read-only indicator beside the switcher. */
@@ -3252,6 +3271,44 @@ mark.url-match {
     border-bottom: 1px solid var(--border-color);
 }
 
+/* 列主區=切換按鈕(icon + 名稱),點擊即切換。 */
+.workspace-manage__switch {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-color-primary);
+    cursor: pointer;
+    text-align: left;
+    border-radius: var(--arc-radius-sm);
+    transition: background-color var(--arc-motion-short) var(--arc-easing-standard);
+}
+
+.workspace-manage__switch:hover {
+    background: var(--element-bg-hover-color);
+}
+
+.workspace-manage__switch:focus-visible {
+    outline: none;
+    box-shadow: var(--arc-focus-ring);
+}
+
+.workspace-manage__icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-color-secondary);
+}
+
+.ws-emoji-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
 .workspace-manage__label {
     flex: 1;
     min-width: 0;
@@ -3264,13 +3321,15 @@ mark.url-match {
 
 .workspace-manage__sync-glyph {
     flex: 0 0 auto;
-    font-size: 0.85em;
+    display: inline-flex;
+    align-items: center;
     line-height: 1;
     opacity: 0.8;
     cursor: default;
+    color: var(--info-color);
 }
 
-.workspace-manage__label.active {
+.workspace-manage__switch.active .workspace-manage__label {
     font-weight: 600;
     color: var(--accent-color);
 }
@@ -3279,11 +3338,14 @@ mark.url-match {
     flex-shrink: 0;
     width: 28px;
     height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--arc-radius-sm);
     background: var(--element-bg-color);
+    color: var(--text-color-primary);
     cursor: pointer;
-    font-size: 14px;
 }
 
 .workspace-manage__btn:hover {

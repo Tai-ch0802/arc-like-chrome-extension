@@ -45,6 +45,8 @@
  * @property {string} [groupColor]
  */
 import { getStorage, setStorage, setStorageStrict, addTabToNewGroup } from '../apiManager.js';
+import { renderIcon, hasIcon } from '../icons.js';
+import { escapeHtml } from '../utils/textUtils.js';
 
 const LEGACY_WORKSPACES_KEY = 'workspaces';            // pre-Phase-9 unified key
 const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // sync
@@ -52,7 +54,33 @@ const WORKSPACE_SNAPSHOTS_KEY = 'workspaceSnapshots';   // local
 const WINDOW_WORKSPACE_MAP_KEY = 'windowWorkspaceMap';  // local (per-device)
 
 const PRESET_COLORS = ['grey', 'blue', 'red', 'yellow', 'green', 'pink', 'purple', 'cyan'];
-const PRESET_ICONS = ['💼', '📚', '🎯', '🧪', '🎨', '🚀', '🏠', '🛒'];
+// 工作區圖示改存 Material Symbols icon-id(過往裝置可能仍存 emoji 字串,由 resolveWorkspaceIcon 相容)。
+const PRESET_ICONS = ['work', 'menu_book', 'track_changes', 'science', 'palette', 'rocket_launch', 'home', 'shopping_cart'];
+const DEFAULT_WORKSPACE_ICON = 'work';
+
+/**
+ * 有效的工作區圖示:已註冊的 icon-id,或短字串(<=4,相容舊版 emoji)。
+ * 放寬自原本單純的 length<=4,使新的 icon-id(如 'shopping_cart')不被誤拒;
+ * 仍拒絕任意長遠端字串(防濫用)。
+ */
+function isValidWorkspaceIcon(x) {
+    return typeof x === 'string' && (hasIcon(x) || (x.length >= 1 && x.length <= 4));
+}
+
+/**
+ * 將儲存的工作區圖示解析為可渲染的 HTML:icon-id → Material Symbols SVG;
+ * 舊版 emoji(短字串)→ 經跳脫的文字;其餘 → 預設 work 圖示。供管理 dialog 列使用。
+ * @param {unknown} stored
+ * @param {{size?:number}} [opts]
+ * @returns {string}
+ */
+export function resolveWorkspaceIcon(stored, { size = 16 } = {}) {
+    if (typeof stored === 'string' && hasIcon(stored)) return renderIcon(stored, { size });
+    if (typeof stored === 'string' && stored.length >= 1 && stored.length <= 4) {
+        return `<span class="ws-emoji-icon" aria-hidden="true">${escapeHtml(stored)}</span>`;
+    }
+    return renderIcon(DEFAULT_WORKSPACE_ICON, { size });
+}
 
 /** @type {Object<string, Workspace>} In-memory mirror of storage. */
 let workspaces = {};
@@ -152,7 +180,7 @@ export async function createWorkspace(args) {
         id,
         name: (args.name || 'Workspace').trim().slice(0, 60),
         color: PRESET_COLORS.includes(args.color) ? args.color : 'blue',
-        icon: (args.icon && args.icon.length <= 4) ? args.icon : '💼',
+        icon: isValidWorkspaceIcon(args.icon) ? args.icon : DEFAULT_WORKSPACE_ICON,
         bookmarkFolderId: args.bookmarkFolderId || undefined,
         tabSnapshot: [],
         lastActiveAt: Date.now(),
@@ -177,7 +205,7 @@ export async function updateWorkspace(id, updates) {
     if (!ws) return null;
     if (updates.name !== undefined) ws.name = updates.name.trim().slice(0, 60);
     if (updates.color !== undefined && PRESET_COLORS.includes(updates.color)) ws.color = updates.color;
-    if (updates.icon !== undefined && updates.icon.length <= 4) ws.icon = updates.icon;
+    if (updates.icon !== undefined && isValidWorkspaceIcon(updates.icon)) ws.icon = updates.icon;
     if (updates.bookmarkFolderId !== undefined) ws.bookmarkFolderId = updates.bookmarkFolderId || undefined;
     bumpRev(ws);
     await persistWorkspaces();
@@ -249,9 +277,9 @@ export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = []
     if (existing) {
         if (metadata.name !== undefined) existing.name = metadata.name;
         if (metadata.color !== undefined) existing.color = metadata.color;
-        // icon 與本機 create/update 一致限為單一 emoji(length<=4):防止損毀/惡意的遠端
-        // 資料帶入超長字串,污染各處圖示渲染(workspace 標籤、Spotlight 結果列)。
-        if (metadata.icon !== undefined && metadata.icon.length <= 4) existing.icon = metadata.icon;
+        // icon 與本機 create/update 一致:僅接受已註冊 icon-id 或短 emoji(<=4),防止損毀/
+        // 惡意的遠端資料帶入超長字串,污染各處圖示渲染(workspace 標籤、Spotlight 結果列)。
+        if (metadata.icon !== undefined && isValidWorkspaceIcon(metadata.icon)) existing.icon = metadata.icon;
         // bookmarkFolderId is intentionally allowed to be cleared (undefined).
         existing.bookmarkFolderId = metadata.bookmarkFolderId || undefined;
         if (metadata.syncEnabled !== undefined) existing.syncEnabled = Boolean(metadata.syncEnabled);
@@ -263,7 +291,7 @@ export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = []
             id,
             name: metadata.name || 'Workspace',
             color: metadata.color || 'blue',
-            icon: (metadata.icon && metadata.icon.length <= 4) ? metadata.icon : '💼',
+            icon: isValidWorkspaceIcon(metadata.icon) ? metadata.icon : DEFAULT_WORKSPACE_ICON,
             bookmarkFolderId: metadata.bookmarkFolderId || undefined,
             tabSnapshot: Array.isArray(tabSnapshot) ? tabSnapshot : [],
             lastActiveAt: remoteUpdatedAt,
