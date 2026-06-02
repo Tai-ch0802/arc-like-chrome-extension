@@ -71,3 +71,15 @@ export function bookmarkMatchesTags(bookmarkTagNames, requiredTagNames) {
     const have = new Set((bookmarkTagNames || []).map(n => String(n).toLowerCase()));
     return requiredTagNames.every(req => have.has(String(req).toLowerCase()));
 }
+
+/**
+ * 決定一次搜尋是否要過濾「面板各區塊」(分頁/群組/其他視窗/閱讀清單)。
+ * 規則:出現任何 tag: token 時,搜尋只作用於書籤,其餘區塊應整批隱藏,
+ * 故 filterPanelSections = false(由 caller 改走 hideNonBookmarkSections)。
+ * keywords 目前未參與計算,保留以維持與 parseSearchQuery 回傳形狀的對稱性。
+ * @param {{keywords?: string[], tags?: string[]}} [parsed]
+ * @returns {{filterPanelSections: boolean}}
+ */
+export function searchScope({ keywords = [], tags = [] } = {}) {
+    return { filterPanelSections: tags.length === 0 };
+}

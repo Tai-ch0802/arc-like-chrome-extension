@@ -1,5 +1,6 @@
 import { matchesAnyKeyword, extractDomain } from '../../modules/utils/searchUtils.js';
 import { parseSearchQuery, bookmarkMatchesTags } from '../../modules/utils/searchUtils.js';
+import { searchScope } from '../../modules/utils/searchUtils.js';
 
 describe('searchManager.matchesAnyKeyword', () => {
     it('returns true when keyword list is empty', () => {
@@ -108,5 +109,21 @@ describe('bookmarkMatchesTags', () => {
   it('bookmarkTagNames 為空/缺 → 只有 required 也空才 true', () => {
     expect(bookmarkMatchesTags(undefined, ['work'])).toBe(false);
     expect(bookmarkMatchesTags(undefined, [])).toBe(true);
+  });
+});
+
+describe('searchScope', () => {
+  it('無 tag → 過濾面板各區塊', () => {
+    expect(searchScope({ keywords: ['react'], tags: [] })).toEqual({ filterPanelSections: true });
+  });
+  it('有 tag → 不過濾面板區塊(只作用書籤)', () => {
+    expect(searchScope({ keywords: [], tags: ['work'] })).toEqual({ filterPanelSections: false });
+    expect(searchScope({ keywords: ['react'], tags: ['work'] })).toEqual({ filterPanelSections: false });
+  });
+  it('皆空 → 過濾(視為無查詢,由下游還原)', () => {
+    expect(searchScope({ keywords: [], tags: [] })).toEqual({ filterPanelSections: true });
+  });
+  it('防禦:未傳參數 → 過濾', () => {
+    expect(searchScope()).toEqual({ filterPanelSections: true });
   });
 });
