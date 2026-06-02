@@ -12,11 +12,13 @@
  * controls live in the options page Sync section.
  */
 import * as api from '../apiManager.js';
+import { renderIcon } from '../icons.js';
+import { escapeHtml } from '../utils/textUtils.js';
 
 /**
  * Pure: map a SyncStatus object to a compact badge view-model. No DOM, no I/O.
  * @param {{state?: string, message?: string, lastSyncedAt?: number}|null|undefined} status
- * @returns {{ hidden: boolean, glyph?: string, text?: string, title?: string, stateClass?: string }}
+ * @returns {{ hidden: boolean, iconId?: string, text?: string, title?: string, stateClass?: string }}
  */
 export function resolveBadgeView(status) {
     const state = status && status.state;
@@ -29,14 +31,14 @@ export function resolveBadgeView(status) {
         case 'syncing':
             return {
                 hidden: false,
-                glyph: '↻',
+                iconId: 'sync',
                 text: api.getMessage('syncStatusSyncing') || 'Syncing…',
                 stateClass: 'is-syncing',
             };
         case 'idle':
             return {
                 hidden: false,
-                glyph: '☁︎',
+                iconId: 'cloud',
                 text: '',
                 title: api.getMessage('syncStatusIdleTitle') || api.getMessage('syncStatusIdle') || 'Synced to Google Drive',
                 stateClass: 'is-idle',
@@ -57,7 +59,7 @@ export function resolveBadgeView(status) {
             if (status && status.message) title += `: ${status.message}`;
             return {
                 hidden: false,
-                glyph: '⚠',
+                iconId: 'warning',
                 text: '',
                 title,
                 stateClass: 'is-warning',
@@ -68,7 +70,7 @@ export function resolveBadgeView(status) {
     }
 }
 
-/** Render a view-model onto the badge element (textContent only; no innerHTML). */
+/** Render a view-model onto the badge element: Material Symbols SVG + optional label. */
 function renderBadge(el, view) {
     if (!el) return;
     el.classList.remove('is-syncing', 'is-idle', 'is-warning');
@@ -80,8 +82,9 @@ function renderBadge(el, view) {
     }
     el.hidden = false;
     if (view.stateClass) el.classList.add(view.stateClass);
-    // Compose "glyph text" without innerHTML — emoji/symbol + optional label.
-    el.textContent = view.text ? `${view.glyph} ${view.text}` : view.glyph;
+    // SVG icon + optional label. text 來自 i18n(可信),仍 escapeHtml 求安全。
+    const icon = renderIcon(view.iconId, { size: 12 });
+    el.innerHTML = view.text ? `${icon} ${escapeHtml(view.text)}` : icon;
     if (view.title) el.title = view.title;
     else el.removeAttribute('title');
 }

@@ -35,7 +35,7 @@ const PANEL_ACTION_HANDLERS = {
     'smart-group': () => document.getElementById('ai-group-btn')?.click(),
     'ai-cleanup': () => document.getElementById('ai-cleanup-btn')?.click(),
     'bookmark-tools': () => document.getElementById('bookmark-tools-btn')?.click(),
-    'manage-workspaces': () => document.getElementById('workspace-manage-btn')?.click(),
+    'manage-workspaces': () => document.getElementById('workspace-switch-btn')?.click(),
     'refresh-bookmarks': () => document.dispatchEvent(new CustomEvent('refreshBookmarksRequired')),
     'ask-ai-search': async () => {
         const { openAskAiDialog } = await import('./modules/commandPalette/nlSearch.js');
@@ -286,7 +286,7 @@ async function initialize() {
         .catch(err => console.warn('[rlSummary] prune failed:', err));
     const bookmarkToolsBtn = document.getElementById('bookmark-tools-btn');
     if (bookmarkToolsBtn) {
-        // Mirror the workspace-manage-btn pattern: resolve aria-label at runtime
+        // Mirror the workspace-switch-btn pattern: resolve aria-label at runtime
         // instead of hard-coding English in the markup so it tracks UI language.
         const bmToolsLabel = api.getMessage('bmToolsTitle') || 'Bookmark Tools';
         bookmarkToolsBtn.setAttribute('aria-label', bmToolsLabel);

@@ -67,14 +67,18 @@ export function hasIcon(name) {
 export function renderIcon(name, { size = 16, className = 'm3-icon', label } = {}) {
     const inner = ICONS[name];
     if (!inner) return '';
-    const a11y = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
+    // label 跳脫,使函式對未來傳入動態/不可信 label 的呼叫端也安全(現無此用法)。
+    const safeLabel = label != null ? String(label).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : '';
+    const a11y = label ? `role="img" aria-label="${safeLabel}"` : 'aria-hidden="true"';
     return `<svg class="${className}" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 -960 960 960" fill="currentColor" ${a11y}>${inner}</svg>`;
 }
 
-/** 同 renderIcon,但回傳 HTMLElement(供以節點建構的呼叫端)。 */
+/** 同 renderIcon,但回傳 HTMLElement(供以節點建構的呼叫端)。未知名稱 fallback 至 'language'
+ *  以保證不回傳 null(避免 replaceWith(null) 誤刪節點)。 */
 export function renderIconEl(name, opts) {
+    const html = renderIcon(name, opts) || renderIcon('language', opts);
     const tpl = document.createElement('template');
-    tpl.innerHTML = renderIcon(name, opts).trim();
+    tpl.innerHTML = html.trim();
     return tpl.content.firstElementChild;
 }
 
