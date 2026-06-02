@@ -152,7 +152,7 @@ async function renderAppearance(container) {
     container.appendChild(spExplanation);
 
     const spBtn = document.createElement('button');
-    spBtn.className = 'modal-btn';
+    spBtn.className = 'modal-button';
     spBtn.textContent = api.getMessage('sidePanelPositionLinkText') || 'Open Chrome Appearance Settings';
     spBtn.addEventListener('click', () => {
         chrome.tabs.create({ url: 'chrome://settings/appearance' });
@@ -343,7 +343,7 @@ async function renderRss(container) {
 
     const addBtn = document.createElement('button');
     addBtn.id = 'rss-add-btn';
-    addBtn.className = 'modal-btn';
+    addBtn.className = 'modal-button';
     addBtn.textContent = api.getMessage('addRssSubscription') || 'Add';
     addControls.appendChild(addBtn);
 
@@ -671,7 +671,7 @@ function renderSync(container) {
             connectedLabel.className = 'opt-row__label';
             connectedLabel.textContent = api.getMessage('syncConnected') || 'Connected to Google Drive';
             const disconnectBtn = document.createElement('button');
-            disconnectBtn.className = 'modal-btn';
+            disconnectBtn.className = 'modal-button primary';
             disconnectBtn.textContent = api.getMessage('syncDisconnectButton') || 'Disconnect';
             disconnectBtn.addEventListener('click', async () => {
                 const confirmed = await modalManager.showConfirm({
@@ -692,7 +692,7 @@ function renderSync(container) {
             accountBlock.appendChild(makeRow(connectedLabel.textContent, disconnectBtn));
         } else {
             const connectBtn = document.createElement('button');
-            connectBtn.className = 'modal-btn';
+            connectBtn.className = 'modal-button primary';
             connectBtn.textContent = api.getMessage('syncConnectButton') || 'Connect Google Drive';
             const connectNote = document.createElement('div');
             connectNote.className = 'opt-row__desc sync-connect-note';
@@ -752,7 +752,7 @@ function renderSync(container) {
                     statusText = (api.getMessage('syncStatusError') || 'Error') +
                         (status.message ? `: ${status.message}` : '');
                     retryBtn = document.createElement('button');
-                    retryBtn.className = 'modal-btn';
+                    retryBtn.className = 'modal-button';
                     retryBtn.textContent = api.getMessage('syncRetryButton') || 'Retry';
                     break;
                 case 'conflict':
@@ -801,7 +801,7 @@ function renderSync(container) {
         // ===== 3. Actions =====
         actionsBlock.innerHTML = '';
         const syncNowBtn = document.createElement('button');
-        syncNowBtn.className = 'modal-btn';
+        syncNowBtn.className = 'modal-button primary';
         syncNowBtn.textContent = api.getMessage('syncNowButton') || 'Sync now';
         syncNowBtn.disabled = !connected;
         syncNowBtn.addEventListener('click', async () => {
@@ -866,7 +866,7 @@ function renderSync(container) {
             for (const entry of restorableNotLocal) {
                 const name = (entry.metadata && entry.metadata.name) || entry.name || entry.id;
                 const restoreBtn = document.createElement('button');
-                restoreBtn.className = 'modal-btn';
+                restoreBtn.className = 'modal-button';
                 restoreBtn.textContent = api.getMessage('syncRestoreButton') || 'Restore';
                 restoreBtn.addEventListener('click', async () => {
                     restoreBtn.disabled = true;
@@ -1141,7 +1141,7 @@ async function renderShortcuts(container) {
 
     // Button to open chrome://extensions/shortcuts
     const manageBtn = document.createElement('button');
-    manageBtn.className = 'modal-btn';
+    manageBtn.className = 'modal-button';
     manageBtn.textContent = api.getMessage('shortcutLinkText') || 'Manage Extension Shortcuts';
     manageBtn.addEventListener('click', () => {
         chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
@@ -1261,7 +1261,11 @@ function buildNav(navEl, contentEl) {
     activate(SECTIONS[0].id);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // 套用 uiLanguage 覆寫:必須在 buildNav(以 api.getMessage 渲染全頁)前載入自訂字典,
+    // 否則 getMessage 會退回瀏覽器語系、忽略使用者選的語言(比照 sidepanel.js / spotlight.js)。
+    const { uiLanguage } = await api.getStorage('sync', { uiLanguage: 'auto' });
+    await api.loadCustomI18n(uiLanguage);
     applyOwnTheme();
     buildNav(document.getElementById('opt-nav'), document.getElementById('opt-content'));
 });

@@ -2014,6 +2014,30 @@ mark.url-match {
     cursor: pointer;
 }
 
+/* 主題化 checkbox:統一專案內各處原生 checkbox 的勾選色為 accent(隨主題變),避免預設
+   藍色與主題不符。涵蓋:編輯書籤標籤選取、書籤工具(重複/列)、AI 清理列與全選、設定頁切換。 */
+.tag-picker__row input[type="checkbox"],
+.bm-tools__dup-row input[type="checkbox"],
+.bm-tools__row input[type="checkbox"],
+.ai-cleanup-row__cb,
+.ai-cleanup-select-all input[type="checkbox"],
+.opt-row input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+    flex: none;
+}
+.tag-picker__row input[type="checkbox"]:focus-visible,
+.bm-tools__dup-row input[type="checkbox"]:focus-visible,
+.bm-tools__row input[type="checkbox"]:focus-visible,
+.ai-cleanup-row__cb:focus-visible,
+.ai-cleanup-select-all input[type="checkbox"]:focus-visible,
+.opt-row input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
 .settings-toggle .toggle-label {
     font-size: 13px;
     color: var(--text-color-primary);
@@ -2162,6 +2186,20 @@ mark.url-match {
     display: flex;
     gap: 8px;
     margin-top: 10px;
+}
+
+/* RSS 新增列/錯誤訊息(原本 class 被引用但未定義,致排版/顏色退回預設)。 */
+.rss-add-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.rss-error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 .rss-add-form .settings-input {
@@ -2779,7 +2817,7 @@ mark.url-match {
 
 .ai-setup-link-btn:hover {
     background: var(--accent-color);
-    color: var(--bg-color, #fff);
+    color: var(--text-color-inverted);
 }
 
 .ai-setup-restart-note {
@@ -3018,7 +3056,7 @@ mark.url-match {
     margin-top: 2px;
 }
 
-.ai-cleanup-row__group { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; font-size: 0.8em; color: var(--secondary-text-color, #5f6368); vertical-align: middle; }
+.ai-cleanup-row__group { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; font-size: 0.8em; color: var(--text-color-secondary); vertical-align: middle; }
 .ai-cleanup-row__group-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
 .ai-cleanup-row__group-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
 
@@ -3514,7 +3552,7 @@ mark.url-match {
 
 /* 工具對話框範圍列 */
 .bm-tools__scope { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; }
-.bm-tools__scope-label { font-size: 0.85em; color: var(--secondary-text-color, #5f6368); }
+.bm-tools__scope-label { font-size: 0.85em; color: var(--text-color-secondary); }
 .bm-tools__scope-btn { background: none; border: 1px solid var(--border-color, #ccc); border-radius: 4px; padding: 2px 8px; cursor: pointer; }
 
 .bm-tools__count {
