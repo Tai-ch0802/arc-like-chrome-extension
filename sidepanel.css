@@ -3552,8 +3552,19 @@ mark.url-match {
 
 /* 工具對話框範圍列 */
 .bm-tools__scope { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; }
-.bm-tools__scope-label { font-size: 0.85em; color: var(--text-color-secondary); }
-.bm-tools__scope-btn { background: none; border: 1px solid var(--border-color, #ccc); border-radius: 4px; padding: 2px 8px; cursor: pointer; }
+/* scope 列文字對齊 dialog 內其他文字(.bm-tools__intro 等用 --text-color-primary opacity 0.7),
+   按鈕補上文字色 + hover,使其隨主題變且與對話框風格一致。 */
+.bm-tools__scope-label { font-size: 0.85em; color: var(--text-color-primary); opacity: 0.7; }
+.bm-tools__scope-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--arc-radius-sm);
+    padding: 2px 8px;
+    cursor: pointer;
+    color: var(--text-color-primary);
+    transition: background-color var(--arc-motion-short) var(--arc-easing-standard);
+}
+.bm-tools__scope-btn:hover { background: var(--element-bg-hover-color); }
 
 .bm-tools__count {
     flex: 1;
