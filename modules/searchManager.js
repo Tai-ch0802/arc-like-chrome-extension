@@ -5,27 +5,34 @@ import { getTabCache, getTabElementsCache, getGroupHeaderElementsCache } from '.
 import { getOtherTabCache, getOtherTabElementsCache, getOtherGroupHeaderElementsCache, getOtherWindowFolderElementsCache } from './ui/otherWindowRenderer.js';
 import { highlightText, escapeRegExp } from './utils/textUtils.js';
 import { debounce } from './utils/functionUtils.js';
-import { matchesAnyKeyword, extractDomain, parseSearchQuery, bookmarkMatchesTags } from './utils/searchUtils.js';
+import { matchesAnyKeyword, extractDomain, parseSearchQuery, bookmarkMatchesTags, searchScope } from './utils/searchUtils.js';
 import * as tagManager from './bookmark/tagManager.js';
 
 // 主搜尋處理函式
 async function handleSearch() {
     // 解析查詢：分離一般關鍵字與 tag: 篩選
-    // tag token 已被抽離，因此分頁／閱讀清單／其他視窗只會收到 keywords，
-    // 不受 tag: 查詢影響（tag 僅作用於書籤）。
     const { keywords, tags } = parseSearchQuery(ui.searchBox.value.trim());
+    const { filterPanelSections } = searchScope({ keywords, tags });
 
-    // 預先編譯所有正則表達式，避免在迴圈中重複編譯
-    // 只用 keywords 編譯（tag 不需要高亮）
+    // 只用 keywords 編譯高亮正則（tag 不需要高亮）
     let regexes = [];
     if (keywords.length > 0) {
         regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
     }
 
-    // 過濾分頁、閱讀清單和書籤
-    const tabCount = filterTabsAndGroups(keywords);
-    const otherWindowsTabCount = filterOtherWindowsTabs(keywords);
-    const readingListCount = filterReadingList(keywords, regexes);
+    let tabCount = 0;
+    let otherWindowsTabCount = 0;
+    let readingListCount = 0;
+    if (filterPanelSections) {
+        // 一般/關鍵字查詢:照舊過濾分頁、其他視窗、閱讀清單
+        tabCount = filterTabsAndGroups(keywords);
+        otherWindowsTabCount = filterOtherWindowsTabs(keywords);
+        readingListCount = filterReadingList(keywords, regexes);
+    } else {
+        // tag: 查詢:標籤只屬書籤,其餘區塊整批隱藏
+        hideNonBookmarkSections();
+    }
+
     const bookmarkCount = await filterBookmarks(keywords, regexes, tags);
 
     // 高亮匹配文字
@@ -35,7 +42,6 @@ async function handleSearch() {
         clearHighlights();
     }
 
-    // 發送結果計數事件 (include other windows tabs and reading list in count)
     const event = new CustomEvent('searchResultUpdated', {
         detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount, bookmarkCount }
     });
@@ -324,6 +330,40 @@ function filterReadingList(keywords, regexes = []) {
     }
 
     return visibleCount;
+}
+
+/**
+ * tag: 查詢時呼叫:把分頁/群組/其他視窗/閱讀清單整批隱藏,只留書籤過濾。
+ * 不需自行還原——切回關鍵字/空白查詢時,filterTabsAndGroups / filterOtherWindowsTabs /
+ * filterReadingList 會以 toggle 重新評估可見性(空 keyword=全顯示)。
+ */
+function hideNonBookmarkSections() {
+    // 目前視窗:分頁 + 群組 header
+    for (const item of getTabElementsCache().values()) {
+        item.classList.add('hidden');
+    }
+    for (const [, header] of getGroupHeaderElementsCache()) {
+        header.classList.add('hidden');
+    }
+    // 其他視窗:分頁 + 群組 header + 視窗資料夾
+    for (const item of getOtherTabElementsCache().values()) {
+        item.classList.add('hidden');
+    }
+    for (const [, header] of getOtherGroupHeaderElementsCache()) {
+        header.classList.add('hidden');
+    }
+    for (const [, folder] of getOtherWindowFolderElementsCache()) {
+        folder.classList.add('hidden');
+        const content = folder.nextElementSibling;
+        if (content && content.classList.contains('folder-content')) {
+            content.classList.add('hidden');
+        }
+    }
+    // 閱讀清單項目
+    const rl = document.getElementById('reading-list');
+    if (rl) {
+        rl.querySelectorAll('.reading-list-item').forEach(i => i.classList.add('hidden'));
+    }
 }
 
 // Search state to track if we are currently showing filtered results
