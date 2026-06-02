@@ -358,6 +358,26 @@ let spotlightWindowId = null;
 // 兩次皆見 spotlightWindowId==null 而各開一個視窗。此旗標確保同時間只開一個。
 let spotlightCreating = false;
 
+// 最近聚焦的 normal 視窗快取(由 chrome.windows.onFocusChanged 維護)。
+// 用途:sidePanel.open 需要 user gesture,而 MV3 service worker 中 onCommand 的
+// user activation 無法穩定撐過 await(Chromium 已知限制,曾於 ~127 回歸、128/129+
+// 修復,官方建議永不依賴)。故全螢幕判斷改讀此「同步可得」的快取,讓全螢幕 fallback
+// 能在任何 await 之前同步呼叫 sidePanel.open,避免 gesture 失效而靜默 reject。
+let lastFocusedNormal = { id: null, fullscreen: false };
+
+function isFullscreenState(s) {
+    return s === 'fullscreen' || s === 'locked-fullscreen';
+}
+
+/** fire-and-forget 刷新 lastFocusedNormal(查當前 normal 視窗的全螢幕狀態)。不需 gesture。 */
+function refreshLastFocusedNormal() {
+    chrome.windows.getLastFocused({ windowTypes: ['normal'] }).then((w) => {
+        if (w && typeof w.id === 'number') {
+            lastFocusedNormal = { id: w.id, fullscreen: isFullscreenState(w.state) };
+        }
+    }).catch(() => {});
+}
+
 /** SW 重啟會遺失 spotlightWindowId;以 popup 視窗 url 比對找回既有 Spotlight。 */
 async function findExistingSpotlight() {
     try {
@@ -370,19 +390,46 @@ async function findExistingSpotlight() {
     return null;
 }
 
-async function openSpotlight() {
+// 快捷鍵入口。注意:必須由 onCommand 同步呼叫(其前不可有 await),否則全螢幕分支的
+// sidePanel.open 會失去 user gesture。本函式刻意「非 async」:gesture-critical 路徑全程
+// 不 await,async 收尾(popup 建立)委派給 openSpotlightPopup。
+function openSpotlight() {
+    // 全螢幕 fallback:macOS 原生全螢幕下 Chrome 自成一個 Space,開新 popup 會被系統丟到
+    // 別的 Space(畫面整個切走)。改開側邊欄並聚焦其搜尋框(側邊欄屬瀏覽器視窗內、不跨
+    // Space)。以同步快取(lastFocusedNormal)判斷全螢幕,讓 sidePanel.open 能在任何
+    // await 前同步呼叫以保留 user gesture;旗標寫入採 fire-and-forget(不 await),避免在
+    // open 前讓 gesture 失效。
+    //
+    // 已知取捨:SW 冷啟動後首次按鍵時快取仍為初始值(fullscreen:false),全螢幕使用者首
+    // 按會落到 popup 路徑(可能跳 Space);但 openSpotlightPopup 會刷新快取,次按即修正為
+    // 側邊欄。這仍優於修正前「gesture 失效 → 完全無反應」。本分支刻意不設 spotlightCreating
+    // 防重入鎖:沒有要建立的視窗,sidePanel.open 與 focus 皆冪等,連按無害。
+    if (lastFocusedNormal.fullscreen && typeof lastFocusedNormal.id === 'number') {
+        const winId = lastFocusedNormal.id;
+        chrome.storage.session.set({ pendingSearchFocus: { ts: Date.now() } }).catch(() => {});
+        chrome.sidePanel.open({ windowId: winId }).catch((err) => {
+            // 萬一 open 失敗(權限/視窗已關/快取過期),清除旗標並退回 popup,
+            // 確保快捷鍵不會靜默無反應。
+            chrome.storage.session.remove('pendingSearchFocus').catch(() => {});
+            console.warn('[spotlight] sidePanel fallback failed, opening popup:', err && err.message ? err.message : err);
+            openSpotlightPopup();
+        });
+        // open() 之後再 fire-and-forget 刷新快取:使用者若已悄悄離開全螢幕(無 focus 變更、
+        // onFocusChanged 不觸發),此處更新讓下次按鍵正確回到 popup。
+        refreshLastFocusedNormal();
+        return;
+    }
+    openSpotlightPopup();
+}
+
+async function openSpotlightPopup() {
     if (spotlightCreating) return;
     spotlightCreating = true;
     try {
         const origin = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
-
-        // 全螢幕 fallback:macOS 原生全螢幕下 Chrome 自成一個 Space,開新 popup 會被系統丟到
-        // 別的 Space(畫面整個切走)。改開側邊欄並聚焦其搜尋框(側邊欄屬瀏覽器視窗內、不跨
-        // Space)。windows API 無法把 popup 釘進全螢幕 Space,故以此 fallback。
-        if (origin && (origin.state === 'fullscreen' || origin.state === 'locked-fullscreen')) {
-            await chrome.storage.session.set({ pendingSearchFocus: { ts: Date.now() } });
-            if (typeof origin.id === 'number') await chrome.sidePanel.open({ windowId: origin.id });
-            return;
+        // 順手刷新快取,供下次全螢幕判斷使用(SW 冷啟動後首次的自我修正路徑)。
+        if (origin && typeof origin.id === 'number') {
+            lastFocusedNormal = { id: origin.id, fullscreen: isFullscreenState(origin.state) };
         }
 
         if (spotlightWindowId == null) spotlightWindowId = await findExistingSpotlight();
@@ -408,11 +455,19 @@ async function openSpotlight() {
     }
 }
 
-// 失焦自動關閉(排除短暫無焦點 WINDOW_ID_NONE)
-chrome.windows.onFocusChanged.addListener((winId) => {
+// 失焦自動關閉(排除短暫無焦點 WINDOW_ID_NONE);同時維護 lastFocusedNormal 快取,
+// 供 openSpotlight 的全螢幕判斷在 onCommand 中同步取用(見快取宣告處的說明)。
+chrome.windows.onFocusChanged.addListener(async (winId) => {
     if (spotlightWindowId != null && winId !== spotlightWindowId && winId !== chrome.windows.WINDOW_ID_NONE) {
         chrome.windows.remove(spotlightWindowId).catch(() => {});
     }
+    if (winId === chrome.windows.WINDOW_ID_NONE) return;
+    try {
+        const w = await chrome.windows.get(winId);
+        if (w && w.type === 'normal') {
+            lastFocusedNormal = { id: w.id, fullscreen: isFullscreenState(w.state) };
+        }
+    } catch { /* 視窗可能已關閉,忽略 */ }
 });
 chrome.windows.onRemoved.addListener((winId) => {
     if (winId === spotlightWindowId) spotlightWindowId = null;
@@ -420,7 +475,8 @@ chrome.windows.onRemoved.addListener((winId) => {
 
 // 監聽快捷鍵指令
 chrome.commands.onCommand.addListener(async (command) => {
-  if (command === 'open-search') { await openSpotlight(); return; }
+  // 同步呼叫(不可 await):保留 user gesture 給全螢幕分支的 sidePanel.open。
+  if (command === 'open-search') { openSpotlight(); return; }
   if (command === 'create-new-tab-right') {
     // 查詢當前作用中的分頁
     const [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });

@@ -25,6 +25,11 @@ import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 // 側邊欄完成初始化(按鈕等事件已綁定)前不消費轉送動作,避免點到尚未接線的按鈕。
 let panelReady = false;
 
+// pendingSearchFocus 旗標的過期窗:僅用於丟棄先前 sidePanel.open 失敗殘留的舊旗標。
+// 取較寬鬆值,確保冷啟動載入(keypress → 完整 initialize hydration,實測約數百毫秒至數秒)
+// 仍能正常聚焦;寧可偶爾尊重略舊旗標,也不要誤丟正當的聚焦請求。
+const SEARCH_FOCUS_TTL_MS = 10000;
+
 // Spotlight(獨立視窗)轉送來的 UI 類動作:在側邊欄正確情境執行。
 const PANEL_ACTION_HANDLERS = {
     'smart-group': () => document.getElementById('ai-group-btn')?.click(),
@@ -72,6 +77,9 @@ async function consumePendingSearchFocus() {
     } catch { return; }
     if (!pending) return;
     try { await chrome.storage.session.remove('pendingSearchFocus'); } catch { /* ignore */ }
+    // 過期保護:旗標若非近期寫入(例如先前 sidePanel.open 失敗殘留),不搶焦點,
+    // 以免下次開側邊欄時被舊旗標誤導而把游標移進搜尋框。
+    if (typeof pending.ts === 'number' && Date.now() - pending.ts > SEARCH_FOCUS_TTL_MS) return;
     const box = document.getElementById('search-box');
     if (box) {
         box.focus();
