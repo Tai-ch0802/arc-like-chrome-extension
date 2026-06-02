@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Google 드라이브에 동기화됨"
+  },
+  "densitySectionHeader": {
+    "message": "목록 간격"
+  },
+  "densityOptionCompact": {
+    "message": "좁게"
+  },
+  "densityOptionCozy": {
+    "message": "보통(기본)"
+  },
+  "densityOptionComfortable": {
+    "message": "넓게"
   }
 }

@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Đã đồng bộ với Google Drive"
+  },
+  "densitySectionHeader": {
+    "message": "Khoảng cách danh sách"
+  },
+  "densityOptionCompact": {
+    "message": "Gọn"
+  },
+  "densityOptionCozy": {
+    "message": "Vừa (mặc định)"
+  },
+  "densityOptionComfortable": {
+    "message": "Thoáng"
   }
 }

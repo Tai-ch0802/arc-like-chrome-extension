@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Синхронизировано с Google Диском"
+  },
+  "densitySectionHeader": {
+    "message": "Интервал списка"
+  },
+  "densityOptionCompact": {
+    "message": "Компактно"
+  },
+  "densityOptionCozy": {
+    "message": "Обычно (по умолчанию)"
+  },
+  "densityOptionComfortable": {
+    "message": "Свободно"
   }
 }

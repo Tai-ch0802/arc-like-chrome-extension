@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "Google Drive से सिंक किया गया"
+  },
+  "densitySectionHeader": {
+    "message": "सूची रिक्ति"
+  },
+  "densityOptionCompact": {
+    "message": "सघन"
+  },
+  "densityOptionCozy": {
+    "message": "सामान्य (डिफ़ॉल्ट)"
+  },
+  "densityOptionComfortable": {
+    "message": "आरामदायक"
   }
 }

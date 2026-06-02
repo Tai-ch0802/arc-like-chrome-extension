@@ -1139,5 +1139,17 @@
   },
   "workspaceSyncedTitle": {
     "message": "ซิงค์ไปยัง Google ไดรฟ์แล้ว"
+  },
+  "densitySectionHeader": {
+    "message": "ระยะห่างรายการ"
+  },
+  "densityOptionCompact": {
+    "message": "กระชับ"
+  },
+  "densityOptionCozy": {
+    "message": "ปกติ (ค่าเริ่มต้น)"
+  },
+  "densityOptionComfortable": {
+    "message": "สบาย"
   }
 }

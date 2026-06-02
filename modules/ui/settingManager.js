@@ -17,6 +17,19 @@ export function applyTheme(themeName) {
     }
 }
 
+/** 有效的列間距密度;cozy 為預設(等同改版前的間距)。 */
+export const VALID_DENSITIES = ['compact', 'cozy', 'comfortable'];
+
+/**
+ * 套用列間距密度到 body(data-density)。cozy 不設 attr,讓 :root 預設值生效。
+ * @param {string} value - 'compact' | 'cozy' | 'comfortable'
+ */
+export function applyDensity(value) {
+    const v = VALID_DENSITIES.includes(value) ? value : 'cozy';
+    if (v === 'cozy') delete document.body.dataset.density;
+    else document.body.dataset.density = v;
+}
+
 /**
  * 初始化主題切換器。
  * - 從存儲中加載並應用保存的主題。
@@ -49,4 +62,9 @@ export function initThemeSwitcher() {
 
     // Load and apply background image (runs in parallel with theme)
     bgImage.loadAndApplyBackgroundImage().catch(console.error);
+
+    // Load and apply list-row density (runs in parallel with theme)
+    api.getStorage('sync', { listDensity: 'cozy' })
+        .then((d) => applyDensity(d.listDensity))
+        .catch(console.error);
 }
