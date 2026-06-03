@@ -74,8 +74,8 @@ git log {LAST_TAG}..HEAD --format='%aN' | sort -u
 ### 4. Check Documentation Updates
 - Analyze the changes to determine if new features were added.
 - If new user-facing features exist, invoke the `update-multilingual-docs` skill to update:
-  - `README.md` / `README.en.md`
-  - `docs/store_description_*.md`
+  - `.github/i18n/{lang}/README.md` (root `README.md` is a symlink to `.github/i18n/en/README.md`)
+  - `docs/chrome-web-store/store_description_*.md`
 
 ### 5. Generate RELEASE_NOTE.md
 - Categorize commits into "New Features" vs "Improvements & Bug Fixes" based on commit prefixes:
@@ -85,5 +85,5 @@ git log {LAST_TAG}..HEAD --format='%aN' | sort -u
 - Write the file to project root.
 
 ### 6. Cleanup
-- `RELEASE_NOTE.md` is temporary and should be added to `.gitignore`.
+- `RELEASE_NOTE.md` is temporary and is already in `.gitignore` — verify it remains gitignored.
 - The content is meant to be copy-pasted into GitHub's release form.

@@ -1,6 +1,6 @@
 ---
 name: pull-request
-description: 建立本專案的 Pull Request：雙語描述 (zh-TW/en)、gh CLI、scripts/check-pr.sh 預驗證、references/pr_template.md 與 checklist.md。當使用者提到「開 PR、建 PR、create PR、pull request、提交變更、發 PR、新建 PR」時觸發。
+description: 建立本專案的 Pull Request：雙語描述 (zh-TW/en)、gh CLI、.agent/skills/pull-request/scripts/check-pr.sh 預驗證、references/pr_template.md 與 checklist.md。當使用者提到「開 PR、建 PR、create PR、pull request、提交變更、發 PR、新建 PR」時觸發。
 ---
 
 # Pull Request Skill
@@ -172,7 +172,7 @@ Types:
 
 - 保持 commit 歷史清晰
 - 每個 commit 應為單一邏輯變更
-- 考慮使用 `git rebase -i` 整理 commit
+- 整理 commit 時，建議在本機互動式 shell 執行（互動式 git 指令如 `git rebase -i` 在非互動環境/Claude Code 中不支援）
 
 ## 檢查清單
 

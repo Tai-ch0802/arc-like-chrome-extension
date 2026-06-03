@@ -27,8 +27,9 @@ This skill updates the project's documentation when new features are added or ex
 *   Insert the new content.
 
 ### 3. Sync Root (Symlinks)
-*   Ensure root files (`README.md`, `CONTRIBUTING.md`) are valid symlinks pointing to `i18n/en/`.
-*   *(No content copy needed if using symlinks)*
+*   Only root `README.md` is a symlink pointing to `.github/i18n/en/README.md`. Ensure it stays a valid symlink.
+*   There is **no** root `CONTRIBUTING.md` (nor `CODE_OF_CONDUCT.md` / `SECURITY.md`); those live per-language under `.github/i18n/{lang}/`, not as root symlinks.
+*   *(No content copy needed for the README symlink)*
 
 ### 4. Update Multilingual Docs
 *   **Iterate**: For each language folder in `.github/i18n/` (excluding `en`):

@@ -21,7 +21,6 @@
 graph TD
     User[User] -->|Interact| UI[Chrome Extension UI]
     UI -->|Message| BG[Background Service Worker]
-    BG -->|API| Server[Remote Server]
     BG -->|Storage| DB[(Chrome Storage)]
 ```
 
