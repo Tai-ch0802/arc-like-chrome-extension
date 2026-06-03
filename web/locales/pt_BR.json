@@ -417,6 +417,9 @@
     "v1_14_2_date": "1 de março de 2026",
     "v1_14_2_title": "Versão 1.14.2",
     "v1_14_2_desc": "Melhorias focadas em recursos de IA e segurança: adicionado guia detalhado de configuração do Gemini Nano com boas práticas, melhoria no cache de resumos com TTL e visibilidade da barra de progresso. Corrigidos múltiplos alertas de segurança do CodeQL e melhoria significativa na qualidade da localização.",
+    "v1_15_0_date": "3 de junho de 2026",
+    "v1_15_0_title": "Versão 1.15.0 (Grande Atualização)",
+    "v1_15_0_desc": "Uma grande atualização visual e de recursos. Nova busca unificada Spotlight: pressione Cmd/Ctrl+Shift+K em qualquer lugar para encontrar instantaneamente abas, favoritos, lista de leitura e ações em um pop-up centralizado. Sincronização opcional com o Google Drive para manter seus Workspaces entre dispositivos. Além de uma repaginação visual completa em Material 3: todos os ícones como SVG, uma barra de workspace com um único botão, espaçamento de lista ajustável, barras de rolagem unificadas e cores consistentes com o tema — além de diversas correções de UI.",
     "v1_14_3_date": "17 de março de 2026",
     "v1_14_3_title": "Versão 1.14.3",
     "v1_14_3_desc": "Adicionado diálogo de confirmação ao redefinir tema personalizado para evitar perda acidental; corrigido o salto da posição de rolagem ao clicar em abas; adicionados rótulos de acessibilidade ao botão de fechar do toast; corrigidas chaves i18n ausentes em todos os idiomas; e atualizadas múltiplas dependências de desenvolvimento."
