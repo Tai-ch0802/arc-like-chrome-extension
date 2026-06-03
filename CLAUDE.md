@@ -33,7 +33,7 @@
   - 「配色 / 字型 / palette / design system」→ `ui-ux-pro-max`
   - 「審查 UI / 檢查無障礙 / accessibility / UI review」→ `web-design-guidelines`
   - 「建立新 skill / 寫 skill」→ `skill-creator`
-- **Session 收尾**：沿用既有 Context Engineering 慣例 — 收斂變更摘要寫入 `.agent/notes/NOTE_YYYYMMDD.md`，作為未來開發脈絡參考。
+- **Session 收尾**：沿用既有 Context Engineering 慣例 — 收斂變更摘要寫入 `.agent/notes/NOTE_YYYYMMDD.md`，作為未來開發脈絡參考。**`.agent/notes/` 已 gitignore（本地脈絡用，不入版控）**；正式設計文件請放 `docs/specs/`（SDD 產出）。
 
 ## 1. Commit / PR / Release Note 規範
 
