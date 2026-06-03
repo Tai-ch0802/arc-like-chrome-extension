@@ -387,7 +387,9 @@
         <a href="#bookmarks" class="toc-link" data-i18n="guide_toc_bookmarks">書籤管理</a>
         <a href="#linked-tabs" class="toc-link" data-i18n="guide_toc_linked">Linked Tabs</a>
         <a href="#cross-window" class="toc-link" data-i18n="guide_toc_window">跨視窗</a>
+        <a href="#workspaces" class="toc-link" data-i18n="guide_toc_workspaces">工作區</a>
         <a href="#search" class="toc-link" data-i18n="guide_toc_search">搜尋功能</a>
+        <a href="#spotlight" class="toc-link" data-i18n="guide_toc_spotlight">Spotlight 搜尋</a>
         <a href="#reading-list" class="toc-link" data-i18n="guide_toc_reading">閱讀清單</a>
         <a href="#rss" class="toc-link" data-i18n="guide_toc_rss">RSS 訂閱</a>
         <a href="#ai-grouping" class="toc-link" data-i18n="guide_toc_ai">AI 智慧整理</a>
@@ -522,6 +524,38 @@
 
         <hr class="guide-divider">
 
+        <!-- 6.5 Workspaces -->
+        <section class="guide-section" id="workspaces">
+            <h2 class="guide-section-title">
+                <i data-lucide="layout-grid" class="section-icon purple"></i>
+                <span data-i18n="guide_ws_title">工作區 (Workspaces)</span>
+            </h2>
+            <p data-i18n="guide_ws_desc">工作區讓你把分頁與書籤的版面依情境分組——例如「工作」、「研究」、「生活」各自獨立。切換工作區時，側邊欄會套用該情境專屬的版面，讓你專注於當下的任務。</p>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_ws_switch_title">切換與管理</h4>
+                <ul>
+                    <li data-i18n="guide_ws_li1"><strong>切換工作區</strong>：點擊側邊欄頂部的工作區按鈕，即可開啟管理面板並在各工作區之間切換。</li>
+                    <li data-i18n="guide_ws_li2"><strong>建立與命名</strong>：在管理面板中新增工作區，為它命名並挑選代表圖示。</li>
+                    <li data-i18n="guide_ws_li3"><strong>重新命名／刪除</strong>：每個工作區列尾都有編輯與刪除按鈕，方便隨時調整。</li>
+                </ul>
+            </div>
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_ws_sync_title">Google Drive 同步（選用）</h4>
+                <p data-i18n="guide_ws_sync_desc">想在多台裝置間共用同一套工作區嗎？在設定頁連結你的 Google 帳號，即可啟用選用的 Google Drive 同步。</p>
+                <ul>
+                    <li data-i18n="guide_ws_sync_li1"><strong>選用且需手動啟用</strong>：必須由你主動在設定頁點擊「連結」並登入 Google 帳號後才會啟動；未啟用時同步功能完全靜止。</li>
+                    <li data-i18n="guide_ws_sync_li2"><strong>最小權限範圍</strong>：僅使用 Drive 的「應用程式資料夾」(drive.appdata)，無法讀取或修改你其他的 Drive 檔案。</li>
+                    <li data-i18n="guide_ws_sync_li3"><strong>隨時中斷</strong>：在設定頁中斷連結即會登出並撤銷授權，下次連結會重新顯示帳號選擇。</li>
+                </ul>
+            </div>
+            <div class="guide-callout green">
+                <i data-lucide="shield-check"></i>
+                <p data-i18n="guide_ws_privacy">你的工作區資料只會存放在你自己 Google Drive 的私有應用程式資料夾中，不會經過我們的任何伺服器。</p>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
         <!-- 7. Search -->
         <section class="guide-section" id="search">
             <h2 class="guide-section-title">
@@ -538,6 +572,29 @@
                 <li data-i18n="guide_search_li3"><strong>即時高亮</strong>：搜尋結果會即時標記匹配的關鍵字，保持視覺焦點清晰。</li>
                 <li data-i18n="guide_search_li4"><strong>跨視窗</strong>：搜尋結果包含所有 Chrome 視窗的分頁，不限於當前視窗。</li>
             </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 7.5 Spotlight -->
+        <section class="guide-section" id="spotlight">
+            <h2 class="guide-section-title">
+                <i data-lucide="command" class="section-icon purple"></i>
+                <span data-i18n="guide_spotlight_title">Spotlight 統一搜尋</span>
+            </h2>
+            <p data-i18n="guide_spotlight_desc">Spotlight 是一個置中彈出的統一搜尋視窗，讓你不必先聚焦側邊欄，就能在任何畫面即時搜尋並直達目標。</p>
+            <ul>
+                <li data-i18n="guide_spotlight_li1"><strong>隨處喚出</strong>：在任何視窗按 <kbd>Cmd/Ctrl + Shift + K</kbd> 即可開啟。
+                </li>
+                <li data-i18n="guide_spotlight_li2"><strong>統一結果</strong>：同時搜尋分頁、書籤、閱讀清單與可執行的動作，結果即時更新。</li>
+                <li data-i18n="guide_spotlight_li3"><strong>鍵盤優先</strong>：以方向鍵選取、<kbd>Enter</kbd> 執行、<kbd>Esc</kbd>
+                    關閉，全程不必離開鍵盤。</li>
+                <li data-i18n="guide_spotlight_li4"><strong>快速動作</strong>：除了開啟分頁，也能直接觸發智慧整理等常用動作。</li>
+            </ul>
+            <div class="guide-callout blue">
+                <i data-lucide="info"></i>
+                <p data-i18n="guide_spotlight_tip">Spotlight 以獨立的置中視窗呈現，因此不會出現在側邊欄的「其他視窗」清單中。</p>
+            </div>
         </section>
 
         <hr class="guide-divider">
@@ -627,7 +684,7 @@
                 <h4 data-i18n="guide_ai_how_title">使用方式</h4>
                 <ol>
                     <li data-i18n="guide_ai_step1">確保你已完成上方的前置設定（需 Chrome 140+、22GB 磁碟空間）。</li>
-                    <li data-i18n="guide_ai_step2">點擊側邊欄中的「✨ 智慧整理」按鈕。</li>
+                    <li data-i18n="guide_ai_step2">點擊側邊欄中的「智慧整理」按鈕。</li>
                     <li data-i18n="guide_ai_step3">系統會掃描所有未分類的分頁（需至少 4 個），AI 將在數秒內完成分析。</li>
                     <li data-i18n="guide_ai_step4">分頁會自動被移入帶有 Emoji 與描述性名稱的群組中。</li>
                 </ol>
@@ -698,6 +755,11 @@
             </div>
 
             <div class="guide-subsection">
+                <h4 data-i18n="guide_theme_density_title">列表密度</h4>
+                <p data-i18n="guide_theme_density_desc">覺得清單太鬆或太擠？在設定中調整列表間距（密度），讓分頁與書籤的行距符合你的偏好，在單一畫面顯示更多項目或保留更多呼吸空間。</p>
+            </div>
+
+            <div class="guide-subsection">
                 <h4 data-i18n="guide_theme_share_title">社群分享</h4>
                 <p data-i18n="guide_theme_share_desc">將你的自訂配色匯出為 JSON 檔案分享給朋友，也可以載入別人分享的主題，快速套用社群熱門配色。</p>
             </div>
@@ -726,6 +788,10 @@
                         <tr>
                             <td><kbd>Cmd/Ctrl</kbd> + <kbd>I</kbd></td>
                             <td data-i18n="guide_kb_toggle">開啟/關閉側邊欄</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Cmd/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd></td>
+                            <td data-i18n="guide_kb_spotlight">開啟 Spotlight 統一搜尋</td>
                         </tr>
                         <tr>
                             <td><kbd>Alt/Opt</kbd> + <kbd>T</kbd></td>

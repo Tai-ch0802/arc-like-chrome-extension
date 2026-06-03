@@ -752,6 +752,109 @@ a:hover {
     background: #10b981;
 }
 
+/* Workspace Bento Visual */
+.ws-icon {
+    color: #a5b4fc;
+    border-color: rgba(99, 102, 241, 0.3);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.ws-visual {
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.1), transparent);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ws-anim {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.ws-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    will-change: background, border-color, color, transform;
+    animation: wsCycle 6s infinite ease-in-out;
+}
+
+.ws-pill i {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
+.ws-pill-1 {
+    animation-delay: 0s;
+}
+
+.ws-pill-2 {
+    animation-delay: 2s;
+}
+
+.ws-pill-3 {
+    animation-delay: 4s;
+}
+
+@keyframes wsCycle {
+
+    0%,
+    33%,
+    100% {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--border-color);
+        color: var(--text-secondary);
+        transform: translateX(0);
+    }
+
+    8%,
+    25% {
+        background: rgba(99, 102, 241, 0.12);
+        border-color: rgba(99, 102, 241, 0.4);
+        color: #c7d2fe;
+        transform: translateX(4px);
+    }
+}
+
+.ws-sync {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-end;
+    margin-top: 2px;
+    font-size: 0.68rem;
+    color: #6ee7b7;
+    animation: wsSyncPulse 6s infinite ease-in-out;
+}
+
+.ws-sync i {
+    width: 12px;
+    height: 12px;
+}
+
+@keyframes wsSyncPulse {
+
+    0%,
+    100% {
+        opacity: 0.45;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
 /* ---------------- */
 /* More Features */
 /* ---------------- */
