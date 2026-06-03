@@ -225,6 +225,7 @@ graph LR
 ```
 .agent/notes/NOTE_YYYYMMDD.md
 ```
+> `.agent/notes/` 已 gitignore，僅作本地開發脈絡之用、**不入版控**。需要保留的正式設計文件請改放 `docs/specs/`（SDD 產出）。
 
 ---
 
