@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Thanh bên kiểu Arc — tabs, bookmarks, reading list trong một panel + AI cục bộ (đặt tên nhóm, cleanup, tóm tắt, NL search), Workspaces, ⌘K palette. Không cần API key.",
+    "message": "Thanh bên kiểu Arc: tabs, bookmarks & reading list + AI cục bộ (nhóm, cleanup, tóm tắt, tìm kiếm), Workspaces. Không cần API key.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

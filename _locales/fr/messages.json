@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barre latérale style Arc — onglets, signets, liste de lecture unifiés + IA locale (nommage de groupes, cleanup, résumé, recherche NL), Workspaces, palette ⌘K. Sans clé API.",
+    "message": "Barre latérale Arc : onglets, signets, liste de lecture + IA locale (groupes, nettoyage, résumé), Workspaces. Sans clé API.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

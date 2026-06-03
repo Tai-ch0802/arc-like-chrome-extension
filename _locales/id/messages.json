@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Sidebar bergaya Arc — tabs, bookmarks, reading list dalam satu panel + AI lokal (penamaan grup, cleanup, ringkasan, NL search), Workspaces, ⌘K palette. Tanpa API key.",
+    "message": "Sidebar gaya Arc: tab, bookmark & reading list + AI lokal (grup, cleanup, ringkasan, pencarian), Workspaces. Tanpa API key.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

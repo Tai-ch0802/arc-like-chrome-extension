@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barra lateral estilo Arc — pestañas, marcadores, lista de lectura unificados + IA local (nombrado de grupos, limpieza, resumen, búsqueda NL), Workspaces, paleta ⌘K. Sin clave API.",
+    "message": "Barra lateral Arc: pestañas, marcadores, lista de lectura + IA local (grupos, limpieza, resumen, búsqueda), Workspaces. Sin API.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
