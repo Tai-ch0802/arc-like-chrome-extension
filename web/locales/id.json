@@ -417,6 +417,9 @@
     "v1_14_2_date": "1 Maret 2026",
     "v1_14_2_title": "Versi 1.14.2",
     "v1_14_2_desc": "Peningkatan fokus pada fitur AI dan keamanan: menambahkan panduan pengaturan Gemini Nano dengan praktik terbaik, memperbaiki caching ringkasan hover dengan TTL dan visibilitas bilah progres. Juga mengatasi beberapa peringatan keamanan CodeQL dan meningkatkan kualitas lokalisasi secara signifikan.",
+    "v1_15_0_date": "3 Juni 2026",
+    "v1_15_0_title": "Versi 1.15.0 (Pembaruan Besar)",
+    "v1_15_0_desc": "Pembaruan besar untuk tampilan dan fitur. Pencarian terpadu Spotlight baru — tekan Cmd/Ctrl+Shift+K di mana saja untuk langsung menemukan tab, bookmark, daftar bacaan, dan tindakan dalam popup terpusat. Sinkronisasi Google Drive opsional menjaga Workspace Anda tetap selaras di seluruh perangkat. Ditambah perombakan visual Material 3 menyeluruh: semua ikon menjadi SVG, bilah workspace satu tombol yang ringkas, jarak daftar yang dapat diatur, scrollbar terpadu, dan warna tema yang konsisten — beserta banyak perbaikan UI.",
     "v1_14_3_date": "17 Maret 2026",
     "v1_14_3_title": "Versi 1.14.3",
     "v1_14_3_desc": "Menambahkan dialog konfirmasi saat mereset tema kustom untuk mencegah kehilangan yang tidak disengaja; memperbaiki posisi scroll yang melompat saat mengklik tab; menambahkan label aksesibilitas pada tombol tutup toast; memperbaiki kunci i18n yang hilang di semua bahasa; dan memperbarui beberapa dependensi pengembangan."
