@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Боковая панель в стиле Arc — вкладки, закладки, список чтения в одном месте + локальный AI (именование групп, очистка, сводки, NL-поиск), Workspaces, палитра ⌘K. Без API-ключа.",
+    "message": "Боковая панель Arc: вкладки, закладки, список чтения + локальный AI (группы, очистка, сводки, поиск), Workspaces. Без API.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

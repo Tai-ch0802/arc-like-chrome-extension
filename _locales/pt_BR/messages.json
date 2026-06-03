@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barra lateral estilo Arc — abas, favoritos, lista de leitura unificados + IA local (nomeação de grupos, limpeza, resumo, busca NL), Workspaces, paleta ⌘K. Sem chave de API.",
+    "message": "Barra lateral Arc: abas, favoritos, lista de leitura + IA local (grupos, limpeza, resumo, busca), Workspaces. Sem API.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

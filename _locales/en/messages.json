@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc-style sidebar — unified tabs, bookmarks, reading list + local AI (group naming, cleanup, summary, NL search), Workspaces, ⌘K palette. No API key.",
+    "message": "Arc-style sidebar: tabs, bookmarks & reading list + local AI (grouping, cleanup, summary, search), Workspaces. No API key.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
