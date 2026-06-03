@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arc-like Sidebar | 你的瀏覽器，理當井然有序</title>
-    <meta name="description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+    <meta name="description" content="用工作區分隔情境、Spotlight 一鍵直達，結合垂直分頁、書籤、隱私 AI 與跨裝置同步的終極 Chrome 側邊欄。">
 
     <!-- SEO Meta Tags -->
     <meta name="keywords"
@@ -22,7 +22,7 @@
       "name": "Arc-like Sidebar",
       "url": "https://sidebar-for-tabs-bookmarks.taislife.work/",
       "image": "https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg",
-      "description": "結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。",
+      "description": "用工作區分隔情境、Spotlight 一鍵直達，結合垂直分頁、書籤、隱私 AI 與跨裝置同步的終極 Chrome 側邊欄。",
       "operatingSystem": "Chrome",
       "applicationCategory": "BrowserExtension",
       "offers": {
@@ -43,7 +43,7 @@
     <meta property="og:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/">
     <meta property="og:site_name" content="Arc-like Sidebar">
     <meta property="og:title" content="Arc-like Sidebar | 你的瀏覽器，理當井然有序">
-    <meta property="og:description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+    <meta property="og:description" content="用工作區分隔情境、Spotlight 一鍵直達，結合垂直分頁、書籤、隱私 AI 與跨裝置同步的終極 Chrome 側邊欄。">
     <meta property="og:image"
         content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
     <meta property="og:image:alt" content="Arc-like Sidebar 擴充功能截圖展示">
@@ -52,7 +52,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://sidebar-for-tabs-bookmarks.taislife.work/">
     <meta name="twitter:title" content="Arc-like Sidebar | 你的瀏覽器，理當井然有序">
-    <meta name="twitter:description" content="結合書籤、垂直分頁、隱私 AI 整理與高度客製化的終極 Chrome 側邊欄工具。">
+    <meta name="twitter:description" content="用工作區分隔情境、Spotlight 一鍵直達，結合垂直分頁、書籤、隱私 AI 與跨裝置同步的終極 Chrome 側邊欄。">
     <meta name="twitter:image"
         content="https://raw.githubusercontent.com/Tai-ch0802/arc-like-chrome-extension/main/web/og-image.jpeg">
     <meta name="twitter:image:alt" content="Arc-like Sidebar 擴充功能截圖展示">
@@ -119,11 +119,11 @@
     <section class="hero container">
         <div class="hero-content">
             <div class="badge-pill pulse-border">
-                <span class="dot"></span> <span data-i18n="hero_badge">全新支援本機 AI 智慧整理</span>
+                <span class="dot"></span> <span data-i18n="hero_badge">全新 工作區 × Spotlight 統一搜尋</span>
             </div>
             <h1 class="hero-title" data-i18n="hero_title_1">你的瀏覽器，<br><span class="text-gradient">理當井然有序。</span></h1>
             <p class="hero-subtitle" data-i18n="hero_subtitle">
-                將凌亂的分頁轉化為清晰的思緒。結合垂直分頁、無縫書籤、閱讀清單與 100% 本機端 AI，<br />打造專屬於你的終極資訊指揮中心。
+                用工作區分隔每個情境，一個快捷鍵（Cmd/Ctrl+Shift+K）直達任何分頁、書籤與動作。<br />結合垂直分頁、無縫書籤與 100% 本機端 AI，打造可跨裝置同步的資訊指揮中心。
             </p>
             <div class="hero-actions">
                 <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
@@ -419,6 +419,28 @@
                 </div>
             </div>
 
+            <!-- 中格：工作區 -->
+            <div class="bento-card bento-medium glow-card">
+                <div class="card-icon-wrapper ws-icon">
+                    <i data-lucide="layout-grid"></i>
+                </div>
+                <h3 class="card-title" data-i18n="workspace_title">工作區 Workspaces</h3>
+                <p class="card-desc" data-i18n="workspace_desc">為工作、研究、生活建立各自獨立的工作區，一鍵切換不同情境的分頁與書籤版面。啟用選用的 Google
+                    Drive 同步後，你的工作區還能在多台裝置間保持一致。</p>
+                <div class="card-visual ws-visual">
+                    <div class="ws-anim">
+                        <div class="ws-pill ws-pill-1"><i data-lucide="briefcase"></i><span
+                                data-i18n="ws_anim_work">工作</span></div>
+                        <div class="ws-pill ws-pill-2"><i data-lucide="flask-conical"></i><span
+                                data-i18n="ws_anim_study">研究</span></div>
+                        <div class="ws-pill ws-pill-3"><i data-lucide="home"></i><span
+                                data-i18n="ws_anim_life">生活</span></div>
+                        <div class="ws-sync"><i data-lucide="cloud"></i><span
+                                data-i18n="ws_anim_synced">Drive 已同步</span></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 中格：拖曳排版 -->
             <div class="bento-card bento-medium glow-card">
                 <div class="card-icon-wrapper">
@@ -470,6 +492,13 @@
         <h2 class="section-title" data-i18n="more_title">還有更多亮點</h2>
         <p class="section-subtitle" data-i18n="more_subtitle">從搜尋到鍵盤操控，每一處細節都經過打磨。</p>
         <div class="features-list">
+            <div class="feature-item glow-card">
+                <div class="card-icon-wrapper"><i data-lucide="command"></i></div>
+                <div>
+                    <h4 data-i18n="spotlight_title">Spotlight 統一搜尋</h4>
+                    <p data-i18n="spotlight_desc">按 Cmd/Ctrl+Shift+K 隨處喚出置中搜尋視窗，即時直達分頁、書籤、閱讀清單與動作。</p>
+                </div>
+            </div>
             <div class="feature-item glow-card">
                 <div class="card-icon-wrapper"><i data-lucide="message-square-text"></i></div>
                 <div>
