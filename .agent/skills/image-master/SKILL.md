@@ -50,9 +50,8 @@ Detailed knowledge is organized into the following reference files:
 |---|---|---|
 | 使用者上傳自訂背景圖 | `modules/ui/backgroundImageManager.js` | 壓縮 + WebP 轉換、CSS 變數套用、容量 quota |
 | 縮圖 / favicon 抓取 | `modules/utils/imageUtils.js` | URL 抓取、resize、WebP 轉換 |
-| Extension icons | `icons/` (16/32/48/128 PNG)、`manifest.json` | retina 友善、透明背景、Chrome Web Store 提交 |
+| Extension icons | `icons/extension-icon-{16,32,48,128}.png`、`manifest.json` | retina 友善、透明背景、Chrome Web Store 提交 |
 | sidepanel UI 圖示 | `modules/icons.js`（SVG 常數） | 優先 SVG (inline)，避免 raster |
-| Chrome Web Store 截圖 | `docs/chrome-web-store/screenshots/` | 1280×800 / 640×400、PNG/JPG |
 
 ### 本專案常用決策
 

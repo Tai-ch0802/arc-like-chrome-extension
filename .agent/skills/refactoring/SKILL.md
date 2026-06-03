@@ -99,7 +99,7 @@ description: 本專案 (vanilla JS Chrome extension) 的重構指南：辨識 co
     *   不要在 UI 元件中直接呼叫 `chrome.bookmarks.*`。應透過 `modules/apiManager.js` 呼叫，以便未來替換或測試。
 
 4.  **樣式一致性**:
-    *   避免使用 `element.style.color = 'red'`。應使用 CSS class (`element.classList.add('error')`) 搭配 `index.css`。
+    *   避免使用 `element.style.color = 'red'`。應使用 CSS class (`element.classList.add('error')`) 搭配 `sidepanel.css` / `options.css`。
 
 ## 如何使用此 Skill
 當 User 要求 "Refactor this file" 或 "Clean up this code" 時：

@@ -67,9 +67,9 @@ description: 撰寫本專案 (vanilla JS Chrome extension) 的 SA (系統分析)
 3. **Storage Schema Diff**：若改動 `chrome.storage` 結構，列出「before / after」JSON shape 與 migration 策略。
 4. **Manifest Diff**：若新增 permissions / host_permissions / commands，明確列出 manifest.json 變更。
 5. **Test Impact Analysis** ⭐：
-   - `tests/`（Jest 單元測試）：列出哪些檔案的測試需要修改。
-   - `usecase_tests/`（Puppeteer E2E）：列出 DOM 選擇器（`.tab-item[data-tab-id]` 等）若變動會影響哪些 E2E。
-   - `scripts/__tests__/`（build/script 測試）：列出 Makefile 或建置流程的測試影響。
+   - `usecase_tests/unit_tests/`（.mjs 單元測試）：列出哪些檔案的測試需要修改。
+   - `usecase_tests/puppeteer_tests/`（Puppeteer E2E）：列出 DOM 選擇器（`.tab-item[data-tab-id]` 等）若變動會影響哪些 E2E。
+   - **建置流程**：本專案以 Makefile 建置（無獨立 script 測試目錄），列出 Makefile 或建置流程的影響。
 
 ### 工具
 
