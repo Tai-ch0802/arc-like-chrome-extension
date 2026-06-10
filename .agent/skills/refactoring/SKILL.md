@@ -51,7 +51,7 @@ description: 本專案 (vanilla JS Chrome extension) 的重構指南：辨識 co
 修改一處需要同時修改多處。
 
 *   **Shotgun Surgery (霰彈式修改)**
-    *   *徵兆*: 每除要加一個小功能，就要改動 5-6 個檔案。
+    *   *徵兆*: 每逢要加一個小功能，就要改動 5-6 個檔案。
     *   *對策*: **Move Method/Field (搬移函式/欄位)**。將相關邏輯集中到單一模組。
 
 ### 4. Dispensables (可有可無者)

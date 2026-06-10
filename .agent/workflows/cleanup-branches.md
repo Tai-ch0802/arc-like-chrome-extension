@@ -1,10 +1,14 @@
 ---
-description: Delete local and remote git branches merged into main.
+description: Delete local and remote git branches whose PRs were merged (squash) into main.
 ---
 
 # Cleanup Merged Branches Workflow
 
-Use this workflow to clean up branches that have been merged into main.
+Use this workflow to clean up branches whose PRs have been merged into main.
+
+> ⚠️ 本專案採 **squash merge**：`git branch --merged main` 永遠偵測不到已合併的
+> 特性分支（squash commit 是 main 上的新 commit，分支 commit 不會成為 ancestor），
+> `git branch -d` 也會誤報拒刪。**以 GitHub PR 的 merged 狀態為準，確認後用 `-D`。**
 
 ## 1. Fetch and Prune
 // turbo
@@ -12,33 +16,32 @@ Use this workflow to clean up branches that have been merged into main.
 git fetch --prune
 ```
 
-## 2. Preview Local Merged Branches
+## 2. Get Merged PR Head Branches (source of truth)
 // turbo
 ```bash
-git branch --merged main | grep -v "main" | grep -v "^\*"
+gh pr list --state merged --limit 100 --json headRefName --jq '.[].headRefName' | sort -u
 ```
 
-## 3. Preview Remote Merged Branches
+## 3. Preview Local Branches
 // turbo
 ```bash
-git branch -r --merged main | grep -v "main" | grep -v "HEAD" | sed 's/origin\///'
+git for-each-ref refs/heads --format='%(refname:short)' | grep -vx main
 ```
 
-## 4. Delete Local Merged Branches
+取步驟 2 與步驟 3 的交集 = 可安全刪除的本地分支；向使用者列出後再執行刪除。
+
+## 4. Delete Local Branches (confirmed merged via PR)
+For each branch in the intersection:
 ```bash
-git branch --merged main | grep -v "main" | grep -v "^\*" | xargs -r git branch -d
+git branch -D <branch-name>
 ```
 
-## 5. Delete Remote Merged Branches
-For each branch from step 3, run:
+## 5. Delete Leftover Remote Branches (rare)
+通常 repo 的 "Automatically delete head branches" 已在 merge 時刪除遠端分支。
+僅在仍殘留時（`git branch -r` 還看得到、且在步驟 2 清單中）執行：
 ```bash
 git push origin --delete <branch-name>
 ```
 
-Or delete all at once (use with caution):
-```bash
-git branch -r --merged main | grep -v "main" | grep -v "HEAD" | sed 's/origin\///' | xargs -I {} git push origin --delete {}
-```
-
 ## 6. Notify User
-Report which branches were deleted (local and remote).
+Report which branches were deleted (local and remote), and which were skipped (not found in merged PR list).
