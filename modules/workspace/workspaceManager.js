@@ -315,14 +315,26 @@ export async function deleteWorkspace(id) {
 
 /**
  * Replaces the workspace's tabSnapshot with the current state of `windowId`.
- * Pinned and chrome:// tabs are kept (we re-open them on restore).
+ * Pinned tabs are kept; chrome:// / about: pages are filtered out (see
+ * buildSnapshotFromTabs), so they are NOT part of a workspace.
  * @param {string} id
  * @param {number} windowId
  */
 export async function snapshotIntoWorkspace(id, windowId) {
     const ws = workspaces[id];
     if (!ws) return null;
-    ws.tabSnapshot = await snapshotWindowTabs(windowId);
+    const snap = await snapshotWindowTabs(windowId);
+    // Never wipe a non-empty snapshot with an empty one from this path: an
+    // all-chrome:// window legitimately yields [], but so does a window in
+    // mid-teardown (tabs already gone) — and the background auto-snapshot
+    // can race window close. Keeping the stale snapshot is strictly safer.
+    if (snap.length === 0 && (ws.tabSnapshot || []).length > 0) return ws;
+    // Content-equality skip: many tab events reach the debounce without
+    // changing what we persist (reloads, group churn that resolves back).
+    // Skipping identical snapshots avoids a spurious rev bump (= a needless
+    // Drive push) and conserves chrome.storage.sync's write quota.
+    if (JSON.stringify(snap) === JSON.stringify(ws.tabSnapshot)) return ws;
+    ws.tabSnapshot = snap;
     ws.lastActiveAt = Date.now();
     bumpRev(ws);
     await persistWorkspaces();
@@ -404,84 +416,110 @@ async function snapshotWindowTabs(windowId) {
 }
 
 /**
- * Hibernate-then-restore switch:
- *   1) ensure the outgoing tabs are saved somewhere — either the currently-
- *      bound workspace, or (if the window is unbound) a fresh auto-created
- *      "Untitled <timestamp>" workspace. NEVER discard unbound tabs silently;
- *   2) open the target workspace's snapshot in the same window;
- *   3) close the original tabs IFF we successfully opened at least one new
- *      tab, otherwise abort to avoid emptying the window;
- *   4) bind window → target workspace.
- *
- * Open before close: removing the last tab in a window auto-closes the
- * window. Empty target snapshot opens one blank tab for the same reason.
- *
- * @param {string} targetId
- * @param {number} windowId
- * @returns {Promise<boolean>} true if switched.
- * @throws if no target tab could be opened (window left untouched).
+ * First live window currently bound to `workspaceId`, or null. Verifies the
+ * window actually exists; stale entries found along the way are dropped
+ * (Chrome recycles window ids across sessions).
+ * @param {string} workspaceId
+ * @returns {Promise<number|null>}
  */
-export async function switchWorkspace(targetId, windowId) {
-    if (!workspaces[targetId]) return false;
-    const currentActiveId = getActiveWorkspaceId(windowId);
-    if (currentActiveId === targetId) return false;
-
-    if (currentActiveId) {
-        await snapshotIntoWorkspace(currentActiveId, windowId);
-    } else {
-        // Unbound window: auto-save current tabs to a recovery workspace before
-        // we close them. Without this, the user's tabs would vanish on every
-        // first switch after a browser restart (windowWorkspaceMap uses
-        // ephemeral window ids and is not rebuilt on startup).
-        const oldTabs = await chrome.tabs.query({ windowId }).catch(() => []);
-        if (oldTabs.length > 0) {
-            await createWorkspace({
-                name: 'Untitled ' + formatTimestamp(),
-                snapshotWindowId: windowId,
-            });
+export async function findLiveWindowForWorkspace(workspaceId) {
+    let prunedStale = false;
+    let found = null;
+    for (const [wid, boundId] of Object.entries(windowWorkspaceMap)) {
+        if (boundId !== workspaceId) continue;
+        const id = Number(wid);
+        const win = await chrome.windows.get(id).catch(() => null);
+        if (win && found === null) {
+            found = id;
+        } else if (!win) {
+            delete windowWorkspaceMap[wid];
+            prunedStale = true;
         }
     }
+    if (prunedStale) await persistWindowMap();
+    return found;
+}
 
+/**
+ * Arc-style switch: bring the target workspace's window to the front, opening
+ * one if needed. NON-DESTRUCTIVE — the window the request came from keeps its
+ * tabs and its own binding.
+ *
+ *  - Target already bound to a live window → focus that window.
+ *  - Otherwise → open a NEW window restoring the target's snapshot (tab groups
+ *    rebuilt best-effort) and bind it to the workspace.
+ *
+ * The previous hibernate-in-place semantics (close the current window's tabs,
+ * reopen the snapshot in the same window) was the main tab-loss vector: any
+ * staleness in either snapshot destroyed live tabs. With one-window-per-
+ * workspace, switching cannot lose tabs by construction; live windows are
+ * continuously snapshotted by the background lifecycle module, so closing a
+ * workspace window is also safe.
+ *
+ * @param {string} targetId
+ * @param {number} [originWindowId] - the window the request came from; only
+ *   used to skip the redundant focus call when it is already the target's.
+ * @returns {Promise<{action:'focused'|'opened', windowId:number}|false>}
+ *   false if the workspace does not exist.
+ */
+export async function switchWorkspace(targetId, originWindowId) {
     const target = workspaces[targetId];
+    if (!target) return false;
+
+    const boundWindowId = await findLiveWindowForWorkspace(targetId);
+    if (boundWindowId !== null) {
+        if (boundWindowId !== originWindowId) {
+            try {
+                await chrome.windows.update(boundWindowId, { focused: true });
+            } catch (err) {
+                console.warn('[workspace] focus failed', err);
+            }
+        }
+        target.lastActiveAt = Date.now();
+        await persistWorkspaces();
+        return { action: 'focused', windowId: boundWindowId };
+    }
+
     const snapshotTabs = (target.tabSnapshot && target.tabSnapshot.length > 0)
         ? target.tabSnapshot
         : [{ url: 'chrome://newtab/', title: '', pinned: false }];
 
-    const oldTabs = await chrome.tabs.query({ windowId }).catch(() => []);
-    const oldTabIds = oldTabs.map(t => t.id);
-
-    let createdCount = 0;
+    // The window is created with the first tab only; the rest are added
+    // sequentially so a per-tab failure (e.g. revoked file:// access) skips
+    // just that tab, and the snapshot order is preserved. ~30ms/tab × 30 tabs
+    // ≈ 1s worst case, acceptable for an explicit user action.
     const createdTabIds = [];
-    // Sequential create keeps the restored tab order stable. ~30ms/tab × 30 tabs
-    // ≈ 1s worst case, acceptable for an explicit user action behind a confirm.
-    for (let i = 0; i < snapshotTabs.length; i++) {
+    let win;
+    try {
+        win = await chrome.windows.create({ url: snapshotTabs[0].url, focused: true });
+        createdTabIds.push(win.tabs && win.tabs[0] ? win.tabs[0].id : null);
+    } catch (err) {
+        console.warn('[workspace] failed to open window with first tab, using blank window', snapshotTabs[0].url, err);
+        win = await chrome.windows.create({ focused: true });
+        createdTabIds.push(null);
+    }
+    const windowId = win.id;
+
+    for (let i = 1; i < snapshotTabs.length; i++) {
         const s = snapshotTabs[i];
         try {
-            const newTab = await chrome.tabs.create({
-                windowId,
-                url: s.url,
-                active: i === 0,
-                pinned: s.pinned || false,
-            });
+            const newTab = await chrome.tabs.create({ windowId, url: s.url, active: false });
             createdTabIds.push(newTab.id);
-            createdCount++;
         } catch (err) {
             createdTabIds.push(null);
             console.warn('[workspace] failed to restore tab', s.url, err);
         }
     }
 
-    if (createdCount === 0) {
-        // Don't close old tabs if we have nothing to replace them with —
-        // would leave the window empty and Chrome would auto-close it.
-        throw new Error('Could not open any tab from the target workspace snapshot.');
-    }
-
-    if (oldTabIds.length > 0) {
-        try {
-            await chrome.tabs.remove(oldTabIds);
-        } catch (err) {
-            console.warn('[workspace] failed to close old tabs', err);
+    // Pin after all tabs exist: pinned tabs auto-move to the front, and the
+    // snapshot lists pinned entries first, so order is preserved.
+    for (let i = 0; i < snapshotTabs.length; i++) {
+        if (snapshotTabs[i].pinned && createdTabIds[i] != null) {
+            try {
+                await chrome.tabs.update(createdTabIds[i], { pinned: true });
+            } catch (err) {
+                console.warn('[workspace] failed to pin restored tab', err);
+            }
         }
     }
 
@@ -501,7 +539,7 @@ export async function switchWorkspace(targetId, windowId) {
     }
 
     await setActiveWorkspace(windowId, targetId);
-    return true;
+    return { action: 'opened', windowId };
 }
 
 /**
@@ -521,10 +559,78 @@ export async function pruneWindowWorkspaceMap() {
     if (changed) await persistWindowMap();
 }
 
-function formatTimestamp() {
-    const d = new Date();
-    const pad = n => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+/**
+ * Normalize a URL for snapshot matching: drop the #fragment. SPAs and anchor
+ * navigation churn the fragment without changing what page the tab "is",
+ * which would otherwise erode the similarity score across a restart.
+ * Pure function.
+ * @param {string} url
+ * @returns {string}
+ */
+export function normalizeUrlForMatch(url) {
+    if (typeof url !== 'string') return '';
+    const i = url.indexOf('#');
+    return i === -1 ? url : url.slice(0, i);
+}
+
+/**
+ * Similarity ∈ [0,1] between two URL lists: multiset intersection size divided
+ * by the LARGER list's size. Max (not min) keeps the score honest when one
+ * side is a superset — a 2-tab window should not perfectly match a 30-tab
+ * workspace just because both tabs appear in it. Pure function.
+ * @param {string[]} urlsA
+ * @param {string[]} urlsB
+ * @returns {number}
+ */
+export function scoreSnapshotSimilarity(urlsA, urlsB) {
+    if (!Array.isArray(urlsA) || !Array.isArray(urlsB) || urlsA.length === 0 || urlsB.length === 0) return 0;
+    const counts = new Map();
+    for (const u of urlsA) {
+        const k = normalizeUrlForMatch(u);
+        counts.set(k, (counts.get(k) || 0) + 1);
+    }
+    let common = 0;
+    for (const u of urlsB) {
+        const k = normalizeUrlForMatch(u);
+        const c = counts.get(k) || 0;
+        if (c > 0) {
+            common++;
+            counts.set(k, c - 1);
+        }
+    }
+    return common / Math.max(urlsA.length, urlsB.length);
+}
+
+/**
+ * Greedy 1:1 assignment of windows to workspaces by snapshot similarity.
+ * Highest-scoring pairs win; each window and each workspace is used at most
+ * once. Used by the background lifecycle module to re-identify session-
+ * restored windows after a browser restart. Pure function.
+ *
+ * @param {Array<{windowId:number, urls:string[]}>} windows
+ * @param {Array<{id:string, urls:string[]}>} candidates
+ * @param {{threshold?:number}} [opts] - minimum score to accept (default 0.6)
+ * @returns {Array<{windowId:number, workspaceId:string, score:number}>}
+ */
+export function matchWindowsToWorkspaces(windows, candidates, { threshold = 0.6 } = {}) {
+    const pairs = [];
+    for (const w of windows || []) {
+        for (const c of candidates || []) {
+            const score = scoreSnapshotSimilarity(w.urls, c.urls);
+            if (score >= threshold) pairs.push({ windowId: w.windowId, workspaceId: c.id, score });
+        }
+    }
+    pairs.sort((a, b) => b.score - a.score);
+    const usedWindows = new Set();
+    const usedWorkspaces = new Set();
+    const result = [];
+    for (const p of pairs) {
+        if (usedWindows.has(p.windowId) || usedWorkspaces.has(p.workspaceId)) continue;
+        usedWindows.add(p.windowId);
+        usedWorkspaces.add(p.workspaceId);
+        result.push(p);
+    }
+    return result;
 }
 
 /**
