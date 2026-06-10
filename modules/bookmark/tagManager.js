@@ -104,6 +104,18 @@ export function getPresetColors() {
 }
 
 /**
+ * 以名稱(不分大小寫)尋找既有 tag。建立入口用來防重複(ISSUE-162 WP6):
+ * tag: 查詢按小寫名稱比對,Work/work 並存時查詢無法區分、dots 卻兩顆。
+ * @param {string} name
+ * @returns {object|null}
+ */
+export function findTagByName(name) {
+    const n = String(name || '').trim().toLowerCase();
+    if (!n) return null;
+    return Object.values(tags).find(t => t.name.toLowerCase() === n) || null;
+}
+
+/**
  * @param {{name: string, color?: string}} args
  * @returns {Promise<object>}
  */

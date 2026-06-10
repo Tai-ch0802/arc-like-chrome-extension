@@ -3,6 +3,7 @@ import { applyTheme } from './modules/ui/settingManager.js';
 import * as customTheme from './modules/ui/customThemeManager.js';
 import * as state from './modules/stateManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
+import * as tagManager from './modules/bookmark/tagManager.js';
 import { setOriginWindowId } from './modules/commandPalette/searchContext.js';
 import { initSpotlight } from './modules/spotlight/spotlightController.js';
 
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         state.initAiGroupingVisibility(),
         state.initAiCleanupVisibility(),
         workspaceManager.initWorkspaces(),
+        tagManager.initTags(), // tag: 查詢需要(ISSUE-162 WP6)
     ]);
 
     initSpotlight();

@@ -66,12 +66,20 @@ export function createTagPicker(initialTagIds = []) {
     createBtn.className = 'tag-picker__create';
     createBtn.textContent = api.getMessage('bmToolsCreateTag') || '+ New tag';
     createBtn.addEventListener('click', async () => {
-        const name = await modal.showPrompt({
-            title: api.getMessage('bmToolsCreateTagPrompt') || 'New tag name',
-            defaultValue: '',
+        // 與 bm-tools 同一個色彩對話框(ISSUE-162 WP6):原本走 showPrompt,
+        // 從這裡建立的 tag 永遠是預設藍,兩個入口行為不一致。
+        const res = await modal.showTagDialog({
+            title: api.getMessage('bmToolsCreateTagPrompt') || 'New tag',
         });
-        if (!name || !name.trim()) return;
-        const tag = await tagManager.createTag({ name: name.trim() });
+        if (!res || !res.name) return;
+        // 名稱唯一性:同名(不分大小寫)沿用既有 tag 並直接勾選。
+        const existing = tagManager.findTagByName(res.name);
+        if (existing) {
+            const cb = list.querySelector(`input[value="${existing.id}"]`);
+            if (cb && !cb.checked) cb.click();
+            return;
+        }
+        const tag = await tagManager.createTag({ name: res.name, color: res.color });
         selected.add(tag.id);
         addRow(tag);
         root.dispatchEvent(new CustomEvent('tagselectionchange', {

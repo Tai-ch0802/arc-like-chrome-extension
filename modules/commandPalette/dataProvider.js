@@ -9,8 +9,11 @@ import * as state from '../stateManager.js';
 import * as api from '../apiManager.js';
 import * as readingListManager from '../readingListManager.js';
 import * as wsManager from '../workspace/workspaceManager.js';
+import * as tagManager from '../bookmark/tagManager.js';
+import { parseSearchQuery, bookmarkMatchesTags } from '../utils/searchUtils.js';
 import { buildActions } from './actions.js';
-import { requestPanelAction, openUrlInOrigin } from './panelBridge.js';
+import { openUrlInOrigin } from './panelBridge.js';
+import { getOriginWindowId } from './searchContext.js';
 
 const MAX_RESULTS_PER_GROUP = 8;
 
@@ -33,7 +36,20 @@ const MAX_RESULTS_PER_GROUP = 8;
  * @returns {Promise<Array<{type: string, titleKey: string, items: PaletteItem[]}>>}
  */
 export async function searchAll(query) {
-    const q = (query || '').trim().toLowerCase();
+    const raw = (query || '').trim();
+
+    // tag: 查詢(ISSUE-162 WP6):與 sidepanel 搜尋同一查詢語言 — 解析
+    // 重用 parseSearchQuery 純函式;命中時僅書籤參與(sidepanel 的對等
+    // 行為是隱藏非書籤區段),其他來源讓位。
+    const parsed = parseSearchQuery(raw);
+    if (parsed.tags.length > 0) {
+        const items = getTaggedBookmarkResults(parsed.keywords, parsed.tags);
+        return items.length > 0
+            ? [{ type: 'bookmark', titleKey: 'cmdPaletteGroupBookmarks', items }]
+            : [];
+    }
+
+    const q = raw.toLowerCase();
 
     const [tabs, readingList] = await Promise.all([
         getTabResults(q),
@@ -59,9 +75,33 @@ function getWorkspaceResults(q) {
         type: 'workspace',
         icon: w.icon,
         title: w.name,
-        subtitle: `${(w.tabSnapshot || []).length} tab(s)`,
-        handler: () => requestPanelAction('switch-workspace', { workspaceId: w.id }),
+        subtitle: api.getMessage('cmdPaletteWorkspaceTabs', [String((w.tabSnapshot || []).length)])
+            || `${(w.tabSnapshot || []).length} tab(s)`,
+        // 直接切換(ISSUE-162 WP6):switchWorkspace 是非破壞性 focus-or-open,
+        // spotlight context 已 init workspaceManager — 不再繞道 sidepanel
+        // (舊路徑會在來源視窗彈出 panel、焦點卻跳去工作區視窗,觀感破碎)。
+        handler: () => wsManager.switchWorkspace(w.id, getOriginWindowId()),
     }));
+}
+
+/** tag: 查詢的書籤結果(AND 語意:全部 tag 命中 + 全部關鍵字命中)。 */
+function getTaggedBookmarkResults(keywords, tags) {
+    const cache = state.getBookmarkCache() || [];
+    return cache
+        .filter(b => b.type === 'bookmark')
+        .filter(b => bookmarkMatchesTags(
+            tagManager.getTagsForBookmark(b.id).map(t => t.name), tags))
+        .filter(b => keywords.every(k =>
+            ((b.title || '') + ' ' + (b.url || '')).toLowerCase().includes(k)))
+        .slice(0, MAX_RESULTS_PER_GROUP)
+        .map(b => ({
+            id: 'bookmark-' + b.id,
+            type: 'bookmark',
+            icon: 'bookmark',
+            title: b.title || '(untitled)',
+            subtitle: b.url,
+            handler: () => openUrlInOrigin(b.url),
+        }));
 }
 
 async function getTabResults(q) {
