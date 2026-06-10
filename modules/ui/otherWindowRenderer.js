@@ -4,6 +4,7 @@
  */
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
+import * as wsManager from '../workspace/workspaceManager.js';
 import { EDIT_ICON_SVG, renderIcon } from '../icons.js';
 import { otherWindowsList } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
@@ -195,14 +196,19 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
         folderItem.setAttribute('role', 'button');
         folderItem.setAttribute('aria-expanded', 'false');
         folderItem.dataset.windowId = window.id;
-        folderItem.title = `Window ${index + 1}`;
 
         const icon = document.createElement('span');
         icon.className = 'window-icon is-chevron is-collapsed';
         icon.innerHTML = renderIcon('expand_more', { size: 16 });
 
+        // Title precedence: explicit per-window custom name > the bound
+        // workspace's name (Arc-style: a window IS a workspace) > "Window N".
         const customName = state.getWindowName(window.id);
-        const titleText = customName || `Window ${index + 1} (${window.tabs.length})`;
+        const boundWsId = wsManager.getActiveWorkspaceId(window.id);
+        const boundWs = boundWsId ? wsManager.getWorkspace(boundWsId) : null;
+        const defaultName = boundWs ? boundWs.name : `Window ${index + 1}`;
+        const titleText = customName || `${defaultName} (${window.tabs.length})`;
+        folderItem.title = customName || defaultName;
 
         const title = document.createElement('span');
         title.className = 'window-title';
@@ -229,7 +235,8 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
             if (newName !== null) {
                 await state.setWindowName(window.id, newName);
-                title.textContent = newName || `Window ${index + 1} (${window.tabs.length})`;
+                // Clearing the custom name falls back to the workspace-aware default.
+                title.textContent = newName || `${defaultName} (${window.tabs.length})`;
             }
         };
 

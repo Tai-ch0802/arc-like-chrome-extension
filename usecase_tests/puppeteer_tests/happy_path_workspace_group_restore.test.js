@@ -1,20 +1,20 @@
 const { setupBrowser, teardownBrowser } = require('./setup');
 
 /**
- * Batch C E2E: switching workspaces rebuilds the captured tab group.
+ * Batch C E2E: Arc-style workspace switching.
  *
- * SAFETY: switchWorkspace() closes ALL tabs in the window it targets and
- * reopens the snapshot. To avoid destabilizing the Puppeteer-controlled
- * sidepanel page (which lives in the ORIGINAL window), every workspace
- * operation here targets a SEPARATE window we create ourselves. The
- * controlling page's window id is never passed to switchWorkspace, so its
- * tabs are never touched. The scratch window is always cleaned up in finally.
+ * switchWorkspace() is NON-DESTRUCTIVE: it never touches the window it is
+ * called from. Switching to a workspace with no live window OPENS a new
+ * window restoring the snapshot (tab groups rebuilt); switching to one that
+ * already has a live window FOCUSES that window. This test exercises both
+ * paths plus the group-restore fidelity of the open path.
  *
  * The sidepanel dev build loads sidepanel.js as an unbundled ES module, so we
  * can dynamic-import the real workspaceManager module from the page context
  * and exercise the genuine switchWorkspace wiring (not a reimplementation).
+ * Every window this test creates is cleaned up in finally.
  */
-describe('Happy Path: tab group restored on workspace switch', () => {
+describe('Happy Path: Arc-style switch opens/focuses workspace window', () => {
     let browser;
     let page;
 
@@ -29,19 +29,13 @@ describe('Happy Path: tab group restored on workspace switch', () => {
         await teardownBrowser(browser);
     });
 
-    test('grouped tabs are regrouped after switching away and back', async () => {
-        let scratchWindowId = null;
+    test('switch opens a new window with groups restored, second switch focuses it', async () => {
+        const windowIds = [];
+        let workspaceId = null;
         try {
             const result = await page.evaluate(async () => {
                 const ws = await import('./modules/workspace/workspaceManager.js');
                 await ws.initWorkspaces();
-
-                // 1) Open a dedicated scratch window with two http tabs.
-                const win = await chrome.windows.create({
-                    url: ['https://example.com/', 'https://example.org/'],
-                    focused: false,
-                });
-                const windowId = win.id;
 
                 const poll = async (fn, attempts = 100, interval = 100) => {
                     for (let i = 0; i < attempts; i++) {
@@ -52,12 +46,19 @@ describe('Happy Path: tab group restored on workspace switch', () => {
                     return null;
                 };
 
+                // 1) Scratch window with two http tabs that we snapshot from.
+                const scratch = await chrome.windows.create({
+                    url: ['https://example.com/', 'https://example.org/'],
+                    focused: false,
+                });
+                const scratchId = scratch.id;
+
                 // Wait until both tabs exist AND have a SETTLED http url. The
-                // snapshot filters on tab.url (not pendingUrl), so grouping /
-                // snapshotting before the url settles is the core race that makes
-                // a naive version of this test flaky. Block on it deterministically.
+                // snapshot filters on tab.url (not pendingUrl), so snapshotting
+                // before the url settles is the core race that would make this
+                // flaky. Block on it deterministically.
                 const httpTabs = await poll(async () => {
-                    const t = await chrome.tabs.query({ windowId });
+                    const t = await chrome.tabs.query({ windowId: scratchId });
                     const ready = t.filter(x => /^https?:/i.test(x.url || ''));
                     return ready.length >= 2 ? ready : null;
                 });
@@ -68,74 +69,98 @@ describe('Happy Path: tab group restored on workspace switch', () => {
                 //    Chrome reports BOTH tabs carrying the groupId before snapshotting.
                 const groupId = await chrome.tabs.group({
                     tabIds: groupTabIds,
-                    createProperties: { windowId },
+                    createProperties: { windowId: scratchId },
                 });
                 await chrome.tabGroups.update(groupId, { title: 'BatchC', color: 'cyan' });
                 const grouped = await poll(async () => {
-                    const t = await chrome.tabs.query({ windowId, groupId });
+                    const t = await chrome.tabs.query({ windowId: scratchId, groupId });
                     return t.length >= 2 ? t : null;
                 });
                 if (!grouped) throw new Error('tabs did not join group');
 
-                // 3) Snapshot the scratch window into workspace A, bind it.
+                // 3) Snapshot the scratch window into workspace A (NOT bound),
+                //    then close the scratch window — the workspace now has no
+                //    live window, like after a browser restart.
                 const wsA = await ws.createWorkspace({
-                    name: 'GroupRestore A ' + Date.now(),
-                    snapshotWindowId: windowId,
+                    name: 'ArcSwitch A ' + Date.now(),
+                    snapshotWindowId: scratchId,
                 });
-                await ws.setActiveWorkspace(windowId, wsA.id);
+                await new Promise(resolve => {
+                    try { chrome.windows.remove(scratchId, () => resolve()); }
+                    catch (_) { resolve(); }
+                });
 
-                // 4) Create an empty workspace B to switch to (forces A's tabs to
-                //    be hibernated and the window emptied/reopened).
-                const wsB = await ws.createWorkspace({ name: 'GroupRestore B ' + Date.now() });
+                // 4) OPEN path: switching must create a NEW window restoring the
+                //    snapshot, and bind it to the workspace.
+                const controlling = await chrome.windows.getCurrent();
+                const opened = await ws.switchWorkspace(wsA.id, controlling.id);
+                if (!opened || opened.action !== 'opened') {
+                    throw new Error('expected opened, got ' + JSON.stringify(opened));
+                }
+                const openedWindowId = opened.windowId;
 
-                // 5) Switch B (away from A), then back to A — restoring A's snapshot,
-                //    which must rebuild the captured tab group.
-                const switchedAway = await ws.switchWorkspace(wsB.id, windowId);
-                const switchedBack = await ws.switchWorkspace(wsA.id, windowId);
-
-                // Deterministically wait for the rebuilt group to appear rather
-                // than sleeping a fixed amount.
+                // Group restore is async best-effort after tab creation — wait
+                // for the rebuilt group deterministically.
                 const groupsAfter = await poll(async () => {
-                    const g = await chrome.tabGroups.query({ windowId });
+                    const g = await chrome.tabGroups.query({ windowId: openedWindowId });
                     return g.some(x => x.title === 'BatchC') ? g : null;
-                }) || await chrome.tabGroups.query({ windowId });
-                const tabsAfter = await chrome.tabs.query({ windowId });
+                }) || await chrome.tabGroups.query({ windowId: openedWindowId });
+                const tabsAfter = await chrome.tabs.query({ windowId: openedWindowId });
+
+                // 5) FOCUS path: switching again must NOT open another window —
+                //    it focuses the one bound in step 4.
+                const focused = await ws.switchWorkspace(wsA.id, controlling.id);
 
                 return {
-                    windowId,
-                    wsAId: wsA.id,
-                    wsBId: wsB.id,
+                    wsId: wsA.id,
                     snapshotGroupCount: wsA.tabSnapshot.filter(s => s.groupKey != null).length,
                     snapshotGroupTitle: (wsA.tabSnapshot.find(s => s.groupKey != null) || {}).groupTitle,
-                    switchedAway,
-                    switchedBack,
+                    openedAction: opened.action,
+                    openedWindowId,
+                    boundWorkspaceId: ws.getActiveWorkspaceId(openedWindowId),
                     groupsAfter: groupsAfter.map(g => ({ title: g.title, color: g.color })),
                     httpTabCount: tabsAfter.filter(t => /^https?:/i.test(t.url || t.pendingUrl || '')).length,
+                    focusedAction: focused && focused.action,
+                    focusedWindowId: focused && focused.windowId,
                 };
             });
 
-            scratchWindowId = result.windowId;
+            windowIds.push(result.openedWindowId);
+            workspaceId = result.wsId;
 
             // The snapshot must have captured the group on the two grouped tabs.
             expect(result.snapshotGroupCount).toBe(2);
             expect(result.snapshotGroupTitle).toBe('BatchC');
 
-            // Both switches succeeded.
-            expect(result.switchedAway).toBe(true);
-            expect(result.switchedBack).toBe(true);
-
-            // After restoring workspace A, the group must be rebuilt.
+            // Open path: new window, bound to the workspace, group rebuilt.
+            expect(result.openedAction).toBe('opened');
+            expect(result.boundWorkspaceId).toBe(result.wsId);
             const restored = result.groupsAfter.find(g => g.title === 'BatchC');
             expect(restored).toBeDefined();
             expect(restored.color).toBe('cyan');
             expect(result.httpTabCount).toBeGreaterThanOrEqual(2);
+
+            // Focus path: same window re-used, no second window opened.
+            expect(result.focusedAction).toBe('focused');
+            expect(result.focusedWindowId).toBe(result.openedWindowId);
         } finally {
-            if (scratchWindowId != null) {
+            // Remove the workspace first so windows.onRemoved cleanup has
+            // nothing to race with, then close any window we opened.
+            try {
+                await page.evaluate(async (wsId) => {
+                    if (!wsId) return;
+                    const ws = await import('./modules/workspace/workspaceManager.js');
+                    await ws.initWorkspaces();
+                    await ws.deleteWorkspace(wsId);
+                }, workspaceId);
+            } catch (_) { /* best-effort */ }
+            for (const id of windowIds) {
+                if (id == null) continue;
                 try {
-                    await page.evaluate((id) => new Promise(resolve => {
-                        try { chrome.windows.remove(id, () => resolve()); }
+                    await page.evaluate((winId) => new Promise(resolve => {
+                        try { chrome.windows.remove(winId, () => resolve()); }
                         catch (_) { resolve(); }
-                    }), scratchWindowId);
+                    }), id);
                 } catch (_) { /* window may already be gone */ }
             }
         }

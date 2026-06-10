@@ -217,6 +217,9 @@ async function initialize() {
     ui.initThemeSwitcher();
     ui.initAiGrouper();
     ui.initAiCleanup();
+    // Workspace cache must be loaded BEFORE the first updateTabList(): the
+    // Other Windows section titles windows by their bound workspace's name.
+    await workspaceManager.initWorkspaces();
     await updateTabList();
 
     refreshBookmarks();
@@ -230,8 +233,11 @@ async function initialize() {
     rssManager.initRssManager().catch(console.error);
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
-    await workspaceManager.initWorkspaces(); // Load workspace cache before UI uses it
-    await initWorkspaceUI(); // Workspace switcher dropdown + manage dialog
+    // Workspace switcher dropdown + manage dialog. (Cache already loaded above,
+    // before the first updateTabList.) onWorkspacesChanged keeps the Other
+    // Windows titles in step with binding changes — e.g. the background
+    // lifecycle re-binding a session-restored window.
+    await initWorkspaceUI({ onWorkspacesChanged: () => updateTabList() });
     // Drive-sync status badge: non-blocking; reads initial status from storage
     // and listens for driveSyncStatusChanged (dispatched by initSettingsBridge).
     initDriveSyncBadge().catch(err => console.warn('[sync] badge init failed:', err));
