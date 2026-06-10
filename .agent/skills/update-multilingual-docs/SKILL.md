@@ -13,7 +13,7 @@ This skill updates the project's documentation when new features are added or ex
     *   **En (Source)**: `.github/i18n/en/{README,CONTRIBUTING,etc}.md`
     *   **Translations**: `.github/i18n/{lang_code}/{filename}.md`
     *   **Root**: Files in root should be Symlinks to `i18n/en/`.
-3.  **Store Descriptions** (`docs/chrome-web-store/`):
+2.  **Store Descriptions** (`docs/chrome-web-store/`):
     *   `store_description_*.md` (14 languages)
 
 ## Procedure

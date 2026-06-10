@@ -26,19 +26,21 @@ print_header() {
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 }
 
+# NOTE: 不可用 ((PASS++))——post-increment 在值為 0 時整個算術式回傳 0（falsy），
+# 在 set -e 下會讓腳本於「第一個通過的檢查」直接中斷。改用安全的賦值形式。
 check_pass() {
     echo -e "${GREEN}✓${NC} $1"
-    ((PASS++))
+    PASS=$((PASS + 1))
 }
 
 check_fail() {
     echo -e "${RED}✗${NC} $1"
-    ((FAIL++))
+    FAIL=$((FAIL + 1))
 }
 
 check_warn() {
     echo -e "${YELLOW}⚠${NC} $1"
-    ((WARN++))
+    WARN=$((WARN + 1))
 }
 
 # Parse arguments

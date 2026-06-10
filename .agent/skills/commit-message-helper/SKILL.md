@@ -33,12 +33,12 @@ When writing commit messages, follow these rules:
 3. Do not end the subject line with a period
 4. Separate subject from body with a blank line
 5. Use the body to explain what and why, not how
-6. Draft the commit message in Traditional Chinese (zh-TW).
+6. **Subject in English** (Conventional Commits); **body in Traditional Chinese (zh-TW)** — see「本專案約定」below
 
 ## Examples
 
 Good:
-refactor: 模組化側邊欄邏輯以提升清晰度與可維護性
+refactor(sidepanel): modularize sidepanel.js into single-purpose modules
 
 此次提交將原先龐大的 `sidepanel.js` 重構成多個職責單一的模組，旨在改善程式碼結構、可讀性，並簡化未來的開發流程。
 核心邏輯現已拆分至 `modules/` 目錄下的多個模組：
