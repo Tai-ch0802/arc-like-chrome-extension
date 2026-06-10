@@ -48,9 +48,9 @@ make clean
 
 | 技能名稱 | 用途 | 何時使用 |
 |---------|------|---------|
-| `sdd` | Spec-Driven Development 主流程 | 🔴 **必讀** - 任何新功能或修復 |
-| `prd` | 產品需求文件撰寫指南 | 撰寫 PRD_spec.md 時 |
-| `sa` | 系統分析文件撰寫指南 | 撰寫 SA_spec.md 時 |
+| `sdd` | 分級 SDD 主流程（T0/T1/T2，單一事實來源） | 🔴 **必讀** - 任何新功能或修復，動工前先分級 |
+| `prd` | 產品需求文件撰寫指南（T2 Phase 1） | 撰寫 PRD_spec.md 時 |
+| `sa` | 系統分析文件撰寫指南（T2 Phase 2） | 撰寫 SA_spec.md 時 |
 | `commit-message-helper` | Conventional Commits 規範 | 撰寫 Commit Message 時 |
 | `pull-request` | PR 建立指南與模板 | 建立 Pull Request 時 |
 | `code-review` | 程式碼審查最佳實踐 | Review PR 時 |
@@ -95,9 +95,18 @@ make clean
 
 ## ⚠️ Development Workflow (SDD)
 
-本專案採用 **Spec-Driven Development** (規格驅動開發)。
+本專案採用 **分級 Spec-Driven Development**（規格與風險成比例）。
+詳細判準與流程以 `.agent/skills/sdd/SKILL.md` 為**單一事實來源**。
 
-### 核心原則：No Spec, No Code
+### 核心原則：Spec 與風險成比例（動工前先分級）
+
+| 層級 | 適用 | 產出 | Gate |
+|------|------|------|------|
+| **T0 直接做** | typo／文案／註解／樣式微調／依賴更新／根因明顯的單點小修 | 無 spec（commit body 交代背景） | PR review |
+| **T1 輕量 SPEC**（預設） | 一般 bug fix、小～中型功能、局部重構 | 單檔 `SPEC.md` | 隨 PR 一起審，無事前 gate |
+| **T2 完整 SDD** | storage schema／manifest 權限／跨 context 協定／資料遺失風險邏輯／大型功能面／大規模重構 | `PRD_spec.md` + `SA_spec.md` | 兩道事前 gate |
+
+### T2 完整流程
 
 ```mermaid
 graph LR
@@ -109,22 +118,18 @@ graph LR
     F --> G[Verification]
 ```
 
-### 何時需要 SDD？
-- ✅ **新功能開發** (Feature)
-- ✅ **Bug 修復** (Fix) - 除非是 Typo 或 Hotfix
-- ⏭️ **可跳過**: 純文字修正、緊急 Hotfix (需事後補文件)
-
 ### 文件位置
 ```
 /docs/specs/
   ├── feature/
-  │    └── ISSUE-{ID}_{description}/
-  │         ├── PRD_spec.md    ← 產品需求
-  │         └── SA_spec.md     ← 系統分析
+  │    ├── ISSUE-{ID}_{description}/   ← T2
+  │    │    ├── PRD_spec.md            ← 產品需求
+  │    │    └── SA_spec.md             ← 系統分析
+  │    └── BASE-{ID}_{description}/    ← T1
+  │         └── SPEC.md                ← 單檔輕量 spec
   └── fix/
        └── ISSUE-{ID}_{description}/
-            ├── PRD_spec.md
-            └── SA_spec.md
+            └── SPEC.md
 ```
 
 ---

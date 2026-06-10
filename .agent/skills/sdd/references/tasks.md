@@ -13,9 +13,12 @@
 
 ## 實作前置條件
 
-> **⚠️ 重要**: 實作階段只能在 PRD 和 SA 都進入 **Approved** 或 **Frozen** 狀態後才能開始。
+> **⚠️ 重要（僅 T2 完整流程適用）**: T2 的實作階段只能在 PRD 和 SA 都進入
+> **Approved** 或 **Frozen** 狀態後才能開始。
+> T1 輕量案件無事前 gate — `SPEC.md` 與實作同步進行、隨 PR 一起審
+> （分級判準見 `.agent/skills/sdd/SKILL.md`）。
 
-確認以下項目：
+T2 動工前確認以下項目：
 
 - [ ] PRD 已核准 (Status: Approved/Frozen)
 - [ ] SA 已核准 (Status: Approved/Frozen)

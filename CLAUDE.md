@@ -51,6 +51,6 @@
 
 ## 3. 開發紀律（沿用 .agent/rules/）
 
-- **SDD-first**：新功能或非 trivial 修復前先讀 `sdd` skill；無 spec 不寫 code。
+- **分級 SDD**：動工前先讀 `sdd` skill 做分級判定並向使用者提出 — T0 直接做（typo/文案/樣式微調）、T1 單檔 `SPEC.md` 與實作同步隨 PR 審（預設）、T2 完整 PRD → SA 先審後寫（storage schema／權限／跨 context 協定／大型功能）。判準以 `.agent/skills/sdd/SKILL.md` 為單一事實來源。
 - **連動影響**：改動 `manifest.json` / `sidepanel.js` / `modules/ui/elements.js` 等核心檔案時，需同步檢視相依模組（參考 `AGENTS.md` Skill Index 與 `RULE_002_ARCHITECTURE.md`）。
 - **`.claude/skills/` 來源**：實際指向 `../.agent/skills/`（軟連結）。更新 skill 內容請編輯 `.agent/skills/<name>/SKILL.md`，Claude Code 與 gemini-cli 會同步看到變更。
