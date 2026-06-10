@@ -48,8 +48,16 @@ const STARTUP_RETRY_MS = 8000;
  *  pass runs, while refusing coincidental overlaps. */
 const REBIND_THRESHOLD = 0.6;
 
+/** Debounce for the windows.onCreated re-bind path (ISSUE-162 F6): long
+ *  enough for ⇧⌘T / Dock-reopen to materialize its tabs (restored-but-unloaded
+ *  tabs carry their url immediately), short enough to feel automatic. */
+const REOPEN_REBIND_DEBOUNCE_MS = 4000;
+
 /** @type {Map<number, ReturnType<typeof setTimeout>>} windowId → pending snapshot timer */
 const pendingSnapshots = new Map();
+
+/** @type {ReturnType<typeof setTimeout>|undefined} single shared reopen-rebind timer */
+let reopenRebindTimer;
 
 /**
  * Registers all listeners. MUST be called synchronously from the service
@@ -94,6 +102,22 @@ export function initWorkspaceLifecycle() {
     chrome.runtime.onStartup.addListener(() => {
         rebindAfterStartup().catch(err =>
             console.warn('[workspace-lifecycle] startup rebind failed:', err));
+    });
+
+    // --- reopen re-binding (ISSUE-162 F6) ----------------------------------------
+    // macOS keeps Chrome alive after the last window closes; reopening from the
+    // Dock / ⇧⌘T is NOT a browser startup, so onStartup never fires and restored
+    // windows would come back unbound forever. A debounced rebind on
+    // windows.onCreated covers that path. Plain new windows (Cmd+N) are a cheap
+    // no-op inside rebindOnce (no http tabs → no match candidates); the startup
+    // burst of onCreated events collapses into one extra no-op pass.
+    chrome.windows.onCreated.addListener(win => {
+        if (win && win.type && win.type !== 'normal') return;
+        clearTimeout(reopenRebindTimer);
+        reopenRebindTimer = setTimeout(() => {
+            rebindOnce().catch(err =>
+                console.warn('[workspace-lifecycle] reopen rebind failed:', err));
+        }, REOPEN_REBIND_DEBOUNCE_MS);
     });
 }
 
@@ -170,7 +194,10 @@ async function rebindOnce() {
         windowEntries, candidates, { threshold: REBIND_THRESHOLD });
 
     for (const m of matches) {
-        await workspaceManager.setActiveWorkspace(m.windowId, m.workspaceId);
+        // touch:false(ISSUE-162 WP2):自動重綁不是使用者活動,不可 bump
+        // lastActiveAt — 否則每次重啟都打亂切換器的 recency 排序。
+        // (在 schema v2 之前的 setActiveWorkspace 簽名上是無害的多餘參數。)
+        await workspaceManager.setActiveWorkspace(m.windowId, m.workspaceId, { touch: false });
         console.info(`[workspace-lifecycle] rebound window ${m.windowId} → workspace ${m.workspaceId} (score ${m.score.toFixed(2)})`);
     }
     return { matched: matches.length, unboundLeft: windowEntries.length - matches.length };
