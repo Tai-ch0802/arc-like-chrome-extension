@@ -17,8 +17,8 @@ const { setupBrowser, teardownBrowser } = require('./setup');
  *      reflects the stored syncEnabled flag (unchecked + disabled while
  *      not-connected).
  *   4. The data layer behind the opt-in checkbox (setWorkspaceSyncEnabled →
- *      chrome.storage.sync.workspaceMetadata) genuinely flips syncEnabled and the
- *      flip round-trips back into the rendered checkbox after a reload.
+ *      chrome.storage.sync["wsMeta_"+id], schema v2) genuinely flips syncEnabled
+ *      and the flip round-trips back into the rendered checkbox after a reload.
  *   5. Clicking "Connect Google Drive" shows the privacy-disclosure confirm modal
  *      BEFORE any auth call; cancelling it dismisses the modal and fires no auth.
  *
@@ -57,8 +57,12 @@ describe('Options Page: Backup & Sync section', () => {
         if (page) {
             try {
                 await page.evaluate(() => new Promise((resolve) => {
-                    chrome.storage.sync.remove('workspaceMetadata', () => {
-                        chrome.storage.local.remove('workspaceSnapshots', () => resolve());
+                    chrome.storage.sync.get(null, (all) => {
+                        const metaKeys = Object.keys(all).filter(k => k.startsWith('wsMeta_'));
+                        const snapKeys = metaKeys.map(k => 'wsSnap_' + k.slice('wsMeta_'.length));
+                        chrome.storage.sync.remove(['workspaceMetadata', ...metaKeys], () => {
+                            chrome.storage.local.remove(['workspaceSnapshots', ...snapKeys], () => resolve());
+                        });
                     });
                 }));
             } catch (_) { /* ignore */ }
@@ -167,10 +171,11 @@ describe('Options Page: Backup & Sync section', () => {
             const ws = await import('./modules/workspace/workspaceManager.js');
             await ws.initWorkspaces();
             await ws.setWorkspaceSyncEnabled(wsId, true);
-            const synced = await new Promise((resolve) =>
-                chrome.storage.sync.get('workspaceMetadata', (r) => resolve(r.workspaceMetadata || {}))
+            // Schema v2 (ISSUE-162 WP1): per-workspace sync key wsMeta_<id>.
+            const meta = await new Promise((resolve) =>
+                chrome.storage.sync.get('wsMeta_' + wsId, (r) => resolve(r['wsMeta_' + wsId] || null))
             );
-            return synced[wsId] ? synced[wsId].syncEnabled : null;
+            return meta ? meta.syncEnabled : null;
         }, seededWorkspaceId);
         expect(flipped).toBe(true);
 

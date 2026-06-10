@@ -49,9 +49,12 @@ export async function initWorkspaceUI({ onWorkspacesChanged } = {}) {
     // harmless but wasteful, and the second run can race with the first.
     let reloadTimer = null;
     chrome.storage.onChanged.addListener((changes, area) => {
+        // Schema v2 (ISSUE-162 WP1): per-workspace keys, matched by prefix.
+        const keys = Object.keys(changes);
         const localTouched = area === 'local'
-            && (changes.workspaceSnapshots || changes.windowWorkspaceMap);
-        const syncTouched = area === 'sync' && changes.workspaceMetadata;
+            && keys.some(k => k.startsWith('wsSnap_') || k === 'windowWorkspaceMap');
+        const syncTouched = area === 'sync'
+            && keys.some(k => k.startsWith('wsMeta_'));
         if (!localTouched && !syncTouched) return;
         clearTimeout(reloadTimer);
         reloadTimer = setTimeout(() => {

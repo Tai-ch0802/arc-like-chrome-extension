@@ -6,7 +6,6 @@ import { getStorage, setStorage } from './modules/apiManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
 import { createSyncEngine } from './modules/sync/syncEngine.js';
-import { removedSyncedIds } from './modules/sync/syncLogic.js';
 import { createGoogleDriveProvider } from './modules/sync/googleDriveProvider.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 
@@ -39,9 +38,10 @@ const DRIVE_SYNC_QUEUE_KEY = 'driveSyncQueue';   // Array<{type, workspaceId}>
 const DRIVE_RESTORABLE_KEY = 'driveRestorable';  // Array<{id, rev, metadata}>
 const DRIVE_SYNC_STATUS_KEY = 'driveSyncStatus'; // SyncStatus
 
-// Workspace storage keys (mirrors workspaceManager) — used to diff onChanged.
-const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // chrome.storage.sync
-const WORKSPACE_SNAPSHOTS_KEY = 'workspaceSnapshots';   // chrome.storage.local
+// Workspace storage key prefixes (mirrors workspaceManager schema v2) — used
+// to identify per-workspace onChanged events. The changed id is the suffix.
+const WS_META_PREFIX = 'wsMeta_';   // chrome.storage.sync (identity)
+const WS_SNAP_PREFIX = 'wsSnap_';   // chrome.storage.local ({tabs, rev, updatedAt})
 
 // Alarm names.
 const ALARM_PULL = 'driveSyncPull';     // periodic full runOnce
@@ -59,17 +59,24 @@ const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarm
  * A module boolean cleared in finally() is racy: chrome.storage.onChanged for
  * the engine's write is typically delivered in a LATER task — after the flag is
  * already cleared — so the handler never sees the suppression. Instead we record
- * the exact rev the engine wrote (or the string 'deleted' for removals) keyed by
- * workspace id. The onChanged handler consumes the entry by comparing it against
- * the workspace's NEW rev: a match means engine-initiated → skip + delete the
- * entry; a mismatch (or no entry) means a genuine user edit → enqueue.
+ * exactly what the engine wrote ({rev, updatedAt}, or the string 'deleted' for
+ * removals) keyed by workspace id. The onChanged handler consumes the entry by
+ * comparing it against the workspace's NEW rev AND updatedAt: a full match
+ * means engine-initiated → skip + delete the entry; a mismatch (or no entry)
+ * means a genuine user edit → enqueue.
+ *
+ * Why BOTH fields (ISSUE-162 F4): rev alone can collide — a concurrent local
+ * snapshot whose mirror predates the engine apply can mint the same rev for
+ * different content, and a rev-only echo would swallow that genuine local edit
+ * forever (local and Drive silently diverge at the same rev). updatedAt makes
+ * the echo effectively a write-nonce.
  *
  * We own the suppression HERE (not in workspaceManager) so the manager stays
  * storage-agnostic. The map self-bounds: per-id set overwrites, and entries are
  * deleted on consumption. A lingering entry only occurs if onChanged never
  * arrives for a write (rare); it self-heals on the next engine write to that id.
  */
-const engineWriteEcho = new Map(); // workspaceId -> rev the engine just wrote (or the string 'deleted')
+const engineWriteEcho = new Map(); // workspaceId -> {rev, updatedAt} the engine just wrote (or the string 'deleted')
 
 /** In-memory device-id cache (avoids a storage read per buildPushPayload). */
 let cachedDeviceId = null;
@@ -155,13 +162,32 @@ const syncEngine = createSyncEngine({
      * will match this echo entry exactly.
      */
     async applyRemoteSnapshot(id, fileJson) {
-        await ensureWorkspacesInit();
-        engineWriteEcho.set(id, fileJson.rev);
+        // Full re-init (not ensure-once): the live-bound check below reads
+        // windowWorkspaceMap, which another context may have changed since
+        // this SW's mirror was last refreshed.
+        await workspaceManager.initWorkspaces();
+        workspaceInitDone = true;
+        // F3 (ISSUE-162): a live-bound workspace's tabSnapshot is owned by the
+        // live window on THIS device. Applying the remote copy would be
+        // overwritten by the next auto-snapshot and would ping-pong revs
+        // across devices forever. Keep local tabs; adopt remote rev/updatedAt
+        // (ordering authority) so the next genuine local change bumps PAST the
+        // remote rev and pushes legitimately.
+        const keepLocalSnapshot = workspaceManager.isWorkspaceBound(id);
+        // Resolve updatedAt EXACTLY like applyRemoteWorkspace will, so the
+        // echo below always matches the persisted record (F4 nonce semantics).
+        const effUpdatedAt = typeof fileJson.updatedAt === 'number'
+            ? fileJson.updatedAt
+            : (fileJson.metadata && typeof fileJson.metadata.updatedAt === 'number'
+                ? fileJson.metadata.updatedAt
+                : Date.now());
+        engineWriteEcho.set(id, { rev: fileJson.rev, updatedAt: effUpdatedAt });
         await workspaceManager.applyRemoteWorkspace(id, {
             metadata: fileJson.metadata,
             tabSnapshot: fileJson.tabSnapshot,
             rev: fileJson.rev,
-            updatedAt: fileJson.updatedAt,
+            updatedAt: effUpdatedAt,
+            keepLocalSnapshot,
         });
     },
 
@@ -237,23 +263,6 @@ function ensurePullAlarm() {
 // is idempotent — it just resets the schedule.
 ensurePullAlarm();
 
-/**
- * Diff two id→value maps and return the set of ids whose value changed, was
- * added, or was removed.
- * @param {Object} oldMap
- * @param {Object} newMap
- * @returns {Set<string>}
- */
-function changedIds(oldMap, newMap) {
-    const ids = new Set();
-    const o = oldMap || {};
-    const n = newMap || {};
-    for (const id of new Set([...Object.keys(o), ...Object.keys(n)])) {
-        if (JSON.stringify(o[id]) !== JSON.stringify(n[id])) ids.add(id);
-    }
-    return ids;
-}
-
 /** Read one workspace's persisted base rev (same storage the engine deps use). */
 async function readBaseRev(id) {
     const res = await getStorage('local', [DRIVE_BASE_REV_KEY]);
@@ -274,38 +283,43 @@ async function readBaseRev(id) {
  * skips ids already in sync (nothing to push), avoiding wasted flushes.
  */
 async function handleWorkspaceStorageChange(changes, areaName) {
-    let ids = new Set();
-    if (areaName === 'sync' && changes[WORKSPACE_METADATA_KEY]) {
-        const c = changes[WORKSPACE_METADATA_KEY];
-        ids = changedIds(c.oldValue, c.newValue);
-
-        // Soft-delete tombstone wiring (C1): a synced workspace whose metadata
-        // entry vanished from chrome.storage.sync was DELETED by the user. We
-        // must tombstone its Drive file so the deletion propagates to other
-        // devices (otherwise it resurrects as "restorable"). Disabling a
-        // workspace's sync (still present, syncEnabled→false) is NOT a delete
-        // and is excluded by removedSyncedIds.
-        //
-        // Echo guard: an ENGINE-initiated remove (pull-driven delete-local) sets
-        // engineWriteEcho.set(id, 'deleted'). For such ids we consume the echo
-        // and SKIP enqueueDelete — the engine removed it because of a REMOTE
-        // tombstone, so re-tombstoning here would be redundant/looping. A genuine
-        // user delete has no echo → enqueueDelete proceeds.
+    const ids = new Set();
+    if (areaName === 'sync') {
         let deleteEnqueued = false;
-        for (const id of removedSyncedIds(c.oldValue || {}, c.newValue || {})) {
-            if (engineWriteEcho.get(id) === 'deleted') {
-                engineWriteEcho.delete(id);
+        for (const [key, c] of Object.entries(changes)) {
+            if (!key.startsWith(WS_META_PREFIX)) continue;
+            const id = key.slice(WS_META_PREFIX.length);
+            if (c.newValue === undefined) {
+                // Soft-delete tombstone wiring (C1): a synced workspace whose
+                // wsMeta_<id> key vanished from chrome.storage.sync was DELETED
+                // by the user; tombstone its Drive file so the deletion
+                // propagates (otherwise it resurrects as "restorable").
+                //
+                // Echo guard: an ENGINE-initiated remove (pull-driven
+                // delete-local) sets engineWriteEcho 'deleted' — consume and
+                // SKIP enqueueDelete (re-tombstoning a remote tombstone loops).
+                if (engineWriteEcho.get(id) === 'deleted') {
+                    engineWriteEcho.delete(id);
+                    continue;
+                }
+                if (c.oldValue && c.oldValue.syncEnabled) {
+                    await syncEngine.enqueueDelete(id);
+                    deleteEnqueued = true;
+                }
                 continue;
             }
-            await syncEngine.enqueueDelete(id);
-            deleteEnqueued = true;
+            ids.add(id);
         }
         if (deleteEnqueued) {
             chrome.alarms.create(ALARM_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
         }
-    } else if (areaName === 'local' && changes[WORKSPACE_SNAPSHOTS_KEY]) {
-        const c = changes[WORKSPACE_SNAPSHOTS_KEY];
-        ids = changedIds(c.oldValue, c.newValue);
+    } else if (areaName === 'local') {
+        for (const [key, c] of Object.entries(changes)) {
+            if (!key.startsWith(WS_SNAP_PREFIX)) continue;
+            // Deletions are handled via the sync-side wsMeta_ removal above.
+            if (c.newValue === undefined) continue;
+            ids.add(key.slice(WS_SNAP_PREFIX.length));
+        }
     } else {
         return;
     }
@@ -323,12 +337,14 @@ async function handleWorkspaceStorageChange(changes, areaName) {
         const ws = workspaceManager.getWorkspace(id);
 
         // Engine-write echo: a removed id whose echo is 'deleted', or a present
-        // id whose new rev equals the echoed rev, is an engine-initiated write.
-        // Consume (delete) the entry and skip enqueue.
+        // id whose new rev AND updatedAt both equal the echoed write-nonce, is
+        // an engine-initiated write. Consume (delete) the entry and skip.
+        // (rev alone can collide with a concurrent local snapshot — F4.)
         if (engineWriteEcho.has(id)) {
             const echoed = engineWriteEcho.get(id);
             const isEngineWrite = ws
-                ? echoed === ws.rev
+                ? (echoed && typeof echoed === 'object'
+                    && echoed.rev === ws.rev && echoed.updatedAt === ws.updatedAt)
                 : echoed === 'deleted';
             if (isEngineWrite) {
                 engineWriteEcho.delete(id);

@@ -4,25 +4,28 @@
  * A Workspace is a saved bundle of (tabs + optional bookmark folder hint) that
  * the user can hibernate and restore as a unit.
  *
- * Storage layout (Phase 9: metadata cross-device sync):
- *   chrome.storage.sync.workspaceMetadata     → { [id]: Metadata }
- *   chrome.storage.local.workspaceSnapshots   → { [id]: TabSnapshot[] }
- *   chrome.storage.local.windowWorkspaceMap   → { [windowId]: workspaceId }
+ * Storage layout v2 (ISSUE-162 WP1: per-id keys):
+ *   chrome.storage.sync ["wsMeta_"+id]   → identity {id,name,color,icon,bookmarkFolderId,syncEnabled,lastActiveAt}
+ *   chrome.storage.local["wsSnap_"+id]   → content  {tabs: TabSnapshot[], rev, updatedAt}
+ *   chrome.storage.local.windowWorkspaceMap → { [windowId]: workspaceId }
  *
  * Why split:
- * - sync has an 8KB-per-key budget; a workspace with 30 tabs is already
- *   2-3KB, so we'd hit the cap with just a few workspaces.
- * - The user-visible identity (name, color, icon, bookmark hint) IS small
- *   and useful to mirror across devices.
+ * - Per-id keys: the sidepanel and the background SW each hold an in-memory
+ *   mirror; v1's whole-map writes let a stale mirror clobber OTHER workspaces'
+ *   fresh data. Per-id keys + read→merge→write (writeSnapRecord) confine any
+ *   race to a single workspace's own fields.
+ * - rev/updatedAt live in the LOCAL record so the high-frequency auto-snapshot
+ *   path consumes zero chrome.storage.sync write quota.
+ * - Identity (name, color, icon, hint) is small and mirrors across devices.
  * - tabSnapshot is per-device anyway — restoring on another machine should
  *   open the user's CURRENT machine's tabs, not yesterday's laptop's.
  * - windowWorkspaceMap uses ephemeral chrome window ids, useless on another
  *   device. Stays local.
  *
- * Legacy migration:
- *   Phase 6 stored a unified `chrome.storage.local.workspaces` key.
- *   On first run after Phase 9, we split it into metadata + snapshots and
- *   drop the legacy key.
+ * Legacy migration (collapsed into one pass, see migrateLegacyToV2):
+ *   Phase 6 unified `local.workspaces` → v1 split maps → v2 per-id keys.
+ *   Local legacy keys are kept as backup; the v1 SYNC map is deleted after
+ *   migration to stop mixed-version devices cross-writing it.
  *
  * @typedef {Object} Workspace
  * @property {string} id
@@ -44,14 +47,26 @@
  * @property {string} [groupTitle]
  * @property {string} [groupColor]
  */
-import { getStorage, setStorage, setStorageStrict, addTabToNewGroup } from '../apiManager.js';
+import { getStorage, setStorage, setStorageStrict, removeStorage, addTabToNewGroup } from '../apiManager.js';
 import { renderIcon, hasIcon } from '../icons.js';
 import { escapeHtml } from '../utils/textUtils.js';
 
-const LEGACY_WORKSPACES_KEY = 'workspaces';            // pre-Phase-9 unified key
-const WORKSPACE_METADATA_KEY = 'workspaceMetadata';     // sync
-const WORKSPACE_SNAPSHOTS_KEY = 'workspaceSnapshots';   // local
-const WINDOW_WORKSPACE_MAP_KEY = 'windowWorkspaceMap';  // local (per-device)
+// --- Storage schema v2 (ISSUE-162 WP1) ---------------------------------------
+// Per-workspace keys so concurrent writers (sidepanel mirror vs background SW
+// mirror) can never clobber OTHER workspaces' data with a stale full-map write:
+//   chrome.storage.sync ["wsMeta_"+id]  → { id, name, color, icon,
+//                                           bookmarkFolderId, syncEnabled, lastActiveAt }
+//   chrome.storage.local["wsSnap_"+id]  → { tabs: TabSnapshot[], rev, updatedAt }
+// rev/updatedAt live in the LOCAL record so the high-frequency auto-snapshot
+// path never consumes chrome.storage.sync write quota (FR-02).
+// Same-id writes additionally use read→merge→write so each path only
+// overwrites the fields it owns (see writeSnapRecord).
+const WS_META_PREFIX = 'wsMeta_';                       // sync, per-id identity
+const WS_SNAP_PREFIX = 'wsSnap_';                       // local, per-id content
+const LEGACY_WORKSPACES_KEY = 'workspaces';             // pre-Phase-9 unified key (local, kept as backup)
+const LEGACY_METADATA_KEY = 'workspaceMetadata';        // v1 sync map (removed after v2 migration)
+const LEGACY_SNAPSHOTS_KEY = 'workspaceSnapshots';      // v1 local map (kept as backup)
+const WINDOW_WORKSPACE_MAP_KEY = 'windowWorkspaceMap';  // local (per-device; ALL writes go through mutateWindowMap — never persist the in-memory map wholesale)
 
 const PRESET_COLORS = ['grey', 'blue', 'red', 'yellow', 'green', 'pink', 'purple', 'cyan'];
 // 工作區圖示改存 Material Symbols icon-id(過往裝置可能仍存 emoji 字串,由 resolveWorkspaceIcon 相容)。
@@ -87,68 +102,103 @@ let workspaces = {};
 /** @type {Object<string, string>} windowId → workspaceId. */
 let windowWorkspaceMap = {};
 
-/** Bump a workspace's content revision + timestamp. Call on CONTENT changes only (not activation). */
-function bumpRev(ws) {
-    ws.rev = (ws.rev || 0) + 1;
-    ws.updatedAt = Date.now();
+export async function initWorkspaces() {
+    // ids derive from a sync-area prefix scan. sync is small (settings +
+    // per-workspace identity), so get(null) is cheap. NEVER get(null) on
+    // LOCAL — custom background images can be MBs.
+    const syncAll = await getStorage('sync', null) || {};
+    const metaIds = Object.keys(syncAll)
+        .filter(k => k.startsWith(WS_META_PREFIX))
+        .map(k => k.slice(WS_META_PREFIX.length));
+
+    if (metaIds.length === 0) {
+        // No v2 data — either fresh install or pre-v2 storage needing migration.
+        await migrateLegacyToV2(syncAll);
+        return;
+    }
+
+    const snapKeys = metaIds.map(id => WS_SNAP_PREFIX + id);
+    const localRes = await getStorage('local', [...snapKeys, WINDOW_WORKSPACE_MAP_KEY]);
+    windowWorkspaceMap = localRes[WINDOW_WORKSPACE_MAP_KEY] || {};
+    workspaces = {};
+    for (const id of metaIds) {
+        const meta = syncAll[WS_META_PREFIX + id] || {};
+        const snap = localRes[WS_SNAP_PREFIX + id] || {};
+        workspaces[id] = {
+            ...meta,
+            id,
+            tabSnapshot: Array.isArray(snap.tabs) ? snap.tabs : [],
+            rev: typeof snap.rev === 'number' ? snap.rev : 1,
+            updatedAt: typeof snap.updatedAt === 'number' ? snap.updatedAt : (meta.lastActiveAt || Date.now()),
+            syncEnabled: typeof meta.syncEnabled === 'boolean' ? meta.syncEnabled : false,
+        };
+    }
 }
 
-export async function initWorkspaces() {
-    const [syncRes, localRes] = await Promise.all([
-        getStorage('sync', [WORKSPACE_METADATA_KEY]),
-        getStorage('local', [WORKSPACE_SNAPSHOTS_KEY, WINDOW_WORKSPACE_MAP_KEY, LEGACY_WORKSPACES_KEY]),
+/**
+ * One-time v1→v2 migration (and the older Phase-6 unified key, collapsed into
+ * the same pass). Builds the in-memory mirror either way, so callers never see
+ * a half-initialized state.
+ *
+ * On success the legacy SYNC map is deleted — leaving it would let pre-v2
+ * devices keep writing the old key while v2 devices write per-id keys (silent
+ * cross-version divergence). Legacy LOCAL keys are kept as cheap backup, same
+ * policy as the Phase-9 migration. On write failure everything legacy is kept
+ * and the migration retries on next init.
+ */
+async function migrateLegacyToV2(syncAll) {
+    const localRes = await getStorage('local', [
+        LEGACY_SNAPSHOTS_KEY, LEGACY_WORKSPACES_KEY, WINDOW_WORKSPACE_MAP_KEY,
     ]);
-
-    let metadata = syncRes[WORKSPACE_METADATA_KEY] || {};
-    let snapshots = localRes[WORKSPACE_SNAPSHOTS_KEY] || {};
     windowWorkspaceMap = localRes[WINDOW_WORKSPACE_MAP_KEY] || {};
 
-    // One-time migration from Phase 6's unified `workspaces` key.
-    const legacy = localRes[LEGACY_WORKSPACES_KEY];
-    const noNewData = Object.keys(metadata).length === 0 && Object.keys(snapshots).length === 0;
-    if (legacy && Object.keys(legacy).length > 0 && noNewData) {
-        for (const [id, ws] of Object.entries(legacy)) {
+    const metadata = { ...(syncAll[LEGACY_METADATA_KEY] || {}) };
+    const snapshots = { ...(localRes[LEGACY_SNAPSHOTS_KEY] || {}) };
+    const phase6 = localRes[LEGACY_WORKSPACES_KEY];
+    if (Object.keys(metadata).length === 0 && Object.keys(snapshots).length === 0
+        && phase6 && Object.keys(phase6).length > 0) {
+        for (const [id, ws] of Object.entries(phase6)) {
             const { tabSnapshot, ...meta } = ws;
             metadata[id] = meta;
             snapshots[id] = tabSnapshot || [];
         }
-        try {
-            // Strict variant so a silent sync write failure (quota / sync
-            // unavailable) doesn't pretend the migration succeeded and end
-            // up with snapshots-only and no metadata on next init.
-            await Promise.all([
-                setStorageStrict('sync', { [WORKSPACE_METADATA_KEY]: metadata }),
-                setStorageStrict('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
-            ]);
-        } catch (err) {
-            // Roll back the in-memory view so the rebuild below uses legacy data,
-            // and KEEP legacy in storage so next launch can retry the migration.
-            console.warn('[workspace] migration write failed, keeping legacy:', err);
-            metadata = {};
-            snapshots = {};
-            for (const [id, ws] of Object.entries(legacy)) {
-                const { tabSnapshot, ...meta } = ws;
-                metadata[id] = meta;
-                snapshots[id] = tabSnapshot || [];
-            }
-        }
-        // INTENTIONALLY do NOT delete LEGACY_WORKSPACES_KEY here. The `noNewData`
-        // guard already prevents re-migration once new keys are populated; the
-        // ~few KB of disk used by the legacy backup is cheap insurance against
-        // ever losing the only complete copy of the user's workspace identity.
     }
 
-    // Rebuild the in-memory full-object form so callers don't need to know
-    // about the split storage.
     workspaces = {};
-    for (const [id, meta] of Object.entries(metadata)) {
-        workspaces[id] = { ...meta, tabSnapshot: snapshots[id] || [] };
-        // Backward-compat: older stored workspaces lack the sync fields. Default
-        // them so the Drive sync engine never sees undefined. Lazy — no extra
-        // persist here; these defaults flush on the next real mutation.
-        if (typeof workspaces[id].rev !== 'number') workspaces[id].rev = 1;
-        if (typeof workspaces[id].updatedAt !== 'number') workspaces[id].updatedAt = workspaces[id].lastActiveAt || Date.now();
-        if (typeof workspaces[id].syncEnabled !== 'boolean') workspaces[id].syncEnabled = false;
+    if (Object.keys(metadata).length === 0) return; // genuinely fresh install
+
+    const metaItems = {};
+    const snapItems = {};
+    for (const [id, m] of Object.entries(metadata)) {
+        // rev/updatedAt move INTO the local snap record; identity stays in sync.
+        const { rev, updatedAt, tabSnapshot: _ignored, ...identity } = m;
+        const tabs = Array.isArray(snapshots[id]) ? snapshots[id] : [];
+        const metaRec = {
+            ...identity,
+            id,
+            syncEnabled: typeof m.syncEnabled === 'boolean' ? m.syncEnabled : false,
+        };
+        const snapRec = {
+            tabs,
+            rev: typeof rev === 'number' ? rev : 1,
+            updatedAt: typeof updatedAt === 'number' ? updatedAt : (m.lastActiveAt || Date.now()),
+        };
+        metaItems[WS_META_PREFIX + id] = metaRec;
+        snapItems[WS_SNAP_PREFIX + id] = snapRec;
+        workspaces[id] = { ...metaRec, tabSnapshot: tabs, rev: snapRec.rev, updatedAt: snapRec.updatedAt };
+    }
+
+    try {
+        // Single set() per area = 1 quota op each, regardless of workspace count.
+        await Promise.all([
+            setStorageStrict('sync', metaItems),
+            setStorageStrict('local', snapItems),
+        ]);
+        await removeStorage('sync', LEGACY_METADATA_KEY);
+    } catch (err) {
+        // Keep legacy as-is; the in-memory mirror above is already built from
+        // legacy data so this session still works. Next init retries.
+        console.warn('[workspace] v2 migration write failed, keeping legacy:', err);
     }
 }
 
@@ -192,7 +242,10 @@ export async function createWorkspace(args) {
         ws.tabSnapshot = await snapshotWindowTabs(args.snapshotWindowId);
     }
     workspaces[id] = ws;
-    await persistWorkspaces();
+    await Promise.all([
+        persistMetaOnly(id),
+        writeSnapRecord(id, { tabs: ws.tabSnapshot, setRev: 1, setUpdatedAt: ws.updatedAt }),
+    ]);
     return ws;
 }
 
@@ -207,8 +260,13 @@ export async function updateWorkspace(id, updates) {
     if (updates.color !== undefined && PRESET_COLORS.includes(updates.color)) ws.color = updates.color;
     if (updates.icon !== undefined && isValidWorkspaceIcon(updates.icon)) ws.icon = updates.icon;
     if (updates.bookmarkFolderId !== undefined) ws.bookmarkFolderId = updates.bookmarkFolderId || undefined;
-    bumpRev(ws);
-    await persistWorkspaces();
+    // Identity change must reach Drive too → rev bump. bumpRev lives in the
+    // snap record write; tabs are deliberately NOT passed so the merge keeps
+    // whatever tabs are currently stored (possibly fresher than this mirror).
+    await Promise.all([
+        persistMetaOnly(id),
+        writeSnapRecord(id, { bumpRev: true }),
+    ]);
     return ws;
 }
 
@@ -221,7 +279,7 @@ export async function setWorkspaceSyncEnabled(id, enabled) {
     const ws = workspaces[id];
     if (!ws) return null;
     ws.syncEnabled = Boolean(enabled);
-    await persistWorkspaces();
+    await persistMetaOnly(id);
     return ws;
 }
 
@@ -269,7 +327,7 @@ export function isWorkspaceBound(workspaceId) {
  * @param {{metadata: {name?:string, color?:string, icon?:string, bookmarkFolderId?:string, syncEnabled?:boolean}, tabSnapshot: TabSnapshot[], rev: number, updatedAt?: number}} remote
  * @returns {Promise<Workspace>}
  */
-export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = [], rev, updatedAt } = {}) {
+export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = [], rev, updatedAt, keepLocalSnapshot = false } = {}) {
     const remoteUpdatedAt = (typeof updatedAt === 'number')
         ? updatedAt
         : (typeof metadata.updatedAt === 'number' ? metadata.updatedAt : Date.now());
@@ -283,9 +341,18 @@ export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = []
         // bookmarkFolderId is intentionally allowed to be cleared (undefined).
         existing.bookmarkFolderId = metadata.bookmarkFolderId || undefined;
         if (metadata.syncEnabled !== undefined) existing.syncEnabled = Boolean(metadata.syncEnabled);
-        existing.tabSnapshot = Array.isArray(tabSnapshot) ? tabSnapshot : [];
-        if (typeof rev === 'number') existing.rev = rev;
-        existing.updatedAt = remoteUpdatedAt;
+        // F3 (ISSUE-162): when the workspace is live-bound on THIS device, its
+        // tabSnapshot is owned by the live window — applying the remote copy
+        // would be overwritten by the next auto-snapshot and ping-pong revs
+        // across devices forever. Keep local tabs but ADOPT the remote
+        // rev/updatedAt (ordering authority), so the next genuine local change
+        // bumps PAST the remote rev and pushes local content legitimately.
+        await Promise.all([
+            persistMetaOnly(id),
+            writeSnapRecord(id, keepLocalSnapshot
+                ? { setRev: rev, setUpdatedAt: remoteUpdatedAt } // tabs merged from stored (= freshest local)
+                : { tabs: Array.isArray(tabSnapshot) ? tabSnapshot : [], setRev: rev, setUpdatedAt: remoteUpdatedAt }),
+        ]);
     } else {
         workspaces[id] = {
             id,
@@ -299,18 +366,34 @@ export async function applyRemoteWorkspace(id, { metadata = {}, tabSnapshot = []
             updatedAt: remoteUpdatedAt,
             syncEnabled: metadata.syncEnabled !== undefined ? Boolean(metadata.syncEnabled) : true,
         };
+        await Promise.all([
+            persistMetaOnly(id),
+            writeSnapRecord(id, {
+                tabs: workspaces[id].tabSnapshot,
+                setRev: workspaces[id].rev,
+                setUpdatedAt: remoteUpdatedAt,
+            }),
+        ]);
     }
-    await persistWorkspaces();
     return workspaces[id];
 }
 
 export async function deleteWorkspace(id) {
     delete workspaces[id];
-    // Detach any window currently bound to it.
-    for (const wid of Object.keys(windowWorkspaceMap)) {
-        if (windowWorkspaceMap[wid] === id) delete windowWorkspaceMap[wid];
-    }
-    await Promise.all([persistWorkspaces(), persistWindowMap()]);
+    await Promise.all([
+        removePersisted(id),
+        // Detach any window currently bound to it.
+        mutateWindowMap(map => {
+            let changed = false;
+            for (const wid of Object.keys(map)) {
+                if (map[wid] === id) {
+                    delete map[wid];
+                    changed = true;
+                }
+            }
+            return changed;
+        }),
+    ]);
 }
 
 /**
@@ -332,27 +415,48 @@ export async function snapshotIntoWorkspace(id, windowId) {
     // Content-equality skip: many tab events reach the debounce without
     // changing what we persist (reloads, group churn that resolves back).
     // Skipping identical snapshots avoids a spurious rev bump (= a needless
-    // Drive push) and conserves chrome.storage.sync's write quota.
+    // Drive push).
     if (JSON.stringify(snap) === JSON.stringify(ws.tabSnapshot)) return ws;
-    ws.tabSnapshot = snap;
-    ws.lastActiveAt = Date.now();
-    bumpRev(ws);
-    await persistWorkspaces();
+    // FR-02: snapshots write ONLY the local snap record — no sync-area write,
+    // and no lastActiveAt bump (a background snapshot is not user activity;
+    // it must not reorder the switcher nor consume sync quota).
+    await writeSnapRecord(id, { tabs: snap, bumpRev: true });
     return ws;
 }
 
-export async function setActiveWorkspace(windowId, workspaceId) {
+/**
+ * Bind/unbind a window to a workspace.
+ * Single-binding invariant (FR-06): binding a workspace to one window removes
+ * any other window's binding to the SAME workspace — two live windows feeding
+ * snapshots into one workspace would oscillate its content on every event.
+ * @param {number} windowId
+ * @param {string|null} workspaceId
+ * @param {{touch?: boolean}} [opts] - touch=false skips the lastActiveAt bump
+ *   (used by startup re-binding, which must not scramble the switcher's
+ *   recency order).
+ */
+export async function setActiveWorkspace(windowId, workspaceId, { touch = true } = {}) {
+    const wid = String(windowId);
     if (workspaceId === null || workspaceId === undefined) {
-        delete windowWorkspaceMap[String(windowId)];
-    } else {
-        windowWorkspaceMap[String(windowId)] = workspaceId;
-        const ws = workspaces[workspaceId];
-        if (ws) {
-            ws.lastActiveAt = Date.now();
-            await persistWorkspaces();
-        }
+        await mutateWindowMap(map => {
+            if (!(wid in map)) return false;
+            delete map[wid];
+            return true;
+        });
+        return;
     }
-    await persistWindowMap();
+    await mutateWindowMap(map => {
+        for (const w of Object.keys(map)) {
+            if (map[w] === workspaceId && w !== wid) delete map[w];
+        }
+        map[wid] = workspaceId;
+        return true;
+    });
+    const ws = workspaces[workspaceId];
+    if (ws && touch) {
+        ws.lastActiveAt = Date.now();
+        await persistMetaOnly(workspaceId);
+    }
 }
 
 /**
@@ -423,7 +527,7 @@ async function snapshotWindowTabs(windowId) {
  * @returns {Promise<number|null>}
  */
 export async function findLiveWindowForWorkspace(workspaceId) {
-    let prunedStale = false;
+    const staleWids = [];
     let found = null;
     for (const [wid, boundId] of Object.entries(windowWorkspaceMap)) {
         if (boundId !== workspaceId) continue;
@@ -432,11 +536,21 @@ export async function findLiveWindowForWorkspace(workspaceId) {
         if (win && found === null) {
             found = id;
         } else if (!win) {
-            delete windowWorkspaceMap[wid];
-            prunedStale = true;
+            staleWids.push(wid);
         }
     }
-    if (prunedStale) await persistWindowMap();
+    if (staleWids.length > 0) {
+        await mutateWindowMap(map => {
+            let changed = false;
+            for (const wid of staleWids) {
+                if (map[wid] === workspaceId) {
+                    delete map[wid];
+                    changed = true;
+                }
+            }
+            return changed;
+        });
+    }
     return found;
 }
 
@@ -476,7 +590,7 @@ export async function switchWorkspace(targetId, originWindowId) {
             }
         }
         target.lastActiveAt = Date.now();
-        await persistWorkspaces();
+        await persistMetaOnly(targetId);
         return { action: 'focused', windowId: boundWindowId };
     }
 
@@ -549,14 +663,16 @@ export async function switchWorkspace(targetId, originWindowId) {
 export async function pruneWindowWorkspaceMap() {
     const allWindows = await chrome.windows.getAll().catch(() => []);
     const aliveIds = new Set(allWindows.map(w => String(w.id)));
-    let changed = false;
-    for (const wid of Object.keys(windowWorkspaceMap)) {
-        if (!aliveIds.has(wid)) {
-            delete windowWorkspaceMap[wid];
-            changed = true;
+    await mutateWindowMap(map => {
+        let changed = false;
+        for (const wid of Object.keys(map)) {
+            if (!aliveIds.has(wid)) {
+                delete map[wid];
+                changed = true;
+            }
         }
-    }
-    if (changed) await persistWindowMap();
+        return changed;
+    });
 }
 
 /**
@@ -603,22 +719,35 @@ export function scoreSnapshotSimilarity(urlsA, urlsB) {
 
 /**
  * Greedy 1:1 assignment of windows to workspaces by snapshot similarity.
- * Highest-scoring pairs win; each window and each workspace is used at most
- * once. Used by the background lifecycle module to re-identify session-
- * restored windows after a browser restart. Pure function.
+ * Used by the background lifecycle module to re-identify session-restored
+ * windows after a browser restart. Pure function.
+ *
+ * Ambiguity guard (ISSUE-162 F2/FR-03): a window only contributes its single
+ * BEST candidate, and only when that score leads the runner-up by `margin`.
+ * A misbind is DESTRUCTIVE here — the next auto-snapshot would overwrite the
+ * wrong workspace's content (and push it to Drive) — so two template-similar
+ * workspaces scoring close (incl. exact ties at 1.0) bind NOTHING and leave
+ * the choice to the user.
  *
  * @param {Array<{windowId:number, urls:string[]}>} windows
  * @param {Array<{id:string, urls:string[]}>} candidates
- * @param {{threshold?:number}} [opts] - minimum score to accept (default 0.6)
+ * @param {{threshold?:number, margin?:number}} [opts]
+ *   threshold: minimum score to accept (default 0.6)
+ *   margin: required lead of best over second-best per window (default 0.15)
  * @returns {Array<{windowId:number, workspaceId:string, score:number}>}
  */
-export function matchWindowsToWorkspaces(windows, candidates, { threshold = 0.6 } = {}) {
+export function matchWindowsToWorkspaces(windows, candidates, { threshold = 0.6, margin = 0.15 } = {}) {
     const pairs = [];
     for (const w of windows || []) {
+        const scored = [];
         for (const c of candidates || []) {
             const score = scoreSnapshotSimilarity(w.urls, c.urls);
-            if (score >= threshold) pairs.push({ windowId: w.windowId, workspaceId: c.id, score });
+            if (score >= threshold) scored.push({ windowId: w.windowId, workspaceId: c.id, score });
         }
+        if (scored.length === 0) continue;
+        scored.sort((a, b) => b.score - a.score);
+        if (scored.length >= 2 && scored[0].score - scored[1].score < margin) continue;
+        pairs.push(scored[0]);
     }
     pairs.sort((a, b) => b.score - a.score);
     const usedWindows = new Set();
@@ -634,43 +763,112 @@ export function matchWindowsToWorkspaces(windows, candidates, { threshold = 0.6 
 }
 
 /**
- * Persists both metadata (sync) and snapshots (local) in parallel. Writes both
- * on every mutation rather than tracking which side changed — simpler and the
- * workspace operations are low-frequency enough that the extra write is fine
- * relative to chrome.storage.sync's 120 writes/minute cap.
+ * Per-id persistence (ISSUE-162 WP1 / FR-01).
  *
- * Uses setStorageStrict for the sync write so that a quota-exceeded failure
- * (single-key budget is 8KB → ~30 workspaces' metadata) is logged rather than
- * silently swallowed. Local write is still silent (local quota is ~10MB and
- * failure here would mean disk is in real trouble). Caller's await wraps the
- * whole Promise.all so any reject surfaces as a rejected promise.
+ * Field ownership:
+ *   wsMeta_<id> (sync):  identity + lastActiveAt — written by user actions
+ *                        (create/rename/sync-toggle/switch), never by the
+ *                        auto-snapshot path (FR-02 quota protection).
+ *   wsSnap_<id> (local): tabs + rev + updatedAt — written via writeSnapRecord's
+ *                        read→merge→write so a stale mirror can't clobber the
+ *                        fields another context just wrote (e.g. a sidepanel
+ *                        rename bumping rev must NOT revert the background's
+ *                        fresher tabs — it merges them in instead).
  */
-function persistWorkspaces() {
-    const metadata = {};
-    const snapshots = {};
-    for (const [id, ws] of Object.entries(workspaces)) {
-        const { tabSnapshot, ...meta } = ws;
-        metadata[id] = meta;
-        snapshots[id] = tabSnapshot || [];
+
+/** sync-area identity record for one workspace (from the in-memory mirror). */
+function buildMetaRecord(ws) {
+    return {
+        id: ws.id,
+        name: ws.name,
+        color: ws.color,
+        icon: ws.icon,
+        bookmarkFolderId: ws.bookmarkFolderId,
+        syncEnabled: Boolean(ws.syncEnabled),
+        lastActiveAt: ws.lastActiveAt,
+    };
+}
+
+/** Persist one workspace's identity to sync. Quota failure logs loudly, never throws. */
+function persistMetaOnly(id) {
+    const ws = workspaces[id];
+    if (!ws) return Promise.resolve();
+    return setStorageStrict('sync', { [WS_META_PREFIX + id]: buildMetaRecord(ws) })
+        .catch(err => {
+            console.warn('[workspace] sync meta write failed (sync disabled or quota). '
+                + 'Local data intact; cross-device identity is stale:', err);
+        });
+}
+
+/**
+ * Persist one workspace's content record with read→merge→write semantics —
+ * the caller only overwrites the fields it owns:
+ *   { tabs }                — replace tabs (auto-snapshot path)
+ *   { bumpRev: true }       — rev = max(stored, mirror) + 1 (content change);
+ *                             max() absorbs concurrent bumps from the other
+ *                             context so two writers can't mint the same rev
+ *                             for different content (F4 surface reduction)
+ *   { setRev, setUpdatedAt }— adopt authoritative values (Drive pull apply)
+ * Omitted fields are taken from the STORED record (the other context may have
+ * fresher data than this mirror), falling back to the mirror.
+ * Also refreshes the in-memory mirror to the merged result.
+ */
+async function writeSnapRecord(id, opts = {}) {
+    const ws = workspaces[id];
+    if (!ws) return null;
+    const key = WS_SNAP_PREFIX + id;
+    const cur = (await getStorage('local', [key]))[key] || {};
+    const curTabs = Array.isArray(cur.tabs) ? cur.tabs : null;
+    const curRev = typeof cur.rev === 'number' ? cur.rev : 0;
+
+    const tabs = opts.tabs !== undefined
+        ? opts.tabs
+        : (curTabs !== null ? curTabs : (ws.tabSnapshot || []));
+    let rev, updatedAt;
+    if (typeof opts.setRev === 'number') {
+        rev = opts.setRev;
+        updatedAt = typeof opts.setUpdatedAt === 'number' ? opts.setUpdatedAt : Date.now();
+    } else if (opts.bumpRev) {
+        rev = Math.max(curRev, ws.rev || 0) + 1;
+        updatedAt = Date.now();
+    } else {
+        rev = Math.max(curRev, ws.rev || 1);
+        updatedAt = typeof cur.updatedAt === 'number' ? cur.updatedAt : (ws.updatedAt || Date.now());
     }
+
+    ws.tabSnapshot = tabs;
+    ws.rev = rev;
+    ws.updatedAt = updatedAt;
+    await setStorage('local', { [key]: { tabs, rev, updatedAt } });
+    return ws;
+}
+
+/** Remove one workspace's persisted records (both areas). */
+function removePersisted(id) {
     return Promise.all([
-        setStorageStrict('sync', { [WORKSPACE_METADATA_KEY]: metadata })
-            .catch(err => {
-                // Don't propagate — the workspace mutation that triggered this
-                // is already locally applied via persistWorkspaces' caller;
-                // failing here would leave the in-memory state inconsistent
-                // with what local snapshots show. Log loudly so a follow-up
-                // can offer the user a retry / per-key migration. v2 todo.
-                console.warn(
-                    '[workspace] sync metadata write failed (sync disabled, quota, or ~30+ workspaces). '
-                    + 'Local snapshot still saved; cross-device sync is offline:',
-                    err
-                );
-            }),
-        setStorage('local', { [WORKSPACE_SNAPSHOTS_KEY]: snapshots }),
+        removeStorage('sync', WS_META_PREFIX + id),
+        removeStorage('local', WS_SNAP_PREFIX + id),
     ]);
 }
 
-function persistWindowMap() {
-    return setStorage('local', { [WINDOW_WORKSPACE_MAP_KEY]: windowWorkspaceMap });
+/**
+ * Apply a delta to windowWorkspaceMap with read→merge→write.
+ *
+ * NEVER persist the in-memory map wholesale: between a mutation and its
+ * persist there are awaits, and the debounced storage.onChanged reload
+ * (initWorkspaces) can swap the module-level map for a stale storage copy in
+ * that window — a wholesale persist would then faithfully write the STALE map
+ * and erase bindings other code (or the other context) just made. Caught live
+ * by the workspace E2E. The mutator receives the freshly-READ stored map and
+ * returns true if it changed anything; the merged result becomes both the
+ * stored and the in-memory map.
+ *
+ * @param {(map: Object<string,string>) => boolean} mutator
+ */
+async function mutateWindowMap(mutator) {
+    const res = await getStorage('local', [WINDOW_WORKSPACE_MAP_KEY]);
+    const map = res[WINDOW_WORKSPACE_MAP_KEY] || {};
+    const changed = mutator(map);
+    windowWorkspaceMap = map;
+    if (changed) await setStorage('local', { [WINDOW_WORKSPACE_MAP_KEY]: map });
 }

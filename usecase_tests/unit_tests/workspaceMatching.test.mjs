@@ -97,6 +97,39 @@ describe('matchWindowsToWorkspaces', () => {
     expect(result).toEqual([{ windowId: 102, workspaceId: 'ws_1', score: 1 }]);
   });
 
+  describe('ambiguity margin (ISSUE-162 F2)', () => {
+    // 兩個模板相似的工作區:基底 [g,c,n] 相同,各自多一個專屬分頁
+    const wsA = ws('ws_a', ['https://g.com/', 'https://c.com/', 'https://n.com/', 'https://a-doc.com/']);
+    const wsB = ws('ws_b', ['https://g.com/', 'https://c.com/', 'https://n.com/', 'https://b-doc.com/']);
+
+    it('視窗對兩個候選分數接近(margin 不足)→ 一律不綁,寧可留白', () => {
+      // 視窗只剩基底 3 個分頁 → 對 A、B 都是 3/4 = 0.75,並列
+      const restored = win(101, ['https://g.com/', 'https://c.com/', 'https://n.com/']);
+      expect(matchWindowsToWorkspaces([restored], [wsA, wsB])).toEqual([]);
+    });
+
+    it('完全並列 1.0(兩個工作區快照相同)→ 都不綁', () => {
+      const dupA = ws('dup_a', ['https://x.com/', 'https://y.com/']);
+      const dupB = ws('dup_b', ['https://x.com/', 'https://y.com/']);
+      const restored = win(101, ['https://x.com/', 'https://y.com/']);
+      expect(matchWindowsToWorkspaces([restored], [dupA, dupB])).toEqual([]);
+    });
+
+    it('最佳領先次佳 ≥ margin → 綁最佳', () => {
+      // 視窗含 a-doc → 對 A 是 4/4 = 1.0,對 B 是 3/4 = 0.75,領先 0.25
+      const restored = win(101, ['https://g.com/', 'https://c.com/', 'https://n.com/', 'https://a-doc.com/']);
+      const result = matchWindowsToWorkspaces([restored], [wsA, wsB]);
+      expect(result).toEqual([{ windowId: 101, workspaceId: 'ws_a', score: 1 }]);
+    });
+
+    it('單一候選不受 margin 影響', () => {
+      const restored = win(101, ['https://g.com/', 'https://c.com/', 'https://n.com/']);
+      const result = matchWindowsToWorkspaces([restored], [wsA]);
+      expect(result).toHaveLength(1);
+      expect(result[0].workspaceId).toBe('ws_a');
+    });
+  });
+
   it('使用者重啟後小幅瀏覽過仍可綁回(0.6 門檻容忍)', () => {
     // 5 個分頁中 1 個被導航走 → 4/5 = 0.8 ≥ 0.6
     const snap = ['https://a.com/', 'https://b.com/', 'https://c.com/', 'https://d.com/', 'https://e.com/'];
