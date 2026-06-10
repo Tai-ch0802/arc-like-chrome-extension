@@ -24,7 +24,7 @@ An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: uni
 - **AI Hover Summarize**: Hover any tab for 2s to see a one-sentence summary of the page.
 - **AI Reading List Summary Memory**: Pages you add to Reading List get summarized once and stored locally — preview later, even offline.
 - **Ask AI to Find** (⌘K): Natural-language search across tabs, bookmarks, and reading-list entries.
-- **Workspaces**: Save bundles of tabs as named workspaces; one click hibernates current tabs and restores another workspace. Metadata syncs across devices.
+- **Workspaces**: Save bundles of tabs as named workspaces; each workspace opens in its own window — switching focuses or reopens it without touching your current tabs, and windows re-bind to their workspaces automatically after a browser restart. Metadata syncs across devices.
 - **Command Palette** (⌘K / Ctrl+K): Unified search + actions overlay, Linear/Raycast-style.
 - **Bookmark Tools**: 🛠️ panel for multi-tag, duplicate finder, and dead-link checker.
 - **Zero Config, No API Key**: All AI runs on Chrome's built-in Gemini Nano. Nothing leaves your machine.
