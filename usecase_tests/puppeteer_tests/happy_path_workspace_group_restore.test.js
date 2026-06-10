@@ -111,13 +111,24 @@ describe('Happy Path: Arc-style switch opens/focuses workspace window', () => {
                 //    it focuses the one bound in step 4.
                 const focused = await ws.switchWorkspace(wsA.id, controlling.id);
 
+                const mapInStorage = await new Promise(r =>
+                    chrome.storage.local.get(['windowWorkspaceMap'], res => r(res.windowWorkspaceMap || {})));
+
+                // The in-memory mirror is EVENTUALLY consistent: the binding
+                // write fires storage.onChanged, and the sidepanel's debounced
+                // (200ms) reload refreshes the mirror. Storage (asserted via
+                // mapInStorage) is the authoritative truth; poll the mirror.
+                const boundWorkspaceId = await poll(
+                    async () => ws.getActiveWorkspaceId(openedWindowId));
+
                 return {
                     wsId: wsA.id,
                     snapshotGroupCount: wsA.tabSnapshot.filter(s => s.groupKey != null).length,
                     snapshotGroupTitle: (wsA.tabSnapshot.find(s => s.groupKey != null) || {}).groupTitle,
                     openedAction: opened.action,
                     openedWindowId,
-                    boundWorkspaceId: ws.getActiveWorkspaceId(openedWindowId),
+                    mapInStorage,
+                    boundWorkspaceId,
                     groupsAfter: groupsAfter.map(g => ({ title: g.title, color: g.color })),
                     httpTabCount: tabsAfter.filter(t => /^https?:/i.test(t.url || t.pendingUrl || '')).length,
                     focusedAction: focused && focused.action,
@@ -134,6 +145,7 @@ describe('Happy Path: Arc-style switch opens/focuses workspace window', () => {
 
             // Open path: new window, bound to the workspace, group rebuilt.
             expect(result.openedAction).toBe('opened');
+            expect(JSON.stringify(result.mapInStorage)).toContain(result.wsId);
             expect(result.boundWorkspaceId).toBe(result.wsId);
             const restored = result.groupsAfter.find(g => g.title === 'BatchC');
             expect(restored).toBeDefined();

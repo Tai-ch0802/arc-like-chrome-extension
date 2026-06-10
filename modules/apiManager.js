@@ -196,6 +196,23 @@ export const setStorageStrict = (area, items) => {
     });
 };
 
+/**
+ * Remove key(s) from a storage area. Resolves regardless of outcome but logs
+ * lastError loudly — a silent sync-area removal failure can suppress the
+ * onChanged event downstream logic depends on (e.g. workspace delete tombstones).
+ * @param {'sync'|'local'} area
+ * @param {string|string[]} keys
+ */
+export const removeStorage = (area, keys) => {
+    return new Promise((resolve) => {
+        chrome.storage[area].remove(keys, () => {
+            const err = chrome.runtime.lastError;
+            if (err) console.warn(`[storage] ${area}.remove failed:`, err.message);
+            resolve();
+        });
+    });
+};
+
 // Wrappers for chrome.readingList API
 export const queryReadingList = (info = {}) => chrome.readingList.query(info);
 export const addReadingListEntry = (options) => chrome.readingList.addEntry(options);

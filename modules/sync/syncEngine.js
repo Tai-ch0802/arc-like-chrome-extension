@@ -453,12 +453,15 @@ export function createSyncEngine(deps) {
                         needsUpdate = true;
                         break;
                     }
-                    // Whether or not it's live-bound, applyRemoteSnapshot only
-                    // writes the stored snapshot — it NEVER opens tabs. So the
-                    // "defer until Restore" guarantee (no auto tab replacement)
-                    // holds in both cases; we apply + advance baseRev either way.
-                    // (isWorkspaceLiveBound is still consulted so the contract is
-                    // explicit and future destructive ops can branch on it.)
+                    // applyRemoteSnapshot only writes the stored snapshot — it
+                    // NEVER opens tabs, so the "defer until Restore" guarantee
+                    // (no auto tab replacement) always holds. The DEP itself
+                    // additionally branches on live-bound (ISSUE-162 F3): a
+                    // live-bound workspace keeps its LOCAL tabs and only adopts
+                    // remote metadata + rev/updatedAt — applying remote tabs
+                    // there would be instantly re-snapshotted away and would
+                    // ping-pong revs across devices. baseRev advances either
+                    // way (the remote rev was fully consumed).
                     await isWorkspaceLiveBound(id);
                     await applyRemoteSnapshot(id, j);
                     await setBaseRev(id, j.rev);
