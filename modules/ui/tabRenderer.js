@@ -296,9 +296,14 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
                 groupHeader.className = 'tab-group-header';
                 groupHeader.tabIndex = 0;
                 groupHeader.setAttribute('role', 'button');
+                // 初始狀態必須在建立時就寫齊(ISSUE-162 C5):updateGroupHeaderElement
+                // 只在 isCollapsed 變化時更新,新建的「展開」header 會卡在
+                // 無 aria-expanded 的狀態(role=button 卻沒有開合語意)。
+                groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
+                groupHeader.dataset.collapsed = group.collapsed ? 'true' : 'false';
 
                 const arrow = document.createElement('span');
-                arrow.className = 'tab-group-arrow is-chevron';
+                arrow.className = 'tab-group-arrow is-chevron' + (group.collapsed ? ' is-collapsed' : '');
                 arrow.innerHTML = renderIcon('expand_more', { size: 16 });
 
                 const colorDot = document.createElement('div');

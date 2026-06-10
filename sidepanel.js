@@ -168,6 +168,19 @@ function applyStaticTranslations() {
         }
     });
 
+    // data-i18n-title:tooltip 在地化(ISSUE-162 C4)。先前無任何處理迴圈,
+    // 6 個元素的 title 永遠是空字串或硬編碼英文(14 語系皆然)。icon-only
+    // 按鈕缺 aria-label 時一併補上。
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const msg = api.getMessage(el.getAttribute('data-i18n-title'));
+        if (msg) {
+            el.title = msg;
+            if (!el.hasAttribute('aria-label') || !el.getAttribute('aria-label')) {
+                el.setAttribute('aria-label', msg);
+            }
+        }
+    });
+
     // 注入 Material Symbols 圖示:[data-icon] 元素(icon-only 按鈕或 .btn-icon span)。
     // 與 data-i18n 分離(label 在 .btn-label),故文字在地化不會洗掉圖示。
     document.querySelectorAll('[data-icon]').forEach(el => {

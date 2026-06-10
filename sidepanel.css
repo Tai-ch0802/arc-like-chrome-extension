@@ -36,9 +36,9 @@
     --arc-state-drag: 0.16;
     /* State layer 覆蓋色 — color-mix over 主題 token,使用時依當前主題解析
        (同 settings-input 既有 color-mix 模式;主題切換於 :root 變更 token 即重算) */
-    --arc-state-layer-hover: color-mix(in srgb, var(--text-color-primary) 8%, transparent);
-    --arc-state-layer-pressed: color-mix(in srgb, var(--text-color-primary) 12%, transparent);
-    --arc-state-layer-accent: color-mix(in srgb, var(--accent-color) 14%, transparent);
+    /* (state-layer 與 focus-ring 的 color-mix tokens 移至下方 body 區塊 —
+       它們引用主題變數,而主題套在 body 而非 :root;宣告在 :root 會在
+       :root 的預設值上提早解析,凍結成 GEEK 配色。ISSUE-162 C1) */
 
     /* Elevation 階 (M3-ish);1/3/5 alias 既有 shadow,不改舊名以免破壞既有引用 */
     --arc-elevation-0: none;
@@ -48,8 +48,7 @@
     --arc-elevation-4: 0 8px 24px hsl(0 0% 0% / 0.28);
     --arc-elevation-5: var(--arc-shadow-drag);
 
-    /* 統一 focus ring */
-    --arc-focus-ring: 0 0 0 2px color-mix(in srgb, var(--accent-color) 40%, transparent);
+    /* (--arc-focus-ring 同上,見 body 區塊) */
 
     /* Motion 語意 alias (指向既有 anim token,沿用既有曲線) */
     --arc-motion-short: var(--arc-anim-duration-fast);
@@ -61,6 +60,17 @@
     /* 列垂直間距(密度設定 listDensity;預設 = cozy = 現狀)。水平 padding 維持各列原值。 */
     --list-row-py: 6px;      /* 分頁 / 閱讀清單 */
     --bookmark-row-py: 4px;  /* 書籤 / 視窗資料夾 */
+}
+
+/* 主題相依的 color-mix tokens(ISSUE-162 C1):必須宣告在 body —— 主題(內建
+   data-theme 與自訂 CSS 變數)都套在 body 上;custom property 中的 var() 在
+   「宣告元素」上即完成替換,若宣告在 :root 會永遠拿 :root 的 GEEK 預設值,
+   所有非預設主題的 focus ring / state layer 因此凍結成 GEEK 綠。 */
+body {
+    --arc-state-layer-hover: color-mix(in srgb, var(--text-color-primary) 8%, transparent);
+    --arc-state-layer-pressed: color-mix(in srgb, var(--text-color-primary) 12%, transparent);
+    --arc-state-layer-accent: color-mix(in srgb, var(--accent-color) 14%, transparent);
+    --arc-focus-ring: 0 0 0 2px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 /* 列間距密度:body[data-density] 由 settingManager.applyDensity 設定。cozy 為預設(不需 override)。 */
@@ -112,7 +122,11 @@ button:focus-visible {
 .context-menu-item:active,
 .workspace-switch-btn:active,
 .workspace-manage__switch:active {
-    background-color: var(--arc-state-layer-pressed);
+    /* 疊層而非取代(ISSUE-162 C2):原本寫 background-color 會被後出的
+       :hover 同特異性規則蓋掉(滑鼠按下時必同時 hover),pressed 回饋從未
+       渲染過。改用 background-image 與 hover 的 background-color 不同屬性,
+       直接複合疊加。 */
+    background-image: linear-gradient(var(--arc-state-layer-pressed), var(--arc-state-layer-pressed));
 }
 
 
