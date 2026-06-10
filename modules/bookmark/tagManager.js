@@ -24,10 +24,58 @@ let tags = {};
 /** @type {Object<string, string[]>} */
 let bookmarkTags = {};
 
+/**
+ * 正規化 tag 名稱:trim、截 40 字,並剝除雙引號 —— tag 名含 `"` 會讓
+ * dot-click 產生的 `tag:"..."` token 無法 round-trip(ISSUE-162 B4)。
+ * 純函式(可單元測試)。
+ * @param {unknown} name
+ * @param {string} [fallback]
+ * @returns {string}
+ */
+export function normalizeTagName(name, fallback = 'Tag') {
+    const n = String(name ?? '').replace(/"/g, '').trim().slice(0, 40);
+    return n || fallback;
+}
+
+let storageSubscribed = false;
+
 export async function initTags() {
     const result = await getStorage('local', [TAGS_KEY, BOOKMARK_TAGS_KEY]);
     tags = result[TAGS_KEY] || {};
     bookmarkTags = result[BOOKMARK_TAGS_KEY] || {};
+
+    // 跨視窗一致性(ISSUE-162 B1):tags/bookmarkTags 是整表持久化的
+    // 可變資料集,且本擴充功能支援多個同時開啟的 sidepanel。沒有這個
+    // 訂閱,視窗 B 會拿陳舊的 in-memory 表覆寫掉視窗 A 剛建立的 tag
+    // (last-write-wins 互滅)。寫入端自己的 onChanged 會因內容相同而
+    // 跳過重繪(免雙重 render)。
+    if (!storageSubscribed && typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
+        storageSubscribed = true;
+        chrome.storage.onChanged.addListener((changes, area) => {
+            if (area !== 'local') return;
+            if (!changes[TAGS_KEY] && !changes[BOOKMARK_TAGS_KEY]) return;
+            let dirty = false;
+            if (changes[TAGS_KEY]) {
+                const next = changes[TAGS_KEY].newValue || {};
+                if (JSON.stringify(next) !== JSON.stringify(tags)) {
+                    tags = next;
+                    dirty = true;
+                }
+            }
+            if (changes[BOOKMARK_TAGS_KEY]) {
+                const next = changes[BOOKMARK_TAGS_KEY].newValue || {};
+                if (JSON.stringify(next) !== JSON.stringify(bookmarkTags)) {
+                    bookmarkTags = next;
+                    dirty = true;
+                }
+            }
+            // 重繪書籤列讓 tag dots 反映他窗變更;spotlight 等無此監聽的
+            // context 只更新 in-memory 即可。
+            if (dirty && typeof document !== 'undefined') {
+                document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
+            }
+        });
+    }
 }
 
 export function getAllTags() {
@@ -63,7 +111,7 @@ export async function createTag(args) {
     const id = 'tag_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
     const tag = {
         id,
-        name: (args.name || 'Tag').trim().slice(0, 40),
+        name: normalizeTagName(args.name),
         color: PRESET_COLORS.includes(args.color) ? args.color : 'blue',
         createdAt: Date.now(),
     };
@@ -75,7 +123,7 @@ export async function createTag(args) {
 export async function updateTag(id, updates) {
     const tag = tags[id];
     if (!tag) return null;
-    if (updates.name !== undefined) tag.name = updates.name.trim().slice(0, 40);
+    if (updates.name !== undefined) tag.name = normalizeTagName(updates.name, tag.name);
     if (updates.color !== undefined && PRESET_COLORS.includes(updates.color)) tag.color = updates.color;
     await persistTags();
     return tag;

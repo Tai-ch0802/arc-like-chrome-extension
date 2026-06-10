@@ -173,6 +173,9 @@ function buildTagRow(tag, listEl) {
             if (listEl.querySelectorAll('.bm-tools__row').length === 0) {
                 listEl.appendChild(makeEmpty(api.getMessage('bmToolsTagsEmpty') || 'No tags yet.'));
             }
+            // 與 edit 路徑一致(ISSUE-162 B3):重繪書籤列移除殘留的 tag dot,
+            // 否則點到死 dot 會進入 tag:已刪名稱 的全面板空白死路。
+            document.dispatchEvent(new CustomEvent('refreshBookmarksRequired'));
         }
     });
     row.appendChild(deleteBtn);

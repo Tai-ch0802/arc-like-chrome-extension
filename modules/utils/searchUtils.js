@@ -45,17 +45,25 @@ export function extractDomain(url) {
 /**
  * 將搜尋字串拆成一般關鍵字與 tag: 篩選。
  * 支援 tag:單詞 與 tag:"含空白名稱"；tag 名稱去引號、小寫化。其餘空白分隔詞為關鍵字（小寫）。
+ *
+ * Token 必須錨定在字界（字首或空白後）：未錨定的版本會把 `montag:9` 或
+ * 貼上的 URL `https://x.com/hashtag:foo` 解析成 tag 查詢，整個面板瞬間
+ * 清空且毫無解釋（ISSUE-162 B2）。同時接受全形冒號 `：` —— zh-TW 使用者
+ * IME 預設輸出全形標點（B5）。
  * @param {string} query
  * @returns {{keywords: string[], tags: string[]}}
  */
 export function parseSearchQuery(query) {
     const tags = [];
     if (typeof query !== 'string') return { keywords: [], tags };
-    const rest = query.replace(/tag:"([^"]*)"|tag:(\S+)/gi, (_, quoted, bare) => {
-        const name = (quoted !== undefined ? quoted : bare).trim().toLowerCase();
-        if (name) tags.push(name);
-        return ' ';
-    });
+    const rest = query.replace(
+        /(^|\s)tag[:：]"([^"]*)"|(^|\s)tag[:：](\S+)/gi,
+        (_, _sep1, quoted, _sep2, bare) => {
+            const name = (quoted !== undefined ? quoted : bare).trim().toLowerCase();
+            if (name) tags.push(name);
+            return ' ';
+        }
+    );
     const keywords = rest.toLowerCase().split(/\s+/).filter(k => k.length > 0);
     return { keywords, tags };
 }
