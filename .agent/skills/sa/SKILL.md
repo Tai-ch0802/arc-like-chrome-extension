@@ -1,11 +1,15 @@
 ---
 name: sa
-description: 撰寫本專案 (vanilla JS Chrome extension) 的 SA (系統分析) 文件，重點為模組架構、chrome.storage schema、message passing、Test Impact Analysis。本專案無 backend / 無 DB，SA 聚焦前端 module 切分與狀態流。當使用者提到「SA、系統分析、技術方案、架構設計、模組規劃、Test Impact」時觸發。SDD 流程的 Phase 2。
+description: 撰寫本專案 (vanilla JS Chrome extension) 的 SA (系統分析) 文件，重點為模組架構、chrome.storage schema、message passing、Test Impact Analysis。本專案無 backend / 無 DB，SA 聚焦前端 module 切分與狀態流。當使用者提到「SA、系統分析、技術方案、架構設計、模組規劃、Test Impact」時觸發。分級 SDD 之 T2（完整流程）的 Phase 2；T1 輕量案件不需獨立 SA。
 ---
 
 # System Analysis (SA) Skill
 
 本技能專注於系統分析與設計 (System Analysis & Design)，旨在將 PRD 中的業務需求轉化為可執行的技術方案。SA 是連接 "What to do" (PRD) 與 "How to do" (Code) 的橋樑。
+
+> **適用層級**：本 skill 屬於分級 SDD 的 **T2（完整流程）Phase 2**。
+> T1 輕量案件在 `SPEC.md` 的「方案／影響面／Test Impact」段落內完成同等思考即可；
+> 分級判準見 `.agent/skills/sdd/SKILL.md`（單一事實來源）。
 
 ## SA 的核心職責
 

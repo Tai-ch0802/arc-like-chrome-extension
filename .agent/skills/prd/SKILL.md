@@ -1,11 +1,15 @@
 ---
 name: prd
-description: 撰寫本專案的 PRD (產品需求文件)，位置為 /docs/specs/{type}/{ID-PREFIX}_{desc}/PRD_spec.md。當使用者提到「PRD、產品需求、需求文件、寫規格、新功能規劃、acceptance criteria」時觸發。SDD 流程的 Phase 1，產出物提供給 sa skill 銜接。
+description: 撰寫本專案的 PRD (產品需求文件)，位置為 /docs/specs/{type}/{ID-PREFIX}_{desc}/PRD_spec.md。當使用者提到「PRD、產品需求、需求文件、寫規格、新功能規劃、acceptance criteria」時觸發。分級 SDD 之 T2（完整流程）的 Phase 1，產出物提供給 sa skill 銜接；T1 輕量案件不需獨立 PRD。
 ---
 
 # Product Requirement Document (PRD) Skill
 
 本技能旨在協助撰寫結構完整、邏輯清晰的產品需求文件 (PRD)。PRD 是產品的核心藍圖，它告訴我們「為什麼要建構這個產品」以及「它應該具備什麼功能」。
+
+> **適用層級**：本 skill 屬於分級 SDD 的 **T2（完整流程）Phase 1**。
+> T1 輕量案件直接用 `sdd` skill 的單檔 `SPEC.md` 即可，不需獨立 PRD；
+> 分級判準見 `.agent/skills/sdd/SKILL.md`（單一事實來源）。
 
 ## 為何需要 PRD？
 
