@@ -212,16 +212,19 @@ function filterOtherWindowsTabs(keywords) {
         folder.classList.toggle('hidden', !visible);
         content.classList.toggle('hidden', !visible);
 
-        // 展開/收合（統一使用 CSS class 控制，避免 inline style 衝突）
+        // 展開/收合：必須用 inline style —— otherWindowRenderer 以
+        // style.display 控制這個節點(初始 'none'、點擊 toggle),class 機制
+        // 蓋不過 inline style:搜尋命中時 chevron/aria 顯示展開、內容卻仍
+        // 隱藏;清除搜尋時又反過來(ISSUE-162 C3,同 group 分支的既有做法)。
         const icon = folder.querySelector('.window-icon');
         if (windowCount > 0 && keywords.length > 0) {
             // 有搜尋結果時：展開並顯示
-            content.classList.remove('collapsed');
+            content.style.display = 'block';
             if (icon) icon.classList.remove('is-collapsed');
             folder.setAttribute('aria-expanded', 'true');
         } else if (keywords.length === 0) {
             // 清除搜尋時：收合
-            content.classList.add('collapsed');
+            content.style.display = 'none';
             if (icon) icon.classList.add('is-collapsed');
             folder.setAttribute('aria-expanded', 'false');
         }

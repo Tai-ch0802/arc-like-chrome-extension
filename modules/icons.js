@@ -62,11 +62,18 @@ export function hasIcon(name) {
  * @param {string} name ICONS 的 key
  * @param {{size?:number, className?:string, label?:string}} [opts]
  *   size 寬高(px,預設 16);className(預設 'm3-icon');label 有值則設 role/aria-label,否則 aria-hidden。
- * @returns {string} SVG 字串;name 不存在時回傳空字串。
+ * @returns {string} SVG 字串;name 不存在時警告並 fallback 至 'language' 圖示。
  */
 export function renderIcon(name, { size = 16, className = 'm3-icon', label } = {}) {
-    const inner = ICONS[name];
-    if (!inner) return '';
+    let inner = ICONS[name];
+    if (!inner) {
+        // 與 renderIconEl 一致的 fallback(ISSUE-162 C6):回空字串會讓動態
+        // id 呼叫端(data-icon、driveSyncBadge)在 id 打錯時靜默渲染出
+        // 看不見的按鈕;改 fallback 至 'language' 並警告。
+        console.warn('[icons] unknown icon id:', name, '— falling back to "language"');
+        inner = ICONS.language;
+        if (!inner) return '';
+    }
     // label 跳脫,使函式對未來傳入動態/不可信 label 的呼叫端也安全(現無此用法)。
     const safeLabel = label != null ? String(label).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : '';
     const a11y = label ? `role="img" aria-label="${safeLabel}"` : 'aria-hidden="true"';

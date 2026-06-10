@@ -57,6 +57,27 @@ describe('Theme Switch Use Case (via options page)', () => {
         await waitForTheme(page, originalTheme);
     }, 120000);
 
+    test('M3 focus-ring token follows the active theme accent (ISSUE-162 C1)', async () => {
+        const originalTheme = await page.evaluate(() => document.body.dataset.theme || 'geek');
+
+        await optionsPage.select('#theme-select-dropdown', 'google');
+        await waitForTheme(page, 'google');
+
+        // color-mix tokens 必須宣告在 body(主題所在元素)而非 :root,
+        // 否則 var() 在 :root 提早解析、永遠凍結成 GEEK 綠 #00ff41。
+        // computed custom property 已完成 var() 替換 — 直接斷言其內含
+        // google accent(#1a73e8),且不含 GEEK 綠。
+        const ring = await page.evaluate(() =>
+            getComputedStyle(document.body).getPropertyValue('--arc-focus-ring'));
+        const normalized = ring.toLowerCase();
+        expect(normalized).toContain('#1a73e8');
+        expect(normalized).not.toContain('#00ff41');
+
+        // Restore.
+        await optionsPage.select('#theme-select-dropdown', originalTheme);
+        await waitForTheme(page, originalTheme);
+    }, 120000);
+
     test('the theme dropdown exposes all expected options', async () => {
         const themeOptions = await optionsPage.$$eval(
             '#theme-select-dropdown option',
