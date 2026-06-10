@@ -798,6 +798,12 @@
   "cmdPaletteGroupWorkspaces": {
     "message": "工作区"
   },
+  "cmdPaletteWorkspaceTabs": {
+    "message": "$count$ 个标签页",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
   "cmdPaletteActionCreateWorkspace": {
     "message": "从当前标签页创建工作区"
   },

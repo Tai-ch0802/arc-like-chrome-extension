@@ -909,6 +909,12 @@
   "cmdPaletteGroupWorkspaces": {
     "message": "Workspaces"
   },
+  "cmdPaletteWorkspaceTabs": {
+    "message": "$count$ टैब",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
   "cmdPaletteHintClose": {
     "message": "बंद करें"
   },

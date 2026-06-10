@@ -801,6 +801,12 @@
   "cmdPaletteGroupWorkspaces": {
     "message": "Workspaces"
   },
+  "cmdPaletteWorkspaceTabs": {
+    "message": "$count$ tab(s)",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
   "cmdPaletteActionCreateWorkspace": {
     "message": "Create workspace from current tabs"
   },

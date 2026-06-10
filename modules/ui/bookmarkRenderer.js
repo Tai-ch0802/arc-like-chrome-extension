@@ -190,7 +190,12 @@ function initBookmarkListeners(container) {
                 const token = /\s/.test(name) ? `tag:"${name}"` : `tag:${name}`;
                 const box = document.getElementById('search-box');
                 if (box) {
-                    box.value = token;
+                    // 組合而非取代(ISSUE-162 WP6):引擎本就支援多 tag AND 與
+                    // 關鍵字並用;再點同一顆 dot 不重複附加。
+                    const cur = box.value.trim();
+                    if (!cur.includes(token)) {
+                        box.value = cur ? `${cur} ${token}` : token;
+                    }
                     box.dispatchEvent(new Event('input', { bubbles: true }));
                     box.focus();
                 }

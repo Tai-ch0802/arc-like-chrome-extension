@@ -118,6 +118,8 @@ function renderTagsView(root) {
             title: api.getMessage('bmToolsCreateTagPrompt') || 'New tag',
         });
         if (!res || !res.name) return;
+        // 名稱唯一性(ISSUE-162 WP6):同名 tag 已在列表,不重複建立。
+        if (tagManager.findTagByName(res.name)) return;
         const tag = await tagManager.createTag({ name: res.name, color: res.color });
         const empty = list.querySelector('.bm-tools__empty');
         if (empty) empty.remove();

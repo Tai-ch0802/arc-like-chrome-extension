@@ -909,6 +909,12 @@
   "cmdPaletteGroupWorkspaces": {
     "message": "Workspaces"
   },
+  "cmdPaletteWorkspaceTabs": {
+    "message": "탭 $count$개",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
   "cmdPaletteHintClose": {
     "message": "닫기"
   },

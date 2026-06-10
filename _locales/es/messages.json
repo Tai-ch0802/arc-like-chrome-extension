@@ -909,6 +909,12 @@
   "cmdPaletteGroupWorkspaces": {
     "message": "Workspaces"
   },
+  "cmdPaletteWorkspaceTabs": {
+    "message": "$count$ pestaña(s)",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
   "cmdPaletteHintClose": {
     "message": "cerrar"
   },

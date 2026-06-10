@@ -798,9 +798,11 @@ mark.url-match {
 .tab-group-header {
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    /* 跟隨 density 設定(ISSUE-162 WP6):固定 padding 會讓 compact/comfortable
+       下的列表節奏混雜;radius 一併收斂到 shape token(原 2px 自成一格)。 */
+    padding: var(--list-row-py, 4px) 8px;
     cursor: default;
-    border-radius: 2px;
+    border-radius: var(--arc-radius-sm);
     margin-top: 6px;
     background-color: var(--group-bg-color);
     transition: background-color 0.2s ease;
@@ -1600,7 +1602,7 @@ mark.url-match {
     padding: 12px;
     background-color: var(--main-bg-color);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--arc-radius-xs);
 }
 
 .color-picker-row {
@@ -3252,6 +3254,12 @@ mark.url-match {
     box-shadow: var(--arc-focus-ring);
 }
 
+.workspace-switch-chevron {
+    flex: 0 0 auto;
+    display: inline-flex;
+    opacity: 0.55;
+}
+
 .workspace-switch-label {
     min-width: 0;
     overflow: hidden;
@@ -3270,7 +3278,7 @@ mark.url-match {
     font-size: 0.72em;
     line-height: 1;
     padding: 2px 5px;
-    border-radius: 4px;
+    border-radius: var(--arc-radius-xs);
     white-space: nowrap;
     user-select: none;
     color: var(--text-color-primary);
@@ -3417,7 +3425,7 @@ mark.url-match {
     width: 100%;
     padding: 8px;
     border: 1px dashed var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--arc-radius-xs);
     background: transparent;
     color: var(--text-color-primary);
     font-size: 0.9em;
