@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { spotlightOriginWindowId } = await chrome.storage.session.get('spotlightOriginWindowId');
         setOriginWindowId(spotlightOriginWindowId);
     } catch { /* ignore */ }
+    // 從另一個視窗再按快捷鍵會「聚焦既有 Spotlight」並改寫 origin(不重載頁面),
+    // 必須跟著更新,否則動作會路由到舊的來源視窗(ISSUE-162 A2)。
+    chrome.storage.session.onChanged.addListener((changes) => {
+        if (changes.spotlightOriginWindowId) {
+            setOriginWindowId(changes.spotlightOriginWindowId.newValue);
+        }
+    });
 
     // Hydrate data provider + action 可見性判斷所讀的 state
     await Promise.all([

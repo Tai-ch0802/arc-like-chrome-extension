@@ -392,6 +392,19 @@ async function findExistingSpotlight() {
     return null;
 }
 
+/**
+ * 記住 Spotlight 視窗 id:模組快取 + chrome.storage.session 雙寫。
+ * SW idle 回收會清空模組狀態(ISSUE-162 A2)— session 副本讓 onFocusChanged
+ * 在 SW 重生後仍能 lazy 補位,失焦自動關閉不再失效。
+ */
+async function setSpotlightWindowId(id) {
+    spotlightWindowId = id;
+    try {
+        if (id == null) await chrome.storage.session.remove('spotlightWindowId');
+        else await chrome.storage.session.set({ spotlightWindowId: id });
+    } catch { /* session unavailable → degrade to module cache only */ }
+}
+
 // 快捷鍵入口:一律開置中 popup(不論是否全螢幕)。每次行為一致、ESC 關閉後可靠重開。
 // (注:macOS 原生全螢幕下 popup 可能被系統移到別的 Space,屬使用者選擇接受的取捨。)
 async function openSpotlight() {
@@ -400,14 +413,18 @@ async function openSpotlight() {
     try {
         const origin = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
 
-        if (spotlightWindowId == null) spotlightWindowId = await findExistingSpotlight();
-        if (spotlightWindowId != null) {
-            try { await chrome.windows.update(spotlightWindowId, { focused: true }); return; }
-            catch { spotlightWindowId = null; }
-        }
+        // Origin 必須在 focus-existing 分支「之前」更新(ISSUE-162 A2):
+        // 從另一個視窗再按 Cmd+Shift+K 聚焦既有 Spotlight 時,動作要路由到
+        // 新的來源視窗。spotlight 頁有 session onChanged 監聽會即時接手。
         await chrome.storage.session.set({
             spotlightOriginWindowId: origin && typeof origin.id === 'number' ? origin.id : null
         });
+
+        if (spotlightWindowId == null) spotlightWindowId = await findExistingSpotlight();
+        if (spotlightWindowId != null) {
+            try { await chrome.windows.update(spotlightWindowId, { focused: true }); return; }
+            catch { await setSpotlightWindowId(null); }
+        }
         const opts = { url: SPOTLIGHT_URL, type: 'popup', focused: true, width: SPOTLIGHT_W, height: SPOTLIGHT_H };
         if (origin && typeof origin.left === 'number' && typeof origin.width === 'number') {
             // 以 origin 視窗的左上為下限(非 0),避免左側副螢幕(origin.left 為負)時被推回主螢幕。
@@ -415,7 +432,7 @@ async function openSpotlight() {
             opts.top = Math.max(origin.top, origin.top + Math.round((origin.height - SPOTLIGHT_H) / 3));
         }
         const win = await chrome.windows.create(opts);
-        spotlightWindowId = win && typeof win.id === 'number' ? win.id : null;
+        await setSpotlightWindowId(win && typeof win.id === 'number' ? win.id : null);
     } catch (err) {
         console.warn('[spotlight] open failed:', err && err.message ? err.message : err);
     } finally {
@@ -423,14 +440,28 @@ async function openSpotlight() {
     }
 }
 
-// 失焦自動關閉(排除短暫無焦點 WINDOW_ID_NONE)
+// 失焦自動關閉(排除短暫無焦點 WINDOW_ID_NONE)。
+// SW 重生後模組快取為 null → 先從 session lazy 補位再判斷(ISSUE-162 A2)。
 chrome.windows.onFocusChanged.addListener((winId) => {
-    if (spotlightWindowId != null && winId !== spotlightWindowId && winId !== chrome.windows.WINDOW_ID_NONE) {
-        chrome.windows.remove(spotlightWindowId).catch(() => {});
-    }
+    if (winId === chrome.windows.WINDOW_ID_NONE) return;
+    (async () => {
+        if (spotlightWindowId == null) {
+            try {
+                const { spotlightWindowId: stored } = await chrome.storage.session.get('spotlightWindowId');
+                if (typeof stored === 'number') spotlightWindowId = stored;
+            } catch { /* ignore */ }
+        }
+        if (spotlightWindowId != null && winId !== spotlightWindowId) {
+            // remove 後一律清掉記錄:成功=已關閉;失敗=id 已死(SW 重啟前殘留)。
+            // 兩種情況都不該讓 stale id 在 session 裡無限期重試。
+            chrome.windows.remove(spotlightWindowId)
+                .catch(() => {})
+                .finally(() => setSpotlightWindowId(null));
+        }
+    })();
 });
 chrome.windows.onRemoved.addListener((winId) => {
-    if (winId === spotlightWindowId) spotlightWindowId = null;
+    if (winId === spotlightWindowId) setSpotlightWindowId(null);
 });
 
 // 監聽快捷鍵指令

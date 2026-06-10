@@ -65,7 +65,11 @@ function getWorkspaceResults(q) {
 }
 
 async function getTabResults(q) {
-    const tabs = await chrome.tabs.query({}).catch(() => []);
+    const allTabs = await chrome.tabs.query({}).catch(() => []);
+    // 排除 Spotlight 自身分頁(ISSUE-162 A4):列出自己只會成為「選中即
+    // 自我關閉」的無效項,還污染空查詢的 top 結果。
+    const selfUrl = chrome.runtime.getURL('spotlight.html');
+    const tabs = allTabs.filter(t => !(t.url || '').startsWith(selfUrl));
     return scoreFilter(tabs, q, t => (t.title || '') + ' ' + (t.url || ''))
         .map(t => ({
             id: 'tab-' + t.id,

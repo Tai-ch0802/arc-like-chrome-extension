@@ -46,6 +46,17 @@ const PANEL_ACTION_HANDLERS = {
     },
 };
 
+// 本 panel 所屬視窗 id:消費轉送動作前必須先知道「我是誰」(定址守門用)。
+let myWindowIdPromise = null;
+function getMyWindowId() {
+    if (!myWindowIdPromise) {
+        myWindowIdPromise = chrome.windows.getCurrent()
+            .then(w => w.id)
+            .catch(() => null);
+    }
+    return myWindowIdPromise;
+}
+
 async function consumePendingPanelAction() {
     // 初始化尚未完成時不消費:旗標保留,待 initialize 末端設定 panelReady 後再讀取,
     // 避免在按鈕事件接線前觸發動作而被吞掉(亦不漏動作)。
@@ -55,7 +66,18 @@ async function consumePendingPanelAction() {
         ({ pendingPanelAction: pending } = await chrome.storage.session.get('pendingPanelAction'));
     } catch { return; }
     if (!pending || !pending.id) return;
+
+    // 定址 + TTL 守門(ISSUE-162 A1/A3):動作寄給特定視窗;非目標 panel
+    // 一律不碰(也不清旗標——目標 panel 可能還在初始化);過期動作清掉,
+    // 防 sidePanel.open 失敗後旗標殘留、之後突發執行。
+    const { classifyPendingAction } = await import('./modules/commandPalette/panelBridge.js');
+    const verdict = classifyPendingAction(pending, await getMyWindowId(), Date.now());
+    if (verdict === 'ignore') return;
     try { await chrome.storage.session.remove('pendingPanelAction'); } catch { /* ignore */ }
+    if (verdict === 'expired') {
+        console.warn('[panel-action] dropped expired action:', pending.id);
+        return;
+    }
     const fn = PANEL_ACTION_HANDLERS[pending.id];
     if (!fn) { console.warn('[panel-action] unknown id:', pending.id); return; }
     try { await fn(pending); }

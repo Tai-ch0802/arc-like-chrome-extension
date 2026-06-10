@@ -94,7 +94,7 @@ key_files:
   - file_path: modules/commandPalette/searchContext.js
     description: "[功能] Spotlight 來源視窗上下文。儲存 Spotlight 啟動時的「來源 normal 視窗 id」（setOriginWindowId / getOriginWindowId）；因 Spotlight 為獨立 popup 視窗，item handler 須作用於使用者的瀏覽器視窗而非 popup，故由此提供作用目標視窗。"
   - file_path: modules/commandPalette/panelBridge.js
-    description: "[通訊] Spotlight → sidepanel 橋接器（非 runtime messaging）。requestPanelAction 將 UI 類動作以 chrome.storage.session 旗標 pendingPanelAction 寫入並 sidePanel.open(來源視窗)，交由 sidepanel.js 的 consumePendingPanelAction 在正確 context 執行；openUrlInOrigin / resolveTargetWindowId 負責在來源 normal 視窗開分頁。"
+    description: "[通訊] Spotlight → sidepanel 橋接器（非 runtime messaging）。requestPanelAction 將 UI 類動作以 chrome.storage.session 旗標 pendingPanelAction 寫入並 sidePanel.open(來源視窗)，交由 sidepanel.js 的 consumePendingPanelAction 在正確 context 執行；openUrlInOrigin / resolveTargetWindowId 負責在來源 normal 視窗開分頁。ISSUE-162 WP3:旗標帶定址 windowId + ts,純函式 classifyPendingAction(execute/ignore/expired)守門——非目標視窗的 panel 不消費(防錯窗執行/雙重執行),TTL 15s 過期丟棄,sidePanel.open 失敗主動清旗標。"
   - file_path: modules/commandPalette/dataProvider.js
     description: "[功能] Command Palette / Spotlight 資料源。Phase 5 新增；聚合多個 source 的搜尋結果與分組顯示邏輯；index.js 已移除，資料/動作層（dataProvider/actions/nlSearch）現直接供獨立 Spotlight 彈窗（Cmd+Shift+K）使用。"
   - file_path: modules/commandPalette/actions.js
