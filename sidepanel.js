@@ -198,11 +198,19 @@ async function initialize() {
     // Warm start stays non-blocking and notifies search to re-run with fresh data.
     // Check the init flag — not cache length — so users with zero bookmarks
     // don't get treated as cold-start on every launch.
+    let pendingWarmCacheRebuild = false;
     if (!state.isBookmarkCacheInitialized()) {
         await state.buildBookmarkCache();
     } else {
+        // 暖啟動:目前 cache 是上個 session 的持久化快照,真正內容要等
+        // 這個背景 rebuild 完成(bookmarkCacheReady)。tag prune 等
+        // 「不可拿陳舊快照做破壞性決策」的工作須等該事件(ISSUE-162 B6)。
+        pendingWarmCacheRebuild = true;
         state.buildBookmarkCache()
-            .then(() => document.dispatchEvent(new CustomEvent('bookmarkCacheReady')))
+            .then(() => {
+                pendingWarmCacheRebuild = false;
+                document.dispatchEvent(new CustomEvent('bookmarkCacheReady'));
+            })
             .catch(console.error);
     }
     applyStaticTranslations();
@@ -242,9 +250,20 @@ async function initialize() {
     // and listens for driveSyncStatusChanged (dispatched by initSettingsBridge).
     initDriveSyncBadge().catch(err => console.warn('[sync] badge init failed:', err));
     await tagManager.initTags(); // Load bookmark tags before command palette / tools UI
-    // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't watching).
-    tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
-        .catch(err => console.warn('[tags] prune failed:', err));
+    // Prune orphaned bookmarkTags entries (bookmarks deleted while we weren't
+    // watching). 時機(ISSUE-162 B6):暖啟動時 cache 是上個 session 的快照、
+    // 真正的 rebuild 在背景跑 — 立刻 prune 會拿陳舊快照誤刪「仍然存在的
+    // 書籤」的 tag 綁定且無法復原。一律等 bookmarkCacheReady(暖啟動)
+    // 或冷啟動已 await 完成的 cache。
+    if (state.isBookmarkCacheInitialized() && !pendingWarmCacheRebuild) {
+        tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
+            .catch(err => console.warn('[tags] prune failed:', err));
+    } else {
+        document.addEventListener('bookmarkCacheReady', () => {
+            tagManager.pruneOrphanedBookmarkTags(state.getBookmarkCache() || [])
+                .catch(err => console.warn('[tags] prune failed:', err));
+        }, { once: true });
+    }
     // Parallelize the two independent storage reads (sync + local) so the
     // total init time doesn't lengthen the critical path before refreshBookmarks
     // settles — CI puppeteer tests were sensitive to even small init delays.

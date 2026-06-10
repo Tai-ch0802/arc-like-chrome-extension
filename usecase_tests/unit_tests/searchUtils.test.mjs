@@ -1,5 +1,6 @@
 import { matchesAnyKeyword, extractDomain } from '../../modules/utils/searchUtils.js';
 import { parseSearchQuery, bookmarkMatchesTags } from '../../modules/utils/searchUtils.js';
+import { normalizeTagName } from '../../modules/bookmark/tagManager.js';
 import { searchScope } from '../../modules/utils/searchUtils.js';
 
 describe('searchManager.matchesAnyKeyword', () => {
@@ -109,6 +110,42 @@ describe('bookmarkMatchesTags', () => {
   it('bookmarkTagNames 為空/缺 → 只有 required 也空才 true', () => {
     expect(bookmarkMatchesTags(undefined, ['work'])).toBe(false);
     expect(bookmarkMatchesTags(undefined, [])).toBe(true);
+  });
+});
+
+describe('parseSearchQuery — 字界錨定與全形冒號 (ISSUE-162 B2/B5)', () => {
+  it('montag:9 不是 tag 查詢(token 須錨定字首/空白後)', () => {
+    expect(parseSearchQuery('montag:9')).toEqual({ keywords: ['montag:9'], tags: [] });
+  });
+  it('貼上含 hashtag: 的 URL 不觸發 tag 模式', () => {
+    expect(parseSearchQuery('https://x.com/hashtag:foo')).toEqual({
+      keywords: ['https://x.com/hashtag:foo'], tags: [],
+    });
+  });
+  it('字首與空白後的 tag: 正常解析', () => {
+    expect(parseSearchQuery('tag:work')).toEqual({ keywords: [], tags: ['work'] });
+    expect(parseSearchQuery('react tag:work')).toEqual({ keywords: ['react'], tags: ['work'] });
+  });
+  it('全形冒號 tag：也解析(zh-TW IME)', () => {
+    expect(parseSearchQuery('tag：工作')).toEqual({ keywords: [], tags: ['工作'] });
+    expect(parseSearchQuery('react tag：工作')).toEqual({ keywords: ['react'], tags: ['工作'] });
+  });
+  it('引號形式仍支援錨定', () => {
+    expect(parseSearchQuery('tag:"my work"')).toEqual({ keywords: [], tags: ['my work'] });
+    expect(parseSearchQuery('x tag:"my work" y')).toEqual({ keywords: ['x', 'y'], tags: ['my work'] });
+  });
+});
+
+describe('normalizeTagName (ISSUE-162 B4)', () => {
+  it('剝除雙引號(dot-click token round-trip)', () => {
+    expect(normalizeTagName('say "hi"')).toBe('say hi');
+    expect(normalizeTagName('"quoted"')).toBe('quoted');
+  });
+  it('trim + 截 40 字 + 空值 fallback', () => {
+    expect(normalizeTagName('  work  ')).toBe('work');
+    expect(normalizeTagName('x'.repeat(50))).toHaveLength(40);
+    expect(normalizeTagName('')).toBe('Tag');
+    expect(normalizeTagName('""', 'fallback')).toBe('fallback');
   });
 });
 
