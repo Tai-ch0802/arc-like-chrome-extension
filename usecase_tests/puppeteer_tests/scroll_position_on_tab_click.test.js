@@ -11,7 +11,6 @@
 const { setupBrowser, teardownBrowser, waitForTabCount, waitForClass } = require('./setup');
 
 const TAB_COUNT = 30;
-const KEYPRESS_INTERVAL_MS = 50;
 
 describe('Scroll Position Stability on Tab Click', () => {
     let browser;
@@ -126,10 +125,22 @@ describe('Scroll Position Stability on Tab Click', () => {
         // Tab key moves focus between focusable elements, triggering focusin on each.
         // The focusin handler calls scrollIntoView when lastInputWasKeyboard is true.
         // (ArrowDown does NOT move focus between div[tabIndex=0] elements.)
+        // Each press is awaited (round-trips to the browser), so focus advances in order
+        // without a fixed per-keypress delay.
         for (let i = 0; i < 15; i++) {
             await page.keyboard.press('Tab');
-            await new Promise(r => setTimeout(r, KEYPRESS_INTERVAL_MS));
         }
+
+        // Wait for the keyboard-driven auto-scroll to settle into its end-state instead
+        // of reading immediately: either the page scrolled, or the focused tab is now
+        // within the viewport. Swallow timeout so the assertion below reports the failure.
+        await page.waitForFunction(() => {
+            const focused = document.activeElement;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const rect = focused ? focused.getBoundingClientRect() : null;
+            const focusedIsVisible = !!rect && rect.top >= 0 && rect.top < 800;
+            return scrollTop > 0 || focusedIsVisible;
+        }, { timeout: 5000 }).catch(() => { });
 
         // The focused element should now be well below the initial viewport.
         // Verify that scrollIntoView was called by checking either:

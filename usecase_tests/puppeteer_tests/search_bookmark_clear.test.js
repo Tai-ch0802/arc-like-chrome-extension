@@ -30,9 +30,10 @@ describe('Bookmark Search Clear', () => {
         });
         testBookmarkIds = [result.folderId, result.bm3Id];
 
-        // Expand bookmarks bar first (root folder is collapsed by default)
+        // Expand bookmarks bar first (root folder is collapsed by default).
+        // expandBookmarksBar already waits for the expanded state; the folder
+        // selector below gates on the children rendering, so no fixed delay needed.
         await expandBookmarksBar(page);
-        await new Promise(r => setTimeout(r, 500));
 
         // Wait for test folder and expand it
         await page.waitForSelector(`.bookmark-folder[data-bookmark-id="${result.folderId}"]`, { timeout: 10000 });
@@ -69,9 +70,12 @@ describe('Bookmark Search Clear', () => {
         );
         expect(initialCount).toBeGreaterThanOrEqual(3);
 
-        // Search for a specific bookmark
+        // Search for a specific bookmark; wait for the list to settle to exactly 1 match
         await page.type('#search-box', 'ClearTestAlpha');
-        await new Promise(r => setTimeout(r, 500));
+        await page.waitForFunction(
+            () => document.querySelectorAll('#bookmark-list .bookmark-item').length === 1,
+            { timeout: 5000 }
+        );
 
         // Verify filtered state
         const filteredCount = await page.evaluate(() =>
@@ -79,9 +83,16 @@ describe('Bookmark Search Clear', () => {
         );
         expect(filteredCount).toBe(1);
 
-        // Click clear button
+        // Click clear button; wait until the full list is restored with the search box
+        // emptied and no stale highlights — deterministic regardless of debounce timing.
         await page.click('#clear-search-btn');
-        await new Promise(r => setTimeout(r, 1500));
+        await page.waitForFunction(
+            (min) => document.querySelectorAll('#bookmark-list .bookmark-item').length >= min
+                && document.getElementById('search-box').value === ''
+                && document.querySelectorAll('#bookmark-list mark').length === 0,
+            { timeout: 5000 },
+            initialCount
+        );
 
         // Verify bookmarks are restored
         const restoredCount = await page.evaluate(() =>
@@ -113,7 +124,9 @@ describe('Bookmark Search Clear', () => {
             searchBox.dispatchEvent(new Event('input', { bubbles: true }));
         });
 
-        // Immediately clear (simulating fast user who types then clears within debounce window)
+        // Immediately clear (simulating fast user who types then clears within debounce
+        // window). The 50ms gap is the intentional race STIMULUS (it reproduces the
+        // type-then-clear timing), not an assertion gate — assertions wait on state below.
         await new Promise(r => setTimeout(r, 50));
         await page.evaluate(() => {
             const searchBox = document.getElementById('search-box');
@@ -121,8 +134,15 @@ describe('Bookmark Search Clear', () => {
             searchBox.dispatchEvent(new Event('input', { bubbles: true }));
         });
 
-        // Wait for all async operations to settle
-        await new Promise(r => setTimeout(r, 2000));
+        // Wait for the post-clear state to settle deterministically: full list restored,
+        // search box empty, and no stale highlights — NOT stuck in the filtered state.
+        await page.waitForFunction(
+            (min) => document.querySelectorAll('#bookmark-list .bookmark-item').length >= min
+                && document.getElementById('search-box').value === ''
+                && document.querySelectorAll('#bookmark-list mark').length === 0,
+            { timeout: 5000 },
+            initialCount
+        );
 
         // The full bookmark list should be restored, NOT stuck in filtered state
         const finalCount = await page.evaluate(() =>
@@ -155,11 +175,17 @@ describe('Bookmark Search Clear', () => {
                 searchBox.value = q;
                 searchBox.dispatchEvent(new Event('input', { bubbles: true }));
             }, query);
-            await new Promise(r => setTimeout(r, 30)); // tiny gap between each
+            await new Promise(r => setTimeout(r, 30)); // tiny stimulus gap between each rapid keystroke
         }
 
-        // Wait for all async operations to settle
-        await new Promise(r => setTimeout(r, 2000));
+        // Wait until the rapid-fire concurrent searches settle back to the cleared
+        // full-list state (last query is ''), deterministically rather than on a timer.
+        await page.waitForFunction(
+            (min) => document.querySelectorAll('#bookmark-list .bookmark-item').length >= min
+                && document.getElementById('search-box').value === '',
+            { timeout: 5000 },
+            initialCount
+        );
 
         // Bookmarks should be fully restored
         const finalCount = await page.evaluate(() =>
@@ -202,11 +228,19 @@ describe('Bookmark Search Clear', () => {
         // clear so this lazy-loads fresh, mark-free rows. Without the fix, the stale
         // <mark> rows resurface here.
         await page.click(folderSel);
+        // Wait for the folder to expand AND its children to lazy-render before asserting,
+        // so "no marks" reflects freshly rendered rows rather than a not-yet-populated folder.
+        // ClearTestBeta lives only inside this folder, so it gates on the folder's own children
+        // (ClearTestGamma sits at the root and would otherwise match prematurely).
         await page.waitForFunction(
-            (sel) => { const f = document.querySelector(sel); return f && f.getAttribute('aria-expanded') === 'true'; },
+            (sel) => {
+                const f = document.querySelector(sel);
+                if (!f || f.getAttribute('aria-expanded') !== 'true') return false;
+                return [...document.querySelectorAll('#bookmark-list .bookmark-item')]
+                    .some(el => el.textContent.includes('ClearTestBeta'));
+            },
             { timeout: 5000 }, folderSel
         );
-        await new Promise(r => setTimeout(r, 300));
         const highlights = await page.evaluate(() => document.querySelectorAll('#bookmark-list mark').length);
         expect(highlights).toBe(0);
     });
