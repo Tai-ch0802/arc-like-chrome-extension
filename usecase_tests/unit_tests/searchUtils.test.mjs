@@ -48,6 +48,41 @@ describe('searchManager.matchesAnyKeyword', () => {
     });
 });
 
+describe('searchManager.matchesAnyKeyword — literal (non-regex) matching', () => {
+    // Regression guard: matchesAnyKeyword uses String.includes(), so regex/HTML special
+    // characters must be matched LITERALLY, never compiled as a pattern. This mirrors the
+    // search_edge_cases.test.js E2E intent but as a fast, deterministic unit test.
+    // (The E2E still owns what it genuinely needs a browser for: XSS-in-DOM safety and
+    //  the no-results UI state.)
+    it('matches HTML-angle-bracket substrings literally', () => {
+        expect(matchesAnyKeyword('Special & Characters <test> " \' / \\', ['<test>'])).toBe(true);
+        expect(matchesAnyKeyword('Special & Characters <test>', ['<nope>'])).toBe(false);
+    });
+
+    it('treats regex metacharacters as literal text, not patterns', () => {
+        const title = 'Regex (Special) [Chars] {Block} * + ? . ^ $ |';
+        expect(matchesAnyKeyword(title, ['(Special)'])).toBe(true);
+        expect(matchesAnyKeyword(title, ['[Chars]'])).toBe(true);
+        expect(matchesAnyKeyword(title, ['{Block}'])).toBe(true);
+        // '.+' as a regex would match any non-empty string; as a literal it must not.
+        expect(matchesAnyKeyword('plain title with no operators', ['.+'])).toBe(false);
+        // '.' literally appears between '?' and '^' in the title above.
+        expect(matchesAnyKeyword(title, ['? . ^'])).toBe(true);
+    });
+
+    it('handles an XSS-looking keyword as an inert literal string (no throw)', () => {
+        const xss = '<script>alert("XSS")</script>';
+        expect(matchesAnyKeyword(`title ${xss} here`, [xss])).toBe(true);
+        expect(matchesAnyKeyword('a perfectly normal title', [xss])).toBe(false);
+    });
+
+    it('does not crash on a very long keyword', () => {
+        const long = 'a'.repeat(500);
+        expect(matchesAnyKeyword('short', [long])).toBe(false);
+        expect(matchesAnyKeyword(long, [long])).toBe(true);
+    });
+});
+
 describe('searchManager.extractDomain', () => {
     it('returns empty string for falsy input', () => {
         expect(extractDomain('')).toBe('');

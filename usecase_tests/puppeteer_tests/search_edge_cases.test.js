@@ -40,116 +40,13 @@ describe('Search Edge Cases', () => {
         await clearSearch();
     });
 
-    test('should find tabs with special characters', async () => {
-        let createdTabId;
-
-        try {
-            // Create a tab with special characters in the title using a data URL
-            const title = 'Special & Characters <test> " \' / \\';
-            const url = `data:text/html,<html><head><title>${title}</title></head><body></body></html>`;
-
-            createdTabId = await page.evaluate((u) => {
-                return new Promise(resolve => {
-                    chrome.tabs.create({ url: u, active: false }, (tab) => resolve(tab.id));
-                });
-            }, url);
-
-            // Wait for tab to appear in list
-            await page.waitForFunction(
-                (id) => document.querySelector(`.tab-item[data-tab-id="${id}"]`),
-                { timeout: 10000 },
-                createdTabId
-            );
-
-            // Search for a unique part of the title
-            await page.type('#search-box', '<test>');
-            await page.waitForFunction(
-                (id) => {
-                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
-                    return el && !el.classList.contains('hidden');
-                },
-                { timeout: 15000 },
-                createdTabId
-            );
-
-            const found = await page.evaluate((id) => {
-                const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
-                return el && !el.classList.contains('hidden');
-            }, createdTabId);
-            expect(found).toBe(true);
-
-        } finally {
-            if (createdTabId) {
-                try {
-                    await page.evaluate((id) => chrome.tabs.remove(id), createdTabId);
-                } catch (e) { }
-            }
-        }
-    }, 30000);
-
-    test('should find tabs with regex special characters', async () => {
-        let createdTabId;
-
-        try {
-            const title = 'Regex (Special) [Chars] {Block} * + ? . ^ $ |';
-            const url = `data:text/html,<html><head><title>${title}</title></head><body></body></html>`;
-
-            createdTabId = await page.evaluate((u) => {
-                return new Promise(resolve => {
-                    chrome.tabs.create({ url: u, active: false }, (tab) => resolve(tab.id));
-                });
-            }, url);
-
-            await page.waitForFunction(
-                (id) => document.querySelector(`.tab-item[data-tab-id="${id}"]`),
-                { timeout: 10000 },
-                createdTabId
-            );
-
-            // Search for "(Special)"
-            await page.type('#search-box', '(Special)');
-            await page.waitForFunction(
-                (id) => {
-                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
-                    return el && !el.classList.contains('hidden');
-                },
-                { timeout: 15000 },
-                createdTabId
-            );
-
-            const found = await page.evaluate((id) => {
-                const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
-                return el && !el.classList.contains('hidden');
-            }, createdTabId);
-            expect(found).toBe(true);
-
-            // Clear and search for "[Chars]"
-            await clearSearch();
-            await page.type('#search-box', '[Chars]');
-            await page.waitForFunction(
-                (id) => {
-                    const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
-                    return el && !el.classList.contains('hidden');
-                },
-                { timeout: 15000 },
-                createdTabId
-            );
-
-            const found2 = await page.evaluate((id) => {
-                const el = document.querySelector(`.tab-item[data-tab-id="${id}"]`);
-                return el && !el.classList.contains('hidden');
-            }, createdTabId);
-            expect(found2).toBe(true);
-
-        } finally {
-            if (createdTabId) {
-                try {
-                    await page.evaluate((id) => chrome.tabs.remove(id), createdTabId);
-                } catch (e) { }
-            }
-        }
-    }, 30000);
-
+    // NOTE: literal substring matching of special / regex metacharacters (e.g. "<test>",
+    // "(Special)", "[Chars]") is now covered deterministically by unit tests in
+    // unit_tests/searchUtils.test.mjs ("literal (non-regex) matching"). Those two former
+    // E2E cases only re-proved matchesAnyKeyword through a browser round-trip, so they were
+    // removed here. The cases below remain E2E because they genuinely need the browser:
+    // XSS-in-DOM safety, the no-results UI state, robustness under pathological input, and
+    // the live debounce+render race.
     test('should handle XSS attempts safely', async () => {
         let dialogShown = false;
         const dialogHandler = async dialog => {
