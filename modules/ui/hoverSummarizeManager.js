@@ -157,8 +157,9 @@ async function triggerSummarize(tabId, anchorEl) {
     const signal = currentAbortController.signal;
 
     try {
-        // Extract page content (FR-2.01)
-        const pageText = await extractPageContent(tabId);
+        // Extract page content (FR-2.01) — budget depends on the active provider
+        const maxLen = await aiManager.getInputCharBudget();
+        const pageText = await extractPageContent(tabId, { maxLen });
         if (signal.aborted) return;
 
         // If extraction failed, use fallback
@@ -169,34 +170,21 @@ async function triggerSummarize(tabId, anchorEl) {
             return;
         }
 
-        // Get or create Summarizer session (Lazy strategy)
-        const session = await aiManager.getOrCreateSummarizerSession();
+        // Summarize via the active provider. Builtin streams delta chunks for
+        // progressive rendering; cloud providers deliver one final chunk.
+        // @see https://developer.chrome.com/docs/ai/render-llm-responses
+        const fullSummary = await aiManager.summarizePageStreaming(pageText, domain, {
+            onChunk: (chunk) => tooltip.updateStreamChunk(chunk),
+            signal,
+        });
         if (signal.aborted) return;
 
-        if (!session) {
-            const fallback = buildFallbackText(tab);
-            tooltip.showSummary(fallback, domain, anchorEl);
-            return;
-        }
-
-        // Use streaming for progressive display
-        const stream = session.summarizeStreaming(pageText, {
-            context: `Web page from ${domain}. Provide a concise one-sentence summary.`,
-        });
-
-        let fullSummary = '';
-        for await (const chunk of stream) {
-            if (signal.aborted) return;
-            fullSummary += chunk; // Accumulate delta chunks for caching
-            // Best Practice: pass delta chunk directly for append()-based rendering
-            // @see https://developer.chrome.com/docs/ai/render-llm-responses
-            tooltip.updateStreamChunk(chunk);
-        }
-
-        // Stream complete — show final summary with domain meta + cache
-        if (fullSummary && !signal.aborted) {
+        if (fullSummary) {
             setCachedSummary(tabId, tab.url, fullSummary);
             tooltip.showSummary(fullSummary, domain, anchorEl);
+        } else {
+            const fallback = buildFallbackText(tab);
+            tooltip.showSummary(fallback, domain, anchorEl);
         }
 
     } catch (err) {

@@ -47,7 +47,7 @@ async function handleEntryAdded(entry) {
         const tab = tabs.find(t => typeof t.id === 'number');
         if (!tab) return;
 
-        const text = await extractPageContent(tab.id);
+        const text = await extractPageContent(tab.id, { maxLen: await aiManager.getInputCharBudget() });
         if (!text) return;
 
         const domain = safeHost(entry.url);
