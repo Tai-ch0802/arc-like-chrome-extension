@@ -1,0 +1,61 @@
+/**
+ * Shared HTTP helpers for cloud AI provider clients.
+ */
+
+export class HttpError extends Error {
+    /**
+     * @param {number} status
+     * @param {string} message
+     */
+    constructor(status, message) {
+        super(message);
+        this.name = 'HttpError';
+        this.status = status;
+    }
+}
+
+/**
+ * fetch() a JSON endpoint; throws HttpError on non-2xx (with a truncated
+ * response-body excerpt for diagnosis). Network/CORS failures propagate as
+ * the original TypeError so callers can distinguish them.
+ * @param {string} url
+ * @param {RequestInit} [init]
+ * @returns {Promise<any>}
+ */
+export async function fetchJson(url, init) {
+    const res = await fetch(url, init);
+    if (!res.ok) {
+        let detail = '';
+        try {
+            detail = (await res.text()).slice(0, 200);
+        } catch { /* body unreadable — status alone will do */ }
+        throw new HttpError(res.status, `HTTP ${res.status}${detail ? `: ${detail}` : ''}`);
+    }
+    return res.json();
+}
+
+/**
+ * Maps a caught error to a testConnection result.
+ * `code: 'network'` marks fetch-level failures (unreachable host, CORS
+ * rejection) so the UI can show provider-specific hints (e.g. Ollama's
+ * OLLAMA_ORIGINS requirement).
+ * @param {unknown} err
+ * @returns {{ok: false, code: 'network'|'http', message: string}}
+ */
+export function toTestFailure(err) {
+    const isNetwork = err instanceof TypeError;
+    return {
+        ok: false,
+        code: isNetwork ? 'network' : 'http',
+        message: (err && err.message) || String(err),
+    };
+}
+
+/**
+ * Normalizes a user-supplied base URL: trims whitespace and trailing slashes.
+ * @param {string} baseUrl
+ * @returns {string}
+ */
+export function normalizeBaseUrl(baseUrl) {
+    return (baseUrl || '').trim().replace(/\/+$/, '');
+}
