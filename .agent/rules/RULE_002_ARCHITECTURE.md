@@ -1,39 +1,45 @@
 ---
-description: 專案架構與關鍵檔案說明
+description: 專案架構不變式與模組地圖
 ---
 
 # 專案架構
 
-## 模組職責對照表
+> **檔案級職責說明的單一事實來源是 `GEMINI.md` 的 `key_files` 區塊**（歷史約定，持續維護）。
+> 本 RULE 只保留「不會隨單一檔案增減而改變」的架構不變式與目錄級地圖，避免與 key_files 重複而 drift。
 
-| 檔案路徑 | 角色 | 職責說明 |
-|---------|------|---------|
-| `sidepanel.js` | **[總指揮]** | 應用程式進入點與總協調者。負責初始化各模組、串連瀏覽器事件監聽（特別是同步書籤與分頁關聯狀態的生命週期事件）。 |
-| `modules/uiManager.js` | **[UI Facade]** | UI 模組的入口點。作為 Facade 模式，重新匯出 `modules/ui/` 下的所有子模組功能，保持對外接口一致。 |
-| `modules/apiManager.js` | **[通訊]** | Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。 |
-| `modules/stateManager.js` | **[狀態]** | UI 狀態管理員。集中管理如『書籤資料夾是否展開』等非同步 UI 狀態，以及『書籤-分頁』的持久化關聯狀態。 |
-| `modules/modalManager.js` | **[互動]** | 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。 |
-| `modules/dragDropManager.js` | **[功能]** | 拖曳排序模組。封裝 SortableJS 的所有邏輯，處理分頁與書籤的拖曳事件，並在拖曳分頁成為書籤時建立關聯。 |
-| `modules/searchManager.js` | **[功能]** | 搜尋過濾模組。負責處理搜尋框的輸入與列表的即時過濾邏輯。 |
+## 執行 Context（Manifest V3）
 
-## UI 子模組
+| 進入點 | Context | 說明 |
+|---|---|---|
+| `background.js` | Service Worker | 快捷鍵、sidePanel 行為、RSS alarms、workspace 生命週期、Drive sync 引擎。**隨時可能被終止**，不可依賴 in-memory 狀態存活。 |
+| `sidepanel.js` | Side Panel 頁面 | 應用主入口：初始化各模組、串連瀏覽器事件。 |
+| `options.js` | 獨立設定頁（open_in_tab） | 設定 UI；跨 context 變更靠 `chrome.storage.onChanged` + `settingsBridge` 傳播，不 dispatch CustomEvent。 |
+| `spotlight.js` | 獨立 popup 視窗 | Spotlight 搜尋（Cmd+Shift+K）；經 `panelBridge` 以 `chrome.storage.session` 旗標與 sidepanel 溝通。 |
+| `offscreen.js` | Offscreen Document | 需要 DOM 的背景工作。 |
 
-| 檔案路徑 | 職責說明 |
-|---------|---------|
-| `modules/ui/elements.js` | DOM 元素集中管理。負責匯出所有主要 UI 容器與控制元件的 DOM 引用。 |
-| `modules/ui/themeManager.js` | 主題管理。負責主題切換邏輯、設定面板的渲染與事件綁定。 |
-| `modules/ui/searchUI.js` | 搜尋介面。負責搜尋結果計數顯示與無結果提示的 UI 更新。 |
-| `modules/ui/tabRenderer.js` | 分頁渲染。負責分頁與分頁群組的 DOM 結構生成與事件綁定。 |
-| `modules/ui/bookmarkRenderer.js` | 書籤渲染。負責書籤列表、資料夾結構以及連結分頁面板的渲染邏輯。 |
+## 架構不變式（改 code 前先確認沒有違反）
 
-## 工具模組
+1. **Chrome API 一律經 `modules/apiManager.js` 封裝**。UI/業務模組不得直接呼叫 `chrome.*`（Service Worker 專屬邏輯除外），以利測試與集中錯誤處理。
+2. **DOM 引用集中於 `modules/ui/elements.js`**；DOM 生成集中在 `modules/ui/*Renderer.js`。業務邏輯模組（stateManager 等）不碰 DOM。
+3. **`modules/uiManager.js` 是 UI Facade**：對外重新匯出 `modules/ui/` 子模組，外部只 import facade。
+4. **SVG 圖示集中於 `modules/icons.js`**（Material Symbols 系統），嚴禁散落硬編碼。
+5. **可測試性優先**：純函式抽到 `modules/utils/` 或模組內獨立 export（不 import elements.js），單元測試才能在 Node/jsdom 跑。同步引擎（`modules/sync/`）採依賴注入，決策核心是純函式。
+6. **跨 context 溝通有既定協定**：storage.onChanged（settingsBridge）、chrome.storage.session 旗標（panelBridge）、runtime messaging（Drive sync 指令）。新增跨 context 協定屬 **SDD T2**，先寫 spec。
+7. **`chrome.storage` schema 變更屬 SDD T2**：sync 有 8KB/key 配額；workspace 採 per-id keys（`wsMeta_<id>`/`wsSnap_<id>`）。
+8. **新增/改名檔案必須同步 `Makefile`**（`DEV_SRC_FILES` / prod esbuild 清單），否則 release zip 會漏包。
 
-| 檔案路徑 | 職責說明 |
-|---------|---------|
-| `modules/utils/virtualScrollUtils.js` | 虛擬滾動工具。負責將書籤樹扁平化為可視列表，支援搜尋過濾並保留階層結構。 |
+## 目錄級地圖
 
-## 設定檔
-
-| 檔案路徑 | 職責說明 |
-|---------|---------|
-| `manifest.json` | 擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。 |
+| 目錄 | 內容 |
+|---|---|
+| `modules/` 根層 | 單檔管理器：apiManager / stateManager / modalManager / dragDropManager / searchManager / keyboardManager / aiManager / rssManager / readingListManager / icons / uiManager |
+| `modules/ui/` | 渲染與 UI 元件（tabRenderer、bookmarkRenderer、settingManager、settingsBridge、customThemeManager、backgroundImageManager、aiGrouperUI、aiCleanupUI、hoverSummarize*、contextMenu*、driveSyncBadge…） |
+| `modules/ui/tab/` | 分頁事件監聽與 Split View 渲染 |
+| `modules/commandPalette/` | Spotlight 資料層：dataProvider / actions / nlSearch / panelBridge / searchContext |
+| `modules/spotlight/` | Spotlight 彈窗控制器 |
+| `modules/workspace/` | workspaceManager（CRUD+儲存）/ workspaceLifecycle（SW 常駐快照與重綁）/ workspaceUI |
+| `modules/bookmark/` | Bookmark Tools：tagManager / dedupe / deadLinkChecker / tagPicker / bookmarkUtils / bookmarkToolsUI |
+| `modules/readingList/` | 閱讀清單摘要 summaryStore / summaryRecorder |
+| `modules/sync/` | Google Drive 同步：syncProvider 介面 / driveAuth / googleDriveProvider / syncLogic（純函式）/ syncEngine（DI 編排） |
+| `modules/utils/` | 純函式工具：colorUtils / imageUtils / textUtils / searchUtils / domUtils / functionUtils / iconUtils / pageContentExtractor |
+| `usecase_tests/` | `unit_tests/`（.mjs, jsdom）與 `puppeteer_tests/`（E2E, `happy_path_*` 前綴 = CI 必跑） |

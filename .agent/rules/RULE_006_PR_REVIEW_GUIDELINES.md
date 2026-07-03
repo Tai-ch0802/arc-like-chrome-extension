@@ -8,10 +8,11 @@ description: PR Review 標準作業程序
 
 ## 1. 工具使用
 
-必須使用 GitHub CLI (`gh`) 進行 Review 提交。
+依執行環境選擇提交管道（結果等價即可）：
 
-- **指令**: `gh pr review <PR_NUMBER> --comment --body-file <COMMENT_FILE>`
-- **Action**: 一律使用 `--comment` (不使用 Approve 或 Request Changes，除非使用者特別指定)。
+- **本機（有 `gh` CLI）**: `gh pr review <PR_NUMBER> --comment --body-file <COMMENT_FILE>`
+- **無 `gh` 的環境**（如 Claude Code on the web）: 使用 GitHub MCP 工具（`pull_request_review_write` 等）提交。
+- **Action**: 一律使用 `--comment`（不使用 Approve 或 Request Changes，除非使用者特別指定）。
 
 ## 2. 語言規範
 
@@ -20,12 +21,14 @@ description: PR Review 標準作業程序
 
 ## 3. 簽名檔 (Signature)
 
-所有 Comment 必須在末尾加上以下簽名：
+所有 Comment 必須在末尾加上簽名，標明是**哪一個** agent 產出的（方便日後追溯是哪套工具/模型給的意見）：
 
 ```
 ---
-created by antigravity agent
+created by <tool-name> agent
 ```
+
+`<tool-name>` 範例：`claude-code`、`gemini-cli`、`antigravity`、`jules`。
 
 ## 4. 檢查重點
 

@@ -18,23 +18,19 @@ This is a Chrome Extension (Manifest V3) providing an Arc-browser-style sidebar 
 
 ## Spec-Driven Development (SDD) Compliance
 
-This project follows **Spec-Driven Development**. All features and fixes should have corresponding specification documents before implementation.
+This project follows **tiered Spec-Driven Development** (spec weight proportional to risk). Source of truth for the tiering rules: `.agent/skills/sdd/SKILL.md`.
+
+| Tier | Applies to | Artifact |
+|---|---|---|
+| **T0** | typo / copy / comments / trivial style / dependency bumps / obvious one-line fixes | No spec (background explained in commit body) |
+| **T1** (default) | Regular bug fixes, small–medium features, local refactors | Single-file `SPEC.md`, reviewed together with the PR |
+| **T2** | `chrome.storage` schema, manifest permissions, cross-context protocols, data-loss-risk logic, large features/refactors | `PRD_spec.md` + `SA_spec.md`, approved **before** implementation |
 
 ### Spec Location
 
-Specs are stored in `/docs/specs/` with the following structure:
-
-```
-/docs/specs/
-  ├── feature/
-  │    └── {ID_PREFIX}_{desc}/
-  │         ├── PRD_spec.md    # Product Requirements
-  │         └── SA_spec.md     # System Analysis
-  └── fix/
-       └── {ID_PREFIX}_{desc}/
-            ├── PRD_spec.md
-            └── SA_spec.md
-```
+Specs are stored in `/docs/specs/{feature|fix}/{ID_PREFIX}_{desc}/`:
+- T1 → `SPEC.md` (single file)
+- T2 → `PRD_spec.md` + `SA_spec.md`
 
 **ID_PREFIX types:**
 - `ISSUE-{num}`: Corresponds to GitHub Issue
@@ -45,18 +41,18 @@ Specs are stored in `/docs/specs/` with the following structure:
 
 When a PR **includes changes to `docs/specs/**`**, verify:
 
-1. **Requirement Traceability**: Check if `SA_spec.md` contains a Traceability Matrix that maps:
+1. **T1 (`SPEC.md`)**: Contains root-cause/background, chosen approach, impact map, test impact, and verifiable acceptance criteria — and matches the actual diff.
+
+2. **T2 Requirement Traceability**: Check if `SA_spec.md` contains a Traceability Matrix that maps:
    - `Req ID` → `PRD Section` → `SA Section` → `Implementation File`
 
-2. **Implementation Files Match**: Verify that code files modified in the PR are listed in the SA's Traceability Matrix.
+3. **T2 Implementation Files Match**: Verify that code files modified in the PR are listed in the SA's Traceability Matrix; new files should be marked as `[NEW]`.
 
-3. **New Files Documented**: If new files are created, check if they are marked as `[NEW]` in the SA spec.
-
-4. **Acceptance Criteria Coverage**: Review if PRD's Acceptance Criteria (Gherkin format) are addressed by the implementation.
+4. **T2 Acceptance Criteria Coverage**: Review if PRD's Acceptance Criteria (Gherkin format) are addressed by the implementation.
 
 ### Skip Condition
 
-> **If the PR does NOT include any changes to files under `docs/specs/`**, skip all SDD-related checks above and proceed with standard code review only.
+> **If the PR does NOT include any changes to files under `docs/specs/`**, treat it as a T0 change: skip the SDD checks above and proceed with standard code review only (the commit body should still explain the background).
 
 ---
 

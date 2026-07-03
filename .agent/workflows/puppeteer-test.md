@@ -1,171 +1,57 @@
 ---
-description: "How to write and run Puppeteer-based E2E tests for Chrome Extensions."
+description: "How to write and run Puppeteer-based E2E tests for this Chrome extension (usecase_tests/)."
 ---
 
 # Puppeteer Test Workflow
 
-此 Workflow 用於指導撰寫與執行 Chrome 擴充功能的 Puppeteer 端對端測試。
+此 Workflow 是撰寫與執行本專案 E2E 測試的**執行入口**。
+測試模式、範例與反模式以 `.agent/skills/puppeteer-test/SKILL.md` 為單一事實來源；
+CI 穩定性方針（禁止 setTimeout 固定等待等 8 條）見 `.agent/workflows/review-pr.md`。
 
-## Prerequisites
+> ⚠️ 測試基礎建設**已存在**：不要新建 `tests/` 目錄、不要改寫 `jest.config.js` 或
+> `package.json` scripts。所有 E2E 測試放 `usecase_tests/puppeteer_tests/`、
+> 單元測試放 `usecase_tests/unit_tests/`（.mjs）。
 
-確認已讀取 `.agent/skills/puppeteer-test/SKILL.md` 以了解完整的測試模式與範例。
+## 1. 認識既有結構
 
-## 1. Environment Setup
-
+// turbo
 ```bash
-# 安裝依賴
-npm install puppeteer jest @jest/globals --save-dev
+ls usecase_tests/puppeteer_tests/ | head -20
+```
+
+- 共用 helper：`usecase_tests/puppeteer_tests/setup.js` 的 `setupBrowser()` / `teardownBrowser()`
+  —— 會載入擴充功能、解析 extensionId、開好 `sidepanel.html`。**禁止自行 `puppeteer.launch`**。
+- 檔名規則：`happy_path_*.test.js` = CI 必跑的核心動線；無前綴 = edge case（CI 不跑）。
+
+## 2. 撰寫測試
+
+1. 讀 `.agent/skills/puppeteer-test/SKILL.md` 取用範例骨架。
+2. 從 `setup.js` import helper，沿用既有測試檔的結構（`beforeAll` 共用頁面）。
+3. 等待一律用 `waitForSelector` / `waitForFunction` 條件式等待，清理放 `afterEach`。
+
+## 3. 執行
+
+// turbo
+```bash
+# 單一測試檔（開發時優先，最快回饋）
+npx jest usecase_tests/puppeteer_tests/<test-file>.test.js
 ```
 
 // turbo
 ```bash
-# 驗證安裝
-npx puppeteer --version
+# CI 等價快驗（僅 happy_path_*，--bail）
+npm run test:ci
 ```
-
-## 2. Create Test Structure
 
 ```bash
-# 建立測試目錄
-mkdir -p tests/e2e tests/unit
+npm test           # 全部 E2E
+npm run test:unit  # 單元測試
+npm run test:full  # 清快取後全跑（懷疑快取汙染時）
 ```
 
-建立共用設定檔：
+## 4. Debug
 
-```javascript
-// tests/e2e/setup.js
-const puppeteer = require('puppeteer');
-const path = require('path');
-
-const EXTENSION_PATH = path.join(__dirname, '../..');
-
-async function launchBrowserWithExtension() {
-  return await puppeteer.launch({
-    headless: false,
-    pipe: true,
-    enableExtensions: [EXTENSION_PATH],
-  });
-}
-
-async function getServiceWorker(browser) {
-  const workerTarget = await browser.waitForTarget(
-    target => target.type() === 'service_worker'
-  );
-  return await workerTarget.worker();
-}
-
-module.exports = { launchBrowserWithExtension, getServiceWorker, EXTENSION_PATH };
-```
-
-## 3. Write Test Cases
-
-1. **識別測試場景**：
-   - 側邊欄 UI 渲染
-   - 分頁操作 (開啟、關閉、切換)
-   - 書籤功能 (新增、刪除、拖曳)
-   - Service Worker 終止後恢復
-
-2. **撰寫測試檔案**：
-
-```javascript
-// tests/e2e/sidepanel.test.js
-const { launchBrowserWithExtension, getServiceWorker } = require('./setup');
-
-let browser, worker;
-
-beforeEach(async () => {
-  browser = await launchBrowserWithExtension();
-  worker = await getServiceWorker(browser);
-});
-
-afterEach(async () => {
-  await browser.close();
-});
-
-test('sidepanel loads correctly', async () => {
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  
-  // 驗證擴充功能正常運作
-  expect(worker).toBeDefined();
-});
-```
-
-## 4. Configure Jest
-
-```javascript
-// jest.config.js
-module.exports = {
-  testTimeout: 30000,
-  testMatch: ['**/tests/**/*.test.js'],
-  verbose: true,
-};
-```
-
-更新 `package.json`：
-
-```json
-{
-  "scripts": {
-    "test": "jest",
-    "test:e2e": "jest tests/e2e",
-    "test:unit": "jest tests/unit"
-  }
-}
-```
-
-## 5. Run Tests
-
-// turbo
-```bash
-# 執行所有測試
-npm test
-```
-
-// turbo
-```bash
-# 僅執行 E2E 測試
-npm run test:e2e
-```
-
-// turbo
-```bash
-# 執行特定測試檔案
-npx jest tests/e2e/sidepanel.test.js
-```
-
-## 6. CI Integration (Optional)
-
-在 `.github/workflows/test.yml` 中加入：
-
-```yaml
-name: E2E Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: npm ci
-      - run: npm run test:e2e
-        env:
-          PUPPETEER_HEADLESS: 'new'
-```
-
-## Debugging Tips
-
-1. **觀察瀏覽器行為**：設定 `headless: false` 查看實際執行
-2. **截圖除錯**：
-   ```javascript
-   await page.screenshot({ path: 'debug.png' });
-   ```
-3. **增加 timeout**：複雜操作可能需要較長等待時間
-4. **檢視 Console 錯誤**：
-   ```javascript
-   page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-   ```
+- 觀察瀏覽器：把 `setupBrowser()` 的 headless 暫時改 `false`（提交前改回）。
+- 截圖：`await page.screenshot({ path: 'debug.png' })`（記得刪除產物）。
+- 頁面 console：`page.on('console', msg => console.log('PAGE:', msg.text()))`。
+- Flaky 分辨：連跑 3 次；只在 CI 掛 → 對照 review-pr.md 的 CI 穩定性方針逐條檢查。

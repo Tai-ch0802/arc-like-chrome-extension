@@ -6,16 +6,22 @@ description: 建置、預覽與部署說明
 
 ## 建置說明
 
-本專案使用 `make` 進行建置與打包。
+本專案使用 `make` 進行建置與打包，**開發版與發布版是不同 target**：
 
 ```bash
-# 產生 arc-sidebar-v<版本號>.zip 檔案
-make
-# 或
-make package
+# 開發版：產生 arc-sidebar-v<版本號>-dev.zip（原始碼直接打包）
+make          # 等同 make package
+
+# 發布版：產生 arc-sidebar-v<版本號>.zip（esbuild bundle + minify，供 Chrome Web Store）
+make release
+
+# 清理建置產物
+make clean
 ```
 
-> **需求**: 需要安裝 `jq` (一個命令列 JSON 處理工具) 才能自動讀取版本號。
+> **需求**: 需要安裝 `jq` (命令列 JSON 處理工具) 才能自動讀取版本號；`make release` 另需 `npx esbuild`（npm devDependency）。
+
+> ⚠️ **新增或改名檔案時，務必同步更新 `Makefile`**（開發版的 `DEV_SRC_FILES`、發布版的 `PROD_STATIC_FILES` 或 esbuild 指令），否則檔案不會進到 zip——過去發生過漏打包事故。
 
 ## 預覽/測試說明
 

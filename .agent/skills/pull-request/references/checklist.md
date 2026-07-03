@@ -45,11 +45,11 @@
 ## 快速指令
 
 ```bash
-# 檢查 lint
-npm run lint
+# 檢查 lint（本專案無 npm lint script，使用 code-review skill 的檢查腳本）
+.agent/skills/code-review/scripts/lint-check.sh .
 
-# 執行測試
-npm test
+# 執行測試（單元 → happy-path E2E）
+npm run test:unit && npm run test:ci
 
 # 檢查 git status
 git status
