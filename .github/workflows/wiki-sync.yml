@@ -1,0 +1,50 @@
+# Sync docs/wiki/ (source of truth) to the GitHub Wiki.
+# 注意：GitHub 的 wiki git repo 要在 Wiki 至少有一頁後才存在；
+# 首次啟用步驟見 docs/wiki/README.md。
+name: Wiki Sync
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "docs/wiki/**" ]
+  workflow_dispatch:
+
+concurrency:
+  group: wiki-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Check out wiki
+        run: |
+          git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki-repo \
+            || { echo "::error::Wiki repo 不存在。請先到 repo 的 Wiki 分頁手動建立 Home 頁（見 docs/wiki/README.md），再重跑本 workflow。"; exit 1; }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync pages
+        run: |
+          rsync -av --delete \
+            --exclude '.git' \
+            --exclude 'README.md' \
+            docs/wiki/ wiki-repo/
+
+      - name: Commit and push
+        run: |
+          cd wiki-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Wiki already up to date."
+            exit 0
+          fi
+          git commit -m "docs: sync wiki from docs/wiki@${GITHUB_SHA::7}"
+          git push
