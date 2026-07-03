@@ -730,7 +730,7 @@ Reply strictly in JSON array format with exactly one object (no markdown, no ext
     "keyPoints": ["<key point 1>", "<key point 2>", "..."]
   }
 ]
-Provide 3 to 7 key points, each a single short sentence.
+Provide 3 to 5 key points, each a single short sentence.
 
 [Page]
 Title: ${title}
@@ -739,15 +739,29 @@ URL: ${cleanUrl}
 [Content]
 ${text}`;
 
-    const raw = await runChatUnified({ system: NL_SYSTEM_PROMPT, prompt, maxTokens: 1500 });
-    if (!raw) return null;
+    // Cloud output is nondeterministic — long articles occasionally yield a
+    // truncated or malformed JSON reply; a single retry usually recovers.
+    // Builtin Nano gets no retry (already slow, and deterministic-ish).
+    const { cloud } = await resolveActiveProvider();
+    const maxAttempts = cloud ? 2 : 1;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        // Generous output budget: TL;DR + key points in CJK locales can be
+        // token-heavy, and (for some Gemini models) thinking shares the budget.
+        const raw = await runChatUnified({ system: NL_SYSTEM_PROMPT, prompt, maxTokens: 3000 });
+        if (!raw) {
+            console.warn('[ai] generatePageDigest: chat call failed or provider unavailable');
+            return null;
+        }
 
-    const parsed = extractJsonArray(raw);
-    const digest = Array.isArray(parsed) ? parsed[0] : null;
-    if (!digest || typeof digest.tldr !== 'string' || !digest.tldr.trim()) return null;
-
-    const keyPoints = Array.isArray(digest.keyPoints)
-        ? digest.keyPoints.filter(p => typeof p === 'string' && p.trim()).map(p => p.trim()).slice(0, 7)
-        : [];
-    return { tldr: digest.tldr.trim(), keyPoints };
+        const parsed = extractJsonArray(raw);
+        const digest = Array.isArray(parsed) ? parsed[0] : null;
+        if (digest && typeof digest.tldr === 'string' && digest.tldr.trim()) {
+            const keyPoints = Array.isArray(digest.keyPoints)
+                ? digest.keyPoints.filter(p => typeof p === 'string' && p.trim()).map(p => p.trim()).slice(0, 5)
+                : [];
+            return { tldr: digest.tldr.trim(), keyPoints };
+        }
+        console.warn(`[ai] generatePageDigest: unparsable reply (attempt ${attempt}/${maxAttempts}):`, String(raw).slice(0, 120));
+    }
+    return null;
 }
