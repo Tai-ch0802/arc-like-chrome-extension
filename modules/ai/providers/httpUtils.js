@@ -63,3 +63,27 @@ export function toTestFailure(err) {
 export function normalizeBaseUrl(baseUrl) {
     return (baseUrl || '').trim().replace(/\/+$/, '');
 }
+
+/**
+ * True when a base URL uses cleartext http: toward a NON-local host —
+ * i.e. the API key would travel unencrypted over the network. Local hosts
+ * (localhost, 127.x, ::1, *.localhost) are exempt: that's Ollama's default.
+ * Unparsable URLs return false (other validation owns that case).
+ * @param {string} baseUrl
+ * @returns {boolean}
+ */
+export function isInsecureRemoteBaseUrl(baseUrl) {
+    let url;
+    try {
+        url = new URL((baseUrl || '').trim());
+    } catch {
+        return false;
+    }
+    if (url.protocol !== 'http:') return false;
+    const host = url.hostname.toLowerCase();
+    const isLocal = host === 'localhost'
+        || host === '[::1]'
+        || host.endsWith('.localhost')
+        || /^127(\.\d{1,3}){3}$/.test(host);
+    return !isLocal;
+}

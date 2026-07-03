@@ -736,7 +736,7 @@
     "message": "A limpeza IA falhou. Tente novamente mais tarde."
   },
   "aiCleanupFound": {
-    "message": "A IA sugere {count} aba(s) que você provavelmente pode fechar. Desmarque as que quiser manter."
+    "message": "A IA sugere {count} aba(s) que você provavelmente pode fechar. Marque as que deseja fechar."
   },
   "aiCleanupNeedsDownload": {
     "message": "O modelo IA ainda não foi baixado. Clique primeiro em Smart Group para iniciar o download."
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "Seu provedor de IA rejeitou a chave de API. Verifique Configurações → IA."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Este endereço usa http: sem criptografia — sua chave de API seria enviada em texto simples."
   }
 }

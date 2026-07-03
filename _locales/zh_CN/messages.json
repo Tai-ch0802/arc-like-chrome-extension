@@ -697,7 +697,7 @@
     "message": "你的标签页很整洁，没有需要清理的项目。"
   },
   "aiCleanupFound": {
-    "message": "AI 建议可关闭 {count} 个标签页，想保留的请取消勾选。"
+    "message": "AI 建议了 {count} 个可能可以关闭的标签页。请勾选您要关闭的标签页。"
   },
   "aiCleanupError": {
     "message": "AI 清理失败，请稍后再试。"
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "AI 提供商拒绝了您的 API 密钥，请检查“设置 → AI”。"
+  },
+  "aiProviderHttpWarning": {
+    "message": "此地址使用未加密的 http:，您的 API 密钥将以明文传输。"
   }
 }

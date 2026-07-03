@@ -736,7 +736,7 @@
     "message": "Cleanup AI gagal. Coba lagi nanti."
   },
   "aiCleanupFound": {
-    "message": "AI menyarankan {count} tab yang mungkin bisa Anda tutup. Hapus centang yang ingin Anda simpan."
+    "message": "AI menyarankan {count} tab yang mungkin bisa Anda tutup. Centang tab yang ingin ditutup."
   },
   "aiCleanupNeedsDownload": {
     "message": "Model AI belum diunduh. Klik Smart Group terlebih dahulu untuk memulai unduhan."
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "Penyedia AI Anda menolak kunci API. Periksa Pengaturan → AI."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Alamat ini menggunakan http: tanpa enkripsi — kunci API Anda akan dikirim sebagai teks biasa."
   }
 }

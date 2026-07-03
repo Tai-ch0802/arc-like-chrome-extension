@@ -697,7 +697,7 @@
     "message": "你的分頁很整潔，沒有需要清理的項目。"
   },
   "aiCleanupFound": {
-    "message": "AI 建議可關閉 {count} 個分頁，想保留的請取消勾選。"
+    "message": "AI 建議了 {count} 個可能可以關閉的分頁。請勾選你要關閉的分頁。"
   },
   "aiCleanupError": {
     "message": "AI 清理失敗，請稍後再試。"
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "AI 供應商拒絕了你的 API 金鑰，請至「設定 → AI」檢查。"
+  },
+  "aiProviderHttpWarning": {
+    "message": "此位址使用未加密的 http:，你的 API 金鑰將以明文傳輸。"
   }
 }

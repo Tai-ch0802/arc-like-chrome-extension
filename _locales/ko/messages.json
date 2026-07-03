@@ -736,7 +736,7 @@
     "message": "AI 정리 실패. 나중에 다시 시도하세요."
   },
   "aiCleanupFound": {
-    "message": "AI 가 닫을 수 있는 탭 {count} 개를 제안합니다. 유지하고 싶은 항목의 체크를 해제하세요."
+    "message": "AI가 닫아도 될 것 같은 탭 {count}개를 제안했습니다. 닫을 탭을 선택하세요."
   },
   "aiCleanupNeedsDownload": {
     "message": "AI 모델이 아직 다운로드되지 않았습니다. 먼저 Smart Group 을 클릭해서 다운로드를 시작하세요."
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "AI 제공자가 API 키를 거부했습니다. 설정 → AI를 확인하세요."
+  },
+  "aiProviderHttpWarning": {
+    "message": "이 주소는 암호화되지 않은 http:를 사용합니다. API 키가 평문으로 전송됩니다."
   }
 }

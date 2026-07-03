@@ -736,7 +736,7 @@
     "message": "AI 整理に失敗しました。後で再試行してください。"
   },
   "aiCleanupFound": {
-    "message": "AI は {count} 個のタブを閉じてよいと提案しています。残したいタブのチェックを外してください。"
+    "message": "AI が閉じられそうなタブを {count} 件提案しました。閉じたいタブにチェックを入れてください。"
   },
   "aiCleanupNeedsDownload": {
     "message": "AI モデルがまだダウンロードされていません。まず Smart Group をクリックしてダウンロードを開始してください。"
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "AI プロバイダーが API キーを拒否しました。設定 → AI を確認してください。"
+  },
+  "aiProviderHttpWarning": {
+    "message": "このアドレスは暗号化されていない http: を使用しています。API キーが平文で送信されます。"
   }
 }

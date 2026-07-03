@@ -700,7 +700,7 @@
     "message": "Your tabs look tidy — nothing to clean up."
   },
   "aiCleanupFound": {
-    "message": "AI suggests {count} tab(s) you can probably close. Uncheck any you want to keep."
+    "message": "AI suggests {count} tab(s) you can probably close. Check the ones you want to close."
   },
   "aiCleanupError": {
     "message": "AI cleanup failed. Try again later."
@@ -1255,5 +1255,8 @@
   },
   "aiProviderAuthError": {
     "message": "Your AI provider rejected the API key. Check Settings → AI."
+  },
+  "aiProviderHttpWarning": {
+    "message": "This address uses unencrypted http: — your API key would be sent in cleartext."
   }
 }

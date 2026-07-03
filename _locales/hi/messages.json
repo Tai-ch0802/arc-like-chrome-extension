@@ -736,7 +736,7 @@
     "message": "AI cleanup विफल। बाद में फिर कोशिश करें।"
   },
   "aiCleanupFound": {
-    "message": "AI {count} tab(s) बंद करने का सुझाव देता है। जिन्हें रखना है उनसे tick हटा दें।"
+    "message": "AI ने {count} टैब सुझाए हैं जिन्हें आप शायद बंद कर सकते हैं। जिन्हें बंद करना चाहते हैं उन्हें चुनें।"
   },
   "aiCleanupNeedsDownload": {
     "message": "AI model अभी download नहीं हुआ है। पहले Smart Group click करें download शुरू करने के लिए।"
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "आपके AI प्रदाता ने API कुंजी अस्वीकार कर दी। सेटिंग → AI जाँचें।"
+  },
+  "aiProviderHttpWarning": {
+    "message": "यह पता अनएन्क्रिप्टेड http: उपयोग करता है — आपकी API कुंजी सादे टेक्स्ट में भेजी जाएगी।"
   }
 }

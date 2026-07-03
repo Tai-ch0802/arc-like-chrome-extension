@@ -736,7 +736,7 @@
     "message": "Le nettoyage IA a échoué. Réessayez plus tard."
   },
   "aiCleanupFound": {
-    "message": "L'IA suggère {count} onglet(s) que vous pouvez fermer. Décochez ceux que vous voulez garder."
+    "message": "L'IA suggère {count} onglet(s) que vous pouvez probablement fermer. Cochez ceux que vous voulez fermer."
   },
   "aiCleanupNeedsDownload": {
     "message": "Le modèle IA n'est pas encore téléchargé. Cliquez d'abord sur Smart Group pour démarrer le téléchargement."
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "Votre fournisseur d'IA a refusé la clé API. Vérifiez Paramètres → IA."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Cette adresse utilise http: non chiffré — votre clé API serait envoyée en clair."
   }
 }

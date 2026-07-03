@@ -736,7 +736,7 @@
     "message": "Cleanup AI thất bại. Thử lại sau."
   },
   "aiCleanupFound": {
-    "message": "AI gợi ý {count} tab có thể đóng. Bỏ chọn những cái bạn muốn giữ."
+    "message": "AI gợi ý {count} thẻ bạn có thể đóng. Hãy đánh dấu những thẻ bạn muốn đóng."
   },
   "aiCleanupNeedsDownload": {
     "message": "Model AI chưa được tải. Nhấn Smart Group trước để bắt đầu tải."
@@ -1252,5 +1252,8 @@
   },
   "aiProviderAuthError": {
     "message": "Nhà cung cấp AI đã từ chối khóa API. Hãy kiểm tra Cài đặt → AI."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Địa chỉ này dùng http: không mã hóa — khóa API của bạn sẽ được gửi dưới dạng văn bản thuần."
   }
 }
