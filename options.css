@@ -29,3 +29,5 @@ body {
 .ai-provider-test-status { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-color-secondary, #6c7086); overflow-wrap: anywhere; }
 .ai-provider-test-status.ok { color: var(--success-color, #4caf50); }
 .ai-provider-test-status.fail { color: var(--danger-color, #f44336); }
+.ai-provider-http-warning { color: var(--danger-color, #f44336); padding: 6px 0; }
+.ai-provider-http-warning[hidden] { display: none; }

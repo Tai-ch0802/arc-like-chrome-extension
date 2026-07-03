@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Une barre latérale de style Arc qui va bien au-delà des onglets verticaux natifs de Chrome : onglets + signets + liste de lecture unifiés, **IA locale sans configuration** (nommage automatique des groupes, suggestions de nettoyage d'onglets, résumés au survol, recherche en langage naturel), **Workspaces** (hibernation et restauration de paquets d'onglets, synchronisation des métadonnées entre appareils), une **palette de commandes ⌘K**, et des **outils pour signets** (étiquettes, déduplication, liens morts) — 100% local, aucune clé API requise.
+Une barre latérale de style Arc qui va bien au-delà des onglets verticaux natifs de Chrome : onglets + signets + liste de lecture unifiés, **IA locale par défaut** (nommage automatique des groupes, suggestions de nettoyage d'onglets, résumés au survol, recherche en langage naturel — Gemini Nano intégré, ou apportez votre propre clé API pour Gemini API / Claude / compatible OpenAI / Ollama), **Workspaces** (hibernation et restauration de paquets d'onglets, synchronisation des métadonnées entre appareils), une **palette de commandes ⌘K**, et des **outils pour signets** (étiquettes, déduplication, liens morts) — sur l'appareil par défaut, aucune clé API requise.
 
 ## 🚀 Mise à jour v1.14.0 !
 [![Vidéo de démonstration](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -178,7 +178,7 @@ Pour les futurs tests automatisés, nous avons choisi **Puppeteer** comme cadre 
 
 ## 🔒 Confidentialité et FAQ
 
-Nous accordons une grande importance à votre vie privée. Cette extension fonctionne entièrement localement et ne collecte ni ne transmet vos données personnelles.
+Nous accordons une grande importance à votre vie privée. Cette extension fonctionne localement par défaut et ne collecte pas vos données personnelles. Si vous activez un fournisseur d'IA cloud avec votre propre clé API, les requêtes IA vont directement de votre navigateur vers ce fournisseur uniquement.
 
 Pour plus de détails, veuillez consulter notre [Politique de confidentialité](../../PRIVACY_POLICY.md).
 

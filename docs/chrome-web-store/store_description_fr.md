@@ -1,8 +1,8 @@
 # Onglets Verticaux et Favoris style Arc - Transformez Chrome en une Centrale de Productivité · Votre espace de travail de connaissance pour Chrome
 
-🔒 **100% local** · 🔑 **Aucune clé API** · 🤖 **Gemini Nano AI intégré**
+🔒 **Local par défaut** · 🔑 **Aucune clé API requise (la vôtre en option)** · 🤖 **Gemini Nano AI intégré**
 
-Les onglets verticaux natifs de Chrome (2025) ne font qu'afficher les onglets verticalement. **C'est un espace de travail de connaissance complet** : onglets + signets + liste de lecture unifiés, IA (nommage auto des groupes, nettoyage d'onglets, résumés au survol, recherche en langage naturel), Workspaces hibernate-restore en un clic synchronisés entre appareils, palette de commandes ⌘K, Bookmark Tools (tags, dedupe, liens morts) — 100% sur l'appareil, sans clé API.
+Les onglets verticaux natifs de Chrome (2025) ne font qu'afficher les onglets verticalement. **C'est un espace de travail de connaissance complet** : onglets + signets + liste de lecture unifiés, IA (nommage auto des groupes, nettoyage d'onglets, résumés au survol, recherche en langage naturel), Workspaces hibernate-restore en un clic synchronisés entre appareils, palette de commandes ⌘K, Bookmark Tools (tags, dedupe, liens morts) — sur l'appareil par défaut (sans clé API), avec IA cloud optionnelle via votre propre clé (Gemini API / Claude / compatible OpenAI / Ollama).
 
 Fatigué de vous perdre dans des dizaines d'onglets encombrés ? Vous rêvez de l'expérience élégante des onglets verticaux du navigateur Arc mais ne pouvez pas quitter l'écosystème Chrome ?
 **Arc-like Vertical Tabs & Bookmarks** est votre réponse ultime ! 🚀
@@ -23,7 +23,7 @@ Nous avons complètement réimaginé Chrome, en introduisant un panneau latéral
 - **Workspaces**: paquets d'onglets nommés, hibernate-restore, métadonnées synchronisées entre appareils.
 - **Command Palette (⌘K / Ctrl+K)**: recherche + actions unifiées.
 - **Bookmark Tools**: 🛠️ tags / dedupe / liens morts.
-- **Zéro configuration, sans clé API**: toute l'IA tourne sur Gemini Nano intégré à Chrome.
+- **Local par défaut, cloud en option**: l'IA tourne d'emblée sur Gemini Nano intégré à Chrome — rien ne quitte votre machine. En option, connectez votre propre clé API (Gemini API / Claude / compatible OpenAI / Ollama).
 
 ## 🔥 Fonctionnalités Clés
 
@@ -79,7 +79,7 @@ Ne cherchez pas seulement — trouvez instantanément.
 ---
 
 ## Confidentialité et Sécurité
-Nous tenons à votre vie privée. Cette extension fonctionne **complètement hors ligne**. Vos favoris, votre historique de navigation et vos informations d'onglets ne sont **JAMAIS** téléchargés sur un serveur.
+Nous tenons à votre vie privée. Cette extension fonctionne **localement par défaut**. Vos favoris, votre historique de navigation et vos informations d'onglets ne sont **jamais** envoyés à nos serveurs. Si vous activez un fournisseur d'IA cloud, les requêtes IA vont directement de votre navigateur vers ce fournisseur uniquement, avec votre propre clé API.
 
 ---
 

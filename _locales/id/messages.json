@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Sidebar gaya Arc: tab, bookmark & reading list + AI lokal (grup, cleanup, ringkasan, pencarian), Workspaces. Tanpa API key.",
+    "message": "Sidebar gaya Arc: tab, bookmark & reading list + AI lokal (grup, cleanup, ringkasan, pencarian), Workspaces. API key opsional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "Cleanup AI gagal. Coba lagi nanti."
   },
   "aiCleanupFound": {
-    "message": "AI menyarankan {count} tab yang mungkin bisa Anda tutup. Hapus centang yang ingin Anda simpan."
+    "message": "AI menyarankan {count} tab yang mungkin bisa Anda tutup. Centang tab yang ingin ditutup."
   },
   "aiCleanupNeedsDownload": {
     "message": "Model AI belum diunduh. Klik Smart Group terlebih dahulu untuk memulai unduhan."
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "Penyedia AI yang dipilih belum dikonfigurasi. Buka Pengaturan → AI untuk menyelesaikan penyiapan."
+  },
+  "aiProviderAuthError": {
+    "message": "Penyedia AI Anda menolak permintaan (otorisasi gagal). Periksa Pengaturan → AI."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Alamat ini menggunakan http: tanpa enkripsi — kunci API Anda akan dikirim sebagai teks biasa."
   }
 }

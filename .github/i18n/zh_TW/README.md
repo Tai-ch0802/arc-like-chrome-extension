@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-超越 Chrome 原生垂直分頁的 Arc 風格側邊欄：統一管理分頁、書籤與閱讀清單，**零設定本機 AI**（自動命名群組、分頁清理建議、滑鼠停留摘要、自然語言搜尋），**工作區**（一鍵 hibernate 與 restore 分頁集合，metadata 跨裝置同步），**⌘K 命令面板**，以及 **書籤工具**（多標籤、重複偵測、失效連結清理）—— 全部 100% 在裝置上運算，無需 API key。
+超越 Chrome 原生垂直分頁的 Arc 風格側邊欄：統一管理分頁、書籤與閱讀清單，**預設本機的 AI**（自動命名群組、分頁清理建議、滑鼠停留摘要、網頁導讀、自然語言搜尋 — 內建 Gemini Nano，也可自帶 API key 接 Gemini API / Claude / OpenAI 相容 / Ollama），**工作區**（一鍵 hibernate 與 restore 分頁集合，metadata 跨裝置同步），**⌘K 命令面板**，以及 **書籤工具**（多標籤、重複偵測、失效連結清理）—— 預設在裝置上運算，無需 API key。
 
 ## 🚀 新版本 v1.14.0 更新！
 [![示範影片](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -27,7 +27,7 @@
 - **工作區**：把分頁綁成具名工作區；每個工作區有自己的視窗——切換時聚焦或重新開啟、完全不動目前分頁，瀏覽器重啟後視窗自動綁回原工作區。metadata 跨裝置同步。
 - **命令面板** (⌘K / Ctrl+K)：Linear / Raycast 風格的統一搜尋 + 動作入口。
 - **書籤工具**：🛠️ 面板含多標籤、重複偵測、失效連結清理。
-- **零設定，免 API Key**：所有 AI 跑在 Chrome 內建 Gemini Nano，所有資料留在你的裝置。
+- **預設本機，雲端可選**：AI 開箱即跑在 Chrome 內建 Gemini Nano，資料不離開你的裝置；也可自帶 API key（Gemini API / Claude / OpenAI 相容 / Ollama）換用更強的模型。
 
 ### ⚡️ 功能特點
 - **自訂背景圖片**：支援透過上傳圖片或 URL 設定側邊欄背景，並可調整透明與模糊度。

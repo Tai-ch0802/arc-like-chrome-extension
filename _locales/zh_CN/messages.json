@@ -4,7 +4,7 @@
     "description": "扩展程序的名称。"
   },
   "extensionDescription": {
-    "message": "Arc 风格侧边栏 — 统一管理标签页、书签、阅读清单 + 本机 AI（群组命名、清理、摘要、NL 搜索）、Workspaces、⌘K 命令面板。免 API key。",
+    "message": "Arc 风格侧边栏 — 统一管理标签页、书签、阅读清单 + 本机 AI（群组命名、清理、摘要、NL 搜索）、Workspaces、⌘K 命令面板。API key 可选。",
     "description": "扩展程序的描述。"
   },
   "searchPlaceholder": {
@@ -697,7 +697,7 @@
     "message": "你的标签页很整洁，没有需要清理的项目。"
   },
   "aiCleanupFound": {
-    "message": "AI 建议可关闭 {count} 个标签页，想保留的请取消勾选。"
+    "message": "AI 建议了 {count} 个可能可以关闭的标签页。请勾选您要关闭的标签页。"
   },
   "aiCleanupError": {
     "message": "AI 清理失败，请稍后再试。"
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "所选的 AI 提供商尚未完成设置。请前往“设置 → AI”填写 API 密钥与模型。"
+  },
+  "aiProviderAuthError": {
+    "message": "AI 提供商拒绝了请求（授权失败），请检查“设置 → AI”。"
+  },
+  "aiProviderHttpWarning": {
+    "message": "此地址使用未加密的 http:，您的 API 密钥将以明文传输。"
   }
 }

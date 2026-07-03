@@ -50,6 +50,9 @@ export function resolveSettingChangeActions(changes, areaName) {
         // The background service worker writes Drive-sync status here; surface it
         // to the sidepanel badge via a DOM event (applySettingChanges dispatches it).
         if (changes.driveSyncStatus) actions.push({ type: 'dispatch', event: 'driveSyncStatusChanged', detail: changes.driveSyncStatus.newValue });
+        // aiManager (any context, incl. the background SW) records cloud AI
+        // 401/403 here; the sidepanel shows a throttled toast (modules/ui/toast.js).
+        if (changes.aiProviderAuthError) actions.push({ type: 'dispatch', event: 'aiProviderAuthErrorChanged', detail: changes.aiProviderAuthError.newValue });
     }
     return actions;
 }

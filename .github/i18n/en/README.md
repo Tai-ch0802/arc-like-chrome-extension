@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](LICENSE)
 
-An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: unified tabs + bookmarks + reading list, **zero-config local AI** (auto-name groups, tab cleanup suggestions, hover summaries, natural-language search), **Workspaces** (hibernate & restore tab bundles, sync metadata across devices), a **⌘K Command Palette**, and **Bookmark Tools** for tagging, deduping, and dead-link cleanup — all 100% on-device with no API key required.
+An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: unified tabs + bookmarks + reading list, **local-by-default AI** (auto-name groups, tab cleanup suggestions, hover summaries, page digests, natural-language search — built-in Gemini Nano, or bring your own API key for Gemini API / Claude / OpenAI-compatible / Ollama), **Workspaces** (hibernate & restore tab bundles, sync metadata across devices), a **⌘K Command Palette**, and **Bookmark Tools** for tagging, deduping, and dead-link cleanup — on-device by default, no API key required.
 
 ## 🚀 New Release v1.14.0 update! 
 [![Demo Video](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -27,7 +27,7 @@ An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: uni
 - **Workspaces**: Save bundles of tabs as named workspaces; each workspace opens in its own window — switching focuses or reopens it without touching your current tabs, and windows re-bind to their workspaces automatically after a browser restart. Metadata syncs across devices.
 - **Command Palette** (⌘K / Ctrl+K): Unified search + actions overlay, Linear/Raycast-style.
 - **Bookmark Tools**: 🛠️ panel for multi-tag, duplicate finder, and dead-link checker.
-- **Zero Config, No API Key**: All AI runs on Chrome's built-in Gemini Nano. Nothing leaves your machine.
+- **Local by Default, Cloud Optional**: AI runs on Chrome's built-in Gemini Nano out of the box — nothing leaves your machine. Optionally connect your own API key (Gemini API / Claude / OpenAI-compatible / Ollama) for stronger models.
 
 ### ⚡️ Established Features
 - **Custom Background Image**: Set your own sidebar background via upload or URL, with adjustable opacity and blur.
@@ -124,16 +124,16 @@ Chrome's native vertical tabs (rolled out 2025) handle "show tabs vertically" �
 | **Cross-Window Search** | ✅ | ❌ | ⚠️ Varies |
 | **Workspaces (hibernate + restore)** | ✅ Cross-device | ❌ | ⚠️ Varies |
 | **Linked Tabs** (bookmark ↔ open tab) | ✅ | ❌ | ❌ |
-| **AI Auto Group Naming** | ✅ Local Gemini Nano | ❌ | ❌ |
-| **AI Tab Cleanup Suggestions** | ✅ Local Gemini Nano | ❌ | ❌ |
-| **AI Hover Page Summary** | ✅ Local Gemini Nano | ❌ | ❌ |
-| **Ask AI Find (NL search)** | ✅ Local Gemini Nano | ❌ | ❌ |
+| **AI Auto Group Naming** | ✅ Local Nano / BYO cloud | ❌ | ❌ |
+| **AI Tab Cleanup Suggestions** | ✅ Local Nano / BYO cloud | ❌ | ❌ |
+| **AI Hover Page Summary** | ✅ Local Nano / BYO cloud | ❌ | ❌ |
+| **Ask AI Find (NL search)** | ✅ Local Nano / BYO cloud | ❌ | ❌ |
 | **Bookmark Tools** (tags / dedupe / dead-link) | ✅ | ❌ | ❌ |
 | **Command Palette** (⌘K) | ✅ | ❌ | ⚠️ Some |
 | **Custom Theme + Background** | ✅ | ❌ | ⚠️ Varies |
 | **Performance for 1000+ bookmarks** | ⚡️ Dynamic Rendering | N/A | 🐢 Virtual Scroll |
-| **API Key Required** | ❌ Zero config | N/A | ⚠️ Many require |
-| **100% Local & Offline** | ✅ | ✅ | ⚠️ Varies |
+| **API Key Required** | ❌ Optional (BYO for cloud AI) | N/A | ⚠️ Many require |
+| **Local & Offline** | ✅ By default (cloud AI opt-in) | ✅ | ⚠️ Varies |
 
 → [Full comparison & why native isn't enough](https://sidebar-for-tabs-bookmarks.taislife.work/why-not-native/)
 
@@ -206,7 +206,7 @@ For future automated testing, we have chosen **Puppeteer** as our End-to-End (E2
 
 ## 🔒 Privacy & FAQ
 
-We value your privacy. This extension operates entirely locally and does not collect or transmit your personal data.
+We value your privacy. This extension operates locally by default and does not collect your personal data. If you opt in to a cloud AI provider with your own API key, AI requests go directly from your browser to that provider only.
 
 For more details, please see our [Privacy Policy](PRIVACY_POLICY.md).
 

@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Thanh bên kiểu Arc: tabs, bookmarks & reading list + AI cục bộ (nhóm, cleanup, tóm tắt, tìm kiếm), Workspaces. Không cần API key.",
+    "message": "Thanh bên kiểu Arc: tabs, bookmarks & reading list + AI cục bộ (nhóm, cleanup, tóm tắt, tìm kiếm), Workspaces. API key tùy chọn.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "Cleanup AI thất bại. Thử lại sau."
   },
   "aiCleanupFound": {
-    "message": "AI gợi ý {count} tab có thể đóng. Bỏ chọn những cái bạn muốn giữ."
+    "message": "AI gợi ý {count} thẻ bạn có thể đóng. Hãy đánh dấu những thẻ bạn muốn đóng."
   },
   "aiCleanupNeedsDownload": {
     "message": "Model AI chưa được tải. Nhấn Smart Group trước để bắt đầu tải."
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "Nhà cung cấp AI đã chọn chưa được cấu hình. Mở Cài đặt → AI để hoàn tất thiết lập."
+  },
+  "aiProviderAuthError": {
+    "message": "Nhà cung cấp AI đã từ chối yêu cầu (xác thực thất bại). Hãy kiểm tra Cài đặt → AI."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Địa chỉ này dùng http: không mã hóa — khóa API của bạn sẽ được gửi dưới dạng văn bản thuần."
   }
 }

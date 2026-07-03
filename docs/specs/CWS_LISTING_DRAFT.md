@@ -1,10 +1,10 @@
 # CWS Listing Draft: Arc-like Sidebar
 
 ## 1. Short Description (Max 132 chars)
-「Arc-like Sidebar」你的瀏覽器，理當井然有序。結合垂直分頁、書籤整合與 100% 隱私的本機 AI 智慧整理，打造最優雅的資訊指揮中心。
+「Arc-like Sidebar」你的瀏覽器，理當井然有序。結合垂直分頁、書籤整合與預設本機（可選雲端）的 AI 智慧整理，打造最優雅的資訊指揮中心。
 
 *English (130 chars)*
-Arc-like Sidebar: Vertical tabs, bookmarks, and a 100% private local AI organizer. Transform your browser into an elegant command center.
+Arc-like Sidebar: vertical tabs, bookmarks, and a local-by-default AI organizer. Turn your browser into an elegant command center.
 
 ## 2. Detailed Description
 
@@ -14,10 +14,10 @@ Arc-like Sidebar: Vertical tabs, bookmarks, and a 100% private local AI organize
 
 **🚀 關鍵差異化特色：**
 
-**1. 🔒 零設定、100% 離線的 AI 智慧整理 (Zero-Config Local AI)**
-- **免 API Key、免綁卡**：直接呼叫 Chrome 內建 Gemini Nano 模型，按一下按鈕，AI 自動分析語意並將數十個分頁分類到對應的群組中。
+**1. 🔒 零設定、預設本機的 AI 智慧整理 (Local-by-Default AI)**
+- **免 API Key、免綁卡**：預設直接呼叫 Chrome 內建 Gemini Nano 模型，按一下按鈕，AI 自動分析語意並將數十個分頁分類到對應的群組中；也可自帶 API key 換用雲端模型。
 - **Hover 智慧摘要**：游標懸停在分頁上 2 秒，AI 自動為您產出一句話重點摘要，找資料不再盲目點擊！
-- **極致隱私**：所有運算皆在您的設備端進行，資料絕不上傳第三方伺服器。
+- **極致隱私**：預設所有運算皆在您的設備端進行；僅在您主動設定雲端 AI 供應商時，AI 請求才會以您自己的 key 直接送往該供應商。
 
 **2. 🎨 畫布級的客製化與 Arc-like 美學**
 - 深度打磨的玻璃擬物 (Glassmorphism) 材質與絲滑的拖曳微動畫。

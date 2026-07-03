@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Eine Arc-artige Sidebar, die weit über Chromes native vertikale Tabs hinausgeht: vereinheitlichte Tabs + Lesezeichen + Leseliste, **Null-Konfiguration lokale KI** (automatische Gruppen-Benennung, Tab-Cleanup-Vorschläge, Hover-Zusammenfassungen, natürlichsprachliche Suche), **Workspaces** (Tab-Bündel ruhen und wiederherstellen, Metadaten geräteübergreifend synchronisiert), eine **⌘K-Befehlspalette** und **Lesezeichen-Tools** für Tags, Dedupe und Dead-Link-Bereinigung — alles 100% auf dem Gerät, kein API-Schlüssel erforderlich.
+Eine Arc-artige Sidebar, die weit über Chromes native vertikale Tabs hinausgeht: vereinheitlichte Tabs + Lesezeichen + Leseliste, **standardmäßig lokale KI** (automatische Gruppen-Benennung, Tab-Cleanup-Vorschläge, Hover-Zusammenfassungen, natürlichsprachliche Suche — integriertes Gemini Nano, oder bringen Sie Ihren eigenen API-Schlüssel für Gemini API / Claude / OpenAI-kompatibel / Ollama mit), **Workspaces** (Tab-Bündel ruhen und wiederherstellen, Metadaten geräteübergreifend synchronisiert), eine **⌘K-Befehlspalette** und **Lesezeichen-Tools** für Tags, Dedupe und Dead-Link-Bereinigung — standardmäßig auf dem Gerät, kein API-Schlüssel erforderlich.
 
 ## 🚀 Neues Update v1.14.0!
 [![Demo-Video](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -178,7 +178,7 @@ Für zukünftige automatisierte Tests haben wir uns für **Puppeteer** als unser
 
 ## 🔒 Datenschutz & FAQ
 
-Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet vollständig lokal und sammelt oder überträgt keine personenbezogenen Daten.
+Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet standardmäßig lokal und sammelt keine personenbezogenen Daten. Wenn Sie sich mit Ihrem eigenen API-Schlüssel für einen Cloud-KI-Anbieter entscheiden, gehen KI-Anfragen direkt von Ihrem Browser ausschließlich an diesen Anbieter.
 
 Weitere Details finden Sie in unserer [Datenschutzerklärung](../../PRIVACY_POLICY.md).
 

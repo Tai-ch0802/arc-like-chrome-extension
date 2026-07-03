@@ -6,6 +6,7 @@ import * as rss from './modules/rssManager.js';
 import { checkBuiltinModelAvailability, triggerLanguageModelDownload } from './modules/aiManager.js';
 import * as providerSettings from './modules/ai/providerSettings.js';
 import { getCloudProvider } from './modules/ai/providers/index.js';
+import { isInsecureRemoteBaseUrl } from './modules/ai/providers/httpUtils.js';
 import * as modalManager from './modules/modalManager.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
@@ -1021,6 +1022,24 @@ async function renderAiProviderBlock(container) {
                 await providerSettings.saveProviderConfig(id, { [field]: input.value.trim() });
             });
             configWrap.appendChild(makeRow(FIELD_LABELS[field](), input));
+
+            // Cleartext warning: http: toward a non-local host sends the API
+            // key unencrypted. Hidden for local addresses (Ollama's default).
+            if (field === 'baseUrl') {
+                const httpWarning = document.createElement('div');
+                httpWarning.className = 'opt-row__desc ai-provider-http-warning';
+                httpWarning.insertAdjacentHTML('afterbegin', renderIcon('warning', { size: 14 }) + ' ');
+                httpWarning.appendChild(document.createTextNode(
+                    api.getMessage('aiProviderHttpWarning')
+                    || 'This address uses unencrypted http: — your API key would be sent in cleartext.'
+                ));
+                const syncHttpWarning = () => {
+                    httpWarning.hidden = !isInsecureRemoteBaseUrl(input.value);
+                };
+                syncHttpWarning();
+                input.addEventListener('input', syncHttpWarning);
+                configWrap.appendChild(httpWarning);
+            }
         }
 
         // Datalist filled by a successful "test connection" (model suggestions).

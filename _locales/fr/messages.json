@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barre latérale Arc : onglets, signets, liste de lecture + IA locale (groupes, nettoyage, résumé), Workspaces. Sans clé API.",
+    "message": "Barre latérale Arc : onglets, signets, liste de lecture + IA locale (groupes, nettoyage, résumé), Workspaces. Clé API optionnelle.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "Le nettoyage IA a échoué. Réessayez plus tard."
   },
   "aiCleanupFound": {
-    "message": "L'IA suggère {count} onglet(s) que vous pouvez fermer. Décochez ceux que vous voulez garder."
+    "message": "L'IA suggère {count} onglet(s) que vous pouvez probablement fermer. Cochez ceux que vous voulez fermer."
   },
   "aiCleanupNeedsDownload": {
     "message": "Le modèle IA n'est pas encore téléchargé. Cliquez d'abord sur Smart Group pour démarrer le téléchargement."
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "Le fournisseur d'IA sélectionné n'est pas configuré. Ouvrez Paramètres → IA pour terminer la configuration."
+  },
+  "aiProviderAuthError": {
+    "message": "Votre fournisseur d'IA a refusé la requête (échec d'autorisation). Vérifiez Paramètres → IA."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Cette adresse utilise http: non chiffré — votre clé API serait envoyée en clair."
   }
 }

@@ -130,7 +130,10 @@ function renderList(suggestions, tabById, groupMap = new Map()) {
         cb.type = 'checkbox';
         cb.className = 'ai-cleanup-row__cb';
         cb.dataset.tabId = String(s.tabId);
-        cb.checked = true;
+        // Default-unchecked: closing tabs is destructive, and suggestions come
+        // from a model reading untrusted page titles/URLs — a prompt-injected
+        // page must not get tabs closed by a habituated "Confirm" click.
+        cb.checked = false;
         cb.addEventListener('change', syncSelectAllState);
 
         const meta = document.createElement('div');
@@ -246,7 +249,7 @@ function showFooter() {
     document.querySelector('#ai-cleanup-section .ai-cleanup-footer')?.classList.remove('hidden');
     const selectAll = document.getElementById('ai-cleanup-select-all');
     if (selectAll) {
-        selectAll.checked = true;
+        selectAll.checked = false; // rows start unchecked — keep the header in sync
         selectAll.indeterminate = false;
     }
 }

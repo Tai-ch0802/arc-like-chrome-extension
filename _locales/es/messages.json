@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barra lateral Arc: pestañas, marcadores, lista de lectura + IA local (grupos, limpieza, resumen, búsqueda), Workspaces. Sin API.",
+    "message": "Sidebar estilo Arc: pestañas, marcadores y lectura + IA local (grupos, limpieza, resumen, búsqueda), Workspaces. API opcional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "La limpieza IA falló. Inténtalo más tarde."
   },
   "aiCleanupFound": {
-    "message": "La IA sugiere {count} pestaña(s) que puedes cerrar. Desmarca las que quieras conservar."
+    "message": "La IA sugiere {count} pestaña(s) que probablemente puedas cerrar. Marca las que quieras cerrar."
   },
   "aiCleanupNeedsDownload": {
     "message": "El modelo IA aún no está descargado. Haz clic primero en Smart Group para iniciar la descarga."
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "El proveedor de IA seleccionado no está configurado. Abre Configuración → IA para completar la configuración."
+  },
+  "aiProviderAuthError": {
+    "message": "Tu proveedor de IA rechazó la solicitud (falló la autorización). Revisa Configuración → IA."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Esta dirección usa http: sin cifrar — tu clave de API se enviaría en texto claro."
   }
 }

@@ -1,8 +1,7 @@
 import * as api from '../apiManager.js';
 import * as aiManager from '../aiManager.js';
 import * as state from '../stateManager.js';
-
-let toastTimeoutId = null;
+import { showToast, hideToast } from './toast.js';
 
 export function initAiGrouper() {
     const aiGroupBtn = document.getElementById('ai-group-btn');
@@ -179,39 +178,5 @@ async function handleUndoAction() {
     }
 }
 
-function showToast(message, allowUndo = false) {
-    const toastContainer = document.getElementById('toast-container');
-    const msgEl = document.getElementById('toast-message');
-    const undoBtn = document.getElementById('toast-undo-btn');
-
-    if (!toastContainer || !msgEl || !undoBtn) return;
-
-    msgEl.textContent = message;
-
-    if (allowUndo) {
-        undoBtn.classList.remove('hidden');
-    } else {
-        undoBtn.classList.add('hidden');
-    }
-
-    toastContainer.classList.remove('hidden');
-
-    if (toastTimeoutId) {
-        clearTimeout(toastTimeoutId);
-    }
-
-    toastTimeoutId = setTimeout(() => {
-        hideToast();
-    }, 10000); // 10 seconds limit for Undo
-}
-
-function hideToast() {
-    const toastContainer = document.getElementById('toast-container');
-    if (toastContainer) {
-        toastContainer.classList.add('hidden');
-    }
-    if (toastTimeoutId) {
-        clearTimeout(toastTimeoutId);
-        toastTimeoutId = null;
-    }
-}
+// showToast/hideToast moved to modules/ui/toast.js (shared with the cloud
+// AI auth-error hint); the Undo button binding above stays here.

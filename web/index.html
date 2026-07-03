@@ -123,7 +123,7 @@
             </div>
             <h1 class="hero-title" data-i18n="hero_title_1">Your browser,<br><span class="text-gradient">brilliantly organized.</span></h1>
             <p class="hero-subtitle" data-i18n="hero_subtitle">
-                Separate every context with Workspaces, and reach any tab, bookmark or action with one shortcut (Cmd/Ctrl+Shift+K).<br />Combined with vertical tabs, seamless bookmarks and 100% on-device AI, build a command center that syncs across your devices.
+                Separate every context with Workspaces, and reach any tab, bookmark or action with one shortcut (Cmd/Ctrl+Shift+K).<br />Combined with vertical tabs, seamless bookmarks and local-by-default AI, build a command center that syncs across your devices.
             </p>
             <div class="hero-actions">
                 <a href="https://chromewebstore.google.com/detail/sidebar-for-tabsbookmarks/beoonblekmppafnjppedgpgfngghebji"
@@ -196,7 +196,7 @@
         <header style="text-align: center; margin-bottom: 60px;">
             <h2 class="section-title" data-i18n="compare_h1">不是更多設定，而是<span class="text-gradient">更好的體驗</span></h2>
             <p class="section-subtitle" style="max-width: 600px; margin: 0 auto;" data-i18n="compare_subtitle">我們不追求成為擁有
-                100+ 個開關的「萬能瑞士刀」。我們專注於打造開箱即用、美觀優雅，並且 100% 隱私安全的瀏覽器側邊欄。</p>
+                100+ 個開關的「萬能瑞士刀」。我們專注於打造開箱即用、美觀優雅，並且隱私安全的瀏覽器側邊欄。</p>
         </header>
 
         <div class="comparison-table-wrapper glow-card" style="overflow-x: auto; border-radius: 16px; padding: 2px;">
@@ -226,7 +226,7 @@
                         <td style="padding: 20px; border-bottom: 1px solid var(--border-color); background: rgba(var(--accent-color-rgb), 0.03);"
                             data-i18n="compare_row1_us"><i data-lucide="check-circle-2"
                                 style="color: #4caf50; width: 18px; margin-right: 8px; vertical-align: text-bottom;"></i>零設定
-                            (內建本機 AI)</td>
+                            (內建本機 AI，雲端可選)</td>
                         <td style="padding: 20px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary);"
                             data-i18n="compare_row1_allinone"><i data-lucide="x-circle"
                                 style="color: #f44336; width: 18px; margin-right: 8px; vertical-align: text-bottom;"></i>需自行申請
@@ -257,8 +257,8 @@
                             data-i18n="compare_row3_title">隱私保護</td>
                         <td style="padding: 20px; border-bottom: 1px solid var(--border-color); background: rgba(var(--accent-color-rgb), 0.03);"
                             data-i18n="compare_row3_us"><i data-lucide="check-circle-2"
-                                style="color: #4caf50; width: 18px; margin-right: 8px; vertical-align: text-bottom;"></i>100%
-                            離線分析</td>
+                                style="color: #4caf50; width: 18px; margin-right: 8px; vertical-align: text-bottom;"></i>離線分析
+                            (預設)</td>
                         <td style="padding: 20px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary);"
                             data-i18n="compare_row3_allinone"><i data-lucide="alert-triangle"
                                 style="color: #ff9800; width: 18px; margin-right: 8px; vertical-align: text-bottom;"></i>需傳送資料至第三方
@@ -345,9 +345,9 @@
                     <i data-lucide="brain-circuit"></i>
                 </div>
                 <h3 class="card-title" data-i18n="ai_title">本機 AI 智慧整理</h3>
-                <p class="card-desc" data-i18n="ai_desc">當你打開了幾十個分頁卻無從整理時，點擊一下按鈕，AI 自動為你將標籤頁分類歸檔。最重要的是，一切運算皆透過 Gemini
+                <p class="card-desc" data-i18n="ai_desc">當你打開了幾十個分頁卻無從整理時，點擊一下按鈕，AI 自動為你將標籤頁分類歸檔。預設一切運算皆透過 Gemini
                     Nano
-                    在你的設備上進行，<b>資料絕不上傳雲端</b>。</p>
+                    在你的設備上進行，<b>資料不離開你的裝置</b>；也可自帶 API key 換用雲端模型。</p>
                 <div class="card-visual ai-visual">
                     <div class="ai-anim-container">
                         <!-- 混亂的初始列表 -->
@@ -613,9 +613,9 @@
         <div class="privacy-box glow-card">
             <div class="privacy-content">
                 <h2 class="section-title text-left" data-i18n="privacy_title">你的數據，只屬於你。</h2>
-                <p class="privacy-desc" data-i18n="privacy_desc">我們相信好的工具不應該以隱私作為代價。這也是為什麼我們選擇接入 Chrome 的內建
-                    <code>LanguageModel</code> API，讓 AI
-                    整理功能 100% 在你的設備上離線運作，而不是將你的每一筆瀏覽紀錄都傳送到外部伺服器。
+                <p class="privacy-desc" data-i18n="privacy_desc">我們相信好的工具不應該以隱私作為代價。預設情況下，AI 整理功能透過 Chrome 內建
+                    <code>LanguageModel</code> API 100% 在你的設備上離線運作。雲端 AI 完全採 opt-in：只有在你自行填入
+                    API key 時，請求才會直接送往你選定的供應商。
                 </p>
                 <div class="privacy-badges">
                     <span class="badge badge-outline"><i data-lucide="shield-check"></i> <span

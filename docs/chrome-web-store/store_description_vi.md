@@ -1,8 +1,8 @@
 # Tab Dọc & Dấu trang kiểu Arc - Biến Chrome thành Cỗ máy Năng suất · Không gian làm việc tri thức của bạn cho Chrome
 
-🔒 **100% trên thiết bị** · 🔑 **Không cần API key** · 🤖 **Gemini Nano AI tích hợp sẵn**
+🔒 **Cục bộ theo mặc định** · 🔑 **Không cần API key (tùy chọn dùng key riêng)** · 🤖 **Gemini Nano AI tích hợp sẵn**
 
-Vertical tabs có sẵn của Chrome (2025) chỉ hiển thị tab dọc. **Đây là không gian làm việc tri thức đầy đủ**: tabs + bookmarks + reading list tích hợp, AI (đặt tên nhóm tự động, cleanup tab, hover summary, tìm kiếm ngôn ngữ tự nhiên), Workspaces hibernate-restore một click đồng bộ giữa các thiết bị, ⌘K Command Palette, Bookmark Tools (tags, dedupe, dead-link) — tất cả trên thiết bị, không cần API key.
+Vertical tabs có sẵn của Chrome (2025) chỉ hiển thị tab dọc. **Đây là không gian làm việc tri thức đầy đủ**: tabs + bookmarks + reading list tích hợp, AI (đặt tên nhóm tự động, cleanup tab, hover summary, tìm kiếm ngôn ngữ tự nhiên), Workspaces hibernate-restore một click đồng bộ giữa các thiết bị, ⌘K Command Palette, Bookmark Tools (tags, dedupe, dead-link) — mặc định chạy trên thiết bị không cần API key, tùy chọn dùng key riêng cho mô hình đám mây (Gemini API / Claude / OpenAI-compatible / Ollama).
 
 Bạn mệt mỏi vì bị lạc trong hàng chục tab lộn xộn? Khao khát trải nghiệm tab dọc mượt mà của trình duyệt Arc nhưng không thể rời khỏi hệ sinh thái Chrome?
 **Arc-like Vertical Tabs & Bookmarks** là câu trả lời cuối cùng của bạn! 🚀
@@ -23,7 +23,7 @@ Chúng tôi đã hoàn toàn tái hiện lại Chrome, giới thiệu một bả
 - **Workspaces**: bộ tab có tên, hibernate-restore, metadata đồng bộ giữa các thiết bị.
 - **Command Palette (⌘K / Ctrl+K)**: tìm kiếm + hành động hợp nhất.
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup.
-- **Không cấu hình, không cần API key**: toàn bộ AI chạy trên Gemini Nano tích hợp sẵn của Chrome.
+- **Cục bộ theo mặc định, đám mây tùy chọn**: AI chạy ngay trên Gemini Nano tích hợp sẵn của Chrome — dữ liệu không rời khỏi máy bạn; tùy chọn kết nối API key của riêng bạn (Gemini API / Claude / OpenAI-compatible / Ollama).
 
 ## 🔥 Tính năng Chính
 
@@ -79,7 +79,7 @@ Have thousands of bookmarks? No problem!
 ---
 
 ## Quyền riêng tư & Bảo mật
-Chúng tôi coi trọng quyền riêng tư của bạn. Tiện ích mở rộng này hoạt động **hoàn toàn ngoại tuyến**. Dấu trang, lịch sử duyệt web và thông tin tab của bạn **KHÔNG BAO GIỜ** được tải lên bất kỳ máy chủ nào.
+Chúng tôi coi trọng quyền riêng tư của bạn. Tiện ích mở rộng này hoạt động **cục bộ theo mặc định**. Dấu trang, lịch sử duyệt web và thông tin tab của bạn **KHÔNG BAO GIỜ** được tải lên máy chủ của chúng tôi. Nếu bạn chủ động bật nhà cung cấp AI đám mây, các yêu cầu AI chỉ được gửi trực tiếp từ trình duyệt của bạn đến nhà cung cấp đó, bằng API key của riêng bạn.
 
 ---
 

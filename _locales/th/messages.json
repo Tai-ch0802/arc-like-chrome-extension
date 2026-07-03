@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Sidebar สไตล์ Arc: tabs, bookmarks, reading list + AI ในเครื่อง (จัดกลุ่ม, cleanup, สรุป, ค้นหา), Workspaces. ไม่ต้องใช้ API key",
+    "message": "Sidebar สไตล์ Arc: tabs, bookmarks, reading list + AI ในเครื่อง (จัดกลุ่ม, cleanup, สรุป, ค้นหา), Workspaces. API key ไม่บังคับ",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "AI cleanup ล้มเหลว ลองอีกครั้งภายหลัง"
   },
   "aiCleanupFound": {
-    "message": "AI แนะนำ {count} tab ที่ปิดได้ ยกเลิกการเลือก tab ที่ต้องการเก็บ"
+    "message": "AI แนะนำ {count} แท็บที่คุณน่าจะปิดได้ เลือกแท็บที่ต้องการปิด"
   },
   "aiCleanupNeedsDownload": {
     "message": "AI model ยังไม่ดาวน์โหลด คลิก Smart Group ก่อนเพื่อเริ่มดาวน์โหลด"
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "ยังไม่ได้ตั้งค่าผู้ให้บริการ AI ที่เลือก เปิด การตั้งค่า → AI เพื่อตั้งค่าให้เสร็จ"
+  },
+  "aiProviderAuthError": {
+    "message": "ผู้ให้บริการ AI ปฏิเสธคำขอ (การอนุญาตล้มเหลว) โปรดตรวจสอบ การตั้งค่า → AI"
+  },
+  "aiProviderHttpWarning": {
+    "message": "ที่อยู่นี้ใช้ http: ที่ไม่เข้ารหัส — คีย์ API ของคุณจะถูกส่งเป็นข้อความธรรมดา"
   }
 }

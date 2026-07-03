@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Chrome 의 기본 수직 탭을 훨씬 뛰어넘는 Arc 스타일 사이드바: 탭 + 북마크 + 리딩 리스트 통합, **제로 설정 로컬 AI**(그룹 자동 명명, 탭 정리 제안, 호버 요약, 자연어 검색), **Workspaces**(탭 묶음 hibernate 및 restore, 기기 간 메타데이터 동기화), **⌘K 명령 팔레트**, **북마크 도구**(태그, 중복 감지, 죽은 링크 정리) —— 모두 100% 기기에서 작동, API 키 불필요.
+Chrome 의 기본 수직 탭을 훨씬 뛰어넘는 Arc 스타일 사이드바: 탭 + 북마크 + 리딩 리스트 통합, **기본값이 로컬인 AI**(그룹 자동 명명, 탭 정리 제안, 호버 요약, 자연어 검색 —— 내장 Gemini Nano, 또는 본인의 API 키로 Gemini API / Claude / OpenAI 호환 / Ollama 사용 가능), **Workspaces**(탭 묶음 hibernate 및 restore, 기기 간 메타데이터 동기화), **⌘K 명령 팔레트**, **북마크 도구**(태그, 중복 감지, 죽은 링크 정리) —— 기본적으로 기기에서 작동, API 키 불필요.
 
 ## 🚀 새 릴리스 v1.14.0 업데이트! 
 [![데모 비디오](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -179,7 +179,7 @@ Chrome 의 기본 수직 탭을 훨씬 뛰어넘는 Arc 스타일 사이드바: 
 
 ## 🔒 개인정보 보호 및 FAQ
 
-우리는 사용자의 개인정보를 소중히 여깁니다. 이 확장 프로그램은 완전히 로컬에서 작동하며 사용자의 개인 데이터를 수집하거나 전송하지 않습니다.
+우리는 사용자의 개인정보를 소중히 여깁니다. 이 확장 프로그램은 기본적으로 로컬에서 작동하며 사용자의 개인 데이터를 수집하지 않습니다. 본인의 API 키로 클라우드 AI 제공자를 옵트인하면 AI 요청은 브라우저에서 해당 제공자로만 직접 전송됩니다.
 
 자세한 내용은 [개인정보 처리방침](../../PRIVACY_POLICY.md)을 참조하세요.
 

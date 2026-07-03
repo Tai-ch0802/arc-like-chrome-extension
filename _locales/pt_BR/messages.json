@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barra lateral Arc: abas, favoritos, lista de leitura + IA local (grupos, limpeza, resumo, busca), Workspaces. Sem API.",
+    "message": "Barra lateral Arc: abas, favoritos, lista de leitura + IA local (grupos, limpeza, resumo, busca), Workspaces. Chave de API opcional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "A limpeza IA falhou. Tente novamente mais tarde."
   },
   "aiCleanupFound": {
-    "message": "A IA sugere {count} aba(s) que você provavelmente pode fechar. Desmarque as que quiser manter."
+    "message": "A IA sugere {count} aba(s) que você provavelmente pode fechar. Marque as que deseja fechar."
   },
   "aiCleanupNeedsDownload": {
     "message": "O modelo IA ainda não foi baixado. Clique primeiro em Smart Group para iniciar o download."
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "O provedor de IA selecionado não está configurado. Abra Configurações → IA para concluir a configuração."
+  },
+  "aiProviderAuthError": {
+    "message": "Seu provedor de IA rejeitou a solicitação (falha de autorização). Verifique Configurações → IA."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Este endereço usa http: sem criptografia — sua chave de API seria enviada em texto simples."
   }
 }

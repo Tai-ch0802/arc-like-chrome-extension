@@ -3,7 +3,7 @@ import * as anthropic from '../../modules/ai/providers/anthropicProvider.js';
 import * as openaiCompat from '../../modules/ai/providers/openaiCompatProvider.js';
 import * as ollama from '../../modules/ai/providers/ollamaProvider.js';
 import { getCloudProvider } from '../../modules/ai/providers/index.js';
-import { normalizeBaseUrl } from '../../modules/ai/providers/httpUtils.js';
+import { normalizeBaseUrl, isInsecureRemoteBaseUrl } from '../../modules/ai/providers/httpUtils.js';
 
 const PARAMS = { system: 'sys prompt', prompt: 'user prompt', maxTokens: 512 };
 
@@ -215,5 +215,23 @@ describe('httpUtils.normalizeBaseUrl', () => {
     expect(normalizeBaseUrl(' https://x.dev/v1// ')).toBe('https://x.dev/v1');
     expect(normalizeBaseUrl('')).toBe('');
     expect(normalizeBaseUrl(undefined)).toBe('');
+  });
+});
+
+describe('httpUtils.isInsecureRemoteBaseUrl', () => {
+  it('flags cleartext http toward remote hosts', () => {
+    expect(isInsecureRemoteBaseUrl('http://my-server.example.com:8080/v1')).toBe(true);
+    expect(isInsecureRemoteBaseUrl('http://192.168.1.10:11434')).toBe(true);
+  });
+  it('exempts local addresses (Ollama default)', () => {
+    expect(isInsecureRemoteBaseUrl('http://localhost:11434')).toBe(false);
+    expect(isInsecureRemoteBaseUrl('http://127.0.0.1:11434')).toBe(false);
+    expect(isInsecureRemoteBaseUrl('http://[::1]:11434')).toBe(false);
+    expect(isInsecureRemoteBaseUrl('http://ollama.localhost')).toBe(false);
+  });
+  it('passes https and unparsable values', () => {
+    expect(isInsecureRemoteBaseUrl('https://api.openai.com/v1')).toBe(false);
+    expect(isInsecureRemoteBaseUrl('not a url')).toBe(false);
+    expect(isInsecureRemoteBaseUrl('')).toBe(false);
   });
 });

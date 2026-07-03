@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Sidebar bergaya Arc yang jauh melampaui vertical tabs bawaan Chrome: tabs + bookmarks + reading list disatukan, **AI lokal tanpa konfigurasi** (penamaan grup otomatis, saran cleanup tab, ringkasan hover, pencarian bahasa natural), **Workspaces** (hibernate & restore kumpulan tab, sinkronisasi metadata antar device), **Command Palette ⌘K**, dan **Bookmark Tools** (tags, dedupe, dead-link cleanup) — semuanya 100% di device, tanpa API key.
+Sidebar bergaya Arc yang jauh melampaui vertical tabs bawaan Chrome: tabs + bookmarks + reading list disatukan, **AI lokal secara default** (penamaan grup otomatis, saran cleanup tab, ringkasan hover, pencarian bahasa natural — Gemini Nano bawaan, atau bawa API key Anda sendiri untuk Gemini API / Claude / kompatibel OpenAI / Ollama), **Workspaces** (hibernate & restore kumpulan tab, sinkronisasi metadata antar device), **Command Palette ⌘K**, dan **Bookmark Tools** (tags, dedupe, dead-link cleanup) — berjalan di device secara default, tanpa perlu API key.
 
 ## 🚀 Pembaruan Rilis Baru v1.14.0! 
 [![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -178,7 +178,7 @@ Untuk pengujian otomatis di masa mendatang, kami telah memilih **Puppeteer** seb
 
 ## 🔒 Privasi & FAQ
 
-Kami menghargai privasi Anda. Ekstensi ini beroperasi sepenuhnya secara lokal dan tidak mengumpulkan atau mengirimkan data pribadi Anda.
+Kami menghargai privasi Anda. Ekstensi ini beroperasi secara lokal secara default dan tidak mengumpulkan data pribadi Anda. Jika Anda memilih (opt-in) penyedia cloud AI dengan API key Anda sendiri, permintaan AI dikirim langsung dari browser Anda hanya ke penyedia tersebut.
 
 Untuk detail lebih lanjut, silakan lihat [Kebijakan Privasi](../../PRIVACY_POLICY.md) kami.
 

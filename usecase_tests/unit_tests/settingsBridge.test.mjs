@@ -58,6 +58,11 @@ describe('resolveSettingChangeActions', () => {
     expect(resolveSettingChangeActions({ readingListSummaryEnabled: { newValue: false } }, 'sync'))
       .toContainEqual({ type: 'refreshState', key: 'readingListSummaryEnabled' });
   });
+  it('local aiProviderAuthError → dispatch aiProviderAuthErrorChanged action', () => {
+    const detail = { providerId: 'anthropic', status: 401, at: 123 };
+    expect(resolveSettingChangeActions({ aiProviderAuthError: { newValue: detail } }, 'local'))
+      .toContainEqual({ type: 'dispatch', event: 'aiProviderAuthErrorChanged', detail });
+  });
   it('sync pageReaderVisible → dispatch event AND refreshState actions', () => {
     const actions = resolveSettingChangeActions({ pageReaderVisible: { newValue: false } }, 'sync');
     expect(actions).toContainEqual({ type: 'dispatch', event: 'pageReaderVisibilityChanged', detail: { visible: false } });

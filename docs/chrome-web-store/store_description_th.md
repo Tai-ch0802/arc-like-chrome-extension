@@ -1,8 +1,8 @@
 # แท็บแนวตั้งและบุ๊กมาร์กสไตล์ Arc - เปลี่ยน Chrome ให้เป็นขุมพลังแห่งการทำงาน · พื้นที่ทำงานความรู้ของคุณบน Chrome
 
-🔒 **100% บนเครื่อง** · 🔑 **ไม่ต้องใช้ API key** · 🤖 **Gemini Nano AI ในเครื่อง**
+🔒 **บนเครื่องเป็นค่าเริ่มต้น** · 🔑 **ไม่ต้องใช้ API key (นำคีย์ของคุณเองมาใช้ได้)** · 🤖 **Gemini Nano AI ในเครื่อง**
 
-Vertical tabs ของ Chrome (2025) แค่แสดงแท็บแนวตั้ง **นี่คือ knowledge workspace ที่สมบูรณ์**: tabs + bookmarks + reading list ในที่เดียว, AI (ตั้งชื่อกลุ่มอัตโนมัติ, cleanup tab, hover summary, natural-language search), Workspaces hibernate-restore คลิกเดียวซิงค์ข้ามอุปกรณ์, ⌘K Command Palette, Bookmark Tools (tags, dedupe, dead-link) — ทั้งหมดบนเครื่อง ไม่ต้องใช้ API key
+Vertical tabs ของ Chrome (2025) แค่แสดงแท็บแนวตั้ง **นี่คือ knowledge workspace ที่สมบูรณ์**: tabs + bookmarks + reading list ในที่เดียว, AI (ตั้งชื่อกลุ่มอัตโนมัติ, cleanup tab, hover summary, natural-language search), Workspaces hibernate-restore คลิกเดียวซิงค์ข้ามอุปกรณ์, ⌘K Command Palette, Bookmark Tools (tags, dedupe, dead-link) — ค่าเริ่มต้นทำงานบนเครื่องโดยไม่ต้องใช้ API key และนำ API key ของคุณเองมาเชื่อมต่อโมเดลคลาวด์ได้ (Gemini API / Claude / OpenAI-compatible / Ollama)
 
 เบื่อกับการหลงทางในแท็บที่ยุ่งเหยิงนับสิบหรือไม่? ปรารถนาประสบการณ์แท็บแนวตั้งที่โฉบเฉี่ยวของเบราว์เซอร์ Arc แต่ไม่สามารถออกจากระบบนิเวศของ Chrome ได้ใช่ไหม?
 **Arc-like Vertical Tabs & Bookmarks** คือคำตอบสุดท้ายของคุณ! 🚀
@@ -23,7 +23,7 @@ Vertical tabs ของ Chrome (2025) แค่แสดงแท็บแนว
 - **Workspaces**: ชุดแท็บที่ตั้งชื่อ, hibernate-restore, metadata ซิงค์ข้ามอุปกรณ์
 - **Command Palette (⌘K / Ctrl+K)**: ค้นหา + การกระทำในที่เดียว
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup
-- **ไม่ต้องตั้งค่า ไม่ต้องใช้ API key**: AI ทั้งหมดทำงานบน Gemini Nano ที่ Chrome ติดมาให้
+- **ในเครื่องเป็นค่าเริ่มต้น คลาวด์เป็นตัวเลือก**: AI ทำงานบน Gemini Nano ที่ Chrome ติดมาให้ตั้งแต่แกะกล่อง — ข้อมูลไม่ออกจากเครื่องของคุณ และเลือกเชื่อมต่อ API key ของคุณเองได้ (Gemini API / Claude / OpenAI-compatible / Ollama)
 
 ## 🔥 คุณสมบัติหลัก
 
@@ -79,7 +79,7 @@ Have thousands of bookmarks? No problem!
 ---
 
 ## ความเป็นส่วนตัวและความปลอดภัย
-เราให้ความสำคัญกับความเป็นส่วนตัวของคุณ ส่วนขยายนี้ทำงาน **แบบออฟไลน์โดยสมบูรณ์** บุ๊กมาร์ก ประวัติการเข้าชม และข้อมูลแท็บของคุณจะ **ไม่ถูกอัปโหลด** ไปยังเซิร์ฟเวอร์ใดๆ
+เราให้ความสำคัญกับความเป็นส่วนตัวของคุณ ส่วนขยายนี้ทำงาน **บนเครื่องเป็นค่าเริ่มต้น** บุ๊กมาร์ก ประวัติการเข้าชม และข้อมูลแท็บของคุณจะ **ไม่ถูกอัปโหลด** ไปยังเซิร์ฟเวอร์ของเรา หากคุณเลือกใช้ผู้ให้บริการ AI คลาวด์ คำขอ AI จะถูกส่งตรงจากเบราว์เซอร์ของคุณไปยังผู้ให้บริการรายนั้นเท่านั้น โดยใช้ API key ของคุณเอง
 
 ---
 

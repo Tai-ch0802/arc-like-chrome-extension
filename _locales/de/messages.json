@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc-Sidebar: Tabs, Lesezeichen & Leseliste + lokale KI (Gruppieren, Cleanup, Zusammenfassung, Suche), Workspaces. Kein API-Key.",
+    "message": "Arc-Sidebar: Tabs, Lesezeichen & Leseliste + lokale KI (Gruppieren, Cleanup, Zusammenfassung, Suche), Workspaces. API-Key optional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {
@@ -736,7 +736,7 @@
     "message": "KI-Aufräumen fehlgeschlagen. Versuchen Sie es später erneut."
   },
   "aiCleanupFound": {
-    "message": "KI schlägt {count} Tab(s) zum Schließen vor. Deaktivieren Sie die, die Sie behalten möchten."
+    "message": "Die KI schlägt {count} Tab(s) vor, die Sie wahrscheinlich schließen können. Markieren Sie die Tabs, die Sie schließen möchten."
   },
   "aiCleanupNeedsDownload": {
     "message": "KI-Modell ist noch nicht heruntergeladen. Klicken Sie zuerst Smart Group, um den Download zu starten."
@@ -1249,5 +1249,11 @@
   },
   "aiProviderNotConfigured": {
     "message": "Der ausgewählte KI-Anbieter ist nicht konfiguriert. Öffnen Sie Einstellungen → KI, um die Einrichtung abzuschließen."
+  },
+  "aiProviderAuthError": {
+    "message": "Ihr KI-Anbieter hat die Anfrage abgelehnt (Autorisierung fehlgeschlagen). Prüfen Sie Einstellungen → KI."
+  },
+  "aiProviderHttpWarning": {
+    "message": "Diese Adresse verwendet unverschlüsseltes http: — Ihr API-Schlüssel würde im Klartext übertragen."
   }
 }
