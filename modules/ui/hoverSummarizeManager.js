@@ -170,8 +170,8 @@ async function triggerSummarize(tabId, anchorEl) {
             return;
         }
 
-        // Summarize via the active provider. Builtin streams delta chunks for
-        // progressive rendering; cloud providers deliver one final chunk.
+        // Summarize via the active provider. Both builtin and cloud providers
+        // stream delta chunks for progressive rendering.
         // @see https://developer.chrome.com/docs/ai/render-llm-responses
         const fullSummary = await aiManager.summarizePageStreaming(pageText, domain, {
             onChunk: (chunk) => tooltip.updateStreamChunk(chunk),
