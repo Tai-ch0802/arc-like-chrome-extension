@@ -76,13 +76,21 @@ key_files:
   - file_path: modules/icons.js
     description: "[UI] Icon 系統(M3)。以 Material Symbols Outlined(viewBox 0 -960 960 960, fill=currentColor)集中管理；ICONS map(~40 icon)+ renderIcon/renderIconEl/hasIcon helper;既有 *_ICON_SVG 常數沿用同名匯出(改以 Material Symbols 重繪)。全 UI emoji 圖示改用此系統(inline SVG via innerHTML)。"
   - file_path: modules/aiManager.js
-    description: "[AI] 本機 AI 模型管理。封裝 LanguageModel (Prompt API) 與 Summarizer API；提供 tab grouping、頁面摘要、AI 群組自動命名 (generateGroupName)、AI tab cleanup 建議 (generateCleanupSuggestions)、reading-list 摘要 (summarizeText)、自然語言搜尋的 reranker (runPrompt，使用獨立 nlLanguageModelSession)。"
+    description: "[AI] AI 功能總 façade + 供應商路由。builtin 走 Chrome 內建 LanguageModel (Prompt API) 與 Summarizer API，雲端走 modules/ai/providers/；提供 tab grouping、頁面摘要 (summarizePageStreaming)、AI 群組自動命名 (generateGroupName)、AI tab cleanup 建議 (generateCleanupSuggestions)、reading-list 摘要 (summarizeText)、自然語言搜尋 reranker (runPrompt)、網頁導讀 (generatePageDigest)、輸入字元預算 (getInputCharBudget)。"
+  - file_path: modules/ai/providerSettings.js
+    description: "[AI] AI 供應商設定儲存層。單一 key aiProviderSettings 存 chrome.storage.local（API key 屬敏感資料不進 sync）；activeProvider + 各家 {apiKey, model, baseUrl}，切換供應商保留各家設定，無儲存值即為 builtin 預設。"
+  - file_path: modules/ai/providers/
+    description: "[AI] 雲端供應商 client（gemini / anthropic / openaiCompat / ollama + index registry + httpUtils）。統一介面 buildChatRequest/parseChatResponse（純函式）、chat、testConnection；anthropic 帶 dangerous-direct-browser-access header 且不送 temperature；ollama 網路錯誤回報 code:'network' 供 UI 顯示 OLLAMA_ORIGINS 提示。"
+  - file_path: modules/ai/jsonExtract.js
+    description: "[AI] 模型輸出 JSON 抽取純函式 (extractJsonArray/extractJsonObject)。容忍 markdown code fence 與前後綴散文；集中原 aiManager/nlSearch 重複的 inline regex。"
+  - file_path: modules/ui/pageReaderUI.js
+    description: "[UI] 網頁導讀 (Page Reader)。一鍵擷取當前分頁文字（依供應商預算截斷）→ aiManager.generatePageDigest → modal 顯示 TL;DR + 重點清單；toggle pageReaderVisible（sync）控制按鈕可見性。"
   - file_path: modules/ui/aiGrouperUI.js
     description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
   - file_path: modules/ui/aiCleanupUI.js
     description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單（預設勾選 + 全選控制）。Phase 12(批B) 每列加 tab group badge（彩色圓點 + 群組名，未分組不顯示），用 resolveTabGroupBadge 判定。"
   - file_path: modules/ui/hoverSummarizeManager.js
-    description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、Summarizer API 串流摘要、記憶體快取。"
+    description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、aiManager.summarizePageStreaming 摘要（builtin 串流／雲端一次回全文）、記憶體快取。"
   - file_path: modules/ui/hoverTooltip.js
     description: "[UI] Hover Summarize 的 Tooltip UI 元件。提供 show/hide/updateStreamChunk API，含 shimmer 載入動畫與 glassmorphism 樣式。"
   - file_path: spotlight.html
@@ -140,7 +148,7 @@ key_files:
   - file_path: modules/utils/searchUtils.js
     description: "[工具] 搜尋純函式工具。Phase 1.2 提取自 searchManager；避免測試時連帶 import elements.js 觸發 DOM 存取，含 matchesAnyKeyword、extractDomain。"
   - file_path: modules/utils/pageContentExtractor.js
-    description: "[工具] 頁面內容擷取。Phase 8 新增；給 reading list 摘要與 NL search 使用，透過 chrome.scripting 抓取頁面文字。"
+    description: "[工具] 頁面內容擷取。Phase 8 新增；給 reading list 摘要、hover 摘要與網頁導讀使用，透過 chrome.scripting 抓取頁面文字；支援 maxLen 參數（預設 1500，雲端供應商由 aiManager.getInputCharBudget 放寬）。"
   - file_path: modules/keyboardManager.js
     description: "[功能] 鍵盤快捷鍵管理。Phase 9 新增；管理 sidepanel 內 keyboard shortcuts（受限於 chrome.commands API 4-command 上限，sidepanel-only 快捷鍵走自管路線）。"
   - file_path: modules/ui/tab/tabListeners.js
