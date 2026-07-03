@@ -62,6 +62,15 @@ describe('getProviderSettings', () => {
     const s = await getProviderSettings();
     expect(s.activeProvider).toBe('builtin');
   });
+
+  it('empty-string fields fall back to defaults (cleared model input)', async () => {
+    installChromeMock({
+      [STORAGE_KEY]: { providers: { gemini: { apiKey: 'k', model: '' } } },
+    });
+    const s = await getProviderSettings();
+    expect(s.providers.gemini.model).toBe('gemini-2.5-flash');
+    expect(s.providers.gemini.apiKey).toBe('k');
+  });
 });
 
 describe('getActiveProvider / setActiveProvider', () => {
@@ -109,6 +118,19 @@ describe('saveProviderConfig', () => {
     await expect(saveProviderConfig('builtin', {})).rejects.toThrow();
     await expect(saveProviderConfig('nope', {})).rejects.toThrow();
   });
+
+  it('write paths preserve provider entries unknown to this version', async () => {
+    const store = installChromeMock({
+      [STORAGE_KEY]: {
+        activeProvider: 'builtin',
+        providers: { futureProvider: { apiKey: 'future-key' } },
+      },
+    });
+    await saveProviderConfig('gemini', { apiKey: 'gk' });
+    await setActiveProvider('gemini');
+    expect(store[STORAGE_KEY].providers.futureProvider).toEqual({ apiKey: 'future-key' });
+    expect(store[STORAGE_KEY].providers.gemini.apiKey).toBe('gk');
+  });
 });
 
 describe('isProviderConfigured', () => {
@@ -119,6 +141,7 @@ describe('isProviderConfigured', () => {
     expect(isProviderConfigured('anthropic', { apiKey: 'k', model: 'm' })).toBe(true);
     expect(isProviderConfigured('anthropic', { apiKey: 'k', model: '' })).toBe(false);
     expect(isProviderConfigured('openai', { apiKey: 'k', model: 'm', baseUrl: 'u' })).toBe(true);
+    expect(isProviderConfigured('openai', { apiKey: '', model: 'm', baseUrl: 'u' })).toBe(true); // keyless local gateways
     expect(isProviderConfigured('openai', { apiKey: 'k', model: '', baseUrl: 'u' })).toBe(false);
     expect(isProviderConfigured('ollama', { baseUrl: 'u', model: 'm' })).toBe(true);
     expect(isProviderConfigured('ollama', { baseUrl: 'u', model: '' })).toBe(false);

@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "KI-Zusammenfassung der aktuellen Seite mit einem Klick (TL;DR + Kernpunkte)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "Der ausgewählte KI-Anbieter ist nicht konfiguriert. Öffnen Sie Einstellungen → KI, um die Einrichtung abzuschließen."
   }
 }

@@ -48,9 +48,13 @@ async function handleCleanupAction() {
     // silently freezing on "Analyzing..." for minutes.
     const availability = await aiManager.checkModelAvailability();
     if (availability !== 'available') {
-        showStatus(api.getMessage(
-            availability === 'unavailable' ? 'aiModelNotReady' : 'aiCleanupNeedsDownload'
-        ));
+        // 'downloadable'/'downloading' only ever come from builtin Nano; for
+        // an unconfigured cloud provider, point at settings instead of Nano.
+        let msgKey = 'aiCleanupNeedsDownload';
+        if (availability === 'unavailable') {
+            msgKey = (await aiManager.isCloudProviderActive()) ? 'aiProviderNotConfigured' : 'aiModelNotReady';
+        }
+        showStatus(api.getMessage(msgKey));
         showSection();
         return;
     }

@@ -37,6 +37,13 @@ describe('geminiProvider', () => {
     expect(body.generationConfig.maxOutputTokens).toBe(512);
   });
 
+  it('disables thinking for 2.5 Flash models only (budget would be eaten by thought tokens)', () => {
+    const flash = JSON.parse(gemini.buildChatRequest(config, PARAMS).init.body);
+    expect(flash.generationConfig.thinkingConfig).toEqual({ thinkingBudget: 0 });
+    const pro = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-2.5-pro' }, PARAMS).init.body);
+    expect(pro.generationConfig.thinkingConfig).toBeUndefined();
+  });
+
   it('omits systemInstruction when no system prompt', () => {
     const body = JSON.parse(gemini.buildChatRequest(config, { prompt: 'p' }).init.body);
     expect(body.systemInstruction).toBeUndefined();
@@ -138,6 +145,31 @@ describe('openaiCompatProvider', () => {
     const res = await openaiCompat.testConnection(config);
     expect(res.ok).toBe(true);
     expect(global.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('testConnection fallback treats HTTP-200 chat as success even with empty content', async () => {
+    global.fetch = jest.fn()
+      .mockResolvedValueOnce({ ok: false, status: 404, text: async () => 'not found' })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ choices: [{ message: { content: '' } }] }) });
+    const res = await openaiCompat.testConnection(config);
+    expect(res.ok).toBe(true);
+  });
+
+  it('chat retries with max_completion_tokens when max_tokens is rejected', async () => {
+    global.fetch = jest.fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        text: async () => "Unsupported parameter: 'max_tokens'. Use 'max_completion_tokens' instead.",
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) });
+    const out = await openaiCompat.chat(config, PARAMS);
+    expect(out).toBe('ok');
+    const firstBody = JSON.parse(global.fetch.mock.calls[0][1].body);
+    const secondBody = JSON.parse(global.fetch.mock.calls[1][1].body);
+    expect(firstBody.max_tokens).toBe(512);
+    expect(secondBody.max_completion_tokens).toBe(512);
+    expect(secondBody.max_tokens).toBeUndefined();
   });
 });
 

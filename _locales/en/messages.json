@@ -1249,5 +1249,8 @@
   },
   "pageReaderDescription": {
     "message": "One-click AI digest of the current page (TL;DR + key points)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "The selected AI provider is not configured. Open Settings → AI to finish setup."
   }
 }

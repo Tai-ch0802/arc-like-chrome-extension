@@ -964,6 +964,7 @@ async function renderAiProviderBlock(container) {
     const select = document.createElement('select');
     select.className = 'modal-select';
     select.id = 'ai-provider-select';
+    select.setAttribute('aria-label', api.getMessage('aiProviderLabel') || 'AI model provider');
     for (const p of AI_PROVIDER_OPTIONS) {
         const opt = document.createElement('option');
         opt.value = p.value;
@@ -999,13 +1000,17 @@ async function renderAiProviderBlock(container) {
 
         const config = current.providers[id] || {};
         const modelListId = `ai-provider-models-${id}`;
+        const fieldInputs = {};
 
         for (const field of AI_PROVIDER_FIELDS[id] || []) {
             const input = document.createElement('input');
             input.type = field === 'apiKey' ? 'password' : (field === 'baseUrl' ? 'url' : 'text');
             input.className = 'modal-input';
-            input.autocomplete = 'off';
+            // 'new-password' suppresses Chrome's save-password prompt more
+            // reliably than 'off' on password fields.
+            input.autocomplete = field === 'apiKey' ? 'new-password' : 'off';
             input.value = config[field] || '';
+            fieldInputs[field] = input;
             input.setAttribute('aria-label', FIELD_LABELS[field]());
             if (field === 'model') {
                 input.setAttribute('list', modelListId);
@@ -1041,6 +1046,13 @@ async function renderAiProviderBlock(container) {
             statusEl.className = 'ai-provider-test-status';
             statusEl.textContent = api.getMessage('aiProviderTesting') || 'Testing…';
             try {
+                // Flush current input values first — the user may click Test
+                // right after typing, before the inputs' change events land.
+                const patch = {};
+                for (const [field, input] of Object.entries(fieldInputs)) {
+                    patch[field] = input.value.trim();
+                }
+                await providerSettings.saveProviderConfig(id, patch);
                 const fresh = await providerSettings.getProviderSettings();
                 const res = await getCloudProvider(id).testConnection(fresh.providers[id] || {});
                 statusEl.innerHTML = '';

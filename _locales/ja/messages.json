@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "ワンクリックで現在のページを AI 要約（要約＋重要ポイント）。"
+  },
+  "aiProviderNotConfigured": {
+    "message": "選択した AI プロバイダーが設定されていません。設定 → AI からセットアップを完了してください。"
   }
 }

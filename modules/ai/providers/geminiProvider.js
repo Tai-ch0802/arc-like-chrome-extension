@@ -14,10 +14,19 @@ const API_ROOT = 'https://generativelanguage.googleapis.com/v1beta';
  * @returns {{url: string, init: RequestInit}}
  */
 export function buildChatRequest(config, { system, prompt, maxTokens = 1024 }) {
-    const model = encodeURIComponent((config.model || '').trim());
+    const modelName = (config.model || '').trim();
+    const model = encodeURIComponent(modelName);
+    const generationConfig = { maxOutputTokens: maxTokens };
+    // Gemini 2.5 Flash models think by default and thought tokens count
+    // against maxOutputTokens — small budgets would return empty text.
+    // thinkingBudget: 0 disables thinking (only Flash models allow 0; Pro
+    // rejects it, so gate on the model name).
+    if (/^gemini-2\.5-flash/.test(modelName)) {
+        generationConfig.thinkingConfig = { thinkingBudget: 0 };
+    }
     const body = {
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: maxTokens },
+        generationConfig,
     };
     if (system) {
         body.systemInstruction = { parts: [{ text: system }] };
@@ -40,21 +49,24 @@ export function buildChatRequest(config, { system, prompt, maxTokens = 1024 }) {
  * @returns {string} The generated text.
  */
 export function parseChatResponse(json) {
-    const parts = json?.candidates?.[0]?.content?.parts;
+    const candidate = json?.candidates?.[0];
+    const parts = candidate?.content?.parts;
     const text = Array.isArray(parts) ? parts.map(p => p?.text || '').join('') : '';
     if (!text.trim()) {
-        throw new Error('Empty response from Gemini API');
+        const reason = candidate?.finishReason;
+        throw new Error(`Empty response from Gemini API${reason ? ` (finishReason: ${reason})` : ''}`);
     }
     return text;
 }
 
 /**
  * @param {{apiKey: string, model: string}} config
- * @param {{system?: string, prompt: string, maxTokens?: number}} params
+ * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @returns {Promise<string>}
  */
 export async function chat(config, params) {
     const { url, init } = buildChatRequest(config, params);
+    if (params.signal) init.signal = params.signal;
     return parseChatResponse(await fetchJson(url, init));
 }
 

@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "한 번의 클릭으로 현재 페이지를 AI 요약(요약 + 핵심 포인트)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "선택한 AI 제공자가 설정되지 않았습니다. 설정 → AI에서 설정을 완료하세요."
   }
 }

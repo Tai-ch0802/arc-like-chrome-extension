@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "Resumen con IA de la página actual con un clic (TL;DR + puntos clave)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "El proveedor de IA seleccionado no está configurado. Abre Configuración → IA para completar la configuración."
   }
 }

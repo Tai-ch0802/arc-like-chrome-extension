@@ -27,7 +27,11 @@ export async function fetchJson(url, init) {
     if (!res.ok) {
         let detail = '';
         try {
-            detail = (await res.text()).slice(0, 200);
+            // Scrub key-shaped tokens — some providers echo (masked) keys in
+            // 401 bodies and this message surfaces in the UI and console.
+            detail = (await res.text())
+                .slice(0, 200)
+                .replace(/\bsk-[A-Za-z0-9_-]{8,}/g, 'sk-***');
         } catch { /* body unreadable — status alone will do */ }
         throw new HttpError(res.status, `HTTP ${res.status}${detail ? `: ${detail}` : ''}`);
     }

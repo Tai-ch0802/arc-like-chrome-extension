@@ -2,18 +2,22 @@
  * OpenAI-compatible provider.
  *
  * Targets any /chat/completions endpoint speaking the OpenAI wire format:
- * api.openai.com itself, or gateways like LiteLLM / one-api / OpenRouter.
- * The base URL is user-supplied (e.g. https://api.openai.com/v1).
+ * api.openai.com itself, or gateways like LiteLLM / one-api / OpenRouter /
+ * LM Studio / llama.cpp. The base URL is user-supplied
+ * (e.g. https://api.openai.com/v1). API key is optional — keyless local
+ * gateways are common.
  */
 import { fetchJson, toTestFailure, normalizeBaseUrl, HttpError } from './httpUtils.js';
 
 /**
  * Builds the chat/completions request. Pure — unit-testable without fetch.
- * @param {{apiKey: string, model: string, baseUrl: string}} config
- * @param {{system?: string, prompt: string, maxTokens?: number}} params
+ * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{system?: string, prompt: string, maxTokens?: number, tokenParam?: string}} params
+ *        tokenParam: 'max_tokens' (default, widest gateway compat) or
+ *        'max_completion_tokens' (required by newer OpenAI reasoning models).
  * @returns {{url: string, init: RequestInit}}
  */
-export function buildChatRequest(config, { system, prompt, maxTokens = 1024 }) {
+export function buildChatRequest(config, { system, prompt, maxTokens = 1024, tokenParam = 'max_tokens' }) {
     const base = normalizeBaseUrl(config.baseUrl);
     const messages = [];
     if (system) {
@@ -32,7 +36,7 @@ export function buildChatRequest(config, { system, prompt, maxTokens = 1024 }) {
             body: JSON.stringify({
                 model: (config.model || '').trim(),
                 messages,
-                max_tokens: maxTokens,
+                [tokenParam]: maxTokens,
             }),
         },
     };
@@ -51,19 +55,41 @@ export function parseChatResponse(json) {
 }
 
 /**
- * @param {{apiKey: string, model: string, baseUrl: string}} config
- * @param {{system?: string, prompt: string, maxTokens?: number}} params
+ * Sends the chat request, retrying once with `max_completion_tokens` when
+ * the server rejects `max_tokens` (newer OpenAI models require the former;
+ * older models and most compat gateways only accept the latter).
+ * @returns {Promise<any>} Raw response JSON.
+ */
+async function requestChat(config, params) {
+    const first = buildChatRequest(config, params);
+    if (params.signal) first.init.signal = params.signal;
+    try {
+        return await fetchJson(first.url, first.init);
+    } catch (err) {
+        const needsCompletionParam = err instanceof HttpError
+            && err.status === 400
+            && /max_completion_tokens/.test(err.message);
+        if (!needsCompletionParam) throw err;
+        const retry = buildChatRequest(config, { ...params, tokenParam: 'max_completion_tokens' });
+        if (params.signal) retry.init.signal = params.signal;
+        return fetchJson(retry.url, retry.init);
+    }
+}
+
+/**
+ * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @returns {Promise<string>}
  */
 export async function chat(config, params) {
-    const { url, init } = buildChatRequest(config, params);
-    return parseChatResponse(await fetchJson(url, init));
+    return parseChatResponse(await requestChat(config, params));
 }
 
 /**
  * GET {base}/models; some compat servers don't implement it (404/405), so
- * fall back to a minimal 1-token chat call before declaring failure.
- * @param {{apiKey: string, model: string, baseUrl: string}} config
+ * fall back to a minimal chat call. Any HTTP-200 chat response counts as
+ * success — reasoning models may return empty text on a 1-token probe.
+ * @param {{apiKey?: string, model: string, baseUrl: string}} config
  * @returns {Promise<{ok: boolean, code?: string, message?: string, models?: string[]}>}
  */
 export async function testConnection(config) {
@@ -81,7 +107,7 @@ export async function testConnection(config) {
         if (!listUnsupported) return toTestFailure(err);
     }
     try {
-        await chat(config, { prompt: 'ping', maxTokens: 1 });
+        await requestChat(config, { prompt: 'ping', maxTokens: 1 });
         return { ok: true };
     } catch (err) {
         return toTestFailure(err);

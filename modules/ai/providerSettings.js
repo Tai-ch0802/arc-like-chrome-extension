@@ -41,9 +41,25 @@ function mergeWithDefaults(stored) {
         : PROVIDER_DEFAULTS.activeProvider;
     const providers = {};
     for (const [id, defaults] of Object.entries(PROVIDER_DEFAULTS.providers)) {
-        providers[id] = { ...defaults, ...(stored?.providers?.[id] || {}) };
+        // Empty strings fall back to defaults — a user clearing the model
+        // field means "use the default", matching the input's placeholder.
+        const storedConfig = stored?.providers?.[id] || {};
+        const merged = { ...defaults };
+        for (const [field, value] of Object.entries(storedConfig)) {
+            if (typeof value === 'string' && value !== '') merged[field] = value;
+        }
+        providers[id] = merged;
     }
     return { activeProvider, providers };
+}
+
+/** Reads the raw stored blob (no normalization) for write paths, so unknown
+ *  provider entries written by a NEWER extension version survive a write
+ *  from this version (rollback / mixed-version safety). */
+async function readRawSettings() {
+    const result = await api.getStorage('local', [STORAGE_KEY]);
+    const raw = result?.[STORAGE_KEY];
+    return (raw && typeof raw === 'object') ? { ...raw, providers: { ...(raw.providers || {}) } } : { providers: {} };
 }
 
 /** @returns {Promise<{activeProvider: string, providers: Object<string, object>}>} */
@@ -71,9 +87,9 @@ export async function setActiveProvider(id) {
     if (!PROVIDER_IDS.includes(id)) {
         throw new Error(`Unknown AI provider: ${id}`);
     }
-    const settings = await getProviderSettings();
-    settings.activeProvider = id;
-    await api.setStorage('local', { [STORAGE_KEY]: settings });
+    const raw = await readRawSettings();
+    raw.activeProvider = id;
+    await api.setStorage('local', { [STORAGE_KEY]: raw });
 }
 
 /**
@@ -85,9 +101,9 @@ export async function saveProviderConfig(id, patch) {
     if (!PROVIDER_IDS.includes(id) || id === 'builtin') {
         throw new Error(`Cannot save config for provider: ${id}`);
     }
-    const settings = await getProviderSettings();
-    settings.providers[id] = { ...settings.providers[id], ...patch };
-    await api.setStorage('local', { [STORAGE_KEY]: settings });
+    const raw = await readRawSettings();
+    raw.providers[id] = { ...(raw.providers[id] || {}), ...patch };
+    await api.setStorage('local', { [STORAGE_KEY]: raw });
 }
 
 /**
@@ -102,9 +118,11 @@ export function isProviderConfigured(id, config = {}) {
         case 'builtin':
             return true;
         case 'ollama':
-            return !!(config.baseUrl && config.model);
         case 'openai':
-            return !!(config.apiKey && config.model && config.baseUrl);
+            // API key optional: keyless local gateways (LM Studio, llama.cpp,
+            // LiteLLM without auth) are common — the client sends Bearer auth
+            // only when a key is present.
+            return !!(config.baseUrl && config.model);
         case 'gemini':
         case 'anthropic':
             return !!(config.apiKey && config.model);

@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "Ringkasan AI halaman saat ini dengan sekali klik (TL;DR + poin utama)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "Penyedia AI yang dipilih belum dikonfigurasi. Buka Pengaturan → AI untuk menyelesaikan penyiapan."
   }
 }

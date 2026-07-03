@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "一键 AI 导读当前页面（摘要 + 重点）。"
+  },
+  "aiProviderNotConfigured": {
+    "message": "所选的 AI 提供商尚未完成设置。请前往“设置 → AI”填写 API 密钥与模型。"
   }
 }

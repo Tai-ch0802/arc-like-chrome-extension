@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "Tóm lược trang hiện tại bằng AI chỉ với một cú nhấp (tóm tắt + điểm chính)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "Nhà cung cấp AI đã chọn chưa được cấu hình. Mở Cài đặt → AI để hoàn tất thiết lập."
   }
 }

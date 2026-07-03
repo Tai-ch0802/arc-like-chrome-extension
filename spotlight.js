@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         state.loadBookmarkCache(),
         state.initAiGroupingVisibility(),
         state.initAiCleanupVisibility(),
+        state.initPageReaderVisibility(),
         workspaceManager.initWorkspaces(),
         tagManager.initTags(), // tag: 查詢需要(ISSUE-162 WP6)
     ]);

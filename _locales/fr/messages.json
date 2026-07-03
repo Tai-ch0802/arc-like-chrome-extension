@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "Synthèse IA de la page actuelle en un clic (TL;DR + points clés)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "Le fournisseur d'IA sélectionné n'est pas configuré. Ouvrez Paramètres → IA pour terminer la configuration."
   }
 }

@@ -7,9 +7,17 @@
  * duplicated as inline regexes in aiManager and nlSearch.
  */
 
-/** Removes markdown code fences (``` / ```json) the model may emit. */
+/**
+ * Removes markdown code fences (``` / ```json) the model may emit.
+ * Only strips fences on their own line or hugging the payload's edges, so
+ * backtick runs INSIDE JSON string values survive intact.
+ */
 function stripCodeFences(raw) {
-    return raw.replace(/```(?:json)?/gi, '');
+    return raw
+        .replace(/^\s*```(?:json)?\s*$/gim, '')
+        .trim()
+        .replace(/^```(?:json)?\s*/i, '')
+        .replace(/\s*```$/, '');
 }
 
 function tryParse(str) {

@@ -544,7 +544,9 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background
 // 統一處理避免多 sidepanel 重複觸發。generateGroupName 內部已限制只在
-// model === 'available' 時執行（不會 silent kick off model download）。
+// checkModelAvailability() === 'available' 時執行：builtin 表示 Nano 已就緒
+// （不會 silent kick off model download）；雲端供應商表示使用者已完成設定
+// （此時會對使用者選定的供應商發出付費 API 呼叫，受 aiAutoNamingEnabled 開關控制）。
 chrome.tabGroups.onCreated.addListener(async (group) => {
     try {
         if (group.title && group.title.trim()) return; // user provided a title

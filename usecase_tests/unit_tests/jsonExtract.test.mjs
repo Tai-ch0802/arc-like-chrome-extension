@@ -38,6 +38,11 @@ describe('extractJsonArray', () => {
     expect(extractJsonArray(raw)).toEqual([{ label: 'X' }]);
   });
 
+  it('preserves backtick runs inside string values', () => {
+    expect(extractJsonArray('[{"label":"see ```js for details"}]'))
+      .toEqual([{ label: 'see ```js for details' }]);
+  });
+
   it('returns null for garbage', () => {
     expect(extractJsonArray('no json here')).toBeNull();
     expect(extractJsonArray('')).toBeNull();

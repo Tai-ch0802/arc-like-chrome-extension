@@ -98,6 +98,17 @@ async function runChatUnified({ system, prompt, maxTokens = 1024 }) {
 }
 
 /**
+ * Whether the active provider is a cloud provider (anything but 'builtin').
+ * Lets UI code pick provider-appropriate copy for unavailable states
+ * ("configure your provider" vs "enable Gemini Nano").
+ * @returns {Promise<boolean>}
+ */
+export async function isCloudProviderActive() {
+    const { id } = await providerSettings.getActiveProvider();
+    return id !== 'builtin';
+}
+
+/**
  * How many characters of page text we can afford to send to the active
  * provider. Builtin Gemini Nano has a tiny input budget; cloud models can
  * take much more (richer digests / summaries).
@@ -412,7 +423,11 @@ export async function runPrompt(promptText) {
  */
 export async function generateGroups(tabsInfo, callbacks = {}) {
     if (!(await checkModelReadiness())) {
-        throw new Error(api.getMessage('aiModelNotReady'));
+        // Provider-appropriate remedy: cloud = go configure it; builtin = Nano setup.
+        const notReadyMsg = (await isCloudProviderActive())
+            ? (api.getMessage('aiProviderNotConfigured') || 'The selected AI provider is not configured. Open Settings → AI to finish setup.')
+            : api.getMessage('aiModelNotReady');
+        throw new Error(notReadyMsg);
     }
 
     // Limit to top 30 tabs to avoid token limit overflow (as per SA)
@@ -455,7 +470,10 @@ ${tabsData}`;
             prompt,
             maxTokens: 2048,
         });
-        const parsed = raw ? extractJsonArray(raw) : null;
+        // Cloud models vary; validate the shape before handing it to the UI.
+        const parsed = (raw ? extractJsonArray(raw) : null)?.filter(
+            g => g && typeof g.theme === 'string' && Array.isArray(g.tabIds)
+        );
         if (parsed && parsed.length > 0) {
             return parsed;
         }
@@ -560,7 +578,7 @@ ${tabsData}`;
     }
     const parsed = extractJsonArray(result);
     const label = Array.isArray(parsed) && parsed[0] && typeof parsed[0].label === 'string'
-        ? parsed[0].label.trim()
+        ? parsed[0].label.trim().slice(0, 40) // hard cap: prompt asks ≤15 chars, don't trust the model
         : null;
     return label || null;
 }
@@ -657,6 +675,7 @@ export async function summarizePageStreaming(pageText, domain = '', { onChunk, s
             system: `You summarize web page content in ONE concise sentence in the '${lang}' locale language. Reply with the sentence only — no preamble, no markdown.`,
             prompt: domain ? `Web page from ${domain}:\n\n${pageText}` : pageText,
             maxTokens: 200,
+            signal, // cancel the network request when the user un-hovers
         });
         if (signal?.aborted) return null;
         const out = (raw || '').trim();

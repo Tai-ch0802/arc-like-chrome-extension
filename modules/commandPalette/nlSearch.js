@@ -182,8 +182,13 @@ export async function openAskAiDialog() {
     if (unavailable) {
         const msg = document.createElement('div');
         msg.className = 'cmd-palette-empty';
-        msg.textContent = api.getMessage('cmdPaletteAskAiUnavailable')
-            || 'AI model is not downloaded yet. Trigger Smart Group first to download, then try again.';
+        // "Trigger Smart Group to download" only makes sense for builtin Nano;
+        // for a cloud provider, the remedy is finishing setup in settings.
+        msg.textContent = (await aiManager.isCloudProviderActive())
+            ? (api.getMessage('aiProviderNotConfigured')
+                || 'The selected AI provider is not configured. Open Settings → AI to finish setup.')
+            : (api.getMessage('cmdPaletteAskAiUnavailable')
+                || 'AI model is not downloaded yet. Trigger Smart Group first to download, then try again.');
         root.appendChild(msg);
         return;
     }

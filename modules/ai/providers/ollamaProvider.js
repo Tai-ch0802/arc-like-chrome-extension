@@ -59,11 +59,12 @@ export function parseChatResponse(json) {
 
 /**
  * @param {{apiKey?: string, model: string, baseUrl: string}} config
- * @param {{system?: string, prompt: string, maxTokens?: number}} params
+ * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @returns {Promise<string>}
  */
 export async function chat(config, params) {
     const { url, init } = buildChatRequest(config, params);
+    if (params.signal) init.signal = params.signal;
     return parseChatResponse(await fetchJson(url, init));
 }
 

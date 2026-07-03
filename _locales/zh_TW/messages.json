@@ -1246,5 +1246,8 @@
   },
   "pageReaderDescription": {
     "message": "一鍵 AI 導讀當前頁面（摘要＋重點）。"
+  },
+  "aiProviderNotConfigured": {
+    "message": "所選的 AI 供應商尚未完成設定。請前往「設定 → AI」填入 API 金鑰與模型。"
   }
 }
