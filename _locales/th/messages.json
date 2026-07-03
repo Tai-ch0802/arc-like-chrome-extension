@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Sidebar สไตล์ Arc: tabs, bookmarks, reading list + AI ในเครื่อง (จัดกลุ่ม, cleanup, สรุป, ค้นหา), Workspaces. ไม่ต้องใช้ API key",
+    "message": "Sidebar สไตล์ Arc: tabs, bookmarks, reading list + AI ในเครื่อง (จัดกลุ่ม, cleanup, สรุป, ค้นหา), Workspaces. API key ไม่บังคับ",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

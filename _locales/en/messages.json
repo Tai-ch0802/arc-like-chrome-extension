@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc-style sidebar: tabs, bookmarks & reading list + local AI (grouping, cleanup, summary, search), Workspaces. No API key.",
+    "message": "Arc-style sidebar: tabs, bookmarks & reading list + local AI (grouping, cleanup, summary, search), Workspaces. API key optional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

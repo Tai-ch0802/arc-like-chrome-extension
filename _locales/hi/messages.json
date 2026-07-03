@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc-style sidebar: tabs, bookmarks और reading list + local AI (grouping, cleanup, summary, search), Workspaces. कोई API key नहीं।",
+    "message": "Arc-style sidebar: tabs, bookmarks और reading list + local AI (grouping, cleanup, summary, search), Workspaces. API key वैकल्पिक।",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

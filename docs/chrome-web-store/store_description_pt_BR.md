@@ -1,8 +1,8 @@
 # Abas Verticais e Favoritos estilo Arc - Transforme o Chrome em uma Potência de Produtividade · Seu espaço de trabalho de conhecimento para Chrome
 
-🔒 **100% local** · 🔑 **Sem chave de API** · 🤖 **Gemini Nano AI integrado**
+🔒 **Local por padrão** · 🔑 **Sem necessidade de chave de API (traga a sua, opcional)** · 🤖 **Gemini Nano AI integrado**
 
-As abas verticais nativas do Chrome (2025) só mostram abas verticalmente. **Isto é um espaço de trabalho de conhecimento completo**: abas + favoritos + lista de leitura unificadas, IA (nomeação automática de grupos, limpeza de abas, resumos ao passar o mouse, busca em linguagem natural), Workspaces hibernate-restore em um clique sincronizados entre dispositivos, paleta de comandos ⌘K, Bookmark Tools (tags, dedupe, links quebrados) — 100% no dispositivo, sem chave de API.
+As abas verticais nativas do Chrome (2025) só mostram abas verticalmente. **Isto é um espaço de trabalho de conhecimento completo**: abas + favoritos + lista de leitura unificadas, IA (nomeação automática de grupos, limpeza de abas, resumos ao passar o mouse, busca em linguagem natural), Workspaces hibernate-restore em um clique sincronizados entre dispositivos, paleta de comandos ⌘K, Bookmark Tools (tags, dedupe, links quebrados) — no dispositivo por padrão (sem chave de API), com IA na nuvem opcional usando sua própria chave (Gemini API / Claude / compatível com OpenAI / Ollama).
 
 Cansado de se perder em dezenas de abas desorganizadas? Deseja a experiência elegante de abas verticais do navegador Arc, mas não pode sair do ecossistema Chrome?
 **Arc-like Vertical Tabs & Bookmarks** é a sua resposta definitiva! 🚀
@@ -23,7 +23,7 @@ Reimaginamos completamente o Chrome, introduzindo um painel lateral moderno que 
 - **Workspaces**: conjuntos de abas nomeados, hibernate-restore, metadados sincronizados entre dispositivos.
 - **Command Palette (⌘K / Ctrl+K)**: busca + ações unificadas.
 - **Bookmark Tools**: 🛠️ tags / dedupe / links quebrados.
-- **Zero configuração, sem chave de API**: toda IA roda em Gemini Nano integrado ao Chrome.
+- **Local por padrão, nuvem opcional**: a IA roda no Gemini Nano integrado ao Chrome desde o início — nada sai da sua máquina. Opcionalmente, conecte sua própria chave de API (Gemini API / Claude / compatível com OpenAI / Ollama).
 
 ## 🔥 Principais Recursos
 
@@ -79,7 +79,7 @@ Não apenas pesquise — encontre instantaneamente.
 ---
 
 ## Privacidade e Segurança
-Valorizamos sua privacidade. Esta extensão opera **completamente offline**. Seus favoritos, histórico de navegação e informações de abas **NUNCA** são enviados para nenhum servidor.
+Valorizamos sua privacidade. Esta extensão opera **localmente por padrão**. Seus favoritos, histórico de navegação e informações de abas **NUNCA** são enviados para nossos servidores. Se você optar por um provedor de IA na nuvem, as solicitações de IA vão diretamente do seu navegador apenas para esse provedor, usando sua própria chave de API.
 
 ---
 

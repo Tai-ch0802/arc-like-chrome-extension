@@ -4,7 +4,7 @@
     "description": "擴充功能的名稱。"
   },
   "extensionDescription": {
-    "message": "Arc 風格側邊欄 — 統一管理分頁、書籤、閱讀清單 + 本機 AI（群組命名、清理、摘要、NL 搜尋）、Workspaces、⌘K 命令面板。免 API key。",
+    "message": "Arc 風格側邊欄 — 統一管理分頁、書籤、閱讀清單 + 本機 AI（群組命名、清理、摘要、NL 搜尋）、Workspaces、⌘K 命令面板。API key 可選。",
     "description": "擴充功能的描述。"
   },
   "searchPlaceholder": {

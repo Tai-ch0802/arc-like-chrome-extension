@@ -1,8 +1,8 @@
 # Arc-like Vertical Tabs & Bookmarks · Your Knowledge Workspace for Chrome
 
-🔒 **100% local** · 🔑 **Zero API key** · 🤖 **Built-in Gemini Nano AI**
+🔒 **Local by default** · 🔑 **No API key needed (BYO optional)** · 🤖 **Built-in Gemini Nano AI**
 
-Chrome's native vertical tabs (2025) only show your tabs vertically. **This is a full knowledge workspace**: unified tabs + bookmarks + reading list, AI-powered (auto group naming, tab cleanup, hover summaries, natural-language search), Workspaces for hibernate-and-restore tab bundles synced across devices, a ⌘K Command Palette, and Bookmark Tools for tagging, deduping, and dead-link cleanup — all on-device, no API key required.
+Chrome's native vertical tabs (2025) only show your tabs vertically. **This is a full knowledge workspace**: unified tabs + bookmarks + reading list, AI-powered (auto group naming, tab cleanup, hover summaries, natural-language search), Workspaces for hibernate-and-restore tab bundles synced across devices, a ⌘K Command Palette, and Bookmark Tools for tagging, deduping, and dead-link cleanup — on-device by default (no API key), with optional bring-your-own-key cloud AI (Gemini API / Claude / OpenAI-compatible / Ollama).
 
 Tired of getting lost in dozens of cluttered tabs? Craving the sleek, vertical tab experience of the Arc browser but can't leave the Chrome ecosystem?
 **Arc-like Vertical Tabs & Bookmarks** is your ultimate answer! 🚀
@@ -24,8 +24,8 @@ Tired of getting lost in dozens of cluttered tabs? Craving the sleek, vertical t
 | **Bookmark Tools** (tags / dedupe / dead-link) | ❌ | ✅ |
 | **Command Palette (⌘K)** | ❌ | ✅ |
 | **Custom theme + background image** | ❌ | ✅ |
-| API key required | N/A | ❌ Zero |
-| 100% local & offline | ✅ | ✅ |
+| API key required | N/A | ❌ Optional |
+| Local & offline | ✅ | ✅ By default |
 
 We've completely reimagined Chrome, introducing a modern side panel that unifies **Vertical Tabs**, **Tab Groups**, and **Bookmark Management**. Say goodbye to the traditional horizontal tab bar and regain control of your browser. Experience focus and efficiency like never before.
 
@@ -45,7 +45,7 @@ We've completely reimagined Chrome, introducing a modern side panel that unifies
 - **Workspaces**: Bundle tabs as named workspaces, hibernate-and-restore one-click, metadata sync across devices.
 - **Command Palette (⌘K / Ctrl+K)**: Linear/Raycast-style unified search + actions overlay.
 - **Bookmark Tools**: 🛠️ for multi-tag, duplicate finder, dead-link checker.
-- **Zero Config, No API Key**: All AI runs on Chrome's built-in Gemini Nano. Nothing leaves your machine.
+- **Local by Default, Cloud Optional**: AI runs on Chrome's built-in Gemini Nano out of the box — nothing leaves your machine. Optionally connect your own API key (Gemini API / Claude / OpenAI-compatible / Ollama).
 
 ### 🔗 Exclusive Innovation: Linked Tabs
 This is our most powerful feature! When you open a bookmark from the sidebar, we automatically create a **"Link"**.
@@ -100,7 +100,7 @@ Don't just search—find instantly.
 ---
 
 ## Privacy & Security
-We value your privacy. This extension operates **completely offline**. Your bookmarks, browsing history, and tab information are **NEVER** uploaded to any server.
+We value your privacy. This extension operates **locally by default**. Your bookmarks, browsing history, and tab information are **never** uploaded to our servers. If you opt in to a cloud AI provider, AI requests go directly from your browser to that provider only, using your own API key.
 
 ---
 

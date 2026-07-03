@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc-Sidebar: Tabs, Lesezeichen & Leseliste + lokale KI (Gruppieren, Cleanup, Zusammenfassung, Suche), Workspaces. Kein API-Key.",
+    "message": "Arc-Sidebar: Tabs, Lesezeichen & Leseliste + lokale KI (Gruppieren, Cleanup, Zusammenfassung, Suche), Workspaces. API-Key optional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

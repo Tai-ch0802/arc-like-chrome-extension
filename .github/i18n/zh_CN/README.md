@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-超越 Chrome 原生垂直标签的 Arc 风格侧边栏：统一管理标签页、书签与阅读清单，**零设定本机 AI**（自动命名群组、标签页清理建议、悬停摘要、自然语言搜索），**工作区**（一键 hibernate 与 restore 标签集合，metadata 跨设备同步），**⌘K 命令面板**，以及 **书签工具**（多标签、重复检测、失效链接清理）—— 全部 100% 在设备上运算，无需 API key。
+超越 Chrome 原生垂直标签的 Arc 风格侧边栏：统一管理标签页、书签与阅读清单，**默认本地的 AI**（自动命名群组、标签页清理建议、悬停摘要、自然语言搜索），**工作区**（一键 hibernate 与 restore 标签集合，metadata 跨设备同步），**⌘K 命令面板**，以及 **书签工具**（多标签、重复检测、失效链接清理）—— 默认在设备上运算，无需 API key；也可自带 API key 接云端模型（Gemini API / Claude / OpenAI 兼容 / Ollama）。
 
 ## 🚀 新版本 v1.14.0 更新！
 [![演示视频](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -180,7 +180,7 @@
 
 ## 🔒 隐私与常见问题
 
-我们非常重视您的隐私。本扩展程序完全在本地运行，不会收集或传输您的个人资料。
+我们非常重视您的隐私。本扩展程序默认在本地运行，不会收集您的个人资料。若您自行设置云端 AI 服务商并填入自己的 API key，AI 请求只会从您的浏览器直接发送给该服务商。
 
 更多详细信息，请参见我们的 [隐私政策](../../PRIVACY_POLICY.md)。
 

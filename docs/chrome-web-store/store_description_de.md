@@ -1,8 +1,8 @@
 # Arc-ähnliche vertikale Tabs & Lesezeichen - Verwandeln Sie Chrome in ein Produktivitätskraftwerk · Ihr Wissens-Arbeitsplatz für Chrome
 
-🔒 **100% lokal** · 🔑 **Kein API-Schlüssel** · 🤖 **Eingebaute Gemini Nano KI**
+🔒 **Standardmäßig lokal** · 🔑 **Kein API-Schlüssel nötig (eigener optional)** · 🤖 **Eingebaute Gemini Nano KI**
 
-Chromes native vertikale Tabs (2025) zeigen Tabs nur vertikal an. **Dies ist ein vollständiger Wissens-Arbeitsplatz**: Tabs + Lesezeichen + Leseliste vereint, KI-gestützt (Gruppen-Auto-Benennung, Tab-Cleanup, Hover-Zusammenfassung, natürlichsprachliche Suche), Workspaces zum Ein-Klick-Hibernate-Restore mit geräteübergreifender Sync, ⌘K Befehlspalette, Bookmark Tools (Tags, Dedupe, tote Links) — alles auf dem Gerät, ohne API-Schlüssel.
+Chromes native vertikale Tabs (2025) zeigen Tabs nur vertikal an. **Dies ist ein vollständiger Wissens-Arbeitsplatz**: Tabs + Lesezeichen + Leseliste vereint, KI-gestützt (Gruppen-Auto-Benennung, Tab-Cleanup, Hover-Zusammenfassung, natürlichsprachliche Suche), Workspaces zum Ein-Klick-Hibernate-Restore mit geräteübergreifender Sync, ⌘K Befehlspalette, Bookmark Tools (Tags, Dedupe, tote Links) — standardmäßig auf dem Gerät (kein API-Schlüssel), mit optionaler Cloud-KI über Ihren eigenen API-Schlüssel (Gemini API / Claude / OpenAI-kompatibel / Ollama).
 
 Sind Sie es leid, sich in Dutzenden von überladenen Tabs zu verlieren? Sehnen Sie sich nach dem eleganten, vertikalen Tab-Erlebnis des Arc-Browsers, können aber das Chrome-Ökosystem nicht verlassen?
 **Arc-like Vertical Tabs & Bookmarks** ist Ihre ultimative Antwort! 🚀
@@ -23,7 +23,7 @@ Wir haben Chrome komplett neu konzipiert und eine moderne Seitenleiste eingefüh
 - **Workspaces**: Tab-Bündel als benannte Workspaces speichern, hibernate-restore, Metadaten geräteübergreifend.
 - **Command Palette (⌘K / Ctrl+K)**: Vereinheitlichte Suche + Aktions-Overlay.
 - **Bookmark Tools**: 🛠️ Tags / Dedupe / tote Links.
-- **Null Konfiguration, kein API-Schlüssel**: Alle AI läuft auf Chromes eingebautem Gemini Nano.
+- **Standardmäßig lokal, Cloud optional**: KI läuft ab Werk auf Chromes eingebautem Gemini Nano — dabei verlässt nichts Ihren Rechner. Optional verbinden Sie Ihren eigenen API-Schlüssel (Gemini API / Claude / OpenAI-kompatibel / Ollama).
 
 ## 🔥 Hauptmerkmale
 
@@ -79,7 +79,7 @@ Suchen Sie nicht nur – finden Sie sofort.
 ---
 
 ## Datenschutz & Sicherheit
-Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet **komplett offline**. Ihre Lesezeichen, der Browserverlauf und Tab-Informationen werden **NIEMALS** auf einen Server hochgeladen.
+Wir schätzen Ihre Privatsphäre. Diese Erweiterung arbeitet **standardmäßig lokal**. Ihre Lesezeichen, der Browserverlauf und Tab-Informationen werden **NIEMALS** auf unsere Server hochgeladen. Wenn Sie sich für einen Cloud-KI-Anbieter entscheiden, gehen KI-Anfragen direkt von Ihrem Browser ausschließlich an diesen Anbieter — mit Ihrem eigenen API-Schlüssel.
 
 ---
 

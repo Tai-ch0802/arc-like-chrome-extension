@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barra lateral Arc: pestañas, marcadores, lista de lectura + IA local (grupos, limpieza, resumen, búsqueda), Workspaces. Sin API.",
+    "message": "Sidebar estilo Arc: pestañas, marcadores y lectura + IA local (grupos, limpieza, resumen, búsqueda), Workspaces. API opcional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

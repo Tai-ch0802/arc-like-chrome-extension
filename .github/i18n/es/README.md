@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Una barra lateral estilo Arc que va mucho más allá de las pestañas verticales nativas de Chrome: pestañas + marcadores + lista de lectura unificados, **IA local sin configuración** (nombrar grupos automáticamente, sugerencias de limpieza de pestañas, resúmenes al pasar el ratón, búsqueda en lenguaje natural), **Workspaces** (hibernación y restauración de grupos de pestañas, metadatos sincronizados entre dispositivos), una **paleta de comandos ⌘K**, y **herramientas para marcadores** (etiquetas, dedupe, enlaces rotos) — 100% local, sin clave API.
+Una barra lateral estilo Arc que va mucho más allá de las pestañas verticales nativas de Chrome: pestañas + marcadores + lista de lectura unificados, **IA local por defecto** (nombrar grupos automáticamente, sugerencias de limpieza de pestañas, resúmenes al pasar el ratón, búsqueda en lenguaje natural — Gemini Nano integrado, o usa tu propia clave API para Gemini API / Claude / compatible con OpenAI / Ollama), **Workspaces** (hibernación y restauración de grupos de pestañas, metadatos sincronizados entre dispositivos), una **paleta de comandos ⌘K**, y **herramientas para marcadores** (etiquetas, dedupe, enlaces rotos) — en el dispositivo por defecto, sin necesidad de clave API.
 
 ## 🚀 ¡Nueva actualización v1.14.0! 
 [![Video de demostración](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -178,7 +178,7 @@ Para futuras pruebas automatizadas, hemos elegido **Puppeteer** como nuestro mar
 
 ## 🔒 Privacidad y preguntas frecuentes
 
-Valoramos tu privacidad. Esta extensión funciona de forma totalmente local y no recopila ni transmite tus datos personales.
+Valoramos tu privacidad. Esta extensión funciona de forma local por defecto y no recopila tus datos personales. Si activas un proveedor de IA en la nube con tu propia clave API, las solicitudes de IA van directamente desde tu navegador únicamente a ese proveedor.
 
 Para más detalles, consulta nuestra [Política de privacidad](../../PRIVACY_POLICY.md).
 

@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Barra lateral Arc: abas, favoritos, lista de leitura + IA local (grupos, limpeza, resumo, busca), Workspaces. Sem API.",
+    "message": "Barra lateral Arc: abas, favoritos, lista de leitura + IA local (grupos, limpeza, resumo, busca), Workspaces. Chave de API opcional.",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

@@ -1,8 +1,8 @@
 # Pestañas Verticales y Marcadores estilo Arc - Transforma Chrome en una Potencia de Productividad · Tu espacio de trabajo de conocimiento para Chrome
 
-🔒 **100% local** · 🔑 **Sin clave API** · 🤖 **Gemini Nano AI integrado**
+🔒 **Local por defecto** · 🔑 **Sin necesidad de clave API (opcional: la tuya)** · 🤖 **Gemini Nano AI integrado**
 
-Las pestañas verticales nativas de Chrome (2025) solo muestran pestañas verticalmente. **Esto es un espacio de trabajo de conocimiento completo**: pestañas + marcadores + lista de lectura unificados, IA (nombrar grupos automáticamente, limpieza de pestañas, resúmenes al pasar el ratón, búsqueda en lenguaje natural), Workspaces de hibernación-restauración con un clic sincronizados entre dispositivos, paleta de comandos ⌘K, Bookmark Tools (etiquetas, dedupe, enlaces rotos) — 100% en el dispositivo, sin clave API.
+Las pestañas verticales nativas de Chrome (2025) solo muestran pestañas verticalmente. **Esto es un espacio de trabajo de conocimiento completo**: pestañas + marcadores + lista de lectura unificados, IA (nombrar grupos automáticamente, limpieza de pestañas, resúmenes al pasar el ratón, búsqueda en lenguaje natural), Workspaces de hibernación-restauración con un clic sincronizados entre dispositivos, paleta de comandos ⌘K, Bookmark Tools (etiquetas, dedupe, enlaces rotos) — en el dispositivo por defecto (sin clave API), con IA en la nube opcional usando tu propia clave (Gemini API / Claude / compatible con OpenAI / Ollama).
 
 ¿Cansado de perderte en docenas de pestañas desordenadas? ¿Anhelas la experiencia elegante de pestañas verticales del navegador Arc pero no puedes dejar el ecosistema de Chrome?
 ¡**Arc-like Vertical Tabs & Bookmarks** es tu respuesta definitiva! 🚀
@@ -23,7 +23,7 @@ Hemos reinventado Chrome por completo, introduciendo un panel lateral moderno qu
 - **Workspaces**: paquetes de pestañas nombrados, hibernate-restore, metadatos sincronizados entre dispositivos.
 - **Command Palette (⌘K / Ctrl+K)**: búsqueda + acciones unificadas.
 - **Bookmark Tools**: 🛠️ etiquetas / dedupe / enlaces rotos.
-- **Cero configuración, sin clave API**: toda la IA corre en Gemini Nano integrado en Chrome.
+- **Local por defecto, nube opcional**: la IA corre en el Gemini Nano integrado de Chrome desde el primer momento — nada sale de tu máquina. Opcionalmente conecta tu propia clave API (Gemini API / Claude / compatible con OpenAI / Ollama).
 
 ## 🔥 Características Principales
 
@@ -79,7 +79,7 @@ No solo busques, encuentra al instante.
 ---
 
 ## Privacidad y Seguridad
-Valoramos tu privacidad. Esta extensión opera **completamente offline**. Tus marcadores, historial de navegación e información de pestañas **NUNCA** se suben a ningún servidor.
+Valoramos tu privacidad. Esta extensión opera **de forma local por defecto**. Tus marcadores, historial de navegación e información de pestañas **NUNCA** se suben a nuestros servidores. Si activas un proveedor de IA en la nube, las solicitudes de IA van directamente desde tu navegador únicamente a ese proveedor, usando tu propia clave API.
 
 ---
 

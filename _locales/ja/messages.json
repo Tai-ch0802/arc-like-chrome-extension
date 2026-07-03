@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Arc スタイルのサイドバー — タブ・ブックマーク・リーディングリスト統合 + ローカル AI（グループ命名、クリーンアップ、要約、NL 検索）、Workspaces、⌘K パレット。API キー不要。",
+    "message": "Arc スタイルのサイドバー — タブ・ブックマーク・リーディングリスト統合 + ローカル AI（グループ命名、クリーンアップ、要約、NL 検索）、Workspaces、⌘K パレット。API キーは任意。",
     "description": "The description of the extension."
   },
   "searchPlaceholder": {

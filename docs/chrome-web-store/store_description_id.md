@@ -1,8 +1,8 @@
 # Tab Vertikal & Bookmark ala Arc - Ubah Chrome Menjadi Pusat Produktivitas · Knowledge Workspace Anda untuk Chrome
 
-🔒 **100% lokal** · 🔑 **Tanpa API key** · 🤖 **Gemini Nano AI bawaan**
+🔒 **Lokal secara default** · 🔑 **Tanpa perlu API key (opsional bawa sendiri)** · 🤖 **Gemini Nano AI bawaan**
 
-Vertical tabs bawaan Chrome (2025) hanya menampilkan tab secara vertikal. **Ini adalah knowledge workspace lengkap**: tabs + bookmarks + reading list disatukan, AI (penamaan grup otomatis, cleanup tab, ringkasan hover, pencarian bahasa natural), Workspaces hibernate-restore satu klik sinkron antar device, Command Palette ⌘K, Bookmark Tools (tags, dedupe, dead-link) — semuanya di device, tanpa API key.
+Vertical tabs bawaan Chrome (2025) hanya menampilkan tab secara vertikal. **Ini adalah knowledge workspace lengkap**: tabs + bookmarks + reading list disatukan, AI (penamaan grup otomatis, cleanup tab, ringkasan hover, pencarian bahasa natural), Workspaces hibernate-restore satu klik sinkron antar device, Command Palette ⌘K, Bookmark Tools (tags, dedupe, dead-link) — berjalan di device secara default (tanpa API key), dengan opsi cloud AI memakai API key Anda sendiri (Gemini API / Claude / kompatibel OpenAI / Ollama).
 
 Bosan tersesat dalam puluhan tab yang berantakan? Mendambakan pengalaman tab vertikal yang ramping dari browser Arc tetapi tidak bisa meninggalkan ekosistem Chrome?
 **Arc-like Vertical Tabs & Bookmarks** adalah jawaban utama Anda! 🚀
@@ -23,7 +23,7 @@ Kami telah sepenuhnya membayangkan kembali Chrome, memperkenalkan panel samping 
 - **Workspaces**: bundel tab bernama, hibernate-restore, metadata sinkron antar device.
 - **Command Palette (⌘K / Ctrl+K)**: pencarian + aksi terpadu.
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup.
-- **Tanpa konfigurasi, tanpa API key**: semua AI berjalan di Gemini Nano bawaan Chrome.
+- **Lokal secara default, cloud opsional**: AI berjalan di Gemini Nano bawaan Chrome sejak awal — data tidak meninggalkan mesin Anda. Secara opsional, hubungkan API key Anda sendiri (Gemini API / Claude / kompatibel OpenAI / Ollama).
 
 ## 🔥 Fitur Utama
 
@@ -79,7 +79,7 @@ Jangan hanya mencari—temukan secara instan.
 ---
 
 ## Privasi & Keamanan
-Kami menghargai privasi Anda. Ekstensi ini beroperasi **sepenuhnya offline**. Bookmark, riwayat penelusuran, dan informasi tab Anda **TIDAK PERNAH** diunggah ke server mana pun.
+Kami menghargai privasi Anda. Ekstensi ini beroperasi **secara lokal secara default**. Bookmark, riwayat penelusuran, dan informasi tab Anda **TIDAK PERNAH** diunggah ke server kami. Jika Anda memilih (opt-in) penyedia cloud AI, permintaan AI dikirim langsung dari browser Anda hanya ke penyedia tersebut, menggunakan API key Anda sendiri.
 
 ---
 

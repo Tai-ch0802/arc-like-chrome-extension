@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Uma barra lateral ao estilo Arc que vai muito além das abas verticais nativas do Chrome: abas + favoritos + lista de leitura unificadas, **IA local sem configuração** (nomeação automática de grupos, sugestões de limpeza de abas, resumos ao passar o mouse, busca em linguagem natural), **Workspaces** (hibernar e restaurar conjuntos de abas, metadados sincronizados entre dispositivos), uma **paleta de comandos ⌘K**, e **ferramentas para favoritos** (tags, dedupe, links quebrados) — 100% no dispositivo, sem chave de API.
+Uma barra lateral ao estilo Arc que vai muito além das abas verticais nativas do Chrome: abas + favoritos + lista de leitura unificadas, **IA local por padrão** (nomeação automática de grupos, sugestões de limpeza de abas, resumos ao passar o mouse, busca em linguagem natural — Gemini Nano integrado, ou traga sua própria chave de API para Gemini API / Claude / compatível com OpenAI / Ollama), **Workspaces** (hibernar e restaurar conjuntos de abas, metadados sincronizados entre dispositivos), uma **paleta de comandos ⌘K**, e **ferramentas para favoritos** (tags, dedupe, links quebrados) — no dispositivo por padrão, sem necessidade de chave de API.
 
 ## 🚀 Nova atualização v1.14.0! 
 [![Vídeo de Demonstração](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -178,7 +178,7 @@ Para testes automatizados futuros, escolhemos o **Puppeteer** como nossa estrutu
 
 ## 🔒 Privacidade e FAQ
 
-Valorizamos sua privacidade. Esta extensão opera inteiramente de forma local e não coleta ou transmite seus dados pessoais.
+Valorizamos sua privacidade. Esta extensão opera localmente por padrão e não coleta seus dados pessoais. Se você optar por um provedor de IA na nuvem com sua própria chave de API, as solicitações de IA vão diretamente do seu navegador apenas para esse provedor.
 
 Para mais detalhes, consulte nossa [Política de Privacidade](../../PRIVACY_POLICY.md).
 
