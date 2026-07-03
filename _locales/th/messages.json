@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "ส่วนนี้ใช้เมื่อเลือก \"ในตัว Chrome (Gemini Nano)\" ด้านบน"
+  },
+  "pageReaderBtnTitle": {
+    "message": "สรุปหน้าเว็บ"
+  },
+  "pageReaderBtnText": {
+    "message": "สรุป"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "สรุปหน้าเว็บ: ย่อยเนื้อหาหน้าปัจจุบัน"
+  },
+  "pageReaderModalTitle": {
+    "message": "สรุปหน้าเว็บ"
+  },
+  "pageReaderLoading": {
+    "message": "กำลังอ่านหน้า…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "สรุปย่อ"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "ประเด็นสำคัญ"
+  },
+  "pageReaderNotScriptable": {
+    "message": "ไม่สามารถอ่านหน้านี้ได้ (หน้าภายในของเบราว์เซอร์)"
+  },
+  "pageReaderNoContent": {
+    "message": "ไม่พบข้อความที่อ่านได้ในหน้านี้"
+  },
+  "pageReaderFailed": {
+    "message": "ไม่สามารถสร้างสรุปได้ โปรดตรวจสอบการตั้งค่า AI แล้วลองอีกครั้ง"
+  },
+  "pageReaderToggleLabel": {
+    "message": "แสดงปุ่มสรุปหน้าเว็บ"
+  },
+  "pageReaderDescription": {
+    "message": "สรุปหน้าปัจจุบันด้วย AI ในคลิกเดียว (สรุปย่อ + ประเด็นสำคัญ)"
   }
 }

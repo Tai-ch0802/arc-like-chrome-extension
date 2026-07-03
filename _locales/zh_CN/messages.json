@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "本部分仅在上方选择“Chrome 内置（Gemini Nano）”时适用。"
+  },
+  "pageReaderBtnTitle": {
+    "message": "网页导读"
+  },
+  "pageReaderBtnText": {
+    "message": "导读"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "网页导读：摘要当前页面"
+  },
+  "pageReaderModalTitle": {
+    "message": "页面导读"
+  },
+  "pageReaderLoading": {
+    "message": "正在读取页面…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "摘要"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "重点"
+  },
+  "pageReaderNotScriptable": {
+    "message": "无法读取此页面（浏览器内部页面）。"
+  },
+  "pageReaderNoContent": {
+    "message": "此页面上没有可读取的文字。"
+  },
+  "pageReaderFailed": {
+    "message": "无法生成导读。请检查 AI 设置后重试。"
+  },
+  "pageReaderToggleLabel": {
+    "message": "显示网页导读按钮"
+  },
+  "pageReaderDescription": {
+    "message": "一键 AI 导读当前页面（摘要 + 重点）。"
   }
 }

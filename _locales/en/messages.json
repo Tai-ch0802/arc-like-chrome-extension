@@ -1213,5 +1213,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "This section applies when \"Chrome built-in (Gemini Nano)\" is selected above."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Page Reader"
+  },
+  "pageReaderBtnText": {
+    "message": "Read"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Page Reader: digest current page"
+  },
+  "pageReaderModalTitle": {
+    "message": "Page digest"
+  },
+  "pageReaderLoading": {
+    "message": "Reading page…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "TL;DR"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Key points"
+  },
+  "pageReaderNotScriptable": {
+    "message": "This page cannot be read (browser internal page)."
+  },
+  "pageReaderNoContent": {
+    "message": "No readable text found on this page."
+  },
+  "pageReaderFailed": {
+    "message": "Could not generate a digest. Check AI settings and try again."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Show Page Reader button"
+  },
+  "pageReaderDescription": {
+    "message": "One-click AI digest of the current page (TL;DR + key points)."
   }
 }

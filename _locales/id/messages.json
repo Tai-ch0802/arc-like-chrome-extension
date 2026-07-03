@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "Bagian ini berlaku saat \"Bawaan Chrome (Gemini Nano)\" dipilih di atas."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Pembaca halaman"
+  },
+  "pageReaderBtnText": {
+    "message": "Baca"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Pembaca halaman: ringkas halaman saat ini"
+  },
+  "pageReaderModalTitle": {
+    "message": "Ringkasan halaman"
+  },
+  "pageReaderLoading": {
+    "message": "Membaca halaman…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "TL;DR"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Poin utama"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Halaman ini tidak dapat dibaca (halaman internal browser)."
+  },
+  "pageReaderNoContent": {
+    "message": "Tidak ada teks yang dapat dibaca di halaman ini."
+  },
+  "pageReaderFailed": {
+    "message": "Tidak dapat membuat ringkasan. Periksa pengaturan AI dan coba lagi."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Tampilkan tombol pembaca halaman"
+  },
+  "pageReaderDescription": {
+    "message": "Ringkasan AI halaman saat ini dengan sekali klik (TL;DR + poin utama)."
   }
 }

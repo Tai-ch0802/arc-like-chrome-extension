@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "Esta sección se aplica cuando arriba está seleccionado «Integrado en Chrome (Gemini Nano)»."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Lector de página"
+  },
+  "pageReaderBtnText": {
+    "message": "Leer"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Lector de página: resumir la página actual"
+  },
+  "pageReaderModalTitle": {
+    "message": "Resumen de la página"
+  },
+  "pageReaderLoading": {
+    "message": "Leyendo la página…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "TL;DR"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Puntos clave"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Esta página no se puede leer (página interna del navegador)."
+  },
+  "pageReaderNoContent": {
+    "message": "No se encontró texto legible en esta página."
+  },
+  "pageReaderFailed": {
+    "message": "No se pudo generar el resumen. Revisa la configuración de IA e inténtalo de nuevo."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Mostrar el botón del lector de página"
+  },
+  "pageReaderDescription": {
+    "message": "Resumen con IA de la página actual con un clic (TL;DR + puntos clave)."
   }
 }

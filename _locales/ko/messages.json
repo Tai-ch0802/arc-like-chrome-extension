@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "이 섹션은 위에서 'Chrome 내장 (Gemini Nano)'을 선택한 경우에 적용됩니다."
+  },
+  "pageReaderBtnTitle": {
+    "message": "페이지 다이제스트"
+  },
+  "pageReaderBtnText": {
+    "message": "요약"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "페이지 다이제스트: 현재 페이지 요약"
+  },
+  "pageReaderModalTitle": {
+    "message": "페이지 다이제스트"
+  },
+  "pageReaderLoading": {
+    "message": "페이지 읽는 중…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "요약"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "핵심 포인트"
+  },
+  "pageReaderNotScriptable": {
+    "message": "이 페이지는 읽을 수 없습니다(브라우저 내부 페이지)."
+  },
+  "pageReaderNoContent": {
+    "message": "이 페이지에서 읽을 수 있는 텍스트를 찾지 못했습니다."
+  },
+  "pageReaderFailed": {
+    "message": "다이제스트를 생성하지 못했습니다. AI 설정을 확인하고 다시 시도하세요."
+  },
+  "pageReaderToggleLabel": {
+    "message": "페이지 다이제스트 버튼 표시"
+  },
+  "pageReaderDescription": {
+    "message": "한 번의 클릭으로 현재 페이지를 AI 요약(요약 + 핵심 포인트)."
   }
 }

@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "Этот раздел действует, когда выше выбран «Встроенный в Chrome (Gemini Nano)»."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Обзор страницы"
+  },
+  "pageReaderBtnText": {
+    "message": "Обзор"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Обзор страницы: краткое содержание текущей страницы"
+  },
+  "pageReaderModalTitle": {
+    "message": "Обзор страницы"
+  },
+  "pageReaderLoading": {
+    "message": "Чтение страницы…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "Кратко"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Ключевые моменты"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Эту страницу нельзя прочитать (внутренняя страница браузера)."
+  },
+  "pageReaderNoContent": {
+    "message": "На этой странице не найдено читаемого текста."
+  },
+  "pageReaderFailed": {
+    "message": "Не удалось создать обзор. Проверьте настройки ИИ и попробуйте ещё раз."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Показывать кнопку обзора страницы"
+  },
+  "pageReaderDescription": {
+    "message": "Обзор текущей страницы с помощью ИИ в один клик (кратко + ключевые моменты)."
   }
 }

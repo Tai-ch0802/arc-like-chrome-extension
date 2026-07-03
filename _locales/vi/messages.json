@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "Phần này áp dụng khi chọn \"Tích hợp sẵn trong Chrome (Gemini Nano)\" ở trên."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Trình đọc trang"
+  },
+  "pageReaderBtnText": {
+    "message": "Đọc"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Trình đọc trang: tóm lược trang hiện tại"
+  },
+  "pageReaderModalTitle": {
+    "message": "Tóm lược trang"
+  },
+  "pageReaderLoading": {
+    "message": "Đang đọc trang…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "Tóm tắt"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Điểm chính"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Không thể đọc trang này (trang nội bộ của trình duyệt)."
+  },
+  "pageReaderNoContent": {
+    "message": "Không tìm thấy văn bản có thể đọc trên trang này."
+  },
+  "pageReaderFailed": {
+    "message": "Không thể tạo tóm lược. Hãy kiểm tra cài đặt AI và thử lại."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Hiển thị nút trình đọc trang"
+  },
+  "pageReaderDescription": {
+    "message": "Tóm lược trang hiện tại bằng AI chỉ với một cú nhấp (tóm tắt + điểm chính)."
   }
 }

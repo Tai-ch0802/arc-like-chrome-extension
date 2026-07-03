@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "Cette section s'applique lorsque « Intégré à Chrome (Gemini Nano) » est sélectionné ci-dessus."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Synthèse de page"
+  },
+  "pageReaderBtnText": {
+    "message": "Lire"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Synthèse de page : résumer la page actuelle"
+  },
+  "pageReaderModalTitle": {
+    "message": "Synthèse de la page"
+  },
+  "pageReaderLoading": {
+    "message": "Lecture de la page…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "TL;DR"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Points clés"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Cette page ne peut pas être lue (page interne du navigateur)."
+  },
+  "pageReaderNoContent": {
+    "message": "Aucun texte lisible trouvé sur cette page."
+  },
+  "pageReaderFailed": {
+    "message": "Impossible de générer la synthèse. Vérifiez les paramètres d'IA et réessayez."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Afficher le bouton de synthèse de page"
+  },
+  "pageReaderDescription": {
+    "message": "Synthèse IA de la page actuelle en un clic (TL;DR + points clés)."
   }
 }

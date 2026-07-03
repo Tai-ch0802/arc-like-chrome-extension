@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "本區塊僅在上方選擇「Chrome 內建（Gemini Nano）」時適用。"
+  },
+  "pageReaderBtnTitle": {
+    "message": "網頁導讀"
+  },
+  "pageReaderBtnText": {
+    "message": "導讀"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "網頁導讀：導讀當前分頁內容"
+  },
+  "pageReaderModalTitle": {
+    "message": "網頁導讀"
+  },
+  "pageReaderLoading": {
+    "message": "正在讀取頁面…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "摘要"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "重點"
+  },
+  "pageReaderNotScriptable": {
+    "message": "無法讀取此頁面（瀏覽器內部頁面）。"
+  },
+  "pageReaderNoContent": {
+    "message": "此頁面上沒有可讀取的文字。"
+  },
+  "pageReaderFailed": {
+    "message": "無法產生導讀。請檢查 AI 設定後再試一次。"
+  },
+  "pageReaderToggleLabel": {
+    "message": "顯示網頁導讀按鈕"
+  },
+  "pageReaderDescription": {
+    "message": "一鍵 AI 導讀當前頁面（摘要＋重點）。"
   }
 }

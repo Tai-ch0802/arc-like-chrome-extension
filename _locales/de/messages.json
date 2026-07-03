@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "Dieser Abschnitt gilt, wenn oben „In Chrome integriert (Gemini Nano)“ ausgewählt ist."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Seitenüberblick"
+  },
+  "pageReaderBtnText": {
+    "message": "Lesen"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Seitenüberblick: aktuelle Seite zusammenfassen"
+  },
+  "pageReaderModalTitle": {
+    "message": "Seitenüberblick"
+  },
+  "pageReaderLoading": {
+    "message": "Seite wird gelesen…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "TL;DR"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Kernpunkte"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Diese Seite kann nicht gelesen werden (interne Browserseite)."
+  },
+  "pageReaderNoContent": {
+    "message": "Auf dieser Seite wurde kein lesbarer Text gefunden."
+  },
+  "pageReaderFailed": {
+    "message": "Zusammenfassung konnte nicht erstellt werden. Prüfen Sie die KI-Einstellungen und versuchen Sie es erneut."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Seitenüberblick-Schaltfläche anzeigen"
+  },
+  "pageReaderDescription": {
+    "message": "KI-Zusammenfassung der aktuellen Seite mit einem Klick (TL;DR + Kernpunkte)."
   }
 }

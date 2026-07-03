@@ -242,6 +242,12 @@ const FEATURE_TOGGLES = [
         descKey: 'aiAutoNamingDescription',
     },
     {
+        key: 'pageReaderVisible',
+        defaultVal: true,
+        labelKey: 'pageReaderToggleLabel',
+        descKey: 'pageReaderDescription',
+    },
+    {
         key: 'hoverSummarizeEnabled',
         defaultVal: true,
         labelKey: 'hoverSummarizeToggle',

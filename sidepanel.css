@@ -3719,3 +3719,31 @@ mark.url-match {
     opacity: 0.6;
     font-style: italic;
 }
+
+/* === Page Reader (one-click AI page digest) === */
+.page-reader-digest {
+    max-height: 60vh;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.55;
+}
+.page-reader-status {
+    color: var(--text-color-secondary, #6c7086);
+    font-size: 13px;
+    padding: 8px 0;
+}
+.page-reader-header {
+    margin: 10px 0 4px;
+    font-size: 13px;
+    color: var(--text-color-header, #fff);
+}
+.page-reader-tldr {
+    margin: 0 0 6px;
+}
+.page-reader-points {
+    margin: 0;
+    padding-left: 18px;
+}
+.page-reader-points li {
+    margin-bottom: 4px;
+}

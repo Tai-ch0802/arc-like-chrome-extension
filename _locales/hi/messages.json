@@ -1210,5 +1210,41 @@
   },
   "aiProviderNanoSectionNote": {
     "message": "यह अनुभाग तब लागू होता है जब ऊपर \"Chrome में अंतर्निहित (Gemini Nano)\" चुना गया हो।"
+  },
+  "pageReaderBtnTitle": {
+    "message": "पेज रीडर"
+  },
+  "pageReaderBtnText": {
+    "message": "पढ़ें"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "पेज रीडर: वर्तमान पेज का सार बनाएं"
+  },
+  "pageReaderModalTitle": {
+    "message": "पेज सार"
+  },
+  "pageReaderLoading": {
+    "message": "पेज पढ़ा जा रहा है…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "सारांश"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "मुख्य बिंदु"
+  },
+  "pageReaderNotScriptable": {
+    "message": "यह पेज पढ़ा नहीं जा सकता (ब्राउज़र का आंतरिक पेज)।"
+  },
+  "pageReaderNoContent": {
+    "message": "इस पेज पर पढ़ने योग्य टेक्स्ट नहीं मिला।"
+  },
+  "pageReaderFailed": {
+    "message": "सार नहीं बनाया जा सका। AI सेटिंग जाँचें और फिर से प्रयास करें।"
+  },
+  "pageReaderToggleLabel": {
+    "message": "पेज रीडर बटन दिखाएँ"
+  },
+  "pageReaderDescription": {
+    "message": "एक क्लिक में वर्तमान पेज का AI सार (सारांश + मुख्य बिंदु)।"
   }
 }
