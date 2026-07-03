@@ -18,6 +18,7 @@ import * as aiManager from '../aiManager.js';
 import * as modal from '../modalManager.js';
 import * as readingListManager from '../readingListManager.js';
 import { renderIcon } from '../icons.js';
+import { extractJsonArray } from '../ai/jsonExtract.js';
 
 const MAX_CANDIDATES = 30;
 const MAX_RESULTS = 8;
@@ -137,8 +138,7 @@ ${lines}`;
     if (raw === null) return { unavailable: true, items: [] };
 
     try {
-        const match = raw.match(/\[[\s\S]*\]/);
-        const parsed = JSON.parse(match ? match[0] : raw);
+        const parsed = extractJsonArray(raw);
         if (!Array.isArray(parsed)) return { unavailable: false, items: [] };
         const items = parsed
             .filter(p => typeof p.index === 'number' && limited[p.index])

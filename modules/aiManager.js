@@ -5,6 +5,7 @@
  * - Summarizer API for page summarization
  */
 import * as api from './apiManager.js';
+import { extractJsonArray } from './ai/jsonExtract.js';
 
 // === Shared Constants ===
 
@@ -350,18 +351,12 @@ ${tabsData}`;
             const session = await getOrCreateLanguageModelSession(callbacks);
             const result = await session.prompt(prompt);
 
-            // Try extracting JSON using regex if markdown code blocks or extra text are present
-            const jsonMatch = result.match(/\[\s*\{.*?\}\s*\]/s);
-            let jsonStr = jsonMatch ? jsonMatch[0] : result;
-
-            try {
-                const parsed = JSON.parse(jsonStr);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    return parsed;
-                }
-            } catch (parseErr) {
-                console.error('Failed to parse AI output as JSON:', jsonStr, parseErr);
+            // Tolerant extraction: handles markdown code blocks or extra text.
+            const parsed = extractJsonArray(result);
+            if (parsed && parsed.length > 0) {
+                return parsed;
             }
+            console.error('Failed to parse AI output as JSON:', result);
             // If parsing fails, fall through to the fallback below
             break;
         } catch (err) {
@@ -427,8 +422,7 @@ ${tabsData}`;
     try {
         const session = await getOrCreateLanguageModelSession();
         const result = await session.prompt(prompt);
-        const jsonMatch = result.match(/\[\s*\{[\s\S]*?\}\s*\]/);
-        const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : result);
+        const parsed = extractJsonArray(result);
         const label = Array.isArray(parsed) && parsed[0] && typeof parsed[0].label === 'string'
             ? parsed[0].label.trim()
             : null;
@@ -486,8 +480,7 @@ ${tabsData}`;
     try {
         const session = await getOrCreateLanguageModelSession();
         const result = await session.prompt(prompt);
-        const jsonMatch = result.match(/\[[\s\S]*\]/);
-        const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : result);
+        const parsed = extractJsonArray(result);
         if (!Array.isArray(parsed)) return [];
         return parsed
             .filter(p => p && typeof p.tabId === 'number' && typeof p.reason === 'string')
