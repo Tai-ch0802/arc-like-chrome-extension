@@ -1254,7 +1254,7 @@
     "message": "The selected AI provider is not configured. Open Settings → AI to finish setup."
   },
   "aiProviderAuthError": {
-    "message": "Your AI provider rejected the API key. Check Settings → AI."
+    "message": "Your AI provider rejected the request (authorization failed). Check Settings → AI."
   },
   "aiProviderHttpWarning": {
     "message": "This address uses unencrypted http: — your API key would be sent in cleartext."

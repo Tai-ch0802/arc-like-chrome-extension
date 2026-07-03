@@ -1251,7 +1251,7 @@
     "message": "Der ausgewählte KI-Anbieter ist nicht konfiguriert. Öffnen Sie Einstellungen → KI, um die Einrichtung abzuschließen."
   },
   "aiProviderAuthError": {
-    "message": "Ihr KI-Anbieter hat den API-Schlüssel abgelehnt. Prüfen Sie Einstellungen → KI."
+    "message": "Ihr KI-Anbieter hat die Anfrage abgelehnt (Autorisierung fehlgeschlagen). Prüfen Sie Einstellungen → KI."
   },
   "aiProviderHttpWarning": {
     "message": "Diese Adresse verwendet unverschlüsseltes http: — Ihr API-Schlüssel würde im Klartext übertragen."

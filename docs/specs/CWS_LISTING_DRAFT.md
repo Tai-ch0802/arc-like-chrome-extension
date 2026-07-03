@@ -4,7 +4,7 @@
 「Arc-like Sidebar」你的瀏覽器，理當井然有序。結合垂直分頁、書籤整合與預設本機（可選雲端）的 AI 智慧整理，打造最優雅的資訊指揮中心。
 
 *English (130 chars)*
-Arc-like Sidebar: Vertical tabs, bookmarks, and a local-by-default AI organizer (optional BYO-key cloud). Transform your browser into an elegant command center.
+Arc-like Sidebar: vertical tabs, bookmarks, and a local-by-default AI organizer. Turn your browser into an elegant command center.
 
 ## 2. Detailed Description
 

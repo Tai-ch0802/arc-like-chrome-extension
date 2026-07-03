@@ -1251,7 +1251,7 @@
     "message": "Nhà cung cấp AI đã chọn chưa được cấu hình. Mở Cài đặt → AI để hoàn tất thiết lập."
   },
   "aiProviderAuthError": {
-    "message": "Nhà cung cấp AI đã từ chối khóa API. Hãy kiểm tra Cài đặt → AI."
+    "message": "Nhà cung cấp AI đã từ chối yêu cầu (xác thực thất bại). Hãy kiểm tra Cài đặt → AI."
   },
   "aiProviderHttpWarning": {
     "message": "Địa chỉ này dùng http: không mã hóa — khóa API của bạn sẽ được gửi dưới dạng văn bản thuần."

@@ -1251,7 +1251,7 @@
     "message": "所选的 AI 提供商尚未完成设置。请前往“设置 → AI”填写 API 密钥与模型。"
   },
   "aiProviderAuthError": {
-    "message": "AI 提供商拒绝了您的 API 密钥，请检查“设置 → AI”。"
+    "message": "AI 提供商拒绝了请求（授权失败），请检查“设置 → AI”。"
   },
   "aiProviderHttpWarning": {
     "message": "此地址使用未加密的 http:，您的 API 密钥将以明文传输。"

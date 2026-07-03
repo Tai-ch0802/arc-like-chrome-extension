@@ -40,7 +40,7 @@ key_files:
   - file_path: options.js
     description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（共 8 區塊：外觀/語言/功能/同步/AI/RSS/快捷鍵/關於）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
   - file_path: modules/ui/settingsBridge.js
-    description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。Phase 13(批E) 加入 driveSyncStatus 分支：local 區的 driveSyncStatus 變更映射成 dispatch driveSyncStatusChanged 事件，供 driveSyncBadge 即時更新徽章。"
+    description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。Phase 13(批E) 加入 driveSyncStatus 分支：local 區的 driveSyncStatus 變更映射成 dispatch driveSyncStatusChanged 事件，供 driveSyncBadge 即時更新徽章。另有 aiProviderAuthError 分支（雲端 AI 401/403 訊號 → dispatch aiProviderAuthErrorChanged，供 toast.js 顯示節流提示）。"
   - file_path: modules/ui/customThemeManager.js
     description: "[UI] 自訂主題管理。負責顏色選擇器面板 UI、使用者自訂配色儲存與載入、以及 JSON 匯出匯入功能。"
   - file_path: modules/ui/backgroundImageManager.js
@@ -86,9 +86,11 @@ key_files:
   - file_path: modules/ui/pageReaderUI.js
     description: "[UI] 網頁導讀 (Page Reader)。一鍵擷取當前分頁文字（依供應商預算截斷）→ aiManager.generatePageDigest → modal 顯示 TL;DR + 重點清單；toggle pageReaderVisible（sync）控制按鈕可見性。"
   - file_path: modules/ui/aiGrouperUI.js
-    description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Toast 復原機制。"
+    description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Undo 復原流程（Toast 顯示/隱藏已抽至 modules/ui/toast.js 共用）。"
+  - file_path: modules/ui/toast.js
+    description: "[UI] 共用 Toast（自 aiGrouperUI 抽出）。showToast/hideToast 操作 sidepanel.html 的 #toast-* DOM；另提供 initAiProviderErrorToast：監聽 aiProviderAuthErrorChanged 顯示雲端 AI 授權失敗提示（60 秒 cooldown 防洗版）。"
   - file_path: modules/ui/aiCleanupUI.js
-    description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單（預設勾選 + 全選控制）。Phase 12(批B) 每列加 tab group badge（彩色圓點 + 群組名，未分組不顯示），用 resolveTabGroupBadge 判定。"
+    description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單（預設不勾選 + 全選控制；降低雲端模型下 prompt-injection 誤關分頁的影響面）。Phase 12(批B) 每列加 tab group badge（彩色圓點 + 群組名，未分組不顯示），用 resolveTabGroupBadge 判定。"
   - file_path: modules/ui/hoverSummarizeManager.js
     description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、aiManager.summarizePageStreaming 摘要（builtin 串流／雲端一次回全文）、記憶體快取。"
   - file_path: modules/ui/hoverTooltip.js

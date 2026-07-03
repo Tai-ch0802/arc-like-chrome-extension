@@ -1251,7 +1251,7 @@
     "message": "O provedor de IA selecionado não está configurado. Abra Configurações → IA para concluir a configuração."
   },
   "aiProviderAuthError": {
-    "message": "Seu provedor de IA rejeitou a chave de API. Verifique Configurações → IA."
+    "message": "Seu provedor de IA rejeitou a solicitação (falha de autorização). Verifique Configurações → IA."
   },
   "aiProviderHttpWarning": {
     "message": "Este endereço usa http: sem criptografia — sua chave de API seria enviada em texto simples."

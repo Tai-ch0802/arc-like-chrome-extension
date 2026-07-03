@@ -72,6 +72,6 @@ export function initAiProviderErrorToast() {
         if (now - lastAuthErrorToastAt < AUTH_ERROR_TOAST_COOLDOWN_MS) return;
         lastAuthErrorToastAt = now;
         showToast(api.getMessage('aiProviderAuthError')
-            || 'Your AI provider rejected the API key. Check Settings → AI.');
+            || 'Your AI provider rejected the request (authorization failed). Check Settings → AI.');
     });
 }

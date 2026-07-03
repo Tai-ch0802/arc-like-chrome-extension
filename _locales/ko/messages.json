@@ -1251,7 +1251,7 @@
     "message": "선택한 AI 제공자가 설정되지 않았습니다. 설정 → AI에서 설정을 완료하세요."
   },
   "aiProviderAuthError": {
-    "message": "AI 제공자가 API 키를 거부했습니다. 설정 → AI를 확인하세요."
+    "message": "AI 제공자가 요청을 거부했습니다(인증 실패). 설정 → AI를 확인하세요."
   },
   "aiProviderHttpWarning": {
     "message": "이 주소는 암호화되지 않은 http:를 사용합니다. API 키가 평문으로 전송됩니다."

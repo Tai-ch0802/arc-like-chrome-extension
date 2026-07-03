@@ -1251,7 +1251,7 @@
     "message": "Penyedia AI yang dipilih belum dikonfigurasi. Buka Pengaturan → AI untuk menyelesaikan penyiapan."
   },
   "aiProviderAuthError": {
-    "message": "Penyedia AI Anda menolak kunci API. Periksa Pengaturan → AI."
+    "message": "Penyedia AI Anda menolak permintaan (otorisasi gagal). Periksa Pengaturan → AI."
   },
   "aiProviderHttpWarning": {
     "message": "Alamat ini menggunakan http: tanpa enkripsi — kunci API Anda akan dikirim sebagai teks biasa."
