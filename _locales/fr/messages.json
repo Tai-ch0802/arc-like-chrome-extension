@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "Le fournisseur d'IA sélectionné n'est pas configuré. Ouvrez Paramètres → IA pour terminer la configuration."
+  },
+  "aiProviderAuthError": {
+    "message": "Votre fournisseur d'IA a refusé la clé API. Vérifiez Paramètres → IA."
   }
 }

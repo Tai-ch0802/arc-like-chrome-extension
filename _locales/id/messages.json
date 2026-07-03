@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "Penyedia AI yang dipilih belum dikonfigurasi. Buka Pengaturan → AI untuk menyelesaikan penyiapan."
+  },
+  "aiProviderAuthError": {
+    "message": "Penyedia AI Anda menolak kunci API. Periksa Pengaturan → AI."
   }
 }

@@ -18,6 +18,7 @@ import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
 import { SEARCH_NO_RESULTS_ICON_SVG, renderIcon } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
+import { initAiProviderErrorToast } from './modules/ui/toast.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 
 // --- Spotlight 轉送動作處理 ---
@@ -275,6 +276,7 @@ async function initialize() {
     initializeSearchUI();
     // Options page writes only to chrome.storage; react to those changes here.
     initSettingsBridge();
+    initAiProviderErrorToast();
 
     rssManager.initRssManager().catch(console.error);
     keyboard.initialize();

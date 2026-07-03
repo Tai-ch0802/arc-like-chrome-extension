@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "選択した AI プロバイダーが設定されていません。設定 → AI からセットアップを完了してください。"
+  },
+  "aiProviderAuthError": {
+    "message": "AI プロバイダーが API キーを拒否しました。設定 → AI を確認してください。"
   }
 }

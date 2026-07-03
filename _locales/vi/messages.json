@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "Nhà cung cấp AI đã chọn chưa được cấu hình. Mở Cài đặt → AI để hoàn tất thiết lập."
+  },
+  "aiProviderAuthError": {
+    "message": "Nhà cung cấp AI đã từ chối khóa API. Hãy kiểm tra Cài đặt → AI."
   }
 }

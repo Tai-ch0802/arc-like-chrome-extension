@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "所選的 AI 供應商尚未完成設定。請前往「設定 → AI」填入 API 金鑰與模型。"
+  },
+  "aiProviderAuthError": {
+    "message": "AI 供應商拒絕了你的 API 金鑰，請至「設定 → AI」檢查。"
   }
 }

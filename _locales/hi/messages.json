@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "चयनित AI प्रदाता कॉन्फ़िगर नहीं है। सेटअप पूरा करने के लिए सेटिंग → AI खोलें।"
+  },
+  "aiProviderAuthError": {
+    "message": "आपके AI प्रदाता ने API कुंजी अस्वीकार कर दी। सेटिंग → AI जाँचें।"
   }
 }

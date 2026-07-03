@@ -1249,5 +1249,8 @@
   },
   "aiProviderNotConfigured": {
     "message": "所选的 AI 提供商尚未完成设置。请前往“设置 → AI”填写 API 密钥与模型。"
+  },
+  "aiProviderAuthError": {
+    "message": "AI 提供商拒绝了您的 API 密钥，请检查“设置 → AI”。"
   }
 }

@@ -14,6 +14,7 @@ import * as api from './apiManager.js';
 import { extractJsonArray } from './ai/jsonExtract.js';
 import * as providerSettings from './ai/providerSettings.js';
 import { getCloudProvider } from './ai/providers/index.js';
+import { HttpError } from './ai/providers/httpUtils.js';
 
 // === Shared Constants ===
 
@@ -69,6 +70,14 @@ async function cloudChat(cloud, config, id, params) {
         return await cloud.chat(config, params);
     } catch (err) {
         console.warn(`[ai] ${id} chat failed:`, err);
+        // Auth failures deserve a user-visible hint (features otherwise
+        // degrade silently). Works from every context — including the
+        // background SW — via storage.onChanged → settingsBridge → toast.
+        if (err instanceof HttpError && (err.status === 401 || err.status === 403)) {
+            api.setStorage('local', {
+                aiProviderAuthError: { providerId: id, status: err.status, at: Date.now() },
+            }).catch(() => { /* best-effort signal */ });
+        }
         return null;
     }
 }
