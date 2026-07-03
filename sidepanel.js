@@ -29,6 +29,7 @@ let panelReady = false;
 const PANEL_ACTION_HANDLERS = {
     'smart-group': () => document.getElementById('ai-group-btn')?.click(),
     'ai-cleanup': () => document.getElementById('ai-cleanup-btn')?.click(),
+    'page-reader': () => document.getElementById('page-reader-btn')?.click(),
     'bookmark-tools': () => document.getElementById('bookmark-tools-btn')?.click(),
     'manage-workspaces': () => document.getElementById('workspace-switch-btn')?.click(),
     'refresh-bookmarks': () => document.dispatchEvent(new CustomEvent('refreshBookmarksRequired')),
@@ -221,7 +222,8 @@ async function initialize() {
         state.initUiLanguage(), // Load UI Language Override state
         state.initHoverSummarize(), // Load Hover Summarize state
         state.initAiAutoNaming(), // Load AI Auto Naming state (drives bg listener gating via storage)
-        state.initAiCleanupVisibility() // Load AI Cleanup visibility state
+        state.initAiCleanupVisibility(), // Load AI Cleanup visibility state
+        state.initPageReaderVisibility() // Load Page Reader visibility state
     ]);
 
     // Ensure custom language dictionary is loaded BEFORE applying any translations
@@ -260,6 +262,7 @@ async function initialize() {
     ui.initThemeSwitcher();
     ui.initAiGrouper();
     ui.initAiCleanup();
+    ui.initPageReader();
     // Workspace cache must be loaded BEFORE the first updateTabList(): the
     // Other Windows section titles windows by their bound workspace's name.
     await workspaceManager.initWorkspaces();

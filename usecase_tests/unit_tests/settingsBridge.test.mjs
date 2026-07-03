@@ -58,4 +58,9 @@ describe('resolveSettingChangeActions', () => {
     expect(resolveSettingChangeActions({ readingListSummaryEnabled: { newValue: false } }, 'sync'))
       .toContainEqual({ type: 'refreshState', key: 'readingListSummaryEnabled' });
   });
+  it('sync pageReaderVisible → dispatch event AND refreshState actions', () => {
+    const actions = resolveSettingChangeActions({ pageReaderVisible: { newValue: false } }, 'sync');
+    expect(actions).toContainEqual({ type: 'dispatch', event: 'pageReaderVisibilityChanged', detail: { visible: false } });
+    expect(actions).toContainEqual({ type: 'refreshState', key: 'pageReaderVisible' });
+  });
 });

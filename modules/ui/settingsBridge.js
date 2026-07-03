@@ -28,6 +28,7 @@ export function resolveSettingChangeActions(changes, areaName) {
             readingListVisible: 'readingListVisibilityChanged',
             aiGroupingVisible: 'aiGroupingVisibilityChanged',
             aiCleanupVisible: 'aiCleanupVisibilityChanged',
+            pageReaderVisible: 'pageReaderVisibilityChanged',
         };
         for (const [key, event] of Object.entries(evMap)) {
             if (changes[key]) actions.push({ type: 'dispatch', event, detail: { visible: changes[key].newValue } });
@@ -36,6 +37,7 @@ export function resolveSettingChangeActions(changes, areaName) {
             'readingListVisible',
             'aiGroupingVisible',
             'aiCleanupVisible',
+            'pageReaderVisible',
             'aiAutoNamingEnabled',
             'hoverSummarizeEnabled',
             'readingListSummaryEnabled',
@@ -74,6 +76,7 @@ export async function applySettingChanges(actions) {
                     readingListVisible: state.initReadingListVisibility,
                     aiGroupingVisible: state.initAiGroupingVisibility,
                     aiCleanupVisible: state.initAiCleanupVisibility,
+                    pageReaderVisible: state.initPageReaderVisibility,
                     aiAutoNamingEnabled: state.initAiAutoNaming,
                     hoverSummarizeEnabled: state.initHoverSummarize,
                     readingListSummaryEnabled: state.initReadingListSummary,

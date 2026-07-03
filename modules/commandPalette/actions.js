@@ -34,6 +34,14 @@ export function buildActions() {
             handler: () => requestPanelAction('ai-cleanup'),
         },
         {
+            id: 'action-page-reader',
+            type: 'action',
+            icon: 'description',
+            titleKey: 'cmdPaletteActionPageReader',
+            isVisible: () => state.isPageReaderVisible(),
+            handler: () => requestPanelAction('page-reader'),
+        },
+        {
             id: 'action-new-tab-right',
             type: 'action',
             icon: 'add',

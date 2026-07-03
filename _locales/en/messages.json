@@ -804,7 +804,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ tab(s)",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteActionCreateWorkspace": {
@@ -1160,5 +1162,95 @@
   },
   "densityOptionComfortable": {
     "message": "Comfortable"
+  },
+  "aiProviderLabel": {
+    "message": "AI model provider"
+  },
+  "aiProviderBuiltin": {
+    "message": "Chrome built-in (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI-compatible endpoint"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (local)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "Runs entirely on this device. No data leaves your browser."
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API key"
+  },
+  "aiProviderModelLabel": {
+    "message": "Model"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "Base URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "Test connection"
+  },
+  "aiProviderTesting": {
+    "message": "Testing…"
+  },
+  "aiProviderTestOk": {
+    "message": "Connection OK"
+  },
+  "aiProviderTestFail": {
+    "message": "Connection failed"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "Your API key is stored only on this device and sent only to the provider you configure."
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama blocks extensions by default. Start it with OLLAMA_ORIGINS=chrome-extension://* to allow access."
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "This section applies when \"Chrome built-in (Gemini Nano)\" is selected above."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Page Reader"
+  },
+  "pageReaderBtnText": {
+    "message": "Read"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Page Reader: digest current page"
+  },
+  "pageReaderModalTitle": {
+    "message": "Page digest"
+  },
+  "pageReaderLoading": {
+    "message": "Reading page…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "TL;DR"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Key points"
+  },
+  "pageReaderNotScriptable": {
+    "message": "This page cannot be read (browser internal page)."
+  },
+  "pageReaderNoContent": {
+    "message": "No readable text found on this page."
+  },
+  "pageReaderFailed": {
+    "message": "Could not generate a digest. Check AI settings and try again."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Show Page Reader button"
+  },
+  "pageReaderDescription": {
+    "message": "One-click AI digest of the current page (TL;DR + key points)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "The selected AI provider is not configured. Open Settings → AI to finish setup."
   }
 }

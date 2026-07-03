@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ แท็บ",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,95 @@
   },
   "densityOptionComfortable": {
     "message": "สบาย"
+  },
+  "aiProviderLabel": {
+    "message": "ผู้ให้บริการโมเดล AI"
+  },
+  "aiProviderBuiltin": {
+    "message": "ในตัว Chrome (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "ปลายทางที่เข้ากันได้กับ OpenAI"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (ในเครื่อง)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "ทำงานบนอุปกรณ์นี้ทั้งหมด ข้อมูลจะไม่ออกจากเบราว์เซอร์ของคุณ"
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "คีย์ API"
+  },
+  "aiProviderModelLabel": {
+    "message": "โมเดล"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "URL หลัก"
+  },
+  "aiProviderTestBtn": {
+    "message": "ทดสอบการเชื่อมต่อ"
+  },
+  "aiProviderTesting": {
+    "message": "กำลังทดสอบ…"
+  },
+  "aiProviderTestOk": {
+    "message": "การเชื่อมต่อสำเร็จ"
+  },
+  "aiProviderTestFail": {
+    "message": "การเชื่อมต่อล้มเหลว"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "คีย์ API ของคุณจะถูกเก็บไว้บนอุปกรณ์นี้เท่านั้น และส่งไปยังผู้ให้บริการที่คุณตั้งค่าเท่านั้น"
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama บล็อกส่วนขยายโดยค่าเริ่มต้น ให้เริ่มด้วย OLLAMA_ORIGINS=chrome-extension://* เพื่ออนุญาตการเข้าถึง"
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "ส่วนนี้ใช้เมื่อเลือก \"ในตัว Chrome (Gemini Nano)\" ด้านบน"
+  },
+  "pageReaderBtnTitle": {
+    "message": "สรุปหน้าเว็บ"
+  },
+  "pageReaderBtnText": {
+    "message": "สรุป"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "สรุปหน้าเว็บ: ย่อยเนื้อหาหน้าปัจจุบัน"
+  },
+  "pageReaderModalTitle": {
+    "message": "สรุปหน้าเว็บ"
+  },
+  "pageReaderLoading": {
+    "message": "กำลังอ่านหน้า…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "สรุปย่อ"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "ประเด็นสำคัญ"
+  },
+  "pageReaderNotScriptable": {
+    "message": "ไม่สามารถอ่านหน้านี้ได้ (หน้าภายในของเบราว์เซอร์)"
+  },
+  "pageReaderNoContent": {
+    "message": "ไม่พบข้อความที่อ่านได้ในหน้านี้"
+  },
+  "pageReaderFailed": {
+    "message": "ไม่สามารถสร้างสรุปได้ โปรดตรวจสอบการตั้งค่า AI แล้วลองอีกครั้ง"
+  },
+  "pageReaderToggleLabel": {
+    "message": "แสดงปุ่มสรุปหน้าเว็บ"
+  },
+  "pageReaderDescription": {
+    "message": "สรุปหน้าปัจจุบันด้วย AI ในคลิกเดียว (สรุปย่อ + ประเด็นสำคัญ)"
+  },
+  "aiProviderNotConfigured": {
+    "message": "ยังไม่ได้ตั้งค่าผู้ให้บริการ AI ที่เลือก เปิด การตั้งค่า → AI เพื่อตั้งค่าให้เสร็จ"
   }
 }

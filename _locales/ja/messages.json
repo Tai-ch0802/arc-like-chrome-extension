@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "タブ $count$ 件",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,95 @@
   },
   "densityOptionComfortable": {
     "message": "ゆったり"
+  },
+  "aiProviderLabel": {
+    "message": "AI モデルプロバイダー"
+  },
+  "aiProviderBuiltin": {
+    "message": "Chrome 内蔵（Gemini Nano）"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI 互換エンドポイント"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama（ローカル）"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "すべてこの端末上で動作します。データがブラウザの外に送信されることはありません。"
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API キー"
+  },
+  "aiProviderModelLabel": {
+    "message": "モデル"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "ベース URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "接続をテスト"
+  },
+  "aiProviderTesting": {
+    "message": "テスト中…"
+  },
+  "aiProviderTestOk": {
+    "message": "接続に成功しました"
+  },
+  "aiProviderTestFail": {
+    "message": "接続に失敗しました"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "API キーはこの端末にのみ保存され、設定したプロバイダーにのみ送信されます。"
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama は既定で拡張機能をブロックします。OLLAMA_ORIGINS=chrome-extension://* を指定して起動するとアクセスを許可できます。"
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "このセクションは、上で「Chrome 内蔵（Gemini Nano）」を選択した場合に適用されます。"
+  },
+  "pageReaderBtnTitle": {
+    "message": "ページダイジェスト"
+  },
+  "pageReaderBtnText": {
+    "message": "要約"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "ページダイジェスト：現在のページを要約"
+  },
+  "pageReaderModalTitle": {
+    "message": "ページダイジェスト"
+  },
+  "pageReaderLoading": {
+    "message": "ページを読み取り中…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "要約"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "重要ポイント"
+  },
+  "pageReaderNotScriptable": {
+    "message": "このページは読み取れません（ブラウザ内部ページ）。"
+  },
+  "pageReaderNoContent": {
+    "message": "このページに読み取れるテキストが見つかりません。"
+  },
+  "pageReaderFailed": {
+    "message": "ダイジェストを生成できませんでした。AI 設定を確認して再試行してください。"
+  },
+  "pageReaderToggleLabel": {
+    "message": "ページダイジェストボタンを表示"
+  },
+  "pageReaderDescription": {
+    "message": "ワンクリックで現在のページを AI 要約（要約＋重要ポイント）。"
+  },
+  "aiProviderNotConfigured": {
+    "message": "選択した AI プロバイダーが設定されていません。設定 → AI からセットアップを完了してください。"
   }
 }

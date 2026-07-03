@@ -60,7 +60,11 @@ async function handleGroupAction() {
         const availability = await aiManager.checkModelAvailability();
         console.info('[AI] Model availability:', availability);
         if (availability === 'unavailable') {
-            showToast(api.getMessage('aiModelNotReady'));
+            // Cloud provider selected but not configured → point at settings,
+            // not at Gemini Nano setup.
+            showToast(api.getMessage(
+                (await aiManager.isCloudProviderActive()) ? 'aiProviderNotConfigured' : 'aiModelNotReady'
+            ));
             return;
         }
 

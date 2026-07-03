@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "Вкладок: $count$",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,95 @@
   },
   "densityOptionComfortable": {
     "message": "Свободно"
+  },
+  "aiProviderLabel": {
+    "message": "Поставщик модели ИИ"
+  },
+  "aiProviderBuiltin": {
+    "message": "Встроенный в Chrome (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "Совместимый с OpenAI эндпоинт"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (локально)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "Работает полностью на этом устройстве. Данные не покидают ваш браузер."
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "Ключ API"
+  },
+  "aiProviderModelLabel": {
+    "message": "Модель"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "Базовый URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "Проверить подключение"
+  },
+  "aiProviderTesting": {
+    "message": "Проверка…"
+  },
+  "aiProviderTestOk": {
+    "message": "Подключение успешно"
+  },
+  "aiProviderTestFail": {
+    "message": "Ошибка подключения"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "Ваш ключ API хранится только на этом устройстве и отправляется только выбранному вами поставщику."
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama по умолчанию блокирует расширения. Запустите его с OLLAMA_ORIGINS=chrome-extension://*, чтобы разрешить доступ."
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "Этот раздел действует, когда выше выбран «Встроенный в Chrome (Gemini Nano)»."
+  },
+  "pageReaderBtnTitle": {
+    "message": "Обзор страницы"
+  },
+  "pageReaderBtnText": {
+    "message": "Обзор"
+  },
+  "cmdPaletteActionPageReader": {
+    "message": "Обзор страницы: краткое содержание текущей страницы"
+  },
+  "pageReaderModalTitle": {
+    "message": "Обзор страницы"
+  },
+  "pageReaderLoading": {
+    "message": "Чтение страницы…"
+  },
+  "pageReaderTldrHeader": {
+    "message": "Кратко"
+  },
+  "pageReaderKeyPointsHeader": {
+    "message": "Ключевые моменты"
+  },
+  "pageReaderNotScriptable": {
+    "message": "Эту страницу нельзя прочитать (внутренняя страница браузера)."
+  },
+  "pageReaderNoContent": {
+    "message": "На этой странице не найдено читаемого текста."
+  },
+  "pageReaderFailed": {
+    "message": "Не удалось создать обзор. Проверьте настройки ИИ и попробуйте ещё раз."
+  },
+  "pageReaderToggleLabel": {
+    "message": "Показывать кнопку обзора страницы"
+  },
+  "pageReaderDescription": {
+    "message": "Обзор текущей страницы с помощью ИИ в один клик (кратко + ключевые моменты)."
+  },
+  "aiProviderNotConfigured": {
+    "message": "Выбранный поставщик ИИ не настроен. Откройте «Настройки → ИИ», чтобы завершить настройку."
   }
 }

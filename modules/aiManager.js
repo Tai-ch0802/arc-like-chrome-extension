@@ -1,10 +1,19 @@
 /**
  * AI Manager Module
- * Encapsulates interactions with the local AI models:
- * - LanguageModel (Prompt API) for tab grouping
- * - Summarizer API for page summarization
+ * Single façade for every AI feature. Routes each call to the user-selected
+ * provider (options page → AI section):
+ * - 'builtin' (default): Chrome's local models — LanguageModel (Prompt API)
+ *   for tab grouping and Summarizer API for page summaries.
+ * - Cloud providers (Gemini API / Anthropic / OpenAI-compatible / Ollama):
+ *   one-shot chat calls via modules/ai/providers/.
+ * Provider settings are read from chrome.storage.local on every call — AI
+ * calls are seconds-slow, so the ~1ms read is negligible and avoids any
+ * cross-context cache invalidation (sidepanel / options / service worker).
  */
 import * as api from './apiManager.js';
+import { extractJsonArray } from './ai/jsonExtract.js';
+import * as providerSettings from './ai/providerSettings.js';
+import { getCloudProvider } from './ai/providers/index.js';
 
 // === Shared Constants ===
 
@@ -27,6 +36,92 @@ const LANGUAGE_MODEL_OPTIONS = {
 };
 
 /**
+ * Neutral system prompt shared by the builtin NL session and cloud one-shot
+ * calls whose caller-built prompt fully describes the task.
+ */
+const NL_SYSTEM_PROMPT = 'You are a helpful assistant. Output ONLY valid JSON arrays as instructed. Do not use markdown code blocks like ```json or ```.';
+
+/** @param {string} currentLang */
+function buildGroupingSystemPrompt(currentLang) {
+    return `You are a helpful assistant that strictly outputs JSON arrays based on the requested format. Do NOT use markdown code blocks like \`\`\`json or \`\`\`. You MUST format the JSON correctly and translate the theme names into the ${currentLang} locale language.`;
+}
+
+// === Provider Routing ===
+
+/**
+ * Resolves the active provider once per call.
+ * @returns {Promise<{id: string, config: object, cloud: object|null}>}
+ *          `cloud` is the provider client module, or null for 'builtin'.
+ */
+async function resolveActiveProvider() {
+    const { id, config } = await providerSettings.getActiveProvider();
+    return { id, config, cloud: getCloudProvider(id) };
+}
+
+/**
+ * One-shot chat on a cloud provider. Warn-swallows every failure to match
+ * the module's "AI errors degrade to null" contract.
+ * @returns {Promise<string|null>}
+ */
+async function cloudChat(cloud, config, id, params) {
+    if (!providerSettings.isProviderConfigured(id, config)) return null;
+    try {
+        return await cloud.chat(config, params);
+    } catch (err) {
+        console.warn(`[ai] ${id} chat failed:`, err);
+        return null;
+    }
+}
+
+/**
+ * Provider-agnostic one-shot prompt. Cloud providers get the given system
+ * prompt; builtin uses the dedicated NL session (its own neutral system
+ * prompt) with the strict `'available'` gate so background callers can't
+ * silently start a multi-GB model download.
+ * @returns {Promise<string|null>}
+ */
+async function runChatUnified({ system, prompt, maxTokens = 1024 }) {
+    const { id, config, cloud } = await resolveActiveProvider();
+    if (cloud) {
+        return cloudChat(cloud, config, id, { system, prompt, maxTokens });
+    }
+    if ((await checkBuiltinModelAvailability()) !== 'available') return null;
+    try {
+        const session = await getOrCreateNlSession();
+        if (!session) return null;
+        return await session.prompt(prompt);
+    } catch (err) {
+        console.warn('[ai] builtin prompt failed:', err);
+        destroyNlSession();
+        return null;
+    }
+}
+
+/**
+ * Whether the active provider is a cloud provider (anything but 'builtin').
+ * Lets UI code pick provider-appropriate copy for unavailable states
+ * ("configure your provider" vs "enable Gemini Nano").
+ * @returns {Promise<boolean>}
+ */
+export async function isCloudProviderActive() {
+    const { id } = await providerSettings.getActiveProvider();
+    return id !== 'builtin';
+}
+
+/**
+ * How many characters of page text we can afford to send to the active
+ * provider. Builtin Gemini Nano has a tiny input budget; cloud models can
+ * take much more (richer digests / summaries).
+ * @returns {Promise<number>}
+ */
+export async function getInputCharBudget() {
+    const { id } = await providerSettings.getActiveProvider();
+    if (id === 'builtin') return 1500;
+    if (id === 'ollama') return 6000; // conservative default context for local models
+    return 12000;
+}
+
+/**
  * Builds Summarizer options that align between `availability()` and `create()`.
  * @returns {{expectedInputLanguages: string[], outputLanguage: string}}
  */
@@ -47,10 +142,14 @@ function _buildSummarizerLangOptions() {
 let summarizerSession = null;
 
 /**
- * Checks if the Summarizer API is available.
+ * Checks if page summarization is available on the active provider.
+ * Cloud providers: a pure config check (health is verified at call time).
+ * Builtin: the Summarizer API availability check.
  * @returns {Promise<boolean>}
  */
 export async function checkSummarizerReadiness() {
+    const { id, config, cloud } = await resolveActiveProvider();
+    if (cloud) return providerSettings.isProviderConfigured(id, config);
     if (!('Summarizer' in self)) return false;
     try {
         // ⚠️ Best Practice: Pass the same language options to availability()
@@ -126,6 +225,19 @@ export function destroySummarizerSession() {
  */
 export async function summarizeText(text, domain = '') {
     if (!text || typeof text !== 'string') return null;
+    {
+        const { id, config, cloud } = await resolveActiveProvider();
+        if (cloud) {
+            const lang = api.getResolvedUILanguage();
+            const raw = await cloudChat(cloud, config, id, {
+                system: `You summarize web page content in ONE concise sentence in the '${lang}' locale language. Reply with the sentence only — no preamble, no markdown.`,
+                prompt: domain ? `Web page from ${domain}:\n\n${text}` : text,
+                maxTokens: 200,
+            });
+            const out = (raw || '').trim();
+            return out || null;
+        }
+    }
     if (!('Summarizer' in self)) return null;
     try {
         const langOpts = _buildSummarizerLangOptions();
@@ -156,10 +268,25 @@ export async function summarizeText(text, domain = '') {
 let languageModelSession = null;
 
 /**
- * Checks the LanguageModel availability and returns the detailed status.
+ * Checks AI availability on the ACTIVE provider.
+ * Cloud providers never download anything, so they map to a binary
+ * 'available' / 'unavailable' based on whether they're configured.
  * @returns {Promise<string>} 'available', 'downloadable', 'downloading', or 'unavailable'
  */
 export async function checkModelAvailability() {
+    const { id, config, cloud } = await resolveActiveProvider();
+    if (cloud) {
+        return providerSettings.isProviderConfigured(id, config) ? 'available' : 'unavailable';
+    }
+    return checkBuiltinModelAvailability();
+}
+
+/**
+ * Checks the BUILTIN LanguageModel (Gemini Nano) availability regardless of
+ * the active provider — the options page status panel always reports Nano.
+ * @returns {Promise<string>} 'available', 'downloadable', 'downloading', or 'unavailable'
+ */
+export async function checkBuiltinModelAvailability() {
     if (typeof globalThis !== 'undefined' && globalThis.LanguageModel) {
         try {
             const status = await globalThis.LanguageModel.availability(LANGUAGE_MODEL_OPTIONS);
@@ -197,7 +324,7 @@ async function getOrCreateLanguageModelSession(callbacks = {}) {
     const currentLang = api.getResolvedUILanguage();
 
     const options = {
-        systemPrompt: `You are a helpful assistant that strictly outputs JSON arrays based on the requested format. Do NOT use markdown code blocks like \`\`\`json or \`\`\`. You MUST format the JSON correctly and translate the theme names into the ${currentLang} locale language.`,
+        systemPrompt: buildGroupingSystemPrompt(currentLang),
         temperature: 0.1,
         topK: 1,
         // ⚠️ Best Practice: Use the shared LANGUAGE_MODEL_OPTIONS constant
@@ -244,13 +371,13 @@ let nlLanguageModelSession = null;
 
 async function getOrCreateNlSession() {
     if (nlLanguageModelSession) return nlLanguageModelSession;
-    if ((await checkModelAvailability()) !== 'available') return null;
+    if ((await checkBuiltinModelAvailability()) !== 'available') return null;
     try {
         nlLanguageModelSession = await globalThis.LanguageModel.create({
             // Intentionally neutral — generic JSON-output assistant. The shared
             // grouping session's systemPrompt mentions "theme names" which is
             // tab-grouping specific and could bias unrelated rerank tasks.
-            systemPrompt: 'You are a helpful assistant. Output ONLY valid JSON arrays as instructed. Do not use markdown code blocks like ```json or ```.',
+            systemPrompt: NL_SYSTEM_PROMPT,
             temperature: 0.1,
             topK: 1,
             ...LANGUAGE_MODEL_OPTIONS,
@@ -284,16 +411,7 @@ function destroyNlSession() {
  */
 export async function runPrompt(promptText) {
     if (!promptText) return null;
-    if ((await checkModelAvailability()) !== 'available') return null;
-    try {
-        const session = await getOrCreateNlSession();
-        if (!session) return null;
-        return await session.prompt(promptText);
-    } catch (err) {
-        console.warn('[ai] runPrompt failed:', err);
-        destroyNlSession();
-        return null;
-    }
+    return runChatUnified({ system: NL_SYSTEM_PROMPT, prompt: promptText, maxTokens: 1024 });
 }
 
 /**
@@ -305,7 +423,11 @@ export async function runPrompt(promptText) {
  */
 export async function generateGroups(tabsInfo, callbacks = {}) {
     if (!(await checkModelReadiness())) {
-        throw new Error(api.getMessage('aiModelNotReady'));
+        // Provider-appropriate remedy: cloud = go configure it; builtin = Nano setup.
+        const notReadyMsg = (await isCloudProviderActive())
+            ? (api.getMessage('aiProviderNotConfigured') || 'The selected AI provider is not configured. Open Settings → AI to finish setup.')
+            : api.getMessage('aiModelNotReady');
+        throw new Error(notReadyMsg);
     }
 
     // Limit to top 30 tabs to avoid token limit overflow (as per SA)
@@ -341,41 +463,52 @@ Please reply strictly in JSON array format, the format must be exactly as follow
 [Tab List]
 ${tabsData}`;
 
-    // Retry logic: if the first attempt fails (e.g., model purged mid-session),
-    // destroy the cached session and try once more.
-    // @see https://developer.chrome.com/docs/ai/understand-built-in-model-management
-    const MAX_RETRIES = 1;
-    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-        try {
-            const session = await getOrCreateLanguageModelSession(callbacks);
-            const result = await session.prompt(prompt);
-
-            // Try extracting JSON using regex if markdown code blocks or extra text are present
-            const jsonMatch = result.match(/\[\s*\{.*?\}\s*\]/s);
-            let jsonStr = jsonMatch ? jsonMatch[0] : result;
-
+    const { id, config, cloud } = await resolveActiveProvider();
+    if (cloud) {
+        const raw = await cloudChat(cloud, config, id, {
+            system: buildGroupingSystemPrompt(currentLang),
+            prompt,
+            maxTokens: 2048,
+        });
+        // Cloud models vary; validate the shape before handing it to the UI.
+        const parsed = (raw ? extractJsonArray(raw) : null)?.filter(
+            g => g && typeof g.theme === 'string' && Array.isArray(g.tabIds)
+        );
+        if (parsed && parsed.length > 0) {
+            return parsed;
+        }
+        // Fall through to the fallback below.
+    } else {
+        // Builtin retry logic: if the first attempt fails (e.g., model purged
+        // mid-session), destroy the cached session and try once more.
+        // @see https://developer.chrome.com/docs/ai/understand-built-in-model-management
+        const MAX_RETRIES = 1;
+        for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
             try {
-                const parsed = JSON.parse(jsonStr);
-                if (Array.isArray(parsed) && parsed.length > 0) {
+                const session = await getOrCreateLanguageModelSession(callbacks);
+                const result = await session.prompt(prompt);
+
+                // Tolerant extraction: handles markdown code blocks or extra text.
+                const parsed = extractJsonArray(result);
+                if (parsed && parsed.length > 0) {
                     return parsed;
                 }
-            } catch (parseErr) {
-                console.error('Failed to parse AI output as JSON:', jsonStr, parseErr);
-            }
-            // If parsing fails, fall through to the fallback below
-            break;
-        } catch (err) {
-            console.error(`AI grouping prompt failed (attempt ${attempt + 1}):`, err);
+                console.error('Failed to parse AI output as JSON:', result);
+                // If parsing fails, fall through to the fallback below
+                break;
+            } catch (err) {
+                console.error(`AI grouping prompt failed (attempt ${attempt + 1}):`, err);
 
-            // Model may have been purged or updated mid-session.
-            // Destroy the cached session and retry once.
-            destroyLanguageModelSession();
+                // Model may have been purged or updated mid-session.
+                // Destroy the cached session and retry once.
+                destroyLanguageModelSession();
 
-            if (attempt < MAX_RETRIES) {
-                console.info('Retrying with a fresh session...');
-                continue;
+                if (attempt < MAX_RETRIES) {
+                    console.info('Retrying with a fresh session...');
+                    continue;
+                }
+                // All retries exhausted, fall through to fallback
             }
-            // All retries exhausted, fall through to fallback
         }
     }
 
@@ -424,20 +557,30 @@ Reply strictly in JSON array format (no markdown, no extra text):
 [Tabs]
 ${tabsData}`;
 
-    try {
-        const session = await getOrCreateLanguageModelSession();
-        const result = await session.prompt(prompt);
-        const jsonMatch = result.match(/\[\s*\{[\s\S]*?\}\s*\]/);
-        const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : result);
-        const label = Array.isArray(parsed) && parsed[0] && typeof parsed[0].label === 'string'
-            ? parsed[0].label.trim()
-            : null;
-        return label || null;
-    } catch (err) {
-        console.warn('[AI] generateGroupName failed:', err);
-        destroyLanguageModelSession();
-        return null;
+    let result = null;
+    const { id, config, cloud } = await resolveActiveProvider();
+    if (cloud) {
+        result = await cloudChat(cloud, config, id, {
+            system: buildGroupingSystemPrompt(currentLang),
+            prompt,
+            maxTokens: 200,
+        });
+        if (result === null) return null;
+    } else {
+        try {
+            const session = await getOrCreateLanguageModelSession();
+            result = await session.prompt(prompt);
+        } catch (err) {
+            console.warn('[AI] generateGroupName failed:', err);
+            destroyLanguageModelSession();
+            return null;
+        }
     }
+    const parsed = extractJsonArray(result);
+    const label = Array.isArray(parsed) && parsed[0] && typeof parsed[0].label === 'string'
+        ? parsed[0].label.trim().slice(0, 40) // hard cap: prompt asks ≤15 chars, don't trust the model
+        : null;
+    return label || null;
 }
 
 /**
@@ -483,18 +626,142 @@ If no tab is a good candidate, reply with: []
 [Tabs]
 ${tabsData}`;
 
-    try {
-        const session = await getOrCreateLanguageModelSession();
-        const result = await session.prompt(prompt);
-        const jsonMatch = result.match(/\[[\s\S]*\]/);
-        const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : result);
-        if (!Array.isArray(parsed)) return [];
-        return parsed
-            .filter(p => p && typeof p.tabId === 'number' && typeof p.reason === 'string')
-            .map(p => ({ tabId: p.tabId, reason: p.reason.trim().slice(0, 40) }));
-    } catch (err) {
-        console.warn('[AI] generateCleanupSuggestions failed:', err);
-        destroyLanguageModelSession();
-        return [];
+    let result = null;
+    const { id, config, cloud } = await resolveActiveProvider();
+    if (cloud) {
+        result = await cloudChat(cloud, config, id, {
+            system: buildGroupingSystemPrompt(currentLang),
+            prompt,
+            maxTokens: 1024,
+        });
+        if (result === null) return [];
+    } else {
+        try {
+            const session = await getOrCreateLanguageModelSession();
+            result = await session.prompt(prompt);
+        } catch (err) {
+            console.warn('[AI] generateCleanupSuggestions failed:', err);
+            destroyLanguageModelSession();
+            return [];
+        }
     }
+    const parsed = extractJsonArray(result);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+        .filter(p => p && typeof p.tabId === 'number' && typeof p.reason === 'string')
+        .map(p => ({ tabId: p.tabId, reason: p.reason.trim().slice(0, 40) }));
+}
+
+// === Page Summaries & Page Reader ===
+
+/**
+ * Summarizes page text with progressive output where supported.
+ * Builtin: real Summarizer streaming (chunks arrive incrementally).
+ * Cloud: one-shot chat — the full text is delivered as a single chunk.
+ * Builtin session errors PROPAGATE so the caller can destroy the session
+ * and fall back (mirrors the previous hoverSummarizeManager behavior).
+ * @param {string} pageText
+ * @param {string} [domain]
+ * @param {{onChunk?: (chunk: string) => void, signal?: AbortSignal}} [opts]
+ * @returns {Promise<string|null>} The full summary, or null when unavailable/aborted.
+ */
+export async function summarizePageStreaming(pageText, domain = '', { onChunk, signal } = {}) {
+    if (!pageText || typeof pageText !== 'string') return null;
+    const { id, config, cloud } = await resolveActiveProvider();
+
+    if (cloud) {
+        const lang = api.getResolvedUILanguage();
+        const raw = await cloudChat(cloud, config, id, {
+            system: `You summarize web page content in ONE concise sentence in the '${lang}' locale language. Reply with the sentence only — no preamble, no markdown.`,
+            prompt: domain ? `Web page from ${domain}:\n\n${pageText}` : pageText,
+            maxTokens: 200,
+            signal, // cancel the network request when the user un-hovers
+        });
+        if (signal?.aborted) return null;
+        const out = (raw || '').trim();
+        if (!out) return null;
+        if (onChunk) onChunk(out);
+        return out;
+    }
+
+    const session = await getOrCreateSummarizerSession();
+    if (!session || signal?.aborted) return null;
+    const stream = session.summarizeStreaming(pageText, {
+        context: domain
+            ? `Web page from ${domain}. Provide a concise one-sentence summary.`
+            : 'Provide a concise one-sentence summary.',
+    });
+    let fullSummary = '';
+    for await (const chunk of stream) {
+        if (signal?.aborted) return null;
+        fullSummary += chunk;
+        if (onChunk) onChunk(chunk);
+    }
+    return fullSummary || null;
+}
+
+/**
+ * Generates a structured digest of a web page for the Page Reader feature:
+ * a TL;DR plus key points, in the user's UI language.
+ *
+ * The model is asked for a single-element JSON ARRAY (not a bare object)
+ * because the builtin NL session's system prompt enforces array output;
+ * cloud models handle it just as well.
+ *
+ * @param {{title?: string, url?: string, text: string}} page
+ * @returns {Promise<{tldr: string, keyPoints: string[]}|null>}
+ */
+export async function generatePageDigest({ title = '', url = '', text }) {
+    if (!text || typeof text !== 'string') return null;
+    const currentLang = api.getResolvedUILanguage();
+
+    let cleanUrl = url;
+    try {
+        const u = new URL(url);
+        cleanUrl = u.hostname + u.pathname;
+    } catch { /* keep as-is */ }
+
+    const prompt = `You are a reading assistant. Digest the following web page for a busy reader.
+Write EVERYTHING in the locale language '${currentLang}'.
+Reply strictly in JSON array format with exactly one object (no markdown, no extra text):
+[
+  {
+    "tldr": "<2-3 sentence summary in ${currentLang}>",
+    "keyPoints": ["<key point 1>", "<key point 2>", "..."]
+  }
+]
+Provide 3 to 5 key points, each a single short sentence.
+
+[Page]
+Title: ${title}
+URL: ${cleanUrl}
+
+[Content]
+${text}`;
+
+    // Cloud output is nondeterministic — long articles occasionally yield a
+    // truncated or malformed JSON reply; a single retry usually recovers.
+    // Builtin Nano gets no retry (already slow, and deterministic-ish).
+    const { cloud } = await resolveActiveProvider();
+    const maxAttempts = cloud ? 2 : 1;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        // Generous output budget: TL;DR + key points in CJK locales can be
+        // token-heavy, and (for some Gemini models) thinking shares the budget.
+        const raw = await runChatUnified({ system: NL_SYSTEM_PROMPT, prompt, maxTokens: 3000 });
+        if (!raw) {
+            console.warn('[ai] generatePageDigest: chat call failed or provider unavailable');
+            return null;
+        }
+
+        const parsed = extractJsonArray(raw);
+        const digest = Array.isArray(parsed) ? parsed[0] : null;
+        if (digest && typeof digest.tldr === 'string' && digest.tldr.trim()) {
+            const keyPoints = Array.isArray(digest.keyPoints)
+                ? digest.keyPoints.filter(p => typeof p === 'string' && p.trim()).map(p => p.trim()).slice(0, 5)
+                : [];
+            return { tldr: digest.tldr.trim(), keyPoints };
+        }
+        console.warn(`[ai] generatePageDigest: unparsable reply (attempt ${attempt}/${maxAttempts}):`, String(raw).slice(0, 120));
+    }
+    return null;
 }

@@ -229,6 +229,38 @@ export async function setAiCleanupVisible(visible) {
   await setStorage('sync', { [AI_CLEANUP_VISIBLE_KEY]: visible });
 }
 
+// --- Page Reader Visibility State ---
+
+const PAGE_READER_VISIBLE_KEY = 'pageReaderVisible';
+let pageReaderVisible = true; // Default to visible
+
+/**
+ * Loads the Page Reader visibility state from chrome.storage.sync.
+ * @returns {Promise<boolean>} The visibility state.
+ */
+export async function initPageReaderVisibility() {
+  const result = await getStorage('sync', [PAGE_READER_VISIBLE_KEY]);
+  pageReaderVisible = result[PAGE_READER_VISIBLE_KEY] !== false; // Default true if not set
+  return pageReaderVisible;
+}
+
+/**
+ * Gets the current Page Reader visibility state from in-memory cache.
+ * @returns {boolean} True if the Page Reader button should be visible.
+ */
+export function isPageReaderVisible() {
+  return pageReaderVisible;
+}
+
+/**
+ * Sets the Page Reader visibility state.
+ * @param {boolean} visible - Whether the Page Reader button should be visible.
+ */
+export async function setPageReaderVisible(visible) {
+  pageReaderVisible = visible;
+  await setStorage('sync', { [PAGE_READER_VISIBLE_KEY]: visible });
+}
+
 // --- Hover Summarize State ---
 
 const HOVER_SUMMARIZE_KEY = 'hoverSummarizeEnabled';
