@@ -101,6 +101,18 @@ export function parseStreamLine(line) {
     if (json?.type === 'content_block_delta' && json.delta?.type === 'text_delta') {
         return { text: json.delta.text || '' };
     }
+    // message_delta carries the final stop_reason — keep parity with
+    // parseChatResponse: refusals must not surface as normal summaries.
+    if (json?.type === 'message_delta') {
+        const stop = json.delta?.stop_reason;
+        if (stop === 'refusal') {
+            throw new Error('Anthropic API refused the request');
+        }
+        if (stop === 'max_tokens') {
+            console.warn('[ai] Anthropic response hit max_tokens; output may be truncated');
+        }
+        return null;
+    }
     if (json?.type === 'message_stop') return { done: true };
     return null;
 }

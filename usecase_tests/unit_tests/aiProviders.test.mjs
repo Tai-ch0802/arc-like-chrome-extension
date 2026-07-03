@@ -281,6 +281,13 @@ describe('provider streaming (parseStreamLine + chatStream)', () => {
         .toThrow(/overloaded/);
     });
 
+    it('parseStreamLine keeps parity with parseChatResponse on refusals', () => {
+      expect(() => anthropic.parseStreamLine('data: {"type":"message_delta","delta":{"stop_reason":"refusal"}}'))
+        .toThrow(/refused/);
+      expect(anthropic.parseStreamLine('data: {"type":"message_delta","delta":{"stop_reason":"end_turn"}}'))
+        .toBeNull();
+    });
+
     it('chatStream sets stream:true, forwards chunks in order, returns the full text', async () => {
       global.fetch = jest.fn().mockResolvedValue(streamResponse([
         'event: message_start\ndata: {"type":"message_start"}\n\n',
@@ -317,6 +324,8 @@ describe('provider streaming (parseStreamLine + chatStream)', () => {
         .toEqual({ text: 'ab' });
       expect(gemini.parseStreamLine('data: {"candidates":[{"finishReason":"STOP"}]}')).toBeNull();
       expect(gemini.parseStreamLine('random noise')).toBeNull();
+      expect(() => gemini.parseStreamLine('data: {"error":{"code":429,"message":"quota exceeded"}}'))
+        .toThrow(/quota exceeded/);
     });
 
     it('chatStream accumulates SSE deltas', async () => {
@@ -346,6 +355,8 @@ describe('provider streaming (parseStreamLine + chatStream)', () => {
       expect(openaiCompat.parseStreamLine('data: {"choices":[{"delta":{"role":"assistant"}}]}')).toBeNull();
       expect(openaiCompat.parseStreamLine('data: [DONE]')).toEqual({ done: true });
       expect(openaiCompat.parseStreamLine(': keep-alive comment')).toBeNull();
+      expect(() => openaiCompat.parseStreamLine('data: {"error":{"message":"rate limited"}}'))
+        .toThrow(/rate limited/);
     });
 
     it('chatStream stops at [DONE] and returns the accumulated text', async () => {
@@ -402,6 +413,59 @@ describe('provider streaming (parseStreamLine + chatStream)', () => {
       expect(out).toBe('Token');
       expect(chunks).toEqual(['To', 'ken']);
       expect(JSON.parse(global.fetch.mock.calls[0][1].body).stream).toBe(true);
+    });
+  });
+
+  describe('stream lifecycle', () => {
+    it('chatStream propagates a mid-stream abort rejection (null contract lives in aiManager)', async () => {
+      const encoder = new TextEncoder();
+      let calls = 0;
+      const abortErr = Object.assign(new Error('The user aborted a request.'), { name: 'AbortError' });
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        body: {
+          getReader: () => ({
+            read: async () => {
+              calls += 1;
+              if (calls === 1) {
+                return { done: false, value: encoder.encode('{"message":{"content":"par"},"done":false}\n') };
+              }
+              throw abortErr; // reader.read() rejects once the signal fires
+            },
+            cancel: async () => {},
+          }),
+        },
+      });
+      const chunks = [];
+      await expect(
+        ollama.chatStream({ apiKey: '', model: 'llama3.2', baseUrl: 'http://localhost:11434' },
+          PARAMS, c => chunks.push(c)),
+      ).rejects.toMatchObject({ name: 'AbortError' });
+      expect(chunks).toEqual(['par']); // no chunk delivered after the abort
+    });
+
+    it('cancels the reader when the done sentinel arrives before the body ends', async () => {
+      const encoder = new TextEncoder();
+      const cancel = jest.fn(async () => {});
+      const frames = [
+        'data: {"choices":[{"delta":{"content":"hi"}}]}\n\ndata: [DONE]\n\n',
+        'data: {"choices":[{"delta":{"content":"NEVER"}}]}\n\n',
+      ];
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        body: {
+          getReader: () => ({
+            read: async () => (frames.length
+              ? { done: false, value: encoder.encode(frames.shift()) }
+              : { done: true, value: undefined }),
+            cancel,
+          }),
+        },
+      });
+      const out = await openaiCompat.chatStream(
+        { apiKey: 'sk-x', model: 'gpt-4o-mini', baseUrl: 'https://api.openai.com/v1' }, PARAMS);
+      expect(out).toBe('hi');
+      expect(cancel).toHaveBeenCalled(); // early break must release the connection
     });
   });
 });

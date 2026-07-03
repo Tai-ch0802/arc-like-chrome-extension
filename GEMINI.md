@@ -80,7 +80,7 @@ key_files:
   - file_path: modules/ai/providerSettings.js
     description: "[AI] AI 供應商設定儲存層。單一 key aiProviderSettings 存 chrome.storage.local（API key 屬敏感資料不進 sync）；activeProvider + 各家 {apiKey, model, baseUrl}，切換供應商保留各家設定，無儲存值即為 builtin 預設。"
   - file_path: modules/ai/providers/
-    description: "[AI] 雲端供應商 client（gemini / anthropic / openaiCompat / ollama + index registry + httpUtils）。統一介面 buildChatRequest/parseChatResponse（純函式）、chat、testConnection；anthropic 帶 dangerous-direct-browser-access header 且不送 temperature；ollama 網路錯誤回報 code:'network' 供 UI 顯示 OLLAMA_ORIGINS 提示。"
+    description: "[AI] 雲端供應商 client（gemini / anthropic / openaiCompat / ollama + index registry + httpUtils）。統一介面 buildChatRequest/parseChatResponse/parseStreamLine（純函式）、chat、chatStream（原生串流：SSE 或 NDJSON，經 httpUtils readStreamLines/consumeStreamText）、testConnection；anthropic 帶 dangerous-direct-browser-access header 且不送 temperature；ollama 網路錯誤回報 code:'network' 供 UI 顯示 OLLAMA_ORIGINS 提示。"
   - file_path: modules/ai/jsonExtract.js
     description: "[AI] 模型輸出 JSON 抽取純函式 (extractJsonArray/extractJsonObject)。容忍 markdown code fence 與前後綴散文；集中原 aiManager/nlSearch 重複的 inline regex。"
   - file_path: modules/ui/pageReaderUI.js

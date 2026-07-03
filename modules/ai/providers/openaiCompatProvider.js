@@ -101,6 +101,11 @@ export function parseStreamLine(line) {
     } catch {
         return null;
     }
+    // Gateways (LiteLLM/OpenRouter/…) can emit in-band error frames on an
+    // HTTP-200 stream — fail loudly instead of returning a truncated text.
+    if (json?.error) {
+        throw new Error(`OpenAI-compatible stream error: ${json.error.message || json.error}`);
+    }
     const text = json?.choices?.[0]?.delta?.content || '';
     return text ? { text } : null;
 }

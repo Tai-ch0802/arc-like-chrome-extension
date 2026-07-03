@@ -88,6 +88,11 @@ export function parseStreamLine(line) {
     } catch {
         return null;
     }
+    // In-band error frames (HTTP 200 + {"error": ...}) must fail the stream,
+    // not silently truncate the summary.
+    if (json?.error) {
+        throw new Error(`Gemini stream error: ${json.error.message || 'unknown'}`);
+    }
     const parts = json?.candidates?.[0]?.content?.parts;
     const text = Array.isArray(parts) ? parts.map(p => p?.text || '').join('') : '';
     return text ? { text } : null;
