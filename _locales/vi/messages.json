@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ thẻ",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "Thoáng"
+  },
+  "aiProviderLabel": {
+    "message": "Nhà cung cấp mô hình AI"
+  },
+  "aiProviderBuiltin": {
+    "message": "Tích hợp sẵn trong Chrome (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "Điểm cuối tương thích OpenAI"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (cục bộ)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "Chạy hoàn toàn trên thiết bị này. Không có dữ liệu nào rời khỏi trình duyệt của bạn."
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "Khóa API"
+  },
+  "aiProviderModelLabel": {
+    "message": "Mô hình"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "URL cơ sở"
+  },
+  "aiProviderTestBtn": {
+    "message": "Kiểm tra kết nối"
+  },
+  "aiProviderTesting": {
+    "message": "Đang kiểm tra…"
+  },
+  "aiProviderTestOk": {
+    "message": "Kết nối thành công"
+  },
+  "aiProviderTestFail": {
+    "message": "Kết nối thất bại"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "Khóa API của bạn chỉ được lưu trên thiết bị này và chỉ được gửi đến nhà cung cấp bạn cấu hình."
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama chặn tiện ích mở rộng theo mặc định. Hãy khởi động với OLLAMA_ORIGINS=chrome-extension://* để cho phép truy cập."
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "Phần này áp dụng khi chọn \"Tích hợp sẵn trong Chrome (Gemini Nano)\" ở trên."
   }
 }

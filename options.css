@@ -21,3 +21,11 @@ body {
 .opt-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border-color, #45475a); }
 .opt-row__label { font-size: 14px; color: var(--text-color-primary, #cdd6f4); }
 .opt-row__desc { font-size: 12px; color: var(--text-color-secondary, #6c7086); margin-top: 2px; }
+
+/* AI provider settings */
+.ai-provider-section { margin-bottom: 20px; }
+.ai-provider-section .modal-input { min-width: 260px; }
+.ai-provider-test-wrap { display: flex; align-items: center; gap: 10px; padding: 12px 0; }
+.ai-provider-test-status { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-color-secondary, #6c7086); overflow-wrap: anywhere; }
+.ai-provider-test-status.ok { color: var(--success-color, #4caf50); }
+.ai-provider-test-status.fail { color: var(--danger-color, #f44336); }

@@ -3,7 +3,9 @@ import { applyTheme } from './modules/ui/settingManager.js';
 import * as customTheme from './modules/ui/customThemeManager.js';
 import * as bgImage from './modules/ui/backgroundImageManager.js';
 import * as rss from './modules/rssManager.js';
-import { checkModelAvailability, triggerLanguageModelDownload } from './modules/aiManager.js';
+import { checkBuiltinModelAvailability, triggerLanguageModelDownload } from './modules/aiManager.js';
+import * as providerSettings from './modules/ai/providerSettings.js';
+import { getCloudProvider } from './modules/ai/providers/index.js';
 import * as modalManager from './modules/modalManager.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
@@ -924,6 +926,172 @@ function getStatusBadge(status) {
     }
 }
 
+/** Provider ids → option labels for the AI provider select. */
+const AI_PROVIDER_OPTIONS = [
+    { value: 'builtin', labelKey: 'aiProviderBuiltin', fallback: 'Chrome built-in (Gemini Nano)' },
+    { value: 'gemini', labelKey: 'aiProviderGemini', fallback: 'Google Gemini API' },
+    { value: 'anthropic', labelKey: 'aiProviderAnthropic', fallback: 'Anthropic Claude API' },
+    { value: 'openai', labelKey: 'aiProviderOpenAI', fallback: 'OpenAI-compatible endpoint' },
+    { value: 'ollama', labelKey: 'aiProviderOllama', fallback: 'Ollama (local)' },
+];
+
+/** Which config fields each cloud provider needs. */
+const AI_PROVIDER_FIELDS = {
+    gemini: ['apiKey', 'model'],
+    anthropic: ['apiKey', 'model'],
+    openai: ['baseUrl', 'apiKey', 'model'],
+    ollama: ['baseUrl', 'model', 'apiKey'],
+};
+
+/**
+ * 渲染 AI 供應商設定區塊：供應商下拉、各家 API key / 模型 / base URL 欄位、
+ * 連線測試按鈕與 inline 狀態。設定僅寫入 chrome.storage.local（API key 屬
+ * 敏感資料不進 sync）；aiManager 每次呼叫時讀取，無需事件橋接。
+ * @param {HTMLElement} container
+ */
+async function renderAiProviderBlock(container) {
+    const block = document.createElement('div');
+    block.className = 'ai-provider-section';
+
+    const settings = await providerSettings.getProviderSettings();
+
+    const select = document.createElement('select');
+    select.className = 'modal-select';
+    select.id = 'ai-provider-select';
+    for (const p of AI_PROVIDER_OPTIONS) {
+        const opt = document.createElement('option');
+        opt.value = p.value;
+        opt.textContent = api.getMessage(p.labelKey) || p.fallback;
+        if (p.value === settings.activeProvider) opt.selected = true;
+        select.appendChild(opt);
+    }
+    block.appendChild(makeRow(api.getMessage('aiProviderLabel') || 'AI model provider', select));
+
+    const configWrap = document.createElement('div');
+    configWrap.id = 'ai-provider-config';
+    block.appendChild(configWrap);
+
+    const FIELD_LABELS = {
+        apiKey: () => api.getMessage('aiProviderApiKeyLabel') || 'API key',
+        model: () => api.getMessage('aiProviderModelLabel') || 'Model',
+        baseUrl: () => api.getMessage('aiProviderBaseUrlLabel') || 'Base URL',
+    };
+
+    async function renderConfigFields() {
+        configWrap.innerHTML = '';
+        const current = await providerSettings.getProviderSettings();
+        const id = current.activeProvider;
+
+        if (id === 'builtin') {
+            const desc = document.createElement('div');
+            desc.className = 'opt-row__desc';
+            desc.textContent = api.getMessage('aiProviderBuiltinDesc')
+                || 'Runs entirely on this device. No data leaves your browser.';
+            configWrap.appendChild(desc);
+            return;
+        }
+
+        const config = current.providers[id] || {};
+        const modelListId = `ai-provider-models-${id}`;
+
+        for (const field of AI_PROVIDER_FIELDS[id] || []) {
+            const input = document.createElement('input');
+            input.type = field === 'apiKey' ? 'password' : (field === 'baseUrl' ? 'url' : 'text');
+            input.className = 'modal-input';
+            input.autocomplete = 'off';
+            input.value = config[field] || '';
+            input.setAttribute('aria-label', FIELD_LABELS[field]());
+            if (field === 'model') {
+                input.setAttribute('list', modelListId);
+                const defaults = providerSettings.PROVIDER_DEFAULTS.providers[id];
+                if (defaults?.model) input.placeholder = defaults.model;
+            }
+            input.addEventListener('change', async () => {
+                await providerSettings.saveProviderConfig(id, { [field]: input.value.trim() });
+            });
+            configWrap.appendChild(makeRow(FIELD_LABELS[field](), input));
+        }
+
+        // Datalist filled by a successful "test connection" (model suggestions).
+        const datalist = document.createElement('datalist');
+        datalist.id = modelListId;
+        configWrap.appendChild(datalist);
+
+        // --- Test connection button + inline status ---
+        const testWrap = document.createElement('div');
+        testWrap.className = 'ai-provider-test-wrap';
+        const testBtn = document.createElement('button');
+        testBtn.className = 'modal-button';
+        testBtn.textContent = api.getMessage('aiProviderTestBtn') || 'Test connection';
+        const statusEl = document.createElement('span');
+        statusEl.className = 'ai-provider-test-status';
+        statusEl.setAttribute('role', 'status');
+        testWrap.appendChild(testBtn);
+        testWrap.appendChild(statusEl);
+        configWrap.appendChild(testWrap);
+
+        testBtn.addEventListener('click', async () => {
+            testBtn.disabled = true;
+            statusEl.className = 'ai-provider-test-status';
+            statusEl.textContent = api.getMessage('aiProviderTesting') || 'Testing…';
+            try {
+                const fresh = await providerSettings.getProviderSettings();
+                const res = await getCloudProvider(id).testConnection(fresh.providers[id] || {});
+                statusEl.innerHTML = '';
+                const icon = document.createElement('span');
+                icon.innerHTML = renderIcon(res.ok ? 'check_circle' : 'cancel', { size: 14 });
+                statusEl.appendChild(icon);
+                const text = document.createElement('span');
+                if (res.ok) {
+                    statusEl.classList.add('ok');
+                    text.textContent = api.getMessage('aiProviderTestOk') || 'Connection OK';
+                    if (Array.isArray(res.models) && res.models.length) {
+                        datalist.innerHTML = '';
+                        for (const m of res.models.slice(0, 50)) {
+                            const opt = document.createElement('option');
+                            opt.value = m;
+                            datalist.appendChild(opt);
+                        }
+                    }
+                } else {
+                    statusEl.classList.add('fail');
+                    const failLabel = api.getMessage('aiProviderTestFail') || 'Connection failed';
+                    const hint = (id === 'ollama' && res.code === 'network')
+                        ? (api.getMessage('aiProviderOllamaCorsHint')
+                            || 'Ollama blocks extensions by default. Start it with OLLAMA_ORIGINS=chrome-extension://* to allow access.')
+                        : (res.message || '');
+                    text.textContent = hint ? `${failLabel} — ${hint}` : failLabel;
+                }
+                statusEl.appendChild(text);
+            } finally {
+                testBtn.disabled = false;
+            }
+        });
+
+        if (id === 'ollama') {
+            const hint = document.createElement('div');
+            hint.className = 'opt-row__desc';
+            hint.textContent = api.getMessage('aiProviderOllamaCorsHint')
+                || 'Ollama blocks extensions by default. Start it with OLLAMA_ORIGINS=chrome-extension://* to allow access.';
+            configWrap.appendChild(hint);
+        }
+
+        const privacyNote = document.createElement('div');
+        privacyNote.className = 'opt-row__desc';
+        privacyNote.textContent = api.getMessage('aiProviderKeyStorageNote')
+            || 'Your API key is stored only on this device and sent only to the provider you configure.';
+        configWrap.appendChild(privacyNote);
+    }
+
+    select.addEventListener('change', async () => {
+        await providerSettings.setActiveProvider(select.value);
+        await renderConfigFields();
+    });
+
+    await renderConfigFields();
+    container.appendChild(block);
+}
+
 /**
  * 渲染 AI 模型狀態區塊：LanguageModel + Summarizer 可用性標誌、下載進度條、
  * 以及引導使用者開啟 chrome://flags 的設定指南。
@@ -935,6 +1103,9 @@ async function renderAi(container) {
     h.textContent = api.getMessage('settingsNavAi') || 'AI & Experimental';
     container.appendChild(h);
 
+    // --- AI provider picker + per-provider config ---
+    await renderAiProviderBlock(container);
+
     // --- Model status header ---
     const statusSection = document.createElement('div');
     statusSection.className = 'ai-model-status-section';
@@ -943,6 +1114,12 @@ async function renderAi(container) {
     statusHeader.className = 'ai-model-status-header';
     statusHeader.textContent = 'Gemini Nano';
     statusSection.appendChild(statusHeader);
+
+    const nanoNote = document.createElement('div');
+    nanoNote.className = 'opt-row__desc';
+    nanoNote.textContent = api.getMessage('aiProviderNanoSectionNote')
+        || 'This section applies when "Chrome built-in (Gemini Nano)" is selected above.';
+    statusSection.appendChild(nanoNote);
 
     // LanguageModel row
     const lmRow = document.createElement('div');
@@ -1037,10 +1214,10 @@ async function renderAi(container) {
 
     container.appendChild(guide);
 
-    // --- Async status detection (mirrors detectAiModelStatus in settingManager.js) ---
+    // --- Async status detection (builtin Nano status, regardless of active provider) ---
     (async () => {
         // LanguageModel
-        const lmStatus = await checkModelAvailability();
+        const lmStatus = await checkBuiltinModelAvailability();
         const lmBadgeInfo = getStatusBadge(lmStatus);
         lmBadge.innerHTML = renderIcon(lmBadgeInfo.icon, { size: 14 }) + ' ' + lmBadgeInfo.label;
         lmBadge.className = `ai-status-badge ${lmBadgeInfo.className}`;
@@ -1081,7 +1258,7 @@ async function renderAi(container) {
                 console.warn('[AI] Download trigger failed:', err);
             }
 
-            const newStatus = await checkModelAvailability();
+            const newStatus = await checkBuiltinModelAvailability();
             const newBadge = getStatusBadge(newStatus);
             lmBadge.innerHTML = renderIcon(newBadge.icon, { size: 14 }) + ' ' + newBadge.label;
             lmBadge.className = `ai-status-badge ${newBadge.className}`;

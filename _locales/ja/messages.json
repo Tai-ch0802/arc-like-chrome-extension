@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "タブ $count$ 件",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "ゆったり"
+  },
+  "aiProviderLabel": {
+    "message": "AI モデルプロバイダー"
+  },
+  "aiProviderBuiltin": {
+    "message": "Chrome 内蔵（Gemini Nano）"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI 互換エンドポイント"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama（ローカル）"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "すべてこの端末上で動作します。データがブラウザの外に送信されることはありません。"
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API キー"
+  },
+  "aiProviderModelLabel": {
+    "message": "モデル"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "ベース URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "接続をテスト"
+  },
+  "aiProviderTesting": {
+    "message": "テスト中…"
+  },
+  "aiProviderTestOk": {
+    "message": "接続に成功しました"
+  },
+  "aiProviderTestFail": {
+    "message": "接続に失敗しました"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "API キーはこの端末にのみ保存され、設定したプロバイダーにのみ送信されます。"
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama は既定で拡張機能をブロックします。OLLAMA_ORIGINS=chrome-extension://* を指定して起動するとアクセスを許可できます。"
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "このセクションは、上で「Chrome 内蔵（Gemini Nano）」を選択した場合に適用されます。"
   }
 }

@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ Tab(s)",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "Komfortabel"
+  },
+  "aiProviderLabel": {
+    "message": "KI-Modellanbieter"
+  },
+  "aiProviderBuiltin": {
+    "message": "In Chrome integriert (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI-kompatibler Endpunkt"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (lokal)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "Läuft vollständig auf diesem Gerät. Keine Daten verlassen Ihren Browser."
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API-Schlüssel"
+  },
+  "aiProviderModelLabel": {
+    "message": "Modell"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "Basis-URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "Verbindung testen"
+  },
+  "aiProviderTesting": {
+    "message": "Wird getestet…"
+  },
+  "aiProviderTestOk": {
+    "message": "Verbindung erfolgreich"
+  },
+  "aiProviderTestFail": {
+    "message": "Verbindung fehlgeschlagen"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "Ihr API-Schlüssel wird nur auf diesem Gerät gespeichert und nur an den von Ihnen konfigurierten Anbieter gesendet."
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama blockiert Erweiterungen standardmäßig. Starten Sie es mit OLLAMA_ORIGINS=chrome-extension://*, um den Zugriff zu erlauben."
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "Dieser Abschnitt gilt, wenn oben „In Chrome integriert (Gemini Nano)“ ausgewählt ist."
   }
 }

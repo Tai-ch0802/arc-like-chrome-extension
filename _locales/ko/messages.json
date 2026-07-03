@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "탭 $count$개",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "넓게"
+  },
+  "aiProviderLabel": {
+    "message": "AI 모델 제공자"
+  },
+  "aiProviderBuiltin": {
+    "message": "Chrome 내장 (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI 호환 엔드포인트"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (로컬)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "이 기기에서만 실행됩니다. 데이터가 브라우저 밖으로 전송되지 않습니다."
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API 키"
+  },
+  "aiProviderModelLabel": {
+    "message": "모델"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "기본 URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "연결 테스트"
+  },
+  "aiProviderTesting": {
+    "message": "테스트 중…"
+  },
+  "aiProviderTestOk": {
+    "message": "연결 성공"
+  },
+  "aiProviderTestFail": {
+    "message": "연결 실패"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "API 키는 이 기기에만 저장되며 설정한 제공자에게만 전송됩니다."
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama는 기본적으로 확장 프로그램을 차단합니다. OLLAMA_ORIGINS=chrome-extension://* 옵션으로 시작하면 접근을 허용할 수 있습니다."
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "이 섹션은 위에서 'Chrome 내장 (Gemini Nano)'을 선택한 경우에 적용됩니다."
   }
 }

@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ टैब",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "आरामदायक"
+  },
+  "aiProviderLabel": {
+    "message": "AI मॉडल प्रदाता"
+  },
+  "aiProviderBuiltin": {
+    "message": "Chrome में अंतर्निहित (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI-संगत एंडपॉइंट"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (स्थानीय)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "पूरी तरह इसी डिवाइस पर चलता है। कोई डेटा आपके ब्राउज़र से बाहर नहीं जाता।"
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API कुंजी"
+  },
+  "aiProviderModelLabel": {
+    "message": "मॉडल"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "बेस URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "कनेक्शन जाँचें"
+  },
+  "aiProviderTesting": {
+    "message": "जाँच हो रही है…"
+  },
+  "aiProviderTestOk": {
+    "message": "कनेक्शन सफल"
+  },
+  "aiProviderTestFail": {
+    "message": "कनेक्शन विफल"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "आपकी API कुंजी केवल इसी डिवाइस पर संग्रहीत होती है और केवल आपके द्वारा कॉन्फ़िगर किए गए प्रदाता को भेजी जाती है।"
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama डिफ़ॉल्ट रूप से एक्सटेंशन को ब्लॉक करता है। एक्सेस की अनुमति देने के लिए इसे OLLAMA_ORIGINS=chrome-extension://* के साथ शुरू करें।"
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "यह अनुभाग तब लागू होता है जब ऊपर \"Chrome में अंतर्निहित (Gemini Nano)\" चुना गया हो।"
   }
 }

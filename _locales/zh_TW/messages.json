@@ -801,7 +801,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ 個分頁",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteActionCreateWorkspace": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "寬鬆"
+  },
+  "aiProviderLabel": {
+    "message": "AI 模型供應商"
+  },
+  "aiProviderBuiltin": {
+    "message": "Chrome 內建（Gemini Nano）"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "OpenAI 相容端點"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama（本機）"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "完全在本機執行，資料不會離開你的瀏覽器。"
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "API 金鑰"
+  },
+  "aiProviderModelLabel": {
+    "message": "模型"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "Base URL"
+  },
+  "aiProviderTestBtn": {
+    "message": "測試連線"
+  },
+  "aiProviderTesting": {
+    "message": "測試中…"
+  },
+  "aiProviderTestOk": {
+    "message": "連線成功"
+  },
+  "aiProviderTestFail": {
+    "message": "連線失敗"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "你的 API 金鑰只會儲存在本機，且只會傳送給你設定的供應商。"
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama 預設會封鎖擴充功能存取。請以 OLLAMA_ORIGINS=chrome-extension://* 啟動以允許存取。"
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "本區塊僅在上方選擇「Chrome 內建（Gemini Nano）」時適用。"
   }
 }

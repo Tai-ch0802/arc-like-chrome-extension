@@ -912,7 +912,9 @@
   "cmdPaletteWorkspaceTabs": {
     "message": "$count$ tab",
     "placeholders": {
-      "count": { "content": "$1" }
+      "count": {
+        "content": "$1"
+      }
     }
   },
   "cmdPaletteHintClose": {
@@ -1157,5 +1159,56 @@
   },
   "densityOptionComfortable": {
     "message": "Lega"
+  },
+  "aiProviderLabel": {
+    "message": "Penyedia model AI"
+  },
+  "aiProviderBuiltin": {
+    "message": "Bawaan Chrome (Gemini Nano)"
+  },
+  "aiProviderGemini": {
+    "message": "Google Gemini API"
+  },
+  "aiProviderAnthropic": {
+    "message": "Anthropic Claude API"
+  },
+  "aiProviderOpenAI": {
+    "message": "Endpoint kompatibel OpenAI"
+  },
+  "aiProviderOllama": {
+    "message": "Ollama (lokal)"
+  },
+  "aiProviderBuiltinDesc": {
+    "message": "Berjalan sepenuhnya di perangkat ini. Tidak ada data yang keluar dari browser Anda."
+  },
+  "aiProviderApiKeyLabel": {
+    "message": "Kunci API"
+  },
+  "aiProviderModelLabel": {
+    "message": "Model"
+  },
+  "aiProviderBaseUrlLabel": {
+    "message": "URL dasar"
+  },
+  "aiProviderTestBtn": {
+    "message": "Uji koneksi"
+  },
+  "aiProviderTesting": {
+    "message": "Menguji…"
+  },
+  "aiProviderTestOk": {
+    "message": "Koneksi berhasil"
+  },
+  "aiProviderTestFail": {
+    "message": "Koneksi gagal"
+  },
+  "aiProviderKeyStorageNote": {
+    "message": "Kunci API Anda hanya disimpan di perangkat ini dan hanya dikirim ke penyedia yang Anda konfigurasikan."
+  },
+  "aiProviderOllamaCorsHint": {
+    "message": "Ollama memblokir ekstensi secara default. Jalankan dengan OLLAMA_ORIGINS=chrome-extension://* untuk mengizinkan akses."
+  },
+  "aiProviderNanoSectionNote": {
+    "message": "Bagian ini berlaku saat \"Bawaan Chrome (Gemini Nano)\" dipilih di atas."
   }
 }
