@@ -63,8 +63,20 @@ describe('geminiProvider', () => {
   it('disables thinking for 2.5 Flash models only (budget would be eaten by thought tokens)', () => {
     const flash = JSON.parse(gemini.buildChatRequest(config, PARAMS).init.body);
     expect(flash.generationConfig.thinkingConfig).toEqual({ thinkingBudget: 0 });
+    expect(flash.generationConfig.maxOutputTokens).toBe(512); // thinking off → full budget to answer
     const pro = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-2.5-pro' }, PARAMS).init.body);
     expect(pro.generationConfig.thinkingConfig).toBeUndefined();
+  });
+
+  it('reserves output headroom for thinking models that cannot disable thinking (2.5 Pro, 3.x)', () => {
+    // gemini-3.5-flash thinks by default and rejects thinkingBudget:0 — the real
+    // case that truncated hover summaries (188 thought tokens ate a 200 budget,
+    // finishReason: MAX_TOKENS). No thinkingConfig, but +2048 output headroom.
+    const flash35 = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-3.5-flash' }, PARAMS).init.body);
+    expect(flash35.generationConfig.thinkingConfig).toBeUndefined();
+    expect(flash35.generationConfig.maxOutputTokens).toBe(512 + 2048);
+    const pro = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-2.5-pro' }, PARAMS).init.body);
+    expect(pro.generationConfig.maxOutputTokens).toBe(512 + 2048);
   });
 
   it('omits systemInstruction when no system prompt', () => {

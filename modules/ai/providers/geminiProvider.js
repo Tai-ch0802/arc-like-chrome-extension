@@ -6,6 +6,16 @@ import { fetchJson, consumeStreamText, toTestFailure } from './httpUtils.js';
 const API_ROOT = 'https://generativelanguage.googleapis.com/v1beta';
 
 /**
+ * Extra output tokens reserved for the "thinking" phase on Gemini models that
+ * can't turn thinking off (2.5 Pro, 3.x). Thought tokens are billed against
+ * maxOutputTokens, so without headroom a small caller budget (e.g. a 200-token
+ * hover summary) is spent ENTIRELY on thinking and the visible answer comes
+ * back empty/truncated (finishReason: MAX_TOKENS). maxOutputTokens is a cap,
+ * not a target, so over-reserving costs nothing when thinking is light.
+ */
+const GEMINI_THINKING_RESERVE = 2048;
+
+/**
  * Builds the generateContent request. Pure — unit-testable without fetch.
  * The API key travels in the `x-goog-api-key` header (never the URL, which
  * would leak it into logs and error messages).
@@ -19,12 +29,16 @@ export function buildChatRequest(config, { system, prompt, maxTokens = 1024, str
     const modelName = (config.model || '').trim();
     const model = encodeURIComponent(modelName);
     const generationConfig = { maxOutputTokens: maxTokens };
-    // Gemini 2.5 Flash models think by default and thought tokens count
-    // against maxOutputTokens — small budgets would return empty text.
-    // thinkingBudget: 0 disables thinking (only Flash models allow 0; Pro
-    // rejects it, so gate on the model name).
+    // Gemini thinking models bill thought tokens against maxOutputTokens.
+    // Gemini 2.5 Flash lets us turn thinking OFF entirely (thinkingBudget: 0),
+    // so the whole budget goes to the answer. Other models (2.5 Pro, 3.x —
+    // e.g. gemini-3.5-flash) think by default and REJECT thinkingBudget: 0, so
+    // we instead reserve extra output headroom; otherwise a small budget is
+    // consumed by thinking and the answer is truncated (finishReason: MAX_TOKENS).
     if (/^gemini-2\.5-flash/.test(modelName)) {
         generationConfig.thinkingConfig = { thinkingBudget: 0 };
+    } else {
+        generationConfig.maxOutputTokens = maxTokens + GEMINI_THINKING_RESERVE;
     }
     const body = {
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
