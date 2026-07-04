@@ -76,6 +76,14 @@ function handleMouseOver(event) {
     clearHoverState();
     currentHoveredTabId = tabId;
 
+    // Suppress the row's native title tooltip up front — before the browser's
+    // ~1s hover delay — so it never pops up to overlap/cover our summary
+    // tooltip. Gated on the feature being on: when it's off no tooltip of ours
+    // appears, so we must keep the native title+URL preview intact.
+    if (state.isHoverSummarizeEnabled()) {
+        tooltip.suppressAnchorTitle(tabItem);
+    }
+
     // Start 2-second debounce timer (FR-1.01)
     hoverTimerId = setTimeout(() => {
         triggerSummarize(tabId, tabItem);
@@ -108,6 +116,8 @@ function clearHoverState() {
         currentAbortController.abort();
         currentAbortController = null;
     }
+    // Give the row back its native title tooltip now that we no longer own it.
+    tooltip.restoreAnchorTitle();
     currentHoveredTabId = null;
 }
 

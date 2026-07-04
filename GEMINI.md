@@ -92,9 +92,9 @@ key_files:
   - file_path: modules/ui/aiCleanupUI.js
     description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單（預設不勾選 + 全選控制；降低雲端模型下 prompt-injection 誤關分頁的影響面）。Phase 12(批B) 每列加 tab group badge（彩色圓點 + 群組名，未分組不顯示），用 resolveTabGroupBadge 判定。"
   - file_path: modules/ui/hoverSummarizeManager.js
-    description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、aiManager.summarizePageStreaming 摘要（builtin 串流／雲端一次回全文）、記憶體快取。"
+    description: "[功能] Hover Summarize 核心邏輯。管理 2 秒 debounce、AbortController 取消、chrome.scripting 文字擷取、aiManager.summarizePageStreaming 摘要（builtin 與雲端皆原生串流）、記憶體快取；hover 時暫時移除分頁列原生 title（透過 hoverTooltip.suppressAnchorTitle），避免瀏覽器內建 tooltip 疊住摘要。"
   - file_path: modules/ui/hoverTooltip.js
-    description: "[UI] Hover Summarize 的 Tooltip UI 元件。提供 show/hide/updateStreamChunk API，含 shimmer 載入動畫與 glassmorphism 樣式。"
+    description: "[UI] Hover Summarize 的 Tooltip UI 元件。提供 show/hide/updateStreamChunk 與 suppressAnchorTitle/restoreAnchorTitle（暫存並移除 anchor 的原生 title 屬性，還原時復原）API，含 shimmer 載入動畫與 glassmorphism 樣式。"
   - file_path: spotlight.html
     description: "[UI] Spotlight 搜尋彈窗頁面。以置中彈窗形式呈現，由 Cmd+Shift+K 快捷鍵（commandOpenSearch）開啟；連結 sidepanel.css（共用元件樣式）+ spotlight.js（ESM 入口）。無獨立 CSS 檔案。"
   - file_path: spotlight.js
