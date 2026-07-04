@@ -193,3 +193,41 @@ export function hideImmediately() {
     }
     isMouseInTooltip = false;
 }
+
+// === Native title suppression ===
+// The browser renders an element's `title` attribute as a built-in tooltip
+// painted ABOVE all page content — higher than any z-index. A hovered tab
+// carries title="<title>\n<url>", so that native tooltip pops up in the same
+// spot as our summary tooltip: it overlaps it and, because it sits on top,
+// hides every line of the summary but the first. While Hover Summarize owns a
+// row we stash its title in a data attribute and drop the live attribute so
+// only our tooltip shows, restoring it on hover-out.
+
+/** @type {HTMLElement|null} The anchor whose native title is currently stashed. */
+let suppressedTitleEl = null;
+
+/**
+ * Removes `el`'s native `title` (stashing it in `data-hover-native-title`) so
+ * the browser tooltip can't cover our summary tooltip. Any previously
+ * suppressed anchor is restored first. A no-op if `el` is already suppressed.
+ * @param {HTMLElement} el
+ */
+export function suppressAnchorTitle(el) {
+    if (!el || suppressedTitleEl === el) return;
+    restoreAnchorTitle();
+    if (el.hasAttribute('title')) {
+        el.dataset.hoverNativeTitle = el.getAttribute('title');
+        el.removeAttribute('title');
+    }
+    suppressedTitleEl = el;
+}
+
+/** Restores the native `title` stashed by {@link suppressAnchorTitle}. Idempotent. */
+export function restoreAnchorTitle() {
+    const el = suppressedTitleEl;
+    suppressedTitleEl = null;
+    if (el && el.dataset.hoverNativeTitle !== undefined) {
+        el.setAttribute('title', el.dataset.hoverNativeTitle);
+        delete el.dataset.hoverNativeTitle;
+    }
+}

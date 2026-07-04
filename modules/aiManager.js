@@ -83,6 +83,29 @@ async function cloudChat(cloud, config, id, params) {
 }
 
 /**
+ * Streaming chat on a cloud provider — same degrade-to-null contract as
+ * cloudChat. NOTE: onChunk may already have delivered partial text before a
+ * mid-stream failure; a null return means "discard what you rendered and
+ * fall back". User-initiated aborts return null without the warn noise.
+ * @returns {Promise<string|null>}
+ */
+async function cloudChatStream(cloud, config, id, params, onChunk) {
+    if (!providerSettings.isProviderConfigured(id, config)) return null;
+    try {
+        return await cloud.chatStream(config, params, onChunk);
+    } catch (err) {
+        if (params.signal?.aborted) return null;
+        console.warn(`[ai] ${id} streaming chat failed:`, err);
+        if (err instanceof HttpError && (err.status === 401 || err.status === 403)) {
+            api.setStorage('local', {
+                aiProviderAuthError: { providerId: id, status: err.status, at: Date.now() },
+            }).catch(() => { /* best-effort signal */ });
+        }
+        return null;
+    }
+}
+
+/**
  * Provider-agnostic one-shot prompt. Cloud providers get the given system
  * prompt; builtin uses the dedicated NL session (its own neutral system
  * prompt) with the strict `'available'` gate so background callers can't
@@ -664,9 +687,11 @@ ${tabsData}`;
 // === Page Summaries & Page Reader ===
 
 /**
- * Summarizes page text with progressive output where supported.
- * Builtin: real Summarizer streaming (chunks arrive incrementally).
- * Cloud: one-shot chat — the full text is delivered as a single chunk.
+ * Summarizes page text with progressive output.
+ * Builtin: Summarizer streaming (chunks arrive incrementally).
+ * Cloud: native provider streaming (SSE/NDJSON) — chunks arrive as the
+ * model generates them; a mid-stream failure degrades to null after some
+ * chunks may already have rendered (callers replace, not append).
  * Builtin session errors PROPAGATE so the caller can destroy the session
  * and fall back (mirrors the previous hoverSummarizeManager behavior).
  * @param {string} pageText
@@ -680,17 +705,14 @@ export async function summarizePageStreaming(pageText, domain = '', { onChunk, s
 
     if (cloud) {
         const lang = api.getResolvedUILanguage();
-        const raw = await cloudChat(cloud, config, id, {
+        const raw = await cloudChatStream(cloud, config, id, {
             system: `You summarize web page content in ONE concise sentence in the '${lang}' locale language. Reply with the sentence only — no preamble, no markdown.`,
             prompt: domain ? `Web page from ${domain}:\n\n${pageText}` : pageText,
             maxTokens: 200,
             signal, // cancel the network request when the user un-hovers
-        });
+        }, onChunk);
         if (signal?.aborted) return null;
-        const out = (raw || '').trim();
-        if (!out) return null;
-        if (onChunk) onChunk(out);
-        return out;
+        return (raw || '').trim() || null;
     }
 
     const session = await getOrCreateSummarizerSession();

@@ -88,7 +88,17 @@ function updateTabElement(tabItem, tab) {
         urlPreview = urlPreview.substring(0, 300) + '...';
     }
     const newTitleTooltip = `${tab.title}\n${urlPreview}`;
-    if (tabItem.title !== newTitleTooltip) {
+    // Hover Summarize may have stashed this row's native title (see
+    // hoverTooltip.suppressAnchorTitle) to stop the browser tooltip from
+    // covering its summary popup. While stashed, keep the stash fresh instead
+    // of writing the live attribute, so a mid-hover re-render doesn't bring the
+    // native tooltip back.
+    if (tabItem.dataset.hoverNativeTitle !== undefined) {
+        if (tabItem.dataset.hoverNativeTitle !== newTitleTooltip) {
+            tabItem.dataset.hoverNativeTitle = newTitleTooltip;
+            tabItem.setAttribute('aria-label', tab.title);
+        }
+    } else if (tabItem.title !== newTitleTooltip) {
         tabItem.title = newTitleTooltip;
         tabItem.setAttribute('aria-label', tab.title);
     }

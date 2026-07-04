@@ -2913,6 +2913,10 @@ mark.url-match {
     position: fixed;
     z-index: 1000;
     max-width: 280px;
+    /* Cap height to the viewport and scroll instead of letting a long summary
+       run off the bottom edge (a second way content could be hidden). */
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
     padding: 8px 12px;
     border-radius: 8px;
 

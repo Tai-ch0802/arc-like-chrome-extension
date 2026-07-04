@@ -3,9 +3,32 @@ import * as anthropic from '../../modules/ai/providers/anthropicProvider.js';
 import * as openaiCompat from '../../modules/ai/providers/openaiCompatProvider.js';
 import * as ollama from '../../modules/ai/providers/ollamaProvider.js';
 import { getCloudProvider } from '../../modules/ai/providers/index.js';
-import { normalizeBaseUrl, isInsecureRemoteBaseUrl } from '../../modules/ai/providers/httpUtils.js';
+import { normalizeBaseUrl, isInsecureRemoteBaseUrl, readStreamLines, HttpError } from '../../modules/ai/providers/httpUtils.js';
 
 const PARAMS = { system: 'sys prompt', prompt: 'user prompt', maxTokens: 512 };
+
+/**
+ * Builds a fetch()-shaped Response whose body streams the given chunks
+ * (strings are UTF-8 encoded; Uint8Arrays pass through for byte-boundary
+ * tests). Mirrors the minimal reader surface readStreamLines relies on.
+ */
+function streamResponse(chunks, { ok = true, status = 200 } = {}) {
+  const encoder = new TextEncoder();
+  const queue = chunks.map(c => (typeof c === 'string' ? encoder.encode(c) : c));
+  return {
+    ok,
+    status,
+    text: async () => chunks.join(''),
+    body: {
+      getReader: () => ({
+        read: async () => (queue.length
+          ? { done: false, value: queue.shift() }
+          : { done: true, value: undefined }),
+        cancel: async () => { queue.length = 0; },
+      }),
+    },
+  };
+}
 
 afterEach(() => {
   delete global.fetch;
@@ -40,8 +63,20 @@ describe('geminiProvider', () => {
   it('disables thinking for 2.5 Flash models only (budget would be eaten by thought tokens)', () => {
     const flash = JSON.parse(gemini.buildChatRequest(config, PARAMS).init.body);
     expect(flash.generationConfig.thinkingConfig).toEqual({ thinkingBudget: 0 });
+    expect(flash.generationConfig.maxOutputTokens).toBe(512); // thinking off → full budget to answer
     const pro = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-2.5-pro' }, PARAMS).init.body);
     expect(pro.generationConfig.thinkingConfig).toBeUndefined();
+  });
+
+  it('reserves output headroom for thinking models that cannot disable thinking (2.5 Pro, 3.x)', () => {
+    // gemini-3.5-flash thinks by default and rejects thinkingBudget:0 — the real
+    // case that truncated hover summaries (188 thought tokens ate a 200 budget,
+    // finishReason: MAX_TOKENS). No thinkingConfig, but +2048 output headroom.
+    const flash35 = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-3.5-flash' }, PARAMS).init.body);
+    expect(flash35.generationConfig.thinkingConfig).toBeUndefined();
+    expect(flash35.generationConfig.maxOutputTokens).toBe(512 + 2048);
+    const pro = JSON.parse(gemini.buildChatRequest({ ...config, model: 'gemini-2.5-pro' }, PARAMS).init.body);
+    expect(pro.generationConfig.maxOutputTokens).toBe(512 + 2048);
   });
 
   it('omits systemInstruction when no system prompt', () => {
@@ -207,6 +242,243 @@ describe('ollamaProvider', () => {
     const res = await ollama.testConnection(config);
     expect(res.ok).toBe(true);
     expect(res.models).toEqual(['llama3.2', 'qwen3']);
+  });
+});
+
+describe('httpUtils.readStreamLines', () => {
+  it('splits lines across chunk boundaries, trims CR, skips blanks, flushes the tail', async () => {
+    global.fetch = jest.fn().mockResolvedValue(streamResponse([
+      'data: one\r\n\n',
+      'data: tw', 'o\ndata: tail-no-newline',
+    ]));
+    const lines = [];
+    for await (const line of readStreamLines('https://x/stream', {})) lines.push(line);
+    expect(lines).toEqual(['data: one', 'data: two', 'data: tail-no-newline']);
+  });
+
+  it('decodes multi-byte UTF-8 characters split across chunks', async () => {
+    const bytes = new TextEncoder().encode('午安\n'); // 3 bytes per CJK char
+    global.fetch = jest.fn().mockResolvedValue(streamResponse([
+      bytes.slice(0, 2), bytes.slice(2), // cut inside 午
+    ]));
+    const lines = [];
+    for await (const line of readStreamLines('https://x/stream', {})) lines.push(line);
+    expect(lines).toEqual(['午安']);
+  });
+
+  it('throws HttpError with scrubbed body on non-2xx before yielding', async () => {
+    global.fetch = jest.fn().mockResolvedValue(
+      streamResponse(['bad key sk-abcdefgh12345678'], { ok: false, status: 401 }));
+    const gen = readStreamLines('https://x/stream', {});
+    await expect(gen.next()).rejects.toMatchObject({ status: 401 });
+    await expect(async () => {
+      for await (const _ of readStreamLines('https://x/stream', {})) void _;
+    }).rejects.toThrow('sk-***');
+  });
+});
+
+describe('provider streaming (parseStreamLine + chatStream)', () => {
+  describe('anthropic', () => {
+    const config = { apiKey: 'sk-ant-x', model: 'claude-opus-4-8' };
+
+    it('parseStreamLine extracts text deltas and the stop sentinel', () => {
+      expect(anthropic.parseStreamLine('event: content_block_delta')).toBeNull();
+      expect(anthropic.parseStreamLine('data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"Hi"}}'))
+        .toEqual({ text: 'Hi' });
+      expect(anthropic.parseStreamLine('data: {"type":"content_block_delta","delta":{"type":"input_json_delta","partial_json":"{"}}'))
+        .toBeNull();
+      expect(anthropic.parseStreamLine('data: {"type":"message_stop"}')).toEqual({ done: true });
+      expect(anthropic.parseStreamLine('data: not json')).toBeNull();
+      expect(() => anthropic.parseStreamLine('data: {"type":"error","error":{"message":"overloaded"}}'))
+        .toThrow(/overloaded/);
+    });
+
+    it('parseStreamLine keeps parity with parseChatResponse on refusals', () => {
+      expect(() => anthropic.parseStreamLine('data: {"type":"message_delta","delta":{"stop_reason":"refusal"}}'))
+        .toThrow(/refused/);
+      expect(anthropic.parseStreamLine('data: {"type":"message_delta","delta":{"stop_reason":"end_turn"}}'))
+        .toBeNull();
+    });
+
+    it('chatStream sets stream:true, forwards chunks in order, returns the full text', async () => {
+      global.fetch = jest.fn().mockResolvedValue(streamResponse([
+        'event: message_start\ndata: {"type":"message_start"}\n\n',
+        'data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"Hello"}}\n\n',
+        'data: {"type":"content_block_delta","delta":{"type":"text_delta","text":" world"}}\n\n',
+        'data: {"type":"message_stop"}\n\n',
+      ]));
+      const chunks = [];
+      const out = await anthropic.chatStream(config, PARAMS, c => chunks.push(c));
+      expect(out).toBe('Hello world');
+      expect(chunks).toEqual(['Hello', ' world']);
+      const body = JSON.parse(global.fetch.mock.calls[0][1].body);
+      expect(body.stream).toBe(true);
+    });
+
+    it('chatStream throws on a stream that ends with no text', async () => {
+      global.fetch = jest.fn().mockResolvedValue(streamResponse(['data: {"type":"message_stop"}\n']));
+      await expect(anthropic.chatStream(config, PARAMS)).rejects.toThrow(/Empty/);
+    });
+  });
+
+  describe('gemini', () => {
+    const config = { apiKey: 'g-key', model: 'gemini-2.5-flash' };
+
+    it('streaming request targets :streamGenerateContent?alt=sse with key in header only', () => {
+      const { url, init } = gemini.buildChatRequest(config, { ...PARAMS, stream: true });
+      expect(url).toBe('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse');
+      expect(url).not.toContain('g-key');
+      expect(init.headers['x-goog-api-key']).toBe('g-key');
+    });
+
+    it('parseStreamLine joins candidate parts and ignores empty deltas', () => {
+      expect(gemini.parseStreamLine('data: {"candidates":[{"content":{"parts":[{"text":"a"},{"text":"b"}]}}]}'))
+        .toEqual({ text: 'ab' });
+      expect(gemini.parseStreamLine('data: {"candidates":[{"finishReason":"STOP"}]}')).toBeNull();
+      expect(gemini.parseStreamLine('random noise')).toBeNull();
+      expect(() => gemini.parseStreamLine('data: {"error":{"code":429,"message":"quota exceeded"}}'))
+        .toThrow(/quota exceeded/);
+    });
+
+    it('chatStream accumulates SSE deltas', async () => {
+      global.fetch = jest.fn().mockResolvedValue(streamResponse([
+        'data: {"candidates":[{"content":{"parts":[{"text":"One "}]}}]}\n\n',
+        'data: {"candidates":[{"content":{"parts":[{"text":"sentence."}]}}]}\n\n',
+      ]));
+      const chunks = [];
+      const out = await gemini.chatStream(config, PARAMS, c => chunks.push(c));
+      expect(out).toBe('One sentence.');
+      expect(chunks).toEqual(['One ', 'sentence.']);
+    });
+
+    it('chatStream surfaces HTTP errors as HttpError', async () => {
+      global.fetch = jest.fn().mockResolvedValue(
+        streamResponse(['denied'], { ok: false, status: 403 }));
+      await expect(gemini.chatStream(config, PARAMS)).rejects.toMatchObject({ status: 403 });
+    });
+  });
+
+  describe('openaiCompat', () => {
+    const config = { apiKey: 'sk-x', model: 'gpt-4o-mini', baseUrl: 'https://api.openai.com/v1' };
+
+    it('parseStreamLine reads delta content and the [DONE] sentinel', () => {
+      expect(openaiCompat.parseStreamLine('data: {"choices":[{"delta":{"content":"Hey"}}]}'))
+        .toEqual({ text: 'Hey' });
+      expect(openaiCompat.parseStreamLine('data: {"choices":[{"delta":{"role":"assistant"}}]}')).toBeNull();
+      expect(openaiCompat.parseStreamLine('data: [DONE]')).toEqual({ done: true });
+      expect(openaiCompat.parseStreamLine(': keep-alive comment')).toBeNull();
+      expect(() => openaiCompat.parseStreamLine('data: {"error":{"message":"rate limited"}}'))
+        .toThrow(/rate limited/);
+    });
+
+    it('chatStream stops at [DONE] and returns the accumulated text', async () => {
+      global.fetch = jest.fn().mockResolvedValue(streamResponse([
+        'data: {"choices":[{"delta":{"role":"assistant"}}]}\n\n',
+        'data: {"choices":[{"delta":{"content":"Str"}}]}\n\ndata: {"choices":[{"delta":{"content":"eam"}}]}\n\n',
+        'data: [DONE]\n\n',
+      ]));
+      const chunks = [];
+      const out = await openaiCompat.chatStream(config, PARAMS, c => chunks.push(c));
+      expect(out).toBe('Stream');
+      expect(chunks).toEqual(['Str', 'eam']);
+      expect(JSON.parse(global.fetch.mock.calls[0][1].body).stream).toBe(true);
+    });
+
+    it('chatStream retries with max_completion_tokens on the dedicated 400', async () => {
+      global.fetch = jest.fn()
+        .mockResolvedValueOnce(streamResponse(
+          ["Unsupported parameter: 'max_tokens'. Use 'max_completion_tokens' instead."],
+          { ok: false, status: 400 }))
+        .mockResolvedValueOnce(streamResponse([
+          'data: {"choices":[{"delta":{"content":"ok"}}]}\n\ndata: [DONE]\n\n',
+        ]));
+      const out = await openaiCompat.chatStream(config, PARAMS, () => {});
+      expect(out).toBe('ok');
+      const firstBody = JSON.parse(global.fetch.mock.calls[0][1].body);
+      const secondBody = JSON.parse(global.fetch.mock.calls[1][1].body);
+      expect(firstBody.max_tokens).toBe(512);
+      expect(secondBody.max_completion_tokens).toBe(512);
+      expect(secondBody.max_tokens).toBeUndefined();
+      expect(secondBody.stream).toBe(true);
+    });
+  });
+
+  describe('ollama', () => {
+    const config = { apiKey: '', model: 'llama3.2', baseUrl: 'http://localhost:11434' };
+
+    it('parseStreamLine reads NDJSON content and the done flag', () => {
+      expect(ollama.parseStreamLine('{"message":{"content":"To"},"done":false}')).toEqual({ text: 'To' });
+      expect(ollama.parseStreamLine('{"message":{"content":""},"done":true}')).toEqual({ done: true });
+      expect(ollama.parseStreamLine('{"message":{"content":"end"},"done":true}'))
+        .toEqual({ text: 'end', done: true });
+      expect(ollama.parseStreamLine('not json')).toBeNull();
+      expect(() => ollama.parseStreamLine('{"error":"model not found"}')).toThrow(/model not found/);
+    });
+
+    it('chatStream sends stream:true and stops at done:true', async () => {
+      global.fetch = jest.fn().mockResolvedValue(streamResponse([
+        '{"message":{"content":"To"},"done":false}\n{"message":{"content":"ken"},"done":false}\n',
+        '{"message":{"content":""},"done":true}\n',
+      ]));
+      const chunks = [];
+      const out = await ollama.chatStream(config, PARAMS, c => chunks.push(c));
+      expect(out).toBe('Token');
+      expect(chunks).toEqual(['To', 'ken']);
+      expect(JSON.parse(global.fetch.mock.calls[0][1].body).stream).toBe(true);
+    });
+  });
+
+  describe('stream lifecycle', () => {
+    it('chatStream propagates a mid-stream abort rejection (null contract lives in aiManager)', async () => {
+      const encoder = new TextEncoder();
+      let calls = 0;
+      const abortErr = Object.assign(new Error('The user aborted a request.'), { name: 'AbortError' });
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        body: {
+          getReader: () => ({
+            read: async () => {
+              calls += 1;
+              if (calls === 1) {
+                return { done: false, value: encoder.encode('{"message":{"content":"par"},"done":false}\n') };
+              }
+              throw abortErr; // reader.read() rejects once the signal fires
+            },
+            cancel: async () => {},
+          }),
+        },
+      });
+      const chunks = [];
+      await expect(
+        ollama.chatStream({ apiKey: '', model: 'llama3.2', baseUrl: 'http://localhost:11434' },
+          PARAMS, c => chunks.push(c)),
+      ).rejects.toMatchObject({ name: 'AbortError' });
+      expect(chunks).toEqual(['par']); // no chunk delivered after the abort
+    });
+
+    it('cancels the reader when the done sentinel arrives before the body ends', async () => {
+      const encoder = new TextEncoder();
+      const cancel = jest.fn(async () => {});
+      const frames = [
+        'data: {"choices":[{"delta":{"content":"hi"}}]}\n\ndata: [DONE]\n\n',
+        'data: {"choices":[{"delta":{"content":"NEVER"}}]}\n\n',
+      ];
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        body: {
+          getReader: () => ({
+            read: async () => (frames.length
+              ? { done: false, value: encoder.encode(frames.shift()) }
+              : { done: true, value: undefined }),
+            cancel,
+          }),
+        },
+      });
+      const out = await openaiCompat.chatStream(
+        { apiKey: 'sk-x', model: 'gpt-4o-mini', baseUrl: 'https://api.openai.com/v1' }, PARAMS);
+      expect(out).toBe('hi');
+      expect(cancel).toHaveBeenCalled(); // early break must release the connection
+    });
   });
 });
 

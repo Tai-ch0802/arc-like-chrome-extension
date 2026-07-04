@@ -58,6 +58,13 @@ export function invalidateCache(tabId) {
  */
 export function removeFromCache(tabId) {
     summaryCache.delete(tabId);
+    // If the closed tab is the one being hovered, drop the hover state and
+    // hide our tooltip so we don't strand a suppressed reference to — or keep
+    // a summary popup pinned over — a row that's about to be detached.
+    if (tabId === currentHoveredTabId) {
+        clearHoverState();
+        tooltip.hideImmediately();
+    }
 }
 
 // === Event Handlers ===
@@ -70,11 +77,28 @@ function handleMouseOver(event) {
     if (!tabItem) return;
 
     const tabId = parseInt(tabItem.dataset.tabId, 10);
-    if (isNaN(tabId) || tabId === currentHoveredTabId) return;
+    if (isNaN(tabId)) return;
+    if (tabId === currentHoveredTabId) {
+        // Same row still hovered. If its element was re-created mid-hover (a
+        // fresh node that carries a live title again), re-suppress so the
+        // native tooltip can't resurface. Don't restart the debounce.
+        if (state.isHoverSummarizeEnabled() && tabItem.dataset.hoverNativeTitle === undefined) {
+            tooltip.suppressAnchorTitle(tabItem);
+        }
+        return;
+    }
 
     // Clear any previous hover timer
     clearHoverState();
     currentHoveredTabId = tabId;
+
+    // Suppress the row's native title tooltip up front — before the browser's
+    // ~1s hover delay — so it never pops up to overlap/cover our summary
+    // tooltip. Gated on the feature being on: when it's off no tooltip of ours
+    // appears, so we must keep the native title+URL preview intact.
+    if (state.isHoverSummarizeEnabled()) {
+        tooltip.suppressAnchorTitle(tabItem);
+    }
 
     // Start 2-second debounce timer (FR-1.01)
     hoverTimerId = setTimeout(() => {
@@ -88,6 +112,11 @@ function handleMouseOver(event) {
 function handleMouseOut(event) {
     const tabItem = event.target.closest('.tab-item');
     if (!tabItem) return;
+
+    // Delegated mouseout fires on every descendant boundary; ignore moves that
+    // stay inside the same row (body → title span → action buttons) so an
+    // already-shown summary isn't torn down and re-fetched mid-read.
+    if (tabItem.contains(event.relatedTarget)) return;
 
     const tabId = parseInt(tabItem.dataset.tabId, 10);
     if (tabId === currentHoveredTabId) {
@@ -108,6 +137,8 @@ function clearHoverState() {
         currentAbortController.abort();
         currentAbortController = null;
     }
+    // Give the row back its native title tooltip now that we no longer own it.
+    tooltip.restoreAnchorTitle();
     currentHoveredTabId = null;
 }
 
@@ -119,8 +150,13 @@ function clearHoverState() {
  * @param {HTMLElement} anchorEl 
  */
 async function triggerSummarize(tabId, anchorEl) {
-    // Check if feature is enabled
-    if (!state.isHoverSummarizeEnabled()) return;
+    // Check if feature is enabled. If it was toggled off during the debounce,
+    // give the row its native title back — we suppressed it on mouseover but
+    // won't be showing a summary to replace it.
+    if (!state.isHoverSummarizeEnabled()) {
+        tooltip.restoreAnchorTitle();
+        return;
+    }
 
     // Try to get the tab info for URL and title
     let tab;
@@ -170,8 +206,8 @@ async function triggerSummarize(tabId, anchorEl) {
             return;
         }
 
-        // Summarize via the active provider. Builtin streams delta chunks for
-        // progressive rendering; cloud providers deliver one final chunk.
+        // Summarize via the active provider. Both builtin and cloud providers
+        // stream delta chunks for progressive rendering.
         // @see https://developer.chrome.com/docs/ai/render-llm-responses
         const fullSummary = await aiManager.summarizePageStreaming(pageText, domain, {
             onChunk: (chunk) => tooltip.updateStreamChunk(chunk),

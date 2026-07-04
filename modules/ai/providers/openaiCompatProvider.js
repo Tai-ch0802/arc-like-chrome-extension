@@ -7,17 +7,17 @@
  * (e.g. https://api.openai.com/v1). API key is optional — keyless local
  * gateways are common.
  */
-import { fetchJson, toTestFailure, normalizeBaseUrl, HttpError } from './httpUtils.js';
+import { fetchJson, consumeStreamText, toTestFailure, normalizeBaseUrl, HttpError } from './httpUtils.js';
 
 /**
  * Builds the chat/completions request. Pure — unit-testable without fetch.
  * @param {{apiKey?: string, model: string, baseUrl: string}} config
- * @param {{system?: string, prompt: string, maxTokens?: number, tokenParam?: string}} params
+ * @param {{system?: string, prompt: string, maxTokens?: number, tokenParam?: string, stream?: boolean}} params
  *        tokenParam: 'max_tokens' (default, widest gateway compat) or
  *        'max_completion_tokens' (required by newer OpenAI reasoning models).
  * @returns {{url: string, init: RequestInit}}
  */
-export function buildChatRequest(config, { system, prompt, maxTokens = 1024, tokenParam = 'max_tokens' }) {
+export function buildChatRequest(config, { system, prompt, maxTokens = 1024, tokenParam = 'max_tokens', stream = false }) {
     const base = normalizeBaseUrl(config.baseUrl);
     const messages = [];
     if (system) {
@@ -37,6 +37,7 @@ export function buildChatRequest(config, { system, prompt, maxTokens = 1024, tok
                 model: (config.model || '').trim(),
                 messages,
                 [tokenParam]: maxTokens,
+                ...(stream ? { stream: true } : {}),
             }),
         },
     };
@@ -83,6 +84,62 @@ async function requestChat(config, params) {
  */
 export async function chat(config, params) {
     return parseChatResponse(await requestChat(config, params));
+}
+
+/**
+ * Parses one SSE line from a streaming chat/completions response. Pure.
+ * @param {string} line
+ * @returns {{text?: string, done?: boolean}|null}
+ */
+export function parseStreamLine(line) {
+    if (!line.startsWith('data:')) return null;
+    const payload = line.slice(5).trim();
+    if (payload === '[DONE]') return { done: true };
+    let json;
+    try {
+        json = JSON.parse(payload);
+    } catch {
+        return null;
+    }
+    // Gateways (LiteLLM/OpenRouter/…) can emit in-band error frames on an
+    // HTTP-200 stream — fail loudly instead of returning a truncated text.
+    if (json?.error) {
+        throw new Error(`OpenAI-compatible stream error: ${json.error.message || json.error}`);
+    }
+    const text = json?.choices?.[0]?.delta?.content || '';
+    return text ? { text } : null;
+}
+
+/** Runs one streaming attempt; onChunk fires per delta. */
+async function streamOnce(config, params, onChunk) {
+    const { url, init } = buildChatRequest(config, { ...params, stream: true });
+    if (params.signal) init.signal = params.signal;
+    const full = await consumeStreamText(url, init, parseStreamLine, onChunk);
+    if (!full.trim()) {
+        throw new Error('Empty response from OpenAI-compatible API');
+    }
+    return full;
+}
+
+/**
+ * Streaming chat with the same max_completion_tokens retry as chat().
+ * The retry is safe: the 400 arrives before any SSE line is read, so no
+ * chunks have been delivered when the second attempt starts.
+ * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
+ * @param {(chunk: string) => void} [onChunk]
+ * @returns {Promise<string>}
+ */
+export async function chatStream(config, params, onChunk) {
+    try {
+        return await streamOnce(config, params, onChunk);
+    } catch (err) {
+        const needsCompletionParam = err instanceof HttpError
+            && err.status === 400
+            && /max_completion_tokens/.test(err.message);
+        if (!needsCompletionParam) throw err;
+        return streamOnce(config, { ...params, tokenParam: 'max_completion_tokens' }, onChunk);
+    }
 }
 
 /**
