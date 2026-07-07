@@ -7,6 +7,7 @@
  * (aiGrouperUI binds #toast-undo-btn); this module only controls visibility.
  */
 import * as api from '../apiManager.js';
+import * as driveAuth from '../sync/driveAuth.js';
 
 let toastTimeoutId = null;
 
@@ -74,4 +75,32 @@ export function initAiProviderErrorToast() {
         showToast(api.getMessage('aiProviderAuthError')
             || 'Your AI provider rejected the request (authorization failed). Check Settings → AI.');
     });
+}
+
+// === RSS cross-device sync onboarding ===
+
+/** Shown at most once, ever. */
+const RSS_SYNC_ONBOARDING_KEY = 'rssSyncOnboardingShown';
+
+/**
+ * One-time nudge: if the user actually uses RSS (has subscriptions) but has not
+ * connected Google Drive, suggest signing in so their RSS subscriptions and
+ * read history sync across devices (and stop re-fetching duplicates). Shown once
+ * per install and never again. Call AFTER initRssManager so the local
+ * subscription working copy is seeded/migrated.
+ */
+export async function initRssSyncOnboarding() {
+    try {
+        const flags = await api.getStorage('local', [RSS_SYNC_ONBOARDING_KEY, 'rssSubscriptions']);
+        if (flags[RSS_SYNC_ONBOARDING_KEY]) return;
+        const subs = flags.rssSubscriptions;
+        if (!Array.isArray(subs) || subs.length === 0) return; // only nudge real RSS users
+        if (await driveAuth.isConnected()) return;              // already signed in
+        // Set BEFORE showing so a race between two panels shows it at most once.
+        await api.setStorage('local', { [RSS_SYNC_ONBOARDING_KEY]: true });
+        showToast(api.getMessage('rssSyncSignInHint')
+            || 'Sign in to Google in Settings to sync your RSS subscriptions and reading history across devices.');
+    } catch (e) {
+        console.warn('RSS: sync onboarding hint failed', e);
+    }
 }

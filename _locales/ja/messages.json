@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "「バックアップと同期」で Google にサインインすると、RSS 購読と閲覧履歴をデバイス間で同期し、重複した再取得を回避できます。",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "設定で Google にサインインすると、RSS 購読と閲覧履歴をデバイス間で同期できます。",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "スマートグループ化"
   },
@@ -1005,7 +1013,7 @@
     "message": "バックアップと同期"
   },
   "syncAccountDesc": {
-    "message": "ご自身の Google ドライブを使って、Workspaces をデバイス間でバックアップ・同期します。"
+    "message": "ご自身の Google ドライブを使って、Workspaces と RSS 購読をデバイス間でバックアップ・同期します。"
   },
   "syncConflictLabel": {
     "message": "同期の競合"
@@ -1023,7 +1031,7 @@
     "message": "Google ドライブに接続"
   },
   "syncConnectDisclosureMessage": {
-    "message": "これは、オプトインした Workspaces のタブ URL、タイトル、グループ情報をご自身の Google ドライブ（アプリ専用フォルダ）にアップロードします。同期は Workspaces ごとのオプトインで、既定ではオフです。接続を解除するとすべてのアップロードが停止します。"
+    "message": "これは、ご自身の Google ドライブ（アプリ専用フォルダ）に次の情報をアップロードします。オプトインした Workspaces のタブ URL、タイトル、グループ情報。加えて、RSS 購読リストと、取得済みの記事リンクの一方向フィンガープリント。Workspaces の同期は Workspaces ごとのオプトインで、既定ではオフです。RSS データは接続中に自動的に同期されます。接続を解除するとすべてのアップロードが停止します。"
   },
   "syncConnectDisclosureTitle": {
     "message": "Google ドライブに接続"
@@ -1056,7 +1064,7 @@
     "message": "手動同期"
   },
   "syncPrivacyNote": {
-    "message": "オプトインした Workspaces のタブ URL、タイトル、グループ情報は、ご自身の Google ドライブ（アプリ専用フォルダ）にのみ保存されます。"
+    "message": "オプトインした Workspace のタブデータと RSS 購読は、ご自身の Google ドライブ（アプリ専用フォルダ）にのみ保存されます。 "
   },
   "syncPrivacyPolicyLink": {
     "message": "プライバシーポリシー"

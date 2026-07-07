@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "在「備份與同步」登入 Google，即可跨裝置同步你的 RSS 訂閱清單與閱讀紀錄，並避免重複抓取相同項目。",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "在設定中登入 Google，即可跨裝置同步你的 RSS 訂閱清單與閱讀紀錄。",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "智慧整理"
   },
@@ -1005,7 +1013,7 @@
     "message": "備份與同步"
   },
   "syncAccountDesc": {
-    "message": "透過你自己的 Google 雲端硬碟，跨裝置備份並同步你的工作區。"
+    "message": "透過你自己的 Google 雲端硬碟，跨裝置備份並同步你的工作區與 RSS 訂閱清單。"
   },
   "syncConflictLabel": {
     "message": "同步衝突"
@@ -1023,7 +1031,7 @@
     "message": "連結 Google 雲端硬碟"
   },
   "syncConnectDisclosureMessage": {
-    "message": "這會將你選擇加入的工作區的分頁網址、標題與群組資訊上傳到你自己的 Google 雲端硬碟（應用程式專屬資料夾）。同步需逐一工作區選擇加入，且預設為關閉。中斷連結會停止所有上傳。"
+    "message": "這會上傳到你自己的 Google 雲端硬碟（應用程式專屬資料夾）：你選擇加入的工作區的分頁網址、標題與群組資訊；以及你的 RSS 訂閱清單，還有已抓取文章連結的單向指紋。工作區同步需逐一選擇加入且預設關閉；RSS 資料則在已連結時自動同步。中斷連結會停止所有上傳。"
   },
   "syncConnectDisclosureTitle": {
     "message": "連結 Google 雲端硬碟"
@@ -1056,7 +1064,7 @@
     "message": "手動同步"
   },
   "syncPrivacyNote": {
-    "message": "你選擇加入的工作區的分頁網址、標題與群組資訊，僅儲存在你自己的 Google 雲端硬碟（應用程式專屬資料夾）中。"
+    "message": "你選擇加入的工作區分頁資料與你的 RSS 訂閱清單，僅儲存在你自己的 Google 雲端硬碟（應用程式專屬資料夾）中。"
   },
   "syncPrivacyPolicyLink": {
     "message": "隱私權政策"

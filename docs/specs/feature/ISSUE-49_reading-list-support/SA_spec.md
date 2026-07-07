@@ -336,11 +336,13 @@ interface ReadingListEntry {
 
 #### RssSubscription (Custom Storage - Compact Format)
 
+> **⚠️ 已更新（見 `docs/specs/feature/BASE-014_rss-drive-sync/SPEC.md`）**：`rssSubscriptions` 已自 `chrome.storage.sync` 遷至 `chrome.storage.local`（改由 Google Drive appdata 做跨裝置同步），並在 pipe format 尾端新增第 7 欄 `updatedAt`（跨裝置合併衝突鍵）。下方為原始 ISSUE-49 設計，欄位語意仍適用。
+
 為符合 `chrome.storage.sync` 配額限制 (QUOTA_BYTES_PER_ITEM = 8,192 bytes)，採用緊湊的 pipe-delimiter 格式：
 
 ```json
-// Stored in chrome.storage.sync under key "rssSubscriptions"
-// Format: "id | url | title | interval | enabled | lastFetched"
+// Stored in chrome.storage.local under key "rssSubscriptions" (was: sync)
+// Format: "id | url | title | interval | enabled | lastFetched | updatedAt"
 // Note: Original data containing "|" must be escaped as "\\|"
 {
   "rssSubscriptions": [

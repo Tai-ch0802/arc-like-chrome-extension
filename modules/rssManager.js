@@ -3,12 +3,22 @@
 
 import * as api from './apiManager.js';
 import { addToReadingList } from './readingListManager.js';
+import { MAX_STORED_HASHES, mergeHashesForWrite, nextTimestamp } from './rss/rssSyncLogic.js';
 
 // --- Constants ---
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
 const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
 const RSS_FETCH_FAILURES_KEY = 'rssFetchFailures';
-const MAX_STORED_HASHES = 500; // Limit stored hashes to prevent storage bloat
+// Tombstones for deleted subscriptions ({id: deletedAtMs}), so a deletion
+// propagates through the Drive union-merge instead of the sibling resurrecting
+// it. chrome.storage.local (device working copy; Drive is the sync layer).
+const RSS_TOMBSTONES_KEY = 'rssTombstones';
+// One-time flag: subscriptions were seeded from the legacy storage.sync location
+// into storage.local. Ensures we never re-seed from a stale sync copy.
+const RSS_MIGRATED_KEY = 'rssMigratedFromSync';
+// MAX_STORED_HASHES now lives in rssSyncLogic (raised 500 -> 5000 so the
+// cross-device hash union never tops out in steady state, which would break the
+// merge's idempotency; see rssSyncLogic.js).
 const MAX_FAILURE_LOG = 20; // Ring buffer for surfacing recent fetch failures to UI
 const DELIMITER = '|';
 const ESCAPE_CHAR = '\\|';
@@ -51,7 +61,9 @@ function serializeSubscription(sub) {
         escapeDelimiter(sub.title),
         sub.interval,
         sub.enabled ? '1' : '0',
-        sub.lastFetched
+        sub.lastFetched,
+        // updatedAt: monotonic edit timestamp — the cross-device conflict key.
+        sub.updatedAt || 0
     ].join(DELIMITER);
 }
 
@@ -69,7 +81,10 @@ function parseSubscription(str) {
         title: unescapeDelimiter(parts[2] || ''),
         interval: parts[3] || '24h',
         enabled: parts[4] === '1',
-        lastFetched: parseInt(parts[5], 10) || 0
+        lastFetched: parseInt(parts[5], 10) || 0,
+        // Missing on legacy (6-field) records seeded from storage.sync -> 0, so
+        // any real edit or Drive tombstone from another device wins the merge.
+        updatedAt: parseInt(parts[6], 10) || 0
     };
 }
 
@@ -100,20 +115,101 @@ function intervalToMinutes(interval) {
 // --- Storage Operations ---
 
 /**
+ * One-time migration: seed the storage.local subscription working copy from the
+ * legacy storage.sync location. Idempotent (flag-guarded), seeds at most once
+ * per install, and only when local is empty.
+ *
+ * Why local-first with a permanent flag: Drive is now the single cross-device
+ * source of truth (via the union-merge). If we re-seeded from storage.sync every
+ * time local was empty, a device that later cleared local (reinstall, eviction)
+ * would resurrect subscriptions the user deleted on another device once the
+ * Drive tombstone had been GC'd. Seeded records carry no updatedAt (parse -> 0),
+ * so any real edit or live tombstone deterministically overrides them.
+ *
+ * We deliberately do NOT delete the storage.sync key: its removal would
+ * propagate through Chrome's native sync and wipe subscriptions on any device
+ * still running the pre-migration version.
+ */
+async function migrateSubsFromSyncIfNeeded() {
+    const flags = await api.getStorage('local', [RSS_MIGRATED_KEY]);
+    if (flags[RSS_MIGRATED_KEY]) return;
+
+    const localRes = await api.getStorage('local', [RSS_SUBSCRIPTIONS_KEY]);
+    const localSubs = localRes[RSS_SUBSCRIPTIONS_KEY];
+    const hasLocal = Array.isArray(localSubs) && localSubs.length > 0;
+    if (!hasLocal) {
+        const syncRes = await api.getStorage('sync', [RSS_SUBSCRIPTIONS_KEY]);
+        const syncSubs = syncRes[RSS_SUBSCRIPTIONS_KEY];
+        if (Array.isArray(syncSubs) && syncSubs.length > 0) {
+            await api.setStorage('local', { [RSS_SUBSCRIPTIONS_KEY]: syncSubs });
+        }
+    }
+    await api.setStorage('local', { [RSS_MIGRATED_KEY]: true });
+}
+
+/**
  * Loads subscriptions from storage into memory.
  */
 async function loadSubscriptions() {
-    const result = await api.getStorage('sync', [RSS_SUBSCRIPTIONS_KEY]);
+    await migrateSubsFromSyncIfNeeded();
+    const result = await api.getStorage('local', [RSS_SUBSCRIPTIONS_KEY]);
     const stored = result[RSS_SUBSCRIPTIONS_KEY] || [];
     subscriptions = stored.map(parseSubscription);
 }
 
 /**
- * Saves subscriptions to storage.
+ * Saves the WHOLE subscription array to storage.local. This is the authoritative
+ * whole-array write used by the user-facing editors (add/remove/update, all
+ * running in the options page — the single authoritative editor). The Service
+ * Worker must NOT use this to update lastFetched; see persistLastFetched.
  */
 async function saveSubscriptions() {
     const serialized = subscriptions.map(serializeSubscription);
-    await api.setStorage('sync', { [RSS_SUBSCRIPTIONS_KEY]: serialized });
+    await api.setStorage('local', { [RSS_SUBSCRIPTIONS_KEY]: serialized });
+}
+
+// Serialises field-level lastFetched writes from the SW's fetch loop. Reading
+// the CURRENT stored array and touching only one field (instead of dumping the
+// SW's whole in-memory array) stops the fetch loop from clobbering a concurrent
+// interval/enable edit made in the options page. Mirrors failureLogChain.
+let subsWriteChain = Promise.resolve();
+
+/**
+ * Persists ONE subscription's lastFetched without overwriting other fields.
+ * @param {string} id
+ * @param {number} ts
+ * @returns {Promise<void>}
+ */
+function persistLastFetched(id, ts) {
+    subsWriteChain = subsWriteChain.then(async () => {
+        try {
+            const res = await api.getStorage('local', [RSS_SUBSCRIPTIONS_KEY]);
+            const stored = (res[RSS_SUBSCRIPTIONS_KEY] || []).map(parseSubscription);
+            const target = stored.find((s) => s.id === id);
+            if (!target) return;
+            target.lastFetched = ts;
+            await api.setStorage('local', { [RSS_SUBSCRIPTIONS_KEY]: stored.map(serializeSubscription) });
+            const mem = subscriptions.find((s) => s.id === id);
+            if (mem) mem.lastFetched = ts;
+        } catch (e) {
+            console.warn('RSS: persistLastFetched failed', e);
+        }
+    });
+    return subsWriteChain;
+}
+
+/**
+ * Writes a tombstone for a deleted subscription so the deletion propagates
+ * through the Drive union-merge. deletedAt is forced strictly newer than the
+ * sub's own updatedAt so the merge reliably hides it.
+ * @param {string} id
+ * @param {object|undefined} removed - the subscription object being removed.
+ */
+async function writeTombstone(id, removed) {
+    const res = await api.getStorage('local', [RSS_TOMBSTONES_KEY]);
+    const tombs = res[RSS_TOMBSTONES_KEY] || {};
+    tombs[id] = nextTimestamp(removed && removed.updatedAt, Date.now());
+    await api.setStorage('local', { [RSS_TOMBSTONES_KEY]: tombs });
 }
 
 // --- Hash Storage Operations (Local) ---
@@ -127,20 +223,35 @@ async function loadFetchedHashes() {
     fetchedHashes = new Set(stored);
 }
 
+// Serialises hash writes AND makes them read-merge-write instead of blind
+// overwrite. This is the root-cause fix for the duplicate-items bug: each JS
+// context (SW / side panel / options) held its own module-level `fetchedHashes`
+// Set and blindly wrote Array.from(it), so a stale snapshot in a long-lived
+// panel would delete hashes the SW had just persisted, and the next SW cold
+// reload would treat those articles as new. Re-reading storage and writing the
+// UNION means a write can only ADD, never delete another context's hashes.
+let hashWriteChain = Promise.resolve();
+
 /**
- * Saves fetched hashes to local storage.
- * Limits to MAX_STORED_HASHES to prevent storage bloat.
+ * Saves fetched hashes to local storage as the UNION of what is already there
+ * and the in-memory Set, capped to MAX_STORED_HASHES. Serialised via
+ * hashWriteChain so concurrent saves cannot lose entries.
+ * // ponytail: FIFO array + high cap; if dozens of high-frequency feeds ever
+ * // blow the cap, switch to {hash: lastSeenMs} evict-oldest (deterministic).
  */
 async function saveFetchedHashes() {
-    let hashArray = Array.from(fetchedHashes);
-
-    // Keep only the most recent hashes if exceeding limit
-    if (hashArray.length > MAX_STORED_HASHES) {
-        hashArray = hashArray.slice(-MAX_STORED_HASHES);
-        fetchedHashes = new Set(hashArray);
-    }
-
-    await api.setStorage('local', { [RSS_FETCHED_HASHES_KEY]: hashArray });
+    hashWriteChain = hashWriteChain.then(async () => {
+        try {
+            const result = await api.getStorage('local', [RSS_FETCHED_HASHES_KEY]);
+            const stored = result[RSS_FETCHED_HASHES_KEY] || [];
+            const merged = mergeHashesForWrite(stored, fetchedHashes, MAX_STORED_HASHES);
+            fetchedHashes = new Set(merged);
+            await api.setStorage('local', { [RSS_FETCHED_HASHES_KEY]: merged });
+        } catch (e) {
+            console.warn('RSS: saveFetchedHashes failed', e);
+        }
+    });
+    return hashWriteChain;
 }
 
 /**
@@ -226,6 +337,104 @@ export async function markAsFetched(url) {
     const hash = await calculateHash(url);
     fetchedHashes.add(hash);
     await saveFetchedHashes();
+}
+
+// --- Cross-context cache freshness ---
+
+// Keep this context's in-memory caches fresh when ANOTHER context (or the Drive
+// sync write-back in the SW) mutates local storage. Without this the second half
+// of the duplicate bug remained: isHashFetched would miss hashes a sibling
+// context added, and the subscription list would go stale. Registered once at
+// module load — in the SW this runs synchronously at top-level import, so the
+// listener survives SW restarts (MV3 requirement). Alarms are intentionally NOT
+// re-derived here; they are managed at the explicit mutation points
+// (add/remove/update) and by importMergedRssState in the SW.
+let storageListenerRegistered = false;
+function registerRssStorageListener() {
+    if (storageListenerRegistered) return;
+    if (typeof chrome === 'undefined' || !chrome.storage || !chrome.storage.onChanged) return;
+    storageListenerRegistered = true;
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area !== 'local') return;
+        if (changes[RSS_FETCHED_HASHES_KEY]) {
+            // Union (monotonic) rather than replace, so an in-flight local add
+            // that hasn't been flushed yet is never dropped.
+            const stored = changes[RSS_FETCHED_HASHES_KEY].newValue || [];
+            for (const h of stored) fetchedHashes.add(h);
+        }
+        if (changes[RSS_SUBSCRIPTIONS_KEY]) {
+            const stored = changes[RSS_SUBSCRIPTIONS_KEY].newValue || [];
+            subscriptions = stored.map(parseSubscription);
+        }
+    });
+}
+registerRssStorageListener();
+
+// --- Drive sync bridge (rssManager stays Drive-agnostic; background.js drives) ---
+
+/**
+ * Snapshot the local RSS working copy (fresh from storage.local, not the
+ * possibly-stale in-memory cache) in the shape rssSyncLogic.mergeRssState wants.
+ * @returns {Promise<{subscriptions: object[], hashes: string[], tombstones: Object<string,number>}>}
+ */
+export async function exportLocalRssState() {
+    const res = await api.getStorage('local', [
+        RSS_SUBSCRIPTIONS_KEY, RSS_FETCHED_HASHES_KEY, RSS_TOMBSTONES_KEY,
+    ]);
+    return {
+        subscriptions: (res[RSS_SUBSCRIPTIONS_KEY] || []).map(parseSubscription),
+        hashes: res[RSS_FETCHED_HASHES_KEY] || [],
+        tombstones: res[RSS_TOMBSTONES_KEY] || {},
+    };
+}
+
+/**
+ * Write a merged RSS state back into storage.local and reconcile alarms. Called
+ * only by the SW after mergeRssState. Subscriptions are a whole replace (the
+ * merged set already incorporates the local copy); hashes go through the union
+ * write-chain so a concurrent markAsFetched is not lost.
+ * @param {{subscriptions: object[], hashes: string[], tombstones: Object<string,number>}} merged
+ */
+export async function importMergedRssState(merged) {
+    // Read the authoritative PREVIOUS stored subscriptions (not the in-memory
+    // cache, which may be empty on a cold SW) so alarm reconciliation only
+    // touches genuine deltas.
+    const prevRes = await api.getStorage('local', [RSS_SUBSCRIPTIONS_KEY]);
+    const prevById = new Map(
+        (prevRes[RSS_SUBSCRIPTIONS_KEY] || []).map(parseSubscription).map((s) => [s.id, s]),
+    );
+
+    subscriptions = (merged.subscriptions || []).map((s) => ({
+        id: s.id,
+        url: s.url,
+        title: s.title,
+        interval: s.interval || '24h',
+        enabled: !!s.enabled,
+        lastFetched: s.lastFetched || 0,
+        updatedAt: s.updatedAt || 0,
+    }));
+    await api.setStorage('local', {
+        [RSS_SUBSCRIPTIONS_KEY]: subscriptions.map(serializeSubscription),
+        [RSS_TOMBSTONES_KEY]: merged.tombstones || {},
+    });
+    for (const h of (merged.hashes || [])) fetchedHashes.add(h);
+    await saveFetchedHashes();
+
+    // Reconcile alarms by DELTA only. Recreating every alarm would reset each to
+    // delayInMinutes:1 on every import — two devices subscribed to the same feed
+    // would then ping-pong fetching ~every minute. A sub whose only change is
+    // lastFetched/updatedAt/title keeps its existing schedule untouched.
+    const nextById = new Map(subscriptions.map((s) => [s.id, s]));
+    for (const id of prevById.keys()) {
+        if (!nextById.has(id)) await clearAlarm(id);
+    }
+    for (const [id, sub] of nextById) {
+        const prev = prevById.get(id);
+        const materiallyChanged = !prev || prev.enabled !== sub.enabled || prev.interval !== sub.interval;
+        if (!materiallyChanged) continue;
+        await clearAlarm(id);
+        if (sub.enabled) await setupAlarm(sub);
+    }
 }
 
 // --- Alarm Management ---
@@ -614,7 +823,8 @@ export async function addSubscription(feedUrl) {
         title: feed.title,
         interval: '24h',
         enabled: true,
-        lastFetched: 0
+        lastFetched: 0,
+        updatedAt: nextTimestamp(0, Date.now())
     };
 
     subscriptions.push(sub);
@@ -630,7 +840,11 @@ export async function addSubscription(feedUrl) {
  */
 export async function removeSubscription(subscriptionId) {
     await clearAlarm(subscriptionId);
+    const removed = subscriptions.find(s => s.id === subscriptionId);
     subscriptions = subscriptions.filter(s => s.id !== subscriptionId);
+    // Tombstone BEFORE saving so the deletion propagates through the Drive merge
+    // instead of a sibling device resurrecting it on the next union.
+    await writeTombstone(subscriptionId, removed);
     await saveSubscriptions();
 }
 
@@ -643,8 +857,10 @@ export async function updateSubscription(subscriptionId, updates) {
     const sub = subscriptions.find(s => s.id === subscriptionId);
     if (!sub) return;
 
-    const wasEnabled = sub.enabled;
     Object.assign(sub, updates);
+    // Bump the monotonic edit clock so this user edit wins the cross-device
+    // merge (and beats any older tombstone for this id).
+    sub.updatedAt = nextTimestamp(sub.updatedAt, Date.now());
 
     await saveSubscriptions();
 
@@ -712,9 +928,11 @@ export async function fetchNow(subscriptionId) {
         // Save hashes to local storage
         await saveFetchedHashes();
 
-        // Update last fetched time
+        // Update last fetched time. Field-level write (NOT a whole-array dump)
+        // so this SW fetch loop cannot clobber a concurrent interval/enable edit
+        // made in the options page.
         sub.lastFetched = fetchStartTime;
-        await saveSubscriptions();
+        await persistLastFetched(sub.id, fetchStartTime);
 
         console.log(`RSS [${sub.title}]: Added ${addedCount} new items (hash-based)`);
         return addedCount;

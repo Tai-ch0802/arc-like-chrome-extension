@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Đăng nhập Google trong phần Sao lưu & Đồng bộ để đồng bộ các đăng ký RSS và lịch sử đọc của bạn trên các thiết bị và tránh tải lại các mục trùng lặp.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Đăng nhập Google trong Cài đặt để đồng bộ các đăng ký RSS và lịch sử đọc của bạn trên các thiết bị.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Nhóm Thông Minh"
   },
@@ -1005,7 +1013,7 @@
     "message": "Sao lưu & Đồng bộ"
   },
   "syncAccountDesc": {
-    "message": "Sao lưu và đồng bộ các Workspaces của bạn trên các thiết bị thông qua Google Drive của riêng bạn."
+    "message": "Sao lưu và đồng bộ các Workspaces và đăng ký RSS của bạn trên các thiết bị thông qua Google Drive của riêng bạn."
   },
   "syncConflictLabel": {
     "message": "Xung đột đồng bộ"
@@ -1023,7 +1031,7 @@
     "message": "Kết nối Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Thao tác này tải URL của tab, tiêu đề và thông tin nhóm của các Workspaces bạn chọn tham gia lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng). Đồng bộ là tùy chọn theo từng Workspace và TẮT theo mặc định. Ngắt kết nối sẽ dừng mọi quá trình tải lên."
+    "message": "Thao tác này tải lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng): URL của tab, tiêu đề và thông tin nhóm của các Workspaces bạn chọn tham gia; cùng với danh sách đăng ký RSS của bạn và một dấu vân tay một chiều của các liên kết bài viết đã được tải. Đồng bộ Workspace là tùy chọn theo từng Workspace và TẮT theo mặc định; dữ liệu RSS được đồng bộ tự động khi đang kết nối. Ngắt kết nối sẽ dừng mọi quá trình tải lên."
   },
   "syncConnectDisclosureTitle": {
     "message": "Kết nối Google Drive"
@@ -1056,7 +1064,7 @@
     "message": "Đồng bộ thủ công"
   },
   "syncPrivacyNote": {
-    "message": "URL của tab, tiêu đề và thông tin nhóm của các Workspaces đã chọn tham gia chỉ được lưu trữ trên Google Drive của riêng bạn (một thư mục riêng của ứng dụng). "
+    "message": "Dữ liệu tab của Workspace bạn đã chọn tham gia và các đăng ký RSS của bạn chỉ được lưu trữ trên Google Drive của riêng bạn (một thư mục riêng của ứng dụng). "
   },
   "syncPrivacyPolicyLink": {
     "message": "Chính sách quyền riêng tư"

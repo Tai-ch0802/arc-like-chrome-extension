@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Melden Sie sich unter „Sicherung und Synchronisierung“ bei Google an, um Ihre RSS-Abonnements und Ihren Leseverlauf geräteübergreifend zu synchronisieren und doppelte Abrufe zu vermeiden.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Melden Sie sich in den Einstellungen bei Google an, um Ihre RSS-Abonnements und Ihren Leseverlauf geräteübergreifend zu synchronisieren.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Smart-Gruppierung"
   },
@@ -1005,7 +1013,7 @@
     "message": "Sicherung und Synchronisierung"
   },
   "syncAccountDesc": {
-    "message": "Sichere und synchronisiere deine Workspaces geräteübergreifend über dein eigenes Google Drive."
+    "message": "Sichere und synchronisiere deine Workspaces und RSS-Abonnements geräteübergreifend über dein eigenes Google Drive."
   },
   "syncConflictLabel": {
     "message": "Synchronisierungskonflikte"
@@ -1023,7 +1031,7 @@
     "message": "Google Drive verbinden"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Dies lädt Tab-URLs, Titel und Gruppeninformationen der von dir aktivierten Workspaces in dein eigenes Google Drive (einen app-privaten Ordner) hoch. Die Synchronisierung erfolgt pro Workspace per Opt-in und ist standardmäßig AUS. Beim Trennen werden alle Uploads gestoppt."
+    "message": "Dies lädt in dein eigenes Google Drive (einen app-privaten Ordner) hoch: Tab-URLs, Titel und Gruppeninformationen der von dir aktivierten Workspaces; außerdem deine RSS-Abonnementliste und einen einseitigen Fingerabdruck bereits abgerufener Artikel-Links. Die Workspace-Synchronisierung erfolgt pro Workspace per Opt-in und ist standardmäßig AUS; RSS-Daten werden bei bestehender Verbindung automatisch synchronisiert. Beim Trennen werden alle Uploads gestoppt."
   },
   "syncConnectDisclosureTitle": {
     "message": "Google Drive verbinden"
@@ -1056,7 +1064,7 @@
     "message": "Manuelle Synchronisierung"
   },
   "syncPrivacyNote": {
-    "message": "Tab-URLs, Titel und Gruppeninformationen der aktivierten Workspaces werden nur in deinem eigenen Google Drive (einem app-privaten Ordner) gespeichert. "
+    "message": "Die Tab-Daten deiner aktivierten Workspaces und deine RSS-Abonnements werden nur in deinem eigenen Google Drive (einem app-privaten Ordner) gespeichert. "
   },
   "syncPrivacyPolicyLink": {
     "message": "Datenschutzerklärung"

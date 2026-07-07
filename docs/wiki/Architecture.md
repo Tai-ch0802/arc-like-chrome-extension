@@ -58,10 +58,12 @@ modules/
 ## Storage 慣例
 
 - `chrome.storage.sync`：跨裝置的小型 metadata（**8KB/key 配額**）。Workspace 身分存 `wsMeta_<id>`。
-- `chrome.storage.local`：大型/本機資料。Workspace 快照存 `wsSnap_<id>`（schema v2，per-id key 使快照路徑零 sync 寫入）。
+- `chrome.storage.local`：大型/本機資料。Workspace 快照存 `wsSnap_<id>`（schema v2，per-id key 使快照路徑零 sync 寫入）。RSS 訂閱清單 `rssSubscriptions`（自 sync 遷入，一次性 `rssMigratedFromSync` 旗標；不刪舊 sync key 以免 wipe 未升級裝置）、去重 hash `rssFetchedHashes`、刪除 tombstone `rssTombstones` 均存此。
 - `chrome.storage.session`：跨 context 的暫態旗標（如 panelBridge）。
-- 多 context 寫同一 key 時**必須 read→merge→write（delta 合併）**，嚴禁全表覆寫——曾發生 debounced reload 後全表寫入清空綁定的事故。
+- 多 context 寫同一 key 時**必須 read→merge→write（delta 合併）**，嚴禁全表覆寫——曾發生 debounced reload 後全表寫入清空綁定的事故；RSS `rssFetchedHashes` 曾因 side panel 陳舊快照全表覆寫導致去重失效，已改為序列化 union 寫入（`rssManager` `hashWriteChain`）。
 
 ## Google Drive 同步（選用功能）
 
 分層：`syncLogic`（純函式：3-way 差異判定、rev-LWW 衝突解決、tombstone GC）→ `syncEngine`（DI 編排）→ `googleDriveProvider`（Drive v3 appDataFolder）→ `driveAuth`（`chrome.identity.getAuthToken`）。設計要點：衝突輸家保留為 conflicted copy 不丟資料；未連線時整層 inert；詳見 `docs/google-drive-sync-setup.md`。
+
+RSS 狀態同步走**獨立的輕量路徑**（不套 `syncEngine` 的 rev/baseRev 模型）：訂閱清單 + 去重 hash + tombstone 存於單一 appdata 檔 `rss-sync.json`，以 set-union / id-merge 的純函式 `modules/rss/rssSyncLogic.js`（`mergeRssState`，commutative + idempotent）合併，收斂靠 no-op write guard（≤2 cycle）取代回音抑制。子系統與 workspace 檔互不干擾（`pullRemote` 以 `/^ws_.../` 過濾略過 `rss-*.json`）；接線在 `background.js` `rssSyncOnce`（single-flight），pull piggyback 於 `runSyncOnce`、push 由 `rssSyncFlush` debounce alarm 觸發。

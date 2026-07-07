@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Faça login no Google em Backup e sincronização para sincronizar suas assinaturas RSS e seu histórico de leitura entre dispositivos e evitar buscar duplicatas novamente.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Faça login no Google nas Configurações para sincronizar suas assinaturas RSS e seu histórico de leitura entre dispositivos.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Agrupamento Inteligente"
   },
@@ -1005,7 +1013,7 @@
     "message": "Backup e sincronização"
   },
   "syncAccountDesc": {
-    "message": "Faça backup e sincronize seus Workspaces entre dispositivos pelo seu próprio Google Drive."
+    "message": "Faça backup e sincronize seus Workspaces e suas assinaturas RSS entre dispositivos pelo seu próprio Google Drive."
   },
   "syncConflictLabel": {
     "message": "Conflitos de sincronização"
@@ -1023,7 +1031,7 @@
     "message": "Conectar Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Isso envia as URLs das abas, os títulos e as informações de grupo dos Workspaces que você ativar para o seu próprio Google Drive (uma pasta privada do app). A sincronização é opcional por Workspace e fica DESATIVADA por padrão. Desconectar interrompe todos os envios."
+    "message": "Isso envia, para o seu próprio Google Drive (uma pasta privada do app): as URLs das abas, os títulos e as informações de grupo dos Workspaces que você ativar; além da sua lista de assinaturas RSS e de uma impressão digital unidirecional dos links de artigos já obtidos. A sincronização de Workspace é opcional por Workspace e fica DESATIVADA por padrão; os dados RSS sincronizam automaticamente enquanto estiver conectado. Desconectar interrompe todos os envios."
   },
   "syncConnectDisclosureTitle": {
     "message": "Conectar Google Drive"
@@ -1056,7 +1064,7 @@
     "message": "Sincronização manual"
   },
   "syncPrivacyNote": {
-    "message": "As URLs das abas, os títulos e as informações de grupo dos Workspaces ativados são armazenados apenas no seu próprio Google Drive (uma pasta privada do app). "
+    "message": "Os dados de abas dos Workspaces ativados e suas assinaturas RSS são armazenados apenas no seu próprio Google Drive (uma pasta privada do app). "
   },
   "syncPrivacyPolicyLink": {
     "message": "Política de Privacidade"

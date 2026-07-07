@@ -18,7 +18,7 @@ import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
 import { SEARCH_NO_RESULTS_ICON_SVG, renderIcon } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
-import { initAiProviderErrorToast } from './modules/ui/toast.js';
+import { initAiProviderErrorToast, initRssSyncOnboarding } from './modules/ui/toast.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 
 // --- Spotlight 轉送動作處理 ---
@@ -278,7 +278,9 @@ async function initialize() {
     initSettingsBridge();
     initAiProviderErrorToast();
 
-    rssManager.initRssManager().catch(console.error);
+    rssManager.initRssManager()
+        .then(() => initRssSyncOnboarding())
+        .catch(console.error);
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
     // Workspace switcher dropdown + manage dialog. (Cache already loaded above,

@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "백업 및 동기화에서 Google에 로그인하면 RSS 구독과 읽기 기록을 여러 기기에서 동기화하고 중복을 다시 가져오지 않을 수 있습니다.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "설정에서 Google에 로그인하면 RSS 구독과 읽기 기록을 여러 기기에서 동기화할 수 있습니다.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "스마트 그룹화"
   },
@@ -1005,7 +1013,7 @@
     "message": "백업 및 동기화"
   },
   "syncAccountDesc": {
-    "message": "본인의 Google 드라이브를 통해 Workspaces를 여러 기기에서 백업하고 동기화합니다."
+    "message": "본인의 Google 드라이브를 통해 Workspaces와 RSS 구독을 여러 기기에서 백업하고 동기화합니다."
   },
   "syncConflictLabel": {
     "message": "동기화 충돌"
@@ -1023,7 +1031,7 @@
     "message": "Google 드라이브 연결"
   },
   "syncConnectDisclosureMessage": {
-    "message": "선택한 Workspaces의 탭 URL, 제목, 그룹 정보를 본인의 Google 드라이브(앱 전용 폴더)에 업로드합니다. 동기화는 Workspaces별 옵트인이며 기본값은 꺼짐입니다. 연결을 해제하면 모든 업로드가 중지됩니다."
+    "message": "본인의 Google 드라이브(앱 전용 폴더)에 다음을 업로드합니다: 옵트인한 Workspaces의 탭 URL, 제목, 그룹 정보, 그리고 RSS 구독 목록과 이미 가져온 기사 링크의 단방향 지문. Workspace 동기화는 Workspaces별 옵트인이며 기본값은 꺼짐이고, RSS 데이터는 연결되어 있는 동안 자동으로 동기화됩니다. 연결을 해제하면 모든 업로드가 중지됩니다."
   },
   "syncConnectDisclosureTitle": {
     "message": "Google 드라이브 연결"
@@ -1056,7 +1064,7 @@
     "message": "수동 동기화"
   },
   "syncPrivacyNote": {
-    "message": "선택한 Workspaces의 탭 URL, 제목, 그룹 정보는 본인의 Google 드라이브(앱 전용 폴더)에만 저장됩니다."
+    "message": "옵트인한 Workspace의 탭 데이터와 RSS 구독은 본인의 Google 드라이브(앱 전용 폴더)에만 저장됩니다. "
   },
   "syncPrivacyPolicyLink": {
     "message": "개인정보처리방침"

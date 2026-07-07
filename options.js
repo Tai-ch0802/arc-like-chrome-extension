@@ -326,6 +326,14 @@ async function renderRss(container) {
     h.textContent = api.getMessage('settingsNavRss') || 'RSS';
     container.appendChild(h);
 
+    // Cross-device sync hint: sign in to Google to sync RSS subscriptions and
+    // dedup history across devices (and stop re-fetching duplicates).
+    const syncHint = document.createElement('p');
+    syncHint.className = 'opt-row__desc';
+    syncHint.textContent = api.getMessage('rssSyncHint')
+        || 'Sign in to Google under Backup & Sync to sync your RSS subscriptions and reading history across devices and avoid re-fetching duplicates.';
+    container.appendChild(syncHint);
+
     // Ensure subscriptions are loaded from storage
     await rss.initRssManager();
 
