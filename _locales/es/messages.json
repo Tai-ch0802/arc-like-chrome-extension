@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Inicia sesión en Google en Copia de seguridad y sincronización para sincronizar tus suscripciones RSS y tu historial de lectura entre dispositivos y evitar volver a obtener duplicados.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Inicia sesión en Google desde Configuración para sincronizar tus suscripciones RSS y tu historial de lectura entre dispositivos.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Agrupación Inteligente"
   },
@@ -1005,7 +1013,7 @@
     "message": "Copia de seguridad y sincronización"
   },
   "syncAccountDesc": {
-    "message": "Haz copias de seguridad y sincroniza tus Workspaces entre dispositivos a través de tu propio Google Drive."
+    "message": "Haz copias de seguridad y sincroniza tus Workspaces y suscripciones RSS entre dispositivos a través de tu propio Google Drive."
   },
   "syncConflictLabel": {
     "message": "Conflictos de sincronización"
@@ -1023,7 +1031,7 @@
     "message": "Conectar Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Esto sube las URL de las pestañas, los títulos y la información de grupo de los Workspaces que actives a tu propio Google Drive (una carpeta privada de la aplicación). La sincronización es opcional por Workspace y está desactivada de forma predeterminada. Al desconectar se detienen todas las subidas."
+    "message": "Esto sube a tu propio Google Drive (una carpeta privada de la aplicación): las URL de las pestañas, los títulos y la información de grupo de los Workspaces que actives; además de tu lista de suscripciones RSS y una huella unidireccional de los enlaces de artículos ya obtenidos. La sincronización de Workspaces es opcional por Workspace y está desactivada de forma predeterminada; los datos RSS se sincronizan automáticamente mientras estás conectado. Al desconectar se detienen todas las subidas."
   },
   "syncConnectDisclosureTitle": {
     "message": "Conectar Google Drive"
@@ -1056,7 +1064,7 @@
     "message": "Sincronización manual"
   },
   "syncPrivacyNote": {
-    "message": "Las URL de las pestañas, los títulos y la información de grupo de los Workspaces activados se almacenan únicamente en tu propio Google Drive (una carpeta privada de la aplicación). "
+    "message": "Los datos de las pestañas de los Workspaces que has activado y tus suscripciones RSS se almacenan únicamente en tu propio Google Drive (una carpeta privada de la aplicación). "
   },
   "syncPrivacyPolicyLink": {
     "message": "Política de privacidad"

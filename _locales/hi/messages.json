@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "अपनी RSS सदस्यताओं और पढ़ने के इतिहास को सभी डिवाइस पर सिंक करने और डुप्लिकेट को दोबारा प्राप्त करने से बचने के लिए 'बैकअप और सिंक' के अंतर्गत Google में साइन इन करें।",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "अपनी RSS सदस्यताओं और पढ़ने के इतिहास को सभी डिवाइस पर सिंक करने के लिए सेटिंग्स में Google में साइन इन करें।",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "स्मार्ट ग्रुप"
   },
@@ -1005,7 +1013,7 @@
     "message": "बैकअप और सिंक"
   },
   "syncAccountDesc": {
-    "message": "अपनी खुद की Google Drive के ज़रिए अपने Workspaces का बैकअप लें और उन्हें सभी डिवाइस पर सिंक करें।"
+    "message": "अपनी खुद की Google Drive के ज़रिए अपने Workspaces और RSS सदस्यताओं का बैकअप लें और उन्हें सभी डिवाइस पर सिंक करें।"
   },
   "syncConflictLabel": {
     "message": "सिंक विरोध"
@@ -1023,7 +1031,7 @@
     "message": "Google Drive कनेक्ट करें"
   },
   "syncConnectDisclosureMessage": {
-    "message": "यह आपके द्वारा चुने गए Workspaces के टैब URL, शीर्षक और समूह जानकारी को आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) पर अपलोड करता है। सिंक प्रत्येक Workspace के लिए ऑप्ट-इन है और डिफ़ॉल्ट रूप से बंद है। कनेक्शन हटाने पर सभी अपलोड रुक जाते हैं।"
+    "message": "यह आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) पर अपलोड करता है: आपके द्वारा ऑप्ट-इन किए गए Workspaces के टैब URL, शीर्षक और समूह जानकारी; साथ ही आपकी RSS सदस्यता सूची और पहले से प्राप्त किए गए लेख लिंक का एक-तरफ़ा फ़िंगरप्रिंट। Workspace सिंक प्रत्येक Workspace के लिए ऑप्ट-इन है और डिफ़ॉल्ट रूप से बंद है; कनेक्ट रहने पर RSS डेटा स्वचालित रूप से सिंक होता है। कनेक्शन हटाने पर सभी अपलोड रुक जाते हैं।"
   },
   "syncConnectDisclosureTitle": {
     "message": "Google Drive कनेक्ट करें"
@@ -1056,7 +1064,7 @@
     "message": "मैन्युअल सिंक"
   },
   "syncPrivacyNote": {
-    "message": "ऑप्ट-इन किए गए Workspaces के टैब URL, शीर्षक और समूह जानकारी केवल आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) में संग्रहीत होती है। "
+    "message": "आपके ऑप्ट-इन किए गए Workspace के टैब डेटा और आपकी RSS सदस्यताएँ केवल आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) में संग्रहीत होती हैं। "
   },
   "syncPrivacyPolicyLink": {
     "message": "गोपनीयता नीति"

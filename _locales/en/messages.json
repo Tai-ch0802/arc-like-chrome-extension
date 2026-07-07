@@ -624,6 +624,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Sign in to Google under Backup & Sync to sync your RSS subscriptions and reading history across devices and avoid re-fetching duplicates.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Sign in to Google in Settings to sync your RSS subscriptions and reading history across devices.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Smart Group"
   },
@@ -1008,7 +1016,7 @@
     "message": "Backup & Sync"
   },
   "syncAccountDesc": {
-    "message": "Back up and sync your workspaces across devices via your own Google Drive."
+    "message": "Back up and sync your workspaces and RSS subscriptions across devices via your own Google Drive."
   },
   "syncConflictLabel": {
     "message": "Sync conflicts"
@@ -1026,7 +1034,7 @@
     "message": "Connect Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "This uploads tab URLs, titles, and group info for the workspaces you opt in to your own Google Drive (an app-private folder). Sync is opt-in per workspace and OFF by default. Disconnecting stops all uploads."
+    "message": "This uploads, to your own Google Drive (an app-private folder): tab URLs, titles, and group info for the workspaces you opt in; plus your RSS subscription list and a one-way fingerprint of article links already fetched. Workspace sync is opt-in per workspace and OFF by default; RSS data syncs automatically while connected. Disconnecting stops all uploads."
   },
   "syncConnectDisclosureTitle": {
     "message": "Connect Google Drive"
@@ -1059,7 +1067,7 @@
     "message": "Manual sync"
   },
   "syncPrivacyNote": {
-    "message": "Your tab URLs, titles, and group info for opted-in workspaces are stored only in your own Google Drive (an app-private folder). "
+    "message": "Your opted-in workspace tab data and your RSS subscriptions are stored only in your own Google Drive (an app-private folder). "
   },
   "syncPrivacyPolicyLink": {
     "message": "Privacy Policy"

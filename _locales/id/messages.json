@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Masuk ke Google di Pencadangan & Sinkronisasi untuk menyinkronkan langganan RSS dan riwayat bacaan Anda di seluruh perangkat serta menghindari pengambilan duplikat.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Masuk ke Google di Pengaturan untuk menyinkronkan langganan RSS dan riwayat bacaan Anda di seluruh perangkat.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Pengelompokan Pintar"
   },
@@ -1005,7 +1013,7 @@
     "message": "Pencadangan & Sinkronisasi"
   },
   "syncAccountDesc": {
-    "message": "Cadangkan dan sinkronkan Workspaces Anda di seluruh perangkat melalui Google Drive Anda sendiri."
+    "message": "Cadangkan dan sinkronkan Workspaces serta langganan RSS Anda di seluruh perangkat melalui Google Drive Anda sendiri."
   },
   "syncConflictLabel": {
     "message": "Konflik sinkronisasi"
@@ -1023,7 +1031,7 @@
     "message": "Hubungkan Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Ini mengunggah URL tab, judul, dan info grup untuk Workspaces yang Anda ikutkan ke Google Drive Anda sendiri (folder privat aplikasi). Sinkronisasi bersifat opt-in per Workspace dan NONAKTIF secara default. Memutuskan koneksi menghentikan semua unggahan."
+    "message": "Ini mengunggah, ke Google Drive Anda sendiri (folder privat aplikasi): URL tab, judul, dan info grup untuk Workspaces yang Anda ikutkan; ditambah daftar langganan RSS Anda dan sidik jari satu arah dari tautan artikel yang sudah diambil. Sinkronisasi Workspace bersifat opt-in per Workspace dan NONAKTIF secara default; data RSS disinkronkan otomatis selama terhubung. Memutuskan koneksi menghentikan semua unggahan."
   },
   "syncConnectDisclosureTitle": {
     "message": "Hubungkan Google Drive"
@@ -1056,7 +1064,7 @@
     "message": "Sinkronisasi manual"
   },
   "syncPrivacyNote": {
-    "message": "URL tab, judul, dan info grup untuk Workspaces yang diikutkan hanya disimpan di Google Drive Anda sendiri (folder privat aplikasi). "
+    "message": "Data tab Workspace yang Anda ikutkan dan langganan RSS Anda hanya disimpan di Google Drive Anda sendiri (folder privat aplikasi). "
   },
   "syncPrivacyPolicyLink": {
     "message": "Kebijakan Privasi"

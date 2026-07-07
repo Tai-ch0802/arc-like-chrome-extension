@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "在「备份与同步」中登录 Google，即可跨设备同步你的 RSS 订阅和阅读记录，并避免重复抓取。",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "在设置中登录 Google，即可跨设备同步你的 RSS 订阅和阅读记录。",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "智能整理"
   },
@@ -1005,7 +1013,7 @@
     "message": "备份与同步"
   },
   "syncAccountDesc": {
-    "message": "通过你自己的 Google 云端硬盘，跨设备备份并同步你的工作区。"
+    "message": "通过你自己的 Google 云端硬盘，跨设备备份并同步你的工作区和 RSS 订阅。"
   },
   "syncConflictLabel": {
     "message": "同步冲突"
@@ -1023,7 +1031,7 @@
     "message": "连接 Google 云端硬盘"
   },
   "syncConnectDisclosureMessage": {
-    "message": "这会将你选择加入的工作区的标签页网址、标题和分组信息上传到你自己的 Google 云端硬盘（应用专属文件夹）。同步需逐个工作区选择加入，且默认关闭。断开连接会停止所有上传。"
+    "message": "这会将以下内容上传到你自己的 Google 云端硬盘（应用专属文件夹）：你选择加入的工作区的标签页网址、标题和分组信息；以及你的 RSS 订阅列表和已抓取文章链接的单向指纹。工作区同步需逐个工作区选择加入，且默认关闭；RSS 数据在连接期间会自动同步。断开连接会停止所有上传。"
   },
   "syncConnectDisclosureTitle": {
     "message": "连接 Google 云端硬盘"
@@ -1056,7 +1064,7 @@
     "message": "手动同步"
   },
   "syncPrivacyNote": {
-    "message": "你选择加入的工作区的标签页网址、标题和分组信息，仅存储在你自己的 Google 云端硬盘（应用专属文件夹）中。"
+    "message": "你选择加入的工作区标签页数据和你的 RSS 订阅，仅存储在你自己的 Google 云端硬盘（应用专属文件夹）中。 "
   },
   "syncPrivacyPolicyLink": {
     "message": "隐私政策"

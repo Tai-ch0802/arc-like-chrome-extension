@@ -70,7 +70,9 @@ key_files:
   - file_path: modules/readingListManager.js
     description: "[功能] 閱讀清單業務邏輯。管理閱讀清單 CRUD 操作、自動分組開啟的分頁、刪除時標記 hash 防止 RSS 重複加入、清除所有已讀功能。"
   - file_path: modules/rssManager.js
-    description: "[功能] RSS 訂閱管理。處理 RSS feed 訂閱儲存、chrome.alarms 排程抓取、hash 去重、自動加入閱讀清單、手動立即抓取功能。"
+    description: "[功能] RSS 訂閱管理。訂閱清單存 chrome.storage.local（自 sync 遷入，rssMigratedFromSync 旗標；updatedAt 為跨裝置合併鍵）、chrome.alarms 排程抓取、hash 去重、自動加入閱讀清單、手動立即抓取。hash/lastFetched 寫入改序列化 read-union-write（hashWriteChain / persistLastFetched，修陳舊快照全表覆寫的去重失效 bug）；storage.onChanged 刷新跨 context in-memory 快取；removeSubscription 寫 rssTombstones；exportLocalRssState/importMergedRssState 為 Drive 同步橋接（rssManager 對 Drive 無知，由 background 驅動）。"
+  - file_path: modules/rss/rssSyncLogic.js
+    description: "[功能][純函式] RSS 狀態跨裝置合併邏輯（set-union / id-merge，非 workspace 的 rev 模型）。mergeRssState（hashes union+cap、subs 依 id 合併 updatedAt-LWW + lastFetched-max、tombstone deletedAt≥updatedAt 排除 + union + GC 180d）對固定 now 交換律+冪等（no-op write guard 收斂前提）；mergeHashesForWrite、capHashes、nextTimestamp(Lamport-lite)、canonicalizeRssState/rssStateEqual。MAX_STORED_HASHES=5000。"
   - file_path: modules/ui/readingListRenderer.js
     description: "[UI] 閱讀清單渲染。負責閱讀清單項目的 DOM 生成、事件處理（點擊/刪除/切換已讀）、展開收合、鍵盤導航、新項目標籤、排序功能 (日期/標題)。"
   - file_path: modules/icons.js
@@ -162,7 +164,7 @@ key_files:
   - file_path: jest.esbuild-transform.cjs
     description: "[Test] Jest 自訂 transform。Phase 1.2 新增；用 esbuild 將 ESM .js 編譯為 CJS，避免引入 babel-jest 依賴。"
   - file_path: background.js
-    description: "[Service Worker] MV3 背景腳本。處理快捷鍵指令、sidePanel 行為、AI 群組自動命名、RSS 鬧鐘。頂層同步呼叫 initWorkspaceLifecycle()(workspace 持續快照/綁定清理/重啟重綁,見 modules/workspace/workspaceLifecycle.js)。Drive sync (批E) 新增：用真實 deps 建立 syncEngine（GoogleDriveProvider + workspaceManager + chrome.storage.local 佇列/baseRev/restorable/status），觸發點 = onChanged(去抖 push)/alarms(driveSyncPull 週期、driveSyncFlush 一次性)/onStartup/onMessage(driveSyncNow|Connect|Disconnect|Restore|SetWorkspaceSync)；engineWriteEcho Map（workspaceId→引擎剛寫入的 rev 或字串 'deleted'）防 pull→push→pull 迴圈，並讓使用者刪除已同步工作區時觸發 enqueueDelete 寫入 tombstone（engine-initiated 刪除帶 'deleted' echo 則略過，不重複 tombstone）；離線(navigator.onLine===false)設 offline 狀態並略過；無 OAuth token 時 isConnected()=false → runSyncOnce/flush 在寫任何狀態前先 early-return（不寫 driveSyncStatus，避免從未連線的安裝產生狀態抖動），引擎全程 inert。"
+    description: "[Service Worker] MV3 背景腳本。處理快捷鍵指令、sidePanel 行為、AI 群組自動命名、RSS 鬧鐘。頂層同步呼叫 initWorkspaceLifecycle()(workspace 持續快照/綁定清理/重啟重綁,見 modules/workspace/workspaceLifecycle.js)。Drive sync (批E) 新增：用真實 deps 建立 syncEngine（GoogleDriveProvider + workspaceManager + chrome.storage.local 佇列/baseRev/restorable/status），觸發點 = onChanged(去抖 push)/alarms(driveSyncPull 週期、driveSyncFlush 一次性)/onStartup/onMessage(driveSyncNow|Connect|Disconnect|Restore|SetWorkspaceSync)；engineWriteEcho Map（workspaceId→引擎剛寫入的 rev 或字串 'deleted'）防 pull→push→pull 迴圈，並讓使用者刪除已同步工作區時觸發 enqueueDelete 寫入 tombstone（engine-initiated 刪除帶 'deleted' echo 則略過，不重複 tombstone）；離線(navigator.onLine===false)設 offline 狀態並略過；無 OAuth token 時 isConnected()=false → runSyncOnce/flush 在寫任何狀態前先 early-return（不寫 driveSyncStatus，避免從未連線的安裝產生狀態抖動），引擎全程 inert。RSS Drive 同步（BASE-014）另走輕量路徑：rssSyncOnce()（single-flight rssSyncChain，read rss-sync.json→mergeRssState→no-op write guard→寫 local+Drive）piggyback 於 runSyncOnce 尾端、由 rssSyncFlush 一次性 alarm（dispatcher 明確分支，否則被 handleRssAlarm 吞掉）與 handleRssStorageChange 觸發；與 workspace 的 engineWriteEcho 零干擾。"
   - file_path: manifest.json
     description: "擴充功能的設定檔。定義名稱、版本、權限、圖示和快捷鍵等。Phase 13(批E) 為 Drive sync 加入 identity 權限 + oauth2 區塊（client_id 目前為 placeholder，scopes 僅 drive.appdata 私有資料夾）；未填真實 client_id 前同步層維持 inert。"
 

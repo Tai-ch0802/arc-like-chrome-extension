@@ -1,6 +1,11 @@
 // background.js
 
-import { handleAlarm as handleRssAlarm } from './modules/rssManager.js';
+import {
+    handleAlarm as handleRssAlarm,
+    exportLocalRssState,
+    importMergedRssState,
+} from './modules/rssManager.js';
+import { mergeRssState, rssStateEqual } from './modules/rss/rssSyncLogic.js';
 import { generateGroupName } from './modules/aiManager.js';
 import { getStorage, setStorage } from './modules/apiManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
@@ -46,8 +51,17 @@ const WS_SNAP_PREFIX = 'wsSnap_';   // chrome.storage.local ({tabs, rev, updated
 // Alarm names.
 const ALARM_PULL = 'driveSyncPull';     // periodic full runOnce
 const ALARM_FLUSH = 'driveSyncFlush';   // one-shot debounced push flush
+const ALARM_RSS_FLUSH = 'rssSyncFlush'; // one-shot debounced RSS Drive sync
 const PULL_PERIOD_MIN = 10;             // ~10 min periodic pull
 const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarms min granularity)
+
+// RSS Drive-sync surfaces. RSS subscriptions + dedup hashes + tombstones live in
+// ONE Drive appdata file, merged atomically (see rssSyncLogic.js). These local
+// keys mirror rssManager's schema and are watched to trigger a debounced sync.
+const RSS_SYNC_FILE = 'rss-sync.json';
+const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
+const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
+const RSS_TOMBSTONES_KEY = 'rssTombstones';
 
 /**
  * Loop-suppression echo map. When an ENGINE-INITIATED write touches local
@@ -251,6 +265,43 @@ async function runSyncOnce() {
         // is a last-resort guard so an unexpected throw never crashes the SW.
         console.warn('[sync] runOnce failed:', err && err.message ? err.message : err);
     }
+    // RSS Drive sync piggybacks on the same pull cadence. Kept OUTSIDE the
+    // workspace try so an RSS failure can't mask a workspace error and vice
+    // versa; rssSyncOnce swallows its own errors internally.
+    await rssSyncOnce();
+}
+
+/**
+ * Single-flight RSS Drive sync: read rss-sync.json, merge with the local working
+ * copy, and write back BOTH sides only where they actually differ (the no-op
+ * write guard). Serialised via rssSyncChain so the periodic-pull call and a
+ * debounced-flush call can never interleave a read-modify-write on the same
+ * Drive file (which would lose an update). Convergence: because mergeRssState is
+ * commutative + idempotent, a real change settles in <=2 cycles (the write-back
+ * fires onChanged → one more sync that finds nothing to write → stop).
+ */
+let rssSyncChain = Promise.resolve();
+function rssSyncOnce() {
+    rssSyncChain = rssSyncChain.then(async () => {
+        try {
+            if (!(await syncProvider.isConnected())) return;
+            if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+            const remoteFile = await syncProvider.read(RSS_SYNC_FILE);
+            const remote = (remoteFile && remoteFile.json)
+                || { subscriptions: [], tombstones: {}, hashes: [] };
+            const local = await exportLocalRssState();
+            const merged = mergeRssState(local, remote, { now: Date.now() });
+            if (!rssStateEqual(merged, local)) {
+                await importMergedRssState(merged);
+            }
+            if (!rssStateEqual(merged, remote)) {
+                await syncProvider.write(RSS_SYNC_FILE, merged);
+            }
+        } catch (err) {
+            console.warn('[rss-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return rssSyncChain;
 }
 
 /** (Re)create the periodic pull alarm. Alarms don't survive a browser restart. */
@@ -530,16 +581,39 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     })();
     return;
   }
-  // Anything else → RSS.
+  if (alarm.name === ALARM_RSS_FLUSH) {
+    // Debounced RSS Drive sync. MUST be an explicit branch: without it this
+    // alarm falls through to handleRssAlarm, whose `rss_fetch_` prefix guard
+    // early-returns → the push half of RSS sync would silently never run.
+    rssSyncOnce();
+    return;
+  }
+  // Anything else → RSS fetch alarms (rss_fetch_<id>).
   handleRssAlarm(alarm);
 });
 
-// chrome.storage.onChanged → derive sync pushes for changed workspaces.
+/**
+ * onChanged → schedule a debounced RSS Drive sync when the local RSS working
+ * copy changes (a fetch adding hashes, or a subscription add/remove/edit). The
+ * write-back from rssSyncOnce also fires onChanged, but the no-op write guard
+ * makes the follow-up cycle write nothing, so it self-terminates. Zero overlap
+ * with the workspace engineWriteEcho path (that only matches wsMeta_/wsSnap_).
+ */
+function handleRssStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!changes[RSS_SUBSCRIPTIONS_KEY]
+      && !changes[RSS_FETCHED_HASHES_KEY]
+      && !changes[RSS_TOMBSTONES_KEY]) return;
+  chrome.alarms.create(ALARM_RSS_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
+// chrome.storage.onChanged → derive sync pushes for changed workspaces + RSS.
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== 'sync' && areaName !== 'local') return;
   handleWorkspaceStorageChange(changes, areaName).catch((err) => {
     console.warn('[sync] onChanged handling failed:', err && err.message ? err.message : err);
   });
+  handleRssStorageChange(changes, areaName);
 });
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background

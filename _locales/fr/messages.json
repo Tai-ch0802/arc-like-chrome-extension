@@ -621,6 +621,14 @@
       }
     }
   },
+  "rssSyncHint": {
+    "message": "Connectez-vous à Google dans Sauvegarde et synchronisation pour synchroniser vos abonnements RSS et votre historique de lecture entre vos appareils et éviter de récupérer des doublons.",
+    "description": "Hint in the RSS settings section suggesting Google sign-in for cross-device RSS sync."
+  },
+  "rssSyncSignInHint": {
+    "message": "Connectez-vous à Google dans les Paramètres pour synchroniser vos abonnements RSS et votre historique de lecture entre vos appareils.",
+    "description": "One-time sidepanel toast nudging RSS users to sign in for cross-device sync."
+  },
   "smartGroupingBtnText": {
     "message": "Groupement Intelligent"
   },
@@ -1005,7 +1013,7 @@
     "message": "Sauvegarde et synchronisation"
   },
   "syncAccountDesc": {
-    "message": "Sauvegardez et synchronisez vos Workspaces sur tous vos appareils via votre propre Google Drive."
+    "message": "Sauvegardez et synchronisez vos Workspaces et vos abonnements RSS sur tous vos appareils via votre propre Google Drive."
   },
   "syncConflictLabel": {
     "message": "Conflits de synchronisation"
@@ -1023,7 +1031,7 @@
     "message": "Connecter Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Cela téléverse les URL des onglets, les titres et les informations de groupe des Workspaces que vous activez vers votre propre Google Drive (un dossier privé de l’application). La synchronisation est activée Workspace par Workspace et désactivée par défaut. La déconnexion arrête tous les téléversements."
+    "message": "Cela téléverse, vers votre propre Google Drive (un dossier privé de l’application) : les URL des onglets, les titres et les informations de groupe des Workspaces que vous activez ; ainsi que votre liste d’abonnements RSS et une empreinte à sens unique des liens d’articles déjà récupérés. La synchronisation est activée Workspace par Workspace et désactivée par défaut ; les données RSS se synchronisent automatiquement lorsque vous êtes connecté. La déconnexion arrête tous les téléversements."
   },
   "syncConnectDisclosureTitle": {
     "message": "Connecter Google Drive"
@@ -1056,7 +1064,7 @@
     "message": "Synchronisation manuelle"
   },
   "syncPrivacyNote": {
-    "message": "Les URL des onglets, les titres et les informations de groupe des Workspaces activés sont stockés uniquement dans votre propre Google Drive (un dossier privé de l’application). "
+    "message": "Les données d’onglets des Workspaces que vous avez activés et vos abonnements RSS sont stockés uniquement dans votre propre Google Drive (un dossier privé de l’application). "
   },
   "syncPrivacyPolicyLink": {
     "message": "Politique de confidentialité"
