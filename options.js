@@ -495,10 +495,14 @@ async function renderRss(container) {
         });
 
         listContainer.querySelectorAll('.rss-toggle-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const item = e.target.closest('.rss-subscription-item');
+            btn.addEventListener('click', async () => {
+                // Read state off `btn` (the listener's element), NOT e.target: the
+                // button's innerHTML is an inline SVG, so a click lands on the <path>
+                // child, whose dataset.action is undefined — which silently coerced
+                // every toggle to enabled:false and made "resume" impossible.
+                const item = btn.closest('.rss-subscription-item');
                 const id = item.dataset.id;
-                const action = e.target.dataset.action;
+                const action = btn.dataset.action;
                 await rss.updateSubscription(id, { enabled: action === 'resume' });
                 await renderList();
             });
