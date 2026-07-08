@@ -5,7 +5,7 @@
     "nav_privacy": "Quyền riêng tư",
     "nav_github": "GitHub",
     "nav_install": "Cài đặt tiện ích mở rộng",
-    "hero_badge": "Mới: Workspaces × Spotlight tìm kiếm hợp nhất",
+    "hero_badge": "Mới: Trình đọc trang AI × đồng bộ RSS đa thiết bị",
     "hero_title_1": "Trình duyệt của bạn<br><span class=\"text-gradient\">được sắp xếp tuyệt vời.</span>",
     "hero_subtitle": "Phân tách từng ngữ cảnh với Workspaces, và đến bất kỳ tab, dấu trang hay thao tác nào chỉ với một phím tắt (Cmd/Ctrl+Shift+K).<br />Kết hợp tab dọc, dấu trang liền mạch và AI cục bộ theo mặc định, xây dựng trung tâm chỉ huy đồng bộ trên mọi thiết bị của bạn.",
     "hero_btn_install": "Thêm vào Chrome",
@@ -470,5 +470,14 @@
     "guide_spotlight_tip": "Spotlight xuất hiện như một cửa sổ độc lập ở giữa màn hình, vì vậy nó sẽ không hiển thị trong danh sách \"Cửa sổ khác\" của thanh bên.",
     "guide_theme_density_title": "Mật độ danh sách",
     "guide_theme_density_desc": "Cảm thấy danh sách quá thưa hay quá chật? Điều chỉnh khoảng cách danh sách (mật độ) trong cài đặt để khoảng cách hàng của tab và dấu trang phù hợp với sở thích của bạn — hiển thị nhiều mục hơn trên một màn hình hoặc giữ thêm không gian thở.",
-    "guide_kb_spotlight": "Mở Spotlight tìm kiếm hợp nhất"
+    "guide_kb_spotlight": "Mở Spotlight tìm kiếm hợp nhất",
+    "v1_16_0_date": "5 tháng 7, 2026",
+    "v1_16_0_title": "Phiên bản 1.16.0 (Cập nhật lớn)",
+    "v1_16_0_desc": "Mở rộng lớn cho các tính năng AI. Page Reader mới tóm tắt toàn bộ trang chỉ với một cú nhấp — và giờ đây cũng hoạt động trên bản tin và blog như Substack. Bạn còn có thể tự chọn nhà cung cấp AI: theo mặc định vẫn chạy 100% trên thiết bị nên dữ liệu không bao giờ rời khỏi máy, hoặc dùng API key của riêng bạn để chuyển sang mô hình đám mây như Gemini. Ngoài ra, tóm tắt khi di chuột (hover) giờ hiển thị theo thời gian thực, hé lộ các ý chính từng chữ một.",
+    "v1_17_0_date": "7 tháng 7, 2026",
+    "v1_17_0_title": "Phiên bản 1.17.0",
+    "v1_17_0_desc": "Trải nghiệm RSS còn tốt hơn nữa. Chúng tôi đã sửa lỗi khó chịu khiến cùng một bài viết có thể xuất hiện nhiều lần trong danh sách. Và khi liên kết Google Drive, các đăng ký RSS cùng trạng thái đã đọc của bạn giờ tự động đồng bộ trên mọi thiết bị — đổi máy tính và đọc tiếp ngay từ chỗ đang dở.",
+    "v1_17_1_date": "8 tháng 7, 2026",
+    "v1_17_1_title": "Phiên bản 1.17.1",
+    "v1_17_1_desc": "Chúng tôi đã sửa lỗi khiến một đăng ký RSS đang tạm dừng không thể tiếp tục — giờ bạn có thể bật lại nguồn cấp đang tạm dừng một cách trơn tru. Chúng tôi cũng sắp xếp lại khoảng cách trong phần cài đặt RSS để danh sách đăng ký trông gọn gàng và bớt chật chội hơn."
 }

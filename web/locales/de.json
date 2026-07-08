@@ -5,7 +5,7 @@
     "nav_privacy": "Datenschutz",
     "nav_github": "GitHub",
     "nav_install": "Erweiterung installieren",
-    "hero_badge": "Neu: Workspaces × Spotlight Suche",
+    "hero_badge": "Neu: KI-Seitenleser × geräteübergreifende RSS-Sync",
     "hero_title_1": "Dein Browser,<br><span class=\"text-gradient\">brillant organisiert.</span>",
     "hero_subtitle": "Trenne jeden Kontext mit Workspaces und erreiche jeden Tab, jedes Lesezeichen oder jede Aktion mit einer Tastenkombination (Cmd/Ctrl+Shift+K).<br />Kombiniert mit vertikalen Tabs, nahtlosen Lesezeichen und standardmäßig lokaler KI – dein Kommandozentrum, das geräteübergreifend synchronisiert.",
     "hero_btn_install": "Zu Chrome hinzufügen",
@@ -470,5 +470,14 @@
     "guide_spotlight_tip": "Spotlight erscheint als eigenes zentriertes Fenster und taucht daher nicht in der Liste „Andere Fenster“ der Seitenleiste auf.",
     "guide_theme_density_title": "Listen-Dichte",
     "guide_theme_density_desc": "Wirkt die Liste zu locker oder zu gedrängt? Passe den Listenabstand (Dichte) in den Einstellungen an, damit der Zeilenabstand von Tabs und Lesezeichen deiner Vorliebe entspricht – zeige mehr Elemente auf einem Bildschirm oder lass mehr Luft zwischen den Einträgen.",
-    "guide_kb_spotlight": "Spotlight Suche öffnen"
+    "guide_kb_spotlight": "Spotlight Suche öffnen",
+    "v1_16_0_date": "5. Juli 2026",
+    "v1_16_0_title": "Version 1.16.0 (Großes Update)",
+    "v1_16_0_desc": "Eine große Erweiterung der KI-Funktionen. Der neue Page Reader fasst eine ganze Seite mit einem Klick zusammen – und funktioniert jetzt auch bei Newslettern und Blogs wie Substack. Außerdem können Sie Ihren eigenen KI-Anbieter wählen: Standardmäßig läuft weiterhin alles zu 100 % lokal auf dem Gerät, sodass Ihre Daten es nie verlassen, oder Sie hinterlegen Ihren eigenen API-Schlüssel für ein Cloud-Modell wie Gemini. Zusätzlich werden Hover-Zusammenfassungen jetzt in Echtzeit gestreamt und zeigen die Kernpunkte Wort für Wort.",
+    "v1_17_0_date": "7. Juli 2026",
+    "v1_17_0_title": "Version 1.17.0",
+    "v1_17_0_desc": "Das RSS-Erlebnis wird noch besser. Wir haben das ärgerliche Problem behoben, bei dem derselbe Artikel mehrfach in Ihrer Liste erscheinen konnte. Und sobald Sie Google Drive verknüpfen, werden Ihre RSS-Abos und der Gelesen-Status automatisch über alle Ihre Geräte synchronisiert – wechseln Sie den Computer und machen Sie nahtlos weiter.",
+    "v1_17_1_date": "8. Juli 2026",
+    "v1_17_1_title": "Version 1.17.1",
+    "v1_17_1_desc": "Wir haben ein Problem behoben, bei dem sich ein pausiertes RSS-Abo nicht wieder fortsetzen ließ – pausierte Feeds lassen sich jetzt problemlos wieder aktivieren. Außerdem haben wir die Abstände in den RSS-Einstellungen aufgeräumt, damit Ihre Abo-Liste übersichtlicher und weniger gedrängt wirkt."
 }
