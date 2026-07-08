@@ -5,7 +5,7 @@
     "nav_privacy": "Privacidade",
     "nav_github": "GitHub",
     "nav_install": "Instalar extensão",
-    "hero_badge": "Novidade: Workspaces × busca unificada Spotlight",
+    "hero_badge": "Novidade: Leitor de página IA × sincronização RSS entre dispositivos",
     "hero_title_1": "Seu navegador,<br><span class=\"text-gradient\">brilhantemente organizado.</span>",
     "hero_subtitle": "Separe cada contexto com Workspaces e alcance qualquer aba, favorito ou ação com um único atalho (Cmd/Ctrl+Shift+K).<br />Combinando abas verticais, favoritos fluidos e IA local por padrão, construa um centro de comando que sincroniza entre seus dispositivos.",
     "hero_btn_install": "Adicionar ao Chrome",
@@ -470,5 +470,14 @@
     "guide_spotlight_tip": "O Spotlight aparece como uma janela centralizada própria, portanto não aparecerá na lista \"Outras Janelas\" da barra lateral.",
     "guide_theme_density_title": "Densidade da lista",
     "guide_theme_density_desc": "A lista está muito espaçada ou comprimida? Ajuste o espaçamento da lista (densidade) nas configurações para que o espaçamento entre linhas de abas e favoritos corresponda à sua preferência — exiba mais itens em uma tela ou mantenha mais espaço de respiração.",
-    "guide_kb_spotlight": "Abrir busca unificada Spotlight"
+    "guide_kb_spotlight": "Abrir busca unificada Spotlight",
+    "v1_16_0_date": "5 de julho de 2026",
+    "v1_16_0_title": "Versão 1.16.0 (Grande Atualização)",
+    "v1_16_0_desc": "Uma grande expansão dos recursos de IA. O novo Page Reader resume uma página inteira com um único clique — e agora também funciona em newsletters e blogs como o Substack. Você também pode escolher seu próprio provedor de IA: por padrão, tudo continua rodando 100% no dispositivo, então seus dados nunca saem dele, ou use sua própria chave de API para mudar para um modelo na nuvem como o Gemini. Além disso, os resumos ao passar o mouse (hover) agora são transmitidos em tempo real, revelando os pontos principais palavra por palavra.",
+    "v1_17_0_date": "7 de julho de 2026",
+    "v1_17_0_title": "Versão 1.17.0",
+    "v1_17_0_desc": "A experiência de RSS ficou ainda melhor. Corrigimos o problema irritante em que o mesmo artigo podia aparecer mais de uma vez na sua lista. E, ao vincular o Google Drive, suas assinaturas RSS e o status de leitura agora sincronizam automaticamente entre todos os seus dispositivos — troque de computador e continue exatamente de onde parou.",
+    "v1_17_1_date": "8 de julho de 2026",
+    "v1_17_1_title": "Versão 1.17.1",
+    "v1_17_1_desc": "Corrigimos um problema em que uma assinatura RSS pausada não podia ser retomada — agora você pode reativar um feed pausado sem problemas. Também organizamos o espaçamento nas configurações de RSS para que sua lista de assinaturas fique mais limpa e menos apertada."
 }

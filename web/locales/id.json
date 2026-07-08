@@ -5,7 +5,7 @@
     "nav_privacy": "Privasi",
     "nav_github": "GitHub",
     "nav_install": "Instal Ekstensi",
-    "hero_badge": "Baru: Workspaces × Spotlight pencarian terpadu",
+    "hero_badge": "Baru: Page Reader AI × sinkronisasi RSS lintas perangkat",
     "hero_title_1": "Browser Anda,<br><span class=\"text-gradient\">tertata dengan cemerlang.</span>",
     "hero_subtitle": "Pisahkan setiap konteks dengan Workspaces, dan jangkau tab, bookmark, atau tindakan apa pun dengan satu pintasan (Cmd/Ctrl+Shift+K).<br />Dikombinasikan dengan tab vertikal, bookmark tanpa hambatan, dan AI yang lokal secara default, bangun pusat komando yang tersinkronisasi di semua perangkat Anda.",
     "hero_btn_install": "Tambahkan ke Chrome",
@@ -470,5 +470,14 @@
     "guide_spotlight_tip": "Spotlight muncul sebagai jendela terpusat tersendiri, sehingga tidak akan muncul dalam daftar \"Jendela Lainnya\" di sidebar.",
     "guide_theme_density_title": "Kepadatan daftar",
     "guide_theme_density_desc": "Merasa daftar terlalu longgar atau terlalu padat? Sesuaikan jarak daftar (kepadatan) di pengaturan agar jarak baris tab dan bookmark sesuai preferensi Anda — tampilkan lebih banyak item dalam satu layar atau berikan lebih banyak ruang napas.",
-    "guide_kb_spotlight": "Buka Spotlight pencarian terpadu"
+    "guide_kb_spotlight": "Buka Spotlight pencarian terpadu",
+    "v1_16_0_date": "5 Juli 2026",
+    "v1_16_0_title": "Versi 1.16.0 (Pembaruan Besar)",
+    "v1_16_0_desc": "Perluasan besar pada fitur AI. Page Reader baru merangkum seluruh halaman hanya dengan satu klik — dan kini juga bekerja pada newsletter dan blog seperti Substack. Anda juga bisa memilih penyedia AI sendiri: secara default tetap berjalan 100% di perangkat sehingga data Anda tidak pernah keluar, atau gunakan API key Anda sendiri untuk beralih ke model cloud seperti Gemini. Selain itu, ringkasan hover kini ditampilkan secara real-time, memunculkan poin-poin penting kata demi kata.",
+    "v1_17_0_date": "7 Juli 2026",
+    "v1_17_0_title": "Versi 1.17.0",
+    "v1_17_0_desc": "Pengalaman RSS jadi lebih baik. Kami memperbaiki masalah menjengkelkan di mana artikel yang sama bisa muncul lebih dari sekali di daftar Anda. Dan setelah menautkan Google Drive, langganan RSS serta status baca Anda kini tersinkron otomatis di semua perangkat — ganti komputer dan lanjutkan dari titik terakhir.",
+    "v1_17_1_date": "8 Juli 2026",
+    "v1_17_1_title": "Versi 1.17.1",
+    "v1_17_1_desc": "Kami memperbaiki masalah di mana langganan RSS yang dijeda tidak bisa dilanjutkan — kini Anda dapat mengaktifkan kembali feed yang dijeda tanpa kendala. Kami juga merapikan jarak pada pengaturan RSS agar daftar langganan Anda tampak lebih bersih dan tidak sesak."
 }

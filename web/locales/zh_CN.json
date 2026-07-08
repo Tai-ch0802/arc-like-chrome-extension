@@ -5,7 +5,7 @@
     "nav_privacy": "隐私承诺",
     "nav_github": "GitHub",
     "nav_install": "安装扩展",
-    "hero_badge": "全新 工作区 × Spotlight 统一搜索",
+    "hero_badge": "全新 AI 网页导读 × RSS 跨设备同步",
     "hero_title_1": "你的浏览器，<br><span class=\"text-gradient\">理当井然有序。</span>",
     "hero_subtitle": "用工作区分隔每个情境，一个快捷键（Cmd/Ctrl+Shift+K）直达任何标签页、书签与动作。<br />结合垂直标签页、无缝书签与默认本地的 AI，打造可跨设备同步的信息指挥中心。",
     "hero_btn_install": "添加到 Chrome",
@@ -470,5 +470,14 @@
     "guide_spotlight_tip": "Spotlight 以独立的居中窗口呈现，因此不会出现在侧边栏的\"其他窗口\"列表中。",
     "guide_theme_density_title": "列表密度",
     "guide_theme_density_desc": "觉得列表太松或太紧？在设置中调整列表间距（密度），让标签页与书签的行距符合你的偏好，在单屏显示更多项目或保留更多呼吸空间。",
-    "guide_kb_spotlight": "打开 Spotlight 统一搜索"
+    "guide_kb_spotlight": "打开 Spotlight 统一搜索",
+    "v1_16_0_date": "2026年7月5日",
+    "v1_16_0_title": "版本 1.16.0 (重大更新)",
+    "v1_16_0_desc": "AI 功能迎来大幅扩充。全新「网页导读 (Page Reader)」只需一键，就能为整个页面生成重点摘要，连 Substack 这类邮件通讯与博客文章也支持。你现在还能自由选择 AI 供应商——默认仍是 100% 本机运算、数据不离开设备，也可以自带 API key 改用云端模型（如 Gemini）。此外，Hover 智能摘要改为实时流式显示，滑过标签页就能逐字看到重点浮现。",
+    "v1_17_0_date": "2026年7月7日",
+    "v1_17_0_title": "版本 1.17.0",
+    "v1_17_0_desc": "RSS 订阅体验再进化。修复了同一篇文章在列表中重复出现的恼人问题；连结 Google 云端硬盘后，你的 RSS 订阅列表与已读状态现在会在多台设备间自动同步，换一台电脑也能无缝接续阅读。",
+    "v1_17_1_date": "2026年7月8日",
+    "v1_17_1_title": "版本 1.17.1",
+    "v1_17_1_desc": "修复了 RSS 订阅在暂停后无法恢复抓取的问题——现在可以顺利地重新启用暂停中的订阅。同时也调整了 RSS 设置区的排版，让订阅列表看起来更清爽、不再拥挤。"
 }
