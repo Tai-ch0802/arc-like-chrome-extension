@@ -2226,10 +2226,11 @@ mark.url-match {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 10px;
+    gap: 12px;
+    padding: 12px 14px;
     background: var(--element-bg-color);
     border-radius: var(--settings-radius);
-    margin-bottom: 6px;
+    margin-bottom: 10px;
     transition: var(--settings-transition);
 }
 
@@ -2240,7 +2241,7 @@ mark.url-match {
 .rss-subscription-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     overflow: hidden;
     flex: 1;
     min-width: 0;
@@ -2256,8 +2257,9 @@ mark.url-match {
 
 .rss-subscription-actions {
     display: flex;
-    gap: 4px;
+    gap: 6px;
     align-items: center;
+    flex-shrink: 0;
 }
 
 /* Reuse icon button styles */
@@ -2289,7 +2291,12 @@ mark.url-match {
 }
 
 .rss-interval-select {
+    /* Override .modal-select's width:100% so the select sizes to its short
+       value ("24h") instead of stretching the full row and crowding the item. */
+    align-self: flex-start;
+    width: 72px;
     height: var(--settings-height-sm);
+    margin-top: 2px;
     padding: 0 6px;
     border: 1px solid var(--border-color);
     border-radius: var(--settings-radius);
