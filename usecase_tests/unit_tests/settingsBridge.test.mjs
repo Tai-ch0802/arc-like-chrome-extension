@@ -68,4 +68,9 @@ describe('resolveSettingChangeActions', () => {
     expect(actions).toContainEqual({ type: 'dispatch', event: 'pageReaderVisibilityChanged', detail: { visible: false } });
     expect(actions).toContainEqual({ type: 'refreshState', key: 'pageReaderVisible' });
   });
+  it('sync sectionOrder → dispatch sectionOrderChanged action (BASE-015)', () => {
+    const order = ['bookmarks', 'tabs', 'otherWindows', 'readingList'];
+    expect(resolveSettingChangeActions({ sectionOrder: { newValue: order } }, 'sync'))
+      .toContainEqual({ type: 'dispatch', event: 'sectionOrderChanged', detail: { order } });
+  });
 });

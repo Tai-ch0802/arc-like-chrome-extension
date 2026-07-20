@@ -264,6 +264,9 @@ async function initialize() {
     ui.initAiGrouper();
     ui.initAiCleanup();
     ui.initPageReader();
+    // 區塊排序(BASE-015):在首次內容渲染前套用 wrapper 順序,避免內容先以
+    // 預設序繪出再跳動;後續變更由 settingsBridge 的 sectionOrderChanged 驅動。
+    await ui.initSectionOrder();
     // Workspace cache must be loaded BEFORE the first updateTabList(): the
     // Other Windows section titles windows by their bound workspace's name.
     await workspaceManager.initWorkspaces();

@@ -51,6 +51,10 @@ key_files:
     description: "[工具] 文字工具函式庫。提供安全處理 HTML 的工具函式，如 `escapeHtml` 以防止 XSS 攻擊。"
   - file_path: modules/utils/colorUtils.js
     description: "[工具] 顏色工具函式庫。提供 HSL/HEX 轉換、WCAG 對比度計算以及衍生色演算法。"
+  - file_path: modules/utils/sectionOrder.js
+    description: "[工具] 側邊欄區塊排序純函式（BASE-015）。DEFAULT_SECTION_ORDER 常數與 mergeSectionOrder(stored, actual)：以 storage 偏好為序、過濾本機不存在的 id（容忍他裝置/未來區塊）、缺漏者依 canonical 序附尾；讀取端不回寫。零 chrome/DOM 依賴可跑 unit test。"
+  - file_path: modules/ui/sectionOrderUI.js
+    description: "[UI] 側邊欄區塊排序套用（BASE-015）。applySectionOrder 讀 storage.sync.sectionOrder，以 DEFAULT_SECTION_ORDER 為 canonical 基準 merge 後，依 data-section-id 對 #content-container 的 .panel-section wrapper 做 appendChild 重排（保留節點身分與監聽器）；initSectionOrder 另訂閱 settingsBridge 派發的 sectionOrderChanged 即時重排。排序 UI 本身在 options.js renderAppearance（Sortable 拖曳清單，只寫 storage）。"
   - file_path: modules/ui/searchUI.js
     description: "[UI] 搜尋介面。負責搜尋結果計數顯示與無結果提示的 UI 更新。"
   - file_path: modules/ui/tabRenderer.js

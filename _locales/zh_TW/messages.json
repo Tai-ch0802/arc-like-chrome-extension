@@ -143,6 +143,14 @@
     "message": "當前快捷鍵：",
     "description": "顯示當前快捷鍵的標籤。"
   },
+  "appearanceSectionOrderHeader": {
+    "message": "側邊欄區塊排序",
+    "description": "外觀設定中側邊欄區塊排序的標題。"
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "拖曳調整側邊欄各區塊的顯示順序。",
+    "description": "區塊排序標題下方的說明文字。"
+  },
   "sidePanelPositionSectionHeader": {
     "message": "側邊面板位置",
     "description": "設定中側邊面板位置區塊的標題。"

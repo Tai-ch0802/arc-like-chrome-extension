@@ -143,6 +143,14 @@
     "message": "Pintasan Saat Ini:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Urutan Bagian Bilah Samping",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Seret untuk mengubah urutan bagian yang ditampilkan di panel samping.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posisi Panel Samping",
     "description": "Header for the side panel position section in settings."

@@ -143,6 +143,14 @@
     "message": "Текущая горячая клавиша:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Порядок разделов боковой панели",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Перетащите, чтобы изменить порядок разделов боковой панели.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Положение боковой панели",
     "description": "Header for the side panel position section in settings."

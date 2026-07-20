@@ -143,6 +143,14 @@
     "message": "वर्तमान शॉर्टकट:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "साइडबार अनुभागों का क्रम",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "साइड पैनल में दिखाए गए अनुभागों का क्रम बदलने के लिए खींचें।",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "साइड पैनल स्थिति",
     "description": "Header for the side panel position section in settings."

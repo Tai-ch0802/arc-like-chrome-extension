@@ -11,6 +11,7 @@ import * as modalManager from './modules/modalManager.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { renderIcon } from './modules/icons.js';
+import { mergeSectionOrder, DEFAULT_SECTION_ORDER, SECTION_ORDER_KEY } from './modules/utils/sectionOrder.js';
 
 const THEME_OPTIONS = [
     { value: 'geek', labelKey: 'themeOptionGeek' },
@@ -161,6 +162,51 @@ async function renderAppearance(container) {
         chrome.tabs.create({ url: 'chrome://settings/appearance' });
     });
     container.appendChild(makeRow('', spBtn));
+
+    // --- Sidebar section order (BASE-015) ---
+    // 拖曳清單只寫 storage.sync.sectionOrder;sidepanel 經 settingsBridge 重排。
+    const soHeader = document.createElement('h4');
+    soHeader.className = 'settings-subsection-header';
+    soHeader.style.marginTop = '12px';
+    soHeader.textContent = api.getMessage('appearanceSectionOrderHeader') || 'Sidebar Section Order';
+    container.appendChild(soHeader);
+
+    const soDesc = document.createElement('p');
+    soDesc.textContent = api.getMessage('appearanceSectionOrderDesc') || 'Drag to reorder the sections shown in the side panel.';
+    container.appendChild(soDesc);
+
+    const soList = document.createElement('div');
+    soList.id = 'section-order-list';
+    container.appendChild(soList);
+
+    const SECTION_LABEL_KEYS = {
+        tabs: 'tabsHeader',
+        otherWindows: 'otherWindowsHeader',
+        readingList: 'readingListHeader',
+        bookmarks: 'bookmarksHeader',
+    };
+    const { [SECTION_ORDER_KEY]: storedOrder } = await api.getStorage('sync', { [SECTION_ORDER_KEY]: [] });
+    for (const id of mergeSectionOrder(storedOrder, DEFAULT_SECTION_ORDER)) {
+        const row = document.createElement('div');
+        row.className = 'opt-row';
+        row.dataset.sectionId = id;
+        row.style.cursor = 'grab';
+        const label = document.createElement('div');
+        label.className = 'opt-row__label';
+        label.textContent = api.getMessage(SECTION_LABEL_KEYS[id]) || id;
+        row.appendChild(label);
+        soList.appendChild(row);
+    }
+    // Sortable 由 options.html 以 <script> 載入為全域(同 sidepanel.html 慣例)。
+    if (window.Sortable) {
+        new Sortable(soList, {
+            animation: 150,
+            onEnd: async () => {
+                const ids = [...soList.querySelectorAll('[data-section-id]')].map(el => el.dataset.sectionId);
+                await api.setStorage('sync', { [SECTION_ORDER_KEY]: ids });
+            },
+        });
+    }
 }
 
 const LANGUAGE_OPTIONS = [

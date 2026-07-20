@@ -143,6 +143,14 @@
     "message": "Phím tắt hiện tại:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Thứ tự các mục của thanh bên",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Kéo để sắp xếp lại thứ tự các mục hiển thị trong bảng điều khiển bên.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Vị trí bảng điều khiển bên",
     "description": "Header for the side panel position section in settings."

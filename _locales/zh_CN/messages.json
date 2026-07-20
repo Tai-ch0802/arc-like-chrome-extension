@@ -143,6 +143,14 @@
     "message": "当前快捷键：",
     "description": "显示当前快捷键的标签。"
   },
+  "appearanceSectionOrderHeader": {
+    "message": "侧边栏区块排序",
+    "description": "外观设置中侧边栏区块排序的标题。"
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "拖动调整侧边栏各区块的显示顺序。",
+    "description": "区块排序标题下方的说明文字。"
+  },
   "sidePanelPositionSectionHeader": {
     "message": "侧边面板位置",
     "description": "设置中侧边面板位置部分的标题。"

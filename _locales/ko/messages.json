@@ -143,6 +143,14 @@
     "message": "현재 단축키:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "사이드바 섹션 순서",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "드래그하여 사이드 패널에 표시되는 섹션의 순서를 변경하세요.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "사이드 패널 위치",
     "description": "Header for the side panel position section in settings."

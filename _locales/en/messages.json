@@ -146,6 +146,14 @@
     "message": "Current Shortcut:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Sidebar Section Order",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Drag to reorder the sections shown in the side panel.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Side Panel Position",
     "description": "Header for the side panel position section in settings."

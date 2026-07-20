@@ -143,6 +143,14 @@
     "message": "แป้นพิมพ์ลัดปัจจุบัน:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "ลำดับส่วนของแถบด้านข้าง",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "ลากเพื่อจัดลำดับส่วนต่าง ๆ ที่แสดงในแผงด้านข้างใหม่",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "ตำแหน่งแผงด้านข้าง",
     "description": "Header for the side panel position section in settings."

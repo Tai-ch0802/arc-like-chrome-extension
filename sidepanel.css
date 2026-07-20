@@ -3758,3 +3758,10 @@ mark.url-match {
 .page-reader-points li {
     margin-bottom: 4px;
 }
+
+/* --- Sidebar section order (BASE-015) --- */
+/* Wrapper 化後每個 .panel-section 自帶結尾 divider;排在最後的區塊不需要分隔線,
+   依當下順序動態隱藏(重排由 sectionOrderUI 的 appendChild 完成,無需改樣式)。 */
+#content-container > .panel-section:last-child > .divider:last-child {
+    display: none;
+}

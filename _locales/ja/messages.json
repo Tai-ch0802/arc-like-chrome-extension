@@ -143,6 +143,14 @@
     "message": "現在のショートカット:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "サイドバーセクションの並び順",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "ドラッグしてサイドパネルに表示されるセクションの順序を変更します。",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "サイドパネルの位置",
     "description": "Header for the side panel position section in settings."

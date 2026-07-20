@@ -143,6 +143,14 @@
     "message": "Aktuelle Tastenkombination:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Reihenfolge der Seitenleisten-Bereiche",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Ziehen Sie die Bereiche, um ihre Reihenfolge im Seitenpanel zu ändern.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Seitenpanel-Position",
     "description": "Header for the side panel position section in settings."

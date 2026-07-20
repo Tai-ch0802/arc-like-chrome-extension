@@ -11,3 +11,4 @@ export * from './ui/aiCleanupUI.js';
 export * from './ui/pageReaderUI.js';
 export * from './ui/hoverSummarizeManager.js';
 export * from './ui/hoverTooltip.js';
+export * from './ui/sectionOrderUI.js';

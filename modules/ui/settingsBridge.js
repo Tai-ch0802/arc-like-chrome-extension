@@ -24,6 +24,8 @@ export function resolveSettingChangeActions(changes, areaName) {
         if (changes.customTheme) actions.push({ type: 'applyCustomTheme' });
         if (changes.backgroundImageConfig) actions.push({ type: 'applyBackground' });
         if (changes.uiLanguage) actions.push({ type: 'reload' });
+        // BASE-015:外觀頁拖曳寫入 sectionOrder;sidepanel 據此重排區塊 wrapper。
+        if (changes.sectionOrder) actions.push({ type: 'dispatch', event: 'sectionOrderChanged', detail: { order: changes.sectionOrder.newValue } });
         const evMap = {
             readingListVisible: 'readingListVisibilityChanged',
             aiGroupingVisible: 'aiGroupingVisibilityChanged',

@@ -143,6 +143,14 @@
     "message": "Atajo actual:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Orden de las secciones de la barra lateral",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Arrastra para reordenar las secciones que se muestran en el panel lateral.",
+    "description": "Helper text under the sidebar section order header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posición del Panel Lateral",
     "description": "Header for the side panel position section in settings."
