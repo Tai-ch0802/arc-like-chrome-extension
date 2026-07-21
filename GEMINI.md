@@ -38,7 +38,7 @@ key_files:
   - file_path: options.html
     description: "[UI] 獨立設定頁（options_ui + open_in_tab）。Phase 12(批D) 新增；左側導覽 + 內容區，載入 sidepanel.css(共用元件樣式) + options.css(頁面版面) + options.js。"
   - file_path: options.js
-    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（共 8 區塊：外觀/語言/功能/同步/AI/RSS/快捷鍵/關於）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
+    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（BASE-016 N2 起共 9 區塊：外觀/語言/功能/同步/AI/RSS/快訊/快捷鍵/關於；renderNewswire=四源卡片 enable+key 遮罩欄+申請引導、金十分段多選、P0/P1/靜音規則編輯，只寫 newswireConfig/newswireKeys 到 storage.local，狀態經 newswire:status 廣播即時顯示）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
   - file_path: modules/ui/settingsBridge.js
     description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。Phase 13(批E) 加入 driveSyncStatus 分支：local 區的 driveSyncStatus 變更映射成 dispatch driveSyncStatusChanged 事件，供 driveSyncBadge 即時更新徽章。另有 aiProviderAuthError 分支（雲端 AI 401/403 訊號 → dispatch aiProviderAuthErrorChanged，供 toast.js 顯示節流提示）。"
   - file_path: modules/ui/customThemeManager.js
@@ -56,7 +56,7 @@ key_files:
   - file_path: modules/ui/sectionOrderUI.js
     description: "[UI] 側邊欄區塊排序套用（BASE-015）。applySectionOrder 讀 storage.sync.sectionOrder，以 DEFAULT_SECTION_ORDER 為 canonical 基準 merge 後，依 data-section-id 對 #content-container 的 .panel-section wrapper 做 appendChild 重排（保留節點身分與監聽器）；initSectionOrder 另訂閱 settingsBridge 派發的 sectionOrderChanged 即時重排。排序 UI 本身在 options.js renderAppearance（Sortable 拖曳清單，只寫 storage）。"
   - file_path: modules/newswire/normalizer.js
-    description: "[快訊] 純函式 normalizer（BASE-016 N1）。各源 raw payload → 統一 NewsEvent：parseTree（Tree of Alpha，含 history replay 批次）＋共用 sanitizeEvent（strip HTML regex、NFKC、title 500 上限、URL 走 new URL() 驗證僅 http/https、symbols 大寫裁 20、缺 id 以 djb2 雜湊補）。零 chrome/DOM 依賴可跑 unit test；N2 補 parseFj/parseAlpaca/parseJin10。"
+    description: "[快訊] 純函式 normalizer（BASE-016）。各源 raw payload → 統一 NewsEvent：parseTree/parseFj/parseAlpaca/parseJin10＋共用 sanitizeEvent（strip HTML regex、NFKC、title 500 上限、URL 走 new URL() 驗證僅 http/https、symbols 大寫裁 20、缺 id 以 djb2 雜湊補）。金十特有：parseBeijingTime（UTC+8→epoch）、important===1→srcImportant、action!==1（修改/刪除）忽略；Alpaca 只取 T==='n'；FJ 只取 type==='news'。零 chrome/DOM 依賴可跑 unit test。"
   - file_path: modules/newswire/dedupe.js
     description: "[快訊] L1 去重純函式（BASE-016）。createDedupeSet：in-memory Map 依插入序 FIFO 淘汰（cap 1000），種子來自 ring buffer 既有事件 id，使 SW 重啟與 Tree history replay 不重複入列。"
   - file_path: modules/newswire/rules.js
@@ -64,7 +64,7 @@ key_files:
   - file_path: modules/newswire/eventBuffer.js
     description: "[快訊] 事件 ring buffer（BASE-016）。新→舊 cap 300，storage.local newswireEvents 以 2s debounce 批次寫入；createEventBuffer 全 DI（仿 syncEngine），unit test 注入 fake storage/timer。"
   - file_path: modules/newswire/adapters.js
-    description: "[快訊] 來源 adapter 工廠（BASE-016 N1：Tree of Alpha；N2 補 FJ/Alpaca/金十）。SW 專用；每源獨立重連狀態機（computeBackoffMs 指數退避＋抖動上限 60s、連續 10 次失敗→degraded 仍續試）；Tree 免 key 可連、有 key 送純文字 `login <key>` 去延遲；協定紀律：不送各源未定義訊息。"
+    description: "[快訊] 來源 adapter 工廠（BASE-016，四源齊備）。共用 createWsAdapter harness：每源獨立重連狀態機（computeBackoffMs 指數退避＋抖動上限 60s、連續 10 次失敗→degraded 仍續試）、ctx.fail()=憑證類錯誤終止重試等設定變更重建。Tree 免 key（選填 `login <key>` 去延遲）；FJ key 走 query string；Alpaca auth→subscribe news:['*']、error 406=連線數超限顯示 degraded、auth 錯誤→needs-key 終止；金十三步 connect→auth(secret-key)→subscribe(category/language，buildJin10SubscribeParams)。missingCreds 純函式供 feedManager 判定 needs-key。協定紀律：不送各源未定義訊息。"
   - file_path: modules/newswire/feedManager.js
     description: "[快訊] SW 編排核心（BASE-016）。單例持有各源連線；管線 raw→normalizer→dedupe→rules→eventBuffer→runtime 廣播（newswire:events/status）；newswire:getState/markSeen 訊息分派；config/keys（storage.local）變更→重建連線；keepalive 20s interval＋newswireWatchdog alarm（30s）喚醒重建；首次啟動 seed defaultNewswireConfig（來源全關＝零網路行為）。P0 系統通知 N4 接上。"
   - file_path: modules/ui/newswireRenderer.js

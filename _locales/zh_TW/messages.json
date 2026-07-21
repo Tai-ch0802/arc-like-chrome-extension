@@ -179,6 +179,126 @@
     "message": "未讀快訊——點擊標為已讀",
     "description": "快訊標題旁未讀徽章的提示文字。"
   },
+  "settingsNavNewswire": {
+    "message": "快訊",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "資訊源",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "啟用",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "API key",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "API key（選填——填入可移除免費層延遲）",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "API key ID",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "API secret",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "此來源已啟用但尚未填入 API key——填入後才會連線。",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "前往申請 →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "未啟用",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "需填入 API key",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "連線中…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "已連線",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "重連中…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "連線異常",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "免費、無需 key 即可使用；填入 Tree of Alpha API key 可移除免費層延遲。",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "需至 stream.financialjuice.com 登入申請 API key；Free 方案延遲 10 分鐘、限 1 條連線。",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "開設 Alpaca 帳戶（paper 即可）免費取得 API keys；每帳戶限 1 條同時連線。",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "需於金十開放平台購買或申請試用取得 secret-key；請遵守金十授權條款。",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "快訊分段",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "市場快訊",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "期貨",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "美港股",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "A股",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "商品外匯",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "關鍵字規則",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "以逗號分隔關鍵字。命中 P0 以重大高亮顯示、P1 為重點；靜音關鍵字則直接濾除不顯示。",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "P0 關鍵字",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "P1 關鍵字",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "靜音關鍵字",
+    "description": "Label of the muted keywords textarea."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "側邊面板位置",
     "description": "設定中側邊面板位置區塊的標題。"

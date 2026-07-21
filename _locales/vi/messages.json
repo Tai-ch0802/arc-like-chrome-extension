@@ -179,6 +179,126 @@
     "message": "Tin chưa đọc — nhấp để đánh dấu đã đọc",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "Bảng tin nhanh",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "Nguồn tin",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "Bật",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "Khóa API",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "Khóa API (tùy chọn — nhập để bỏ độ trễ gói miễn phí)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "ID khóa API",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "Mã bí mật API",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "Nguồn này đã bật nhưng chưa có khóa API — nhập để kết nối.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "Lấy khóa →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "Tắt",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "Cần khóa API",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "Đang kết nối…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "Đã kết nối",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "Đang kết nối lại…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "Kết nối bất ổn",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "Miễn phí, không cần khóa. Thêm khóa API Tree of Alpha để bỏ độ trễ của gói miễn phí.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "Cần khóa API cấp tại stream.financialjuice.com. Gói miễn phí trễ 10 phút và giới hạn một kết nối.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Miễn phí với tài khoản Alpaca (paper là đủ). Tạo khóa API trong bảng điều khiển; mỗi tài khoản một kết nối đồng thời.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Cần secret-key từ Jin10 Open Platform (mua hoặc dùng thử). Vui lòng tuân thủ điều khoản của Jin10.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "Danh mục tin nhanh",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "Tin thị trường",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "Hợp đồng tương lai",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "Cổ phiếu Mỹ & HK",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "Cổ phiếu A",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "Hàng hóa & ngoại hối",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "Quy tắc từ khóa",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "Phân tách từ khóa bằng dấu phẩy. Trùng P0 được tô đậm là nghiêm trọng, P1 là đáng chú ý; từ khóa bị tắt sẽ bị loại bỏ.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "Từ khóa P0",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "Từ khóa P1",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "Từ khóa bị tắt",
+    "description": "Label of the muted keywords textarea."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Vị trí bảng điều khiển bên",
     "description": "Header for the side panel position section in settings."

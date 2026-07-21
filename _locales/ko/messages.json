@@ -179,6 +179,126 @@
     "message": "읽지 않은 뉴스 — 클릭하면 읽음으로 표시됩니다",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "뉴스 피드",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "뉴스 소스",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "사용",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "API 키",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "API 키(선택 — 입력 시 무료 플랜 지연 제거)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "API 키 ID",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "API 시크릿",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "이 소스는 활성화되었지만 API 키가 없습니다. 입력하면 연결됩니다.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "키 발급받기 →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "사용 안 함",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "API 키 필요",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "연결 중…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "연결됨",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "재연결 중…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "연결 불안정",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "키 없이 무료로 사용할 수 있습니다. Tree of Alpha API 키를 입력하면 무료 플랜 지연이 제거됩니다.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "stream.financialjuice.com 에서 API 키 발급이 필요합니다. 무료 플랜은 10분 지연, 연결 1개 제한입니다.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Alpaca 계정(페이퍼 가능)으로 무료입니다. 대시보드에서 API 키를 만드세요. 계정당 동시 1연결입니다.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Jin10 오픈 플랫폼에서 구매 또는 체험 신청으로 secret-key를 받으세요. Jin10 이용약관을 준수하세요.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "뉴스 카테고리",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "시장 뉴스",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "선물",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "미국·홍콩 주식",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "A주",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "원자재·외환",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "키워드 규칙",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "키워드는 쉼표로 구분합니다. P0는 중대 강조, P1은 주목 표시되며, 음소거 키워드는 표시되지 않습니다.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "P0 키워드",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "P1 키워드",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "음소거 키워드",
+    "description": "Label of the muted keywords textarea."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "사이드 패널 위치",
     "description": "Header for the side panel position section in settings."

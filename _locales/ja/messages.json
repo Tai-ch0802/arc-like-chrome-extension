@@ -179,6 +179,126 @@
     "message": "未読ニュース — クリックで既読にします",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "ニュース速報",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "ニュースソース",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "有効にする",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "APIキー",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "APIキー（任意 — 入力すると無料プランの遅延を解除）",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "APIキーID",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "APIシークレット",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "このソースは有効ですがAPIキーが未入力です。入力すると接続します。",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "キーを取得 →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "無効",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "APIキーが必要",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "接続中…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "接続済み",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "再接続中…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "接続に問題あり",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "キー不要で無料利用できます。Tree of AlphaのAPIキーを入力すると無料プランの遅延を解除できます。",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "stream.financialjuice.com でAPIキーの発行が必要です。無料プランは10分遅延・1接続までです。",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Alpaca口座（ペーパー可）で無料。ダッシュボードでAPIキーを作成、1口座につき同時1接続です。",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "金十オープンプラットフォームで購入または試用申請してsecret-keyを取得してください。金十の利用規約に従ってください。",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "速報カテゴリ",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "市場速報",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "先物",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "米国・香港株",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "A株",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "商品・為替",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "キーワードルール",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "キーワードはカンマ区切り。P0は重大として強調、P1は注目扱い、ミュートは表示せず除外します。",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "P0キーワード",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "P1キーワード",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "ミュートキーワード",
+    "description": "Label of the muted keywords textarea."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "サイドパネルの位置",
     "description": "Header for the side panel position section in settings."

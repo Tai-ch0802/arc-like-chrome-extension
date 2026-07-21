@@ -179,6 +179,126 @@
     "message": "Berita belum dibaca — klik untuk menandai sudah dibaca",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "Umpan Berita",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "Sumber",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "Aktifkan",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "Kunci API",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "Kunci API (opsional — menghapus penundaan paket gratis)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "ID kunci API",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "Rahasia API",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "Sumber ini aktif tetapi belum ada kunci API — masukkan untuk terhubung.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "Dapatkan kunci →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "Nonaktif",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "Perlu kunci API",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "Menghubungkan…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "Terhubung",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "Menghubungkan ulang…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "Koneksi terganggu",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "Gratis tanpa kunci. Tambahkan kunci API Tree of Alpha untuk menghapus penundaan paket gratis.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "Memerlukan kunci API dari stream.financialjuice.com. Paket gratis tertunda 10 menit dan satu koneksi.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Gratis dengan akun Alpaca (paper cukup). Buat kunci API di dasbor; satu koneksi bersamaan per akun.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Memerlukan secret-key dari Jin10 Open Platform (beli atau uji coba). Patuhi ketentuan penggunaan Jin10.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "Kategori berita",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "Berita pasar",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "Berjangka",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "Saham AS & HK",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "Saham A",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "Komoditas & valas",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "Aturan kata kunci",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "Pisahkan kata kunci dengan koma. P0 disorot sebagai kritis, P1 sebagai penting; kata kunci senyap dibuang.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "Kata kunci P0",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "Kata kunci P1",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "Kata kunci senyap",
+    "description": "Label of the muted keywords textarea."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posisi Panel Samping",
     "description": "Header for the side panel position section in settings."

@@ -179,6 +179,126 @@
     "message": "Ungelesene Nachrichten — zum Markieren klicken",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "News-Feed",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "Quellen",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "Aktivieren",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "API-Schlüssel",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "API-Schlüssel (optional — entfernt die Verzögerung des Gratis-Tarifs)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "API-Schlüssel-ID",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "API-Secret",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "Diese Quelle ist aktiviert, hat aber noch keinen API-Schlüssel — zum Verbinden eingeben.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "Schlüssel anfordern →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "Aus",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "API-Schlüssel erforderlich",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "Verbinde…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "Verbunden",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "Neuverbindung…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "Verbindung beeinträchtigt",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "Kostenlos ohne Schlüssel nutzbar. Mit einem Tree-of-Alpha-Schlüssel entfällt die Verzögerung des Gratis-Tarifs.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "Erfordert einen API-Schlüssel von stream.financialjuice.com. Der Gratis-Tarif hat 10 Minuten Verzögerung und eine Verbindung.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Kostenlos mit Alpaca-Konto (Paper genügt). API-Schlüssel im Dashboard erstellen; eine gleichzeitige Verbindung pro Konto.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Erfordert einen secret-key der Jin10 Open Platform (Kauf oder Test). Bitte die Jin10-Nutzungsbedingungen beachten.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "Flash-Kategorien",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "Markt-Flash",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "Futures",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "US- & HK-Aktien",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "A-Aktien",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "Rohstoffe & Devisen",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "Stichwort-Regeln",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "Stichwörter mit Komma trennen. P0-Treffer werden als kritisch hervorgehoben, P1 als wichtig; stummgeschaltete werden verworfen.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "P0-Stichwörter",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "P1-Stichwörter",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "Stummgeschaltete Stichwörter",
+    "description": "Label of the muted keywords textarea."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Seitenpanel-Position",
     "description": "Header for the side panel position section in settings."

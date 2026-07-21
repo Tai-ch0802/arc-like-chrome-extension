@@ -82,6 +82,26 @@ export function sanitizeEvent(partial, now = Date.now()) {
     };
 }
 
+function toObject(raw) {
+    if (raw == null) return null;
+    if (typeof raw === 'string') {
+        try { return JSON.parse(raw); } catch { return null; }
+    }
+    return raw;
+}
+
+/**
+ * 金十 `time` 為北京時間(UTC+8)字串「YYYY-MM-DD HH:mm:ss」,轉 epoch ms。
+ * @returns {number|undefined} 無法解析回 undefined(sanitize 會 fallback ingest)
+ */
+export function parseBeijingTime(s) {
+    if (typeof s !== 'string') return undefined;
+    const m = s.trim().match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}:\d{2})$/);
+    if (!m) return undefined;
+    const ts = Date.parse(`${m[1]}T${m[2]}+08:00`);
+    return Number.isFinite(ts) ? ts : undefined;
+}
+
 /**
  * Tree of Alpha 主 WS:訊息為 JSON(單則或批次;連線初始有 history replay,
  * 與即時訊息同路徑,重複靠 L1 去重)。常見欄位 _id/title/body/url/link/
@@ -91,11 +111,8 @@ export function sanitizeEvent(partial, now = Date.now()) {
  * @returns {object[]} NewsEvent[]
  */
 export function parseTree(raw, now = Date.now()) {
-    if (raw == null) return [];
-    let msg = raw;
-    if (typeof raw === 'string') {
-        try { msg = JSON.parse(raw); } catch { return []; }
-    }
+    const msg = toObject(raw);
+    if (msg == null) return [];
     const items = Array.isArray(msg) ? msg : [msg];
     const out = [];
     for (const it of items) {
@@ -116,4 +133,84 @@ export function parseTree(raw, now = Date.now()) {
         if (ev) out.push(ev);
     }
     return out;
+}
+
+/**
+ * FinancialJuice Stream:訊息 `{type:'news'|'calendar', data:{...}}`,
+ * v1 只取 news(日曆留未來功能)。欄位以實測 payload 校正(M0 註記):
+ * headline/time 防禦性讀取。
+ * @returns {object[]} NewsEvent[]
+ */
+export function parseFj(raw, now = Date.now()) {
+    const msg = toObject(raw);
+    if (msg == null || msg.type !== 'news') return [];
+    const items = Array.isArray(msg.data) ? msg.data : (msg.data ? [msg.data] : []);
+    const out = [];
+    for (const it of items) {
+        if (!it || typeof it !== 'object') continue;
+        const parsedTime = typeof it.time === 'number' ? it.time : Date.parse(it.time);
+        const ev = sanitizeEvent({
+            source: 'fj',
+            sourceId: it.id ?? it.newsId,
+            title: it.headline || it.title || '',
+            url: it.url ?? it.link,
+            tsSource: Number.isFinite(parsedTime) ? parsedTime : undefined,
+        }, now);
+        if (ev) out.push(ev);
+    }
+    return out;
+}
+
+/**
+ * Alpaca News Stream:訊息為陣列,資料項 `T === 'n'`
+ * ({id, headline, created_at, url, symbols});控制訊息(success/error/
+ * subscription)由 adapter 處理,這裡直接略過。
+ * @returns {object[]} NewsEvent[]
+ */
+export function parseAlpaca(raw, now = Date.now()) {
+    const msg = toObject(raw);
+    if (msg == null) return [];
+    const items = Array.isArray(msg) ? msg : [msg];
+    const out = [];
+    for (const it of items) {
+        if (!it || typeof it !== 'object' || it.T !== 'n') continue;
+        const parsedTime = Date.parse(it.created_at);
+        const ev = sanitizeEvent({
+            source: 'alpaca',
+            sourceId: it.id,
+            title: it.headline || '',
+            url: it.url,
+            tsSource: Number.isFinite(parsedTime) ? parsedTime : undefined,
+            symbols: it.symbols,
+        }, now);
+        if (ev) out.push(ev);
+    }
+    return out;
+}
+
+/**
+ * 金十官方 WSS(M0 定稿,SA §5.4):資料訊息
+ * `{type:'data', data:{id, time(北京時間), important, data:{content(富文本),
+ * title}, action:1新增|2修改|3刪除}}`。v1 只處理 action===1(缺 action 視為
+ * 新增);content 可含 HTML,由 sanitizeEvent 統一 strip;important===1 →
+ * srcImportant(rules 據此強制 P0)。
+ * @param {unknown} raw ws 訊息(字串或已解析物件;adapter 已剝殼則為 data 訊息本體)
+ * @returns {object[]} NewsEvent[]
+ */
+export function parseJin10(raw, now = Date.now()) {
+    const msg = toObject(raw);
+    if (msg == null || msg.type !== 'data') return [];
+    const d = msg.data;
+    if (!d || typeof d !== 'object') return [];
+    if (d.action != null && d.action !== 1) return []; // 修改/刪除 v1 忽略
+    const inner = d.data || {};
+    const ev = sanitizeEvent({
+        source: 'jin10',
+        sourceId: d.id,
+        title: inner.title || inner.content || '',
+        url: inner.source_link || inner.link,
+        tsSource: parseBeijingTime(d.time),
+        srcImportant: d.important === 1,
+    }, now);
+    return ev ? [ev] : [];
 }

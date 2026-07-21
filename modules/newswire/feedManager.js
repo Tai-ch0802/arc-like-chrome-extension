@@ -7,11 +7,17 @@
 // alarm(30s)喚醒重建。storage 經 apiManager;alarms/runtime 為 SW 專屬。
 
 import { getStorage, setStorage } from '../apiManager.js';
-import { parseTree } from './normalizer.js';
+import { parseTree, parseFj, parseAlpaca, parseJin10 } from './normalizer.js';
 import { createDedupeSet } from './dedupe.js';
 import { classify, DEFAULT_RULES } from './rules.js';
 import { createEventBuffer } from './eventBuffer.js';
-import { createTreeAdapter } from './adapters.js';
+import {
+    createTreeAdapter,
+    createFjAdapter,
+    createAlpacaAdapter,
+    createJin10Adapter,
+    missingCreds,
+} from './adapters.js';
 
 export const NEWSWIRE_CONFIG_KEY = 'newswireConfig';
 export const NEWSWIRE_KEYS_KEY = 'newswireKeys';
@@ -41,14 +47,23 @@ export function defaultNewswireConfig(now = Date.now()) {
     };
 }
 
-// N1 只實作 tree;N2 為 fj/alpaca/jin10 補 factory 即自動納管。
 const ADAPTER_FACTORIES = {
     tree: (sourceCfg, keys, hooks) => createTreeAdapter({ apiKey: keys?.tree?.apiKey }, hooks),
+    fj: (sourceCfg, keys, hooks) => createFjAdapter({ apiKey: keys?.fj?.apiKey }, hooks),
+    alpaca: (sourceCfg, keys, hooks) => createAlpacaAdapter(
+        { keyId: keys?.alpaca?.keyId, secret: keys?.alpaca?.secret }, hooks),
+    jin10: (sourceCfg, keys, hooks) => createJin10Adapter({
+        secretKey: keys?.jin10?.secretKey,
+        categories: sourceCfg?.categories,
+        // 官方 language=traditional:UI 語言為繁體時快訊轉繁體(M0/SA §5.4)。
+        language: uiLangCache === 'zh_TW' ? 'traditional' : undefined,
+    }, hooks),
 };
 
 let started = false;
 let config = null;
 let keysCache = {};
+let uiLangCache = '';
 const adapters = new Map();
 const statuses = { tree: 'disabled', fj: 'disabled', alpaca: 'disabled', jin10: 'disabled' };
 let dedupe = createDedupeSet();
@@ -85,6 +100,9 @@ function handleRaw(source, raw) {
     let parsed;
     switch (source) {
         case 'tree': parsed = parseTree(raw); break;
+        case 'fj': parsed = parseFj(raw); break;
+        case 'alpaca': parsed = parseAlpaca(raw); break;
+        case 'jin10': parsed = parseJin10(raw); break;
         default: parsed = [];
     }
     if (!parsed.length) return;
@@ -112,12 +130,22 @@ async function loadState() {
         await setStorage('local', { [NEWSWIRE_CONFIG_KEY]: config });
     }
     keysCache = res[NEWSWIRE_KEYS_KEY] || {};
+    const { uiLanguage } = await getStorage('sync', { uiLanguage: 'auto' });
+    uiLangCache = (uiLanguage && uiLanguage !== 'auto')
+        ? uiLanguage
+        : (chrome.i18n?.getUILanguage?.() || '').replace('-', '_');
 }
 
 function applyAdapters() {
     for (const [source, factory] of Object.entries(ADAPTER_FACTORIES)) {
         const wantEnabled = !!config?.sources?.[source]?.enabled;
         const existing = adapters.get(source);
+        if (wantEnabled && missingCreds(source, keysCache)) {
+            // 啟用但憑證缺漏:不建連線,顯示 needs-key(填入 key 後 onChanged 重建)。
+            if (existing) { existing.disconnect(); adapters.delete(source); }
+            setStatus(source, 'needs-key');
+            continue;
+        }
         if (wantEnabled && !existing) {
             const adapter = factory(config.sources[source], keysCache, {
                 onRaw: (raw) => handleRaw(source, raw),
@@ -128,6 +156,8 @@ function applyAdapters() {
         } else if (!wantEnabled && existing) {
             existing.disconnect();
             adapters.delete(source);
+        } else if (!wantEnabled && statuses[source] !== 'disabled') {
+            setStatus(source, 'disabled');
         }
     }
     if (adapters.size) {
@@ -164,10 +194,14 @@ export function handleNewswireWatchdog() {
     ensureKeepalive();
 }
 
-/** local newswireConfig/newswireKeys 變更 → 重讀並重建連線(粗粒度,設定變更頻率低)。 */
+/**
+ * local newswireConfig/newswireKeys 變更 → 重讀並重建連線(粗粒度,設定
+ * 變更頻率低);sync uiLanguage 變更也重建(金十 traditional 參數跟著換)。
+ */
 export function handleNewswireConfigChange(changes, areaName) {
-    if (areaName !== 'local') return;
-    if (!changes[NEWSWIRE_CONFIG_KEY] && !changes[NEWSWIRE_KEYS_KEY]) return;
+    const uiLangChanged = areaName === 'sync' && !!changes.uiLanguage;
+    if (areaName !== 'local' && !uiLangChanged) return;
+    if (!uiLangChanged && !changes[NEWSWIRE_CONFIG_KEY] && !changes[NEWSWIRE_KEYS_KEY]) return;
     (async () => {
         await loadState();
         for (const adapter of adapters.values()) adapter.disconnect();
