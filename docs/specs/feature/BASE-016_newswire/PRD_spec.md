@@ -54,7 +54,7 @@
 
 ### 3.1 來源管理（options）
 
-- **FR-01**：The system shall 在 options 新增「快訊」section，列出 4 個來源卡片：Tree of Alpha、FinancialJuice、Alpaca News、金十數據（官方）。每張卡片含：啟用 toggle（預設全關）、來源說明與**申請 key 引導文案**、官方申請頁外部連結、API key 輸入欄（Tree of Alpha 的 key 為選填「去延遲」欄位）。
+- **FR-01**：The system shall 在 options 新增「快訊」section，列出 4 個來源卡片：Tree of Alpha、FinancialJuice、Alpaca News、金十數據（官方）。每張卡片含：啟用 toggle（預設全關）、來源說明與**申請 key 引導文案**、官方申請頁外部連結、API key 輸入欄（Tree of Alpha 的 key 為選填「去延遲」欄位）。金十卡片另含**快訊分段多選**（M0 查證：官方 `category` 為市場分段——1 市場快訊(主站)／2 期貨／3 美港／4 A股／5 商品外匯，可複選，預設僅「1 市場快訊」）。
 - **FR-02**：WHEN 使用者啟用需要 key 的來源但未填 key，the system shall 顯示行內提示並不建立連線（不視為錯誤態）。
 - **FR-03**：The system shall 僅使用各來源之**官方公開端點**；金十一律走官方開放平台（WSS 為主、REST 輪詢備援），**不得**內建任何非官方端點。
 
@@ -175,13 +175,13 @@ flowchart TD
     D --> D1[Tree of Alpha\n免 key 即用;key 選填去延遲]
     D --> D2[FinancialJuice\nkey 必填;Free 層延遲說明]
     D --> D3[Alpaca News\nkey 必填;開戶引導]
-    D --> D4[金十數據 官方\nsecret-key 必填;申請引導]
+    D --> D4[金十數據 官方\nsecret-key 必填;申請引導\n快訊分段多選 1-5]
     A --> E[關鍵字規則\nP0 / P1 / 靜音]
     A --> F[通知開關 P0]
     A --> G[同步 API keys opt-in\n預設關]
 ```
 
-- 每張來源卡片：啟用 toggle → 展開 key 欄（`type=password`＋`autocomplete=new-password`）＋連線狀態＋引導文案（含官方申請頁 `target=_blank` 連結與費用/延遲注意事項，例：FJ Free 層延遲 10 分鐘、金十免費層 1–3 分鐘）。
+- 每張來源卡片：啟用 toggle → 展開 key 欄（`type=password`＋`autocomplete=new-password`）＋連線狀態＋引導文案（含官方申請頁 `target=_blank` 連結與費用/延遲注意事項，例：FJ Free 層延遲 10 分鐘；金十 secret-key 於金十開放平台**購買或申請試用**取得——M0 查證：官方文件無免費層延遲聲明，舊規格書「1–3 分鐘延遲」臆測已移除）。金十卡片含 traditional 語言參數行為說明（UI 語言為繁體時快訊自動轉繁體，官方 `language=traditional` 參數）。
 - 危險操作（清除全部快訊資料）用 `.modal-button.danger-outline`。
 
 ### 5.3 通知
@@ -226,3 +226,4 @@ flowchart TD
 | 版本 | 日期 | 變更 | 作者 |
 |---|---|---|---|
 | v1.0 | 2026-07-20 | 初稿：自 server-side 規格書改造為 MV3 extension 版；納入使用者拍板決策（背景常駐＋通知、四源 opt-in、key 同步 opt-in、Drive appdata 持久層） | Tai / Claude 協作 |
+| v1.1 | 2026-07-21 | M0 金十官方文件查證（使用者授權瀏覽器逐頁檢視）後修訂：category 語意更正為市場分段多選（FR-01）、金十引導文案改為購買/試用取得 key（移除延遲臆測）、繁體 language 參數說明 | Tai / Claude 協作 |
