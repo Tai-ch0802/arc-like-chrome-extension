@@ -143,6 +143,42 @@
     "message": "Pintasan Saat Ini:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Urutan Bagian Bilah Samping",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Seret untuk mengubah urutan bagian yang ditampilkan di panel samping.",
+    "description": "Helper text under the sidebar section order header."
+  },
+  "newswireSectionHeader": {
+    "message": "Umpan Berita",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "Belum ada sumber berita yang diaktifkan. Aktifkan di Pengaturan untuk memulai umpan langsung.",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "Buka Pengaturan",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "Jeda",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "Lanjutkan",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "Tandai semua sudah dibaca",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "Berita belum dibaca — klik untuk menandai sudah dibaca",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posisi Panel Samping",
     "description": "Header for the side panel position section in settings."

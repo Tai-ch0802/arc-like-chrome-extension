@@ -24,11 +24,14 @@ export function resolveSettingChangeActions(changes, areaName) {
         if (changes.customTheme) actions.push({ type: 'applyCustomTheme' });
         if (changes.backgroundImageConfig) actions.push({ type: 'applyBackground' });
         if (changes.uiLanguage) actions.push({ type: 'reload' });
+        // BASE-015:外觀頁拖曳寫入 sectionOrder;sidepanel 據此重排區塊 wrapper。
+        if (changes.sectionOrder) actions.push({ type: 'dispatch', event: 'sectionOrderChanged', detail: { order: changes.sectionOrder.newValue } });
         const evMap = {
             readingListVisible: 'readingListVisibilityChanged',
             aiGroupingVisible: 'aiGroupingVisibilityChanged',
             aiCleanupVisible: 'aiCleanupVisibilityChanged',
             pageReaderVisible: 'pageReaderVisibilityChanged',
+            newswireVisible: 'newswireVisibilityChanged',
         };
         for (const [key, event] of Object.entries(evMap)) {
             if (changes[key]) actions.push({ type: 'dispatch', event, detail: { visible: changes[key].newValue } });
@@ -41,6 +44,7 @@ export function resolveSettingChangeActions(changes, areaName) {
             'aiAutoNamingEnabled',
             'hoverSummarizeEnabled',
             'readingListSummaryEnabled',
+            'newswireVisible',
         ];
         for (const key of refreshKeys) {
             if (changes[key]) actions.push({ type: 'refreshState', key });
@@ -83,6 +87,7 @@ export async function applySettingChanges(actions) {
                     aiAutoNamingEnabled: state.initAiAutoNaming,
                     hoverSummarizeEnabled: state.initHoverSummarize,
                     readingListSummaryEnabled: state.initReadingListSummary,
+                    newswireVisible: state.initNewswireVisibility,
                 };
                 const fn = initByKey[a.key];
                 if (fn) await fn();

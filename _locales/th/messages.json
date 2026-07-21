@@ -143,6 +143,42 @@
     "message": "แป้นพิมพ์ลัดปัจจุบัน:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "ลำดับส่วนของแถบด้านข้าง",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "ลากเพื่อจัดลำดับส่วนต่าง ๆ ที่แสดงในแผงด้านข้างใหม่",
+    "description": "Helper text under the sidebar section order header."
+  },
+  "newswireSectionHeader": {
+    "message": "ฟีดข่าว",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "ยังไม่ได้เปิดใช้งานแหล่งข่าว เปิดใช้งานในการตั้งค่าเพื่อเริ่มฟีดสด",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "เปิดการตั้งค่า",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "หยุดชั่วคราว",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "เล่นต่อ",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "ทำเครื่องหมายว่าอ่านทั้งหมดแล้ว",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "ข่าวที่ยังไม่ได้อ่าน — คลิกเพื่อทำเครื่องหมายว่าอ่านแล้ว",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "ตำแหน่งแผงด้านข้าง",
     "description": "Header for the side panel position section in settings."

@@ -42,56 +42,63 @@
     </div>
 
     <div id="content-container">
-        <!-- Tab Section Header -->
-        <div class="section-header-row">
-            <h2 class="section-header" data-i18n="tabsHeader">Tabs</h2>
-            <div class="header-controls-right">
-                <div id="ai-download-progress" class="ai-progress" hidden>
-                    <div class="ai-progress__fill"></div>
+        <!-- BASE-015:每個區塊包進 .panel-section wrapper(data-section-id 為排序身分),
+             modules/ui/sectionOrderUI.js 依 storage.sync.sectionOrder 重排 wrapper。
+             內部元素 id 一律不變(E2E selector 與各 renderer 依賴)。 -->
+        <section id="tabs-section" class="panel-section" data-section-id="tabs">
+            <!-- Tab Section Header -->
+            <div class="section-header-row">
+                <h2 class="section-header" data-i18n="tabsHeader">Tabs</h2>
+                <div class="header-controls-right">
+                    <div id="ai-download-progress" class="ai-progress" hidden>
+                        <div class="ai-progress__fill"></div>
+                    </div>
+                    <button id="ai-group-btn" class="header-action-btn" title="Smart Auto-Grouping"
+                        data-i18n-title="smartGroupingBtnTitle" aria-label="Smart Auto-Grouping"><span
+                            class="btn-icon" data-icon="auto_awesome"></span><span class="btn-label"
+                            data-i18n="smartGroupingBtnText"></span></button>
+                    <button id="ai-cleanup-btn" class="header-action-btn" title="AI Cleanup"
+                        data-i18n-title="aiCleanupBtnTitle" aria-label="AI Cleanup"><span class="btn-icon"
+                            data-icon="cleaning_services"></span><span class="btn-label"
+                            data-i18n="aiCleanupBtnText"></span></button>
+                    <button id="page-reader-btn" class="header-action-btn" title="Page Reader"
+                        data-i18n-title="pageReaderBtnTitle" aria-label="Page Reader"><span class="btn-icon"
+                            data-icon="description"></span><span class="btn-label"
+                            data-i18n="pageReaderBtnText"></span></button>
                 </div>
-                <button id="ai-group-btn" class="header-action-btn" title="Smart Auto-Grouping"
-                    data-i18n-title="smartGroupingBtnTitle" aria-label="Smart Auto-Grouping"><span
-                        class="btn-icon" data-icon="auto_awesome"></span><span class="btn-label"
-                        data-i18n="smartGroupingBtnText"></span></button>
-                <button id="ai-cleanup-btn" class="header-action-btn" title="AI Cleanup"
-                    data-i18n-title="aiCleanupBtnTitle" aria-label="AI Cleanup"><span class="btn-icon"
-                        data-icon="cleaning_services"></span><span class="btn-label"
-                        data-i18n="aiCleanupBtnText"></span></button>
-                <button id="page-reader-btn" class="header-action-btn" title="Page Reader"
-                    data-i18n-title="pageReaderBtnTitle" aria-label="Page Reader"><span class="btn-icon"
-                        data-icon="description"></span><span class="btn-label"
-                        data-i18n="pageReaderBtnText"></span></button>
             </div>
-        </div>
 
-        <!-- AI Cleanup Section (collapsed by default; expanded when the button is clicked) -->
-        <div id="ai-cleanup-section" class="ai-cleanup-section hidden" aria-live="polite">
-            <div class="ai-cleanup-header">
-                <h3 class="ai-cleanup-title" data-i18n="aiCleanupSectionHeader">AI Cleanup Suggestions</h3>
-                <button id="ai-cleanup-close" class="icon-btn" aria-label="Close" data-icon="close"></button>
+            <!-- AI Cleanup Section (collapsed by default; expanded when the button is clicked) -->
+            <div id="ai-cleanup-section" class="ai-cleanup-section hidden" aria-live="polite">
+                <div class="ai-cleanup-header">
+                    <h3 class="ai-cleanup-title" data-i18n="aiCleanupSectionHeader">AI Cleanup Suggestions</h3>
+                    <button id="ai-cleanup-close" class="icon-btn" aria-label="Close" data-icon="close"></button>
+                </div>
+                <div id="ai-cleanup-status" class="ai-cleanup-status"></div>
+                <div id="ai-cleanup-list" class="ai-cleanup-list"></div>
+                <div class="ai-cleanup-footer hidden">
+                    <label class="ai-cleanup-select-all">
+                        <input type="checkbox" id="ai-cleanup-select-all">
+                        <span data-i18n="aiCleanupSelectAll">Select all</span>
+                    </label>
+                    <button id="ai-cleanup-confirm" class="ai-cleanup-confirm-btn"
+                        data-i18n="aiCleanupConfirm">Close selected</button>
+                </div>
             </div>
-            <div id="ai-cleanup-status" class="ai-cleanup-status"></div>
-            <div id="ai-cleanup-list" class="ai-cleanup-list"></div>
-            <div class="ai-cleanup-footer hidden">
-                <label class="ai-cleanup-select-all">
-                    <input type="checkbox" id="ai-cleanup-select-all">
-                    <span data-i18n="aiCleanupSelectAll">Select all</span>
-                </label>
-                <button id="ai-cleanup-confirm" class="ai-cleanup-confirm-btn"
-                    data-i18n="aiCleanupConfirm">Close selected</button>
-            </div>
-        </div>
 
-        <div id="tab-list"></div>
+            <div id="tab-list"></div>
 
-        <hr class="divider">
+            <hr class="divider">
+        </section>
 
-        <div id="other-windows-list"></div>
+        <section id="other-windows-section" class="panel-section" data-section-id="otherWindows">
+            <div id="other-windows-list"></div>
 
-        <hr class="divider">
+            <hr class="divider">
+        </section>
 
         <!-- Reading List Section -->
-        <div id="reading-list-section">
+        <div id="reading-list-section" class="panel-section" data-section-id="readingList">
             <div class="section-header-row">
                 <button id="reading-list-toggle" class="section-toggle-btn" aria-expanded="true"
                     aria-controls="reading-list">
@@ -112,14 +119,47 @@
             <hr class="divider">
         </div>
 
-        <div class="section-header-row">
-            <h2 class="section-header" data-i18n="bookmarksHeader"></h2>
-            <div class="header-controls-right">
-                <button id="bookmark-tools-btn" class="header-action-btn"
-                    title="" data-i18n-title="bmToolsTitle" data-icon="build"></button>
+        <section id="bookmarks-section" class="panel-section" data-section-id="bookmarks">
+            <div class="section-header-row">
+                <h2 class="section-header" data-i18n="bookmarksHeader"></h2>
+                <div class="header-controls-right">
+                    <button id="bookmark-tools-btn" class="header-action-btn"
+                        title="" data-i18n-title="bmToolsTitle" data-icon="build"></button>
+                </div>
             </div>
-        </div>
-        <div id="bookmark-list"></div>
+            <div id="bookmark-list"></div>
+            <!-- BASE-015:補結尾 divider 讓重排後區塊間分隔一致;最後一個區塊的 divider 由 CSS 隱藏 -->
+            <hr class="divider">
+        </section>
+
+        <!-- Newswire Section (BASE-016 N1):內容由 modules/ui/newswireRenderer.js
+             經 SW 的 newswire:getState 回填,即時事件走 runtime message 廣播。 -->
+        <section id="newswire-section" class="panel-section" data-section-id="newswire">
+            <div class="section-header-row">
+                <button id="newswire-toggle" class="section-toggle-btn" aria-expanded="true"
+                    aria-controls="newswire-list">
+                    <h2 class="section-header" data-i18n="newswireSectionHeader"></h2>
+                    <span id="newswire-unread-badge" class="newswire-unread-badge hidden"
+                        data-i18n-title="newswireUnreadBadgeTitle" aria-live="polite"></span>
+                    <span class="toggle-chevron"></span>
+                </button>
+                <div class="header-controls-right">
+                    <button id="newswire-pause-btn" class="header-action-btn newswire-header-btn hidden"
+                        data-i18n="newswirePauseBtn" data-i18n-title="newswirePauseBtn"></button>
+                    <button id="newswire-mark-read-btn" class="header-action-btn newswire-header-btn hidden"
+                        data-i18n="newswireMarkReadBtn" data-i18n-title="newswireMarkReadBtn"></button>
+                </div>
+            </div>
+            <div id="newswire-top-sentinel" aria-hidden="true"></div>
+            <div id="newswire-list"></div>
+            <div id="newswire-empty" class="newswire-empty hidden">
+                <div class="newswire-empty-text" data-i18n="newswireEmptyState"></div>
+                <button id="newswire-empty-cta" class="empty-state-action-btn">
+                    <span data-i18n="newswireEmptyStateCta"></span>
+                </button>
+            </div>
+            <hr class="divider">
+        </section>
     </div>
 
     <!-- Toast Notification for Undo -->

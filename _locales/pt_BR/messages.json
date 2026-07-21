@@ -143,6 +143,42 @@
     "message": "Atalho Atual:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "Ordem das seções da barra lateral",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "Arraste para reordenar as seções exibidas no painel lateral.",
+    "description": "Helper text under the sidebar section order header."
+  },
+  "newswireSectionHeader": {
+    "message": "Feed de notícias",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "Nenhuma fonte de notícias ativada ainda. Ative uma nas Configurações para iniciar o feed ao vivo.",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "Abrir configurações",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "Pausar",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "Retomar",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "Marcar tudo como lido",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "Notícias não lidas — clique para marcar como lidas",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posição do Painel Lateral",
     "description": "Header for the side panel position section in settings."

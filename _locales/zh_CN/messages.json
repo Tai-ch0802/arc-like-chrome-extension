@@ -143,6 +143,42 @@
     "message": "当前快捷键：",
     "description": "显示当前快捷键的标签。"
   },
+  "appearanceSectionOrderHeader": {
+    "message": "侧边栏区块排序",
+    "description": "外观设置中侧边栏区块排序的标题。"
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "拖动调整侧边栏各区块的显示顺序。",
+    "description": "区块排序标题下方的说明文字。"
+  },
+  "newswireSectionHeader": {
+    "message": "快讯",
+    "description": "侧边栏快讯区块的标题。"
+  },
+  "newswireEmptyState": {
+    "message": "尚未启用任何快讯来源，前往设置启用后即可接收实时快讯。",
+    "description": "未启用任何快讯来源时的空状态文字。"
+  },
+  "newswireEmptyStateCta": {
+    "message": "前往设置",
+    "description": "快讯空状态的行动按钮。"
+  },
+  "newswirePauseBtn": {
+    "message": "暂停",
+    "description": "暂停实时快讯插入的标题栏按钮。"
+  },
+  "newswireResumeBtn": {
+    "message": "继续",
+    "description": "恢复实时快讯插入的标题栏按钮。"
+  },
+  "newswireMarkReadBtn": {
+    "message": "全部标为已读",
+    "description": "清除未读计数的标题栏按钮。"
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "未读快讯——点击标为已读",
+    "description": "快讯标题旁未读徽章的提示文字。"
+  },
   "sidePanelPositionSectionHeader": {
     "message": "侧边面板位置",
     "description": "设置中侧边面板位置部分的标题。"

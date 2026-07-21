@@ -143,6 +143,42 @@
     "message": "현재 단축키:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "사이드바 섹션 순서",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "드래그하여 사이드 패널에 표시되는 섹션의 순서를 변경하세요.",
+    "description": "Helper text under the sidebar section order header."
+  },
+  "newswireSectionHeader": {
+    "message": "뉴스 피드",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "아직 활성화된 뉴스 소스가 없습니다. 설정에서 활성화하면 실시간 피드가 시작됩니다.",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "설정 열기",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "일시정지",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "재개",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "모두 읽음으로 표시",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "읽지 않은 뉴스 — 클릭하면 읽음으로 표시됩니다",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "사이드 패널 위치",
     "description": "Header for the side panel position section in settings."

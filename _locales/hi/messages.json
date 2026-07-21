@@ -143,6 +143,42 @@
     "message": "वर्तमान शॉर्टकट:",
     "description": "Label for displaying the current shortcut."
   },
+  "appearanceSectionOrderHeader": {
+    "message": "साइडबार अनुभागों का क्रम",
+    "description": "Header for the sidebar section order setting in Appearance."
+  },
+  "appearanceSectionOrderDesc": {
+    "message": "साइड पैनल में दिखाए गए अनुभागों का क्रम बदलने के लिए खींचें।",
+    "description": "Helper text under the sidebar section order header."
+  },
+  "newswireSectionHeader": {
+    "message": "समाचार फ़ीड",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "अभी कोई समाचार स्रोत सक्षम नहीं है। लाइव फ़ीड शुरू करने के लिए सेटिंग्स में सक्षम करें।",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "सेटिंग्स खोलें",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "रोकें",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "जारी रखें",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "सभी को पढ़ा हुआ चिह्नित करें",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "अपठित समाचार — पढ़ा हुआ चिह्नित करने के लिए क्लिक करें",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "साइड पैनल स्थिति",
     "description": "Header for the side panel position section in settings."

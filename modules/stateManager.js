@@ -153,6 +153,38 @@ export async function setReadingListVisible(visible) {
   await setStorage('sync', { [READING_LIST_VISIBLE_KEY]: visible });
 }
 
+// --- Newswire Visibility State (BASE-016 N1) ---
+
+const NEWSWIRE_VISIBLE_KEY = 'newswireVisible';
+let newswireVisible = true; // Default to visible
+
+/**
+ * Loads the Newswire section visibility state from chrome.storage.sync.
+ * @returns {Promise<boolean>} The visibility state.
+ */
+export async function initNewswireVisibility() {
+  const result = await getStorage('sync', [NEWSWIRE_VISIBLE_KEY]);
+  newswireVisible = result[NEWSWIRE_VISIBLE_KEY] !== false; // Default true if not set
+  return newswireVisible;
+}
+
+/**
+ * Gets the current Newswire visibility state from in-memory cache.
+ * @returns {boolean} True if the Newswire section should be visible.
+ */
+export function isNewswireVisible() {
+  return newswireVisible;
+}
+
+/**
+ * Sets the Newswire visibility state.
+ * @param {boolean} visible - Whether the Newswire section should be visible.
+ */
+export async function setNewswireVisible(visible) {
+  newswireVisible = visible;
+  await setStorage('sync', { [NEWSWIRE_VISIBLE_KEY]: visible });
+}
+
 // --- AI Grouping Visibility State ---
 
 const AI_GROUPING_VISIBLE_KEY = 'aiGroupingVisible';

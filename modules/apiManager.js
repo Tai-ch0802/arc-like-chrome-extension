@@ -214,6 +214,11 @@ export const removeStorage = (area, keys) => {
 };
 
 // Wrappers for chrome.readingList API
+// --- Runtime Messaging & Pages API ---
+export const sendRuntimeMessage = (message) => chrome.runtime.sendMessage(message);
+export const addRuntimeMessageListener = (listener) => chrome.runtime.onMessage.addListener(listener);
+export const openOptionsPage = () => chrome.runtime.openOptionsPage();
+
 export const queryReadingList = (info = {}) => chrome.readingList.query(info);
 export const addReadingListEntry = (options) => chrome.readingList.addEntry(options);
 export const removeReadingListEntry = (options) => chrome.readingList.removeEntry(options);
