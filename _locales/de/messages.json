@@ -151,6 +151,34 @@
     "message": "Ziehen Sie die Bereiche, um ihre Reihenfolge im Seitenpanel zu ändern.",
     "description": "Helper text under the sidebar section order header."
   },
+  "newswireSectionHeader": {
+    "message": "News-Feed",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "Noch keine Nachrichtenquellen aktiviert. Aktivieren Sie eine in den Einstellungen, um den Live-Feed zu starten.",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "Einstellungen öffnen",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "Pause",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "Fortsetzen",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "Alle als gelesen markieren",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "Ungelesene Nachrichten — zum Markieren klicken",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Seitenpanel-Position",
     "description": "Header for the side panel position section in settings."

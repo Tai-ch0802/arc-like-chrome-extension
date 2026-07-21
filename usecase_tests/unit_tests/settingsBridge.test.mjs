@@ -68,6 +68,11 @@ describe('resolveSettingChangeActions', () => {
     expect(actions).toContainEqual({ type: 'dispatch', event: 'pageReaderVisibilityChanged', detail: { visible: false } });
     expect(actions).toContainEqual({ type: 'refreshState', key: 'pageReaderVisible' });
   });
+  it('sync newswireVisible → dispatch event AND refreshState actions (BASE-016 N1)', () => {
+    const actions = resolveSettingChangeActions({ newswireVisible: { newValue: false } }, 'sync');
+    expect(actions).toContainEqual({ type: 'dispatch', event: 'newswireVisibilityChanged', detail: { visible: false } });
+    expect(actions).toContainEqual({ type: 'refreshState', key: 'newswireVisible' });
+  });
   it('sync sectionOrder → dispatch sectionOrderChanged action (BASE-015)', () => {
     const order = ['bookmarks', 'tabs', 'otherWindows', 'readingList'];
     expect(resolveSettingChangeActions({ sectionOrder: { newValue: order } }, 'sync'))

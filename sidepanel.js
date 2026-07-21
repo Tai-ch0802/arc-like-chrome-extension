@@ -224,7 +224,8 @@ async function initialize() {
         state.initHoverSummarize(), // Load Hover Summarize state
         state.initAiAutoNaming(), // Load AI Auto Naming state (drives bg listener gating via storage)
         state.initAiCleanupVisibility(), // Load AI Cleanup visibility state
-        state.initPageReaderVisibility() // Load Page Reader visibility state
+        state.initPageReaderVisibility(), // Load Page Reader visibility state
+        state.initNewswireVisibility() // Load Newswire visibility state (BASE-016)
     ]);
 
     // Ensure custom language dictionary is loaded BEFORE applying any translations
@@ -284,6 +285,8 @@ async function initialize() {
     rssManager.initRssManager()
         .then(() => initRssSyncOnboarding())
         .catch(console.error);
+    // 快訊區塊(BASE-016 N1):經 SW getState 回填+訂閱廣播;不進首屏關鍵路徑。
+    ui.initNewswireSection().catch(console.error);
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
     // Workspace switcher dropdown + manage dialog. (Cache already loaded above,

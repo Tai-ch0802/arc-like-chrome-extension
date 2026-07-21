@@ -151,6 +151,34 @@
     "message": "拖曳調整側邊欄各區塊的顯示順序。",
     "description": "區塊排序標題下方的說明文字。"
   },
+  "newswireSectionHeader": {
+    "message": "快訊",
+    "description": "側邊欄快訊區塊的標題。"
+  },
+  "newswireEmptyState": {
+    "message": "尚未啟用任何快訊來源，前往設定啟用後即可接收即時快訊。",
+    "description": "未啟用任何快訊來源時的空狀態文字。"
+  },
+  "newswireEmptyStateCta": {
+    "message": "前往設定",
+    "description": "快訊空狀態的行動按鈕。"
+  },
+  "newswirePauseBtn": {
+    "message": "暫停",
+    "description": "暫停即時快訊插入的標題列按鈕。"
+  },
+  "newswireResumeBtn": {
+    "message": "繼續",
+    "description": "恢復即時快訊插入的標題列按鈕。"
+  },
+  "newswireMarkReadBtn": {
+    "message": "全部標為已讀",
+    "description": "清除未讀計數的標題列按鈕。"
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "未讀快訊——點擊標為已讀",
+    "description": "快訊標題旁未讀徽章的提示文字。"
+  },
   "sidePanelPositionSectionHeader": {
     "message": "側邊面板位置",
     "description": "設定中側邊面板位置區塊的標題。"

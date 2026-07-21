@@ -151,6 +151,34 @@
     "message": "ドラッグしてサイドパネルに表示されるセクションの順序を変更します。",
     "description": "Helper text under the sidebar section order header."
   },
+  "newswireSectionHeader": {
+    "message": "ニュース速報",
+    "description": "Header of the newswire section in the side panel."
+  },
+  "newswireEmptyState": {
+    "message": "ニュースソースが未設定です。設定で有効にするとライブ配信が始まります。",
+    "description": "Empty state shown when no newswire source is enabled."
+  },
+  "newswireEmptyStateCta": {
+    "message": "設定を開く",
+    "description": "CTA button in the newswire empty state."
+  },
+  "newswirePauseBtn": {
+    "message": "一時停止",
+    "description": "Header button pausing live insertion of news items."
+  },
+  "newswireResumeBtn": {
+    "message": "再開",
+    "description": "Header button resuming live insertion of news items."
+  },
+  "newswireMarkReadBtn": {
+    "message": "すべて既読にする",
+    "description": "Header button clearing the unread news counter."
+  },
+  "newswireUnreadBadgeTitle": {
+    "message": "未読ニュース — クリックで既読にします",
+    "description": "Tooltip of the unread badge next to the newswire header."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "サイドパネルの位置",
     "description": "Header for the side panel position section in settings."

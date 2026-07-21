@@ -13,6 +13,13 @@ import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.j
 import { createSyncEngine } from './modules/sync/syncEngine.js';
 import { createGoogleDriveProvider } from './modules/sync/googleDriveProvider.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
+import {
+  initNewswire,
+  handleNewswireWatchdog,
+  handleNewswireMessage,
+  handleNewswireConfigChange,
+  ALARM_NEWSWIRE_WATCHDOG,
+} from './modules/newswire/feedManager.js';
 
 const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
 
@@ -314,6 +321,10 @@ function ensurePullAlarm() {
 // is idempotent — it just resets the schedule.
 ensurePullAlarm();
 
+// newswire(BASE-016 N1):SW 每次啟動重建連線層——adapter/timer 活在 SW
+// 記憶體,回收即消失;initNewswire 冪等,來源全關時為零網路行為的 no-op。
+initNewswire();
+
 /** Read one workspace's persisted base rev (same storage the engine deps use). */
 async function readBaseRev(id) {
     const res = await getStorage('local', [DRIVE_BASE_REV_KEY]);
@@ -588,6 +599,11 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     rssSyncOnce();
     return;
   }
+  if (alarm.name === ALARM_NEWSWIRE_WATCHDOG) {
+    // newswire 看門狗:SW 存活時檢查各連線、被回收後由此喚醒重建(BASE-016)。
+    handleNewswireWatchdog();
+    return;
+  }
   // Anything else → RSS fetch alarms (rss_fetch_<id>).
   handleRssAlarm(alarm);
 });
@@ -614,6 +630,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     console.warn('[sync] onChanged handling failed:', err && err.message ? err.message : err);
   });
   handleRssStorageChange(changes, areaName);
+  handleNewswireConfigChange(changes, areaName);
 });
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background
@@ -718,6 +735,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ ok: true });
     })().catch((err) => sendResponse({ ok: false, error: err && err.message }));
     return true;
+  } else if (typeof message.action === 'string' && message.action.startsWith('newswire:')) {
+    // newswire 協定(BASE-016):getState/markSeen 由 feedManager 分派。
+    return handleNewswireMessage(message, sendResponse);
   }
   // 不處理的 action：不攔截，讓 offscreen document 等其他 context 可以回應
 });

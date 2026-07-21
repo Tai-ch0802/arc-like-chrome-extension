@@ -3765,3 +3765,95 @@ mark.url-match {
 #content-container > .panel-section:last-child > .divider:last-child {
     display: none;
 }
+
+/* --- Newswire section (BASE-016 N1) --- */
+/* header 操作鈕:base .header-action-btn 是 danger 紅,快訊的暫停/已讀屬
+   非破壞性操作 → info 藍(比照 #ai-group-btn 的 ID 覆寫,這裡 class 化)。 */
+.newswire-header-btn {
+    border-color: var(--info-color);
+    color: var(--info-color);
+}
+
+.newswire-header-btn:hover {
+    background: var(--info-color);
+    color: var(--text-color-inverted);
+}
+
+.newswire-unread-badge {
+    margin-left: 6px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    line-height: 1.4;
+    background: var(--accent-color);
+    color: var(--text-color-inverted);
+    cursor: pointer;
+    animation: pulse-badge 2s infinite;
+}
+
+#newswire-list.collapsed {
+    display: none;
+}
+
+.newswire-empty.force-hidden {
+    display: none;
+}
+
+.newswire-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: var(--list-row-py) 6px;
+    border-left: 2px solid transparent;
+    font-size: 12px;
+    color: var(--text-color-primary);
+}
+
+.newswire-item--link {
+    cursor: pointer;
+}
+
+.newswire-item--link:hover {
+    background: var(--element-bg-color-hover);
+}
+
+.newswire-item--p0 {
+    border-left-color: var(--danger-color);
+}
+
+.newswire-item--p1 {
+    border-left-color: var(--info-color);
+}
+
+.newswire-item__time {
+    flex-shrink: 0;
+    color: var(--text-color-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.newswire-item__source {
+    flex-shrink: 0;
+    text-transform: uppercase;
+    font-size: 9px;
+    padding: 0 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--arc-radius-sm);
+    color: var(--text-color-secondary);
+}
+
+.newswire-item__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.newswire-empty {
+    padding: 8px 6px;
+    font-size: 12px;
+    color: var(--text-color-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}

@@ -184,6 +184,7 @@ async function renderAppearance(container) {
         otherWindows: 'otherWindowsHeader',
         readingList: 'readingListHeader',
         bookmarks: 'bookmarksHeader',
+        newswire: 'newswireSectionHeader',
     };
     const { [SECTION_ORDER_KEY]: storedOrder } = await api.getStorage('sync', { [SECTION_ORDER_KEY]: [] });
     for (const id of mergeSectionOrder(storedOrder, DEFAULT_SECTION_ORDER)) {

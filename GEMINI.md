@@ -55,6 +55,20 @@ key_files:
     description: "[工具] 側邊欄區塊排序純函式（BASE-015）。DEFAULT_SECTION_ORDER 常數與 mergeSectionOrder(stored, actual)：以 storage 偏好為序、過濾本機不存在的 id（容忍他裝置/未來區塊）、缺漏者依 canonical 序附尾；讀取端不回寫。零 chrome/DOM 依賴可跑 unit test。"
   - file_path: modules/ui/sectionOrderUI.js
     description: "[UI] 側邊欄區塊排序套用（BASE-015）。applySectionOrder 讀 storage.sync.sectionOrder，以 DEFAULT_SECTION_ORDER 為 canonical 基準 merge 後，依 data-section-id 對 #content-container 的 .panel-section wrapper 做 appendChild 重排（保留節點身分與監聽器）；initSectionOrder 另訂閱 settingsBridge 派發的 sectionOrderChanged 即時重排。排序 UI 本身在 options.js renderAppearance（Sortable 拖曳清單，只寫 storage）。"
+  - file_path: modules/newswire/normalizer.js
+    description: "[快訊] 純函式 normalizer（BASE-016 N1）。各源 raw payload → 統一 NewsEvent：parseTree（Tree of Alpha，含 history replay 批次）＋共用 sanitizeEvent（strip HTML regex、NFKC、title 500 上限、URL 走 new URL() 驗證僅 http/https、symbols 大寫裁 20、缺 id 以 djb2 雜湊補）。零 chrome/DOM 依賴可跑 unit test；N2 補 parseFj/parseAlpaca/parseJin10。"
+  - file_path: modules/newswire/dedupe.js
+    description: "[快訊] L1 去重純函式（BASE-016）。createDedupeSet：in-memory Map 依插入序 FIFO 淘汰（cap 1000），種子來自 ring buffer 既有事件 id，使 SW 重啟與 Tree history replay 不重複入列。"
+  - file_path: modules/newswire/rules.js
+    description: "[快訊] 規則引擎純函式（BASE-016）。classify(event, rules)：mute 命中→丟棄；srcImportant（金十 important===1 類來源旗標）或 P0 詞→0；P1 詞→1；其餘 2。比對 NFKC+lowercase；DEFAULT_RULES 沿上游規格書 §6（簡繁並列）。"
+  - file_path: modules/newswire/eventBuffer.js
+    description: "[快訊] 事件 ring buffer（BASE-016）。新→舊 cap 300，storage.local newswireEvents 以 2s debounce 批次寫入；createEventBuffer 全 DI（仿 syncEngine），unit test 注入 fake storage/timer。"
+  - file_path: modules/newswire/adapters.js
+    description: "[快訊] 來源 adapter 工廠（BASE-016 N1：Tree of Alpha；N2 補 FJ/Alpaca/金十）。SW 專用；每源獨立重連狀態機（computeBackoffMs 指數退避＋抖動上限 60s、連續 10 次失敗→degraded 仍續試）；Tree 免 key 可連、有 key 送純文字 `login <key>` 去延遲；協定紀律：不送各源未定義訊息。"
+  - file_path: modules/newswire/feedManager.js
+    description: "[快訊] SW 編排核心（BASE-016）。單例持有各源連線；管線 raw→normalizer→dedupe→rules→eventBuffer→runtime 廣播（newswire:events/status）；newswire:getState/markSeen 訊息分派；config/keys（storage.local）變更→重建連線；keepalive 20s interval＋newswireWatchdog alarm（30s）喚醒重建；首次啟動 seed defaultNewswireConfig（來源全關＝零網路行為）。P0 系統通知 N4 接上。"
+  - file_path: modules/ui/newswireRenderer.js
+    description: "[UI] sidepanel 快訊區塊 renderer（BASE-016 N1）。初始經 newswire:getState 回填、即時事件收 SW 廣播 prepend（上限 300 列）；P0/P1 以 --danger/--info 左緣高亮；標題一律 textContent（不可信內容），點擊開原文前再驗 URL scheme；未讀徽章（頂部 sentinel IntersectionObserver 進視野即讀）、暫停/繼續（pending 佇列補齊）、收合（newswireCollapsed sync）、newswireVisible 顯隱走 settingsBridge。"
   - file_path: modules/ui/searchUI.js
     description: "[UI] 搜尋介面。負責搜尋結果計數顯示與無結果提示的 UI 更新。"
   - file_path: modules/ui/tabRenderer.js

@@ -1,7 +1,7 @@
 const { setupBrowser, teardownBrowser } = require('./setup');
 
 /**
- * BASE-015: sidebar section order.
+ * BASE-015: sidebar section order (+ BASE-016 N1 加入第五區塊 newswire)。
  *
  * 排序偏好存 chrome.storage.sync.sectionOrder;options 外觀頁的拖曳清單只寫
  * storage,sidepanel 經 settingsBridge 的 sectionOrderChanged 事件以 appendChild
@@ -11,6 +11,8 @@ const { setupBrowser, teardownBrowser } = require('./setup');
  * 不用 puppeteer 模擬 HTML5 拖曳(既知 flaky 來源);拖曳互動由
  * mergeSectionOrder 的 unit tests 與手動驗證涵蓋。
  */
+
+const DEFAULT_ORDER = ['tabs', 'otherWindows', 'readingList', 'bookmarks', 'newswire'];
 
 const readOrder = (page) => page.$$eval(
     '#content-container > [data-section-id]',
@@ -42,46 +44,55 @@ describe('Sidebar Section Order (BASE-015)', () => {
 
     test('default order (no stored preference) matches the built-in layout', async () => {
         const ids = await readOrder(page);
-        expect(ids).toEqual(['tabs', 'otherWindows', 'readingList', 'bookmarks']);
+        expect(ids).toEqual(DEFAULT_ORDER);
     }, 120000);
 
     test('writing sectionOrder reorders the live sidepanel via the storage bridge', async () => {
         await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['bookmarks', 'readingList', 'tabs', 'otherWindows'],
+            sectionOrder: ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'newswire'],
         }));
-        await waitForOrder(page, ['bookmarks', 'readingList', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'newswire']);
 
         // Section ids the panel doesn't have (another device / future feature)
         // are tolerated — ignored for layout, and NOT rewritten back to storage.
         await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows'],
+            sectionOrder: ['ghostSection', 'newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows'],
         }));
-        await waitForOrder(page, ['readingList', 'bookmarks', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows']);
 
         const stored = await page.evaluate(() =>
             chrome.storage.sync.get('sectionOrder').then(v => v.sectionOrder));
-        expect(stored).toEqual(['newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows']);
+        expect(stored).toEqual(['ghostSection', 'newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows']);
 
         await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
-        await waitForOrder(page, ['tabs', 'otherWindows', 'readingList', 'bookmarks']);
+        await waitForOrder(page, DEFAULT_ORDER);
+    }, 120000);
+
+    test('a pre-newswire preference (4 ids) appends the new section at the end', async () => {
+        await page.evaluate(() => chrome.storage.sync.set({
+            sectionOrder: ['bookmarks', 'tabs', 'otherWindows', 'readingList'],
+        }));
+        await waitForOrder(page, ['bookmarks', 'tabs', 'otherWindows', 'readingList', 'newswire']);
+        await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
+        await waitForOrder(page, DEFAULT_ORDER);
     }, 120000);
 
     test('stored order is applied on sidepanel load (persists across reload)', async () => {
         await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['readingList', 'bookmarks', 'tabs', 'otherWindows'],
+            sectionOrder: ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows'],
         }));
-        await waitForOrder(page, ['readingList', 'bookmarks', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows']);
 
         await page.reload();
         await page.waitForSelector('#tab-list', { timeout: 10000 });
-        await waitForOrder(page, ['readingList', 'bookmarks', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows']);
 
         // Restore defaults for any test that follows in this profile.
         await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
-        await waitForOrder(page, ['tabs', 'otherWindows', 'readingList', 'bookmarks']);
+        await waitForOrder(page, DEFAULT_ORDER);
     }, 120000);
 
-    test('options Appearance exposes a 4-row draggable order list', async () => {
+    test('options Appearance exposes a 5-row draggable order list', async () => {
         const optionsPage = await browser.newPage();
         await optionsPage.goto(`chrome-extension://${extensionId}/options.html`, { waitUntil: 'domcontentloaded' });
         await optionsPage.waitForSelector('#section-order-list', { timeout: 15000 });
@@ -90,7 +101,7 @@ describe('Sidebar Section Order (BASE-015)', () => {
             '#section-order-list > [data-section-id]',
             els => els.map(el => el.dataset.sectionId)
         );
-        expect(rows).toEqual(['tabs', 'otherWindows', 'readingList', 'bookmarks']);
+        expect(rows).toEqual(DEFAULT_ORDER);
 
         // Sortable 已載入且清單列有可讀 label(重用既有 *Header i18n key)。
         const sortableLoaded = await optionsPage.evaluate(() => Boolean(window.Sortable));

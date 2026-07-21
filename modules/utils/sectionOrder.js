@@ -3,7 +3,7 @@
 
 export const SECTION_ORDER_KEY = 'sectionOrder';
 
-export const DEFAULT_SECTION_ORDER = ['tabs', 'otherWindows', 'readingList', 'bookmarks'];
+export const DEFAULT_SECTION_ORDER = ['tabs', 'otherWindows', 'readingList', 'bookmarks', 'newswire'];
 
 /**
  * Merge the stored order preference with the sections actually present.

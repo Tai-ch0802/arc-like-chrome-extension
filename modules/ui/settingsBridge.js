@@ -31,6 +31,7 @@ export function resolveSettingChangeActions(changes, areaName) {
             aiGroupingVisible: 'aiGroupingVisibilityChanged',
             aiCleanupVisible: 'aiCleanupVisibilityChanged',
             pageReaderVisible: 'pageReaderVisibilityChanged',
+            newswireVisible: 'newswireVisibilityChanged',
         };
         for (const [key, event] of Object.entries(evMap)) {
             if (changes[key]) actions.push({ type: 'dispatch', event, detail: { visible: changes[key].newValue } });
@@ -43,6 +44,7 @@ export function resolveSettingChangeActions(changes, areaName) {
             'aiAutoNamingEnabled',
             'hoverSummarizeEnabled',
             'readingListSummaryEnabled',
+            'newswireVisible',
         ];
         for (const key of refreshKeys) {
             if (changes[key]) actions.push({ type: 'refreshState', key });
@@ -85,6 +87,7 @@ export async function applySettingChanges(actions) {
                     aiAutoNamingEnabled: state.initAiAutoNaming,
                     hoverSummarizeEnabled: state.initHoverSummarize,
                     readingListSummaryEnabled: state.initReadingListSummary,
+                    newswireVisible: state.initNewswireVisibility,
                 };
                 const fn = initByKey[a.key];
                 if (fn) await fn();

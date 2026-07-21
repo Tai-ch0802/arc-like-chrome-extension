@@ -131,6 +131,35 @@
             <!-- BASE-015:補結尾 divider 讓重排後區塊間分隔一致;最後一個區塊的 divider 由 CSS 隱藏 -->
             <hr class="divider">
         </section>
+
+        <!-- Newswire Section (BASE-016 N1):內容由 modules/ui/newswireRenderer.js
+             經 SW 的 newswire:getState 回填,即時事件走 runtime message 廣播。 -->
+        <section id="newswire-section" class="panel-section" data-section-id="newswire">
+            <div class="section-header-row">
+                <button id="newswire-toggle" class="section-toggle-btn" aria-expanded="true"
+                    aria-controls="newswire-list">
+                    <h2 class="section-header" data-i18n="newswireSectionHeader"></h2>
+                    <span id="newswire-unread-badge" class="newswire-unread-badge hidden"
+                        data-i18n-title="newswireUnreadBadgeTitle" aria-live="polite"></span>
+                    <span class="toggle-chevron"></span>
+                </button>
+                <div class="header-controls-right">
+                    <button id="newswire-pause-btn" class="header-action-btn newswire-header-btn hidden"
+                        data-i18n="newswirePauseBtn" data-i18n-title="newswirePauseBtn"></button>
+                    <button id="newswire-mark-read-btn" class="header-action-btn newswire-header-btn hidden"
+                        data-i18n="newswireMarkReadBtn" data-i18n-title="newswireMarkReadBtn"></button>
+                </div>
+            </div>
+            <div id="newswire-top-sentinel" aria-hidden="true"></div>
+            <div id="newswire-list"></div>
+            <div id="newswire-empty" class="newswire-empty hidden">
+                <div class="newswire-empty-text" data-i18n="newswireEmptyState"></div>
+                <button id="newswire-empty-cta" class="empty-state-action-btn">
+                    <span data-i18n="newswireEmptyStateCta"></span>
+                </button>
+            </div>
+            <hr class="divider">
+        </section>
     </div>
 
     <!-- Toast Notification for Undo -->
