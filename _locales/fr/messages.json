@@ -299,6 +299,30 @@
     "message": "Mots-clés muets",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "Synchronisation",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "Synchroniser les clés API avec Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "Désactivé par défaut. Les clés API restent sur cet appareil jusqu'à ce que vous l'activiez ; une fois activé, elles ne se synchronisent qu'avec votre propre appdata Drive.",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Connectez Google Drive pour synchroniser vos sources et règles de mots-clés entre appareils.",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "Configurer dans Sauvegarde et synchronisation",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "Connectez-vous à Google dans les Paramètres pour synchroniser vos sources et règles entre appareils.",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Position du panneau latéral",
     "description": "Header for the side panel position section in settings."

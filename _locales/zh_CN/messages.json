@@ -299,6 +299,30 @@
     "message": "静音关键词",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "跨设备同步",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "同步 API keys 到 Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "默认关闭。API key 只会留在本机；开启后才会同步，且仅存到你自己的 Drive appdata。",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "绑定 Google Drive，让快讯来源设置与关键词规则跨设备漫游。",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "前往“备份与同步”设置",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "在设置中登录 Google，即可让快讯来源与规则跨设备同步。",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "侧边面板位置",
     "description": "设置中侧边面板位置部分的标题。"

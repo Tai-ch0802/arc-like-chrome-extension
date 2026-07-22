@@ -299,6 +299,30 @@
     "message": "Từ khóa bị tắt",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "Đồng bộ",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "Đồng bộ khóa API với Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "Mặc định tắt. Khóa API chỉ nằm trên thiết bị này cho đến khi bạn bật; khi bật, chúng chỉ đồng bộ với appdata Drive của riêng bạn.",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Kết nối Google Drive để đồng bộ nguồn tin và quy tắc từ khóa giữa các thiết bị.",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "Thiết lập trong Sao lưu & Đồng bộ",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "Đăng nhập Google trong Cài đặt để đồng bộ nguồn tin và quy tắc giữa các thiết bị.",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Vị trí bảng điều khiển bên",
     "description": "Header for the side panel position section in settings."

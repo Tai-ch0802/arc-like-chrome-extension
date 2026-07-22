@@ -1594,6 +1594,27 @@ function renderNewswire(container) {
         const cfg = res[NEWSWIRE_CONFIG_KEY] || defaultNewswireConfig();
         const keys = res[NEWSWIRE_KEYS_KEY] || {};
 
+        // Drive 綁定引導卡(BASE-016 N3):未綁定時提示前往「備份與同步」完成綁定,
+        // 讓來源設定與規則跨裝置漫遊(FR-19)。連結流程與隱私揭露統一在 Sync 區塊,
+        // 這裡只跳過去(不重複 driveConnect 的揭露 modal)。
+        if (!(await driveAuth.isConnected())) {
+            const guideCard = document.createElement('div');
+            guideCard.className = 'settings-group newswire-drive-guide';
+            const gt = document.createElement('p');
+            gt.className = 'opt-row__desc';
+            gt.textContent = api.getMessage('newswireDriveGuideText')
+                || 'Connect Google Drive to sync your news sources and rules across devices.';
+            const gb = document.createElement('button');
+            gb.className = 'modal-button primary';
+            gb.textContent = api.getMessage('newswireDriveGuideBtn') || 'Set up in Backup & Sync';
+            gb.addEventListener('click', () => {
+                const syncNav = document.querySelector('.opt-nav__item[data-section="sync"]');
+                if (syncNav) syncNav.click();
+            });
+            guideCard.append(gt, gb);
+            container.appendChild(guideCard);
+        }
+
         const srcHeader = document.createElement('h4');
         srcHeader.className = 'settings-subsection-header';
         srcHeader.textContent = api.getMessage('newswireSourcesHeader') || 'Sources';
@@ -1736,6 +1757,29 @@ function renderNewswire(container) {
             container.appendChild(makeRow(api.getMessage(labelKey) || groupKey.toUpperCase(), null));
             container.appendChild(ta);
         }
+
+        // --- 跨裝置同步(BASE-016 N3) ---
+        const syncHeader = document.createElement('h4');
+        syncHeader.className = 'settings-subsection-header';
+        syncHeader.textContent = api.getMessage('newswireSyncHeader') || 'Sync';
+        container.appendChild(syncHeader);
+
+        // key 同步 opt-in(預設關):關閉時 payload 不含 keys、下次同步 scrub 遠端(FR-20)。
+        // 本機工作副本一律留 local,不受此開關影響。
+        const keySyncToggle = document.createElement('input');
+        keySyncToggle.type = 'checkbox';
+        keySyncToggle.id = 'newswire-sync-keys';
+        keySyncToggle.checked = cfg.prefs?.syncKeys === true;
+        keySyncToggle.addEventListener('change', async () => {
+            await rmwNewswireConfig((c) => {
+                c.prefs = { ...(c.prefs || {}), syncKeys: keySyncToggle.checked, updatedAt: Date.now() };
+            });
+        });
+        container.appendChild(makeRow(
+            api.getMessage('newswireKeySyncToggleLabel') || 'Sync API keys to Google Drive',
+            keySyncToggle,
+            api.getMessage('newswireKeySyncToggleDesc') || '',
+        ));
 
         // 初始狀態+訂閱 SW 廣播。
         try {

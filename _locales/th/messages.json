@@ -299,6 +299,30 @@
     "message": "คำสำคัญที่ปิดเสียง",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "การซิงค์",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "ซิงค์คีย์ API ไปยัง Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "ปิดโดยค่าเริ่มต้น คีย์ API จะอยู่บนอุปกรณ์นี้จนกว่าคุณจะเปิดใช้งาน เมื่อเปิดจะซิงค์ไปยัง appdata ของ Drive ของคุณเองเท่านั้น",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "เชื่อมต่อ Google Drive เพื่อซิงค์แหล่งข่าวและกฎคำสำคัญข้ามอุปกรณ์",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "ตั้งค่าในการสำรองและซิงค์",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "ลงชื่อเข้าใช้ Google ในการตั้งค่าเพื่อซิงค์แหล่งข่าวและกฎข้ามอุปกรณ์",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "ตำแหน่งแผงด้านข้าง",
     "description": "Header for the side panel position section in settings."

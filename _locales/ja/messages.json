@@ -299,6 +299,30 @@
     "message": "ミュートキーワード",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "同期",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "APIキーを Google Drive に同期",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "既定はオフ。APIキーはオンにするまでこの端末にのみ保存され、オンにすると自分の Drive appdata にのみ同期されます。",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Google Drive を接続すると、ニュースソースとキーワードルールを端末間で同期できます。",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "バックアップと同期で設定",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "設定で Google にサインインすると、ニュースソースとルールを端末間で同期できます。",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "サイドパネルの位置",
     "description": "Header for the side panel position section in settings."

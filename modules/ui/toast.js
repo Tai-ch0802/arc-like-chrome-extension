@@ -104,3 +104,32 @@ export async function initRssSyncOnboarding() {
         console.warn('RSS: sync onboarding hint failed', e);
     }
 }
+
+// === Newswire cross-device sync onboarding (BASE-016 N3) ===
+
+/** Shown at most once, ever. */
+const NEWSWIRE_SYNC_ONBOARDING_KEY = 'newswireSyncOnboardingShown';
+
+/**
+ * One-time nudge (mirrors initRssSyncOnboarding): if the user has enabled any
+ * newswire source but has not connected Google Drive, suggest signing in so
+ * their source settings and keyword rules roam across devices. Shown once per
+ * install and never again. Call AFTER initNewswireSection.
+ */
+export async function initNewswireSyncOnboarding() {
+    try {
+        const flags = await api.getStorage('local', [NEWSWIRE_SYNC_ONBOARDING_KEY, 'newswireConfig']);
+        if (flags[NEWSWIRE_SYNC_ONBOARDING_KEY]) return;
+        const cfg = flags.newswireConfig;
+        const anyEnabled = cfg && cfg.sources
+            && Object.values(cfg.sources).some((s) => s && s.enabled);
+        if (!anyEnabled) return;                      // only nudge real newswire users
+        if (await driveAuth.isConnected()) return;    // already signed in
+        // Set BEFORE showing so a race between two panels shows it at most once.
+        await api.setStorage('local', { [NEWSWIRE_SYNC_ONBOARDING_KEY]: true });
+        showToast(api.getMessage('newswireSyncSignInHint')
+            || 'Sign in to Google in Settings to sync your news sources and rules across devices.');
+    } catch (e) {
+        console.warn('newswire: sync onboarding hint failed', e);
+    }
+}

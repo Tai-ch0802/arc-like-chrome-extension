@@ -299,6 +299,30 @@
     "message": "म्यूट कीवर्ड",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "सिंक",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "API कुंजियाँ Google Drive से सिंक करें",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "डिफ़ॉल्ट रूप से बंद। जब तक आप इसे चालू नहीं करते, API कुंजियाँ इसी डिवाइस पर रहती हैं; चालू करने पर वे केवल आपके अपने Drive appdata से सिंक होती हैं।",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "समाचार स्रोतों और कीवर्ड नियमों को डिवाइसों के बीच सिंक करने के लिए Google Drive कनेक्ट करें।",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "बैकअप और सिंक में सेट करें",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "स्रोतों और नियमों को डिवाइसों के बीच सिंक करने के लिए सेटिंग्स में Google से साइन इन करें।",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "साइड पैनल स्थिति",
     "description": "Header for the side panel position section in settings."

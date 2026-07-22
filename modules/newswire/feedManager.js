@@ -18,11 +18,45 @@ import {
     createJin10Adapter,
     missingCreds,
 } from './adapters.js';
+import { canonicalizeNewswire } from './newswireSyncLogic.js';
 
 export const NEWSWIRE_CONFIG_KEY = 'newswireConfig';
 export const NEWSWIRE_KEYS_KEY = 'newswireKeys';
 export const NEWSWIRE_LAST_SEEN_KEY = 'newswireLastSeenTs';
 export const ALARM_NEWSWIRE_WATCHDOG = 'newswireWatchdog';
+
+/**
+ * Drive-agnostic bridge OUT (BASE-016 N3): the local working copy for the Drive
+ * sync chain in background.js. Config missing → seed defaults; keys missing → {}.
+ * @returns {Promise<{config:object, keys:object}>}
+ */
+export async function exportLocalNewswireState() {
+    const res = await getStorage('local', { [NEWSWIRE_CONFIG_KEY]: null, [NEWSWIRE_KEYS_KEY]: {} });
+    return {
+        config: res[NEWSWIRE_CONFIG_KEY] || defaultNewswireConfig(),
+        keys: res[NEWSWIRE_KEYS_KEY] || {},
+    };
+}
+
+/**
+ * Drive-agnostic bridge IN (BASE-016 N3): persist a merged result. Writes each of
+ * config / keys ONLY when it actually differs (canonical compare) so an unchanged
+ * sync fires no onChanged and the convergence loop settles. The config write
+ * (when it happens) triggers handleNewswireConfigChange → adapters rebuild, which
+ * is exactly right: a pulled-in setting change should re-evaluate connections.
+ * @param {{config:object, localKeys:object}} merged
+ */
+export async function importMergedNewswireState(merged) {
+    const res = await getStorage('local', { [NEWSWIRE_CONFIG_KEY]: null, [NEWSWIRE_KEYS_KEY]: {} });
+    const patch = {};
+    if (canonicalizeNewswire(res[NEWSWIRE_CONFIG_KEY]) !== canonicalizeNewswire(merged.config)) {
+        patch[NEWSWIRE_CONFIG_KEY] = merged.config;
+    }
+    if (canonicalizeNewswire(res[NEWSWIRE_KEYS_KEY] || {}) !== canonicalizeNewswire(merged.localKeys || {})) {
+        patch[NEWSWIRE_KEYS_KEY] = merged.localKeys || {};
+    }
+    if (Object.keys(patch).length) await setStorage('local', patch);
+}
 
 const KEEPALIVE_INTERVAL_MS = 20000; // Chrome 官方 WebSocket-in-SW 建議節奏
 const WATCHDOG_PERIOD_MIN = 0.5;     // alarms 最短週期

@@ -86,4 +86,32 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
         await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
             .then(v => JSON.stringify(v.newswireConfig?.rules?.p1) === JSON.stringify(['CoWoS', '台積電', 'HBM4'])), { timeout: 5000 });
     }, 120000);
+
+    test('key-sync opt-in toggle persists prefs.syncKeys with a timestamp (BASE-016 N3)', async () => {
+        const before = await page.evaluate(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.syncKeys === true));
+        expect(before).toBe(false); // default off (FR-20)
+
+        await page.click('#newswire-sync-keys');
+        await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.syncKeys === true
+                && typeof v.newswireConfig?.prefs?.updatedAt === 'number'), { timeout: 5000 });
+
+        await page.click('#newswire-sync-keys'); // back off
+        await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.syncKeys === false), { timeout: 5000 });
+    }, 120000);
+
+    test('Drive guide card is shown while Drive is not connected, and jumps to Sync', async () => {
+        // placeholder client_id in tests → driveAuth.isConnected() is false → card shown.
+        const card = await page.$('.newswire-drive-guide');
+        expect(card).toBeTruthy();
+        await page.click('.newswire-drive-guide button');
+        await page.waitForFunction(() => {
+            const active = document.querySelector('.opt-nav__item.active');
+            return active && active.dataset.section === 'sync';
+        }, { timeout: 5000 });
+        // 回到快訊分頁,不影響後續測試(本 describe 已無後續,仍還原以防未來新增)。
+        await page.click('.opt-nav__item[data-section="newswire"]');
+    }, 120000);
 });

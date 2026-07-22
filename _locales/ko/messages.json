@@ -299,6 +299,30 @@
     "message": "음소거 키워드",
     "description": "Label of the muted keywords textarea."
   },
+  "newswireSyncHeader": {
+    "message": "동기화",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "API 키를 Google Drive에 동기화",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "기본값은 꺼짐. 켜기 전까지 API 키는 이 기기에만 저장되며, 켜면 본인의 Drive appdata에만 동기화됩니다.",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Google Drive를 연결하면 뉴스 소스와 키워드 규칙이 기기 간에 동기화됩니다.",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "백업 및 동기화에서 설정",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "설정에서 Google에 로그인하면 뉴스 소스와 규칙이 기기 간에 동기화됩니다.",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "사이드 패널 위치",
     "description": "Header for the side panel position section in settings."
