@@ -323,6 +323,18 @@
     "message": "Đăng nhập Google trong Cài đặt để đồng bộ nguồn tin và quy tắc giữa các thiết bị.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Thông báo",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Thông báo hệ thống cho sự kiện ưu tiên cao nhất (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Hiển thị thông báo Chrome khi có sự kiện P0 (ví dụ CPI, FOMC, quyết định lãi suất), ngay cả khi bảng điều khiển bên đã đóng. Nhấp để mở nguồn.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Vị trí bảng điều khiển bên",
     "description": "Header for the side panel position section in settings."

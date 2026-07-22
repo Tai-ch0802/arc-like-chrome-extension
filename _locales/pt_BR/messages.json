@@ -323,6 +323,18 @@
     "message": "Faça login no Google nas Configurações para sincronizar suas fontes e regras entre dispositivos.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Notificações",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Notificações do sistema para eventos de prioridade máxima (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Mostra uma notificação do Chrome quando chega um evento P0 (por exemplo, CPI, FOMC, decisões de juros), mesmo com o painel lateral fechado. Clique para abrir a fonte.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posição do Painel Lateral",
     "description": "Header for the side panel position section in settings."

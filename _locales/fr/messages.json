@@ -323,6 +323,18 @@
     "message": "Connectez-vous à Google dans les Paramètres pour synchroniser vos sources et règles entre appareils.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Notifications",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Notifications système pour les événements prioritaires (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Affiche une notification Chrome à l'arrivée d'un événement P0 (IPC, FOMC, décisions de taux…), même lorsque le panneau latéral est fermé. Cliquez pour ouvrir la source.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Position du panneau latéral",
     "description": "Header for the side panel position section in settings."

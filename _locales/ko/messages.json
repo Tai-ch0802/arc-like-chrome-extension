@@ -323,6 +323,18 @@
     "message": "설정에서 Google에 로그인하면 뉴스 소스와 규칙이 기기 간에 동기화됩니다.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "알림",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "최우선(P0) 이벤트 시스템 알림",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "P0 이벤트(CPI, FOMC, 금리 결정 등)가 도착하면 사이드 패널이 닫혀 있어도 Chrome 알림을 표시합니다. 클릭하면 원문이 열립니다.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "사이드 패널 위치",
     "description": "Header for the side panel position section in settings."

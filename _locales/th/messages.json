@@ -323,6 +323,18 @@
     "message": "ลงชื่อเข้าใช้ Google ในการตั้งค่าเพื่อซิงค์แหล่งข่าวและกฎข้ามอุปกรณ์",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "การแจ้งเตือน",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "การแจ้งเตือนระบบสำหรับเหตุการณ์สำคัญสูงสุด (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "แสดงการแจ้งเตือนของ Chrome เมื่อมีเหตุการณ์ P0 (เช่น CPI, FOMC, การตัดสินใจอัตราดอกเบี้ย) แม้ปิดแผงด้านข้างอยู่ คลิกเพื่อเปิดแหล่งข่าว",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "ตำแหน่งแผงด้านข้าง",
     "description": "Header for the side panel position section in settings."

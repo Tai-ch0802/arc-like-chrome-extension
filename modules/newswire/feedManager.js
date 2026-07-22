@@ -19,6 +19,7 @@ import {
     missingCreds,
 } from './adapters.js';
 import { canonicalizeNewswire } from './newswireSyncLogic.js';
+import { buildP0Notification } from './notify.js';
 
 export const NEWSWIRE_CONFIG_KEY = 'newswireConfig';
 export const NEWSWIRE_KEYS_KEY = 'newswireKeys';
@@ -152,7 +153,26 @@ function handleRaw(source, raw) {
     if (!fresh.length) return;
     buffer.append(fresh);
     broadcast({ type: 'newswire:events', events: fresh });
-    // P0 → chrome.notifications 於 N4 與 manifest 權限同批接上。
+    // P0 → chrome.notifications(BASE-016 N4)。點擊開原文由
+    // handleNewswireNotificationClick 從 ring buffer 反查 url(耐 SW 回收)。
+    if (config?.prefs?.notificationsEnabled !== false) {
+        for (const ev of fresh) { if (ev.importance === 0) notifyP0(ev); }
+    }
+}
+
+/** 發送一則 P0 系統通知;notificationId 內嵌 event.id 供點擊反查原文。 */
+function notifyP0(event) {
+    if (typeof chrome === 'undefined' || !chrome.notifications) return;
+    const { title, message } = buildP0Notification(event, Date.now());
+    try {
+        chrome.notifications.create(`newswire:${event.id}`, {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/extension-icon-128.png'),
+            title,
+            message,
+            priority: 2,
+        });
+    } catch { /* 權限未授予或平台不支援:靜默略過 */ }
 }
 
 async function loadState() {
@@ -217,6 +237,28 @@ export async function initNewswire() {
         started = false;
         console.warn('[newswire] init failed:', err?.message || err);
     }
+}
+
+/**
+ * chrome.notifications.onClicked 分派(BASE-016 N4)。從 ring buffer 反查事件
+ * url(buffer 由 storage.local 於 SW 啟動重建 → 耐 SW 回收),開原文分頁並清除
+ * 通知。非 newswire: 前綴的通知不處理(留給其他 context)。
+ * @returns {boolean} true = 已認領此通知
+ */
+export function handleNewswireNotificationClick(notificationId) {
+    if (typeof notificationId !== 'string' || !notificationId.startsWith('newswire:')) return false;
+    const id = notificationId.slice('newswire:'.length);
+    (async () => {
+        if (!started) await initNewswire();
+        try { chrome.notifications.clear(notificationId); } catch { /* noop */ }
+        const ev = buffer.getEvents().find((e) => e.id === id);
+        if (!ev?.url) return;
+        try {
+            const u = new URL(ev.url); // 開分頁前再驗一次 scheme(不可信內容)
+            if (u.protocol === 'http:' || u.protocol === 'https:') chrome.tabs.create({ url: u.href });
+        } catch { /* invalid url */ }
+    })().catch((e) => console.warn('[newswire] notif click failed:', e?.message || e));
+    return true;
 }
 
 /** newswireWatchdog alarm:確保 SW 存活時連線在線、被回收後重建。 */

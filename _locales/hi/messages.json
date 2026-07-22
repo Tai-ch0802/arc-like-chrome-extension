@@ -323,6 +323,18 @@
     "message": "स्रोतों और नियमों को डिवाइसों के बीच सिंक करने के लिए सेटिंग्स में Google से साइन इन करें।",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "सूचनाएँ",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "सर्वोच्च प्राथमिकता (P0) की घटनाओं के लिए सिस्टम सूचनाएँ",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "जब कोई P0 घटना (जैसे CPI, FOMC, ब्याज दर निर्णय) आती है, तो साइड पैनल बंद होने पर भी Chrome सूचना दिखाएँ; स्रोत खोलने के लिए क्लिक करें।",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "साइड पैनल स्थिति",
     "description": "Header for the side panel position section in settings."

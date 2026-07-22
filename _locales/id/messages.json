@@ -323,6 +323,18 @@
     "message": "Masuk ke Google di Pengaturan untuk menyinkronkan sumber dan aturan antar perangkat.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Notifikasi",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Notifikasi sistem untuk peristiwa prioritas tertinggi (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Tampilkan notifikasi Chrome saat peristiwa P0 (mis. CPI, FOMC, keputusan suku bunga) tiba, bahkan ketika panel samping tertutup. Klik untuk membuka sumbernya.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posisi Panel Samping",
     "description": "Header for the side panel position section in settings."

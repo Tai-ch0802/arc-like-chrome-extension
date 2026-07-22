@@ -323,6 +323,18 @@
     "message": "Melde dich in den Einstellungen bei Google an, um Nachrichtenquellen und Regeln geräteübergreifend zu synchronisieren.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Benachrichtigungen",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Systembenachrichtigungen für Ereignisse höchster Priorität (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Zeigt eine Chrome-Benachrichtigung, wenn ein P0-Ereignis (z. B. CPI, FOMC, Zinsentscheidungen) eintrifft, auch bei geschlossenem Seitenpanel. Zum Öffnen der Quelle anklicken.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Seitenpanel-Position",
     "description": "Header for the side panel position section in settings."

@@ -326,6 +326,18 @@
     "message": "Sign in to Google in Settings to sync your news sources and rules across devices.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Notifications",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "System notifications for top-priority (P0) events",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Show a Chrome notification when a P0 event (e.g. CPI, FOMC, rate decisions) arrives, even when the side panel is closed. Click it to open the source.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Side Panel Position",
     "description": "Header for the side panel position section in settings."

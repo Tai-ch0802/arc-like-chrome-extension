@@ -323,6 +323,18 @@
     "message": "Войдите в Google в настройках, чтобы синхронизировать источники и правила между устройствами.",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "Уведомления",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Системные уведомления о самых важных событиях (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Показывает уведомление Chrome при поступлении события P0 (например, CPI, FOMC, решения по ставке), даже если боковая панель закрыта. Нажмите, чтобы открыть источник.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Положение боковой панели",
     "description": "Header for the side panel position section in settings."

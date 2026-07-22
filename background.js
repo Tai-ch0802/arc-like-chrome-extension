@@ -18,6 +18,7 @@ import {
   handleNewswireWatchdog,
   handleNewswireMessage,
   handleNewswireConfigChange,
+  handleNewswireNotificationClick,
   exportLocalNewswireState,
   importMergedNewswireState,
   ALARM_NEWSWIRE_WATCHDOG,
@@ -369,6 +370,13 @@ ensurePullAlarm();
 // newswire(BASE-016 N1):SW 每次啟動重建連線層——adapter/timer 活在 SW
 // 記憶體,回收即消失;initNewswire 冪等,來源全關時為零網路行為的 no-op。
 initNewswire();
+
+// newswire P0 通知點擊 → 開原文(BASE-016 N4)。只認領 newswire: 前綴的通知。
+if (chrome.notifications && chrome.notifications.onClicked) {
+  chrome.notifications.onClicked.addListener((notificationId) => {
+    handleNewswireNotificationClick(notificationId);
+  });
+}
 
 /** Read one workspace's persisted base rev (same storage the engine deps use). */
 async function readBaseRev(id) {

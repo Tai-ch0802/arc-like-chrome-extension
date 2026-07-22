@@ -1758,6 +1758,29 @@ function renderNewswire(container) {
             container.appendChild(ta);
         }
 
+        // --- 通知(BASE-016 N4) ---
+        const notifHeader = document.createElement('h4');
+        notifHeader.className = 'settings-subsection-header';
+        notifHeader.textContent = api.getMessage('newswireNotifHeader') || 'Notifications';
+        container.appendChild(notifHeader);
+
+        // P0 系統通知開關(預設開;prefs.notificationsEnabled)。SW 依此決定
+        // 是否對 importance===0 事件發 chrome.notifications。
+        const notifToggle = document.createElement('input');
+        notifToggle.type = 'checkbox';
+        notifToggle.id = 'newswire-notif';
+        notifToggle.checked = cfg.prefs?.notificationsEnabled !== false;
+        notifToggle.addEventListener('change', async () => {
+            await rmwNewswireConfig((c) => {
+                c.prefs = { ...(c.prefs || {}), notificationsEnabled: notifToggle.checked, updatedAt: Date.now() };
+            });
+        });
+        container.appendChild(makeRow(
+            api.getMessage('newswireNotifToggleLabel') || 'System notifications for P0 events',
+            notifToggle,
+            api.getMessage('newswireNotifToggleDesc') || '',
+        ));
+
         // --- 跨裝置同步(BASE-016 N3) ---
         const syncHeader = document.createElement('h4');
         syncHeader.className = 'settings-subsection-header';

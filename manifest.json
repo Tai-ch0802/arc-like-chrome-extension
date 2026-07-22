@@ -15,7 +15,8 @@
     "alarms",
     "offscreen",
     "scripting",
-    "identity"
+    "identity",
+    "notifications"
   ],
   "oauth2": {
     "client_id": "849720332841-ouhe2qbugvd0skkf5sbjlm3ftnn9loop.apps.googleusercontent.com",

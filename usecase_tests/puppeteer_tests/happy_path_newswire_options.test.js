@@ -102,6 +102,27 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
             .then(v => v.newswireConfig?.prefs?.syncKeys === false), { timeout: 5000 });
     }, 120000);
 
+    test('P0 notification toggle defaults on and persists prefs.notificationsEnabled (BASE-016 N4)', async () => {
+        const on = await page.evaluate(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.notificationsEnabled !== false));
+        expect(on).toBe(true); // default on
+        expect(await page.$eval('#newswire-notif', el => el.checked)).toBe(true);
+
+        await page.click('#newswire-notif');
+        await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.notificationsEnabled === false
+                && typeof v.newswireConfig?.prefs?.updatedAt === 'number'), { timeout: 5000 });
+
+        await page.click('#newswire-notif'); // back on
+        await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.notificationsEnabled === true), { timeout: 5000 });
+    }, 120000);
+
+    test('the notifications permission is declared in the manifest (BASE-016 N4)', async () => {
+        const perms = await page.evaluate(() => chrome.runtime.getManifest().permissions);
+        expect(perms).toContain('notifications');
+    }, 120000);
+
     test('Drive guide card is shown while Drive is not connected, and jumps to Sync', async () => {
         // placeholder client_id in tests → driveAuth.isConnected() is false → card shown.
         const card = await page.$('.newswire-drive-guide');

@@ -323,6 +323,18 @@
     "message": "設定で Google にサインインすると、ニュースソースとルールを端末間で同期できます。",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "通知",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "最重要（P0）イベントのシステム通知",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "P0 イベント（CPI、FOMC、金利決定など）が届いたら、サイドパネルを閉じていても Chrome 通知を表示します。クリックで元記事を開きます。",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "サイドパネルの位置",
     "description": "Header for the side panel position section in settings."

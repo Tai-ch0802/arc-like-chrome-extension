@@ -323,6 +323,18 @@
     "message": "在設定中登入 Google，即可讓快訊來源與規則跨裝置同步。",
     "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
   },
+  "newswireNotifHeader": {
+    "message": "通知",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "重大事件（P0）系統通知",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "當 P0 事件（如 CPI、FOMC、利率決議）出現時，即使側邊欄未開啟也跳出 Chrome 通知；點擊可開啟原文。",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "側邊面板位置",
     "description": "設定中側邊面板位置區塊的標題。"
