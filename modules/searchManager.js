@@ -23,11 +23,13 @@ async function handleSearch() {
     let tabCount = 0;
     let otherWindowsTabCount = 0;
     let readingListCount = 0;
+    let newswireCount = 0;
     if (filterPanelSections) {
-        // 一般/關鍵字查詢:照舊過濾分頁、其他視窗、閱讀清單
+        // 一般/關鍵字查詢:照舊過濾分頁、其他視窗、閱讀清單、快訊
         tabCount = filterTabsAndGroups(keywords);
         otherWindowsTabCount = filterOtherWindowsTabs(keywords);
         readingListCount = filterReadingList(keywords, regexes);
+        newswireCount = filterNewswire(keywords);
     } else {
         // tag: 查詢:標籤只屬書籤,其餘區塊整批隱藏
         hideNonBookmarkSections();
@@ -43,7 +45,7 @@ async function handleSearch() {
     }
 
     const event = new CustomEvent('searchResultUpdated', {
-        detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount, bookmarkCount }
+        detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount + newswireCount, bookmarkCount }
     });
     document.dispatchEvent(event);
 }
@@ -336,6 +338,33 @@ function filterReadingList(keywords, regexes = []) {
 }
 
 /**
+ * 過濾快訊項目(BASE-017)。比對標題與來源標籤;空 keyword=全顯示。
+ * 不做 innerHTML 高亮——快訊標題為外部不可信內容,維持該區塊
+ * textContent-only 的安全紀律(newswireRenderer 同)。
+ * @param {string[]} keywords
+ * @returns {number} 有搜尋時的可見項目數
+ */
+function filterNewswire(keywords) {
+    const container = document.getElementById('newswire-list');
+    if (!container) return 0;
+
+    const items = container.querySelectorAll('.newswire-item');
+    if (items.length === 0) return 0;
+
+    let visibleCount = 0;
+    items.forEach(item => {
+        const title = item.dataset.title || '';
+        const source = item.dataset.source || '';
+        const matches = keywords.length === 0
+            || matchesAnyKeyword(title, keywords)
+            || matchesAnyKeyword(source, keywords);
+        item.classList.toggle('hidden', !matches);
+        if (matches && keywords.length > 0) visibleCount++;
+    });
+    return visibleCount;
+}
+
+/**
  * tag: 查詢時呼叫:把分頁/群組/其他視窗/閱讀清單整批隱藏,只留書籤過濾。
  * 不需自行還原——切回關鍵字/空白查詢時,filterTabsAndGroups / filterOtherWindowsTabs /
  * filterReadingList 會以 toggle 重新評估可見性(空 keyword=全顯示)。
@@ -366,6 +395,11 @@ function hideNonBookmarkSections() {
     const rl = document.getElementById('reading-list');
     if (rl) {
         rl.querySelectorAll('.reading-list-item').forEach(i => i.classList.add('hidden'));
+    }
+    // 快訊項目(BASE-017)
+    const nw = document.getElementById('newswire-list');
+    if (nw) {
+        nw.querySelectorAll('.newswire-item').forEach(i => i.classList.add('hidden'));
     }
 }
 

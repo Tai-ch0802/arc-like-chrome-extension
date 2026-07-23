@@ -68,5 +68,11 @@ export function createEventBuffer(deps = {}) {
         await persistNow();
     }
 
-    return { init, append, getEvents, flush };
+    /** 清空 buffer 並立即落地(快速清除,BASE-017)。 */
+    async function clear() {
+        events = [];
+        await flush();
+    }
+
+    return { init, append, getEvents, flush, clear };
 }

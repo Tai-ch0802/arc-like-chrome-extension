@@ -104,6 +104,77 @@ describe('Newswire Section (BASE-016 N1)', () => {
         }, { timeout: 5000 });
     }, 120000);
 
+    const broadcast = (events) => optionsPage.evaluate((evs) =>
+        chrome.runtime.sendMessage({ type: 'newswire:events', events: evs }).catch(() => {}), events);
+
+    // 在單一 evaluate 內設搜尋 + 等 debounce + 讀結果,回傳指定 id 的 hidden 狀態。
+    // 一步到位避開 puppeteer 跨呼叫的時序 flakiness(page.type 更會在快訊列表有
+    // 內容時卡住其元素 stability 檢查——工具偽陽性,真實鍵盤不受影響)。
+    const searchAndRead = (query, ids) => page.evaluate(async (q, wantIds) => {
+        const box = document.getElementById('search-box');
+        box.value = q;
+        box.dispatchEvent(new Event('input', { bubbles: true }));
+        await new Promise(r => setTimeout(r, 600)); // 過 300ms debounce
+        const out = {};
+        for (const id of wantIds) {
+            const el = document.querySelector(`#newswire-list [data-event-id="${id}"]`);
+            out[id] = el ? (el.classList.contains('hidden') ? 'hidden' : 'visible') : 'absent';
+        }
+        return out;
+    }, query, ids);
+
+    test('the search bar filters newswire items; clearing restores them (BASE-017)', async () => {
+        // 自足:不依賴前面測試的列表狀態,自己注入兩則可辨識事件。
+        const t = Date.now();
+        await broadcast([
+            { id: 'tree:sf-a', source: 'tree', sourceId: 'sf-a', tsSource: t - 200, tsIngest: t - 200, title: 'Search fixture CPI print', url: 'https://example.com/a', importance: 0 },
+            { id: 'tree:sf-b', source: 'tree', sourceId: 'sf-b', tsSource: t - 100, tsIngest: t - 100, title: 'Search fixture unrelated headline', importance: 2 },
+        ]);
+        await page.waitForFunction(() =>
+            document.querySelector('#newswire-list [data-event-id="tree:sf-a"]')
+            && document.querySelector('#newswire-list [data-event-id="tree:sf-b"]'), { timeout: 5000 });
+
+        // 含 CPI 的 sf-a 可見、sf-b 隱藏。
+        expect(await searchAndRead('CPI', ['tree:sf-a', 'tree:sf-b']))
+            .toEqual({ 'tree:sf-a': 'visible', 'tree:sf-b': 'hidden' });
+
+        // 清除搜尋 → 兩則都復原可見。
+        expect(await searchAndRead('', ['tree:sf-a', 'tree:sf-b']))
+            .toEqual({ 'tree:sf-a': 'visible', 'tree:sf-b': 'visible' });
+    }, 120000);
+
+    test('the list is height-capped with internal scrolling (BASE-017)', async () => {
+        const style = await page.$eval('#newswire-list', el => {
+            const cs = getComputedStyle(el);
+            return { overflowY: cs.overflowY, maxHeight: cs.maxHeight };
+        });
+        expect(style.overflowY).toBe('auto');
+        expect(style.maxHeight).not.toBe('none');
+        expect(parseInt(style.maxHeight, 10)).toBeGreaterThan(0);
+    }, 120000);
+
+    test('the clear button empties the feed via the SW round-trip (BASE-017)', async () => {
+        // 自足:先確保列表有內容(清空搜尋 + 注入一則),再驗清除。
+        await searchAndRead('', []);
+        const t = Date.now();
+        await broadcast([{ id: 'tree:clr', source: 'tree', sourceId: 'clr', tsSource: t, tsIngest: t, title: 'Clear fixture headline', importance: 2 }]);
+        await page.waitForFunction(() =>
+            document.querySelector('#newswire-list [data-event-id="tree:clr"]')
+            && !document.getElementById('newswire-clear-btn').classList.contains('hidden'), { timeout: 5000 });
+
+        // DOM click(繞開 puppeteer 互動層 stability 檢查,同上)。
+        await page.$eval('#newswire-clear-btn', el => el.click());
+        // SW 處理 newswire:clear → 廣播 newswire:cleared → 本地清空。
+        await page.waitForFunction(() =>
+            document.querySelectorAll('#newswire-list .newswire-item').length === 0, { timeout: 5000 });
+
+        // buffer 已落地為空、清除鈕隨之隱藏。
+        const stored = await page.evaluate(() => chrome.storage.local.get('newswireEvents')
+            .then(v => v.newswireEvents?.events ?? []));
+        expect(stored).toEqual([]);
+        expect(await page.$eval('#newswire-clear-btn', el => el.classList.contains('hidden'))).toBe(true);
+    }, 120000);
+
     test('newswireVisible toggle hides/shows the section via the settings bridge', async () => {
         await page.evaluate(() => chrome.storage.sync.set({ newswireVisible: false }));
         await page.waitForFunction(() =>

@@ -72,7 +72,7 @@ key_files:
   - file_path: modules/newswire/newswireSyncLogic.js
     description: "[快訊] 純函式 Drive 同步邏輯（BASE-016 N3，比 rssSyncLogic 簡單：固定 4 源、無 tombstone）。per-group LWW（sources.{id}/rules/prefs 各以 updatedAt 取新，pickNewer 相等時 order-independent tiebreak）；mergeNewswireState 依 prefs.syncKeys 決定 keys 去留（關→localKeys 不動、remoteKeys=undefined 使 payload scrub 遠端 keys）；buildNewswirePayload 組 newswire-sync.json；canonicalizeNewswire（object key 排序、陣列保序）供 no-op guard。keys 整包 LWW（非 per-source，ponytail ceiling 註記）。"
   - file_path: modules/ui/newswireRenderer.js
-    description: "[UI] sidepanel 快訊區塊 renderer（BASE-016 N1）。初始經 newswire:getState 回填、即時事件收 SW 廣播 prepend（上限 300 列）；P0/P1 以 --danger/--info 左緣高亮；標題一律 textContent（不可信內容），點擊開原文前再驗 URL scheme；未讀徽章（頂部 sentinel IntersectionObserver 進視野即讀）、暫停/繼續（pending 佇列補齊）、收合（newswireCollapsed sync）、newswireVisible 顯隱走 settingsBridge。"
+    description: "[UI] sidepanel 快訊區塊 renderer（BASE-016 N1，BASE-017 強化）。初始經 newswire:getState 回填、即時事件收 SW 廣播 prepend（上限 300 列）；P0/P1 以 --danger/--info 左緣高亮；標題一律 textContent（不可信內容），並設 dataset.title/source 供 searchManager 過濾；點擊開原文前再驗 URL scheme；未讀徽章、暫停/繼續（pending 佇列補齊）、收合、newswireVisible 顯隱走 settingsBridge。BASE-017：快速清除鈕（發 newswire:clear、收 newswire:cleared 廣播清空）、固定高度內部捲動後未讀判定改 list.scrollTop（取代 sentinel IntersectionObserver）、prepend 時補償 scrollTop 避免內容跳動。"
   - file_path: modules/ui/searchUI.js
     description: "[UI] 搜尋介面。負責搜尋結果計數顯示與無結果提示的 UI 更新。"
   - file_path: modules/ui/tabRenderer.js

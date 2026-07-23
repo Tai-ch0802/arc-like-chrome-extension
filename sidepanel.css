@@ -3791,6 +3791,14 @@ mark.url-match {
     animation: pulse-badge 2s infinite;
 }
 
+#newswire-list {
+    /* 固定高度約 30 列(隨密度變數縮放),超過改由列表內部捲動找舊訊息
+       (BASE-017)。列高 ≈ 內容行 16px + 上下 padding 各 var(--list-row-py)。 */
+    max-height: calc(30 * (16px + 2 * var(--list-row-py)));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
 #newswire-list.collapsed {
     display: none;
 }

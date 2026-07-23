@@ -335,6 +335,10 @@
     "message": "Показывает уведомление Chrome при поступлении события P0 (например, CPI, FOMC, решения по ставке), даже если боковая панель закрыта. Нажмите, чтобы открыть источник.",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "Очистить",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Положение боковой панели",
     "description": "Header for the side panel position section in settings."

@@ -335,6 +335,10 @@
     "message": "แสดงการแจ้งเตือนของ Chrome เมื่อมีเหตุการณ์ P0 (เช่น CPI, FOMC, การตัดสินใจอัตราดอกเบี้ย) แม้ปิดแผงด้านข้างอยู่ คลิกเพื่อเปิดแหล่งข่าว",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "ล้าง",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "ตำแหน่งแผงด้านข้าง",
     "description": "Header for the side panel position section in settings."

@@ -335,6 +335,10 @@
     "message": "Hiển thị thông báo Chrome khi có sự kiện P0 (ví dụ CPI, FOMC, quyết định lãi suất), ngay cả khi bảng điều khiển bên đã đóng. Nhấp để mở nguồn.",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "Xóa hết",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Vị trí bảng điều khiển bên",
     "description": "Header for the side panel position section in settings."

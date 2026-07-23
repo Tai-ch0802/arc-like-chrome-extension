@@ -335,6 +335,10 @@
     "message": "Muestra una notificación de Chrome cuando llega un evento P0 (p. ej., IPC, FOMC, decisiones de tipos), incluso con el panel lateral cerrado. Haz clic para abrir la fuente.",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "Limpiar",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posición del Panel Lateral",
     "description": "Header for the side panel position section in settings."

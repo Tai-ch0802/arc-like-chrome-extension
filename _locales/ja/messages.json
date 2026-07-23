@@ -335,6 +335,10 @@
     "message": "P0 イベント（CPI、FOMC、金利決定など）が届いたら、サイドパネルを閉じていても Chrome 通知を表示します。クリックで元記事を開きます。",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "クリア",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "サイドパネルの位置",
     "description": "Header for the side panel position section in settings."
