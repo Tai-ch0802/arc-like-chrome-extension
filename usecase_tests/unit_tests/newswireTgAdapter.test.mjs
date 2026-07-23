@@ -158,13 +158,28 @@ describe('createTgAdapter — lifecycle', () => {
     expect(a.isAlive()).toBe(false);
   });
 
-  it('ALL channels unresolvable → transient reconnect (not fatal)', async () => {
+  it('ALL channels unresolvable (channel-level) → transient reconnect (not fatal)', async () => {
     const { deps } = makeDeps({ getEntityError: Object.assign(new Error('x'), { errorMessage: 'CHANNEL_INVALID' }) });
     const { statuses, h } = hooks();
     createTgAdapter(cfg(), h, deps).connect();
     await flush();
     expect(statuses).toContain('retrying'); // 一個都解析不到 → 暫時性重連
     expect(statuses).not.toContain('needs-key');
+  });
+
+  it('session dies at getEntity stage (not connect) → needs-key, NO reconnect (FR-10, PR#194 review)', async () => {
+    // connect() 成功但 session 已撤銷:GramJS 到第一個 API call(getEntity)才回 fatal。
+    // 全頻道都因此失敗時,必須判 fatal 進 needs-key,而非泛用 'no channel resolved' → transient。
+    const { deps, timers } = makeDeps({ getEntityError: Object.assign(new Error('x'), { errorMessage: 'SESSION_REVOKED' }) });
+    const { statuses, h } = hooks();
+    const a = createTgAdapter(cfg(), h, deps);
+    a.connect();
+    await flush();
+    expect(statuses).toContain('needs-key');
+    expect(statuses).not.toContain('retrying');
+    expect(timers.length).toBe(0); // 不排程重連
+    a.connect(); await flush();     // watchdog 重複呼叫
+    expect(timers.length).toBe(0);  // 仍 no-op(failed)
   });
 
   it('one bad channel among good ones is skipped; source still connects to the rest (#3)', async () => {

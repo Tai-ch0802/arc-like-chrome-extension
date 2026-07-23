@@ -95,6 +95,7 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
             const entities = [];
             const metaById = new Map();
             const wanted = cfg.channels || [];
+            let lastFatalErr = null;   // 憑證/session 級錯誤:同一 client 下必定全頻道失敗
             for (const ch of wanted) {
                 const ref = ch.username ? ch.username : ch.id;
                 if (ref == null) continue;
@@ -103,11 +104,17 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                     entities.push(entity);
                     const meta = { id: ch.id ?? (entity && entity.id), username: ch.username ?? (entity && entity.username), title: ch.title ?? (entity && entity.title) };
                     if (meta.id != null) metaById.set(String(meta.id), meta);
-                } catch { /* 略過此頻道(不 throw);全部失敗才走下方 transient 重連 */ }
+                } catch (e) {
+                    // 略過此頻道(不 throw);但保留 fatal 原因——session 失效會在
+                    // getEntity 階段(非 connect)才浮現,不記下來全失敗時會被誤判 transient
+                    // 而無限重連(違反 FR-10)。頻道級失敗(handle 打錯/私有)判 transient,不影響。
+                    if (classifyTgError(e).kind === 'fatal') lastFatalErr = e;
+                }
             }
             if (wanted.length && entities.length === 0) {
-                // 一個都解析不到:可能暫時性(網路/限流) → 退避重連。
-                throw new Error('no channel resolved');
+                // 一個都解析不到:若肇因於 session 失效,rethrow 原始 fatal error(上層
+                // classifyTgError 判 fatal → needs-key 終止);否則暫時性 → 退避重連。
+                throw lastFatalErr || new Error('no channel resolved');
             }
             client.addEventHandler((event) => {
                 try {
