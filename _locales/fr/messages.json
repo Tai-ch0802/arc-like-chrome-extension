@@ -179,6 +179,162 @@
     "message": "Actualités non lues — cliquez pour les marquer comme lues",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "Fil d'actualités",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "Sources",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "Activer",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "Clé API",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "Clé API (facultative — supprime le délai de l'offre gratuite)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "ID de clé API",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "Secret API",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "Cette source est activée mais sans clé API — saisissez-en une pour vous connecter.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "Obtenir une clé →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "Désactivé",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "Clé API requise",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "Connexion…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "Connecté",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "Reconnexion…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "Connexion dégradée",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "Gratuit sans clé. Ajoutez une clé API Tree of Alpha pour supprimer le délai de l'offre gratuite.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "Nécessite une clé API émise sur stream.financialjuice.com. L'offre gratuite a 10 minutes de délai et une seule connexion.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Gratuit avec un compte Alpaca (paper suffit). Créez des clés API dans le tableau de bord ; une connexion simultanée par compte.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Nécessite une secret-key de la Jin10 Open Platform (achat ou essai). Respectez les conditions d'utilisation de Jin10.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "Catégories de flashs",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "Flash marché",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "Contrats à terme",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "Actions US et HK",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "Actions A",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "Matières premières et devises",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "Règles de mots-clés",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "Séparez les mots-clés par des virgules. Les correspondances P0 sont critiques, P1 notables ; les mots-clés muets sont ignorés.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "Mots-clés P0",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "Mots-clés P1",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "Mots-clés muets",
+    "description": "Label of the muted keywords textarea."
+  },
+  "newswireSyncHeader": {
+    "message": "Synchronisation",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "Synchroniser les clés API avec Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "Désactivé par défaut. Les clés API restent sur cet appareil jusqu'à ce que vous l'activiez ; une fois activé, elles ne se synchronisent qu'avec votre propre appdata Drive.",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Connectez Google Drive pour synchroniser vos sources et règles de mots-clés entre appareils.",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "Configurer dans Sauvegarde et synchronisation",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "Connectez-vous à Google dans les Paramètres pour synchroniser vos sources et règles entre appareils.",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
+  "newswireNotifHeader": {
+    "message": "Notifications",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Notifications système pour les événements prioritaires (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Affiche une notification Chrome à l'arrivée d'un événement P0 (IPC, FOMC, décisions de taux…), même lorsque le panneau latéral est fermé. Cliquez pour ouvrir la source.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Position du panneau latéral",
     "description": "Header for the side panel position section in settings."

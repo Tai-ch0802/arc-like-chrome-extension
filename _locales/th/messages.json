@@ -179,6 +179,162 @@
     "message": "ข่าวที่ยังไม่ได้อ่าน — คลิกเพื่อทำเครื่องหมายว่าอ่านแล้ว",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "ฟีดข่าว",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "แหล่งข่าว",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "เปิดใช้งาน",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "คีย์ API",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "คีย์ API (ไม่บังคับ — ใส่เพื่อลบดีเลย์ของแผนฟรี)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "ID คีย์ API",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "ซีเคร็ต API",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "แหล่งข่าวนี้เปิดใช้งานแล้วแต่ยังไม่มีคีย์ API — ใส่คีย์เพื่อเชื่อมต่อ",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "ขอรับคีย์ →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "ปิด",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "ต้องใส่คีย์ API",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "กำลังเชื่อมต่อ…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "เชื่อมต่อแล้ว",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "กำลังเชื่อมต่อใหม่…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "การเชื่อมต่อผิดปกติ",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "ใช้ฟรีโดยไม่ต้องมีคีย์ ใส่คีย์ API ของ Tree of Alpha เพื่อลบดีเลย์ของแผนฟรี",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "ต้องใช้คีย์ API จาก stream.financialjuice.com แผนฟรีดีเลย์ 10 นาทีและจำกัด 1 การเชื่อมต่อ",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "ฟรีด้วยบัญชี Alpaca (paper ก็ได้) สร้างคีย์ API ในแดชบอร์ด จำกัด 1 การเชื่อมต่อพร้อมกันต่อบัญชี",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "ต้องซื้อหรือขอทดลองใช้ secret-key จาก Jin10 Open Platform โปรดปฏิบัติตามข้อกำหนดการใช้งานของ Jin10",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "หมวดข่าวด่วน",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "ข่าวตลาด",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "ฟิวเจอร์ส",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "หุ้นสหรัฐฯ และฮ่องกง",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "หุ้น A",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "สินค้าโภคภัณฑ์และอัตราแลกเปลี่ยน",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "กฎคำสำคัญ",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "คั่นคำสำคัญด้วยจุลภาค คำที่ตรง P0 จะถูกเน้นเป็นเรื่องสำคัญมาก P1 เป็นเรื่องน่าสนใจ ส่วนคำที่ปิดเสียงจะถูกตัดทิ้ง",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "คำสำคัญ P0",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "คำสำคัญ P1",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "คำสำคัญที่ปิดเสียง",
+    "description": "Label of the muted keywords textarea."
+  },
+  "newswireSyncHeader": {
+    "message": "การซิงค์",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "ซิงค์คีย์ API ไปยัง Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "ปิดโดยค่าเริ่มต้น คีย์ API จะอยู่บนอุปกรณ์นี้จนกว่าคุณจะเปิดใช้งาน เมื่อเปิดจะซิงค์ไปยัง appdata ของ Drive ของคุณเองเท่านั้น",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "เชื่อมต่อ Google Drive เพื่อซิงค์แหล่งข่าวและกฎคำสำคัญข้ามอุปกรณ์",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "ตั้งค่าในการสำรองและซิงค์",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "ลงชื่อเข้าใช้ Google ในการตั้งค่าเพื่อซิงค์แหล่งข่าวและกฎข้ามอุปกรณ์",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
+  "newswireNotifHeader": {
+    "message": "การแจ้งเตือน",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "การแจ้งเตือนระบบสำหรับเหตุการณ์สำคัญสูงสุด (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "แสดงการแจ้งเตือนของ Chrome เมื่อมีเหตุการณ์ P0 (เช่น CPI, FOMC, การตัดสินใจอัตราดอกเบี้ย) แม้ปิดแผงด้านข้างอยู่ คลิกเพื่อเปิดแหล่งข่าว",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "ตำแหน่งแผงด้านข้าง",
     "description": "Header for the side panel position section in settings."

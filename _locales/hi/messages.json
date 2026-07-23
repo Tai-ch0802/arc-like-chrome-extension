@@ -179,6 +179,162 @@
     "message": "अपठित समाचार — पढ़ा हुआ चिह्नित करने के लिए क्लिक करें",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "समाचार फ़ीड",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "स्रोत",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "सक्षम करें",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "API कुंजी",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "API कुंजी (वैकल्पिक — मुफ़्त प्लान की देरी हटाती है)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "API कुंजी ID",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "API सीक्रेट",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "यह स्रोत सक्षम है पर API कुंजी नहीं है — कनेक्ट करने के लिए दर्ज करें।",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "कुंजी प्राप्त करें →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "बंद",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "API कुंजी आवश्यक",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "कनेक्ट हो रहा है…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "कनेक्टेड",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "पुनः कनेक्ट हो रहा है…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "कनेक्शन बाधित",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "बिना कुंजी के मुफ़्त। Tree of Alpha API कुंजी जोड़ने पर मुफ़्त प्लान की देरी हट जाती है।",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "stream.financialjuice.com से जारी API कुंजी आवश्यक है। मुफ़्त प्लान में 10 मिनट की देरी और एक कनेक्शन।",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Alpaca खाते (paper चलेगा) के साथ मुफ़्त। डैशबोर्ड में API कुंजियाँ बनाएँ; प्रति खाता एक समवर्ती कनेक्शन।",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Jin10 Open Platform से secret-key आवश्यक है (खरीद या ट्रायल)। कृपया Jin10 की उपयोग शर्तों का पालन करें।",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "फ़्लैश श्रेणियाँ",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "बाज़ार फ़्लैश",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "वायदा",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "US और HK शेयर",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "A-शेयर",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "कमोडिटी और विदेशी मुद्रा",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "कीवर्ड नियम",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "कीवर्ड अल्पविराम से अलग करें। P0 को गंभीर, P1 को उल्लेखनीय के रूप में हाइलाइट किया जाता है; म्यूट कीवर्ड हटा दिए जाते हैं।",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "P0 कीवर्ड",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "P1 कीवर्ड",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "म्यूट कीवर्ड",
+    "description": "Label of the muted keywords textarea."
+  },
+  "newswireSyncHeader": {
+    "message": "सिंक",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "API कुंजियाँ Google Drive से सिंक करें",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "डिफ़ॉल्ट रूप से बंद। जब तक आप इसे चालू नहीं करते, API कुंजियाँ इसी डिवाइस पर रहती हैं; चालू करने पर वे केवल आपके अपने Drive appdata से सिंक होती हैं।",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "समाचार स्रोतों और कीवर्ड नियमों को डिवाइसों के बीच सिंक करने के लिए Google Drive कनेक्ट करें।",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "बैकअप और सिंक में सेट करें",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "स्रोतों और नियमों को डिवाइसों के बीच सिंक करने के लिए सेटिंग्स में Google से साइन इन करें।",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
+  "newswireNotifHeader": {
+    "message": "सूचनाएँ",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "सर्वोच्च प्राथमिकता (P0) की घटनाओं के लिए सिस्टम सूचनाएँ",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "जब कोई P0 घटना (जैसे CPI, FOMC, ब्याज दर निर्णय) आती है, तो साइड पैनल बंद होने पर भी Chrome सूचना दिखाएँ; स्रोत खोलने के लिए क्लिक करें।",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "साइड पैनल स्थिति",
     "description": "Header for the side panel position section in settings."

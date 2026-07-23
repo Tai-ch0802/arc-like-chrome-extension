@@ -179,6 +179,162 @@
     "message": "Непрочитанные новости — нажмите, чтобы отметить прочитанными",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "Лента новостей",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "Источники",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "Включить",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "Ключ API",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "Ключ API (необязательно — убирает задержку бесплатного тарифа)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "ID ключа API",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "Секрет API",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "Источник включён, но ключ API не указан — введите его для подключения.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "Получить ключ →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "Выключено",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "Нужен ключ API",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "Подключение…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "Подключено",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "Переподключение…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "Сбой соединения",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "Бесплатно и без ключа. Добавьте ключ API Tree of Alpha, чтобы убрать задержку бесплатного тарифа.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "Требуется ключ API с stream.financialjuice.com. Бесплатный тариф: задержка 10 минут и одно подключение.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Бесплатно с аккаунтом Alpaca (paper подойдёт). Создайте ключи API в панели; одно одновременное подключение на аккаунт.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Требуется secret-key платформы Jin10 Open Platform (покупка или пробный доступ). Соблюдайте условия использования Jin10.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "Категории новостей",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "Рыночные новости",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "Фьючерсы",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "Акции США и Гонконга",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "Акции A",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "Сырьё и валюты",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "Правила ключевых слов",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "Разделяйте ключевые слова запятыми. Совпадения P0 выделяются как критичные, P1 — как важные; заглушённые отбрасываются.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "Ключевые слова P0",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "Ключевые слова P1",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "Заглушённые слова",
+    "description": "Label of the muted keywords textarea."
+  },
+  "newswireSyncHeader": {
+    "message": "Синхронизация",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "Синхронизировать ключи API с Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "По умолчанию выключено. Ключи API остаются на этом устройстве, пока вы не включите параметр; после включения они синхронизируются только с вашим appdata в Drive.",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Подключите Google Drive, чтобы синхронизировать источники новостей и правила ключевых слов между устройствами.",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "Настроить в «Резервное копирование и синхронизация»",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "Войдите в Google в настройках, чтобы синхронизировать источники и правила между устройствами.",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
+  "newswireNotifHeader": {
+    "message": "Уведомления",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Системные уведомления о самых важных событиях (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Показывает уведомление Chrome при поступлении события P0 (например, CPI, FOMC, решения по ставке), даже если боковая панель закрыта. Нажмите, чтобы открыть источник.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Положение боковой панели",
     "description": "Header for the side panel position section in settings."

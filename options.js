@@ -12,6 +12,7 @@ import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { renderIcon } from './modules/icons.js';
 import { mergeSectionOrder, DEFAULT_SECTION_ORDER, SECTION_ORDER_KEY } from './modules/utils/sectionOrder.js';
+import { NEWSWIRE_CONFIG_KEY, NEWSWIRE_KEYS_KEY, defaultNewswireConfig } from './modules/newswire/feedManager.js';
 
 const THEME_OPTIONS = [
     { value: 'geek', labelKey: 'themeOptionGeek' },
@@ -1488,6 +1489,334 @@ function renderAbout(container) {
     container.appendChild(githubLink);
 }
 
+// --- Newswire settings section (BASE-016 N2) ---
+// options 只寫 storage(newswireConfig/newswireKeys, local);SW feedManager
+// 監聽 onChanged 重建連線並廣播 newswire:status,本頁據此顯示各源狀態。
+// keys 遵循 aiProviderSettings 安全慣例:local-only、password 遮罩。
+
+const NEWSWIRE_SOURCE_CARDS = [
+    {
+        id: 'tree', name: 'Tree of Alpha',
+        guideKey: 'newswireGuideTree', link: 'https://news.treeofalpha.com/',
+        fields: [{ key: 'apiKey', labelKey: 'newswireApiKeyOptionalLabel' }],
+    },
+    {
+        id: 'fj', name: 'FinancialJuice',
+        guideKey: 'newswireGuideFj', link: 'https://stream.financialjuice.com/',
+        fields: [{ key: 'apiKey', labelKey: 'newswireApiKeyLabel' }],
+    },
+    {
+        id: 'alpaca', name: 'Alpaca News',
+        guideKey: 'newswireGuideAlpaca', link: 'https://app.alpaca.markets/',
+        fields: [
+            { key: 'keyId', labelKey: 'newswireApiKeyIdLabel' },
+            { key: 'secret', labelKey: 'newswireApiSecretLabel' },
+        ],
+    },
+    {
+        id: 'jin10', name: '金十數據 Jin10',
+        guideKey: 'newswireGuideJin10', link: 'https://open.jin10.com/',
+        fields: [{ key: 'secretKey', labelKey: 'newswireApiKeyLabel' }],
+    },
+];
+
+const JIN10_CATEGORY_OPTIONS = [
+    { value: '1', labelKey: 'newswireJin10CatMarket' },
+    { value: '2', labelKey: 'newswireJin10CatFutures' },
+    { value: '3', labelKey: 'newswireJin10CatUsHk' },
+    { value: '4', labelKey: 'newswireJin10CatAShare' },
+    { value: '5', labelKey: 'newswireJin10CatCommodityFx' },
+];
+
+const NEWSWIRE_STATUS_LABEL_KEYS = {
+    'disabled': 'newswireStatusDisabled',
+    'needs-key': 'newswireStatusNeedsKey',
+    'connecting': 'newswireStatusConnecting',
+    'connected': 'newswireStatusConnected',
+    'retrying': 'newswireStatusRetrying',
+    'degraded': 'newswireStatusDegraded',
+};
+
+async function rmwNewswireConfig(mutate) {
+    const res = await api.getStorage('local', { [NEWSWIRE_CONFIG_KEY]: null });
+    const cfg = res[NEWSWIRE_CONFIG_KEY] || defaultNewswireConfig();
+    mutate(cfg);
+    await api.setStorage('local', { [NEWSWIRE_CONFIG_KEY]: cfg });
+}
+
+async function rmwNewswireKeys(mutate) {
+    const res = await api.getStorage('local', { [NEWSWIRE_KEYS_KEY]: {} });
+    const keys = res[NEWSWIRE_KEYS_KEY] || {};
+    mutate(keys);
+    keys.updatedAt = Date.now();
+    await api.setStorage('local', { [NEWSWIRE_KEYS_KEY]: keys });
+}
+
+/** 規則 textarea → 關鍵字陣列:逗號/換行分隔,去重,上限 50 項×64 字元。 */
+function parseRuleWords(text) {
+    const seen = new Set();
+    const out = [];
+    for (const part of String(text || '').split(/[,\n]/)) {
+        const w = part.trim().slice(0, 64);
+        if (!w || seen.has(w)) continue;
+        seen.add(w);
+        out.push(w);
+        if (out.length >= 50) break;
+    }
+    return out;
+}
+
+function renderNewswire(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('settingsNavNewswire') || 'News Feed';
+    container.appendChild(h);
+
+    const statusEls = {}; // source id → status span
+    const noteEls = {};   // source id → needs-key 行內提示
+
+    const applyStatuses = (statuses) => {
+        for (const [source, status] of Object.entries(statuses || {})) {
+            const el = statusEls[source];
+            if (el) {
+                el.dataset.status = status;
+                el.textContent = api.getMessage(NEWSWIRE_STATUS_LABEL_KEYS[status] || '') || status;
+            }
+            if (noteEls[source]) noteEls[source].classList.toggle('hidden', status !== 'needs-key');
+        }
+    };
+
+    // 骨架同步畫、資料 async hydrate(renderSync 慣例:eager render 不可阻塞)。
+    (async () => {
+        const res = await api.getStorage('local', {
+            [NEWSWIRE_CONFIG_KEY]: null,
+            [NEWSWIRE_KEYS_KEY]: {},
+        });
+        const cfg = res[NEWSWIRE_CONFIG_KEY] || defaultNewswireConfig();
+        const keys = res[NEWSWIRE_KEYS_KEY] || {};
+
+        // Drive 綁定引導卡(BASE-016 N3):未綁定時提示前往「備份與同步」完成綁定,
+        // 讓來源設定與規則跨裝置漫遊(FR-19)。連結流程與隱私揭露統一在 Sync 區塊,
+        // 這裡只跳過去(不重複 driveConnect 的揭露 modal)。
+        if (!(await driveAuth.isConnected())) {
+            const guideCard = document.createElement('div');
+            guideCard.className = 'settings-group newswire-drive-guide';
+            const gt = document.createElement('p');
+            gt.className = 'opt-row__desc';
+            gt.textContent = api.getMessage('newswireDriveGuideText')
+                || 'Connect Google Drive to sync your news sources and rules across devices.';
+            const gb = document.createElement('button');
+            gb.className = 'modal-button primary';
+            gb.textContent = api.getMessage('newswireDriveGuideBtn') || 'Set up in Backup & Sync';
+            gb.addEventListener('click', () => {
+                const syncNav = document.querySelector('.opt-nav__item[data-section="sync"]');
+                if (syncNav) syncNav.click();
+            });
+            guideCard.append(gt, gb);
+            container.appendChild(guideCard);
+        }
+
+        const srcHeader = document.createElement('h4');
+        srcHeader.className = 'settings-subsection-header';
+        srcHeader.textContent = api.getMessage('newswireSourcesHeader') || 'Sources';
+        container.appendChild(srcHeader);
+
+        for (const card of NEWSWIRE_SOURCE_CARDS) {
+            const group = document.createElement('div');
+            group.className = 'settings-group';
+            group.dataset.newswireSource = card.id;
+
+            // 標題列:品牌名(不進 i18n)+ 即時狀態。
+            const titleRow = document.createElement('div');
+            titleRow.className = 'opt-row';
+            const titleLabel = document.createElement('div');
+            titleLabel.className = 'opt-row__label';
+            titleLabel.textContent = card.name;
+            const status = document.createElement('span');
+            status.className = 'newswire-status';
+            status.dataset.status = 'disabled';
+            statusEls[card.id] = status;
+            titleRow.append(titleLabel, status);
+            group.appendChild(titleRow);
+
+            // 啟用 toggle(寫 config 即生效:SW onChanged 重建連線)。
+            const enable = document.createElement('input');
+            enable.type = 'checkbox';
+            enable.id = `newswire-enable-${card.id}`;
+            enable.checked = cfg.sources?.[card.id]?.enabled === true;
+            enable.addEventListener('change', async () => {
+                await rmwNewswireConfig((c) => {
+                    c.sources = { ...(c.sources || {}) };
+                    c.sources[card.id] = {
+                        ...(c.sources[card.id] || {}),
+                        enabled: enable.checked,
+                        updatedAt: Date.now(),
+                    };
+                });
+            });
+            group.appendChild(makeRow(api.getMessage('newswireEnableSource') || 'Enable', enable));
+
+            // key 欄位:遮罩+new-password(壓掉 Chrome 存密碼提示,比照 AI 供應商)。
+            for (const field of card.fields) {
+                const input = document.createElement('input');
+                input.type = 'password';
+                input.autocomplete = 'new-password';
+                input.className = 'modal-input';
+                input.id = `newswire-key-${card.id}-${field.key}`;
+                input.value = keys?.[card.id]?.[field.key] || '';
+                input.addEventListener('change', async () => {
+                    const value = input.value.trim();
+                    await rmwNewswireKeys((k) => {
+                        k[card.id] = { ...(k[card.id] || {}), [field.key]: value };
+                    });
+                });
+                group.appendChild(makeRow(api.getMessage(field.labelKey) || field.key, input));
+            }
+
+            // 金十:快訊分段多選(M0:category 1-5 為市場分段;全不選由 adapter 回退 ['1'])。
+            if (card.id === 'jin10') {
+                const catWrap = document.createElement('div');
+                catWrap.className = 'newswire-cats';
+                const selected = new Set((cfg.sources?.jin10?.categories || ['1']).map(String));
+                for (const opt of JIN10_CATEGORY_OPTIONS) {
+                    const label = document.createElement('label');
+                    label.className = 'newswire-cat';
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = opt.value;
+                    cb.checked = selected.has(opt.value);
+                    cb.addEventListener('change', async () => {
+                        const picked = [...catWrap.querySelectorAll('input:checked')].map((el) => el.value);
+                        await rmwNewswireConfig((c) => {
+                            c.sources = { ...(c.sources || {}) };
+                            c.sources.jin10 = {
+                                ...(c.sources.jin10 || {}),
+                                categories: picked,
+                                updatedAt: Date.now(),
+                            };
+                        });
+                    });
+                    const text = document.createElement('span');
+                    text.textContent = api.getMessage(opt.labelKey) || opt.value;
+                    label.append(cb, text);
+                    catWrap.appendChild(label);
+                }
+                group.appendChild(makeRow(api.getMessage('newswireJin10CategoriesLabel') || 'Categories', null));
+                group.appendChild(catWrap);
+            }
+
+            // 啟用但缺 key 的行內提示(狀態 needs-key 時顯示;非錯誤態)。
+            const note = document.createElement('div');
+            note.className = 'newswire-card-note hidden';
+            note.textContent = api.getMessage('newswireNeedsKeyNote') || 'Enter an API key to connect.';
+            noteEls[card.id] = note;
+            group.appendChild(note);
+
+            // 申請引導文案+官方連結(含費用/延遲注意事項)。
+            const guide = document.createElement('p');
+            guide.className = 'opt-row__desc';
+            guide.textContent = api.getMessage(card.guideKey) || '';
+            const link = document.createElement('a');
+            link.href = card.link;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = ` ${api.getMessage('newswireGetKeyLink') || 'Get a key'}`;
+            guide.appendChild(link);
+            group.appendChild(guide);
+
+            container.appendChild(group);
+        }
+
+        // --- 分級規則(P0/P1/靜音;寫入即生效,隨 N3 Drive 同步漫遊) ---
+        const rulesHeader = document.createElement('h4');
+        rulesHeader.className = 'settings-subsection-header';
+        rulesHeader.textContent = api.getMessage('newswireRulesHeader') || 'Keyword rules';
+        container.appendChild(rulesHeader);
+        const rulesDesc = document.createElement('p');
+        rulesDesc.className = 'opt-row__desc';
+        rulesDesc.textContent = api.getMessage('newswireRulesDesc') || '';
+        container.appendChild(rulesDesc);
+
+        for (const groupKey of ['p0', 'p1', 'mute']) {
+            const ta = document.createElement('textarea');
+            ta.className = 'modal-input newswire-rules-input';
+            ta.rows = 2;
+            ta.id = `newswire-rules-${groupKey}`;
+            ta.value = (cfg.rules?.[groupKey] || []).join(', ');
+            ta.addEventListener('change', async () => {
+                await rmwNewswireConfig((c) => {
+                    c.rules = {
+                        ...(c.rules || {}),
+                        [groupKey]: parseRuleWords(ta.value),
+                        updatedAt: Date.now(),
+                    };
+                });
+            });
+            const labelKey = {
+                p0: 'newswireRulesP0Label',
+                p1: 'newswireRulesP1Label',
+                mute: 'newswireRulesMuteLabel',
+            }[groupKey];
+            container.appendChild(makeRow(api.getMessage(labelKey) || groupKey.toUpperCase(), null));
+            container.appendChild(ta);
+        }
+
+        // --- 通知(BASE-016 N4) ---
+        const notifHeader = document.createElement('h4');
+        notifHeader.className = 'settings-subsection-header';
+        notifHeader.textContent = api.getMessage('newswireNotifHeader') || 'Notifications';
+        container.appendChild(notifHeader);
+
+        // P0 系統通知開關(預設開;prefs.notificationsEnabled)。SW 依此決定
+        // 是否對 importance===0 事件發 chrome.notifications。
+        const notifToggle = document.createElement('input');
+        notifToggle.type = 'checkbox';
+        notifToggle.id = 'newswire-notif';
+        notifToggle.checked = cfg.prefs?.notificationsEnabled !== false;
+        notifToggle.addEventListener('change', async () => {
+            await rmwNewswireConfig((c) => {
+                c.prefs = { ...(c.prefs || {}), notificationsEnabled: notifToggle.checked, updatedAt: Date.now() };
+            });
+        });
+        container.appendChild(makeRow(
+            api.getMessage('newswireNotifToggleLabel') || 'System notifications for P0 events',
+            notifToggle,
+            api.getMessage('newswireNotifToggleDesc') || '',
+        ));
+
+        // --- 跨裝置同步(BASE-016 N3) ---
+        const syncHeader = document.createElement('h4');
+        syncHeader.className = 'settings-subsection-header';
+        syncHeader.textContent = api.getMessage('newswireSyncHeader') || 'Sync';
+        container.appendChild(syncHeader);
+
+        // key 同步 opt-in(預設關):關閉時 payload 不含 keys、下次同步 scrub 遠端(FR-20)。
+        // 本機工作副本一律留 local,不受此開關影響。
+        const keySyncToggle = document.createElement('input');
+        keySyncToggle.type = 'checkbox';
+        keySyncToggle.id = 'newswire-sync-keys';
+        keySyncToggle.checked = cfg.prefs?.syncKeys === true;
+        keySyncToggle.addEventListener('change', async () => {
+            await rmwNewswireConfig((c) => {
+                c.prefs = { ...(c.prefs || {}), syncKeys: keySyncToggle.checked, updatedAt: Date.now() };
+            });
+        });
+        container.appendChild(makeRow(
+            api.getMessage('newswireKeySyncToggleLabel') || 'Sync API keys to Google Drive',
+            keySyncToggle,
+            api.getMessage('newswireKeySyncToggleDesc') || '',
+        ));
+
+        // 初始狀態+訂閱 SW 廣播。
+        try {
+            const st = await api.sendRuntimeMessage({ action: 'newswire:getState' });
+            if (st?.statuses) applyStatuses(st.statuses);
+        } catch { /* SW 喚醒中:靠後續廣播補上 */ }
+        api.addRuntimeMessageListener((message) => {
+            if (message?.type === 'newswire:status') applyStatuses(message.statuses);
+        });
+    })().catch((err) => console.warn('[newswire] renderNewswire failed:', err?.message || err));
+}
+
 const SECTIONS = [
     { id: 'appearance', labelKey: 'settingsNavAppearance', render: renderAppearance },
     { id: 'language',   labelKey: 'settingsNavLanguage',   render: renderLanguage },
@@ -1495,6 +1824,7 @@ const SECTIONS = [
     { id: 'sync',       labelKey: 'settingsNavSync',       render: renderSync, labelFallback: 'Backup & Sync' },
     { id: 'ai',         labelKey: 'settingsNavAi',         render: renderAi },
     { id: 'rss',        labelKey: 'settingsNavRss',        render: renderRss },
+    { id: 'newswire',   labelKey: 'settingsNavNewswire',   render: renderNewswire, labelFallback: 'News Feed' },
     { id: 'shortcuts',  labelKey: 'settingsNavShortcuts',  render: renderShortcuts },
     { id: 'about',      labelKey: 'settingsNavAbout',      render: renderAbout },
 ];

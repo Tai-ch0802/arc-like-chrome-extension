@@ -18,7 +18,7 @@ import { initSummaryRecorder } from './modules/readingList/summaryRecorder.js';
 import { SEARCH_NO_RESULTS_ICON_SVG, renderIcon } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
-import { initAiProviderErrorToast, initRssSyncOnboarding } from './modules/ui/toast.js';
+import { initAiProviderErrorToast, initRssSyncOnboarding, initNewswireSyncOnboarding } from './modules/ui/toast.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 
 // --- Spotlight 轉送動作處理 ---
@@ -286,7 +286,10 @@ async function initialize() {
         .then(() => initRssSyncOnboarding())
         .catch(console.error);
     // 快訊區塊(BASE-016 N1):經 SW getState 回填+訂閱廣播;不進首屏關鍵路徑。
-    ui.initNewswireSection().catch(console.error);
+    // N3:區塊就緒後,若已啟用來源但未綁 Drive → 一次性引導 toast。
+    ui.initNewswireSection()
+        .then(() => initNewswireSyncOnboarding())
+        .catch(console.error);
     keyboard.initialize();
     hoverSummarize.init(); // Initialize Hover Summarize feature
     // Workspace switcher dropdown + manage dialog. (Cache already loaded above,

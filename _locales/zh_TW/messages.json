@@ -179,6 +179,162 @@
     "message": "未讀快訊——點擊標為已讀",
     "description": "快訊標題旁未讀徽章的提示文字。"
   },
+  "settingsNavNewswire": {
+    "message": "快訊",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "資訊源",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "啟用",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "API 金鑰",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "API 金鑰（選填——填入可移除免費層延遲）",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "API 金鑰 ID",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "API 密鑰",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "此來源已啟用但尚未填入 API key——填入後才會連線。",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "前往申請 →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "未啟用",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "需填入 API key",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "連線中…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "已連線",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "重連中…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "連線異常",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "免費、無需 key 即可使用；填入 Tree of Alpha API key 可移除免費層延遲。",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "需至 stream.financialjuice.com 登入申請 API key；Free 方案延遲 10 分鐘、限 1 條連線。",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "開設 Alpaca 帳戶（paper 即可）免費取得 API keys；每帳戶限 1 條同時連線。",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "需於金十開放平台購買或申請試用取得 secret-key；請遵守金十授權條款。",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "快訊分段",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "市場快訊",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "期貨",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "美港股",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "A股",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "商品外匯",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "關鍵字規則",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "以逗號分隔關鍵字。命中 P0 以重大高亮顯示、P1 為重點；靜音關鍵字則直接濾除不顯示。",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "P0 關鍵字",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "P1 關鍵字",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "靜音關鍵字",
+    "description": "Label of the muted keywords textarea."
+  },
+  "newswireSyncHeader": {
+    "message": "跨裝置同步",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "同步 API keys 到 Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "預設關閉。API key 只會留在本機；開啟後才會同步，且僅存到你自己的 Drive appdata。",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "綁定 Google Drive，讓快訊來源設定與關鍵字規則跨裝置漫遊。",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "前往「備份與同步」設定",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "在設定中登入 Google，即可讓快訊來源與規則跨裝置同步。",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
+  "newswireNotifHeader": {
+    "message": "通知",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "重大事件（P0）系統通知",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "當 P0 事件（如 CPI、FOMC、利率決議）出現時，即使側邊欄未開啟也跳出 Chrome 通知；點擊可開啟原文。",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "側邊面板位置",
     "description": "設定中側邊面板位置區塊的標題。"

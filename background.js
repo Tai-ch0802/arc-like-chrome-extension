@@ -18,8 +18,14 @@ import {
   handleNewswireWatchdog,
   handleNewswireMessage,
   handleNewswireConfigChange,
+  handleNewswireNotificationClick,
+  exportLocalNewswireState,
+  importMergedNewswireState,
   ALARM_NEWSWIRE_WATCHDOG,
+  NEWSWIRE_CONFIG_KEY,
+  NEWSWIRE_KEYS_KEY,
 } from './modules/newswire/feedManager.js';
+import { mergeNewswireState, buildNewswirePayload, canonicalizeNewswire } from './modules/newswire/newswireSyncLogic.js';
 
 const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
 
@@ -59,6 +65,7 @@ const WS_SNAP_PREFIX = 'wsSnap_';   // chrome.storage.local ({tabs, rev, updated
 const ALARM_PULL = 'driveSyncPull';     // periodic full runOnce
 const ALARM_FLUSH = 'driveSyncFlush';   // one-shot debounced push flush
 const ALARM_RSS_FLUSH = 'rssSyncFlush'; // one-shot debounced RSS Drive sync
+const ALARM_NEWSWIRE_FLUSH = 'newswireSyncFlush'; // one-shot debounced newswire Drive sync
 const PULL_PERIOD_MIN = 10;             // ~10 min periodic pull
 const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarms min granularity)
 
@@ -66,6 +73,7 @@ const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarm
 // ONE Drive appdata file, merged atomically (see rssSyncLogic.js). These local
 // keys mirror rssManager's schema and are watched to trigger a debounced sync.
 const RSS_SYNC_FILE = 'rss-sync.json';
+const NEWSWIRE_SYNC_FILE = 'newswire-sync.json';
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
 const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
 const RSS_TOMBSTONES_KEY = 'rssTombstones';
@@ -276,6 +284,9 @@ async function runSyncOnce() {
     // workspace try so an RSS failure can't mask a workspace error and vice
     // versa; rssSyncOnce swallows its own errors internally.
     await rssSyncOnce();
+    // newswire settings sync (BASE-016 N3): same cadence, same single-flight
+    // pattern; swallows its own errors internally.
+    await newswireSyncOnce();
 }
 
 /**
@@ -311,6 +322,41 @@ function rssSyncOnce() {
     return rssSyncChain;
 }
 
+/**
+ * Single-flight newswire settings Drive sync (BASE-016 N3). Mirrors rssSyncOnce
+ * but with per-group LWW (newswireSyncLogic) instead of set-union. Reads
+ * newswire-sync.json, merges with the local working copy, writes back BOTH sides
+ * only where they differ (no-op guard on the {config, keys} subset — the
+ * payload's top-level updatedAt is excluded so an unchanged sync writes nothing).
+ * Key opt-in (FR-20): merged.remoteKeys is undefined when prefs.syncKeys is off,
+ * so buildNewswirePayload emits a keys-less payload that scrubs the remote copy.
+ */
+let newswireSyncChain = Promise.resolve();
+function newswireSyncOnce() {
+    newswireSyncChain = newswireSyncChain.then(async () => {
+        try {
+            if (!(await syncProvider.isConnected())) return;
+            if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+            const remoteFile = await syncProvider.read(NEWSWIRE_SYNC_FILE);
+            const remote = (remoteFile && remoteFile.json) || {};
+            const local = await exportLocalNewswireState();
+            const merged = mergeNewswireState(local, remote);
+            await importMergedNewswireState(merged); // internal no-op guard per key
+            const payload = buildNewswirePayload(merged, Date.now());
+            // Compare the identity subset {config, keys} — NOT the top-level
+            // updatedAt (changes every cycle) — so a settled state writes nothing.
+            const remoteIdentity = { config: remote.config, keys: remote.keys };
+            const payloadIdentity = { config: payload.config, keys: payload.keys };
+            if (canonicalizeNewswire(remoteIdentity) !== canonicalizeNewswire(payloadIdentity)) {
+                await syncProvider.write(NEWSWIRE_SYNC_FILE, payload);
+            }
+        } catch (err) {
+            console.warn('[newswire-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return newswireSyncChain;
+}
+
 /** (Re)create the periodic pull alarm. Alarms don't survive a browser restart. */
 function ensurePullAlarm() {
     chrome.alarms.create(ALARM_PULL, { periodInMinutes: PULL_PERIOD_MIN });
@@ -324,6 +370,13 @@ ensurePullAlarm();
 // newswire(BASE-016 N1):SW 每次啟動重建連線層——adapter/timer 活在 SW
 // 記憶體,回收即消失;initNewswire 冪等,來源全關時為零網路行為的 no-op。
 initNewswire();
+
+// newswire P0 通知點擊 → 開原文(BASE-016 N4)。只認領 newswire: 前綴的通知。
+if (chrome.notifications && chrome.notifications.onClicked) {
+  chrome.notifications.onClicked.addListener((notificationId) => {
+    handleNewswireNotificationClick(notificationId);
+  });
+}
 
 /** Read one workspace's persisted base rev (same storage the engine deps use). */
 async function readBaseRev(id) {
@@ -599,6 +652,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     rssSyncOnce();
     return;
   }
+  if (alarm.name === ALARM_NEWSWIRE_FLUSH) {
+    // Debounced newswire settings Drive sync (BASE-016 N3). Explicit branch for
+    // the same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
+    newswireSyncOnce();
+    return;
+  }
   if (alarm.name === ALARM_NEWSWIRE_WATCHDOG) {
     // newswire 看門狗:SW 存活時檢查各連線、被回收後由此喚醒重建(BASE-016)。
     handleNewswireWatchdog();
@@ -623,6 +682,18 @@ function handleRssStorageChange(changes, areaName) {
   chrome.alarms.create(ALARM_RSS_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
 }
 
+/**
+ * onChanged → schedule a debounced newswire Drive sync when the local newswire
+ * working copy (config or keys) changes. The write-back from newswireSyncOnce
+ * also fires onChanged, but the no-op guard makes that follow-up cycle write
+ * nothing, so it self-terminates (same convergence property as RSS).
+ */
+function handleNewswireStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!changes[NEWSWIRE_CONFIG_KEY] && !changes[NEWSWIRE_KEYS_KEY]) return;
+  chrome.alarms.create(ALARM_NEWSWIRE_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
 // chrome.storage.onChanged → derive sync pushes for changed workspaces + RSS.
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== 'sync' && areaName !== 'local') return;
@@ -630,6 +701,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     console.warn('[sync] onChanged handling failed:', err && err.message ? err.message : err);
   });
   handleRssStorageChange(changes, areaName);
+  handleNewswireStorageChange(changes, areaName);
   handleNewswireConfigChange(changes, areaName);
 });
 

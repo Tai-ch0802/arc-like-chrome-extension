@@ -179,6 +179,162 @@
     "message": "Noticias sin leer: haz clic para marcarlas como leídas",
     "description": "Tooltip of the unread badge next to the newswire header."
   },
+  "settingsNavNewswire": {
+    "message": "Noticias en vivo",
+    "description": "Nav item and header of the News Feed settings section."
+  },
+  "newswireSourcesHeader": {
+    "message": "Fuentes",
+    "description": "Subsection header above the source cards."
+  },
+  "newswireEnableSource": {
+    "message": "Activar",
+    "description": "Label of the per-source enable toggle."
+  },
+  "newswireApiKeyLabel": {
+    "message": "Clave API",
+    "description": "Label of a required API key field."
+  },
+  "newswireApiKeyOptionalLabel": {
+    "message": "Clave API (opcional: elimina el retraso del plan gratuito)",
+    "description": "Label of the optional Tree of Alpha key field."
+  },
+  "newswireApiKeyIdLabel": {
+    "message": "ID de clave API",
+    "description": "Label of the Alpaca API key ID field."
+  },
+  "newswireApiSecretLabel": {
+    "message": "Secreto API",
+    "description": "Label of the Alpaca API secret field."
+  },
+  "newswireNeedsKeyNote": {
+    "message": "Esta fuente está activada pero aún no tiene clave API; introdúcela para conectar.",
+    "description": "Inline note when a source is enabled without a key."
+  },
+  "newswireGetKeyLink": {
+    "message": "Obtener una clave →",
+    "description": "Link text pointing to the source signup page."
+  },
+  "newswireStatusDisabled": {
+    "message": "Desactivado",
+    "description": "Source status: disabled."
+  },
+  "newswireStatusNeedsKey": {
+    "message": "Requiere clave API",
+    "description": "Source status: enabled but missing API key."
+  },
+  "newswireStatusConnecting": {
+    "message": "Conectando…",
+    "description": "Source status: connecting."
+  },
+  "newswireStatusConnected": {
+    "message": "Conectado",
+    "description": "Source status: connected."
+  },
+  "newswireStatusRetrying": {
+    "message": "Reconectando…",
+    "description": "Source status: reconnecting with backoff."
+  },
+  "newswireStatusDegraded": {
+    "message": "Conexión degradada",
+    "description": "Source status: repeated failures / degraded."
+  },
+  "newswireGuideTree": {
+    "message": "Gratis y sin clave. Añade una clave API de Tree of Alpha para eliminar el retraso del plan gratuito.",
+    "description": "Guidance text on the Tree of Alpha card."
+  },
+  "newswireGuideFj": {
+    "message": "Requiere una clave API emitida en stream.financialjuice.com. El plan gratuito tiene 10 minutos de retraso y una conexión.",
+    "description": "Guidance text on the FinancialJuice card."
+  },
+  "newswireGuideAlpaca": {
+    "message": "Gratis con una cuenta de Alpaca (paper sirve). Crea claves API en el panel; una conexión simultánea por cuenta.",
+    "description": "Guidance text on the Alpaca card."
+  },
+  "newswireGuideJin10": {
+    "message": "Requiere una secret-key de la Jin10 Open Platform (compra o prueba). Respeta los términos de uso de Jin10.",
+    "description": "Guidance text on the Jin10 card."
+  },
+  "newswireJin10CategoriesLabel": {
+    "message": "Categorías de noticias",
+    "description": "Label of the Jin10 flash-category multi-select."
+  },
+  "newswireJin10CatMarket": {
+    "message": "Flash de mercado",
+    "description": "Jin10 category 1: market flash (main site)."
+  },
+  "newswireJin10CatFutures": {
+    "message": "Futuros",
+    "description": "Jin10 category 2: futures flash."
+  },
+  "newswireJin10CatUsHk": {
+    "message": "Acciones EE. UU. y HK",
+    "description": "Jin10 category 3: US & HK flash."
+  },
+  "newswireJin10CatAShare": {
+    "message": "Acciones A",
+    "description": "Jin10 category 4: A-share flash."
+  },
+  "newswireJin10CatCommodityFx": {
+    "message": "Materias primas y divisas",
+    "description": "Jin10 category 5: commodities & FX flash."
+  },
+  "newswireRulesHeader": {
+    "message": "Reglas de palabras clave",
+    "description": "Subsection header of the keyword rules editor."
+  },
+  "newswireRulesDesc": {
+    "message": "Separa las palabras clave con comas. Las coincidencias P0 se destacan como críticas, P1 como notables; las silenciadas se descartan.",
+    "description": "Helper text under the keyword rules header."
+  },
+  "newswireRulesP0Label": {
+    "message": "Palabras clave P0",
+    "description": "Label of the P0 keywords textarea."
+  },
+  "newswireRulesP1Label": {
+    "message": "Palabras clave P1",
+    "description": "Label of the P1 keywords textarea."
+  },
+  "newswireRulesMuteLabel": {
+    "message": "Palabras clave silenciadas",
+    "description": "Label of the muted keywords textarea."
+  },
+  "newswireSyncHeader": {
+    "message": "Sincronización",
+    "description": "Subsection header of the newswire cross-device sync settings."
+  },
+  "newswireKeySyncToggleLabel": {
+    "message": "Sincronizar claves API con Google Drive",
+    "description": "Label of the opt-in toggle that syncs API keys to Drive."
+  },
+  "newswireKeySyncToggleDesc": {
+    "message": "Desactivado por defecto. Las claves API permanecen en este dispositivo hasta que lo actives; al activarlo se sincronizan solo con tu propio appdata de Drive.",
+    "description": "Security note under the API-key sync opt-in toggle."
+  },
+  "newswireDriveGuideText": {
+    "message": "Conecta Google Drive para sincronizar tus fuentes de noticias y reglas de palabras clave entre dispositivos.",
+    "description": "Guide-card text shown when Drive is not connected."
+  },
+  "newswireDriveGuideBtn": {
+    "message": "Configurar en Copia y sincronización",
+    "description": "Guide-card button jumping to the Backup & Sync section."
+  },
+  "newswireSyncSignInHint": {
+    "message": "Inicia sesión en Google en Ajustes para sincronizar tus fuentes y reglas entre dispositivos.",
+    "description": "One-time sidepanel toast nudging Drive sign-in for newswire."
+  },
+  "newswireNotifHeader": {
+    "message": "Notificaciones",
+    "description": "Subsection header of the newswire notification settings."
+  },
+  "newswireNotifToggleLabel": {
+    "message": "Notificaciones del sistema para eventos de máxima prioridad (P0)",
+    "description": "Label of the P0 system-notification toggle."
+  },
+  "newswireNotifToggleDesc": {
+    "message": "Muestra una notificación de Chrome cuando llega un evento P0 (p. ej., IPC, FOMC, decisiones de tipos), incluso con el panel lateral cerrado. Haz clic para abrir la fuente.",
+    "description": "Helper text under the P0 notification toggle."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posición del Panel Lateral",
     "description": "Header for the side panel position section in settings."
