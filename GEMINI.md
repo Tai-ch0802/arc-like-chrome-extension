@@ -56,7 +56,11 @@ key_files:
   - file_path: modules/ui/sectionOrderUI.js
     description: "[UI] 側邊欄區塊排序套用（BASE-015）。applySectionOrder 讀 storage.sync.sectionOrder，以 DEFAULT_SECTION_ORDER 為 canonical 基準 merge 後，依 data-section-id 對 #content-container 的 .panel-section wrapper 做 appendChild 重排（保留節點身分與監聽器）；initSectionOrder 另訂閱 settingsBridge 派發的 sectionOrderChanged 即時重排。排序 UI 本身在 options.js renderAppearance（Sortable 拖曳清單，只寫 storage）。"
   - file_path: modules/newswire/normalizer.js
-    description: "[快訊] 純函式 normalizer（BASE-016）。各源 raw payload → 統一 NewsEvent：parseTree/parseFj/parseAlpaca/parseJin10＋共用 sanitizeEvent（strip HTML regex、NFKC、title 500 上限、URL 走 new URL() 驗證僅 http/https、symbols 大寫裁 20、缺 id 以 djb2 雜湊補）。金十特有：parseBeijingTime（UTC+8→epoch）、important===1→srcImportant、action!==1（修改/刪除）忽略；Alpaca 只取 T==='n'；FJ 只取 type==='news'。零 chrome/DOM 依賴可跑 unit test。"
+    description: "[快訊] 純函式 normalizer（BASE-016/018）。各源 raw payload → 統一 NewsEvent：parseTree/parseFj/parseAlpaca/parseJin10/parseTgMessage＋共用 sanitizeEvent（strip HTML regex、NFKC、title 500 上限、URL 走 new URL() 驗證僅 http/https、symbols 大寫裁 20、缺 id 以 djb2 雜湊補）。金十特有：parseBeijingTime（UTC+8→epoch）、important===1→srcImportant、action!==1 忽略；Alpaca 只取 T==='n'；FJ 只取 type==='news'。TG（BASE-018）：parseTgMessage（GramJS {message,channel}→NewsEvent，date 秒×1000、t.me/<username>/<id> url、媒體無 caption→[媒體]、channelTitle 附加供徽章）。NEWSWIRE_SOURCES 含 tg。零 chrome/DOM 依賴可跑 unit test。"
+  - file_path: modules/newswire/tgAdapter.js
+    description: "[快訊] Telegram adapter（BASE-018 TG1）。GramJS 客戶端（非 raw WebSocket，故不用 createWsAdapter）經 DI 注入（createClient/NewMessage 可 fake 測）；實作同一 Adapter 介面＋狀態詞彙。connect→client.connect()→逐頻道 getEntity→addEventHandler(NewMessage{chats})→新訊息以 {message,channel} 交 onRaw。classifyTgError 純函式（FLOOD_WAIT 遵守秒數／session 失效→needs-key 終止不迴圈／其餘暫時性退避）；eventChatId 純函式對應頻道 meta。真 GramJS 為 vendored bundle（tgClient.js，TG1-live）。"
+  - file_path: modules/newswire/tgClient.js
+    description: "[快訊] 真實 GramJS 客戶端工廠（BASE-018）。GramJS 以 vendored bundle 進 lib/（TG1-live，見 SPIKE_T0.md：1.3M＋polyfill build）；bundle 就緒前 createTgClient 拋明確錯誤、NewMessage=null，tgAdapter 捕捉為暫時性（生產環境 tg 預設 enabled=false＋無 UI 不觸發）。"
   - file_path: modules/newswire/dedupe.js
     description: "[快訊] L1 去重純函式（BASE-016）。createDedupeSet：in-memory Map 依插入序 FIFO 淘汰（cap 1000），種子來自 ring buffer 既有事件 id，使 SW 重啟與 Tree history replay 不重複入列。"
   - file_path: modules/newswire/rules.js

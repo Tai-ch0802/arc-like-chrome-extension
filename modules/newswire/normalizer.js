@@ -7,7 +7,7 @@
 //     title, url?, symbols?, srcImportant }
 // importance 由 rules.classify 於管線後段決定,不在此附加。
 
-export const NEWSWIRE_SOURCES = ['tree', 'fj', 'alpaca', 'jin10'];
+export const NEWSWIRE_SOURCES = ['tree', 'fj', 'alpaca', 'jin10', 'tg'];
 
 const TITLE_MAX = 500;
 const URL_MAX = 2048;
@@ -213,4 +213,38 @@ export function parseJin10(raw, now = Date.now()) {
         srcImportant: d.important === 1,
     }, now);
     return ev ? [ev] : [];
+}
+
+/**
+ * Telegram（BASE-018 TG1）:tgAdapter 把 GramJS NewMessage 包成
+ * `{ message, channel }` 交來。純函式,不碰 GramJS。
+ * @param {{message:object, channel?:{id?:any, username?:string, title?:string}}} raw
+ * @returns {object[]} NewsEvent[]（`channelTitle` 附加供 UI 徽章顯示頻道名）
+ */
+export function parseTgMessage(raw, now = Date.now()) {
+    if (!raw || typeof raw !== 'object') return [];
+    const m = raw.message;
+    if (!m || typeof m !== 'object' || m.id == null) return [];
+    const ch = (raw.channel && typeof raw.channel === 'object') ? raw.channel : {};
+    const msgId = String(m.id);
+    // 純文字或媒體 caption 都在 m.message;先淨化再決定佔位——caption 若淨化後
+    // 為空(純空白/純 HTML)且有媒體,仍以「[媒體]」呈現不丟棄(否則 sanitizeEvent
+    // 會因空 title 回 null)。
+    const rawText = typeof m.message === 'string' ? m.message : '';
+    const cleaned = collapseWhitespace(stripHtml(rawText));
+    const title = cleaned || (m.media != null ? '[媒體]' : '');
+    // GramJS date 為 unix 秒;url 需頻道 username(公開頻道)。
+    const date = Number.isFinite(m.date) ? m.date * 1000 : undefined;
+    const username = typeof ch.username === 'string' && ch.username ? ch.username : undefined;
+    const ev = sanitizeEvent({
+        source: 'tg',
+        sourceId: ch.id != null ? `${ch.id}:${msgId}` : msgId,
+        title,
+        url: username ? `https://t.me/${username}/${msgId}` : undefined,
+        tsSource: date,
+    }, now);
+    if (!ev) return [];
+    // 徽章顯示頻道名(TG2 renderer 用;既有渲染忽略未知欄位,無害)。
+    if (typeof ch.title === 'string' && ch.title) ev.channelTitle = ch.title;
+    return [ev];
 }
