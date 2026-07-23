@@ -60,7 +60,9 @@ export async function importMergedNewswireState(merged) {
 }
 
 const KEEPALIVE_INTERVAL_MS = 20000; // Chrome 官方 WebSocket-in-SW 建議節奏
-const WATCHDOG_PERIOD_MIN = 0.5;     // alarms 最短週期
+// alarms 最短週期。unpacked(開發載入)可到 30s;正式安裝的套件 Chrome 會把
+// 週期下限拉到 1 分鐘,屆時自癒延遲上限為 ~60s(仍在 PRD 的 90s 目標內)。
+const WATCHDOG_PERIOD_MIN = 0.5;
 
 /** 預設設定(首次啟動 flag-guarded 一次性 seed;來源全關=零網路行為)。 */
 export function defaultNewswireConfig(now = Date.now()) {
@@ -172,6 +174,10 @@ function notifyP0(event) {
             message,
             priority: 2,
         });
+        // 立即落地 ring buffer:點擊通知要從 buffer 反查 url,若 SW 在
+        // eventBuffer 的 2s debounce 完成前被回收,最新一則(最可能被點的
+        // 那則)會查不到而靜默失敗。P0 為低頻事件,這次額外寫入成本可忽略。
+        buffer.flush().catch(() => {});
     } catch { /* 權限未授予或平台不支援:靜默略過 */ }
 }
 

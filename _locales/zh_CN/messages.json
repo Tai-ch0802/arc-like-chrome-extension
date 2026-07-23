@@ -192,19 +192,19 @@
     "description": "Label of the per-source enable toggle."
   },
   "newswireApiKeyLabel": {
-    "message": "API key",
+    "message": "API 密钥",
     "description": "Label of a required API key field."
   },
   "newswireApiKeyOptionalLabel": {
-    "message": "API key（选填——填入可移除免费层延迟）",
+    "message": "API 密钥（选填——填入可移除免费层延迟）",
     "description": "Label of the optional Tree of Alpha key field."
   },
   "newswireApiKeyIdLabel": {
-    "message": "API key ID",
+    "message": "API 密钥 ID",
     "description": "Label of the Alpaca API key ID field."
   },
   "newswireApiSecretLabel": {
-    "message": "API secret",
+    "message": "API 私钥",
     "description": "Label of the Alpaca API secret field."
   },
   "newswireNeedsKeyNote": {

@@ -172,6 +172,11 @@ export function createTreeAdapter(cfg = {}, hooks = {}) {
 /**
  * FinancialJuice Stream:key 走 query string(該源官方設計;僅於 SW 內組
  * URL,不落 log)。連線即推送,無 subscribe 訊框。
+ *
+ * 已知限制:FJ 協定沒有可辨識的「認證失敗」訊框(不像 Alpaca 的 error code
+ * 或金十的 auth_result),因此無效 key 只會表現為伺服器關閉連線 → 一般退避
+ * 重連(上限 60s,不會風暴,但不會像其他兩源那樣終止於 needs-key)。缺 key
+ * 時 buildUrl 回 null,仍會在連線前就標記 needs-key。
  */
 export function createFjAdapter(cfg = {}, hooks = {}) {
     return createWsAdapter({
@@ -184,9 +189,18 @@ export function createFjAdapter(cfg = {}, hooks = {}) {
 }
 
 /**
+ * Alpaca 官方 error code 中屬於「憑證/方案問題,重試無用」的白名單:
+ * 401 not authenticated、402 auth failed、409 insufficient subscription。
+ * 其餘(400 語法、405 symbol limit、407 slow client、500 internal…)一律
+ * 視為暫時性,交給一般重連——避免一次偶發錯誤讓來源永久卡在 needs-key。
+ */
+export const ALPACA_FATAL_AUTH_CODES = new Set([401, 402, 409]);
+
+/**
  * Alpaca News:連線後 10 秒內送 auth,authenticated 後 subscribe news:["*"]。
  * 一般帳戶限 1 條同時連線——超限回 error 406(顯示 degraded,交給退避慢速
- * 續試,另一端釋放後可自癒);auth 類錯誤 → needs-key 終止重試。
+ * 續試,另一端釋放後可自癒);憑證類錯誤(見 ALPACA_FATAL_AUTH_CODES)
+ * → needs-key 終止重試,等使用者改 key 觸發重建。
  */
 export function createAlpacaAdapter(cfg = {}, hooks = {}) {
     return createWsAdapter({
@@ -205,8 +219,13 @@ export function createAlpacaAdapter(cfg = {}, hooks = {}) {
                 } else if (m.T === 'subscription') {
                     ctx.setStatus('connected');
                 } else if (m.T === 'error') {
-                    if (m.code === 406) ctx.setStatus('degraded'); // connection limit exceeded
-                    else ctx.fail('needs-key'); // 401/402/403 等 auth 類
+                    if (ALPACA_FATAL_AUTH_CODES.has(m.code)) {
+                        ctx.fail('needs-key'); // 憑證/方案問題:重試無用
+                    } else {
+                        // 406(連線數超限)與其餘未知碼:暫時性,標 degraded 後
+                        // 交給 onclose→退避重連自癒,不永久終止。
+                        ctx.setStatus('degraded');
+                    }
                 }
             }
             ctx.emit(raw); // 資料項(T==='n')由 parseAlpaca 過濾

@@ -10,6 +10,11 @@
  *   - Merge is PER-GROUP last-writer-wins by each group's own `updatedAt`:
  *     sources.{tree,fj,alpaca,jin10}, rules, and prefs each merge independently.
  *     Sources are a FIXED set (4) so there is no add/remove → no tombstones.
+ *     NOTE the granularity: `rules` is ONE group — editing P0 on device A while
+ *     device B edits P1 does NOT field-merge; the later `updatedAt` wins the
+ *     whole rules block. Same for `keys` (see mergeKeys). Acceptable because
+ *     rule edits are rare and one-device-at-a-time in practice; revisit with
+ *     per-field updatedAt if concurrent multi-device editing shows up.
  *   - API keys are SENSITIVE (aiProviderSettings convention: local-only working
  *     copy). They enter the Drive payload ONLY when the merged prefs.syncKeys is
  *     true; turning the opt-in off pushes a keys-less payload that SCRUBS the
@@ -23,6 +28,16 @@
 
 export const NEWSWIRE_SYNC_SCHEMA = 1;
 export const NEWSWIRE_SOURCE_IDS = ['tree', 'fj', 'alpaca', 'jin10'];
+
+/**
+ * Keys that must never be copied from remote JSON onto a fresh object. A literal
+ * `"__proto__"` key survives JSON.parse as an OWN property, and assigning it with
+ * bracket notation triggers the Object.prototype.__proto__ setter — which
+ * re-points THAT object's prototype (it does not poison Object.prototype, but a
+ * lookup miss on the object would then resolve against attacker-supplied data).
+ * The remote payload comes from Drive appdata, so treat it as untrusted input.
+ */
+const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
 /**
  * Pick the newer of two grouped records by `updatedAt` (last edit wins). Ties
@@ -55,6 +70,7 @@ export function mergeNewswireConfig(localCfg, remoteCfg) {
     const rSources = r.sources || {};
     const sources = {};
     for (const id of new Set([...NEWSWIRE_SOURCE_IDS, ...Object.keys(lSources), ...Object.keys(rSources)])) {
+        if (UNSAFE_KEYS.has(id)) continue; // 不可信遠端 JSON 的原型改寫防護
         const merged = pickNewer(lSources[id], rSources[id]);
         if (merged) sources[id] = merged;
     }
@@ -130,7 +146,10 @@ function sortKeysDeep(v) {
     if (Array.isArray(v)) return v.map(sortKeysDeep); // 陣列保序:關鍵字順序是使用者資料
     if (v && typeof v === 'object') {
         const out = {};
-        for (const k of Object.keys(v).sort()) out[k] = sortKeysDeep(v[k]);
+        for (const k of Object.keys(v).sort()) {
+            if (UNSAFE_KEYS.has(k)) continue; // 同上:canonical 每次 sync 都會跑
+            out[k] = sortKeysDeep(v[k]);
+        }
         return out;
     }
     return v;

@@ -39,9 +39,15 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
         expect(await page.$('#newswire-key-alpaca-keyId')).toBeTruthy();
         expect(await page.$('#newswire-key-alpaca-secret')).toBeTruthy();
 
-        const links = await page.$$eval('[data-newswire-source] a[target="_blank"]', els => els.map(el => el.href));
-        expect(links.some(h => h.includes('treeofalpha.com'))).toBe(true);
-        expect(links.some(h => h.includes('open.jin10.com'))).toBe(true);
+        // 比對 hostname 全等而非子字串:子字串比對會被 CodeQL 的
+        // js/incomplete-url-substring-sanitization 標記(evil.com/treeofalpha.com
+        // 之類也會通過),精確比對同時更嚴謹。
+        const hosts = await page.$$eval(
+            '[data-newswire-source] a[target="_blank"]',
+            els => els.map(el => new URL(el.href).hostname)
+        );
+        expect(hosts).toContain('news.treeofalpha.com');
+        expect(hosts).toContain('open.jin10.com');
     }, 120000);
 
     test('enabling FJ without a key writes config and surfaces needs-key status (no network)', async () => {

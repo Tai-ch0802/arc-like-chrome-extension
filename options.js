@@ -1645,6 +1645,7 @@ function renderNewswire(container) {
             enable.checked = cfg.sources?.[card.id]?.enabled === true;
             enable.addEventListener('change', async () => {
                 await rmwNewswireConfig((c) => {
+                    c.sources = { ...(c.sources || {}) };
                     c.sources[card.id] = {
                         ...(c.sources[card.id] || {}),
                         enabled: enable.checked,
@@ -1686,6 +1687,7 @@ function renderNewswire(container) {
                     cb.addEventListener('change', async () => {
                         const picked = [...catWrap.querySelectorAll('input:checked')].map((el) => el.value);
                         await rmwNewswireConfig((c) => {
+                            c.sources = { ...(c.sources || {}) };
                             c.sources.jin10 = {
                                 ...(c.sources.jin10 || {}),
                                 categories: picked,
