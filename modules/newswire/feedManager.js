@@ -7,7 +7,7 @@
 // alarm(30s)喚醒重建。storage 經 apiManager;alarms/runtime 為 SW 專屬。
 
 import { getStorage, setStorage } from '../apiManager.js';
-import { parseTree, parseFj, parseAlpaca, parseJin10 } from './normalizer.js';
+import { parseTree, parseFj, parseAlpaca, parseJin10, parseTgMessage } from './normalizer.js';
 import { createDedupeSet } from './dedupe.js';
 import { classify, DEFAULT_RULES } from './rules.js';
 import { createEventBuffer } from './eventBuffer.js';
@@ -18,6 +18,7 @@ import {
     createJin10Adapter,
     missingCreds,
 } from './adapters.js';
+import { createTgAdapter } from './tgAdapter.js';
 import { canonicalizeNewswire } from './newswireSyncLogic.js';
 import { buildP0Notification } from './notify.js';
 
@@ -73,6 +74,8 @@ export function defaultNewswireConfig(now = Date.now()) {
             fj: { enabled: false, updatedAt: now },
             alpaca: { enabled: false, updatedAt: now },
             jin10: { enabled: false, mode: 'wss', categories: ['1'], updatedAt: now },
+            // Telegram(BASE-018):channels 隨 config 漫遊;登入/UI 於 TG2。
+            tg: { enabled: false, channels: [], updatedAt: now },
         },
         rules: {
             p0: [...DEFAULT_RULES.p0],
@@ -95,6 +98,15 @@ const ADAPTER_FACTORIES = {
         // 官方 language=traditional:UI 語言為繁體時快訊轉繁體(M0/SA §5.4)。
         language: uiLangCache === 'zh_TW' ? 'traditional' : undefined,
     }, hooks),
+    // Telegram(BASE-018 TG1):GramJS 客戶端(vendored bundle 隨 TG1-live)。
+    // 預設 enabled=false 且尚無 UI 可啟用 → 生產環境不觸發真連線;bundle
+    // 就緒前 createTgClient 拋錯,tgAdapter 捕捉為暫時性(不影響其他源)。
+    tg: (sourceCfg, keys, hooks) => createTgAdapter({
+        session: keys?.tg?.session,
+        apiId: keys?.tg?.apiId,
+        apiHash: keys?.tg?.apiHash,
+        channels: sourceCfg?.channels || [],
+    }, hooks),
 };
 
 let started = false;
@@ -102,7 +114,7 @@ let config = null;
 let keysCache = {};
 let uiLangCache = '';
 const adapters = new Map();
-const statuses = { tree: 'disabled', fj: 'disabled', alpaca: 'disabled', jin10: 'disabled' };
+const statuses = { tree: 'disabled', fj: 'disabled', alpaca: 'disabled', jin10: 'disabled', tg: 'disabled' };
 let dedupe = createDedupeSet();
 const buffer = createEventBuffer();
 let keepaliveTimer = null;
@@ -140,6 +152,7 @@ function handleRaw(source, raw) {
         case 'fj': parsed = parseFj(raw); break;
         case 'alpaca': parsed = parseAlpaca(raw); break;
         case 'jin10': parsed = parseJin10(raw); break;
+        case 'tg': parsed = parseTgMessage(raw); break;
         default: parsed = [];
     }
     if (!parsed.length) return;

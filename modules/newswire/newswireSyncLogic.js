@@ -8,8 +8,8 @@
  *   - newswire settings live in ONE Drive file `newswire-sync.json`:
  *     { schemaVersion, config:{sources, rules, prefs}, keys?, updatedAt }.
  *   - Merge is PER-GROUP last-writer-wins by each group's own `updatedAt`:
- *     sources.{tree,fj,alpaca,jin10}, rules, and prefs each merge independently.
- *     Sources are a FIXED set (4) so there is no add/remove → no tombstones.
+ *     sources.{tree,fj,alpaca,jin10,tg}, rules, and prefs each merge independently.
+ *     Sources are a FIXED set (5) so there is no add/remove → no tombstones.
  *     NOTE the granularity: `rules` is ONE group — editing P0 on device A while
  *     device B edits P1 does NOT field-merge; the later `updatedAt` wins the
  *     whole rules block. Same for `keys` (see mergeKeys). Acceptable because
@@ -27,7 +27,7 @@
  */
 
 export const NEWSWIRE_SYNC_SCHEMA = 1;
-export const NEWSWIRE_SOURCE_IDS = ['tree', 'fj', 'alpaca', 'jin10'];
+export const NEWSWIRE_SOURCE_IDS = ['tree', 'fj', 'alpaca', 'jin10', 'tg'];
 
 /**
  * Keys that must never be copied from remote JSON onto a fresh object. A literal

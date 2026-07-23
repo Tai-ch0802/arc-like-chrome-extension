@@ -38,6 +38,8 @@ export function missingCreds(source, keys) {
         case 'fj': return !keys?.fj?.apiKey;
         case 'alpaca': return !(keys?.alpaca?.keyId && keys?.alpaca?.secret);
         case 'jin10': return !keys?.jin10?.secretKey;
+        // Telegram(BASE-018):需 session（登入後產出）＋ api_id/api_hash。
+        case 'tg': return !(keys?.tg?.session && keys?.tg?.apiId && keys?.tg?.apiHash);
         default: return true;
     }
 }

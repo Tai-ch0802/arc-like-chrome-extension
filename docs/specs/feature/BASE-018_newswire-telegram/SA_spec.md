@@ -4,7 +4,7 @@
 |---|---|
 | ID | BASE-018 |
 | 分級 | **T2**（Phase 2：SA） |
-| 狀態 | Draft v1.1 — 待 User Review（Gate 2，PRD 核准後定稿）｜v1.1 依 PR #192 意見：session 改為 opt-in 同步 |
+| 狀態 | **Final v1.2 — 已核准（Gate 2 通過）**；T0 spike PROCEED，TG1 實作進行中 |
 | 日期 | 2026-07-23 |
 | 上游 | 同目錄 `PRD_spec.md` v1.1 |
 
