@@ -335,6 +335,10 @@
     "message": "जब कोई P0 घटना (जैसे CPI, FOMC, ब्याज दर निर्णय) आती है, तो साइड पैनल बंद होने पर भी Chrome सूचना दिखाएँ; स्रोत खोलने के लिए क्लिक करें।",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "साफ़ करें",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "साइड पैनल स्थिति",
     "description": "Header for the side panel position section in settings."

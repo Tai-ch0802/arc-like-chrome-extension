@@ -18,7 +18,12 @@ let unreadCount = 0;
 let latestTs = 0;          // 已呈現事件的最大 tsIngest,markSeen 水位
 let enabledAny = false;
 let collapsed = false;
-let sentinelVisible = false;
+
+// BASE-017:#newswire-list 有固定高度+內部捲動,「使用者看著最新訊息」
+// 的判定改為列表自身的 scrollTop(≈0 即在頂部),取代原本的 IntersectionObserver
+// sentinel(列表內部捲動後,列表外的 sentinel 恆在視野內,判定會失真)。
+const AT_TOP_PX = 4;
+const listAtTop = () => !!els?.list && els.list.scrollTop <= AT_TOP_PX;
 
 const taipeiTime = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Asia/Taipei',
@@ -47,6 +52,10 @@ function renderRow(ev) {
     title.className = 'newswire-item__title';
     title.textContent = ev.title || '';
     title.title = ev.title || '';
+
+    // 供 searchManager 過濾(BASE-017):快訊參與側欄搜尋。
+    row.dataset.title = ev.title || '';
+    row.dataset.source = ev.source || '';
 
     row.append(time, source, title);
 
@@ -78,11 +87,18 @@ function renderAll(events) {
 
 /** 插入即時事件於頂部(events 新→舊;由舊到新逐一插到最上方保持排序)。 */
 function prependEvents(events) {
+    // 使用者若正往下捲看舊訊息,插入不可造成內容跳動:記錄插入前後的
+    // scrollHeight 差,補償 scrollTop(BASE-017 內部捲動)。
+    const keepPosition = els.list.scrollTop > AT_TOP_PX;
+    const prevHeight = keepPosition ? els.list.scrollHeight : 0;
     for (let i = events.length - 1; i >= 0; i--) {
         els.list.insertBefore(renderRow(events[i]), els.list.firstChild);
         latestTs = Math.max(latestTs, events[i].tsIngest || 0);
     }
     trimRows();
+    if (keepPosition) {
+        els.list.scrollTop += els.list.scrollHeight - prevHeight;
+    }
 }
 
 function refreshBadge() {
@@ -100,6 +116,18 @@ function refreshControls() {
     els.empty.classList.toggle('hidden', enabledAny || hasRows);
     els.pauseBtn.classList.toggle('hidden', !enabledAny);
     els.markReadBtn.classList.toggle('hidden', !enabledAny);
+    // 清除鈕跟著「有沒有內容」走,不跟來源開關——來源全關後殘留的舊訊息
+    // 也要能清(BASE-017)。
+    els.clearBtn.classList.toggle('hidden', !hasRows);
+}
+
+/** SW 完成清除後的本地清空(所有開啟中的 sidepanel 各自收到廣播)。 */
+function onCleared() {
+    els.list.textContent = '';
+    pending = [];
+    unreadCount = 0;
+    refreshBadge();
+    refreshControls();
 }
 
 function markSeenNow() {
@@ -117,8 +145,8 @@ function onLiveEvents(events) {
         return;
     }
     prependEvents(events);
-    if (sentinelVisible && document.hasFocus()) {
-        markSeenNow(); // 頂部在視野內:即到即讀(FR-12)
+    if (listAtTop() && document.hasFocus()) {
+        markSeenNow(); // 列表在頂部:即到即讀(FR-12)
     } else {
         unreadCount += events.length;
         refreshBadge();
@@ -159,7 +187,7 @@ export async function initNewswireSection() {
         badge: document.getElementById('newswire-unread-badge'),
         pauseBtn: document.getElementById('newswire-pause-btn'),
         markReadBtn: document.getElementById('newswire-mark-read-btn'),
-        sentinel: document.getElementById('newswire-top-sentinel'),
+        clearBtn: document.getElementById('newswire-clear-btn'),
         list: document.getElementById('newswire-list'),
         empty: document.getElementById('newswire-empty'),
         emptyCta: document.getElementById('newswire-empty-cta'),
@@ -185,21 +213,24 @@ export async function initNewswireSection() {
     });
     els.pauseBtn.addEventListener('click', togglePause);
     els.markReadBtn.addEventListener('click', markSeenNow);
+    els.clearBtn.addEventListener('click', () => {
+        // 一鍵清除:快訊為短暫流水非使用者資料,不做確認對話框(BASE-017);
+        // 實際清空等 SW 廣播 newswire:cleared,多個 sidepanel 一致。
+        api.sendRuntimeMessage({ action: 'newswire:clear' }).catch(() => {});
+    });
     els.emptyCta.addEventListener('click', () => api.openOptionsPage());
 
-    // 頂部 sentinel 進入視野=使用者看著列表頂 → 未讀歸零(FR-12 的捲動重置)。
-    if (typeof IntersectionObserver === 'function') {
-        const io = new IntersectionObserver((entries) => {
-            sentinelVisible = entries[0]?.isIntersecting === true;
-            if (sentinelVisible && unreadCount > 0 && document.hasFocus()) markSeenNow();
-        });
-        io.observe(els.sentinel);
-    }
+    // 捲回列表頂部 → 未讀歸零(FR-12 的捲動重置;BASE-017 改為內部捲動判定)。
+    els.list.addEventListener('scroll', () => {
+        if (listAtTop() && unreadCount > 0 && document.hasFocus()) markSeenNow();
+    }, { passive: true });
 
     api.addRuntimeMessageListener((message) => {
         if (!message || typeof message !== 'object') return;
         if (message.type === 'newswire:events') {
             onLiveEvents(message.events || []);
+        } else if (message.type === 'newswire:cleared') {
+            onCleared();
         } else if (message.type === 'newswire:status') {
             enabledAny = Object.values(message.statuses || {}).some((s) => s !== 'disabled');
             refreshControls();

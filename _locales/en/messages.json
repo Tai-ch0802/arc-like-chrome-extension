@@ -338,6 +338,10 @@
     "message": "Show a Chrome notification when a P0 event (e.g. CPI, FOMC, rate decisions) arrives, even when the side panel is closed. Click it to open the source.",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "Clear",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Side Panel Position",
     "description": "Header for the side panel position section in settings."

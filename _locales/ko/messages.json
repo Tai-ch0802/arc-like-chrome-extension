@@ -335,6 +335,10 @@
     "message": "P0 이벤트(CPI, FOMC, 금리 결정 등)가 도착하면 사이드 패널이 닫혀 있어도 Chrome 알림을 표시합니다. 클릭하면 원문이 열립니다.",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "지우기",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "사이드 패널 위치",
     "description": "Header for the side panel position section in settings."

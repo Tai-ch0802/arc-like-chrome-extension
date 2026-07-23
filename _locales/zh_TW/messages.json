@@ -335,6 +335,10 @@
     "message": "當 P0 事件（如 CPI、FOMC、利率決議）出現時，即使側邊欄未開啟也跳出 Chrome 通知；點擊可開啟原文。",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "清除",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "側邊面板位置",
     "description": "設定中側邊面板位置區塊的標題。"

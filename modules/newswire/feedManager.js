@@ -313,6 +313,18 @@ export function handleNewswireMessage(message, sendResponse) {
         }));
         return true;
     }
+    if (message.action === 'newswire:clear') {
+        // 快速清除(BASE-017):清空 ring buffer 並廣播;dedupe set 刻意保留,
+        // 讓 Tree 下次重連的 history replay 不會把剛清掉的舊訊息復活。
+        (async () => {
+            if (!started) await initNewswire();
+            await buffer.clear();
+            await setStorage('local', { [NEWSWIRE_LAST_SEEN_KEY]: Date.now() });
+            broadcast({ type: 'newswire:cleared' });
+            sendResponse({ ok: true });
+        })().catch((err) => sendResponse({ ok: false, error: err?.message || String(err) }));
+        return true;
+    }
     if (message.action === 'newswire:markSeen') {
         setStorage('local', { [NEWSWIRE_LAST_SEEN_KEY]: Number(message.ts) || Date.now() })
             .then(() => sendResponse({ ok: true }))

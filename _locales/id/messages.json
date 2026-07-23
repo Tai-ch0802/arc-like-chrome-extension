@@ -335,6 +335,10 @@
     "message": "Tampilkan notifikasi Chrome saat peristiwa P0 (mis. CPI, FOMC, keputusan suku bunga) tiba, bahkan ketika panel samping tertutup. Klik untuk membuka sumbernya.",
     "description": "Helper text under the P0 notification toggle."
   },
+  "newswireClearBtn": {
+    "message": "Bersihkan",
+    "description": "Header button clearing all news items from the feed."
+  },
   "sidePanelPositionSectionHeader": {
     "message": "Posisi Panel Samping",
     "description": "Header for the side panel position section in settings."

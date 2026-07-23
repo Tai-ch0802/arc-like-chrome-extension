@@ -61,4 +61,14 @@ describe('newswire eventBuffer (BASE-016 N1)', () => {
     buf.append([]);
     expect(timers.length).toBe(0);
   });
+  it('clear empties the buffer and persists immediately (BASE-017)', async () => {
+    const { deps, writes } = makeDeps({ events: [mkEvent('a', 1), mkEvent('b', 2)] });
+    const buf = createEventBuffer(deps);
+    await buf.init();
+    buf.append([mkEvent('c', 3)]); // debounce 中
+    await buf.clear();
+    expect(buf.getEvents()).toEqual([]);
+    expect(writes.length).toBe(1); // 立即落地一次(取消了 pending timer)
+    expect(writes[0][NEWSWIRE_EVENTS_KEY].events).toEqual([]);
+  });
 });
