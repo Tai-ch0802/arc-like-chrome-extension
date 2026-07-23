@@ -149,9 +149,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     return;
                 }
                 const hostname = parsedUrl.hostname.toLowerCase().replace(/^\[|\]$/g, '');
-                if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' ||
-                    /^10\./.test(hostname) || /^192\.168\./.test(hostname) ||
-                    /^172\.(1[6-9]|2[0-9]|3[01])\./.test(hostname) || hostname === '0.0.0.0') {
+                if (
+                    hostname === 'localhost' ||
+                    hostname === '0.0.0.0' ||
+                    /^127\./.test(hostname) ||
+                    /^10\./.test(hostname) ||
+                    /^192\.168\./.test(hostname) ||
+                    /^172\.(1[6-9]|2[0-9]|3[01])\./.test(hostname) ||
+                    /^169\.254\./.test(hostname)
+                ) {
+                    sendResponse({ success: false, error: 'Feed URL points to private network' });
+                    return;
+                }
+                if (
+                    hostname === '::1' ||
+                    /^fc/i.test(hostname) ||
+                    /^fd/i.test(hostname) ||
+                    /^fe80/i.test(hostname) ||
+                    /^::ffff:/i.test(hostname)
+                ) {
                     sendResponse({ success: false, error: 'Feed URL points to private network' });
                     return;
                 }
@@ -159,9 +175,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), message.timeoutMs || 10000);
 
-                const response = await fetch(message.feedUrl, { signal: controller.signal });
+                const response = await fetch(message.feedUrl, { signal: controller.signal, redirect: 'manual' });
                 clearTimeout(timeoutId);
 
+                if (response.type === 'opaqueredirect') {
+                    sendResponse({ success: false, error: 'Feed URL redirects are not allowed' });
+                    return;
+                }
                 if (!response.ok) {
                     sendResponse({ success: false, error: `HTTP ${response.status}` });
                     return;
