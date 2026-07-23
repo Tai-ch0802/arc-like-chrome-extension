@@ -142,6 +142,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // This is used by the Service Worker which cannot use fetch() reliably for some URLs
         (async () => {
             try {
+                let parsedUrl;
+                try { parsedUrl = new URL(message.feedUrl); } catch { sendResponse({ success: false, error: 'Invalid feed URL' }); return; }
+                if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+                    sendResponse({ success: false, error: 'Invalid feed URL protocol' });
+                    return;
+                }
+                const hostname = parsedUrl.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+                if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' ||
+                    /^10\./.test(hostname) || /^192\.168\./.test(hostname) ||
+                    /^172\.(1[6-9]|2[0-9]|3[01])\./.test(hostname) || hostname === '0.0.0.0') {
+                    sendResponse({ success: false, error: 'Feed URL points to private network' });
+                    return;
+                }
+
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), message.timeoutMs || 10000);
 
