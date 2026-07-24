@@ -5,13 +5,15 @@
 import { createTgLoginController } from '../../modules/newswire/tgLoginController.js';
 
 function fakeGramJS(behavior = {}) {
-    const calls = { started: null, loggedOut: false, disconnected: false, gotEntity: null };
+    const calls = { started: null, loggedOut: false, disconnected: false, gotEntity: null, clientOptions: null };
     class FakeStringSession {
         constructor(s) { this.s = s || ''; }
         save() { return behavior.savedSession || 'SESSION_STRING'; }
     }
+    class FakePromisedWebSockets {}
+    FakePromisedWebSockets.isWebSocket = true;
     class FakeTelegramClient {
-        constructor(session) { this.session = session; }
+        constructor(session, apiId, apiHash, options) { this.session = session; calls.clientOptions = options; }
         async start(params) {
             calls.started = params;
             // 模擬 GramJS auth 迴圈:callback 回 null(取消)→ onError;onError 回 truthy 才中止(拋)。
@@ -32,7 +34,7 @@ function fakeGramJS(behavior = {}) {
         async logOut() { calls.loggedOut = true; }
         async getEntity(u) { calls.gotEntity = u; return behavior.entity || { id: 100n, username: u, title: 'Chan', participantsCount: 5000 }; }
     }
-    return { loadGramJS: async () => ({ TelegramClient: FakeTelegramClient, StringSession: FakeStringSession }), calls };
+    return { loadGramJS: async () => ({ TelegramClient: FakeTelegramClient, StringSession: FakeStringSession, PromisedWebSockets: FakePromisedWebSockets }), calls };
 }
 
 describe('tgLoginController (BASE-018 TG2c)', () => {
@@ -118,5 +120,16 @@ describe('tgLoginController (BASE-018 TG2c)', () => {
         } });
         await expect(ctrl.login({ apiId: 1, apiHash: 'h', phoneNumber: 'x', phoneCode: async () => '1', password: async () => 'x' }))
             .rejects.toThrow('PHONE_NUMBER_INVALID');
+    });
+
+    it('★ 建 client 傳 networkSocket=PromisedWebSockets(瀏覽器 WebSocket transport)', async () => {
+        // 回歸防護:不傳則 teleproto 預設 PromisedNetSockets → new net.Socket()(recipe 已
+        // stub node:net)→ 真連線炸「Socket is not a constructor」。須顯式 WebSocket transport。
+        const { loadGramJS, calls } = fakeGramJS();
+        const ctrl = createTgLoginController({ loadGramJS });
+        await ctrl.resolveChannel({ apiId: 1, apiHash: 'h', session: 'S', username: 'x' });
+        expect(calls.clientOptions?.useWSS).toBe(true);
+        expect(calls.clientOptions?.networkSocket).toBeDefined();
+        expect(calls.clientOptions.networkSocket.isWebSocket).toBe(true);
     });
 });

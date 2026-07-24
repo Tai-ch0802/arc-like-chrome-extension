@@ -22,10 +22,13 @@ function loadGramJS() {
  * @returns {Promise<object>} GramJS TelegramClient
  */
 export async function createTgClient({ session, apiId, apiHash } = {}) {
-    const { TelegramClient, StringSession } = await loadGramJS();
+    const { TelegramClient, StringSession, PromisedWebSockets } = await loadGramJS();
     return new TelegramClient(new StringSession(session || ''), Number(apiId), String(apiHash), {
         connectionRetries: 3,
         useWSS: true,
+        // 瀏覽器連線層:不傳則預設 PromisedNetSockets(node:net,recipe 已 stub → 炸)。
+        // PromisedWebSockets 用 globalThis.WebSocket,offscreen DOM context 有原生 WS。
+        networkSocket: PromisedWebSockets,
     });
 }
 

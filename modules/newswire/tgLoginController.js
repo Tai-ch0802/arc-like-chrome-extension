@@ -13,10 +13,13 @@ export function createTgLoginController(deps = {}) {
 
     // 建一個短命 client 執行一次性操作後必 disconnect。
     async function withClient(session, apiId, apiHash, fn) {
-        const { TelegramClient, StringSession } = await loadGramJS();
+        const { TelegramClient, StringSession, PromisedWebSockets } = await loadGramJS();
         const client = new TelegramClient(new StringSession(session || ''), Number(apiId), String(apiHash), {
             connectionRetries: 3,
             useWSS: true,
+            // 瀏覽器連線層:不傳則預設 PromisedNetSockets(node:net,recipe 已 stub → 真連線炸
+            // 「Socket is not a constructor」)。PromisedWebSockets 用 globalThis.WebSocket。
+            networkSocket: PromisedWebSockets,
         });
         try {
             return await fn(client);
