@@ -99,6 +99,11 @@ describe('createTgAdapter — lifecycle', () => {
     expect(a.isAlive()).toBe(true);
     const client = factory.last();
     expect(client.handlers[0].ev.opts.chats.length).toBe(1); // subscribed to 1 entity
+    // 回歸防護:chats 必須傳頻道識別碼(id)而非 entity 物件——teleproto EventBuilder 對每個
+    // 元素 .toString(),entity 物件 → "[object Object]" → resolve 失敗 → filter 永久短路 →
+    // 一則訊息都收不到(連上卻無 raw)。傳 id → toString 為數字字串 → 正確解析。
+    expect(client.handlers[0].ev.opts.chats).toEqual([100]);
+    expect(typeof client.handlers[0].ev.opts.chats[0]).not.toBe('object');
 
     client.emit({ chatId: '100', message: { id: 9, message: 'hi', date: 1 } });
     expect(raws).toHaveLength(1);

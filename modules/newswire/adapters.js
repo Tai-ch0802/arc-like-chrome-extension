@@ -45,6 +45,18 @@ export function missingCreds(source, keys) {
 }
 
 /**
+ * 純函式:Telegram 已登入(creds 齊)但**未設定任何頻道**。訂閱空頻道 whitelist 時
+ * teleproto 的 EventBuilder filter 會靜默丟棄每一則訊息(events/common.js:89-98)卻報
+ * connected → 使用者以為正常卻收不到。feedManager 據此改報 needs-config、不建連線,
+ * 待使用者加頻道(config 變更)後重建。其他源無頻道概念,一律 false。
+ * @param {string} source
+ * @param {object} sourceCfg config.sources[source]
+ */
+export function missingChannels(source, sourceCfg) {
+    return source === 'tg' && !(sourceCfg?.channels?.length);
+}
+
+/**
  * 純函式:金十 subscribe params(SA §5.4)。category 空值 fallback ['1'];
  * language 僅在 traditional 時送出;contain/filter/classify v1 不使用
  * (mute/分級統一走 client 端 rules,跨源一致)。

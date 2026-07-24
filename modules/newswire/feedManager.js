@@ -17,6 +17,7 @@ import {
     createAlpacaAdapter,
     createJin10Adapter,
     missingCreds,
+    missingChannels,
 } from './adapters.js';
 import { createTgProxyAdapter } from './tgProxyAdapter.js';
 import { canonicalizeNewswire } from './newswireSyncLogic.js';
@@ -218,6 +219,13 @@ function applyAdapters() {
             // 啟用但憑證缺漏:不建連線,顯示 needs-key(填入 key 後 onChanged 重建)。
             if (existing) { existing.disconnect(); adapters.delete(source); }
             setStatus(source, 'needs-key');
+            continue;
+        }
+        if (wantEnabled && missingChannels(source, config?.sources?.[source])) {
+            // tg 已登入但未加頻道:訂閱空 whitelist 會被 teleproto filter 靜默丟棄每則訊息
+            // 卻報 connected。不建連線、報 needs-config;加頻道(onChanged)後 !existing 重建。
+            if (existing) { existing.disconnect(); adapters.delete(source); }
+            setStatus(source, 'needs-config');
             continue;
         }
         if (wantEnabled && !existing) {

@@ -223,6 +223,10 @@
     "message": "API-Schlüssel erforderlich",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsConfig": {
+    "message": "Kanal hinzufügen",
+    "description": "Source status: enabled but no channel configured yet."
+  },
   "newswireStatusConnecting": {
     "message": "Verbinde…",
     "description": "Source status: connecting."
