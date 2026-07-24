@@ -1673,7 +1673,7 @@ function renderTgCard(container, cfg, keys, statusEls) {
         loginBtn.textContent = api.getMessage('tgLoggingIn') || 'Logging in…';
         try {
             const ctrl = await tgLoginCtrl();
-            const { session, me } = await ctrl.login({
+            const result = await ctrl.login({
                 apiId, apiHash, phoneNumber: phone,
                 phoneCode: () => modalManager.showPrompt({
                     title: api.getMessage('tgCodeTitle') || 'Telegram 驗證碼',
@@ -1686,6 +1686,12 @@ function renderTgCard(container, cfg, keys, statusEls) {
                 }),
                 onError: () => {},
             });
+            if (result.cancelled) { // 使用者取消驗證碼/2FA prompt:靜默重啟用按鈕,不當錯誤
+                loginBtn.disabled = false;
+                loginBtn.textContent = api.getMessage('tgLoginButton') || 'Log in';
+                return;
+            }
+            const { session, me } = result;
             state.keys = { ...state.keys, apiId, apiHash, session, meName: me?.firstName || me?.username || '' };
             await rmwNewswireKeys((k) => { k.tg = { ...(k.tg || {}), apiId, apiHash, session }; });
             await rmwNewswireConfig((c) => {

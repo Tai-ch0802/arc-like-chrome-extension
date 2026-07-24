@@ -34,12 +34,27 @@ export function createTgLoginController(deps = {}) {
      */
     async function login({ apiId, apiHash, phoneNumber, phoneCode, password, onError }) {
         return withClient('', apiId, apiHash, async (client) => {
-            await client.start({
-                phoneNumber,
-                phoneCode,
-                password,
-                onError: (e) => { onError?.(e); },
-            });
+            // 使用者取消驗證碼/2FA prompt(callback 回 null)時,GramJS 的 auth 迴圈只有在
+            // onError 回 truthy 才會中止(拋 AUTH_USER_CANCEL);否則會無限重開同一個 prompt、
+            // login 永不 settle、UI 按鈕卡死。故:取消 → 記 cancelled → onError 回 true 中止;
+            // 真錯誤(如驗證碼打錯)cancelled 為 false → onError 回 false,交 GramJS 重試(重彈 prompt)。
+            let cancelled = false;
+            const guard = (cb) => (cb ? async (...a) => {
+                const v = await cb(...a);
+                if (v == null || v === '') cancelled = true;
+                return v;
+            } : cb);
+            try {
+                await client.start({
+                    phoneNumber,
+                    phoneCode: guard(phoneCode),
+                    password: guard(password),
+                    onError: (e) => { onError?.(e); return cancelled; },
+                });
+            } catch (e) {
+                if (cancelled) return { cancelled: true };
+                throw e;
+            }
             const session = client.session.save();
             let me = {};
             try {

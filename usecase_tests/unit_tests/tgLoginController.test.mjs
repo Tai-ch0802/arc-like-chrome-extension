@@ -14,8 +14,17 @@ function fakeGramJS(behavior = {}) {
         constructor(session) { this.session = session; }
         async start(params) {
             calls.started = params;
-            if (params.phoneCode) await params.phoneCode();           // 模擬互動:要驗證碼
-            if (behavior.need2FA && params.password) await params.password(); // 要 2FA
+            // 模擬 GramJS auth 迴圈:callback 回 null(取消)→ onError;onError 回 truthy 才中止(拋)。
+            const code = params.phoneCode ? await params.phoneCode() : 'x';
+            if (code == null || code === '') {
+                if (await params.onError(new Error('Code is empty'))) throw new Error('AUTH_USER_CANCEL');
+            }
+            if (behavior.need2FA && params.password) {
+                const pw = await params.password();
+                if (pw == null || pw === '') {
+                    if (await params.onError(new Error('Password is empty'))) throw new Error('AUTH_USER_CANCEL');
+                }
+            }
         }
         async connect() { this.connected = true; }
         async disconnect() { calls.disconnected = true; }
@@ -82,5 +91,32 @@ describe('tgLoginController (BASE-018 TG2c)', () => {
         expect(calls.gotEntity).toBe('BWEnews');
         expect(r).toEqual({ id: '100', username: 'BWEnews', title: 'Chan', participantsCount: 5000 });
         expect(calls.disconnected).toBe(true);
+    });
+
+    it('★ 取消驗證碼(phoneCode 回 null)→ login 回 {cancelled}(不無限重試/不拋),仍 disconnect', async () => {
+        const { loadGramJS, calls } = fakeGramJS();
+        const ctrl = createTgLoginController({ loadGramJS });
+        const res = await ctrl.login({ apiId: 1, apiHash: 'h', phoneNumber: '+886', phoneCode: async () => null, password: async () => 'x' });
+        expect(res).toEqual({ cancelled: true });
+        expect(calls.disconnected).toBe(true);
+    });
+
+    it('★ 取消 2FA(password 回 null)→ login 回 {cancelled}', async () => {
+        const { loadGramJS } = fakeGramJS({ need2FA: true });
+        const ctrl = createTgLoginController({ loadGramJS });
+        const res = await ctrl.login({ apiId: 1, apiHash: 'h', phoneNumber: '+886', phoneCode: async () => '12345', password: async () => null });
+        expect(res).toEqual({ cancelled: true });
+    });
+
+    it('真錯誤(非取消)→ 照拋,不吞成 cancelled', async () => {
+        const { loadGramJS } = fakeGramJS();
+        // fake start 對非空 code 不 onError;改用 loadGramJS 讓 start 拋非取消錯誤
+        const ctrl = createTgLoginController({ loadGramJS: async () => {
+            class SS { constructor(s) { this.s = s; } save() { return 'S'; } }
+            class TC { async start() { throw new Error('PHONE_NUMBER_INVALID'); } async disconnect() {} }
+            return { TelegramClient: TC, StringSession: SS };
+        } });
+        await expect(ctrl.login({ apiId: 1, apiHash: 'h', phoneNumber: 'x', phoneCode: async () => '1', password: async () => 'x' }))
+            .rejects.toThrow('PHONE_NUMBER_INVALID');
     });
 });
