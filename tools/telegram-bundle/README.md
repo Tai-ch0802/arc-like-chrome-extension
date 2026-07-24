@@ -29,6 +29,8 @@ npm run build   # → dist/telegram.bundle.js (~1.3 MB min / ~383 KB gzip；giti
 
 ## ⚠️ 維護警示
 
-**🔴 授權 blocker（TG2 落地前必須解決）**：`telegram` 的 MTProto AES-IGE 加密實作**強制依賴** `@cryptography/aes@0.1.1`，授權為 **GPL-3.0-or-later**（強 copyleft）。本專案是 **MIT** 且透過 Chrome Web Store 分發。一旦把此 bundle vendored 進 `lib/`，等於在 MIT／閉源分發的擴充功能內嵌 GPL-3.0 程式碼——授權相容性衝突。且它在**核心密碼路徑**，`build.mjs` 無法 stub；WebCrypto 也不支援 AES-IGE 這個非標準模式，不易直接替換。TG2 落地前須先解決：評估替換加密實作、或改採其他方案。**這可能牽動整個 GramJS 路線可行性。**
+**🟠 授權 blocker（有解方，TG2 執行）**：`telegram` 的 MTProto AES-IGE 加密**強制依賴** `@cryptography/aes@0.1.1` = **GPL-3.0-or-later**（純 JS `dist/cjs/aes.min.js`，會被 esbuild inline 進 bundle）。本專案 MIT＋CWS 分發，內嵌 GPL-3.0 = 授權衝突；它在核心密碼路徑無法 stub，WebCrypto 也無 AES-IGE（非標準模式）。
 
-**telegram 已 archived**：`telegram@2.26.22` 上游已 archived、不再維護，開發轉到 fork [`teleproto`](https://npmjs.com/package/teleproto)（宣稱 largely compatible）。目前鎖定 `telegram@2.26.22`；評估遷移 `teleproto` 時**一併確認它是否仍依賴同一個 GPL 加密庫**。供應鏈以 `package-lock.json` 鎖版，納入既有 dependabot。
+**✅ 解方已查證（2026-07-24）：遷 fork [`teleproto`](https://github.com/sanyok12345/teleproto)（MIT）**。實測 `npm install teleproto` 掃描：依賴樹 12 packages **零 GPL/copyleft、無 `@cryptography/aes`**；AES-IGE 改用 Node `node:crypto` 的 `createCipheriv("aes-256-cbc"/"AES-256-CTR")` 手工組（瀏覽器端靠 `crypto-browserify` = MIT polyfill）。目錄/API 與 GramJS 對齊（`TelegramClient`／`sessions/StringSession`／`events/NewMessage` 皆在），`entry.mjs` 幾乎只需把 `telegram` 換成 `teleproto`。**此遷移一併解掉 `telegram` 已 archived 的維護風險。**
+
+**TG2 遷移待辦**：`entry.mjs` 改 `teleproto`；`build.mjs` alias 補 `node:crypto → crypto-browserify`（teleproto 有 7 檔用帶 `node:` 前綴的 import，現有 alias 只匹配 `crypto`）；重驗瀏覽器端 `createCipheriv` aes-256-cbc/ctr 正確性（IGE 依賴 CBC）；確認「largely compatible」的實際 API 差異。供應鏈以 `package-lock.json` 鎖版，納入既有 dependabot。

@@ -4,7 +4,7 @@
 |---|---|
 | ID | BASE-018 |
 | 分級 | **T2**（Phase 2：SA） |
-| 狀態 | **v1.3 — 架構修正（見 §8/Revision History）**；Gate 2 通過、T0 spike PROCEED、TG1 已合併（PR #194）。**TG2 落地前有未解 blocker：GPL 授權相容性（§5）** |
+| 狀態 | **v1.3 — 架構修正（見 §8/Revision History）**；Gate 2 通過、T0 spike PROCEED、TG1 已合併（PR #194）。TG2 前置：GPL 授權 blocker **解方已查證＝遷 `teleproto`**（§5） |
 | 日期 | 2026-07-23 |
 | 上游 | 同目錄 `PRD_spec.md` v1.1 |
 
@@ -56,7 +56,7 @@
 | 仿冒頻道（First Squawk 兩 handle 並存） | 策展清單醒目警示；加入前 resolve 顯示頻道名/訂閱數確認 |
 | FLOOD_WAIT／rate limit | 遵守伺服器等待秒數；加頻道操作節流 |
 | GramJS 供應鏈 | 鎖定版本＋`npm audit` 納入既有 dependabot 流程；bundle 進包＝送審內容可稽核（**註：TG1-live bundle 尚未進包，此緩解待 TG2 落地才成立**） |
-| **🔴 GPL 授權相容性（TG2 落地前必須解決）** | `telegram` 的 MTProto AES-IGE 加密**強制依賴** `@cryptography/aes@0.1.1`＝**GPL-3.0-or-later**（強 copyleft），在核心密碼路徑無法 stub。本專案 MIT＋CWS 分發，vendored 進 `lib/` 即內嵌 GPL-3.0 → 授權衝突。WebCrypto 無 AES-IGE（非標準模式）不易替換。**須於 TG2 落地前解決（替換加密實作／改方案），可能牽動整個 GramJS 路線可行性**；評估遷 `teleproto` 時一併確認是否仍依賴同一 GPL 庫 |
+| **🟠 GPL 授權相容性（有解方，TG2 執行）** | `telegram` 的 MTProto AES-IGE **強制依賴** `@cryptography/aes@0.1.1`＝**GPL-3.0-or-later**（純 JS `dist/cjs/aes.min.js`，會被 esbuild inline 進 bundle）。MIT＋CWS 分發內嵌 GPL-3.0 ＝ 授權衝突。**✅ 解方已查證（2026-07-24）：遷 fork [`teleproto`](https://github.com/sanyok12345/teleproto)（MIT）**——依賴樹 12 packages 零 GPL、無 `@cryptography/aes`；AES-IGE 改用 Node `node:crypto` `createCipheriv(aes-256-cbc/ctr)` 手工組 IGE（瀏覽器靠 crypto-browserify＝MIT polyfill）。目錄/API 與 GramJS 對齊（`TelegramClient`／`sessions/StringSession`／`events/NewMessage` 皆在，`entry.mjs` 幾乎只需改 package 名）。**TG2 遷移待辦**：build 配方補 alias `node:crypto→crypto-browserify`（7 檔用帶前綴 import）＋重驗瀏覽器端 `createCipheriv` 正確性（IGE 依賴 CBC）＋確認 largely-compatible 的實際 API 差異。此遷移**一併解掉 `telegram` archived 風險** |
 
 ## 6. Test Impact
 
@@ -104,4 +104,4 @@
 | v1.0 | 2026-07-23 | 初稿：GramJS 路線、session 安全硬規則、T0 spike 條件 | Tai / Claude 協作 |
 | v1.1 | 2026-07-23 | 依 PR #192 意見：session/api_hash 改為納入既有 key opt-in 同步（取代同步硬排除；`mergeKeys` 整包 LWW 自動涵蓋 tg，僅需 'tg' 入 NEWSWIRE_SOURCE_IDS）；連動更新 §2 Module Map、§3 storage schema、§5 安全設計、§6 測試、§8 TG1 | Tai / Claude 協作 |
 | v1.2 | 2026-07-23 | T0 spike 執行完成（SPIKE_T0.md）：GramJS 可行性 de-risk，PROCEED（有條件）；§1 依賴引入改為 vendored bundle 進 lib/（1.3M）、§7 回填四問題結論；未竟項＝使用者跑 harness 確認真登入/接收 | Tai / Claude 協作 |
-| v1.3 | 2026-07-24 | TG1-live 縮範圍：對抗式 review＋Chrome 官方文件查證確認 **MV3 SW 不支援 dynamic import()**，原「SW 內 dynamic import bundle」不可行 → §8 新增「GramJS 執行 context 架構決策」：定案 **offscreen document**（SW proxy＋watchdog 監控 offscreen），offscreen 整合併入 TG2。TG1-live 收斂為僅落地可重現 build recipe（`tools/telegram-bundle/`），1.3M bundle 不進 main（無 code 引用）。記錄上游 `telegram@2.26.22` 已 archived（fork `teleproto`），供應鏈風險待評估遷移。**PR #195 review 追加**：查證 `@cryptography/aes` = GPL-3.0-or-later（核心密碼路徑不可 stub）→ §5 新增授權 blocker、header 標示；build 輸出改 `tools/telegram-bundle/dist/`（gitignored，避免污染 `make` 打包路徑）；§1 補 forward-correction 指向 §8；header 版本 v1.2→v1.3 | Tai / Claude 協作 |
+| v1.3 | 2026-07-24 | TG1-live 縮範圍：對抗式 review＋Chrome 官方文件查證確認 **MV3 SW 不支援 dynamic import()**，原「SW 內 dynamic import bundle」不可行 → §8 新增「GramJS 執行 context 架構決策」：定案 **offscreen document**（SW proxy＋watchdog 監控 offscreen），offscreen 整合併入 TG2。TG1-live 收斂為僅落地可重現 build recipe（`tools/telegram-bundle/`），1.3M bundle 不進 main（無 code 引用）。記錄上游 `telegram@2.26.22` 已 archived（fork `teleproto`），供應鏈風險待評估遷移。**PR #195 review 追加**：查證 `@cryptography/aes` = GPL-3.0-or-later（核心密碼路徑不可 stub）→ §5 新增授權 blocker、header 標示；build 輸出改 `tools/telegram-bundle/dist/`（gitignored，避免污染 `make` 打包路徑）；§1 補 forward-correction 指向 §8；header 版本 v1.2→v1.3。**GPL blocker 調研**：實測 `npm install teleproto` 掃描確認 fork `teleproto`（MIT）依賴樹零 GPL、AES-IGE 改用 `node:crypto`、API 與 GramJS 對齊 → §5 blocker 降級為「有解方（遷 teleproto）」，一併解 archived 風險 | Tai / Claude 協作 |
