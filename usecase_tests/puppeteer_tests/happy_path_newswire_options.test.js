@@ -36,6 +36,18 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
         // Telegram 卡片(TG2c,未登入態)存在;結構異於四源的簡單 key 卡片(有登入流程)。
         expect(await page.$('[data-newswire-source="tg"]')).toBeTruthy();
 
+        // 卡片預設收合(BASE-019):body 隱藏、toggle aria-expanded=false;狀態徽章留在標題列。
+        expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-body',
+            el => el.classList.contains('hidden'))).toBe(true);
+        expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-toggle',
+            el => el.getAttribute('aria-expanded'))).toBe('false');
+        // 完整 disclosure pattern:toggle 的 aria-controls 指向 body 的 id。
+        expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-toggle',
+            el => el.getAttribute('aria-controls'))).toBe('newswire-card-body-fj');
+        expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-body',
+            el => el.id)).toBe('newswire-card-body-fj');
+        expect(await page.$('[data-newswire-source="tg"] .newswire-card-toggle .newswire-status')).toBeTruthy();
+
         // key 欄位遮罩+new-password(安全慣例);Alpaca 有兩欄。
         const fjType = await page.$eval('#newswire-key-fj-apiKey', el => ({ type: el.type, ac: el.autocomplete }));
         expect(fjType).toEqual({ type: 'password', ac: 'new-password' });
@@ -54,6 +66,9 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
     }, 120000);
 
     test('enabling FJ without a key writes config and surfaces needs-key status (no network)', async () => {
+        // 卡片預設收合(BASE-019):先展開、等 checkbox 實際可見再點。
+        await page.click('[data-newswire-source="fj"] .newswire-card-toggle');
+        await page.waitForSelector('#newswire-enable-fj', { visible: true, timeout: 5000 });
         await page.click('#newswire-enable-fj');
 
         // config 寫入(SW onChanged 會重建連線層)。
@@ -78,6 +93,10 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
     }, 120000);
 
     test('jin10 category multi-select persists to config (source stays disabled)', async () => {
+        // 卡片預設收合(BASE-019):先展開、等分類 checkbox 實際可見再點。
+        await page.click('[data-newswire-source="jin10"] .newswire-card-toggle');
+        await page.waitForSelector('[data-newswire-source="jin10"] .newswire-cats input[value="2"]',
+            { visible: true, timeout: 5000 });
         const futures = await page.$('[data-newswire-source="jin10"] .newswire-cats input[value="2"]');
         await futures.click();
         await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
