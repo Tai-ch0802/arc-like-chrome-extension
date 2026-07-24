@@ -41,6 +41,11 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
             el => el.classList.contains('hidden'))).toBe(true);
         expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-toggle',
             el => el.getAttribute('aria-expanded'))).toBe('false');
+        // 完整 disclosure pattern:toggle 的 aria-controls 指向 body 的 id。
+        expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-toggle',
+            el => el.getAttribute('aria-controls'))).toBe('newswire-card-body-fj');
+        expect(await page.$eval('[data-newswire-source="fj"] .newswire-card-body',
+            el => el.id)).toBe('newswire-card-body-fj');
         expect(await page.$('[data-newswire-source="tg"] .newswire-card-toggle .newswire-status')).toBeTruthy();
 
         // key 欄位遮罩+new-password(安全慣例);Alpaca 有兩欄。

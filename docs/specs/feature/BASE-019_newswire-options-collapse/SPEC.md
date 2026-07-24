@@ -11,7 +11,7 @@
    - **預設全部收合**;狀態徽章留在標題列，收合時仍一眼可見連線狀態(disabled/needs-key/connected…)。
    - **收折狀態不持久化**(不新增 storage key，YAGNI;session 內互動即可)。
    - 四源卡(主迴圈)與 Telegram 卡(`renderTgCard`)共用同一 helper;tg 卡的 `repaint()`(登入/登出/增刪頻道後重繪)以重繪前的 `aria-expanded` 保留展開態，避免操作中卡片突然收合。
-   - 原生 `<button>` 取得免費的鍵盤操作與 focus ring;chevron 為 CSS `::before` 裝飾(`aria-expanded` 承載語意)，無新增 i18n 字串。
+   - 原生 `<button>` 取得免費的鍵盤操作與 focus ring;chevron 為 CSS `::before` 裝飾(`aria-expanded` + `aria-controls`→body id 承載完整 disclosure pattern 語意)，無新增 i18n 字串。
 2. **標題層級**(`sidepanel.css` 共用 class，一處修全站):`.settings-subsection-header` 12px→14px、600→700、secondary→primary。整個 options 頁所有 subsection 標題(含外觀/同步/AI 等區塊)一致受益——層級問題是共用樣式造成，修在共用點而非只覆寫快訊區。
    - 排除方案:只對快訊區加 override class——同樣的層級倒置在其他區塊一樣存在，區域覆寫會留下不一致。
 

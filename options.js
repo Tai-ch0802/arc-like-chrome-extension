@@ -1597,16 +1597,21 @@ async function reloadNewswireCfg() {
 // 仍可一眼看連線狀態。收折狀態不持久化(session 內即可)。
 function buildCollapsibleCard(cardEl, titleText, statusEl, expanded = false) {
     cardEl.replaceChildren();
+    // dataset.newswireSource 由呼叫端先設好,派生唯一 body id 供 aria-controls
+    // (完整 disclosure pattern:aria-expanded + aria-controls)。
+    const bodyId = `newswire-card-body-${cardEl.dataset.newswireSource}`;
     const toggle = document.createElement('button');
     toggle.type = 'button';
     toggle.className = 'opt-row newswire-card-toggle';
     toggle.setAttribute('aria-expanded', String(expanded));
+    toggle.setAttribute('aria-controls', bodyId);
     const label = document.createElement('div');
     label.className = 'opt-row__label';
     label.textContent = titleText;
     toggle.append(label, statusEl);
     const body = document.createElement('div');
     body.className = 'newswire-card-body';
+    body.id = bodyId;
     body.classList.toggle('hidden', !expanded);
     toggle.addEventListener('click', () => {
         const nowHidden = body.classList.toggle('hidden');
