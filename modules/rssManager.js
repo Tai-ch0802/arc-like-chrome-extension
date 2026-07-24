@@ -4,6 +4,7 @@
 import * as api from './apiManager.js';
 import { addToReadingList } from './readingListManager.js';
 import { MAX_STORED_HASHES, mergeHashesForWrite, nextTimestamp } from './rss/rssSyncLogic.js';
+import { ensureOffscreenDocument } from './offscreenManager.js';
 
 // --- Constants ---
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
@@ -648,40 +649,8 @@ async function fetchRssFeed(feedUrl) {
 }
 
 // --- Offscreen Document Management ---
-
-const OFFSCREEN_DOCUMENT_PATH = '/offscreen.html';
-let creatingOffscreenDocument = null;
-
-/**
- * Ensures the offscreen document exists, creating it if necessary.
- * Uses a singleton pattern to prevent multiple document creations.
- */
-async function ensureOffscreenDocument() {
-    // Check if document already exists
-    const existingContexts = await chrome.runtime.getContexts({
-        contextTypes: ['OFFSCREEN_DOCUMENT'],
-        documentUrls: [chrome.runtime.getURL(OFFSCREEN_DOCUMENT_PATH)]
-    });
-
-    if (existingContexts.length > 0) {
-        return; // Document already exists
-    }
-
-    // Prevent multiple concurrent creation attempts
-    if (creatingOffscreenDocument) {
-        await creatingOffscreenDocument;
-        return;
-    }
-
-    creatingOffscreenDocument = chrome.offscreen.createDocument({
-        url: OFFSCREEN_DOCUMENT_PATH,
-        reasons: [chrome.offscreen.Reason.DOM_PARSER],
-        justification: 'Parse RSS/Atom XML feeds using DOMParser'
-    });
-
-    await creatingOffscreenDocument;
-    creatingOffscreenDocument = null;
-}
+// 已抽出至 modules/offscreenManager.js（與 Telegram 共用單一 offscreen document，
+// BASE-018 TG2b）。ensureOffscreenDocument 由該模組匯入。
 
 /**
  * Extracts content from an XML tag.

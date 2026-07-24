@@ -12,7 +12,7 @@
 // 終止（不打登入迴圈，FR-10）;其餘暫時性 → 指數退避重連。
 
 import { computeBackoffMs, DEGRADED_AFTER_FAILS } from './adapters.js';
-import { createTgClient, NewMessage as RealNewMessage } from './tgClient.js';
+import { createTgClient, getNewMessage } from './tgClient.js';
 
 /**
  * 純函式:分類 GramJS 錯誤。
@@ -60,7 +60,8 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
     const onRaw = hooks.onRaw || (() => {});
     const onStatus = hooks.onStatus || (() => {});
     const createClient = deps.createClient || createTgClient;
-    const NewMessage = deps.NewMessage || RealNewMessage;
+    // 測試以 deps.NewMessage 注入 fake class(同步);生產從 vendored bundle 動態取。
+    const resolveNewMessage = deps.NewMessage ? () => deps.NewMessage : getNewMessage;
     const setTimer = deps.setTimer || ((fn, ms) => setTimeout(fn, ms));
     const clearTimer = deps.clearTimer || ((id) => clearTimeout(id));
     const backoff = deps.computeBackoff || computeBackoffMs;
@@ -88,7 +89,10 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
         // 重建前拆掉殘留 client(watchdog 週期重建時避免洩漏 client/handler)。
         if (client) { try { await (client.disconnect && client.disconnect()); } catch { /* noop */ } client = null; }
         try {
-            client = createClient({ session: cfg.session, apiId: cfg.apiId, apiHash: cfg.apiHash });
+            client = await createClient({ session: cfg.session, apiId: cfg.apiId, apiHash: cfg.apiHash });
+            // async 窗口(dynamic import 2.6M bundle)期間若 disconnect,resume 時已 stopped
+            // → 拆掉剛建好的 client 並收手,避免 orphan(false 'connected' after 'disabled')。
+            if (stopped || failed) { try { await client.disconnect(); } catch { /* noop */ } client = null; return; }
             await client.connect();
             // 逐頻道解析 entity,建 id→meta 對照供 onRaw 標記頻道。
             // 單一頻道解析失敗(handle 打錯/私有/仿冒)只跳過該頻道,不拖垮整個來源。
@@ -116,6 +120,8 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                 // classifyTgError 判 fatal → needs-key 終止);否則暫時性 → 退避重連。
                 throw lastFatalErr || new Error('no channel resolved');
             }
+            const NewMessage = await resolveNewMessage();
+            if (stopped || failed) { try { await client.disconnect(); } catch { /* noop */ } client = null; return; }
             client.addEventHandler((event) => {
                 try {
                     const chatId = eventChatId(event);

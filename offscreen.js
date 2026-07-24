@@ -117,6 +117,14 @@ function getLinkFromGuid(item) {
     return null;
 }
 
+// --- Telegram (BASE-018 TG2b) ---
+// GramJS 只在此 offscreen document 執行(DOM context 支援 dynamic import + WebSocket;
+// MV3 SW 兩者皆不支援/不宜)。tg 控制邏輯抽至 modules/newswire/tgOffscreenController.js
+// (可單元測:generation guard、ping),offscreen 一次性載入後純 delegate。只有 SW 發
+// tg:connect 觸發 controller.connect 時才動態載入 2.6M bundle,不啟用 tg 的用戶零成本。
+const tgControllerReady = import('./modules/newswire/tgOffscreenController.js')
+    .then((m) => m.createTgOffscreenController());
+
 // --- Message Listener ---
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'parseRssFeed') {
@@ -153,5 +161,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
         })();
         return true; // Keep channel open for async response
+    }
+
+    // --- Telegram (BASE-018 TG2b) ---（delegate 至 tgOffscreenController）
+    if (message.action === 'tg:connect') {
+        tgControllerReady.then((c) => c.connect(message.cfg)).catch(() => { /* controller 載入失敗(極少見) */ });
+        return false; // 無同步 response;狀態經 tg:status 主動 post
+    }
+    if (message.action === 'tg:disconnect') {
+        tgControllerReady.then((c) => c.disconnect());
+        return false;
+    }
+    if (message.action === 'tg:ping') {
+        tgControllerReady.then((c) => sendResponse(c.ping()))
+            .catch(() => sendResponse({ alive: false, hasAdapter: false, status: 'disabled' }));
+        return true;
     }
 });

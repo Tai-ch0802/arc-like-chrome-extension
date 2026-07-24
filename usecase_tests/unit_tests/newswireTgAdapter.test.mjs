@@ -196,6 +196,35 @@ describe('createTgAdapter — lifecycle', () => {
     expect(raws[0].channel.username).toBe('good');
   });
 
+  it('disconnect during the createClient await → no orphan, no false connected (async-race, TG2b)', async () => {
+    // TG2b:createClient 為 async(dynamic import 2.6M bundle),await 期間 disconnect
+    // 不得留下已連線但無人管的 orphan client,也不得在 disabled 後誤報 connected。
+    const { statuses, h } = hooks();
+    let resolveClient;
+    const client = {
+      connected: false, disconnected: false, subscribed: false,
+      connect: async () => { client.connected = true; },
+      getEntity: async () => ({ id: 100, username: 'BWEnews', title: 'C' }),
+      addEventHandler: () => { client.subscribed = true; },
+      disconnect: async () => { client.disconnected = true; client.connected = false; },
+    };
+    const deps = {
+      createClient: () => new Promise((r) => { resolveClient = () => r(client); }),
+      NewMessage: FakeNewMessage,
+      setTimer: () => 1, clearTimer: () => {}, computeBackoff: () => 5000,
+    };
+    const a = createTgAdapter(cfg(), h, deps);
+    a.connect();
+    await flush();                 // open() 掛在 await createClient
+    a.disconnect();                // stopped=true;此時 module 內 client 仍為 null(pending)
+    resolveClient();
+    await flush();
+    expect(client.disconnected).toBe(true);       // 剛建好的 client 被拆掉(未 orphan)
+    expect(client.subscribed).toBe(false);        // 未訂閱(未 addEventHandler)
+    expect(statuses).not.toContain('connected');  // 未誤報 connected
+    expect(statuses[statuses.length - 1]).toBe('disabled');
+  });
+
   it('rebuild after a drop tears down the stale client (no leak, #5)', async () => {
     const { deps, factory } = makeDeps();
     const { h } = hooks();

@@ -18,7 +18,7 @@ import {
     createJin10Adapter,
     missingCreds,
 } from './adapters.js';
-import { createTgAdapter } from './tgAdapter.js';
+import { createTgProxyAdapter } from './tgProxyAdapter.js';
 import { canonicalizeNewswire } from './newswireSyncLogic.js';
 import { buildP0Notification } from './notify.js';
 
@@ -98,10 +98,10 @@ const ADAPTER_FACTORIES = {
         // 官方 language=traditional:UI 語言為繁體時快訊轉繁體(M0/SA §5.4)。
         language: uiLangCache === 'zh_TW' ? 'traditional' : undefined,
     }, hooks),
-    // Telegram(BASE-018 TG1):GramJS 客戶端(vendored bundle 隨 TG1-live)。
-    // 預設 enabled=false 且尚無 UI 可啟用 → 生產環境不觸發真連線;bundle
-    // 就緒前 createTgClient 拋錯,tgAdapter 捕捉為暫時性(不影響其他源)。
-    tg: (sourceCfg, keys, hooks) => createTgAdapter({
+    // Telegram(BASE-018 TG2b):GramJS 在 offscreen document 執行,SW 端用 proxy
+    // 透過 message 控制(SW 不 import GramJS/bundle)。預設 enabled=false;啟用需
+    // session(TG2c 登入 UI)。offscreen 收訊經 tg:raw 回,狀態經 tg:status 回。
+    tg: (sourceCfg, keys, hooks) => createTgProxyAdapter({
         session: keys?.tg?.session,
         apiId: keys?.tg?.apiId,
         apiHash: keys?.tg?.apiHash,
@@ -110,6 +110,7 @@ const ADAPTER_FACTORIES = {
 };
 
 let started = false;
+let initPromise = null;
 let config = null;
 let keysCache = {};
 let uiLangCache = '';
@@ -244,18 +245,21 @@ function applyAdapters() {
 }
 
 /** SW 每次啟動的進入點(background.js 頂層呼叫);冪等。 */
-export async function initNewswire() {
-    if (started) return;
+export function initNewswire() {
+    if (started) return initPromise || Promise.resolve();
     started = true;
-    try {
-        await loadState();
-        const events = await buffer.init();
-        dedupe = createDedupeSet(events.map((e) => e.id));
-        applyAdapters();
-    } catch (err) {
-        started = false;
-        console.warn('[newswire] init failed:', err?.message || err);
-    }
+    initPromise = (async () => {
+        try {
+            await loadState();
+            const events = await buffer.init();
+            dedupe = createDedupeSet(events.map((e) => e.id));
+            applyAdapters();
+        } catch (err) {
+            started = false;
+            console.warn('[newswire] init failed:', err?.message || err);
+        }
+    })();
+    return initPromise;
 }
 
 /**
@@ -281,12 +285,72 @@ export function handleNewswireNotificationClick(notificationId) {
 }
 
 /** newswireWatchdog alarm:確保 SW 存活時連線在線、被回收後重建。 */
-export function handleNewswireWatchdog() {
+export async function handleNewswireWatchdog() {
     if (!started) { initNewswire(); return; }
-    for (const adapter of adapters.values()) {
-        if (!adapter.isAlive()) adapter.connect();
+    for (const [source, adapter] of adapters) {
+        if (source === 'tg') {
+            // GramJS 在 offscreen,可能被 Chrome 回收 → 以 tg:ping 探活(不能只靠
+            // isAlive:offscreen 回收後不再回報,lastStatus 會停在過時的 'connected')。
+            // 無回應(offscreen 不存在/逾時)→ proxy.connect() 重建 offscreen + 重發
+            // tg:connect;有回應則交由 offscreen 內 tgAdapter 自行退避重連(不干預)。
+            // 無回應→重建;offscreen 在但無 live tgAdapter(被 RSS 重建 adapter-less／
+            // tgConnect 失敗)→ 重連;連線中/needs-key 不動。見 shouldReconnectTg。
+            if (shouldReconnectTg(await pingTg())) adapter.connect();
+        } else if (!adapter.isAlive()) {
+            adapter.connect();
+        }
     }
     ensureKeepalive();
+}
+
+/** ping offscreen 的 tg handler;offscreen 不存在(no receiver)或逾時回 null。 */
+async function pingTg() {
+    try {
+        return await Promise.race([
+            chrome.runtime.sendMessage({ action: 'tg:ping' }),
+            new Promise((_, reject) => { setTimeout(() => reject(new Error('tg:ping timeout')), 2000); }),
+        ]);
+    } catch { return null; }
+}
+
+/**
+ * 純函式:tg:ping 回應 → 是否該重發 tg:connect。**以 hasAdapter 而非 status 判斷**:
+ *   - 無回應(null,offscreen 不存在/逾時)→ 重連。
+ *   - alive(已連線)→ 不重連。
+ *   - 有 tgAdapter 物件但未 alive(retrying 退避中/degraded/connecting/needs-key)→
+ *     **不重連**,交由 offscreen 內 tgAdapter 自己的指數退避/FLOOD_WAIT 處理;否則
+ *     watchdog 每 30s 就會砍掉退避重建、加重 flood 懲罰(review 抓到的干預問題)。
+ *   - 無 tgAdapter 物件(offscreen 被 RSS 路徑重建成 adapter-less、或 tgConnect 載入失敗)
+ *     → 重連,因為沒有任何 adapter 會自癒。
+ * @param {{alive?:boolean, hasAdapter?:boolean, status?:string}|null} pong
+ * @returns {boolean}
+ */
+export function shouldReconnectTg(pong) {
+    if (!pong) return true;
+    if (pong.alive) return false;
+    return !pong.hasAdapter;
+}
+
+/**
+ * offscreen 回報的 tg 訊息分派(background onMessage 委派)。tg:raw → 進既有管線;
+ * tg:status → 更新 tg proxy 狀態(透傳 setStatus 廣播)。
+ * @returns {boolean} true = 已認領此訊息
+ */
+export function handleTgOffscreenMessage(message) {
+    if (message?.action === 'tg:raw') {
+        // SW 可能被此訊息喚醒,此時 initNewswire 仍在 await buffer.init——直接 handleRaw
+        // 會被隨後 buffer.init 覆蓋而丟事件(GramJS NewMessage 無 history 回補)。等 init
+        // 完成再進管線(initNewswire 回 in-flight promise;started 時亦回既有 promise)。
+        initNewswire().then(() => handleRaw('tg', message.raw));
+        return true;
+    }
+    if (message?.action === 'tg:status') {
+        const a = adapters.get('tg');
+        if (a && a.setRemoteStatus) a.setRemoteStatus(message.status);
+        else setStatus('tg', message.status);
+        return true;
+    }
+    return false;
 }
 
 /**
