@@ -4,7 +4,7 @@
 |---|---|
 | ID | BASE-018 |
 | 分級 | **T2**（Phase 2：SA） |
-| 狀態 | **Final v1.2 — 已核准（Gate 2 通過）**；T0 spike PROCEED，TG1 實作進行中 |
+| 狀態 | **v1.3 — 架構修正（見 §8/Revision History）**；Gate 2 通過、T0 spike PROCEED、TG1 已合併（PR #194）。**TG2 落地前有未解 blocker：GPL 授權相容性（§5）** |
 | 日期 | 2026-07-23 |
 | 上游 | 同目錄 `PRD_spec.md` v1.1 |
 
@@ -15,6 +15,8 @@
 使用者指定 Telethon / MTProto user session 路線。Telethon 是 Python、無法在 extension 執行；其 JS 等價品為 **GramJS**（npm `telegram` 套件，同一作者生態、API 形狀對齊 Telethon：`TelegramClient`、`StringSession`、`NewMessage` 事件）。瀏覽器端走 **MTProto over WSS**（Telegram 官方 web 端點；web.telegram.org 即為此模式的既存先例），MV3 SW 內可用（WebSocket＋WebCrypto/BigInt 皆可用；session 用 `StringSession` 存記憶體＋自行持久化，不依賴 localStorage）。
 
 **依賴引入方式（T0 spike 後修正，見 §7/SPIKE_T0.md）**：GramJS 為 CJS＋多個 Node built-in 依賴，**無法以原始碼直載於 dev 模式**，esbuild 也不能開箱 bundle。→ 定案：以專屬 polyfill build step（crypto-browserify 等，見 §7）**預打包成單一 vendored bundle 放 `lib/telegram.bundle.js`（比照 `lib/Sortable.min.js`）**，以全域方式匯入；dev 與 prod 皆載入此 vendored bundle（不走 from-source esbuild）。bundle 1.3M min / 383K gzip。
+
+> **⚠️ 後續修正（2026-07-24，TG1-live，見 §8）**：本段「以全域方式匯入；dev 與 prod 皆載入」的**無條件全域載入**方案已被 §8 否決——SW 內 dynamic import 不可行、靜態全域載入又讓所有 tg-disabled 用戶白付 parse 成本。**定案改為：GramJS 於 offscreen document 內、僅在 tg 啟用時 dynamic import**。載入策略以 §8「GramJS 執行 context 架構決策」為準。
 
 ## 2. Module Impact Map
 
@@ -53,7 +55,8 @@
 | session ≈ **完整帳號存取權**（比 API key 嚴重一個量級） | 預設本機、預設不同步；納入既有 key opt-in（開啟才進 Drive、關閉即 scrub，單元測試鎖 on/off/scrub 行為）；**登入前與開啟同步前皆顯著風險告知 modal**（session ≈ 完整帳號存取權；開啟同步＝憑證離開本機進雲端 Drive）；引導使用小號；「登出並撤銷」一鍵（遠端 revoke＋本機清除＋若曾同步則下次同步一併從 Drive scrub） |
 | 仿冒頻道（First Squawk 兩 handle 並存） | 策展清單醒目警示；加入前 resolve 顯示頻道名/訂閱數確認 |
 | FLOOD_WAIT／rate limit | 遵守伺服器等待秒數；加頻道操作節流 |
-| GramJS 供應鏈 | 鎖定版本＋`npm audit` 納入既有 dependabot 流程；bundle 進包＝送審內容可稽核 |
+| GramJS 供應鏈 | 鎖定版本＋`npm audit` 納入既有 dependabot 流程；bundle 進包＝送審內容可稽核（**註：TG1-live bundle 尚未進包，此緩解待 TG2 落地才成立**） |
+| **🔴 GPL 授權相容性（TG2 落地前必須解決）** | `telegram` 的 MTProto AES-IGE 加密**強制依賴** `@cryptography/aes@0.1.1`＝**GPL-3.0-or-later**（強 copyleft），在核心密碼路徑無法 stub。本專案 MIT＋CWS 分發，vendored 進 `lib/` 即內嵌 GPL-3.0 → 授權衝突。WebCrypto 無 AES-IGE（非標準模式）不易替換。**須於 TG2 落地前解決（替換加密實作／改方案），可能牽動整個 GramJS 路線可行性**；評估遷 `teleproto` 時一併確認是否仍依賴同一 GPL 庫 |
 
 ## 6. Test Impact
 
@@ -101,4 +104,4 @@
 | v1.0 | 2026-07-23 | 初稿：GramJS 路線、session 安全硬規則、T0 spike 條件 | Tai / Claude 協作 |
 | v1.1 | 2026-07-23 | 依 PR #192 意見：session/api_hash 改為納入既有 key opt-in 同步（取代同步硬排除；`mergeKeys` 整包 LWW 自動涵蓋 tg，僅需 'tg' 入 NEWSWIRE_SOURCE_IDS）；連動更新 §2 Module Map、§3 storage schema、§5 安全設計、§6 測試、§8 TG1 | Tai / Claude 協作 |
 | v1.2 | 2026-07-23 | T0 spike 執行完成（SPIKE_T0.md）：GramJS 可行性 de-risk，PROCEED（有條件）；§1 依賴引入改為 vendored bundle 進 lib/（1.3M）、§7 回填四問題結論；未竟項＝使用者跑 harness 確認真登入/接收 | Tai / Claude 協作 |
-| v1.3 | 2026-07-24 | TG1-live 縮範圍：對抗式 review＋Chrome 官方文件查證確認 **MV3 SW 不支援 dynamic import()**，原「SW 內 dynamic import bundle」不可行 → §8 新增「GramJS 執行 context 架構決策」：定案 **offscreen document**（SW proxy＋watchdog 監控 offscreen），offscreen 整合併入 TG2。TG1-live 收斂為僅落地可重現 build recipe（`tools/telegram-bundle/`），1.3M bundle 不進 main（無 code 引用）。記錄上游 `telegram@2.26.22` 已 archived（fork `teleproto`），供應鏈風險待評估遷移 | Tai / Claude 協作 |
+| v1.3 | 2026-07-24 | TG1-live 縮範圍：對抗式 review＋Chrome 官方文件查證確認 **MV3 SW 不支援 dynamic import()**，原「SW 內 dynamic import bundle」不可行 → §8 新增「GramJS 執行 context 架構決策」：定案 **offscreen document**（SW proxy＋watchdog 監控 offscreen），offscreen 整合併入 TG2。TG1-live 收斂為僅落地可重現 build recipe（`tools/telegram-bundle/`），1.3M bundle 不進 main（無 code 引用）。記錄上游 `telegram@2.26.22` 已 archived（fork `teleproto`），供應鏈風險待評估遷移。**PR #195 review 追加**：查證 `@cryptography/aes` = GPL-3.0-or-later（核心密碼路徑不可 stub）→ §5 新增授權 blocker、header 標示；build 輸出改 `tools/telegram-bundle/dist/`（gitignored，避免污染 `make` 打包路徑）；§1 補 forward-correction 指向 §8；header 版本 v1.2→v1.3 | Tai / Claude 協作 |

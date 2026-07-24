@@ -11,7 +11,10 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const outfile = resolve(here, '../../lib/telegram.bundle.js');
+// 輸出到 recipe 目錄下的 dist/（gitignored），**刻意不落在 lib/**：Makefile 從
+// 檔案系統整包 cp lib/ 進包(不依 git 追蹤),若輸出 lib/ 則任何人跑重建就會把
+// 1.3M bundle 打進擴充功能。TG2 整合時再改輸出/複製到 lib/。
+const outfile = resolve(here, 'dist/telegram.bundle.js');
 
 const r = await esbuild.build({
   entryPoints: [resolve(here, 'entry.mjs')],
@@ -33,4 +36,4 @@ const r = await esbuild.build({
 }).catch((e) => { console.error('BUILD FAIL:', e.message); process.exit(2); });
 
 const bytes = Object.values(r.metafile.outputs)[0].bytes;
-console.log(`BUILD OK → lib/telegram.bundle.js (${(bytes / 1024 / 1024).toFixed(2)} MB)`);
+console.log(`BUILD OK → tools/telegram-bundle/dist/telegram.bundle.js (${(bytes / 1024 / 1024).toFixed(2)} MB)`);

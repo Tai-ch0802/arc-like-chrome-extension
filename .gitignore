@@ -16,3 +16,6 @@ __pycache__/
 # Ephemeral agent session notes / internal planning (local-only context)
 .agent/notes/
 docs/superpowers/
+
+# GramJS vendored bundle build 產物（BASE-018；1.3M，TG2 才落地進 lib/）
+tools/telegram-bundle/dist/

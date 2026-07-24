@@ -1,6 +1,6 @@
 # telegram-bundle-builder
 
-`lib/telegram.bundle.js`（GramJS vendored bundle，BASE-018 Telegram 快訊源）的**可重現 build recipe**。這是 build-time 工具，**不屬於擴充功能本體**、不進 `make` 打包。
+GramJS vendored bundle（BASE-018 Telegram 快訊源；TG2 落地為 `lib/telegram.bundle.js`）的**可重現 build recipe**。這是 build-time 工具，**不屬於擴充功能本體**、不進 `make` 打包。build 產物輸出到 `dist/`（gitignored，**刻意不落在 `lib/`**——`make` 從檔案系統整包 cp `lib/`，輸出那裡會讓任何人跑重建就把 1.3M 打進包）。
 
 ## 為何 vendored
 
@@ -13,7 +13,7 @@ GramJS（`telegram`）是 CJS 套件、依賴多個 Node built-in（`crypto`/`fs
 ```bash
 cd tools/telegram-bundle
 npm ci          # 鎖定版本安裝(package-lock.json)
-npm run build   # → ../../lib/telegram.bundle.js (~1.3 MB min / ~383 KB gzip)
+npm run build   # → dist/telegram.bundle.js (~1.3 MB min / ~383 KB gzip；gitignored)
 ```
 
 `entry.mjs` 只匯出 `tgClient.js` 需要的 `TelegramClient` / `StringSession` / `NewMessage`。
@@ -29,4 +29,6 @@ npm run build   # → ../../lib/telegram.bundle.js (~1.3 MB min / ~383 KB gzip)
 
 ## ⚠️ 維護警示
 
-`telegram@2.26.22` 上游**已 archived、不再維護**，開發轉到 fork [`teleproto`](https://npmjs.com/package/teleproto)（宣稱 largely compatible）。目前鎖定 `telegram@2.26.22`；後續安全更新需求時評估遷移到 `teleproto`（見 SA 風險清單）。供應鏈以 `package-lock.json` 鎖版，納入既有 dependabot。
+**🔴 授權 blocker（TG2 落地前必須解決）**：`telegram` 的 MTProto AES-IGE 加密實作**強制依賴** `@cryptography/aes@0.1.1`，授權為 **GPL-3.0-or-later**（強 copyleft）。本專案是 **MIT** 且透過 Chrome Web Store 分發。一旦把此 bundle vendored 進 `lib/`，等於在 MIT／閉源分發的擴充功能內嵌 GPL-3.0 程式碼——授權相容性衝突。且它在**核心密碼路徑**，`build.mjs` 無法 stub；WebCrypto 也不支援 AES-IGE 這個非標準模式，不易直接替換。TG2 落地前須先解決：評估替換加密實作、或改採其他方案。**這可能牽動整個 GramJS 路線可行性。**
+
+**telegram 已 archived**：`telegram@2.26.22` 上游已 archived、不再維護，開發轉到 fork [`teleproto`](https://npmjs.com/package/teleproto)（宣稱 largely compatible）。目前鎖定 `telegram@2.26.22`；評估遷移 `teleproto` 時**一併確認它是否仍依賴同一個 GPL 加密庫**。供應鏈以 `package-lock.json` 鎖版，納入既有 dependabot。
