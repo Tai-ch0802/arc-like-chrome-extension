@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "session tương đương quyền truy cập toàn bộ tài khoản (đọc mọi cuộc trò chuyện, gửi mạo danh bạn) — nghiêm trọng hơn API key thông thường. Dùng tài khoản phụ và tránh máy tính công cộng. Tiếp tục?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Đồng bộ session Telegram lên đám mây?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session tương đương quyền truy cập toàn bộ tài khoản. Khi bật, nó sẽ được tải lên cùng với các keys khác của bạn vào appdata Google Drive của chính bạn — bất kỳ ai có quyền truy cập Drive đó đều có thể mạo danh tài khoản Telegram của bạn. Bật đồng bộ?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Bật đồng bộ"
+  },
   "tgCodeTitle": {
     "message": "Mã xác minh Telegram"
   },

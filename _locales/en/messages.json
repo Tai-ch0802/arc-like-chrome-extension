@@ -1496,6 +1496,15 @@
   "tgRiskMessage": {
     "message": "The session equals full account access (read all chats, send as you) — more serious than a normal API key. Use a burner account and avoid public computers. Continue?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Sync Telegram session to the cloud?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "The session equals full account access. Turning this on uploads it, alongside your other keys, into your own Google Drive appdata — anyone with access to that Drive could impersonate your Telegram account. Enable sync?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Enable sync"
+  },
   "tgCodeTitle": {
     "message": "Telegram verification code"
   },

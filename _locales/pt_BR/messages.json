@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "A session equivale ao acesso total à conta (ler todos os chats, enviar em seu nome) — mais grave que uma API key comum. Use uma conta descartável e evite computadores públicos. Continuar?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Sincronizar a session do Telegram com a nuvem?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "A session equivale ao acesso total à conta. Ao ativar, ela é enviada, junto com suas outras keys, para a sua própria appdata do Google Drive — qualquer pessoa com acesso a esse Drive poderia se passar pela sua conta do Telegram. Ativar sincronização?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Ativar sincronização"
+  },
   "tgCodeTitle": {
     "message": "Código de verificação do Telegram"
   },

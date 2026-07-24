@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "session पूरे अकाउंट एक्सेस के बराबर है (सभी चैट पढ़ना, आपके नाम से भेजना) — सामान्य API key से ज़्यादा गंभीर। बर्नर अकाउंट इस्तेमाल करें और सार्वजनिक कंप्यूटर से बचें। जारी रखें?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Telegram session को क्लाउड पर सिंक करें?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session पूरे अकाउंट एक्सेस के बराबर है। इसे चालू करने पर यह आपकी अन्य keys के साथ आपके अपने Google Drive appdata में अपलोड हो जाती है — उस Drive तक पहुँच रखने वाला कोई भी आपके Telegram अकाउंट का रूप धर सकता है। सिंक चालू करें?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "सिंक चालू करें"
+  },
   "tgCodeTitle": {
     "message": "Telegram सत्यापन कोड"
   },

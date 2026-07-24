@@ -2082,6 +2082,21 @@ function renderNewswire(container) {
         keySyncToggle.id = 'newswire-sync-keys';
         keySyncToggle.checked = cfg.prefs?.syncKeys === true;
         keySyncToggle.addEventListener('change', async () => {
+            // 開啟 key 同步且已存在 tg session:session ≈ 完整帳號存取權,開啟代表憑證離開
+            // 本機進雲端 Drive(FR-04/US-3 要求開啟前顯著風險告知——揭露措施,非阻擋)。
+            // 取消則還原 toggle、不寫。關閉路徑不 gating(scrub 是更安全方向)。
+            if (keySyncToggle.checked) {
+                const res = await api.getStorage('local', { [NEWSWIRE_KEYS_KEY]: {} });
+                if (res[NEWSWIRE_KEYS_KEY]?.tg?.session) {
+                    const ok = await modalManager.showConfirm({
+                        title: api.getMessage('tgSyncRiskTitle') || '開啟同步:Telegram session 將上雲',
+                        message: api.getMessage('tgSyncRiskMessage')
+                            || 'session 等同完整帳號存取權。開啟後將隨其他 keys 進入你的 Google Drive appdata,取得該 Drive 者即可冒用你的 Telegram 帳號。確定開啟?',
+                        confirmButtonText: api.getMessage('tgSyncRiskConfirm') || '開啟同步',
+                    });
+                    if (!ok) { keySyncToggle.checked = false; return; }
+                }
+            }
             await rmwNewswireConfig((c) => {
                 c.prefs = { ...(c.prefs || {}), syncKeys: keySyncToggle.checked, updatedAt: Date.now() };
             });

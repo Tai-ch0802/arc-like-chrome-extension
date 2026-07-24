@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "session はアカウントへの完全アクセスに相当し（すべてのチャットを読む、あなたになりすまして送信）、通常の API key より深刻です。捨てアカウントを使い、公共のコンピューターは避けてください。続行しますか？"
   },
+  "tgSyncRiskTitle": {
+    "message": "Telegram の session をクラウドに同期しますか？"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session はアカウントへの完全アクセスに相当します。オンにすると、他の keys と一緒にあなた自身の Google Drive appdata へアップロードされます。その Drive にアクセスできる人は誰でもあなたの Telegram アカウントになりすませます。同期を有効にしますか？"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "同期を有効にする"
+  },
   "tgCodeTitle": {
     "message": "Telegram 認証コード"
   },

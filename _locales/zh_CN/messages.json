@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "session 等同完整账号访问权限（可读取所有对话、冒名发信），比一般 API key 严重。建议用小号、勿在公用电脑操作。继续？"
   },
+  "tgSyncRiskTitle": {
+    "message": "同步 Telegram session 到云端？"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session 等同完整账号访问权限。开启后将随其他 keys 一并上传到你自己的 Google Drive appdata；取得该 Drive 者即可冒用你的 Telegram 账号。确定开启同步？"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "开启同步"
+  },
   "tgCodeTitle": {
     "message": "Telegram 验证码"
   },

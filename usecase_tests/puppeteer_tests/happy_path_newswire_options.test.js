@@ -141,7 +141,49 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
             const active = document.querySelector('.opt-nav__item.active');
             return active && active.dataset.section === 'sync';
         }, { timeout: 5000 });
-        // 回到快訊分頁,不影響後續測試(本 describe 已無後續,仍還原以防未來新增)。
+        // 回到快訊分頁,不影響後續測試。
         await page.click('.opt-nav__item[data-section="newswire"]');
+    }, 120000);
+
+    // 本測試會 reload 並寫入 tg session,置於最後(自包含,不污染前面共用 page)。
+    test('enabling key sync while a tg session exists requires a risk confirm; cancel reverts, confirm persists (BASE-018 TG2c, FR-04/US-3)', async () => {
+        // 前置:寫入 tg session(等同已登入)+ syncKeys=false,reload 讓 renderNewswire 反映。
+        // 不 enable tg source → SW 不會拿 fake session 連 Telegram。
+        await page.evaluate(() => new Promise((resolve) => {
+            chrome.storage.local.get({ newswireKeys: {}, newswireConfig: {} }, (r) => {
+                const keys = r.newswireKeys || {};
+                keys.tg = { apiId: 1, apiHash: 'h', session: 'FAKE_SESSION_FOR_TEST' };
+                const cfg = r.newswireConfig || {};
+                cfg.prefs = { ...(cfg.prefs || {}), syncKeys: false };
+                chrome.storage.local.set({ newswireKeys: keys, newswireConfig: cfg }, resolve);
+            });
+        }));
+        await page.reload({ waitUntil: 'domcontentloaded' });
+        await page.waitForSelector('.opt-nav__item[data-section="newswire"]', { timeout: 15000 });
+        await page.click('.opt-nav__item[data-section="newswire"]');
+        await page.waitForSelector('#newswire-sync-keys', { timeout: 15000 });
+        expect(await page.$eval('#newswire-sync-keys', el => el.checked)).toBe(false);
+
+        // 開啟 → 已有 tg session ⇒ 彈風險 confirm modal(FR-04:開啟同步前顯著告知)。
+        await page.click('#newswire-sync-keys');
+        await page.waitForSelector('.modal-overlay .confirm-btn', { timeout: 5000 });
+
+        // 取消 ⇒ toggle 還原、syncKeys 不被寫成 true(揭露非阻擋,尊重使用者取消)。
+        await page.click('.modal-overlay .cancel-btn');
+        await page.waitForFunction(() => {
+            const el = document.querySelector('#newswire-sync-keys');
+            return el && el.checked === false && !document.querySelector('.modal-overlay');
+        }, { timeout: 5000 });
+        const afterCancel = await page.evaluate(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.syncKeys === true));
+        expect(afterCancel).toBe(false);
+
+        // 再開啟 → 確認 ⇒ syncKeys 落地 true。
+        await page.click('#newswire-sync-keys');
+        await page.waitForSelector('.modal-overlay .confirm-btn', { timeout: 5000 });
+        await page.click('.modal-overlay .confirm-btn');
+        await page.waitForFunction(() => chrome.storage.local.get('newswireConfig')
+            .then(v => v.newswireConfig?.prefs?.syncKeys === true), { timeout: 5000 });
+        expect(await page.$eval('#newswire-sync-keys', el => el.checked)).toBe(true);
     }, 120000);
 });

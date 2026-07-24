@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "Die session entspricht dem vollen Kontozugriff (alle Chats lesen, in deinem Namen senden) – gravierender als ein normaler API key. Verwende ein Wegwerf-Konto und meide öffentliche Computer. Fortfahren?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Telegram-session in die Cloud synchronisieren?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "Die session entspricht dem vollen Kontozugriff. Beim Aktivieren wird sie zusammen mit deinen anderen keys in deine eigene Google Drive appdata hochgeladen – wer Zugriff auf dieses Drive hat, kann sich als dein Telegram-Konto ausgeben. Synchronisierung aktivieren?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Synchronisierung aktivieren"
+  },
   "tgCodeTitle": {
     "message": "Telegram-Bestätigungscode"
   },

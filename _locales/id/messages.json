@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "session setara dengan akses penuh ke akun (membaca semua obrolan, mengirim atas nama Anda) — lebih serius daripada API key biasa. Gunakan akun burner dan hindari komputer publik. Lanjutkan?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Sinkronkan session Telegram ke cloud?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session setara dengan akses penuh ke akun. Mengaktifkan ini akan mengunggahnya, bersama keys Anda yang lain, ke appdata Google Drive Anda sendiri — siapa pun yang punya akses ke Drive itu bisa menyamar sebagai akun Telegram Anda. Aktifkan sinkronisasi?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Aktifkan sinkronisasi"
+  },
   "tgCodeTitle": {
     "message": "Kode verifikasi Telegram"
   },

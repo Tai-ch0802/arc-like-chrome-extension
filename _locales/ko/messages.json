@@ -1493,6 +1493,15 @@
   "tgRiskMessage": {
     "message": "session은 전체 계정 접근 권한과 같아(모든 대화 읽기, 사용자 명의로 전송) 일반 API key보다 심각합니다. 버너 계정을 사용하고 공용 컴퓨터는 피하세요. 계속할까요?"
   },
+  "tgSyncRiskTitle": {
+    "message": "Telegram session을 클라우드에 동기화할까요?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session은 전체 계정 접근 권한과 같습니다. 켜면 다른 keys와 함께 사용자 본인의 Google Drive appdata에 업로드됩니다 — 그 Drive에 접근할 수 있는 사람은 누구나 사용자의 Telegram 계정을 사칭할 수 있습니다. 동기화를 켤까요?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "동기화 켜기"
+  },
   "tgCodeTitle": {
     "message": "Telegram 인증 코드"
   },
