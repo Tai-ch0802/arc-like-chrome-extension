@@ -1,0 +1,23 @@
+{
+  "name": "telegram-bundle-builder",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Reproducible build recipe for lib/telegram.bundle.js (GramJS vendored bundle, BASE-018). Not part of the extension — build-time only. See README.md.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "telegram": "2.26.22"
+  },
+  "devDependencies": {
+    "buffer": "6.0.3",
+    "crypto-browserify": "3.12.1",
+    "esbuild": "0.28.1",
+    "events": "3.3.0",
+    "path-browserify": "1.0.1",
+    "process": "0.11.10",
+    "stream-browserify": "3.0.0",
+    "util": "0.12.5"
+  }
+}

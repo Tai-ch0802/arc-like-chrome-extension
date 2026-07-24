@@ -7,6 +7,8 @@
 
 **PROCEED（有條件）**：GramJS 可在 extension 內運作——bundle 可產出、client 可建構、**核心密碼路徑（crypto-browserify）在瀏覽器實測正確**、瀏覽器 WSS transport 會選中並嘗試連 Telegram 官方 web 端點。但有明確整合成本（需 polyfill build＋vendored bundle、1.3M 體積、dev 模式需預打包），且**真實登入與訊息接收無法由我驗證**（需你的 api_id/api_hash＋手機），已備妥 harness 供你完成。
 
+> **⚠️ 後續修正（2026-07-24，TG1-live）**：本 spike Q1 對「SW 內載入 GramJS」的判斷是在 **DOM/page context** 實測後外推「SW 建構等價」。TG1-live 經對抗式 review＋Chrome 官方文件查證發現 **MV3 service worker 不支援 `dynamic import()`**（w3c/webextensions #212 open）——故「SW 內 dynamic import 1.3M bundle」不可行。執行 context 已改定案為 **offscreen document**（DOM context 支援 dynamic import、且 GramJS 登入本需 DOM），詳見 SA §8「GramJS 執行 context 架構決策」。本文其餘瀏覽器端結論（crypto/transport/bundle 可產出）仍有效。
+
 ## 四個問題逐一結論
 
 ### Q1：GramJS 在 MV3 SW 實連 — ⚠️ 部分 PASS（可驗部分全過）
