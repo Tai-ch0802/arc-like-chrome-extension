@@ -27,9 +27,9 @@ const alias = {
   events: 'events', 'node:events': 'events',
   util: 'util', 'node:util': 'util',
   buffer: 'buffer', 'node:buffer': 'buffer',
-  // teleproto GZIPPacked 用 node:zlib(上游 telegram 是 pako);browserify-zlib = MIT。
-  zlib: 'browserify-zlib', 'node:zlib': 'browserify-zlib',
-  assert: 'assert', 'node:assert': 'assert',
+  // teleproto GZIPPacked 只用 zlib.unzipSync;pako-based 薄 shim 取代 browserify-zlib
+  // (+8 transitive),供應鏈更小(見 zlib-shim.cjs / README)。
+  zlib: resolve(here, 'zlib-shim.cjs'), 'node:zlib': resolve(here, 'zlib-shim.cjs'),
   // functional os shim:建構時讀 os.type() 等組 device 字串。
   os: osShim, 'node:os': osShim,
   // 空存根:記憶體 StringSession,不觸檔案/原生 socket。

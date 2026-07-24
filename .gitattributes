@@ -1,0 +1,4 @@
+# Vendored 第三方 bundle:GitHub 折疊 diff、排除語言統計、git 不產生 textual diff。
+# lib/telegram.bundle.js 由 tools/telegram-bundle recipe 產出(teleproto,見該目錄 README)。
+lib/telegram.bundle.js linguist-vendored linguist-generated -diff
+lib/Sortable.min.js    linguist-vendored linguist-generated -diff
