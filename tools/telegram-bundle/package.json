@@ -2,15 +2,18 @@
   "name": "telegram-bundle-builder",
   "private": true,
   "version": "0.0.0",
-  "description": "Reproducible build recipe for lib/telegram.bundle.js (GramJS vendored bundle, BASE-018). Not part of the extension — build-time only. See README.md.",
+  "description": "Reproducible build recipe for the GramJS vendored bundle (BASE-018). Uses teleproto (MIT fork of telegram/GramJS) to avoid telegram's GPL @cryptography/aes dependency. Build-time only — not part of the extension. See README.md.",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "verify": "node verify.mjs"
   },
   "dependencies": {
-    "telegram": "2.26.22"
+    "teleproto": "1.228.4"
   },
   "devDependencies": {
+    "assert": "2.1.0",
+    "browserify-zlib": "0.2.0",
     "buffer": "6.0.3",
     "crypto-browserify": "3.12.1",
     "esbuild": "0.28.1",
