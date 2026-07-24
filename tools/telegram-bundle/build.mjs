@@ -42,7 +42,9 @@ const r = await esbuild.build({
   entryPoints: [resolve(here, 'entry.mjs')],
   bundle: true, format: 'esm', platform: 'browser', target: 'es2020',
   outfile, minify: true, metafile: true, logLevel: 'error',
-  define: { global: 'globalThis', 'process.env.NODE_ENV': '"production"' },
+  // setTimeout → __tgSetTimeout(shim-inject):還原 Node「回 Timeout 物件(有 unref)」的假設,
+  // 修 teleproto Helpers.sleep 的 `setTimeout(...).unref()` 在瀏覽器炸 TypeError(見 shim-inject)。
+  define: { global: 'globalThis', 'process.env.NODE_ENV': '"production"', setTimeout: '__tgSetTimeout' },
   inject: [resolve(here, 'shim-inject.mjs')],
   alias,
 }).catch((e) => { console.error('BUILD FAIL:', e.message); process.exit(2); });
