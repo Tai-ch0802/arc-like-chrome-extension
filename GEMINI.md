@@ -24,6 +24,7 @@ tech_stack:
     - Sortable.js
   build_tools:
     - make
+    - tools/telegram-bundle (可重現 esbuild+polyfill recipe，重建 GramJS bundle 供 TG2 offscreen 載入；產物 1.3M，不入 main)
 
 # 關鍵檔案說明：各主要檔案的職責
 key_files:
@@ -60,7 +61,7 @@ key_files:
   - file_path: modules/newswire/tgAdapter.js
     description: "[快訊] Telegram adapter（BASE-018 TG1）。GramJS 客戶端（非 raw WebSocket，故不用 createWsAdapter）經 DI 注入（createClient/NewMessage 可 fake 測）；實作同一 Adapter 介面＋狀態詞彙。connect→client.connect()→逐頻道 getEntity→addEventHandler(NewMessage{chats})→新訊息以 {message,channel} 交 onRaw。classifyTgError 純函式（FLOOD_WAIT 遵守秒數／session 失效→needs-key 終止不迴圈／其餘暫時性退避）；eventChatId 純函式對應頻道 meta。真 GramJS 為 vendored bundle（tgClient.js，TG1-live）。"
   - file_path: modules/newswire/tgClient.js
-    description: "[快訊] 真實 GramJS 客戶端工廠（BASE-018）。GramJS 以 vendored bundle 進 lib/（TG1-live，見 SPIKE_T0.md：1.3M＋polyfill build）；bundle 就緒前 createTgClient 拋明確錯誤、NewMessage=null，tgAdapter 捕捉為暫時性（生產環境 tg 預設 enabled=false＋無 UI 不觸發）。"
+    description: "[快訊] GramJS 客戶端工廠（BASE-018，stub）。載入策略定案 offscreen document（TG2，見 SA §8）：MV3 SW 不支援 dynamic import()（Chrome 官方文件確認），靜態 import 又會讓所有用戶 SW 冷啟白 parse 1.3M，且 GramJS 登入需 DOM context → GramJS 於 offscreen 執行、SW 以 message proxy 控制、watchdog 監控 offscreen 存活/重建。TG1-live 僅落地 build recipe（tools/telegram-bundle）；bundle 與 offscreen 整合待 TG2。stub 期 createTgClient 拋錯、NewMessage=null（生產 tg disabled＋無 UI 不觸發）。"
   - file_path: modules/newswire/dedupe.js
     description: "[快訊] L1 去重純函式（BASE-016）。createDedupeSet：in-memory Map 依插入序 FIFO 淘汰（cap 1000），種子來自 ring buffer 既有事件 id，使 SW 重啟與 Tree history replay 不重複入列。"
   - file_path: modules/newswire/rules.js

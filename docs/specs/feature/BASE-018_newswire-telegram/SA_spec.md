@@ -79,9 +79,20 @@
 | Phase | 內容 |
 |---|---|
 | **T0** | §7 spike（1–2 晚,scratch 不入版控） |
-| **TG1** | tgAdapter＋parseTgMessage＋feedManager 納管＋tg keys 納入既有 opt-in 同步路徑（'tg' 入 NEWSWIRE_SOURCE_IDS；含 on/off/scrub 測試） |
-| **TG2** | options 卡（登入/頻道管理/策展清單）＋i18n＋PERMISSIONS.md |
+| **TG1** | tgAdapter＋parseTgMessage＋feedManager 納管＋tg keys 納入既有 opt-in 同步路徑（'tg' 入 NEWSWIRE_SOURCE_IDS；含 on/off/scrub 測試）｜PR #194 已合併 |
+| **TG1-live** | **僅落地可重現 build recipe**（`tools/telegram-bundle/`：esbuild+polyfill，`npm ci && npm run build` → 1.3M bundle）。**GramJS 執行 context 定案：offscreen document**（見下方架構決策）。tgClient 維持 stub（載入待 TG2）。1.3M bundle 本身**不進 main**（無 code 引用前不入版控/打包），TG2 連同 offscreen 載入 code 一起落地 |
+| **TG2** | GramJS **offscreen 整合**（bundle 落地＋offscreen.js 加 tg handler＋SW↔offscreen message proxy＋watchdog 改監控 offscreen 存活/重建＋抽共用 `ensureOffscreenDocument`＋Makefile DEV build 補 offscreen 檔案）＋options 登入卡（頻道管理/策展清單）＋i18n＋PERMISSIONS.md |
 | **TG3** | 手動矩陣（真帳號登入、百頻道壓測、FLOOD_WAIT、跨端撤銷） |
+
+### GramJS 執行 context 架構決策（TG1-live 查證定案，取代原「SW 內 dynamic import」假設）
+
+**問題**：MV3 service worker **不支援 dynamic import()**（Chrome 官方文件明文「import()...is not supported」；w3c/webextensions #212 open）。原設計假設 SW 內按需 dynamic import 1.3M bundle → **不可行**。
+
+**替代方案取捨**：
+- SW **靜態 import**：可行,但每次 SW 冷啟 parse 1.3M,tg disabled 的絕大多數用戶白付（SW 頻繁回收放大）。
+- **offscreen document（定案）**：DOM context 支援 dynamic import,只在 tg 啟用時建 offscreen → 不用 tg 零成本;且 GramJS 登入（client.start 需互動 prompt）本就需 DOM context。
+
+**定案架構**：GramJS 於 offscreen document 執行（bundle 於 offscreen dynamic import）。SW 端 tg「adapter」為 message proxy（`tg:connect/disconnect/status/raw`），常駐連線狀態機（classifyTgError／退避／needs-key）搬至 offscreen 端。**watchdog 保留在 SW**（offscreen 無 `alarms` API 且會被回收）→ 由 SW alarm 監控 offscreen 存活並重建（監控對象從 in-SW `adapter.isAlive()` 改為 offscreen document + tg 狀態 ping）。offscreen 為 Chrome 單例,與既有 RSS（`DOM_PARSER`）**共用同一 document**——複用 `rssManager` 的 `ensureOffscreenDocument`（單例 guard），**勿另建第二份**。既有 RSS offscreen 建後不 close,不會衝突。
 
 ## Revision History
 
@@ -90,3 +101,4 @@
 | v1.0 | 2026-07-23 | 初稿：GramJS 路線、session 安全硬規則、T0 spike 條件 | Tai / Claude 協作 |
 | v1.1 | 2026-07-23 | 依 PR #192 意見：session/api_hash 改為納入既有 key opt-in 同步（取代同步硬排除；`mergeKeys` 整包 LWW 自動涵蓋 tg，僅需 'tg' 入 NEWSWIRE_SOURCE_IDS）；連動更新 §2 Module Map、§3 storage schema、§5 安全設計、§6 測試、§8 TG1 | Tai / Claude 協作 |
 | v1.2 | 2026-07-23 | T0 spike 執行完成（SPIKE_T0.md）：GramJS 可行性 de-risk，PROCEED（有條件）；§1 依賴引入改為 vendored bundle 進 lib/（1.3M）、§7 回填四問題結論；未竟項＝使用者跑 harness 確認真登入/接收 | Tai / Claude 協作 |
+| v1.3 | 2026-07-24 | TG1-live 縮範圍：對抗式 review＋Chrome 官方文件查證確認 **MV3 SW 不支援 dynamic import()**，原「SW 內 dynamic import bundle」不可行 → §8 新增「GramJS 執行 context 架構決策」：定案 **offscreen document**（SW proxy＋watchdog 監控 offscreen），offscreen 整合併入 TG2。TG1-live 收斂為僅落地可重現 build recipe（`tools/telegram-bundle/`），1.3M bundle 不進 main（無 code 引用）。記錄上游 `telegram@2.26.22` 已 archived（fork `teleproto`），供應鏈風險待評估遷移 | Tai / Claude 協作 |
