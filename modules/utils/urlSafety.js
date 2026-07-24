@@ -18,7 +18,9 @@ export function validateFeedUrl(feedUrl) {
         /^10\./.test(hostname) ||
         /^192\.168\./.test(hostname) ||
         /^172\.(1[6-9]|2[0-9]|3[01])\./.test(hostname) ||
-        /^169\.254\./.test(hostname)
+        /^169\.254\./.test(hostname) ||
+        // 100.64.0.0/10 CGNAT (RFC 6598) — incl. Alibaba Cloud metadata 100.100.100.200
+        /^100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\./.test(hostname)
     ) {
         return 'Feed URL points to private network';
     }

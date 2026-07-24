@@ -53,7 +53,7 @@ key_files:
   - file_path: modules/utils/colorUtils.js
     description: "[工具] 顏色工具函式庫。提供 HSL/HEX 轉換、WCAG 對比度計算以及衍生色演算法。"
   - file_path: modules/utils/urlSafety.js
-    description: "[工具] RSS feed URL SSRF 驗證（PR #193）。validateFeedUrl 純函式：僅允許 http/https；黑名單擋 localhost／私網 IPv4（127/8、10/8、192.168/16、172.16/12、169.254/16、0.0.0.0）與 IPv6 保留段（^:: 前綴涵蓋 ::、::1、::ffff:v4、v4-compatible ::/96；fc00::/7、fe80）；IPv6 判斷只對含冒號的 literal 套用，避免誤擋 fc2.com 類網域。decimal/hex/octal IP 編碼靠 new URL() 正規化後被攔。兩個 fetch 入口（rssManager 直抓、offscreen fetchAndParseRssFeed）都先驗來源 URL，redirect 跟隨後再驗 response.url（擋 302 轉私網後讀取回應）。已知限制：字串比對無法防 DNS rebinding（見檔頭註解）。零 chrome/DOM 依賴可跑 unit test。"
+    description: "[工具] RSS feed URL SSRF 驗證（PR #193）。validateFeedUrl 純函式：僅允許 http/https；黑名單擋 localhost／私網 IPv4（127/8、10/8、192.168/16、172.16/12、169.254/16、100.64/10 CGNAT、0.0.0.0）與 IPv6 保留段（^:: 前綴涵蓋 ::、::1、::ffff:v4、v4-compatible ::/96；fc00::/7、fe80）；IPv6 判斷只對含冒號的 literal 套用，避免誤擋 fc2.com 類網域。decimal/hex/octal IP 編碼靠 new URL() 正規化後被攔。兩個 fetch 入口（rssManager 直抓、offscreen fetchAndParseRssFeed）都先驗來源 URL，redirect 跟隨後再驗 response.url（擋 302 轉私網後讀取回應）。已知限制：字串比對無法防 DNS rebinding（見檔頭註解）。零 chrome/DOM 依賴可跑 unit test。"
   - file_path: modules/utils/sectionOrder.js
     description: "[工具] 側邊欄區塊排序純函式（BASE-015）。DEFAULT_SECTION_ORDER 常數與 mergeSectionOrder(stored, actual)：以 storage 偏好為序、過濾本機不存在的 id（容忍他裝置/未來區塊）、缺漏者依 canonical 序附尾；讀取端不回寫。零 chrome/DOM 依賴可跑 unit test。"
   - file_path: modules/ui/sectionOrderUI.js

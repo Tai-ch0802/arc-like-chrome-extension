@@ -11,6 +11,8 @@ describe('urlSafety.validateFeedUrl', () => {
             'https://fdroid-mirror.org/feed',       // fd-prefixed domain
             'https://fe80something.dev/feed',       // fe80-prefixed domain
             'http://172.32.0.1/feed',               // just outside 172.16.0.0/12
+            'http://100.63.255.254/feed',           // just below 100.64.0.0/10
+            'http://100.128.0.1/feed',              // just above 100.64.0.0/10
             'https://[2606:4700::6810:85e5]/feed',  // public IPv6 literal
         ])('%s', (url) => {
             expect(validateFeedUrl(url)).toBeNull();
@@ -45,6 +47,9 @@ describe('urlSafety.validateFeedUrl', () => {
             'http://172.16.0.1/feed',
             'http://172.31.255.254/feed',
             'http://169.254.169.254/latest/meta-data/',  // cloud metadata endpoint
+            'http://100.100.100.200/latest/meta-data/',  // Alibaba Cloud metadata (CGNAT range)
+            'http://100.64.0.1/feed',                    // 100.64.0.0/10 lower bound
+            'http://100.127.255.254/feed',               // 100.64.0.0/10 upper bound
         ])('%s', (url) => {
             expect(validateFeedUrl(url)).toBe(PRIVATE);
         });
