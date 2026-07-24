@@ -32,8 +32,7 @@ PROD_STATIC_FILES = \
     icons \
     lib \
     _locales \
-    offscreen.html \
-    offscreen.js
+    offscreen.html
 
 # --- Targets ---
 
@@ -80,6 +79,8 @@ build-prod:
 	@npx esbuild spotlight.js --bundle --minify --outfile=$(PROD_BUILD_DIR)/spotlight.js
 	@cp spotlight.html $(PROD_BUILD_DIR)/spotlight.html
 	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/spotlight.html
+	@npx esbuild offscreen.js --bundle --minify --outfile=$(PROD_BUILD_DIR)/offscreen.js
+	@sed -i.bak 's/type="module" //' $(PROD_BUILD_DIR)/offscreen.html
 	@rm -f $(PROD_BUILD_DIR)/*.bak
 
 zip-prod:

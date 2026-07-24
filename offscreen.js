@@ -2,6 +2,8 @@
 // This script runs in a hidden offscreen document that has access to DOM APIs.
 // It's used for parsing RSS/Atom XML feeds using DOMParser.
 
+import { validateFeedUrl } from './modules/utils/urlSafety.js';
+
 /**
  * Parses an RSS/Atom feed XML string and extracts title and items.
  * @param {string} xmlText - The raw XML text of the feed.
@@ -142,35 +144,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // This is used by the Service Worker which cannot use fetch() reliably for some URLs
         (async () => {
             try {
-                let parsedUrl;
-                try { parsedUrl = new URL(message.feedUrl); } catch { sendResponse({ success: false, error: 'Invalid feed URL' }); return; }
-                if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
-                    sendResponse({ success: false, error: 'Invalid feed URL protocol' });
-                    return;
-                }
-                const hostname = parsedUrl.hostname.toLowerCase().replace(/^\[|\]$/g, '');
-                if (
-                    hostname === 'localhost' ||
-                    hostname === '0.0.0.0' ||
-                    /^127\./.test(hostname) ||
-                    /^10\./.test(hostname) ||
-                    /^192\.168\./.test(hostname) ||
-                    /^172\.(1[6-9]|2[0-9]|3[01])\./.test(hostname) ||
-                    /^169\.254\./.test(hostname)
-                ) {
-                    sendResponse({ success: false, error: 'Feed URL points to private network' });
-                    return;
-                }
-                if (
-                    hostname === '::1' ||
-                    /^fc/i.test(hostname) ||
-                    /^fd/i.test(hostname) ||
-                    /^fe80/i.test(hostname) ||
-                    /^::ffff:/i.test(hostname)
-                ) {
-                    sendResponse({ success: false, error: 'Feed URL points to private network' });
-                    return;
-                }
+                const urlError = validateFeedUrl(message.feedUrl);
+                if (urlError) { sendResponse({ success: false, error: urlError }); return; }
 
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), message.timeoutMs || 10000);
