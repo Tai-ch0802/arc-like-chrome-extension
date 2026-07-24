@@ -18,7 +18,9 @@ export function validateFeedUrl(feedUrl) {
         /^10\./.test(hostname) ||
         /^192\.168\./.test(hostname) ||
         /^172\.(1[6-9]|2[0-9]|3[01])\./.test(hostname) ||
-        /^169\.254\./.test(hostname)
+        /^169\.254\./.test(hostname) ||
+        // 100.64.0.0/10 CGNAT (RFC 6598) — incl. Alibaba Cloud metadata 100.100.100.200
+        /^100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\./.test(hostname)
     ) {
         return 'Feed URL points to private network';
     }
@@ -27,12 +29,15 @@ export function validateFeedUrl(feedUrl) {
     // Regular DNS hostnames never contain colons, so this avoids false-positives
     // on domains like fc.example.com, fdroid-mirror.org, fe80something.dev.
     if (hostname.includes(':')) {
+        // /^::/ covers the whole reserved low block in canonical form:
+        // :: (unspecified), ::1 (loopback), ::ffff:a.b.c.d (IPv4-mapped),
+        // and deprecated IPv4-compatible ::/96 forms like ::7f00:1.
+        // No public IPv6 address serializes with a leading "::".
         if (
-            hostname === '::1' ||
+            /^::/.test(hostname) ||
             /^fc/i.test(hostname) ||
             /^fd/i.test(hostname) ||
-            /^fe80/i.test(hostname) ||
-            /^::ffff:/i.test(hostname)
+            /^fe80/i.test(hostname)
         ) {
             return 'Feed URL points to private network';
         }

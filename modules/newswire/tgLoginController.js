@@ -9,7 +9,8 @@
 // 不經此模組儲存。session ≈ 完整帳號存取權,由 caller 負責風險告示與 storage。
 
 export function createTgLoginController(deps = {}) {
-    const loadGramJS = deps.loadGramJS || (() => import('../../lib/telegram.bundle.js'));
+    // getURL 而非字面相對路徑:esbuild(make release)會把字面 import() 的 2.7M bundle inline 進 options.js。
+    const loadGramJS = deps.loadGramJS || (() => import(chrome.runtime.getURL('lib/telegram.bundle.js')));
 
     // 建一個短命 client 執行一次性操作後必 disconnect。
     async function withClient(session, apiId, apiHash, fn) {

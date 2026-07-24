@@ -610,11 +610,14 @@ async function fetchRssFeed(feedUrl) {
             const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
             try {
-                const response = await fetch(feedUrl, { signal: controller.signal, redirect: 'manual' });
+                const response = await fetch(feedUrl, { signal: controller.signal });
                 clearTimeout(timeoutId);
 
-                if (response.type === 'opaqueredirect') {
-                    throw new Error('Feed URL redirects are not allowed');
+                // Redirects are followed, then the FINAL url is re-validated so a
+                // public feed can't 302 into a private address (same as offscreen.js).
+                const redirectError = checkUrlSafety(response.url);
+                if (redirectError) {
+                    throw new Error(redirectError);
                 }
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);

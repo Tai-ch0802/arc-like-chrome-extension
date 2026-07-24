@@ -10,8 +10,10 @@
 let _modPromise = null;
 function loadGramJS() {
     // import() reject 時清快取,讓 tgAdapter 的重連能重試(否則永遠拿到同一顆 rejected)。
+    // getURL 而非字面相對路徑:esbuild(make release)會把字面 import() 的 2.7M bundle
+    // inline 進 offscreen.js(iife 無 code-splitting),破壞「不啟用 tg 零成本」的 lazy load。
     if (!_modPromise) {
-        _modPromise = import('../../lib/telegram.bundle.js').catch((e) => { _modPromise = null; throw e; });
+        _modPromise = import(chrome.runtime.getURL('lib/telegram.bundle.js')).catch((e) => { _modPromise = null; throw e; });
     }
     return _modPromise;
 }

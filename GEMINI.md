@@ -52,6 +52,8 @@ key_files:
     description: "[工具] 文字工具函式庫。提供安全處理 HTML 的工具函式，如 `escapeHtml` 以防止 XSS 攻擊。"
   - file_path: modules/utils/colorUtils.js
     description: "[工具] 顏色工具函式庫。提供 HSL/HEX 轉換、WCAG 對比度計算以及衍生色演算法。"
+  - file_path: modules/utils/urlSafety.js
+    description: "[工具] RSS feed URL SSRF 驗證（PR #193）。validateFeedUrl 純函式：僅允許 http/https；黑名單擋 localhost／私網 IPv4（127/8、10/8、192.168/16、172.16/12、169.254/16、100.64/10 CGNAT、0.0.0.0）與 IPv6 保留段（^:: 前綴涵蓋 ::、::1、::ffff:v4、v4-compatible ::/96；fc00::/7、fe80）；IPv6 判斷只對含冒號的 literal 套用，避免誤擋 fc2.com 類網域。decimal/hex/octal IP 編碼靠 new URL() 正規化後被攔。兩個 fetch 入口（rssManager 直抓、offscreen fetchAndParseRssFeed）都先驗來源 URL，redirect 跟隨後再驗 response.url（擋 302 轉私網後讀取回應）。已知限制：字串比對無法防 DNS rebinding（見檔頭註解）。零 chrome/DOM 依賴可跑 unit test。"
   - file_path: modules/utils/sectionOrder.js
     description: "[工具] 側邊欄區塊排序純函式（BASE-015）。DEFAULT_SECTION_ORDER 常數與 mergeSectionOrder(stored, actual)：以 storage 偏好為序、過濾本機不存在的 id（容忍他裝置/未來區塊）、缺漏者依 canonical 序附尾；讀取端不回寫。零 chrome/DOM 依賴可跑 unit test。"
   - file_path: modules/ui/sectionOrderUI.js
@@ -105,7 +107,7 @@ key_files:
   - file_path: modules/readingListManager.js
     description: "[功能] 閱讀清單業務邏輯。管理閱讀清單 CRUD 操作、自動分組開啟的分頁、刪除時標記 hash 防止 RSS 重複加入、清除所有已讀功能。"
   - file_path: modules/rssManager.js
-    description: "[功能] RSS 訂閱管理。訂閱清單存 chrome.storage.local（自 sync 遷入，rssMigratedFromSync 旗標；updatedAt 為跨裝置合併鍵）、chrome.alarms 排程抓取、hash 去重、自動加入閱讀清單、手動立即抓取。hash/lastFetched 寫入改序列化 read-union-write（hashWriteChain / persistLastFetched，修陳舊快照全表覆寫的去重失效 bug）；storage.onChanged 刷新跨 context in-memory 快取；removeSubscription 寫 rssTombstones；exportLocalRssState/importMergedRssState 為 Drive 同步橋接（rssManager 對 Drive 無知，由 background 驅動）。SW context 的 fetch+parse 委派改用共用 modules/offscreenManager.js 的 ensureOffscreenDocument（與 tg 共用單一 offscreen document,TG2b）。"
+    description: "[功能] RSS 訂閱管理。訂閱清單存 chrome.storage.local（自 sync 遷入，rssMigratedFromSync 旗標；updatedAt 為跨裝置合併鍵）、chrome.alarms 排程抓取、hash 去重、自動加入閱讀清單、手動立即抓取。hash/lastFetched 寫入改序列化 read-union-write（hashWriteChain / persistLastFetched，修陳舊快照全表覆寫的去重失效 bug）；storage.onChanged 刷新跨 context in-memory 快取；removeSubscription 寫 rssTombstones；exportLocalRssState/importMergedRssState 為 Drive 同步橋接（rssManager 對 Drive 無知，由 background 驅動）。SW context 的 fetch+parse 委派改用共用 modules/offscreenManager.js 的 ensureOffscreenDocument（與 tg 共用單一 offscreen document,TG2b）。fetchRssFeed 進入點先經 modules/utils/urlSafety.js 驗證 feed URL,redirect 跟隨後再驗 response.url（PR #193）。"
   - file_path: modules/rss/rssSyncLogic.js
     description: "[功能][純函式] RSS 狀態跨裝置合併邏輯（set-union / id-merge，非 workspace 的 rev 模型）。mergeRssState（hashes union+cap、subs 依 id 合併 updatedAt-LWW + lastFetched-max、tombstone deletedAt≥updatedAt 排除 + union + GC 180d）對固定 now 交換律+冪等（no-op write guard 收斂前提）；mergeHashesForWrite、capHashes、nextTimestamp(Lamport-lite)、canonicalizeRssState/rssStateEqual。MAX_STORED_HASHES=5000。"
   - file_path: modules/ui/readingListRenderer.js

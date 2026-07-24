@@ -150,11 +150,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), message.timeoutMs || 10000);
 
-                const response = await fetch(message.feedUrl, { signal: controller.signal, redirect: 'manual' });
+                const response = await fetch(message.feedUrl, { signal: controller.signal });
                 clearTimeout(timeoutId);
 
-                if (response.type === 'opaqueredirect') {
-                    sendResponse({ success: false, error: 'Feed URL redirects are not allowed' });
+                // Redirects are followed (http→https, FeedBurner-style feeds are
+                // common), then the FINAL url is re-validated so a public feed
+                // can't 302 into a private address and have its response read.
+                const redirectError = validateFeedUrl(response.url);
+                if (redirectError) {
+                    sendResponse({ success: false, error: redirectError });
                     return;
                 }
                 if (!response.ok) {
