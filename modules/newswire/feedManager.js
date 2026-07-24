@@ -18,7 +18,7 @@ import {
     createJin10Adapter,
     missingCreds,
 } from './adapters.js';
-import { createTgAdapter } from './tgAdapter.js';
+import { createTgProxyAdapter } from './tgProxyAdapter.js';
 import { canonicalizeNewswire } from './newswireSyncLogic.js';
 import { buildP0Notification } from './notify.js';
 
@@ -98,10 +98,10 @@ const ADAPTER_FACTORIES = {
         // 官方 language=traditional:UI 語言為繁體時快訊轉繁體(M0/SA §5.4)。
         language: uiLangCache === 'zh_TW' ? 'traditional' : undefined,
     }, hooks),
-    // Telegram(BASE-018 TG1):GramJS 客戶端(vendored bundle 隨 TG1-live)。
-    // 預設 enabled=false 且尚無 UI 可啟用 → 生產環境不觸發真連線;bundle
-    // 就緒前 createTgClient 拋錯,tgAdapter 捕捉為暫時性(不影響其他源)。
-    tg: (sourceCfg, keys, hooks) => createTgAdapter({
+    // Telegram(BASE-018 TG2b):GramJS 在 offscreen document 執行,SW 端用 proxy
+    // 透過 message 控制(SW 不 import GramJS/bundle)。預設 enabled=false;啟用需
+    // session(TG2c 登入 UI)。offscreen 收訊經 tg:raw 回,狀態經 tg:status 回。
+    tg: (sourceCfg, keys, hooks) => createTgProxyAdapter({
         session: keys?.tg?.session,
         apiId: keys?.tg?.apiId,
         apiHash: keys?.tg?.apiHash,
@@ -281,12 +281,47 @@ export function handleNewswireNotificationClick(notificationId) {
 }
 
 /** newswireWatchdog alarm:確保 SW 存活時連線在線、被回收後重建。 */
-export function handleNewswireWatchdog() {
+export async function handleNewswireWatchdog() {
     if (!started) { initNewswire(); return; }
-    for (const adapter of adapters.values()) {
-        if (!adapter.isAlive()) adapter.connect();
+    for (const [source, adapter] of adapters) {
+        if (source === 'tg') {
+            // GramJS 在 offscreen,可能被 Chrome 回收 → 以 tg:ping 探活(不能只靠
+            // isAlive:offscreen 回收後不再回報,lastStatus 會停在過時的 'connected')。
+            // 無回應(offscreen 不存在/逾時)→ proxy.connect() 重建 offscreen + 重發
+            // tg:connect;有回應則交由 offscreen 內 tgAdapter 自行退避重連(不干預)。
+            const pong = await pingTg();
+            if (!pong) adapter.connect();
+        } else if (!adapter.isAlive()) {
+            adapter.connect();
+        }
     }
     ensureKeepalive();
+}
+
+/** ping offscreen 的 tg handler;offscreen 不存在(no receiver)或逾時回 null。 */
+async function pingTg() {
+    try {
+        return await Promise.race([
+            chrome.runtime.sendMessage({ action: 'tg:ping' }),
+            new Promise((_, reject) => { setTimeout(() => reject(new Error('tg:ping timeout')), 2000); }),
+        ]);
+    } catch { return null; }
+}
+
+/**
+ * offscreen 回報的 tg 訊息分派(background onMessage 委派)。tg:raw → 進既有管線;
+ * tg:status → 更新 tg proxy 狀態(透傳 setStatus 廣播)。
+ * @returns {boolean} true = 已認領此訊息
+ */
+export function handleTgOffscreenMessage(message) {
+    if (message?.action === 'tg:raw') { handleRaw('tg', message.raw); return true; }
+    if (message?.action === 'tg:status') {
+        const a = adapters.get('tg');
+        if (a && a.setRemoteStatus) a.setRemoteStatus(message.status);
+        else setStatus('tg', message.status);
+        return true;
+    }
+    return false;
 }
 
 /**

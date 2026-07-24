@@ -17,6 +17,8 @@ DEV_SRC_FILES = \
     options.js \
     spotlight.html \
     spotlight.js \
+    offscreen.html \
+    offscreen.js \
     icons \
     lib \
     modules \

@@ -19,6 +19,7 @@ import {
   handleNewswireMessage,
   handleNewswireConfigChange,
   handleNewswireNotificationClick,
+  handleTgOffscreenMessage,
   exportLocalNewswireState,
   importMergedNewswireState,
   ALARM_NEWSWIRE_WATCHDOG,
@@ -810,6 +811,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (typeof message.action === 'string' && message.action.startsWith('newswire:')) {
     // newswire 協定(BASE-016):getState/markSeen 由 feedManager 分派。
     return handleNewswireMessage(message, sendResponse);
+  } else if (message.action === 'tg:raw' || message.action === 'tg:status') {
+    // offscreen 回報的 tg 訊息(BASE-018 TG2b):進管線/更新狀態。fire-and-forget。
+    handleTgOffscreenMessage(message);
+    return false;
   }
   // 不處理的 action：不攔截，讓 offscreen document 等其他 context 可以回應
 });
