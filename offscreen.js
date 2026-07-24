@@ -119,36 +119,11 @@ function getLinkFromGuid(item) {
 
 // --- Telegram (BASE-018 TG2b) ---
 // GramJS 只在此 offscreen document 執行(DOM context 支援 dynamic import + WebSocket;
-// MV3 SW 兩者皆不支援/不宜)。tgAdapter/tgClient 以 dynamic import 隔離載入——只有
-// SW 發 tg:connect 時才載入 2.6M bundle,不啟用 tg 的用戶零成本。收到 NewMessage 主動
-// post tg:raw 給 SW 的既有 newswire 管線;狀態變化 post tg:status;SW watchdog 以 tg:ping 探活。
-let tgAdapter = null;
-let lastTgStatus = 'disabled';
-let tgGeneration = 0; // 每次 connect/disconnect 遞增,使 in-flight tgConnect 於 import 窗口失效
-
-async function tgConnect(cfg) {
-    const gen = ++tgGeneration;
-    const { createTgAdapter } = await import('./modules/newswire/tgAdapter.js');
-    // import(2.6M bundle,首載窗口寬)期間若發生 disconnect 或新 connect(gen 已變)→ 收手,
-    // 否則會建立一條 SW 已視為 disabled、卻無人管理的 orphan Telegram 連線。tgAdapter 內的
-    // stopped guard 保不到「adapter 尚未生成」的這層窗口。
-    if (gen !== tgGeneration) return;
-    if (tgAdapter) { try { tgAdapter.disconnect(); } catch (e) { /* noop */ } tgAdapter = null; }
-    tgAdapter = createTgAdapter(cfg, {
-        onRaw: (raw) => { chrome.runtime.sendMessage({ action: 'tg:raw', raw }).catch(() => { /* SW 忙/回收 */ }); },
-        onStatus: (status) => {
-            lastTgStatus = status;
-            chrome.runtime.sendMessage({ action: 'tg:status', status }).catch(() => { /* noop */ });
-        },
-    });
-    tgAdapter.connect();
-}
-
-function tgDisconnect() {
-    tgGeneration++; // 使 in-flight tgConnect 於 import resolve 後收手
-    if (tgAdapter) { try { tgAdapter.disconnect(); } catch (e) { /* noop */ } tgAdapter = null; }
-    lastTgStatus = 'disabled';
-}
+// MV3 SW 兩者皆不支援/不宜)。tg 控制邏輯抽至 modules/newswire/tgOffscreenController.js
+// (可單元測:generation guard、ping),offscreen 一次性載入後純 delegate。只有 SW 發
+// tg:connect 觸發 controller.connect 時才動態載入 2.6M bundle,不啟用 tg 的用戶零成本。
+const tgControllerReady = import('./modules/newswire/tgOffscreenController.js')
+    .then((m) => m.createTgOffscreenController());
 
 // --- Message Listener ---
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -188,21 +163,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true; // Keep channel open for async response
     }
 
-    // --- Telegram (BASE-018 TG2b) ---
+    // --- Telegram (BASE-018 TG2b) ---（delegate 至 tgOffscreenController）
     if (message.action === 'tg:connect') {
-        tgConnect(message.cfg).catch(() => {
-            // 動態載入/建構失敗:回報 retrying,SW watchdog 會再排程重連。
-            lastTgStatus = 'retrying';
-            chrome.runtime.sendMessage({ action: 'tg:status', status: 'retrying' }).catch(() => { /* noop */ });
-        });
+        tgControllerReady.then((c) => c.connect(message.cfg)).catch(() => { /* controller 載入失敗(極少見) */ });
         return false; // 無同步 response;狀態經 tg:status 主動 post
     }
     if (message.action === 'tg:disconnect') {
-        tgDisconnect();
+        tgControllerReady.then((c) => c.disconnect());
         return false;
     }
     if (message.action === 'tg:ping') {
-        sendResponse({ alive: !!tgAdapter && tgAdapter.isAlive(), status: lastTgStatus });
+        tgControllerReady.then((c) => sendResponse(c.ping()))
+            .catch(() => sendResponse({ alive: false, hasAdapter: false, status: 'disabled' }));
         return true;
     }
 });

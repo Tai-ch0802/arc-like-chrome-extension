@@ -314,16 +314,21 @@ async function pingTg() {
 }
 
 /**
- * 純函式:tg:ping 回應 → 是否該重發 tg:connect。offscreen 無回應(null,不存在/逾時)、
- * 或在但無 live tgAdapter(alive=false;被 RSS 路徑重建成 adapter-less、或 tgConnect 失敗)
- * 且非連線中(connecting)/憑證失效(needs-key,終止態)→ 重連。單看有無回應不足以判活。
- * @param {{alive?:boolean, status?:string}|null} pong
+ * 純函式:tg:ping 回應 → 是否該重發 tg:connect。**以 hasAdapter 而非 status 判斷**:
+ *   - 無回應(null,offscreen 不存在/逾時)→ 重連。
+ *   - alive(已連線)→ 不重連。
+ *   - 有 tgAdapter 物件但未 alive(retrying 退避中/degraded/connecting/needs-key)→
+ *     **不重連**,交由 offscreen 內 tgAdapter 自己的指數退避/FLOOD_WAIT 處理;否則
+ *     watchdog 每 30s 就會砍掉退避重建、加重 flood 懲罰(review 抓到的干預問題)。
+ *   - 無 tgAdapter 物件(offscreen 被 RSS 路徑重建成 adapter-less、或 tgConnect 載入失敗)
+ *     → 重連,因為沒有任何 adapter 會自癒。
+ * @param {{alive?:boolean, hasAdapter?:boolean, status?:string}|null} pong
  * @returns {boolean}
  */
 export function shouldReconnectTg(pong) {
     if (!pong) return true;
     if (pong.alive) return false;
-    return pong.status !== 'needs-key' && pong.status !== 'connecting';
+    return !pong.hasAdapter;
 }
 
 /**
