@@ -62,6 +62,19 @@ export function createEventBuffer(deps = {}) {
         return events;
     }
 
+    /**
+     * 標記單則事件已讀(點擊開原文後反灰,BASE-020)。read 旗標存在事件本體上,
+     * 隨 ring buffer 持久化與 FIFO 淘汰——不需獨立 read-id 集合與清理邏輯。
+     * @returns {boolean} 是否有找到並標記(已標記過回 false,呼叫端可略過廣播)
+     */
+    function markRead(id) {
+        const ev = events.find((e) => e.id === id);
+        if (!ev || ev.read === true) return false;
+        ev.read = true;
+        schedulePersist();
+        return true;
+    }
+
     /** 立即落地(測試/終止前用);無待寫入時為 no-op。 */
     async function flush() {
         if (timer) { clearTimer(timer); timer = null; }
@@ -74,5 +87,5 @@ export function createEventBuffer(deps = {}) {
         await flush();
     }
 
-    return { init, append, getEvents, flush, clear };
+    return { init, append, getEvents, markRead, flush, clear };
 }

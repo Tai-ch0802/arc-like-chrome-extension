@@ -85,6 +85,14 @@ describe('eventChatId (pure)', () => {
     expect(eventChatId({ message: { peerId: { channelId: 42 } } })).toBe('42');
     expect(eventChatId({})).toBeUndefined();
   });
+  it('★ strips the -100 channel mark so it matches bare entity ids (clickable url regression)', () => {
+    // teleproto 事件 chatId 對頻道回 marked 形式 -100<id>;metaById key 是裸 entity.id。
+    // 不 strip → lookup miss → 多頻道 fallback 無 username → 無 t.me url → 不可點。
+    expect(eventChatId({ chatId: -1001234567890n })).toBe('1234567890');
+    expect(eventChatId({ chatId: '-1001234567890' })).toBe('1234567890');
+    // 普通群組 marked -10000xyz(=-100 後跟 0)不可誤 strip(與 teleproto resolveId 正則一致)。
+    expect(eventChatId({ chatId: '-10000123' })).toBe('-10000123');
+  });
 });
 
 describe('createTgAdapter — lifecycle', () => {
@@ -108,7 +116,23 @@ describe('createTgAdapter — lifecycle', () => {
     client.emit({ chatId: '100', message: { id: 9, message: 'hi', date: 1 } });
     expect(raws).toHaveLength(1);
     expect(raws[0].message.message).toBe('hi');
-    expect(raws[0].channel).toMatchObject({ id: 100, username: 'BWEnews' });
+    expect(raws[0].channel).toMatchObject({ id: '100', username: 'BWEnews' });
+  });
+
+  it('★ multi-channel: marked (-100) event chatId resolves the right channel meta; meta.id is a string', async () => {
+    // 真實 teleproto 事件 chatId 是 marked 形式(-100<id>);metaById key 為裸 id。
+    // 修正前 lookup miss → 多頻道 fallback {id} 無 username → 無 t.me url 不可點。
+    // meta.id 需為字串:BigInt 經 runtime message JSON 序列化會 throw、事件整則丟失。
+    const { deps, factory } = makeDeps({ idFor: (ref) => (ref === 'BWEnews' ? 111n : 222n) });
+    const { raws, h } = hooks();
+    const a = createTgAdapter(cfg({ channels: [{ username: 'BWEnews' }, { username: 'WatcherGuru' }] }), h, deps);
+    a.connect();
+    await flush();
+    const client = factory.last();
+    client.emit({ chatId: '-100222', message: { id: 1, message: 'guru', date: 1 } });
+    expect(raws).toHaveLength(1);
+    expect(raws[0].channel).toMatchObject({ id: '222', username: 'WatcherGuru' });
+    expect(typeof raws[0].channel.id).toBe('string');
   });
 
   it('REAL FloodWaitError → schedules reconnect (honors e.seconds even though message lacks FLOOD_WAIT token)', async () => {

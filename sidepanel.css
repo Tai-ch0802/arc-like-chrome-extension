@@ -3827,6 +3827,15 @@ mark.url-match {
     background: var(--element-bg-color-hover);
 }
 
+/* 點擊開原文後反灰已讀(BASE-020,比照 .reading-list-item.is-read)。 */
+.newswire-item.is-read {
+    opacity: 0.6;
+}
+
+.newswire-item.is-read .newswire-item__title {
+    color: var(--text-color-secondary);
+}
+
 .newswire-item--p0 {
     border-left-color: var(--danger-color);
 }

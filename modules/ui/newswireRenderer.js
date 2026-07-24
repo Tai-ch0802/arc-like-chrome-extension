@@ -59,6 +59,8 @@ function renderRow(ev) {
 
     row.append(time, source, title);
 
+    if (ev.read === true) row.classList.add('is-read'); // 已讀反灰(BASE-020,比照閱讀清單)
+
     if (ev.url) {
         row.classList.add('newswire-item--link');
         row.addEventListener('click', () => {
@@ -66,6 +68,10 @@ function renderRow(ev) {
                 const u = new URL(ev.url);
                 if (u.protocol === 'http:' || u.protocol === 'https:') api.createTab({ url: u.href });
             } catch { /* 非法 URL:不動作 */ }
+            // 點擊即已讀:本地立即反灰,SW 落地 ring buffer 並廣播其他 sidepanel 同步。
+            row.classList.add('is-read');
+            api.sendRuntimeMessage({ action: 'newswire:markRead', id: ev.id })
+                .catch(() => { /* SW 重啟中:僅本地反灰,重開面板依 buffer 狀態 */ });
         });
     }
     return row;
@@ -231,6 +237,10 @@ export async function initNewswireSection() {
             onLiveEvents(message.events || []);
         } else if (message.type === 'newswire:cleared') {
             onCleared();
+        } else if (message.type === 'newswire:read') {
+            // 其他 sidepanel 點擊的已讀:依 id 找列反灰(本面板點的已在 click 時反灰)。
+            const row = els.list.querySelector(`[data-event-id="${CSS.escape(message.id || '')}"]`);
+            if (row) row.classList.add('is-read');
         } else if (message.type === 'newswire:status') {
             enabledAny = Object.values(message.statuses || {}).some((s) => s !== 'disabled');
             refreshControls();
