@@ -1566,6 +1566,283 @@ function parseRuleWords(text) {
     return out;
 }
 
+// Telegram 策展頻道(TG2c,使用者提供已驗證清單;firstsquawk 有相似仿冒 handle 需醒目標示)。
+const TG_CURATED_CHANNELS = [
+    { username: 'WalterBloomberg', label: 'Walter Bloomberg' },
+    { username: 'firstsquawk', label: 'First Squawk', warn: true },
+    { username: 'BWEnews', label: '方程式新聞 BWEnews' },
+    { username: 'WatcherGuru', label: 'Watcher Guru' },
+    { username: 'binance_announcements', label: 'Binance (EN)' },
+    { username: 'binance_cn', label: 'Binance 中文' },
+    { username: 'tnews365', label: '竹新社' },
+];
+
+let _tgLoginCtrl = null;
+async function tgLoginCtrl() {
+    if (!_tgLoginCtrl) {
+        const { createTgLoginController } = await import('./modules/newswire/tgLoginController.js');
+        _tgLoginCtrl = createTgLoginController();
+    }
+    return _tgLoginCtrl;
+}
+async function reloadNewswireCfg() {
+    const res = await api.getStorage('local', { [NEWSWIRE_CONFIG_KEY]: null });
+    return res[NEWSWIRE_CONFIG_KEY] || defaultNewswireConfig();
+}
+
+// Telegram 卡片:異於四源(填 key 即可),有未登入/已登入兩態,登入走 tgLoginController
+// (client.start 互動:驗證碼/2FA)。登入邏輯在 modules/newswire/tgLoginController.js(可測)。
+function renderTgCard(container, cfg, keys, statusEls) {
+    const group = document.createElement('div');
+    group.className = 'settings-group';
+    group.dataset.newswireSource = 'tg';
+    container.appendChild(group);
+
+    const state = { keys: { ...(keys?.tg || {}) }, cfg };
+
+    const repaint = () => {
+        group.innerHTML = '';
+        const titleRow = document.createElement('div');
+        titleRow.className = 'opt-row';
+        const titleLabel = document.createElement('div');
+        titleLabel.className = 'opt-row__label';
+        titleLabel.textContent = 'Telegram';
+        const status = document.createElement('span');
+        status.className = 'newswire-status';
+        status.dataset.status = 'disabled';
+        statusEls.tg = status;
+        titleRow.append(titleLabel, status);
+        group.appendChild(titleRow);
+        if (state.keys.session) paintLoggedIn(); else paintLoginForm();
+    };
+
+    function paintLoginForm() {
+        const guide = document.createElement('p');
+        guide.className = 'opt-row__desc';
+        guide.textContent = api.getMessage('tgLoginGuide')
+            || '需自 my.telegram.org 申請 api_id/api_hash（建議用小號:session 等同完整帳號存取權）。';
+        const link = document.createElement('a');
+        link.href = 'https://my.telegram.org/apps';
+        link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.textContent = ` ${api.getMessage('tgLoginGetApiLink') || 'Get api_id/api_hash'}`;
+        guide.appendChild(link);
+        group.appendChild(guide);
+
+        const apiIdInput = document.createElement('input');
+        apiIdInput.type = 'text'; apiIdInput.inputMode = 'numeric';
+        apiIdInput.className = 'modal-input'; apiIdInput.value = state.keys.apiId || '';
+        group.appendChild(makeRow(api.getMessage('tgApiIdLabel') || 'api_id', apiIdInput));
+
+        const apiHashInput = document.createElement('input');
+        apiHashInput.type = 'password'; apiHashInput.autocomplete = 'new-password';
+        apiHashInput.className = 'modal-input'; apiHashInput.value = state.keys.apiHash || '';
+        group.appendChild(makeRow(api.getMessage('tgApiHashLabel') || 'api_hash', apiHashInput));
+
+        const phoneInput = document.createElement('input');
+        phoneInput.type = 'tel'; phoneInput.className = 'modal-input'; phoneInput.placeholder = '+886…';
+        group.appendChild(makeRow(api.getMessage('tgPhoneLabel') || 'Phone', phoneInput));
+
+        const errEl = document.createElement('p');
+        errEl.className = 'newswire-card-note hidden';
+        group.appendChild(errEl);
+
+        const loginBtn = document.createElement('button');
+        loginBtn.className = 'modal-button primary';
+        loginBtn.textContent = api.getMessage('tgLoginButton') || 'Log in';
+        loginBtn.addEventListener('click', () => doLogin({
+            apiId: apiIdInput.value.trim(), apiHash: apiHashInput.value.trim(),
+            phone: phoneInput.value.trim(), errEl, loginBtn,
+        }));
+        group.appendChild(loginBtn);
+    }
+
+    async function doLogin({ apiId, apiHash, phone, errEl, loginBtn }) {
+        errEl.classList.add('hidden');
+        if (!apiId || !apiHash || !phone) {
+            errEl.textContent = api.getMessage('tgLoginMissingFields') || '請填 api_id、api_hash 與手機號碼。';
+            errEl.classList.remove('hidden'); return;
+        }
+        const ok = await modalManager.showConfirm({
+            title: api.getMessage('tgRiskTitle') || 'Telegram 登入風險',
+            message: api.getMessage('tgRiskMessage')
+                || 'session 等同完整帳號存取權(可讀所有對話、冒名發訊),比一般 API key 嚴重。建議用小號、勿在公用電腦。繼續?',
+            confirmButtonText: api.getMessage('tgLoginButton') || 'Log in',
+        });
+        if (!ok) return;
+        loginBtn.disabled = true;
+        loginBtn.textContent = api.getMessage('tgLoggingIn') || 'Logging in…';
+        try {
+            const ctrl = await tgLoginCtrl();
+            const { session, me } = await ctrl.login({
+                apiId, apiHash, phoneNumber: phone,
+                phoneCode: () => modalManager.showPrompt({
+                    title: api.getMessage('tgCodeTitle') || 'Telegram 驗證碼',
+                    message: api.getMessage('tgCodeMessage') || '輸入手機/Telegram app 收到的驗證碼',
+                }),
+                password: () => modalManager.showPrompt({
+                    title: api.getMessage('tg2faTitle') || '兩步驟驗證密碼',
+                    message: api.getMessage('tg2faMessage') || '此帳號啟用了 2FA,請輸入密碼',
+                    inputType: 'password',
+                }),
+                onError: () => {},
+            });
+            state.keys = { ...state.keys, apiId, apiHash, session, meName: me?.firstName || me?.username || '' };
+            await rmwNewswireKeys((k) => { k.tg = { ...(k.tg || {}), apiId, apiHash, session }; });
+            await rmwNewswireConfig((c) => {
+                c.sources = { ...(c.sources || {}) };
+                c.sources.tg = { ...(c.sources.tg || {}), enabled: true, updatedAt: Date.now() };
+            });
+            state.cfg = await reloadNewswireCfg();
+            repaint();
+        } catch (e) {
+            errEl.textContent = `${api.getMessage('tgLoginFailed') || '登入失敗:'} ${e?.errorMessage || e?.message || e}`;
+            errEl.classList.remove('hidden');
+            loginBtn.disabled = false;
+            loginBtn.textContent = api.getMessage('tgLoginButton') || 'Log in';
+        }
+    }
+
+    function paintLoggedIn() {
+        const who = document.createElement('p');
+        who.className = 'opt-row__desc';
+        who.textContent = `${api.getMessage('tgLoggedInAs') || 'Logged in as'} ${state.keys.meName || '(session)'}`;
+        group.appendChild(who);
+
+        const enable = document.createElement('input');
+        enable.type = 'checkbox'; enable.id = 'newswire-enable-tg';
+        enable.checked = state.cfg.sources?.tg?.enabled === true;
+        enable.addEventListener('change', async () => {
+            await rmwNewswireConfig((c) => {
+                c.sources = { ...(c.sources || {}) };
+                c.sources.tg = { ...(c.sources.tg || {}), enabled: enable.checked, updatedAt: Date.now() };
+            });
+        });
+        group.appendChild(makeRow(api.getMessage('newswireEnableSource') || 'Enable', enable));
+
+        paintChannels();
+
+        const logoutBtn = document.createElement('button');
+        logoutBtn.className = 'modal-button';
+        logoutBtn.textContent = api.getMessage('tgLogoutButton') || 'Log out & revoke';
+        logoutBtn.addEventListener('click', () => doLogout(logoutBtn));
+        group.appendChild(logoutBtn);
+    }
+
+    function paintChannels() {
+        const ch5 = document.createElement('h5');
+        ch5.textContent = api.getMessage('tgChannelsHeader') || 'Channels';
+        group.appendChild(ch5);
+
+        const channels = state.cfg.sources?.tg?.channels || [];
+        for (const ch of channels) {
+            const row = document.createElement('div');
+            row.className = 'opt-row';
+            const label = document.createElement('span');
+            label.textContent = ch.title ? `${ch.title} (@${ch.username})` : `@${ch.username}`;
+            const rm = document.createElement('button');
+            rm.className = 'modal-button';
+            rm.textContent = api.getMessage('removeButton') || 'Remove';
+            rm.addEventListener('click', async () => {
+                await rmwNewswireConfig((c) => {
+                    c.sources = { ...(c.sources || {}) };
+                    const arr = (c.sources.tg?.channels || []).filter((x) => x.username !== ch.username);
+                    c.sources.tg = { ...(c.sources.tg || {}), channels: arr, updatedAt: Date.now() };
+                });
+                state.cfg = await reloadNewswireCfg();
+                repaint();
+            });
+            row.append(label, rm);
+            group.appendChild(row);
+        }
+
+        const addInput = document.createElement('input');
+        addInput.type = 'text'; addInput.className = 'modal-input';
+        addInput.placeholder = api.getMessage('tgAddPlaceholder') || 'username（不含 @）';
+        const addBtn = document.createElement('button');
+        addBtn.className = 'modal-button';
+        addBtn.textContent = api.getMessage('addButton') || 'Add';
+        addBtn.addEventListener('click', () => addChannel(addInput.value.trim().replace(/^@/, ''), addBtn));
+        const addRow = document.createElement('div');
+        addRow.className = 'opt-row';
+        addRow.append(addInput, addBtn);
+        group.appendChild(addRow);
+
+        const curatedDesc = document.createElement('p');
+        curatedDesc.className = 'opt-row__desc';
+        curatedDesc.textContent = api.getMessage('tgCuratedHeader') || '策展清單（加入前會 resolve 確認頻道真偽）';
+        group.appendChild(curatedDesc);
+        const existing = new Set(channels.map((c) => c.username.toLowerCase()));
+        for (const cur of TG_CURATED_CHANNELS) {
+            if (existing.has(cur.username.toLowerCase())) continue;
+            const b = document.createElement('button');
+            b.className = 'modal-button';
+            b.textContent = `+ ${cur.label}${cur.warn ? ' ⚠️' : ''}`;
+            if (cur.warn) b.title = api.getMessage('tgCuratedWarn') || '注意:有相似仿冒 handle,加入前務必確認';
+            b.addEventListener('click', () => addChannel(cur.username, b));
+            group.appendChild(b);
+        }
+    }
+
+    async function addChannel(username, btn) {
+        if (!username) return;
+        btn.disabled = true;
+        try {
+            const ctrl = await tgLoginCtrl();
+            const info = await ctrl.resolveChannel({
+                apiId: state.keys.apiId, apiHash: state.keys.apiHash, session: state.keys.session, username,
+            });
+            const msg = `${info.title || username}${info.username ? ` (@${info.username})` : ''}`
+                + (info.participantsCount ? ` · ${info.participantsCount} ${api.getMessage('tgSubscribers') || 'subscribers'}` : '');
+            const ok = await modalManager.showConfirm({
+                title: api.getMessage('tgAddTitle') || '確認頻道（防仿冒）',
+                message: `${api.getMessage('tgAddConfirm') || '加入此頻道?'}\n${msg}`,
+                confirmButtonText: api.getMessage('addButton') || 'Add',
+            });
+            if (!ok) { btn.disabled = false; return; }
+            await rmwNewswireConfig((c) => {
+                c.sources = { ...(c.sources || {}) };
+                const arr = [...(c.sources.tg?.channels || [])];
+                const uname = info.username || username;
+                if (!arr.some((x) => x.username.toLowerCase() === uname.toLowerCase())) arr.push({ username: uname, title: info.title });
+                c.sources.tg = { ...(c.sources.tg || {}), channels: arr, updatedAt: Date.now() };
+            });
+            state.cfg = await reloadNewswireCfg();
+            repaint();
+        } catch (e) {
+            await modalManager.showConfirm({
+                title: api.getMessage('tgAddFailed') || '無法解析頻道',
+                message: String(e?.errorMessage || e?.message || e),
+                confirmButtonText: api.getMessage('okButton') || 'OK',
+            });
+            btn.disabled = false;
+        }
+    }
+
+    async function doLogout(btn) {
+        const ok = await modalManager.showConfirm({
+            title: api.getMessage('tgLogoutTitle') || '登出並撤銷 session?',
+            message: api.getMessage('tgLogoutMessage') || '會遠端撤銷此 session 並清除本機憑證。',
+            confirmButtonText: api.getMessage('tgLogoutButton') || 'Log out & revoke',
+        });
+        if (!ok) return;
+        btn.disabled = true;
+        try {
+            const ctrl = await tgLoginCtrl();
+            await ctrl.logout({ apiId: state.keys.apiId, apiHash: state.keys.apiHash, session: state.keys.session });
+        } catch { /* 遠端撤銷失敗仍清本機 */ }
+        await rmwNewswireKeys((k) => { delete k.tg; });
+        await rmwNewswireConfig((c) => {
+            c.sources = { ...(c.sources || {}) };
+            c.sources.tg = { ...(c.sources.tg || {}), enabled: false, updatedAt: Date.now() };
+        });
+        state.keys = {};
+        state.cfg = await reloadNewswireCfg();
+        repaint();
+    }
+
+    repaint();
+}
+
 function renderNewswire(container) {
     const h = document.createElement('h2');
     h.textContent = api.getMessage('settingsNavNewswire') || 'News Feed';
@@ -1725,6 +2002,9 @@ function renderNewswire(container) {
 
             container.appendChild(group);
         }
+
+        // Telegram 卡片(TG2c,兩態:登入/已登入,登入走 tgLoginController)。
+        renderTgCard(container, cfg, keys, statusEls);
 
         // --- 分級規則(P0/P1/靜音;寫入即生效,隨 N3 Drive 同步漫遊) ---
         const rulesHeader = document.createElement('h4');

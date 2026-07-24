@@ -173,13 +173,16 @@ export function showConfirm({ title, message = '', confirmButtonText = 'Confirm'
     });
 }
 
-export function showPrompt({ title, confirmButtonText = 'Confirm', defaultValue = '' }) {
+export function showPrompt({ title, message = '', confirmButtonText = 'Confirm', defaultValue = '', inputType = 'text' }) {
     return new Promise((resolve) => {
         const form = document.createElement('form');
         form.noValidate = true;
+        // inputType 白名單:僅 password 走遮罩(＋new-password 壓存密碼提示),其餘一律 text。
+        const safeType = inputType === 'password' ? 'password' : 'text';
         form.innerHTML = `
             <h3 class="modal-title">${escapeHtml(title)}</h3>
-            <input type="text" class="modal-input" value="${escapeHtml(defaultValue)}">
+            ${message ? `<p class="modal-message">${escapeHtml(message)}</p>` : ''}
+            <input type="${safeType}" class="modal-input" value="${escapeHtml(defaultValue)}"${safeType === 'password' ? ' autocomplete="new-password"' : ''}>
             <div class="modal-buttons">
                 <button type="button" class="modal-button cancel-btn">${api.getMessage("cancelButton") || 'Cancel'}</button>
                 <button type="submit" class="modal-button confirm-btn primary">${escapeHtml(confirmButtonText)}</button>
