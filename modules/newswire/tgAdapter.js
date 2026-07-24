@@ -122,6 +122,13 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
             }
             const NewMessage = await resolveNewMessage();
             if (stopped || failed) { try { await client.disconnect(); } catch { /* noop */ } client = null; return; }
+            // chats 必須傳頻道「識別碼」(entity.id),不能傳 entity 物件:teleproto 的
+            // EventBuilder constructor 會對每個元素 .toString()(events/common.js:66),而
+            // teleproto 實體無 toString → "[object Object]" → _intoIdSet 落到 getInputEntity
+            // 解析失敗且被靜默吞掉(updates.js) → resolved 永遠 false → filter 第一行
+            // `if(!resolved) return` 永久短路 → onRaw 一則都不會觸發(連上卻收不到)。
+            // 傳 entity.id(BigInteger)→ toString 為數字字串 → parseID 正確解析為 peer id。
+            const chatIds = entities.map((e) => e && e.id).filter((id) => id != null);
             client.addEventHandler((event) => {
                 try {
                     const chatId = eventChatId(event);
@@ -129,7 +136,7 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                         || (metaById.size === 1 ? [...metaById.values()][0] : { id: chatId });
                     onRaw({ message: event && event.message, channel });
                 } catch { /* 單則事件失敗不影響連線 */ }
-            }, new NewMessage({ chats: entities }));
+            }, new NewMessage({ chats: chatIds }));
             attempts = 0;
             onStatus('connected'); // 部分頻道解析成功也算連上(壞頻道只是不推送)
         } catch (e) {
