@@ -1592,27 +1592,49 @@ async function reloadNewswireCfg() {
 
 // Telegram 卡片:異於四源(填 key 即可),有未登入/已登入兩態,登入走 tgLoginController
 // (client.start 互動:驗證碼/2FA)。登入邏輯在 modules/newswire/tgLoginController.js(可測)。
+// 資訊源卡片收折 shell(BASE-019):清空 cardEl、建「標題列 toggle(品牌名+狀態徽章)
+// + body」結構,回傳 body 供呼叫端塞內容。預設收合;狀態徽章留在 toggle 上,收合時
+// 仍可一眼看連線狀態。收折狀態不持久化(session 內即可)。
+function buildCollapsibleCard(cardEl, titleText, statusEl, expanded = false) {
+    cardEl.replaceChildren();
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'opt-row newswire-card-toggle';
+    toggle.setAttribute('aria-expanded', String(expanded));
+    const label = document.createElement('div');
+    label.className = 'opt-row__label';
+    label.textContent = titleText;
+    toggle.append(label, statusEl);
+    const body = document.createElement('div');
+    body.className = 'newswire-card-body';
+    body.classList.toggle('hidden', !expanded);
+    toggle.addEventListener('click', () => {
+        const nowHidden = body.classList.toggle('hidden');
+        toggle.setAttribute('aria-expanded', String(!nowHidden));
+    });
+    cardEl.append(toggle, body);
+    return body;
+}
+
 function renderTgCard(container, cfg, keys, statusEls) {
-    const group = document.createElement('div');
-    group.className = 'settings-group';
-    group.dataset.newswireSource = 'tg';
-    container.appendChild(group);
+    const card = document.createElement('div');
+    card.className = 'settings-group';
+    card.dataset.newswireSource = 'tg';
+    container.appendChild(card);
 
     const state = { keys: { ...(keys?.tg || {}) }, cfg };
+    // 卡片 body(收折容器)。沿用「group」名稱,paintLoginForm/paintLoggedIn/paintChannels
+    // 內的十餘個 group.appendChild 呼叫點不需逐一改名。
+    let group;
 
     const repaint = () => {
-        group.innerHTML = '';
-        const titleRow = document.createElement('div');
-        titleRow.className = 'opt-row';
-        const titleLabel = document.createElement('div');
-        titleLabel.className = 'opt-row__label';
-        titleLabel.textContent = 'Telegram';
         const status = document.createElement('span');
         status.className = 'newswire-status';
         status.dataset.status = 'disabled';
         statusEls.tg = status;
-        titleRow.append(titleLabel, status);
-        group.appendChild(titleRow);
+        // 登入/加頻道等操作觸發的 repaint 不應把使用者展開中的卡片收起來。
+        const wasExpanded = card.querySelector('.newswire-card-toggle')?.getAttribute('aria-expanded') === 'true';
+        group = buildCollapsibleCard(card, 'Telegram', status, wasExpanded);
         if (state.keys.session) paintLoggedIn(); else paintLoginForm();
     };
 
@@ -1908,18 +1930,12 @@ function renderNewswire(container) {
             group.className = 'settings-group';
             group.dataset.newswireSource = card.id;
 
-            // 標題列:品牌名(不進 i18n)+ 即時狀態。
-            const titleRow = document.createElement('div');
-            titleRow.className = 'opt-row';
-            const titleLabel = document.createElement('div');
-            titleLabel.className = 'opt-row__label';
-            titleLabel.textContent = card.name;
+            // 標題列 toggle:品牌名(不進 i18n)+ 即時狀態;內容收進可收折 body(BASE-019)。
             const status = document.createElement('span');
             status.className = 'newswire-status';
             status.dataset.status = 'disabled';
             statusEls[card.id] = status;
-            titleRow.append(titleLabel, status);
-            group.appendChild(titleRow);
+            const body = buildCollapsibleCard(group, card.name, status);
 
             // 啟用 toggle(寫 config 即生效:SW onChanged 重建連線)。
             const enable = document.createElement('input');
@@ -1936,7 +1952,7 @@ function renderNewswire(container) {
                     };
                 });
             });
-            group.appendChild(makeRow(api.getMessage('newswireEnableSource') || 'Enable', enable));
+            body.appendChild(makeRow(api.getMessage('newswireEnableSource') || 'Enable', enable));
 
             // key 欄位:遮罩+new-password(壓掉 Chrome 存密碼提示,比照 AI 供應商)。
             for (const field of card.fields) {
@@ -1952,7 +1968,7 @@ function renderNewswire(container) {
                         k[card.id] = { ...(k[card.id] || {}), [field.key]: value };
                     });
                 });
-                group.appendChild(makeRow(api.getMessage(field.labelKey) || field.key, input));
+                body.appendChild(makeRow(api.getMessage(field.labelKey) || field.key, input));
             }
 
             // 金十:快訊分段多選(M0:category 1-5 為市場分段;全不選由 adapter 回退 ['1'])。
@@ -1983,8 +1999,8 @@ function renderNewswire(container) {
                     label.append(cb, text);
                     catWrap.appendChild(label);
                 }
-                group.appendChild(makeRow(api.getMessage('newswireJin10CategoriesLabel') || 'Categories', null));
-                group.appendChild(catWrap);
+                body.appendChild(makeRow(api.getMessage('newswireJin10CategoriesLabel') || 'Categories', null));
+                body.appendChild(catWrap);
             }
 
             // 啟用但缺 key 的行內提示(狀態 needs-key 時顯示;非錯誤態)。
@@ -1992,7 +2008,7 @@ function renderNewswire(container) {
             note.className = 'newswire-card-note hidden';
             note.textContent = api.getMessage('newswireNeedsKeyNote') || 'Enter an API key to connect.';
             noteEls[card.id] = note;
-            group.appendChild(note);
+            body.appendChild(note);
 
             // 申請引導文案+官方連結(含費用/延遲注意事項)。
             const guide = document.createElement('p');
@@ -2004,7 +2020,7 @@ function renderNewswire(container) {
             link.rel = 'noopener noreferrer';
             link.textContent = ` ${api.getMessage('newswireGetKeyLink') || 'Get a key'}`;
             guide.appendChild(link);
-            group.appendChild(guide);
+            body.appendChild(guide);
 
             container.appendChild(group);
         }

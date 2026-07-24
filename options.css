@@ -31,3 +31,26 @@ body {
 .ai-provider-test-status.fail { color: var(--danger-color, #f44336); }
 .ai-provider-http-warning { color: var(--danger-color, #f44336); padding: 6px 0; }
 .ai-provider-http-warning[hidden] { display: none; }
+
+/* Newswire 資訊源卡片收折 (BASE-019) */
+.newswire-card-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+.newswire-card-toggle[aria-expanded="true"] { border-bottom: 1px solid var(--border-color, #45475a); }
+.newswire-card-toggle .opt-row__label::before {
+    content: '▸';
+    display: inline-block;
+    margin-right: 8px;
+    color: var(--text-color-secondary, #6c7086);
+    transition: transform 0.15s ease;
+}
+.newswire-card-toggle[aria-expanded="true"] .opt-row__label::before { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+    .newswire-card-toggle .opt-row__label::before { transition: none; }
+}

@@ -2075,9 +2075,11 @@ mark.url-match {
 }
 
 .settings-subsection-header {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-color-secondary);
+    /* 14px/700/primary:必須壓過內容列 .opt-row__label(14px/400/primary),
+       否則區塊標題反而比其下的欄位標籤不顯眼(視覺層級倒置)。 */
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-color-primary);
     margin: 0 0 10px 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
