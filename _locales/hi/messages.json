@@ -223,6 +223,10 @@
     "message": "API कुंजी आवश्यक",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsConfig": {
+    "message": "चैनल जोड़ें",
+    "description": "Source status: enabled but no channel configured yet."
+  },
   "newswireStatusConnecting": {
     "message": "कनेक्ट हो रहा है…",
     "description": "Source status: connecting."

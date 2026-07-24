@@ -1531,6 +1531,7 @@ const JIN10_CATEGORY_OPTIONS = [
 const NEWSWIRE_STATUS_LABEL_KEYS = {
     'disabled': 'newswireStatusDisabled',
     'needs-key': 'newswireStatusNeedsKey',
+    'needs-config': 'newswireStatusNeedsConfig',
     'connecting': 'newswireStatusConnecting',
     'connected': 'newswireStatusConnected',
     'retrying': 'newswireStatusRetrying',

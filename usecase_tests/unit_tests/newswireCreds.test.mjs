@@ -1,4 +1,4 @@
-import { missingCreds, buildJin10SubscribeParams } from '../../modules/newswire/adapters.js';
+import { missingCreds, missingChannels, buildJin10SubscribeParams } from '../../modules/newswire/adapters.js';
 
 describe('newswire creds & jin10 params (BASE-016 N2)', () => {
   describe('missingCreds', () => {
@@ -19,6 +19,22 @@ describe('newswire creds & jin10 params (BASE-016 N2)', () => {
       expect(missingCreds('jin10', {})).toBe(true);
       expect(missingCreds('jin10', { jin10: { secretKey: 'k' } })).toBe(false);
       expect(missingCreds('benzinga', { benzinga: { token: 'x' } })).toBe(true);
+    });
+  });
+
+  describe('missingChannels (BASE-018 P2 — tg 登入但未加頻道)', () => {
+    it('tg with no channels → true (訂閱空 whitelist 會靜默丟棄全部訊息卻報 connected)', () => {
+      expect(missingChannels('tg', { enabled: true, channels: [] })).toBe(true);
+      expect(missingChannels('tg', { enabled: true })).toBe(true);
+      expect(missingChannels('tg', undefined)).toBe(true);
+    });
+    it('tg with channels → false', () => {
+      expect(missingChannels('tg', { channels: [{ username: 'BWEnews' }] })).toBe(false);
+    });
+    it('non-tg sources never need channels', () => {
+      expect(missingChannels('tree', { channels: [] })).toBe(false);
+      expect(missingChannels('fj', undefined)).toBe(false);
+      expect(missingChannels('jin10', {})).toBe(false);
     });
   });
 

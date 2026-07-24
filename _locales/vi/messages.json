@@ -223,6 +223,10 @@
     "message": "Cần khóa API",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsConfig": {
+    "message": "Thêm kênh",
+    "description": "Source status: enabled but no channel configured yet."
+  },
   "newswireStatusConnecting": {
     "message": "Đang kết nối…",
     "description": "Source status: connecting."

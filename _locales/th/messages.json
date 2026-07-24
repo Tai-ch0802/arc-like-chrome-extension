@@ -223,6 +223,10 @@
     "message": "ต้องใส่คีย์ API",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsConfig": {
+    "message": "เพิ่มช่อง",
+    "description": "Source status: enabled but no channel configured yet."
+  },
   "newswireStatusConnecting": {
     "message": "กำลังเชื่อมต่อ…",
     "description": "Source status: connecting."

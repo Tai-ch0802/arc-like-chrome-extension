@@ -223,6 +223,10 @@
     "message": "需填入 API key",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsConfig": {
+    "message": "尚未加入頻道",
+    "description": "Source status: enabled but no channel configured yet."
+  },
   "newswireStatusConnecting": {
     "message": "連線中…",
     "description": "Source status: connecting."
