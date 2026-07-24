@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "Địa chỉ này dùng http: không mã hóa — khóa API của bạn sẽ được gửi dưới dạng văn bản thuần."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Số điện thoại"
+  },
+  "tgLoginButton": {
+    "message": "Đăng nhập"
+  },
+  "tgLoggingIn": {
+    "message": "Đang đăng nhập…"
+  },
+  "tgLoginGuide": {
+    "message": "Đăng ký api_id/api_hash tại my.telegram.org (dùng tài khoản phụ — session tương đương quyền truy cập toàn bộ tài khoản)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Lấy api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Vui lòng điền api_id, api_hash và số điện thoại."
+  },
+  "tgLoginFailed": {
+    "message": "Đăng nhập thất bại:"
+  },
+  "tgRiskTitle": {
+    "message": "Rủi ro đăng nhập Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "session tương đương quyền truy cập toàn bộ tài khoản (đọc mọi cuộc trò chuyện, gửi mạo danh bạn) — nghiêm trọng hơn API key thông thường. Dùng tài khoản phụ và tránh máy tính công cộng. Tiếp tục?"
+  },
+  "tgCodeTitle": {
+    "message": "Mã xác minh Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "Nhập mã đã gửi đến điện thoại / app Telegram của bạn"
+  },
+  "tg2faTitle": {
+    "message": "Mật khẩu xác minh hai bước"
+  },
+  "tg2faMessage": {
+    "message": "Tài khoản này đã bật 2FA. Nhập mật khẩu."
+  },
+  "tgLoggedInAs": {
+    "message": "Đã đăng nhập với tên"
+  },
+  "tgLogoutButton": {
+    "message": "Đăng xuất & thu hồi"
+  },
+  "tgLogoutTitle": {
+    "message": "Đăng xuất và thu hồi session?"
+  },
+  "tgLogoutMessage": {
+    "message": "Thao tác này thu hồi session từ xa và xóa thông tin đăng nhập cục bộ."
+  },
+  "tgChannelsHeader": {
+    "message": "Kênh"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (không có @)"
+  },
+  "tgAddTitle": {
+    "message": "Xác nhận kênh (chống giả mạo)"
+  },
+  "tgAddConfirm": {
+    "message": "Thêm kênh này?"
+  },
+  "tgAddFailed": {
+    "message": "Không thể resolve kênh"
+  },
+  "tgSubscribers": {
+    "message": "người đăng ký"
+  },
+  "tgCuratedHeader": {
+    "message": "Danh sách tuyển chọn (resolve và xác nhận trước khi thêm)"
+  },
+  "tgCuratedWarn": {
+    "message": "Cảnh báo: tồn tại handle giả mạo tương tự — xác minh trước khi thêm"
   }
 }

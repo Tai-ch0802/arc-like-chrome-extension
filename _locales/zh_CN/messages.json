@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "此地址使用未加密的 http:，您的 API 密钥将以明文传输。"
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "手机号码"
+  },
+  "tgLoginButton": {
+    "message": "登录"
+  },
+  "tgLoggingIn": {
+    "message": "登录中…"
+  },
+  "tgLoginGuide": {
+    "message": "需在 my.telegram.org 申请 api_id/api_hash（建议用小号：session 等同完整账号访问权限）。"
+  },
+  "tgLoginGetApiLink": {
+    "message": "获取 api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "请填写 api_id、api_hash 与手机号码。"
+  },
+  "tgLoginFailed": {
+    "message": "登录失败："
+  },
+  "tgRiskTitle": {
+    "message": "Telegram 登录风险"
+  },
+  "tgRiskMessage": {
+    "message": "session 等同完整账号访问权限（可读取所有对话、冒名发信），比一般 API key 严重。建议用小号、勿在公用电脑操作。继续？"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram 验证码"
+  },
+  "tgCodeMessage": {
+    "message": "输入手机／Telegram app 收到的验证码"
+  },
+  "tg2faTitle": {
+    "message": "两步验证密码"
+  },
+  "tg2faMessage": {
+    "message": "此账号启用了 2FA，请输入密码"
+  },
+  "tgLoggedInAs": {
+    "message": "已登录为"
+  },
+  "tgLogoutButton": {
+    "message": "登出并撤销"
+  },
+  "tgLogoutTitle": {
+    "message": "登出并撤销 session？"
+  },
+  "tgLogoutMessage": {
+    "message": "会远程撤销此 session 并清除本机凭证。"
+  },
+  "tgChannelsHeader": {
+    "message": "频道"
+  },
+  "tgAddPlaceholder": {
+    "message": "username（不含 @）"
+  },
+  "tgAddTitle": {
+    "message": "确认频道（防仿冒）"
+  },
+  "tgAddConfirm": {
+    "message": "加入此频道？"
+  },
+  "tgAddFailed": {
+    "message": "无法解析频道"
+  },
+  "tgSubscribers": {
+    "message": "订阅数"
+  },
+  "tgCuratedHeader": {
+    "message": "策展清单（加入前会 resolve 确认频道真伪）"
+  },
+  "tgCuratedWarn": {
+    "message": "注意：有相似仿冒 handle，加入前务必确认"
   }
 }

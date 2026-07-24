@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "此位址使用未加密的 http:，你的 API 金鑰將以明文傳輸。"
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "手機號碼"
+  },
+  "tgLoginButton": {
+    "message": "登入"
+  },
+  "tgLoggingIn": {
+    "message": "登入中…"
+  },
+  "tgLoginGuide": {
+    "message": "需自 my.telegram.org 申請 api_id/api_hash（建議用小號：session 等同完整帳號存取權）。"
+  },
+  "tgLoginGetApiLink": {
+    "message": "取得 api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "請填 api_id、api_hash 與手機號碼。"
+  },
+  "tgLoginFailed": {
+    "message": "登入失敗："
+  },
+  "tgRiskTitle": {
+    "message": "Telegram 登入風險"
+  },
+  "tgRiskMessage": {
+    "message": "session 等同完整帳號存取權（可讀所有對話、冒名發訊），比一般 API key 嚴重。建議用小號、勿在公用電腦。繼續？"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram 驗證碼"
+  },
+  "tgCodeMessage": {
+    "message": "輸入手機／Telegram app 收到的驗證碼"
+  },
+  "tg2faTitle": {
+    "message": "兩步驟驗證密碼"
+  },
+  "tg2faMessage": {
+    "message": "此帳號啟用了 2FA，請輸入密碼"
+  },
+  "tgLoggedInAs": {
+    "message": "已登入為"
+  },
+  "tgLogoutButton": {
+    "message": "登出並撤銷"
+  },
+  "tgLogoutTitle": {
+    "message": "登出並撤銷 session？"
+  },
+  "tgLogoutMessage": {
+    "message": "會遠端撤銷此 session 並清除本機憑證。"
+  },
+  "tgChannelsHeader": {
+    "message": "頻道"
+  },
+  "tgAddPlaceholder": {
+    "message": "username（不含 @）"
+  },
+  "tgAddTitle": {
+    "message": "確認頻道（防仿冒）"
+  },
+  "tgAddConfirm": {
+    "message": "加入此頻道？"
+  },
+  "tgAddFailed": {
+    "message": "無法解析頻道"
+  },
+  "tgSubscribers": {
+    "message": "訂閱數"
+  },
+  "tgCuratedHeader": {
+    "message": "策展清單（加入前會 resolve 確認頻道真偽）"
+  },
+  "tgCuratedWarn": {
+    "message": "注意：有相似仿冒 handle，加入前務必確認"
   }
 }

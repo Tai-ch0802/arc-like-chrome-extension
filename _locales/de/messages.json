@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "Diese Adresse verwendet unverschlüsseltes http: — Ihr API-Schlüssel würde im Klartext übertragen."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Telefonnummer"
+  },
+  "tgLoginButton": {
+    "message": "Anmelden"
+  },
+  "tgLoggingIn": {
+    "message": "Anmeldung…"
+  },
+  "tgLoginGuide": {
+    "message": "api_id/api_hash unter my.telegram.org beantragen (Wegwerf-Konto verwenden – die session entspricht dem vollen Kontozugriff)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "api_id/api_hash abrufen"
+  },
+  "tgLoginMissingFields": {
+    "message": "Bitte api_id, api_hash und Telefonnummer ausfüllen."
+  },
+  "tgLoginFailed": {
+    "message": "Anmeldung fehlgeschlagen:"
+  },
+  "tgRiskTitle": {
+    "message": "Telegram-Anmelderisiko"
+  },
+  "tgRiskMessage": {
+    "message": "Die session entspricht dem vollen Kontozugriff (alle Chats lesen, in deinem Namen senden) – gravierender als ein normaler API key. Verwende ein Wegwerf-Konto und meide öffentliche Computer. Fortfahren?"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram-Bestätigungscode"
+  },
+  "tgCodeMessage": {
+    "message": "Gib den an dein Telefon / die Telegram app gesendeten Code ein"
+  },
+  "tg2faTitle": {
+    "message": "Passwort der zweistufigen Bestätigung"
+  },
+  "tg2faMessage": {
+    "message": "Für dieses Konto ist 2FA aktiviert. Gib das Passwort ein."
+  },
+  "tgLoggedInAs": {
+    "message": "Angemeldet als"
+  },
+  "tgLogoutButton": {
+    "message": "Abmelden & widerrufen"
+  },
+  "tgLogoutTitle": {
+    "message": "Abmelden und session widerrufen?"
+  },
+  "tgLogoutMessage": {
+    "message": "Dadurch wird die session remote widerrufen und lokale Anmeldedaten werden gelöscht."
+  },
+  "tgChannelsHeader": {
+    "message": "Kanäle"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (ohne @)"
+  },
+  "tgAddTitle": {
+    "message": "Kanal bestätigen (Spoofing-Schutz)"
+  },
+  "tgAddConfirm": {
+    "message": "Diesen Kanal hinzufügen?"
+  },
+  "tgAddFailed": {
+    "message": "Kanal konnte nicht aufgelöst werden"
+  },
+  "tgSubscribers": {
+    "message": "Abonnenten"
+  },
+  "tgCuratedHeader": {
+    "message": "Kuratierte Liste (vor dem Hinzufügen aufgelöst und bestätigt)"
+  },
+  "tgCuratedWarn": {
+    "message": "Achtung: Es existiert ein ähnlicher Spoofing-handle – vor dem Hinzufügen prüfen"
   }
 }

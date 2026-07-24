@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "이 주소는 암호화되지 않은 http:를 사용합니다. API 키가 평문으로 전송됩니다."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "전화번호"
+  },
+  "tgLoginButton": {
+    "message": "로그인"
+  },
+  "tgLoggingIn": {
+    "message": "로그인 중…"
+  },
+  "tgLoginGuide": {
+    "message": "my.telegram.org에서 api_id/api_hash를 신청하세요 (버너 계정 사용 권장 — session은 전체 계정 접근 권한과 같습니다)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "api_id/api_hash 받기"
+  },
+  "tgLoginMissingFields": {
+    "message": "api_id, api_hash, 전화번호를 입력하세요."
+  },
+  "tgLoginFailed": {
+    "message": "로그인 실패:"
+  },
+  "tgRiskTitle": {
+    "message": "Telegram 로그인 위험"
+  },
+  "tgRiskMessage": {
+    "message": "session은 전체 계정 접근 권한과 같아(모든 대화 읽기, 사용자 명의로 전송) 일반 API key보다 심각합니다. 버너 계정을 사용하고 공용 컴퓨터는 피하세요. 계속할까요?"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram 인증 코드"
+  },
+  "tgCodeMessage": {
+    "message": "휴대폰 / Telegram app으로 받은 코드를 입력하세요"
+  },
+  "tg2faTitle": {
+    "message": "2단계 인증 비밀번호"
+  },
+  "tg2faMessage": {
+    "message": "이 계정은 2FA가 활성화되어 있습니다. 비밀번호를 입력하세요."
+  },
+  "tgLoggedInAs": {
+    "message": "로그인 계정:"
+  },
+  "tgLogoutButton": {
+    "message": "로그아웃 및 해지"
+  },
+  "tgLogoutTitle": {
+    "message": "로그아웃하고 session을 해지할까요?"
+  },
+  "tgLogoutMessage": {
+    "message": "session을 원격으로 해지하고 로컬 자격 증명을 지웁니다."
+  },
+  "tgChannelsHeader": {
+    "message": "채널"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (@ 제외)"
+  },
+  "tgAddTitle": {
+    "message": "채널 확인 (스푸핑 방지)"
+  },
+  "tgAddConfirm": {
+    "message": "이 채널을 추가할까요?"
+  },
+  "tgAddFailed": {
+    "message": "채널을 resolve할 수 없습니다"
+  },
+  "tgSubscribers": {
+    "message": "구독자"
+  },
+  "tgCuratedHeader": {
+    "message": "큐레이션 목록 (추가 전에 resolve하여 채널 진위 확인)"
+  },
+  "tgCuratedWarn": {
+    "message": "주의: 유사한 스푸핑 handle이 있습니다 — 추가 전에 확인하세요"
   }
 }

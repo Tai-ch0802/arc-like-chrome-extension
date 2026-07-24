@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "Este endereço usa http: sem criptografia — sua chave de API seria enviada em texto simples."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Telefone"
+  },
+  "tgLoginButton": {
+    "message": "Entrar"
+  },
+  "tgLoggingIn": {
+    "message": "Entrando…"
+  },
+  "tgLoginGuide": {
+    "message": "Solicite api_id/api_hash em my.telegram.org (use uma conta descartável — a session equivale ao acesso total à conta)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Obter api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Preencha api_id, api_hash e o número de telefone."
+  },
+  "tgLoginFailed": {
+    "message": "Falha ao entrar:"
+  },
+  "tgRiskTitle": {
+    "message": "Risco de login no Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "A session equivale ao acesso total à conta (ler todos os chats, enviar em seu nome) — mais grave que uma API key comum. Use uma conta descartável e evite computadores públicos. Continuar?"
+  },
+  "tgCodeTitle": {
+    "message": "Código de verificação do Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "Digite o código enviado ao seu telefone / app do Telegram"
+  },
+  "tg2faTitle": {
+    "message": "Senha da verificação em duas etapas"
+  },
+  "tg2faMessage": {
+    "message": "Esta conta tem 2FA ativado. Digite a senha."
+  },
+  "tgLoggedInAs": {
+    "message": "Conectado como"
+  },
+  "tgLogoutButton": {
+    "message": "Sair e revogar"
+  },
+  "tgLogoutTitle": {
+    "message": "Sair e revogar a session?"
+  },
+  "tgLogoutMessage": {
+    "message": "Isso revoga a session remotamente e limpa as credenciais locais."
+  },
+  "tgChannelsHeader": {
+    "message": "Canais"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (sem @)"
+  },
+  "tgAddTitle": {
+    "message": "Confirmar canal (antifalsificação)"
+  },
+  "tgAddConfirm": {
+    "message": "Adicionar este canal?"
+  },
+  "tgAddFailed": {
+    "message": "Não foi possível resolver o canal"
+  },
+  "tgSubscribers": {
+    "message": "inscritos"
+  },
+  "tgCuratedHeader": {
+    "message": "Lista curada (resolvida e confirmada antes de adicionar)"
+  },
+  "tgCuratedWarn": {
+    "message": "Aviso: existe um handle de falsificação semelhante — verifique antes de adicionar"
   }
 }

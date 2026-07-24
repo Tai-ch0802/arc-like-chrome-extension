@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "Esta dirección usa http: sin cifrar — tu clave de API se enviaría en texto claro."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Teléfono"
+  },
+  "tgLoginButton": {
+    "message": "Iniciar sesión"
+  },
+  "tgLoggingIn": {
+    "message": "Iniciando sesión…"
+  },
+  "tgLoginGuide": {
+    "message": "Solicita api_id/api_hash en my.telegram.org (usa una cuenta desechable: la session equivale al acceso completo a la cuenta)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Obtener api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Rellena api_id, api_hash y número de teléfono."
+  },
+  "tgLoginFailed": {
+    "message": "Error de inicio de sesión:"
+  },
+  "tgRiskTitle": {
+    "message": "Riesgo de inicio de sesión en Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "La session equivale al acceso completo a la cuenta (leer todos los chats, enviar en tu nombre): más grave que una API key normal. Usa una cuenta desechable y evita los ordenadores públicos. ¿Continuar?"
+  },
+  "tgCodeTitle": {
+    "message": "Código de verificación de Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "Introduce el código enviado a tu teléfono / la app de Telegram"
+  },
+  "tg2faTitle": {
+    "message": "Contraseña de verificación en dos pasos"
+  },
+  "tg2faMessage": {
+    "message": "Esta cuenta tiene 2FA activado. Introduce la contraseña."
+  },
+  "tgLoggedInAs": {
+    "message": "Sesión iniciada como"
+  },
+  "tgLogoutButton": {
+    "message": "Cerrar sesión y revocar"
+  },
+  "tgLogoutTitle": {
+    "message": "¿Cerrar sesión y revocar la session?"
+  },
+  "tgLogoutMessage": {
+    "message": "Esto revoca la session de forma remota y borra las credenciales locales."
+  },
+  "tgChannelsHeader": {
+    "message": "Canales"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (sin @)"
+  },
+  "tgAddTitle": {
+    "message": "Confirmar canal (anti-suplantación)"
+  },
+  "tgAddConfirm": {
+    "message": "¿Añadir este canal?"
+  },
+  "tgAddFailed": {
+    "message": "No se pudo resolver el canal"
+  },
+  "tgSubscribers": {
+    "message": "suscriptores"
+  },
+  "tgCuratedHeader": {
+    "message": "Lista curada (se resuelve y confirma antes de añadir)"
+  },
+  "tgCuratedWarn": {
+    "message": "Aviso: existe un handle de suplantación similar; verifícalo antes de añadir"
   }
 }

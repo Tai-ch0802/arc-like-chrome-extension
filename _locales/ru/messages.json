@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "Этот адрес использует незашифрованный http: — ключ API будет передан открытым текстом."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Телефон"
+  },
+  "tgLoginButton": {
+    "message": "Войти"
+  },
+  "tgLoggingIn": {
+    "message": "Вход…"
+  },
+  "tgLoginGuide": {
+    "message": "Получите api_id/api_hash на my.telegram.org (используйте одноразовый аккаунт — session равнозначна полному доступу к аккаунту)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Получить api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Заполните api_id, api_hash и номер телефона."
+  },
+  "tgLoginFailed": {
+    "message": "Ошибка входа:"
+  },
+  "tgRiskTitle": {
+    "message": "Риск входа в Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "session равнозначна полному доступу к аккаунту (чтение всех чатов, отправка от вашего имени) — серьёзнее обычного API key. Используйте одноразовый аккаунт и избегайте публичных компьютеров. Продолжить?"
+  },
+  "tgCodeTitle": {
+    "message": "Код подтверждения Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "Введите код, отправленный на телефон / в app Telegram"
+  },
+  "tg2faTitle": {
+    "message": "Пароль двухэтапной проверки"
+  },
+  "tg2faMessage": {
+    "message": "На этом аккаунте включена 2FA. Введите пароль."
+  },
+  "tgLoggedInAs": {
+    "message": "Вы вошли как"
+  },
+  "tgLogoutButton": {
+    "message": "Выйти и отозвать"
+  },
+  "tgLogoutTitle": {
+    "message": "Выйти и отозвать session?"
+  },
+  "tgLogoutMessage": {
+    "message": "Это удалённо отзывает session и удаляет локальные учётные данные."
+  },
+  "tgChannelsHeader": {
+    "message": "Каналы"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (без @)"
+  },
+  "tgAddTitle": {
+    "message": "Подтвердите канал (защита от подделки)"
+  },
+  "tgAddConfirm": {
+    "message": "Добавить этот канал?"
+  },
+  "tgAddFailed": {
+    "message": "Не удалось разрешить канал"
+  },
+  "tgSubscribers": {
+    "message": "подписчиков"
+  },
+  "tgCuratedHeader": {
+    "message": "Кураторский список (перед добавлением канал разрешается и подтверждается)"
+  },
+  "tgCuratedWarn": {
+    "message": "Внимание: существует похожий поддельный handle — проверьте перед добавлением"
   }
 }

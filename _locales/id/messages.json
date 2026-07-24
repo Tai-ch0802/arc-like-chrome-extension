@@ -1459,5 +1459,86 @@
   },
   "aiProviderHttpWarning": {
     "message": "Alamat ini menggunakan http: tanpa enkripsi — kunci API Anda akan dikirim sebagai teks biasa."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Telepon"
+  },
+  "tgLoginButton": {
+    "message": "Masuk"
+  },
+  "tgLoggingIn": {
+    "message": "Sedang masuk…"
+  },
+  "tgLoginGuide": {
+    "message": "Ajukan api_id/api_hash di my.telegram.org (gunakan akun burner — session setara dengan akses penuh ke akun)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Dapatkan api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Harap isi api_id, api_hash, dan nomor telepon."
+  },
+  "tgLoginFailed": {
+    "message": "Gagal masuk:"
+  },
+  "tgRiskTitle": {
+    "message": "Risiko login Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "session setara dengan akses penuh ke akun (membaca semua obrolan, mengirim atas nama Anda) — lebih serius daripada API key biasa. Gunakan akun burner dan hindari komputer publik. Lanjutkan?"
+  },
+  "tgCodeTitle": {
+    "message": "Kode verifikasi Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "Masukkan kode yang dikirim ke ponsel / app Telegram Anda"
+  },
+  "tg2faTitle": {
+    "message": "Kata sandi verifikasi dua langkah"
+  },
+  "tg2faMessage": {
+    "message": "Akun ini mengaktifkan 2FA. Masukkan kata sandi."
+  },
+  "tgLoggedInAs": {
+    "message": "Masuk sebagai"
+  },
+  "tgLogoutButton": {
+    "message": "Keluar & cabut"
+  },
+  "tgLogoutTitle": {
+    "message": "Keluar dan cabut session?"
+  },
+  "tgLogoutMessage": {
+    "message": "Ini mencabut session dari jarak jauh dan menghapus kredensial lokal."
+  },
+  "tgChannelsHeader": {
+    "message": "Kanal"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (tanpa @)"
+  },
+  "tgAddTitle": {
+    "message": "Konfirmasi kanal (anti-spoofing)"
+  },
+  "tgAddConfirm": {
+    "message": "Tambahkan kanal ini?"
+  },
+  "tgAddFailed": {
+    "message": "Tidak dapat me-resolve kanal"
+  },
+  "tgSubscribers": {
+    "message": "pelanggan"
+  },
+  "tgCuratedHeader": {
+    "message": "Daftar kurasi (di-resolve & dikonfirmasi sebelum ditambahkan)"
+  },
+  "tgCuratedWarn": {
+    "message": "Peringatan: ada handle spoofing yang mirip — verifikasi sebelum menambahkan"
   }
 }
