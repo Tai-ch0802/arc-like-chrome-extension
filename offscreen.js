@@ -124,9 +124,15 @@ function getLinkFromGuid(item) {
 // post tg:raw 給 SW 的既有 newswire 管線;狀態變化 post tg:status;SW watchdog 以 tg:ping 探活。
 let tgAdapter = null;
 let lastTgStatus = 'disabled';
+let tgGeneration = 0; // 每次 connect/disconnect 遞增,使 in-flight tgConnect 於 import 窗口失效
 
 async function tgConnect(cfg) {
+    const gen = ++tgGeneration;
     const { createTgAdapter } = await import('./modules/newswire/tgAdapter.js');
+    // import(2.6M bundle,首載窗口寬)期間若發生 disconnect 或新 connect(gen 已變)→ 收手,
+    // 否則會建立一條 SW 已視為 disabled、卻無人管理的 orphan Telegram 連線。tgAdapter 內的
+    // stopped guard 保不到「adapter 尚未生成」的這層窗口。
+    if (gen !== tgGeneration) return;
     if (tgAdapter) { try { tgAdapter.disconnect(); } catch (e) { /* noop */ } tgAdapter = null; }
     tgAdapter = createTgAdapter(cfg, {
         onRaw: (raw) => { chrome.runtime.sendMessage({ action: 'tg:raw', raw }).catch(() => { /* SW 忙/回收 */ }); },
@@ -139,6 +145,7 @@ async function tgConnect(cfg) {
 }
 
 function tgDisconnect() {
+    tgGeneration++; // 使 in-flight tgConnect 於 import resolve 後收手
     if (tgAdapter) { try { tgAdapter.disconnect(); } catch (e) { /* noop */ } tgAdapter = null; }
     lastTgStatus = 'disabled';
 }

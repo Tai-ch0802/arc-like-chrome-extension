@@ -110,6 +110,7 @@ const ADAPTER_FACTORIES = {
 };
 
 let started = false;
+let initPromise = null;
 let config = null;
 let keysCache = {};
 let uiLangCache = '';
@@ -244,18 +245,21 @@ function applyAdapters() {
 }
 
 /** SW 每次啟動的進入點(background.js 頂層呼叫);冪等。 */
-export async function initNewswire() {
-    if (started) return;
+export function initNewswire() {
+    if (started) return initPromise || Promise.resolve();
     started = true;
-    try {
-        await loadState();
-        const events = await buffer.init();
-        dedupe = createDedupeSet(events.map((e) => e.id));
-        applyAdapters();
-    } catch (err) {
-        started = false;
-        console.warn('[newswire] init failed:', err?.message || err);
-    }
+    initPromise = (async () => {
+        try {
+            await loadState();
+            const events = await buffer.init();
+            dedupe = createDedupeSet(events.map((e) => e.id));
+            applyAdapters();
+        } catch (err) {
+            started = false;
+            console.warn('[newswire] init failed:', err?.message || err);
+        }
+    })();
+    return initPromise;
 }
 
 /**
@@ -289,8 +293,9 @@ export async function handleNewswireWatchdog() {
             // isAlive:offscreen 回收後不再回報,lastStatus 會停在過時的 'connected')。
             // 無回應(offscreen 不存在/逾時)→ proxy.connect() 重建 offscreen + 重發
             // tg:connect;有回應則交由 offscreen 內 tgAdapter 自行退避重連(不干預)。
-            const pong = await pingTg();
-            if (!pong) adapter.connect();
+            // 無回應→重建;offscreen 在但無 live tgAdapter(被 RSS 重建 adapter-less／
+            // tgConnect 失敗)→ 重連;連線中/needs-key 不動。見 shouldReconnectTg。
+            if (shouldReconnectTg(await pingTg())) adapter.connect();
         } else if (!adapter.isAlive()) {
             adapter.connect();
         }
@@ -309,12 +314,31 @@ async function pingTg() {
 }
 
 /**
+ * 純函式:tg:ping 回應 → 是否該重發 tg:connect。offscreen 無回應(null,不存在/逾時)、
+ * 或在但無 live tgAdapter(alive=false;被 RSS 路徑重建成 adapter-less、或 tgConnect 失敗)
+ * 且非連線中(connecting)/憑證失效(needs-key,終止態)→ 重連。單看有無回應不足以判活。
+ * @param {{alive?:boolean, status?:string}|null} pong
+ * @returns {boolean}
+ */
+export function shouldReconnectTg(pong) {
+    if (!pong) return true;
+    if (pong.alive) return false;
+    return pong.status !== 'needs-key' && pong.status !== 'connecting';
+}
+
+/**
  * offscreen 回報的 tg 訊息分派(background onMessage 委派)。tg:raw → 進既有管線;
  * tg:status → 更新 tg proxy 狀態(透傳 setStatus 廣播)。
  * @returns {boolean} true = 已認領此訊息
  */
 export function handleTgOffscreenMessage(message) {
-    if (message?.action === 'tg:raw') { handleRaw('tg', message.raw); return true; }
+    if (message?.action === 'tg:raw') {
+        // SW 可能被此訊息喚醒,此時 initNewswire 仍在 await buffer.init——直接 handleRaw
+        // 會被隨後 buffer.init 覆蓋而丟事件(GramJS NewMessage 無 history 回補)。等 init
+        // 完成再進管線(initNewswire 回 in-flight promise;started 時亦回既有 promise)。
+        initNewswire().then(() => handleRaw('tg', message.raw));
+        return true;
+    }
     if (message?.action === 'tg:status') {
         const a = adapters.get('tg');
         if (a && a.setRemoteStatus) a.setRemoteStatus(message.status);
