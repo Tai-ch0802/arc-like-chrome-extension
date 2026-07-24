@@ -1462,5 +1462,95 @@
   },
   "aiProviderHttpWarning": {
     "message": "This address uses unencrypted http: — your API key would be sent in cleartext."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Phone"
+  },
+  "tgLoginButton": {
+    "message": "Log in"
+  },
+  "tgLoggingIn": {
+    "message": "Logging in…"
+  },
+  "tgLoginGuide": {
+    "message": "Apply for api_id/api_hash at my.telegram.org (use a burner account — the session equals full account access)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Get api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Please fill in api_id, api_hash and phone number."
+  },
+  "tgLoginFailed": {
+    "message": "Login failed:"
+  },
+  "tgRiskTitle": {
+    "message": "Telegram login risk"
+  },
+  "tgRiskMessage": {
+    "message": "The session equals full account access (read all chats, send as you) — more serious than a normal API key. Use a burner account and avoid public computers. Continue?"
+  },
+  "tgSyncRiskTitle": {
+    "message": "Sync Telegram session to the cloud?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "The session equals full account access. Turning this on uploads it, alongside your other keys, into your own Google Drive appdata — anyone with access to that Drive could impersonate your Telegram account. Enable sync?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Enable sync"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram verification code"
+  },
+  "tgCodeMessage": {
+    "message": "Enter the code sent to your phone / Telegram app"
+  },
+  "tg2faTitle": {
+    "message": "Two-step verification password"
+  },
+  "tg2faMessage": {
+    "message": "This account has 2FA enabled. Enter the password."
+  },
+  "tgLoggedInAs": {
+    "message": "Logged in as"
+  },
+  "tgLogoutButton": {
+    "message": "Log out & revoke"
+  },
+  "tgLogoutTitle": {
+    "message": "Log out and revoke session?"
+  },
+  "tgLogoutMessage": {
+    "message": "This remotely revokes the session and clears local credentials."
+  },
+  "tgChannelsHeader": {
+    "message": "Channels"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (without @)"
+  },
+  "tgAddTitle": {
+    "message": "Confirm channel (anti-spoofing)"
+  },
+  "tgAddConfirm": {
+    "message": "Add this channel?"
+  },
+  "tgAddFailed": {
+    "message": "Could not resolve channel"
+  },
+  "tgSubscribers": {
+    "message": "subscribers"
+  },
+  "tgCuratedHeader": {
+    "message": "Curated list (resolved & confirmed before adding)"
+  },
+  "tgCuratedWarn": {
+    "message": "Warning: a similar spoofing handle exists — verify before adding"
   }
 }

@@ -1459,5 +1459,95 @@
   },
   "aiProviderHttpWarning": {
     "message": "ที่อยู่นี้ใช้ http: ที่ไม่เข้ารหัส — คีย์ API ของคุณจะถูกส่งเป็นข้อความธรรมดา"
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "โทรศัพท์"
+  },
+  "tgLoginButton": {
+    "message": "เข้าสู่ระบบ"
+  },
+  "tgLoggingIn": {
+    "message": "กำลังเข้าสู่ระบบ…"
+  },
+  "tgLoginGuide": {
+    "message": "ขอ api_id/api_hash ที่ my.telegram.org (ใช้บัญชีสำรอง — session เท่ากับการเข้าถึงบัญชีทั้งหมด)"
+  },
+  "tgLoginGetApiLink": {
+    "message": "รับ api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "โปรดกรอก api_id, api_hash และหมายเลขโทรศัพท์"
+  },
+  "tgLoginFailed": {
+    "message": "เข้าสู่ระบบไม่สำเร็จ:"
+  },
+  "tgRiskTitle": {
+    "message": "ความเสี่ยงในการเข้าสู่ระบบ Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "session เท่ากับการเข้าถึงบัญชีทั้งหมด (อ่านแชททั้งหมด ส่งในนามคุณ) ร้ายแรงกว่า API key ทั่วไป แนะนำให้ใช้บัญชีสำรองและหลีกเลี่ยงคอมพิวเตอร์สาธารณะ ดำเนินการต่อหรือไม่?"
+  },
+  "tgSyncRiskTitle": {
+    "message": "ซิงค์ session ของ Telegram ไปยังคลาวด์หรือไม่?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session เท่ากับการเข้าถึงบัญชีทั้งหมด เมื่อเปิดใช้งาน จะอัปโหลด session พร้อมกับ keys อื่น ๆ ของคุณไปยัง appdata ใน Google Drive ของคุณเอง ใครก็ตามที่เข้าถึง Drive นั้นได้จะสามารถปลอมเป็นบัญชี Telegram ของคุณได้ เปิดการซิงค์หรือไม่?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "เปิดการซิงค์"
+  },
+  "tgCodeTitle": {
+    "message": "รหัสยืนยัน Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "กรอกรหัสที่ส่งไปยังโทรศัพท์ / app Telegram ของคุณ"
+  },
+  "tg2faTitle": {
+    "message": "รหัสผ่านการยืนยันแบบสองขั้นตอน"
+  },
+  "tg2faMessage": {
+    "message": "บัญชีนี้เปิดใช้งาน 2FA อยู่ กรอกรหัสผ่าน"
+  },
+  "tgLoggedInAs": {
+    "message": "เข้าสู่ระบบในชื่อ"
+  },
+  "tgLogoutButton": {
+    "message": "ออกจากระบบและเพิกถอน"
+  },
+  "tgLogoutTitle": {
+    "message": "ออกจากระบบและเพิกถอน session?"
+  },
+  "tgLogoutMessage": {
+    "message": "การทำเช่นนี้จะเพิกถอน session จากระยะไกลและล้างข้อมูลรับรองในเครื่อง"
+  },
+  "tgChannelsHeader": {
+    "message": "ช่อง"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (ไม่ต้องมี @)"
+  },
+  "tgAddTitle": {
+    "message": "ยืนยันช่อง (ป้องกันการปลอมแปลง)"
+  },
+  "tgAddConfirm": {
+    "message": "เพิ่มช่องนี้หรือไม่?"
+  },
+  "tgAddFailed": {
+    "message": "ไม่สามารถ resolve ช่องได้"
+  },
+  "tgSubscribers": {
+    "message": "ผู้ติดตาม"
+  },
+  "tgCuratedHeader": {
+    "message": "รายการที่คัดสรร (resolve และยืนยันก่อนเพิ่ม)"
+  },
+  "tgCuratedWarn": {
+    "message": "คำเตือน: มี handle ปลอมแปลงที่คล้ายกัน — ตรวจสอบก่อนเพิ่ม"
   }
 }

@@ -1459,5 +1459,95 @@
   },
   "aiProviderHttpWarning": {
     "message": "Cette adresse utilise http: non chiffré — votre clé API serait envoyée en clair."
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "Téléphone"
+  },
+  "tgLoginButton": {
+    "message": "Se connecter"
+  },
+  "tgLoggingIn": {
+    "message": "Connexion…"
+  },
+  "tgLoginGuide": {
+    "message": "Demandez api_id/api_hash sur my.telegram.org (utilisez un compte jetable : la session équivaut à un accès complet au compte)."
+  },
+  "tgLoginGetApiLink": {
+    "message": "Obtenir api_id/api_hash"
+  },
+  "tgLoginMissingFields": {
+    "message": "Veuillez renseigner api_id, api_hash et le numéro de téléphone."
+  },
+  "tgLoginFailed": {
+    "message": "Échec de la connexion :"
+  },
+  "tgRiskTitle": {
+    "message": "Risque de connexion Telegram"
+  },
+  "tgRiskMessage": {
+    "message": "La session équivaut à un accès complet au compte (lire tous les chats, envoyer en votre nom) — plus grave qu'une API key ordinaire. Utilisez un compte jetable et évitez les ordinateurs publics. Continuer ?"
+  },
+  "tgSyncRiskTitle": {
+    "message": "Synchroniser la session Telegram vers le cloud ?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "La session équivaut à un accès complet au compte. En l'activant, elle est envoyée, avec vos autres keys, dans votre propre appdata Google Drive — quiconque a accès à ce Drive pourrait usurper votre compte Telegram. Activer la synchronisation ?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "Activer la synchronisation"
+  },
+  "tgCodeTitle": {
+    "message": "Code de vérification Telegram"
+  },
+  "tgCodeMessage": {
+    "message": "Saisissez le code envoyé sur votre téléphone / l'app Telegram"
+  },
+  "tg2faTitle": {
+    "message": "Mot de passe de la validation en deux étapes"
+  },
+  "tg2faMessage": {
+    "message": "Ce compte a la 2FA activée. Saisissez le mot de passe."
+  },
+  "tgLoggedInAs": {
+    "message": "Connecté en tant que"
+  },
+  "tgLogoutButton": {
+    "message": "Se déconnecter et révoquer"
+  },
+  "tgLogoutTitle": {
+    "message": "Se déconnecter et révoquer la session ?"
+  },
+  "tgLogoutMessage": {
+    "message": "Cela révoque la session à distance et efface les identifiants locaux."
+  },
+  "tgChannelsHeader": {
+    "message": "Canaux"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (sans @)"
+  },
+  "tgAddTitle": {
+    "message": "Confirmer le canal (anti-usurpation)"
+  },
+  "tgAddConfirm": {
+    "message": "Ajouter ce canal ?"
+  },
+  "tgAddFailed": {
+    "message": "Impossible de résoudre le canal"
+  },
+  "tgSubscribers": {
+    "message": "abonnés"
+  },
+  "tgCuratedHeader": {
+    "message": "Liste curatée (résolue et confirmée avant l'ajout)"
+  },
+  "tgCuratedWarn": {
+    "message": "Attention : un handle d'usurpation similaire existe — vérifiez avant d'ajouter"
   }
 }

@@ -4,7 +4,7 @@
 |---|---|
 | ID | BASE-018 |
 | 分級 | **T2**（Phase 2：SA） |
-| 狀態 | **v1.5 — TG2b（offscreen 接收路徑）**；TG1/TG2a 已合併（#194/#196）。GramJS 在 offscreen 收訊路徑完整,登入 UI 待 TG2c、真連線待 TG3 |
+| 狀態 | **v1.6 — TG2c（options 登入 UI）**；TG1/TG1-live/TG2a/TG2b 已合併（#194/#195/#196/#197）。登入卡片就緒,真登入/收訊待 TG3 手動矩陣 |
 | 日期 | 2026-07-23 |
 | 上游 | 同目錄 `PRD_spec.md` v1.1 |
 
@@ -86,7 +86,7 @@
 | **TG1-live** | **僅落地可重現 build recipe**（`tools/telegram-bundle/`：esbuild+polyfill，`npm ci && npm run build` → 1.3M bundle）。**GramJS 執行 context 定案：offscreen document**（見下方架構決策）。tgClient 維持 stub（載入待 TG2）。1.3M bundle 本身**不進 main**（無 code 引用前不入版控/打包），TG2 連同 offscreen 載入 code 一起落地 |
 | **TG2a** | **recipe 遷 `teleproto`（MIT）解 GPL blocker**（`tools/telegram-bundle`：entry/build alias/lockfile＋`npm run verify` AES 自我驗證）｜PR #196 已合併 |
 | **TG2b** | GramJS **offscreen 接收路徑**：pako zlib shim＋`verify`(IGE oracle)/`audit`(供應鏈)gate＋bundle 落地 `lib/`；`offscreen.js` tg handler（dynamic import tgAdapter）；SW `tgProxyAdapter`（post tg:connect／收 tg:raw·status）；watchdog 改 async 對 tg 以 `tg:ping` 探活重建；抽共用 `offscreenManager`；Makefile DEV 補 offscreen。**接收路徑完整,真連線待 TG2c session＋TG3 手動矩陣**｜本 PR |
-| **TG2c** | options 登入卡（`client.start` phone→code→2FA 於 DOM context）＋頻道管理/策展清單＋session 風險告示 modal＋i18n＋PERMISSIONS.md |
+| **TG2c** | options tg 卡片(兩態):`tgLoginController`(login/logout/resolveChannel,可測)＋`renderTgCard`(api_id/hash 引導、`client.start` 登入彈驗證碼/2FA、session 存/登出撤銷、頻道管理＋策展 7 頻道＋仿冒確認、session 風險告示 modal)＋i18n 27 key×14。**無新權限**(既有廣域 host_permissions `*://*/*` 已涵蓋 Telegram web DC＋offscreen/storage),故不另立 PERMISSIONS.md。真登入列 TG3｜本 PR |
 | **TG3** | 手動矩陣（真帳號登入、百頻道壓測、FLOOD_WAIT、跨端撤銷） |
 
 ### GramJS 執行 context 架構決策（TG1-live 查證定案，取代原「SW 內 dynamic import」假設）
@@ -109,3 +109,4 @@
 | v1.3 | 2026-07-24 | TG1-live 縮範圍：對抗式 review＋Chrome 官方文件查證確認 **MV3 SW 不支援 dynamic import()**，原「SW 內 dynamic import bundle」不可行 → §8 新增「GramJS 執行 context 架構決策」：定案 **offscreen document**（SW proxy＋watchdog 監控 offscreen），offscreen 整合併入 TG2。TG1-live 收斂為僅落地可重現 build recipe（`tools/telegram-bundle/`），1.3M bundle 不進 main（無 code 引用）。記錄上游 `telegram@2.26.22` 已 archived（fork `teleproto`），供應鏈風險待評估遷移。**PR #195 review 追加**：查證 `@cryptography/aes` = GPL-3.0-or-later（核心密碼路徑不可 stub）→ §5 新增授權 blocker、header 標示；build 輸出改 `tools/telegram-bundle/dist/`（gitignored，避免污染 `make` 打包路徑）；§1 補 forward-correction 指向 §8；header 版本 v1.2→v1.3。**GPL blocker 調研**：實測 `npm install teleproto` 掃描確認 fork `teleproto`（MIT）依賴樹零 GPL、AES-IGE 改用 `node:crypto`、API 與 GramJS 對齊 → §5 blocker 降級為「有解方（遷 teleproto）」，一併解 archived 風險 | Tai / Claude 協作 |
 | v1.4 | 2026-07-24 | **TG2a**：recipe 實際遷 `teleproto`（MIT）——`package.json`/`entry.mjs`/`build.mjs`（alias 補 `node:` 前綴雙寫＋`zlib→browserify-zlib`＋`assert`）／重生 lockfile（137 packages 零 copyleft）；新增 `verify.mjs`（`npm run verify`：crypto-browserify AES ≡ Node 逐位元組＋teleproto IGE round-trip）。§5 GPL blocker→已解決。遺留 tradeoff：bundle 2.67M/483K gzip（記於 §5/README）。§8 TG2 拆 TG2a(本 PR)/TG2b(offscreen)/TG2c(登入 UI) | Tai / Claude 協作 |
 | v1.5 | 2026-07-24 | **TG2b**：GramJS offscreen 接收路徑落地。bundle 進 `lib/`（pako zlib shim,2.63M；`verify` 加 textbook AES-IGE oracle 200 組、`audit` 加供應鏈紅旗 gate）；`offscreen.js` tg handler（dynamic import tgAdapter）；SW `tgProxyAdapter`（GramJS 移出 SW import graph）；watchdog 改 async 對 tg 以 `tg:ping` 探活重建；抽共用 `offscreenManager`（順修建立失敗不歸零 bug）；Makefile DEV 補 offscreen。tgAdapter async 化＋修 TG1-live review 的 async-race。unit +offscreenManager/tgProxyAdapter/async-race。真連線待 TG2c session＋TG3 手動矩陣 | Tai / Claude 協作 |
+| v1.6 | 2026-07-24 | **TG2c**：options Telegram 登入 UI。`tgLoginController`(login=client.start／logout=client.logOut 遠端撤銷／resolveChannel,DI 可測);`renderTgCard` 兩態(未登入 api_id/hash+phone+登入;已登入身份+enable+頻道管理+策展 7 頻道+登出撤銷);session 風險告示 modal;`modalManager.showPrompt` 加 inputType(2FA 遮罩)+message;i18n 27 key×14。無新權限(既有廣域 host_permissions 已涵蓋)。真登入列 TG3 | Tai / Claude 協作 |

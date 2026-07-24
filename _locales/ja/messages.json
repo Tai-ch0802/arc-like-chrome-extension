@@ -1459,5 +1459,95 @@
   },
   "aiProviderHttpWarning": {
     "message": "このアドレスは暗号化されていない http: を使用しています。API キーが平文で送信されます。"
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "電話番号"
+  },
+  "tgLoginButton": {
+    "message": "ログイン"
+  },
+  "tgLoggingIn": {
+    "message": "ログイン中…"
+  },
+  "tgLoginGuide": {
+    "message": "my.telegram.org で api_id/api_hash を申請してください（捨てアカウント推奨：session はアカウントへの完全アクセスに相当します）。"
+  },
+  "tgLoginGetApiLink": {
+    "message": "api_id/api_hash を取得"
+  },
+  "tgLoginMissingFields": {
+    "message": "api_id、api_hash、電話番号を入力してください。"
+  },
+  "tgLoginFailed": {
+    "message": "ログインに失敗しました："
+  },
+  "tgRiskTitle": {
+    "message": "Telegram ログインのリスク"
+  },
+  "tgRiskMessage": {
+    "message": "session はアカウントへの完全アクセスに相当し（すべてのチャットを読む、あなたになりすまして送信）、通常の API key より深刻です。捨てアカウントを使い、公共のコンピューターは避けてください。続行しますか？"
+  },
+  "tgSyncRiskTitle": {
+    "message": "Telegram の session をクラウドに同期しますか？"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session はアカウントへの完全アクセスに相当します。オンにすると、他の keys と一緒にあなた自身の Google Drive appdata へアップロードされます。その Drive にアクセスできる人は誰でもあなたの Telegram アカウントになりすませます。同期を有効にしますか？"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "同期を有効にする"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram 認証コード"
+  },
+  "tgCodeMessage": {
+    "message": "電話 / Telegram app に届いたコードを入力してください"
+  },
+  "tg2faTitle": {
+    "message": "2 段階認証のパスワード"
+  },
+  "tg2faMessage": {
+    "message": "このアカウントは 2FA が有効です。パスワードを入力してください。"
+  },
+  "tgLoggedInAs": {
+    "message": "ログイン中："
+  },
+  "tgLogoutButton": {
+    "message": "ログアウトして失効させる"
+  },
+  "tgLogoutTitle": {
+    "message": "ログアウトして session を失効させますか？"
+  },
+  "tgLogoutMessage": {
+    "message": "session をリモートで失効させ、ローカルの認証情報を消去します。"
+  },
+  "tgChannelsHeader": {
+    "message": "チャンネル"
+  },
+  "tgAddPlaceholder": {
+    "message": "username（@ なし）"
+  },
+  "tgAddTitle": {
+    "message": "チャンネルを確認（なりすまし対策）"
+  },
+  "tgAddConfirm": {
+    "message": "このチャンネルを追加しますか？"
+  },
+  "tgAddFailed": {
+    "message": "チャンネルを解決できませんでした"
+  },
+  "tgSubscribers": {
+    "message": "登録者"
+  },
+  "tgCuratedHeader": {
+    "message": "キュレーションリスト（追加前に resolve してチャンネルを確認）"
+  },
+  "tgCuratedWarn": {
+    "message": "注意：類似のなりすまし handle が存在します。追加前に確認してください"
   }
 }

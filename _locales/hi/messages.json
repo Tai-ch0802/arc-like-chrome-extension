@@ -1459,5 +1459,95 @@
   },
   "aiProviderHttpWarning": {
     "message": "यह पता अनएन्क्रिप्टेड http: उपयोग करता है — आपकी API कुंजी सादे टेक्स्ट में भेजी जाएगी।"
+  },
+  "tgApiIdLabel": {
+    "message": "api_id"
+  },
+  "tgApiHashLabel": {
+    "message": "api_hash"
+  },
+  "tgPhoneLabel": {
+    "message": "फ़ोन"
+  },
+  "tgLoginButton": {
+    "message": "लॉग इन करें"
+  },
+  "tgLoggingIn": {
+    "message": "लॉग इन हो रहा है…"
+  },
+  "tgLoginGuide": {
+    "message": "my.telegram.org पर api_id/api_hash के लिए आवेदन करें (बर्नर अकाउंट इस्तेमाल करें — session पूरे अकाउंट एक्सेस के बराबर है)।"
+  },
+  "tgLoginGetApiLink": {
+    "message": "api_id/api_hash प्राप्त करें"
+  },
+  "tgLoginMissingFields": {
+    "message": "कृपया api_id, api_hash और फ़ोन नंबर भरें।"
+  },
+  "tgLoginFailed": {
+    "message": "लॉग इन विफल:"
+  },
+  "tgRiskTitle": {
+    "message": "Telegram लॉगिन जोखिम"
+  },
+  "tgRiskMessage": {
+    "message": "session पूरे अकाउंट एक्सेस के बराबर है (सभी चैट पढ़ना, आपके नाम से भेजना) — सामान्य API key से ज़्यादा गंभीर। बर्नर अकाउंट इस्तेमाल करें और सार्वजनिक कंप्यूटर से बचें। जारी रखें?"
+  },
+  "tgSyncRiskTitle": {
+    "message": "Telegram session को क्लाउड पर सिंक करें?"
+  },
+  "tgSyncRiskMessage": {
+    "message": "session पूरे अकाउंट एक्सेस के बराबर है। इसे चालू करने पर यह आपकी अन्य keys के साथ आपके अपने Google Drive appdata में अपलोड हो जाती है — उस Drive तक पहुँच रखने वाला कोई भी आपके Telegram अकाउंट का रूप धर सकता है। सिंक चालू करें?"
+  },
+  "tgSyncRiskConfirm": {
+    "message": "सिंक चालू करें"
+  },
+  "tgCodeTitle": {
+    "message": "Telegram सत्यापन कोड"
+  },
+  "tgCodeMessage": {
+    "message": "अपने फ़ोन / Telegram app पर भेजा गया कोड दर्ज करें"
+  },
+  "tg2faTitle": {
+    "message": "दो-चरणीय सत्यापन पासवर्ड"
+  },
+  "tg2faMessage": {
+    "message": "इस अकाउंट पर 2FA सक्षम है। पासवर्ड दर्ज करें।"
+  },
+  "tgLoggedInAs": {
+    "message": "इस रूप में लॉग इन"
+  },
+  "tgLogoutButton": {
+    "message": "लॉग आउट करें और रद्द करें"
+  },
+  "tgLogoutTitle": {
+    "message": "लॉग आउट करें और session रद्द करें?"
+  },
+  "tgLogoutMessage": {
+    "message": "इससे session दूरस्थ रूप से रद्द हो जाती है और स्थानीय क्रेडेंशियल साफ़ हो जाते हैं।"
+  },
+  "tgChannelsHeader": {
+    "message": "चैनल"
+  },
+  "tgAddPlaceholder": {
+    "message": "username (@ के बिना)"
+  },
+  "tgAddTitle": {
+    "message": "चैनल की पुष्टि करें (एंटी-स्पूफ़िंग)"
+  },
+  "tgAddConfirm": {
+    "message": "यह चैनल जोड़ें?"
+  },
+  "tgAddFailed": {
+    "message": "चैनल resolve नहीं हो सका"
+  },
+  "tgSubscribers": {
+    "message": "सब्सक्राइबर"
+  },
+  "tgCuratedHeader": {
+    "message": "क्यूरेटेड सूची (जोड़ने से पहले resolve और पुष्टि की जाती है)"
+  },
+  "tgCuratedWarn": {
+    "message": "चेतावनी: एक मिलता-जुलता spoofing handle मौजूद है — जोड़ने से पहले सत्यापित करें"
   }
 }
