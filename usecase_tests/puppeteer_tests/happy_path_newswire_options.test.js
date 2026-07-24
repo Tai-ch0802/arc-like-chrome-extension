@@ -29,9 +29,12 @@ describe('Newswire Options Section (BASE-016 N2)', () => {
         await teardownBrowser(browser);
     });
 
-    test('renders four source cards with key fields and guidance links', async () => {
+    test('renders source cards (four base + Telegram) with key fields and guidance links', async () => {
         const cards = await page.$$eval('[data-newswire-source]', els => els.map(el => el.dataset.newswireSource));
-        expect(cards).toEqual(['tree', 'fj', 'alpaca', 'jin10']);
+        expect(cards).toEqual(['tree', 'fj', 'alpaca', 'jin10', 'tg']); // TG2c 加 Telegram 卡片(第五源)
+
+        // Telegram 卡片(TG2c,未登入態)存在;結構異於四源的簡單 key 卡片(有登入流程)。
+        expect(await page.$('[data-newswire-source="tg"]')).toBeTruthy();
 
         // key 欄位遮罩+new-password(安全慣例);Alpaca 有兩欄。
         const fjType = await page.$eval('#newswire-key-fj-apiKey', el => ({ type: el.type, ac: el.autocomplete }));
