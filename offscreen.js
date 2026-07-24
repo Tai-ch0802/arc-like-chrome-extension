@@ -117,6 +117,32 @@ function getLinkFromGuid(item) {
     return null;
 }
 
+// --- Telegram (BASE-018 TG2b) ---
+// GramJS 只在此 offscreen document 執行(DOM context 支援 dynamic import + WebSocket;
+// MV3 SW 兩者皆不支援/不宜)。tgAdapter/tgClient 以 dynamic import 隔離載入——只有
+// SW 發 tg:connect 時才載入 2.6M bundle,不啟用 tg 的用戶零成本。收到 NewMessage 主動
+// post tg:raw 給 SW 的既有 newswire 管線;狀態變化 post tg:status;SW watchdog 以 tg:ping 探活。
+let tgAdapter = null;
+let lastTgStatus = 'disabled';
+
+async function tgConnect(cfg) {
+    const { createTgAdapter } = await import('./modules/newswire/tgAdapter.js');
+    if (tgAdapter) { try { tgAdapter.disconnect(); } catch (e) { /* noop */ } tgAdapter = null; }
+    tgAdapter = createTgAdapter(cfg, {
+        onRaw: (raw) => { chrome.runtime.sendMessage({ action: 'tg:raw', raw }).catch(() => { /* SW 忙/回收 */ }); },
+        onStatus: (status) => {
+            lastTgStatus = status;
+            chrome.runtime.sendMessage({ action: 'tg:status', status }).catch(() => { /* noop */ });
+        },
+    });
+    tgAdapter.connect();
+}
+
+function tgDisconnect() {
+    if (tgAdapter) { try { tgAdapter.disconnect(); } catch (e) { /* noop */ } tgAdapter = null; }
+    lastTgStatus = 'disabled';
+}
+
 // --- Message Listener ---
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'parseRssFeed') {
@@ -153,5 +179,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
         })();
         return true; // Keep channel open for async response
+    }
+
+    // --- Telegram (BASE-018 TG2b) ---
+    if (message.action === 'tg:connect') {
+        tgConnect(message.cfg).catch(() => {
+            // 動態載入/建構失敗:回報 retrying,SW watchdog 會再排程重連。
+            lastTgStatus = 'retrying';
+            chrome.runtime.sendMessage({ action: 'tg:status', status: 'retrying' }).catch(() => { /* noop */ });
+        });
+        return false; // 無同步 response;狀態經 tg:status 主動 post
+    }
+    if (message.action === 'tg:disconnect') {
+        tgDisconnect();
+        return false;
+    }
+    if (message.action === 'tg:ping') {
+        sendResponse({ alive: !!tgAdapter && tgAdapter.isAlive(), status: lastTgStatus });
+        return true;
     }
 });
