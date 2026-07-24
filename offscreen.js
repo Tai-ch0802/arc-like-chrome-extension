@@ -2,6 +2,8 @@
 // This script runs in a hidden offscreen document that has access to DOM APIs.
 // It's used for parsing RSS/Atom XML feeds using DOMParser.
 
+import { validateFeedUrl } from './modules/utils/urlSafety.js';
+
 /**
  * Parses an RSS/Atom feed XML string and extracts title and items.
  * @param {string} xmlText - The raw XML text of the feed.
@@ -142,12 +144,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // This is used by the Service Worker which cannot use fetch() reliably for some URLs
         (async () => {
             try {
+                const urlError = validateFeedUrl(message.feedUrl);
+                if (urlError) { sendResponse({ success: false, error: urlError }); return; }
+
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), message.timeoutMs || 10000);
 
-                const response = await fetch(message.feedUrl, { signal: controller.signal });
+                const response = await fetch(message.feedUrl, { signal: controller.signal, redirect: 'manual' });
                 clearTimeout(timeoutId);
 
+                if (response.type === 'opaqueredirect') {
+                    sendResponse({ success: false, error: 'Feed URL redirects are not allowed' });
+                    return;
+                }
                 if (!response.ok) {
                     sendResponse({ success: false, error: `HTTP ${response.status}` });
                     return;

@@ -5,6 +5,7 @@ import * as api from './apiManager.js';
 import { addToReadingList } from './readingListManager.js';
 import { MAX_STORED_HASHES, mergeHashesForWrite, nextTimestamp } from './rss/rssSyncLogic.js';
 import { ensureOffscreenDocument } from './offscreenManager.js';
+import { validateFeedUrl as checkUrlSafety } from './utils/urlSafety.js';
 
 // --- Constants ---
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
@@ -595,6 +596,11 @@ function parseRssFeedXml(xmlText) {
  * @returns {Promise<{title: string, items: Array<{title: string, url: string}>}>}
  */
 async function fetchRssFeed(feedUrl) {
+    const urlError = checkUrlSafety(feedUrl);
+    if (urlError) {
+        throw new Error(urlError);
+    }
+
     try {
         let parsedData;
 
@@ -604,9 +610,12 @@ async function fetchRssFeed(feedUrl) {
             const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
             try {
-                const response = await fetch(feedUrl, { signal: controller.signal });
+                const response = await fetch(feedUrl, { signal: controller.signal, redirect: 'manual' });
                 clearTimeout(timeoutId);
 
+                if (response.type === 'opaqueredirect') {
+                    throw new Error('Feed URL redirects are not allowed');
+                }
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
