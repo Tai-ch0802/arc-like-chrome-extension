@@ -27,12 +27,15 @@ export function validateFeedUrl(feedUrl) {
     // Regular DNS hostnames never contain colons, so this avoids false-positives
     // on domains like fc.example.com, fdroid-mirror.org, fe80something.dev.
     if (hostname.includes(':')) {
+        // /^::/ covers the whole reserved low block in canonical form:
+        // :: (unspecified), ::1 (loopback), ::ffff:a.b.c.d (IPv4-mapped),
+        // and deprecated IPv4-compatible ::/96 forms like ::7f00:1.
+        // No public IPv6 address serializes with a leading "::".
         if (
-            hostname === '::1' ||
+            /^::/.test(hostname) ||
             /^fc/i.test(hostname) ||
             /^fd/i.test(hostname) ||
-            /^fe80/i.test(hostname) ||
-            /^::ffff:/i.test(hostname)
+            /^fe80/i.test(hostname)
         ) {
             return 'Feed URL points to private network';
         }
