@@ -118,8 +118,10 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                 try {
                     const entity = await client.getEntity(ref);
                     entities.push(entity);
-                    // meta.id 一律字串化:entity.id 是 BigInteger,若原樣進 meta,onRaw 經
-                    // chrome.runtime.sendMessage(JSON 序列化)送 SW 時會 throw、整則事件靜默丟失。
+                    // meta.id 一律字串化以統一型別:entity.id 是 BigInteger 物件,而 metaById
+                    // 的 key 與 eventChatId 的回傳都是字串,混用會 lookup miss;meta 也會經
+                    // runtime message 送 SW(BigInteger 有 toJSON,不會 throw,但序列化後型別
+                    // 會漂成字串)——在來源處就固定成字串,兩端型別才一致。
                     const rawId = ch.id ?? (entity && entity.id);
                     const meta = { id: rawId != null ? String(rawId) : undefined, username: ch.username ?? (entity && entity.username), title: ch.title ?? (entity && entity.title) };
                     if (meta.id != null) metaById.set(meta.id, meta);
