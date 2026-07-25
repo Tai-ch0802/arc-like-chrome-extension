@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "Aviso: existe um handle de falsificação semelhante — verifique antes de adicionar"
+  },
+  "workspaceOverwrite": {
+    "message": "Sobrescrever com a janela atual"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Sobrescrever Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "Substituir \"{ws}\" ({old} aba(s)) pelas {new} aba(s) desta janela? A configuração salva não poderá ser recuperada, e qualquer outra janela vinculada a \"{ws}\" será desvinculada."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Nada a salvar"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "Esta janela não tem abas que possam ser salvas (páginas internas do navegador não são armazenadas). Abra ao menos uma página primeiro."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Falha ao sobrescrever"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "A substituição não foi concluída. Esta janela talvez já esteja vinculada ao Workspace, mas o layout das abas pode não ter sido salvo — verifique o conteúdo do Workspace."
   }
 }

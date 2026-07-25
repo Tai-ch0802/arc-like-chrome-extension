@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "คำเตือน: มี handle ปลอมแปลงที่คล้ายกัน — ตรวจสอบก่อนเพิ่ม"
+  },
+  "workspaceOverwrite": {
+    "message": "เขียนทับด้วย window ปัจจุบัน"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "เขียนทับ Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "แทนที่ \"{ws}\" ({old} tab) ด้วย {new} tab ของ window นี้? การตั้งค่า tabs ที่บันทึกไว้จะกู้คืนไม่ได้ และ window อื่นที่ผูกกับ \"{ws}\" อยู่จะถูกยกเลิกการผูก"
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "ไม่มีอะไรให้บันทึก"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "window นี้ไม่มี tab ที่บันทึกได้ (หน้าภายในของเบราว์เซอร์จะไม่ถูกเก็บ) กรุณาเปิดอย่างน้อยหนึ่งหน้าก่อน"
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "เขียนทับล้มเหลว"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "การเขียนทับทำไม่สำเร็จ window นี้อาจถูกผูกกับ Workspace แล้ว แต่การตั้งค่า tabs อาจยังไม่ถูกบันทึก โปรดตรวจสอบเนื้อหาของ Workspace นั้น"
   }
 }

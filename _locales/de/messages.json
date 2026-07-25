@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "Achtung: Es existiert ein ähnlicher Spoofing-handle – vor dem Hinzufügen prüfen"
+  },
+  "workspaceOverwrite": {
+    "message": "Mit aktuellem Fenster überschreiben"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Workspace überschreiben"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "\"{ws}\" ({old} Tab(s)) durch die {new} Tab(s) dieses Fensters ersetzen? Die gespeicherte Anordnung kann nicht wiederhergestellt werden, und jedes andere Fenster, das an \"{ws}\" gebunden ist, wird davon gelöst."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Nichts zu speichern"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "Dieses Fenster hat keine speicherbaren Tabs (browserinterne Seiten werden nicht gespeichert). Öffnen Sie zuerst mindestens eine Seite."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Überschreiben fehlgeschlagen"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Das Überschreiben wurde nicht abgeschlossen. Dieses Fenster ist möglicherweise bereits an den Workspace gebunden, die Tab-Anordnung wurde aber eventuell nicht gespeichert — bitte prüfen Sie den Inhalt des Workspace."
   }
 }

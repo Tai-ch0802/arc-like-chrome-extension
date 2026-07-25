@@ -1185,6 +1185,27 @@
   "workspaceNoActive": {
     "message": "— tidak ada Workspace —"
   },
+  "workspaceOverwrite": {
+    "message": "Timpa dengan window saat ini"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Timpa Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "Ganti \"{ws}\" ({old} tab) dengan {new} tab dari window ini? Layout yang tersimpan tidak dapat dipulihkan, dan window lain yang terikat ke \"{ws}\" akan dilepas ikatannya."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Tidak ada yang bisa disimpan"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "Window ini tidak memiliki tab yang bisa disimpan (halaman internal browser tidak disimpan). Buka minimal satu halaman terlebih dahulu."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Gagal menimpa"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Penimpaan tidak selesai. Window ini mungkin sudah terikat ke Workspace tersebut, tetapi layout tab-nya belum tentu tersimpan — silakan periksa isi Workspace tersebut."
+  },
   "workspaceRename": {
     "message": "Ubah nama"
   },

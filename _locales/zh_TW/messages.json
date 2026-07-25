@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "注意：有相似仿冒 handle，加入前務必確認"
+  },
+  "workspaceOverwrite": {
+    "message": "以目前視窗覆蓋"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "覆蓋工作區"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "要用目前視窗的 {new} 個分頁取代「{ws}」原有的 {old} 個分頁嗎？原本儲存的配置將無法復原；若有其他視窗綁定「{ws}」，該視窗會被解除綁定。"
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "沒有可儲存的分頁"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "這個視窗沒有可儲存的分頁（瀏覽器內部頁面不會被記錄）。請先開啟至少一個網頁。"
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "覆蓋失敗"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "覆蓋未完成。目前視窗可能已綁定至該工作區，但分頁配置未必已儲存——請確認該工作區的內容。"
   }
 }

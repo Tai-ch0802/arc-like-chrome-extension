@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "चेतावनी: एक मिलता-जुलता spoofing handle मौजूद है — जोड़ने से पहले सत्यापित करें"
+  },
+  "workspaceOverwrite": {
+    "message": "मौजूदा window से overwrite करें"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Workspace overwrite करें"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "\"{ws}\" के {old} tab(s) की जगह इस window के {new} tab(s) save करें? पहले से save किया हुआ layout वापस नहीं मिलेगा, और \"{ws}\" से bound कोई भी दूसरा window unbind हो जाएगा।"
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "save करने के लिए कुछ नहीं"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "इस window में save करने लायक कोई tab नहीं है (browser के internal pages store नहीं होते)। पहले कम से कम एक page खोलें।"
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Overwrite fail"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Overwrite पूरा नहीं हुआ। यह window शायद पहले से ही इस Workspace से bound हो चुका है, लेकिन उसका tab layout save हुआ हो यह ज़रूरी नहीं — कृपया Workspace की सामग्री जाँच लें।"
   }
 }
