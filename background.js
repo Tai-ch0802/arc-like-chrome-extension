@@ -812,9 +812,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // newswire 協定(BASE-016):getState/markSeen 由 feedManager 分派。
     return handleNewswireMessage(message, sendResponse);
   } else if (message.action === 'tg:raw' || message.action === 'tg:status') {
-    // offscreen 回報的 tg 訊息(BASE-018 TG2b):進管線/更新狀態。fire-and-forget。
-    handleTgOffscreenMessage(message);
-    return false;
+    // offscreen 回報的 tg 訊息(BASE-018 TG2b):進管線/更新狀態。tg:raw 以 pending
+    // sendResponse 保活 SW 至 append/broadcast 完成(fire-and-forget 會在 SW 掛起
+    // 邊緣丟事件,BASE-020);回傳值透傳以保持 message channel 開啟。
+    return handleTgOffscreenMessage(message, sendResponse);
   }
   // 不處理的 action：不攔截，讓 offscreen document 等其他 context 可以回應
 });

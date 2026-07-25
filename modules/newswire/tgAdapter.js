@@ -40,13 +40,25 @@ export function classifyTgError(e) {
     return { kind: 'transient' };
 }
 
-/** 純函式:取 GramJS 事件的 chat/channel id（供對應頻道 meta）。 */
+/**
+ * 純函式:取 GramJS 事件的 chat/channel id（供對應頻道 meta）,一律回**裸 id**。
+ * 事件的 chatId getter(teleproto ChatGetter→getPeerId)對頻道回 **marked 形式**
+ * `-100<id>`,而 metaById 的 key 是 getEntity 的裸 entity.id——不 normalize 則
+ * lookup 必 miss,多頻道時 fallback meta 無 username → parseTgMessage 組不出
+ * t.me url → 快訊不可點。strip 正則與 teleproto Utils.resolveId 一致
+ * (`-100([^0]\d*)`,排除 -10000xyz 的普通群組誤判)。
+ */
 export function eventChatId(event) {
     if (event == null) return undefined;
-    if (event.chatId != null) return String(event.chatId);
+    const bare = (v) => {
+        const s = String(v);
+        const m = s.match(/^-100([^0]\d*)$/);
+        return m ? m[1] : s;
+    };
+    if (event.chatId != null) return bare(event.chatId);
     const peer = event.message && event.message.peerId;
-    if (peer && peer.channelId != null) return String(peer.channelId);
-    if (peer && peer.chatId != null) return String(peer.chatId);
+    if (peer && peer.channelId != null) return bare(peer.channelId);
+    if (peer && peer.chatId != null) return bare(peer.chatId);
     return undefined;
 }
 
@@ -106,8 +118,13 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                 try {
                     const entity = await client.getEntity(ref);
                     entities.push(entity);
-                    const meta = { id: ch.id ?? (entity && entity.id), username: ch.username ?? (entity && entity.username), title: ch.title ?? (entity && entity.title) };
-                    if (meta.id != null) metaById.set(String(meta.id), meta);
+                    // meta.id 一律字串化以統一型別:entity.id 是 BigInteger 物件,而 metaById
+                    // 的 key 與 eventChatId 的回傳都是字串,混用會 lookup miss;meta 也會經
+                    // runtime message 送 SW(BigInteger 有 toJSON,不會 throw,但序列化後型別
+                    // 會漂成字串)——在來源處就固定成字串,兩端型別才一致。
+                    const rawId = ch.id ?? (entity && entity.id);
+                    const meta = { id: rawId != null ? String(rawId) : undefined, username: ch.username ?? (entity && entity.username), title: ch.title ?? (entity && entity.title) };
+                    if (meta.id != null) metaById.set(meta.id, meta);
                 } catch (e) {
                     // 略過此頻道(不 throw);但保留 fatal 原因——session 失效會在
                     // getEntity 階段(非 connect)才浮現,不記下來全失敗時會被誤判 transient

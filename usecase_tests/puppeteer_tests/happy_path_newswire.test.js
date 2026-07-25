@@ -153,6 +153,47 @@ describe('Newswire Section (BASE-016 N1)', () => {
         expect(parseInt(style.maxHeight, 10)).toBeGreaterThan(0);
     }, 120000);
 
+    test('a tg:raw message flows the real pipeline into a clickable row; clicking grays it read and persists (BASE-018/020)', async () => {
+        // 走真管線(不連真 Telegram):tg:raw → SW parseTgMessage(組 t.me url)→ buffer
+        // → 廣播渲染。端到端鎖「頻道 username → 可點 url」與「點擊 → 已讀落地」。
+        //
+        // 先 getState 一次喚醒 SW 並等 init 完成再發 tg:raw:SW 若在 idle 掛起中被
+        // tg:raw 喚醒,喚醒瞬間發出的 newswire:events 廣播會與頁面 port 建立 race 而
+        // 偶發丟失(診斷實錄:SW buffer 有事件、sidepanel 沒收到)。真實場景由「開面板
+        // 時 getState 回填」兜底,測試則以 pre-wake 消除對喚醒時序的依賴。
+        // msgId 每 attempt 唯一:固定 id 會在 retry 時被 SW dedupe 吸收,retry 必死;
+        // 唯一 id 讓 jest retry 能吸收殘餘的 SW 生命週期 race(~5%,無法在測試中根絕)。
+        const msgId = Date.now() % 100000000;
+        const evId = `tg:999:${msgId}`;
+        await optionsPage.evaluate(() => chrome.runtime.sendMessage({ action: 'newswire:getState' }).catch(() => {}));
+        await optionsPage.evaluate((mid) => chrome.runtime.sendMessage({
+            action: 'tg:raw',
+            raw: {
+                message: { id: mid, message: 'TG read-state fixture headline', date: Math.floor(Date.now() / 1000) },
+                channel: { id: '999', username: 'testchan', title: 'Test Channel' },
+            },
+        }).catch(() => {}), msgId);
+
+        // row 出現且可點(newswire-item--link=有 url;url 由 SW 端組出 https://t.me/testchan/<msgId>)。
+        await page.waitForFunction((id) => {
+            const el = document.querySelector(`#newswire-list [data-event-id="${id}"]`);
+            return el && el.classList.contains('newswire-item--link') && !el.classList.contains('is-read');
+        }, { timeout: 5000 }, evId);
+
+        // 點擊:stub 掉 tabs.create(不真開 t.me 分頁,CI 不外連),驗反灰與落地。
+        await page.evaluate((id) => {
+            chrome.tabs.create = () => Promise.resolve({});
+            document.querySelector(`#newswire-list [data-event-id="${id}"]`).click();
+        }, evId);
+        expect(await page.$eval(`#newswire-list [data-event-id="${evId}"]`,
+            el => el.classList.contains('is-read'))).toBe(true);
+
+        // SW markRead → ring buffer read:true → 立即 flush 落地 storage(SW debounce
+        // timer 會隨 SW 掛起蒸發,故 markRead 不等 debounce;此處同時是該行為的回歸鎖)。
+        await page.waitForFunction((id) => chrome.storage.local.get('newswireEvents')
+            .then(v => (v.newswireEvents?.events || []).find(e => e.id === id)?.read === true), { timeout: 8000 }, evId);
+    }, 120000);
+
     test('the clear button empties the feed via the SW round-trip (BASE-017)', async () => {
         // 自足:先確保列表有內容(清空搜尋 + 注入一則),再驗清除。
         await searchAndRead('', []);

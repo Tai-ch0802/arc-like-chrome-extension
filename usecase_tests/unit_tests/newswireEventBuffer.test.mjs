@@ -46,6 +46,17 @@ describe('newswire eventBuffer (BASE-016 N1)', () => {
     expect(writes.length).toBe(1);
     expect(writes[0][NEWSWIRE_EVENTS_KEY].events.map((e) => e.id)).toEqual(['b', 'a']);
   });
+  it('markRead flags the event, schedules persist, and is idempotent (BASE-020)', async () => {
+    const { deps, timers } = makeDeps({ events: [mkEvent('a', 1), mkEvent('b', 2)] });
+    const buf = createEventBuffer(deps);
+    await buf.init();
+    expect(buf.markRead('a')).toBe(true);               // 首次標記
+    expect(buf.getEvents().find((e) => e.id === 'a').read).toBe(true);
+    expect(timers.length).toBe(1);                      // 已排程持久化
+    expect(buf.markRead('a')).toBe(false);              // 重複 → no-op(呼叫端不重播)
+    expect(buf.markRead('missing')).toBe(false);        // 不存在 → no-op
+    expect(buf.getEvents().find((e) => e.id === 'b').read).toBeUndefined(); // 不波及他事件
+  });
   it('flush persists immediately and cancels pending timer', async () => {
     const { deps, writes } = makeDeps();
     const buf = createEventBuffer(deps);

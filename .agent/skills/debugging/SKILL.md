@@ -34,6 +34,8 @@ description: 本專案 (MV3 Chrome extension) 的除錯紀律與 playbook：先�
 | E2E 本機過、CI 掛 | race condition：固定 `setTimeout` 等待、事件委派未就緒 | 對照 `review-pr.md` CI 穩定性方針 8 條逐項檢查 |
 | UI 事件沒觸發 | 事件委派容器還沒渲染就 dispatch / listener 延遲註冊 | 先 `waitForSelector` 容器再操作 |
 | release 版壞、dev 版好 | 檔案沒進 `Makefile` 打包清單，或 esbuild bundle 差異 | 解開 zip 比對；`make release` 後檢查產物 |
+| SW 訊息處理「有時」沒完成（事件丟失/廣播未達），attach devtools 就正常 | onMessage handler **fire-and-forget**（return false 且處理是 async）——SW 在 idle 掛起邊緣被喚醒時，事件 return 後的 async 後續無保活保障 | 改 pending `sendResponse` 模式（return true + 完成後回應）= MV3 keep-alive 訊號；BASE-020 tg:raw 實例 |
+| storage 寫入「有時」沒發生（UI 更新了、重開卻消失） | debounce/`setTimeout` 排的寫入 timer **隨 SW 掛起蒸發**；低頻使用者操作沒有後續事件補寫 | 低頻操作直接 flush 立即落地（高頻串流才值得 debounce）；BASE-020 markRead 實例 |
 
 ## 觀測工具
 

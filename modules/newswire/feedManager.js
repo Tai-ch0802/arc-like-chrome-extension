@@ -342,14 +342,23 @@ export function shouldReconnectTg(pong) {
 /**
  * offscreen 回報的 tg 訊息分派(background onMessage 委派)。tg:raw → 進既有管線;
  * tg:status → 更新 tg proxy 狀態(透傳 setStatus 廣播)。
- * @returns {boolean} true = 已認領此訊息
+ * @returns {boolean} true = 已認領此訊息(tg:raw 會 async sendResponse,呼叫端須把
+ *   此回傳值 return 給 onMessage 以保持 channel 開啟)
  */
-export function handleTgOffscreenMessage(message) {
+export function handleTgOffscreenMessage(message, sendResponse = () => {}) {
     if (message?.action === 'tg:raw') {
         // SW 可能被此訊息喚醒,此時 initNewswire 仍在 await buffer.init——直接 handleRaw
         // 會被隨後 buffer.init 覆蓋而丟事件(GramJS NewMessage 無 history 回補)。等 init
         // 完成再進管線(initNewswire 回 in-flight promise;started 時亦回既有 promise)。
-        initNewswire().then(() => handleRaw('tg', message.raw));
+        //
+        // 不可 fire-and-forget:pending sendResponse 是 MV3 的 keep-alive 訊號。若處理
+        // 完 onMessage 即回(無 pending response),SW 在 idle 掛起邊緣被喚醒時,init 之後
+        // 的 append/broadcast 沒有保活保障——事件靜默丟失、sidepanel 收不到廣播(E2E
+        // 診斷實錄:SW buffer 有事件、廣播未達)。offscreen 端 post 為 fire-and-forget,
+        // response 被丟棄,無需配合。
+        initNewswire()
+            .then(() => { handleRaw('tg', message.raw); sendResponse({ ok: true }); })
+            .catch((err) => sendResponse({ ok: false, error: err?.message || String(err) }));
         return true;
     }
     if (message?.action === 'tg:status') {
@@ -407,6 +416,23 @@ export function handleNewswireMessage(message, sendResponse) {
             await setStorage('local', { [NEWSWIRE_LAST_SEEN_KEY]: Date.now() });
             broadcast({ type: 'newswire:cleared' });
             sendResponse({ ok: true });
+        })().catch((err) => sendResponse({ ok: false, error: err?.message || String(err) }));
+        return true;
+    }
+    if (message.action === 'newswire:markRead') {
+        // 單則已讀(點擊開原文後反灰,BASE-020):寫進 ring buffer 事件本體並廣播,
+        // 其他開啟中的 sidepanel 同步反灰;重複標記為 no-op(不重複廣播)。
+        // 立即 flush 而非等 debounce:低頻使用者操作,而 SW 處理完訊息後可能隨即
+        // 被掛起,debounce 的 setTimeout timer 會隨 SW 蒸發 → read 標記丟失
+        // (UI 已反灰,重開面板卻變回未讀)。比照 newswire:clear 的即時落地。
+        (async () => {
+            if (!started) await initNewswire();
+            const marked = buffer.markRead(message.id);
+            if (marked) {
+                broadcast({ type: 'newswire:read', id: message.id });
+                await buffer.flush();
+            }
+            sendResponse({ ok: true, marked });
         })().catch((err) => sendResponse({ ok: false, error: err?.message || String(err) }));
         return true;
     }
