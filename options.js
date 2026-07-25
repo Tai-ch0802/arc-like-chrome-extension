@@ -43,7 +43,10 @@ function makeRow(labelText, control, descText) {
     const labelWrap = document.createElement('div');
     const label = document.createElement('div');
     label.className = 'opt-row__label';
-    label.textContent = labelText;
+    // 允許傳入 Node(例如「圖示 + 名稱」的組合);字串維持 textContent 不變,
+    // 呼叫端要放圖示時自行組好節點,避免在此開 innerHTML 的口子。
+    if (labelText instanceof Node) label.appendChild(labelText);
+    else label.textContent = labelText;
     labelWrap.appendChild(label);
     if (descText) {
         const desc = document.createElement('div');
@@ -916,10 +919,18 @@ function renderSync(container) {
                     await hydrate();
                 });
                 const name = ws.name || ws.id;
-                optInBlock.appendChild(makeRow(
-                    `${ws.icon ? ws.icon + ' ' : ''}${name}`,
-                    checkbox
-                ));
+                // ws.icon 自 ISSUE-162/M3 起存 Material Symbols icon-id(如 'work'、
+                // 'menu_book'),不再是 emoji——直接字串串接會渲染成字面文字
+                // (「work MyWorkspace」)。經 resolveWorkspaceIcon 轉成 SVG,它同時
+                // 相容 legacy emoji(escapeHtml 後輸出)與缺值 fallback,故 innerHTML
+                // 安全;工作區名稱屬使用者輸入,一律走 text node。
+                const labelNode = document.createDocumentFragment();
+                const iconEl = document.createElement('span');
+                iconEl.className = 'sync-ws-icon';
+                iconEl.innerHTML = workspaceManager.resolveWorkspaceIcon(ws.icon, { size: 16 });
+                labelNode.appendChild(iconEl);
+                labelNode.appendChild(document.createTextNode(name));
+                optInBlock.appendChild(makeRow(labelNode, checkbox));
             }
         }
 

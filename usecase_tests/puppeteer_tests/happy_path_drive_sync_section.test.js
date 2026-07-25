@@ -160,6 +160,25 @@ describe('Options Page: Backup & Sync section', () => {
         expect(state.checked).toBe(false);
         // Not connected (placeholder client_id) → opt-in is disabled until connect.
         expect(state.disabled).toBe(true);
+
+        // The label must render the workspace icon as an ICON, not as the literal
+        // icon-id. Since ISSUE-162/M3 `ws.icon` holds a Material Symbols id
+        // ('work' by default), so string-concatenating it printed "work <name>".
+        const label = await page.$eval(rowSelector, (el) => {
+            const row = el.closest('.opt-row');
+            const labelEl = row && row.querySelector('.opt-row__label');
+            if (!labelEl) return null;
+            const icon = labelEl.querySelector('.sync-ws-icon');
+            return {
+                text: labelEl.textContent.trim(),
+                hasIconSpan: Boolean(icon),
+                hasSvg: Boolean(icon && icon.querySelector('svg')),
+            };
+        });
+        expect(label).not.toBeNull();
+        expect(label.hasIconSpan).toBe(true);
+        expect(label.hasSvg).toBe(true);              // 真的畫出圖示
+        expect(label.text).toBe('SyncOptIn E5c');     // 文字只有名稱,不含 'work'
     }, 60000);
 
     test('the opt-in persistence path flips syncEnabled in storage and round-trips to the checkbox', async () => {
