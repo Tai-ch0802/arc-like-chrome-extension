@@ -520,5 +520,8 @@
     "privacy_s5_li4": "Connect to the newswire sources you enabled and present or alert on headlines according to your own keyword rules.",
     "v1_18_0_date": "July 25, 2026",
     "v1_18_0_title": "Version 1.18.0 (Major Update)",
-    "v1_18_0_desc": "The sidebar gains a Newswire section — Tree of Alpha, FinancialJuice, Alpaca News and Jin10 merged into a single live timeline, and you can add any public Telegram channel as a source too. Set your own keywords and the headlines that matter get highlighted in red and pushed as system notifications; click one to open the source, and items you've read gray out automatically. The four sidebar sections (Tabs, Other Windows, Reading List, Bookmarks) are now drag-to-reorder. Every newswire source is off by default, and your keys never leave your device."
+    "v1_18_0_desc": "The sidebar gains a Newswire section — Tree of Alpha, FinancialJuice, Alpaca News and Jin10 merged into a single live timeline, and you can add any public Telegram channel as a source too. Set your own keywords and the headlines that matter get highlighted in red and pushed as system notifications; click one to open the source, and items you've read gray out automatically. The four sidebar sections (Tabs, Other Windows, Reading List, Bookmarks) are now drag-to-reorder. Every newswire source is off by default, and your keys never leave your device.",
+    "v1_18_1_date": "July 25, 2026",
+    "v1_18_1_title": "Version 1.18.1",
+    "v1_18_1_desc": "Workspaces gain a genuinely useful action: when you have curated a set of tabs in a separate window, you can now overwrite an existing workspace with that window's layout instead of creating a duplicate. A confirmation spells out how many tabs it had, how many it will have, and that the change cannot be undone. Also fixed the options page showing workspace icons as raw text codes under Backup & Sync."
 }
