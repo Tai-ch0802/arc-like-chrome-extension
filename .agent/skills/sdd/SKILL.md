@@ -15,8 +15,9 @@ description: 本專案標準開發流程：分級 Spec-Driven Development (SDD)�
    而不是一律套用最重的流程。低風險變更被流程拖慢，和高風險變更裸奔，是同一種失敗。
 2. **Spec 是給未來的 context**：spec 的主要讀者是「之後接手的人與 AI agent」。
    寫「為什麼這樣設計、排除了哪些方案」，比堆 boilerplate 章節有價值。
-3. **Living Documentation**：實作中發現設計需變更時，先更新 spec 再繼續寫 code
-   （T1 隨手改；T2 需重新取得核准）。
+3. **Living Documentation（以 PR merge 為界）**：實作中發現設計需變更時，先更新 spec
+   再繼續寫 code（T1 隨手改；T2 需重新取得核准）。merge 後 spec 即成為歷史決策記錄
+   （ADR 語意），**不回頭維護**；後續變更開新 spec 並引用舊的。
 4. **驗收可檢驗**：不論哪一級，「怎樣算做完」都必須在動工前說得出口
    （T0 在 commit message、T1/T2 在 spec 的驗收條件）。
 
@@ -41,7 +42,8 @@ description: 本專案標準開發流程：分級 Spec-Driven Development (SDD)�
 
 - 由 agent 在動工前**主動提出分級與理由**（一兩句即可），使用者可隨時覆寫升降級。
 - 拿不準 T1/T2 時，**問使用者一句**，不要自行猜重的或猜輕的。
-- 修 bug 常要先調查才知道影響面：允許「先調查、後判級」，調查本身不需 spec。
+- 修 bug 常要先調查才知道影響面：允許「先調查、後判級」，調查本身不需 spec；
+  值得留存的技術驗證結論可落地為同目錄 `SPIKE.md`（判例：BASE-018 GramJS 可行性驗證）。
 
 ## T1：單檔 SPEC.md 骨架
 
@@ -73,18 +75,17 @@ description: 本專案標準開發流程：分級 Spec-Driven Development (SDD)�
 
 ### Phase 1: PRD — 定義 What & Why
 - **檔案**：`/docs/specs/{type}/{ID-PREFIX}_{desc}/PRD_spec.md`
-- **指引**：`prd` skill（`.agent/skills/prd/SKILL.md`）；快速清單 `sdd/references/requirements.md`
+- **指引**：`prd` skill（`.agent/skills/prd/SKILL.md`）
 - **必要內容**：User Stories、Functional Requirements（EARS）、**Acceptance Criteria（Given-When-Then）**⭐、Out of Scope
 - **Gate**：User Review → Approved 後才進 Phase 2
 
 ### Phase 2: SA — 定義 How
 - **檔案**：同目錄 `SA_spec.md`
-- **指引**：`sa` skill（`.agent/skills/sa/SKILL.md`）；快速清單 `sdd/references/design.md`
+- **指引**：`sa` skill（`.agent/skills/sa/SKILL.md`）
 - **必要內容**：**Requirement Traceability Matrix** ⭐、Module Impact Map、Storage Schema Diff、**Test Impact Analysis** ⭐
 - **Gate**：User Review → Approved 後才動工
 
 ### Phase 3: 實作與驗收
-- 指引：`sdd/references/tasks.md`
 - 實作中發現設計需變更：**暫停 → 更新 spec（bump 版本）→ 重新核准 → 繼續**
 - 對照 PRD 的 Acceptance Criteria 驗收並回報
 
@@ -122,6 +123,5 @@ description: 本專案標準開發流程：分級 Spec-Driven Development (SDD)�
 
 | 用途 | 檔案 |
 |------|------|
-| PRD 快速清單 / 完整模板 | `sdd/references/requirements.md` / `prd/references/template_comprehensive.md` |
-| SA 快速清單 / 完整模板 | `sdd/references/design.md` / `sa/references/system_design_doc.md` |
-| 實作階段指南 | `sdd/references/tasks.md` |
+| PRD 撰寫指引 / 完整模板 | `prd` skill / `.agent/skills/prd/references/template_comprehensive.md` |
+| SA 撰寫指引 / 完整模板 | `sa` skill / `.agent/skills/sa/references/system_design_doc.md` |
