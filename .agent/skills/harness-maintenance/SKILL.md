@@ -51,7 +51,7 @@ Harness（agent 設定檔與知識庫）不維護就會腐爛：檔案改名了�
 
 判例：2026-07 刪除 `ui-ux-pro-max`（560KB 通用 CSV 資料庫、需 Python 執行環境）；2026-07 依 Claude 5 context engineering 原則再刪 7 個通用知識傾印型 skill（refactoring / image-master / web-design-guidelines / commit-message-helper / cleanup-merged-branches / release-notes / skill-creator）——內容模型原生就會，專案特定的零星事實已內聯回 CLAUDE.md / AGENTS.md / 對應 workflow。
 
-新 skill 一律放 `.agent/skills/<name>/`（symlink 自動讓 Claude/Gemini 同步看到），frontmatter 需含 `name`（與目錄同名）與 `description`（含觸發關鍵字——觸發靠 description，不另設對照表），並在 `AGENTS.md` Skills 表格加一列。刪除 skill 時反向清理 `AGENTS.md`，並全 repo grep 殘留引用（含 `docs/wiki/`、`.github/i18n/`、`.agent/workflows/`）。
+新 skill 一律放 `.agent/skills/<name>/`（symlink 自動讓 Claude/Gemini 同步看到），frontmatter 需含 `name`（與目錄同名）與 `description`（含觸發關鍵字——觸發靠 description，不另設對照表），並在 `AGENTS.md` Skills 表格加一列。刪除 skill 時反向清理 `AGENTS.md`，並**全 repo** grep 殘留引用——勿用列舉目錄縮小範圍：歷史 spec（`docs/specs/`）與多語文件（`.github/i18n/`）最容易漏（判例：PR #207 首輪清理即漏掉 `docs/specs/` 內一處 `image-master` 引用）。
 
 ## GitHub Wiki 維護
 

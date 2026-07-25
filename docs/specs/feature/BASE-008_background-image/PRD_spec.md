@@ -84,5 +84,5 @@
 ---
 
 ## 5. Notes
-- 參考 `image-master` skill，使用 Canvas 或 `createImageBitmap` 進行前端壓縮。
+- 使用 Canvas 或 `createImageBitmap` 進行前端壓縮（實作落地於 `modules/utils/imageUtils.js`）。
 - 為了確保文字可讀性，背景圖層 (z-index: -1) 應位於內容圖層之下，且內容容器背景色需調整為半透明 (`rgba(..., 0.8)`)。
