@@ -392,6 +392,7 @@
         <a href="#spotlight" class="toc-link" data-i18n="guide_toc_spotlight">Spotlight 搜尋</a>
         <a href="#reading-list" class="toc-link" data-i18n="guide_toc_reading">閱讀清單</a>
         <a href="#rss" class="toc-link" data-i18n="guide_toc_rss">RSS 訂閱</a>
+        <a href="#newswire" class="toc-link" data-i18n="guide_toc_newswire">財經快訊</a>
         <a href="#ai-grouping" class="toc-link" data-i18n="guide_toc_ai">AI 智慧整理</a>
         <a href="#ai-hover" class="toc-link" data-i18n="guide_toc_ai_hover">Hover 智慧摘要</a>
         <a href="#customization" class="toc-link" data-i18n="guide_toc_theme">客製化</a>
@@ -639,6 +640,69 @@
                     <li data-i18n="guide_rss_li4"><strong>智慧去重</strong>：使用 hash 比對機制，確保同一篇文章不會重複加入閱讀清單。</li>
                     <li data-i18n="guide_rss_li5"><strong>手動抓取</strong>：支援立即觸發抓取，不必等待排程。</li>
                 </ul>
+            </div>
+        </section>
+
+        <hr class="guide-divider">
+
+        <!-- 9.5 Newswire -->
+        <section class="guide-section" id="newswire">
+            <h2 class="guide-section-title">
+                <i data-lucide="radio" class="section-icon purple"></i>
+                <span data-i18n="guide_news_title">財經快訊</span>
+            </h2>
+            <p data-i18n="guide_news_desc">RSS 適合慢讀，快訊則是為了「馬上知道」。側邊欄的快訊區塊會把多個財經新聞來源即時串接到同一條時間軸上，重要消息還能跳系統通知——不必再開一堆分頁盯盤。所有來源預設關閉，由你自行開啟。</p>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_news_sources_title">內建來源</h4>
+                <ul>
+                    <li data-i18n="guide_news_src_li1"><strong>Tree of Alpha</strong>：免費且免申請金鑰，開啟即可使用，適合先試試看快訊長什麼樣子。</li>
+                    <li data-i18n="guide_news_src_li2"><strong>FinancialJuice</strong>：需要在官方網站申請 API 金鑰。</li>
+                    <li data-i18n="guide_news_src_li3"><strong>Alpaca News</strong>：需要 Alpaca 帳號的 Key ID 與 Secret。</li>
+                    <li data-i18n="guide_news_src_li4"><strong>金十數據</strong>：走官方 WebSocket，需要金鑰；可自選要接收的快訊分類。</li>
+                </ul>
+                <p data-i18n="guide_news_sources_note">每張來源卡片都附有申請金鑰的引導連結。金鑰只會存在你自己的裝置上（<code>chrome.storage.local</code>）。</p>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_news_tg_title">Telegram 頻道</h4>
+                <p data-i18n="guide_news_tg_desc">許多第一手財經消息會比其他管道更早出現在 Telegram 公開頻道。你可以把任意公開頻道加進快訊來源。</p>
+                <ol>
+                    <li data-i18n="guide_news_tg_step1">前往 <a href="https://my.telegram.org" target="_blank" rel="noopener">my.telegram.org</a> 申請你自己的 <code>api_id</code> 與 <code>api_hash</code>。</li>
+                    <li data-i18n="guide_news_tg_step2">在設定頁的 Telegram 卡片填入上述兩項與手機號碼，依序輸入簡訊/App 收到的驗證碼，若帳號有兩步驟驗證則再輸入密碼。</li>
+                    <li data-i18n="guide_news_tg_step3">登入後可從<strong>策展清單</strong>一鍵加入常用頻道，或自行輸入頻道代號（@handle）。</li>
+                    <li data-i18n="guide_news_tg_step4">加入前系統會顯示該頻道的真實名稱與訂閱數供你確認，避免加到仿冒頻道。</li>
+                </ol>
+            </div>
+
+            <div class="guide-callout">
+                <i data-lucide="shield-alert"></i>
+                <p data-i18n="guide_news_tg_warning"><strong>請務必先了解風險：</strong>Telegram 登入產生的 session 等同於<strong>完整帳號存取權</strong>（可讀取你所有對話、以你的身分發訊），比一般 API 金鑰敏感得多。強烈建議使用<strong>小號</strong>、不要在公用電腦上登入。session 預設只存在本機；設定頁提供「登出並撤銷」可讓遠端 session 立即失效。</p>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_news_rules_title">關鍵字規則與通知</h4>
+                <ul>
+                    <li data-i18n="guide_news_rules_li1"><strong>P0（紅色）</strong>：你最在意的關鍵字，命中時整列高亮，並發送 Chrome 系統通知，點擊直達原文。</li>
+                    <li data-i18n="guide_news_rules_li2"><strong>P1（藍色）</strong>：次要關注的關鍵字，只做視覺高亮、不發通知。</li>
+                    <li data-i18n="guide_news_rules_li3"><strong>靜音</strong>：命中的訊息不會進入清單，用來過濾雜訊。</li>
+                    <li data-i18n="guide_news_rules_li4"><strong>通知開關</strong>：不想被打擾時，可在設定頁單獨關閉 P0 系統通知。</li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h4 data-i18n="guide_news_ops_title">日常操作</h4>
+                <ul>
+                    <li data-i18n="guide_news_ops_li1"><strong>點擊開原文</strong>：點擊快訊會開啟新分頁，該列隨即變灰表示已讀，重開側邊欄仍會記得。</li>
+                    <li data-i18n="guide_news_ops_li2"><strong>暫停／繼續</strong>：需要專心時可暫停推送，恢復後會一次補上暫停期間的訊息。</li>
+                    <li data-i18n="guide_news_ops_li3"><strong>未讀計數</strong>：捲回列表頂端或點擊徽章即可歸零。</li>
+                    <li data-i18n="guide_news_ops_li4"><strong>搜尋與清除</strong>：側邊欄搜尋框可直接過濾快訊；一鍵清除會清空整條時間軸。</li>
+                </ul>
+            </div>
+
+            <div class="guide-callout green">
+                <i data-lucide="cloud"></i>
+                <p data-i18n="guide_news_sync">連結 Google 雲端硬碟後，快訊的來源開關、關鍵字規則與 Telegram 訂閱頻道清單會跨裝置同步。<strong>API 金鑰與 Telegram session 另有獨立的同步開關，預設關閉</strong>——只有你主動開啟，它們才會隨其他設定進入你自己的 Drive 私有資料夾。</p>
             </div>
         </section>
 
