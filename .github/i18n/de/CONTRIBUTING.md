@@ -85,7 +85,6 @@ Sobald die Konzepte stehen, geht es an das Programmieren.
 ## 📝 Styleguides
 
 *   **Commit-Nachrichten**: Folgen Sie den Conventional Commits (`feat`, `fix`, `docs`, `refactor`...).
-    *   Sie können den Skill `commit-message-helper` in diesem Projekt verwenden.
 *   **Sprache**: Projektdokumentation und Kommunikation können in Ihrer Muttersprache erfolgen, Code-Kommentare und Variablen müssen jedoch in Englisch verfasst sein.
 *   **Code-Stil**: Achten Sie auf Konsistenz und orientieren Sie sich am bestehenden Code-Stil.
 

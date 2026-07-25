@@ -23,7 +23,7 @@ Spec 位置：`docs/specs/{feature|fix}/{ISSUE-n|PR-n|BASE-n}_{kebab-desc}/`。
 | Merge 策略 | **Squash merge**；合併後特性分支即可刪除 |
 | 程式碼註解 | 英文 |
 
-⚠️ 因為採 squash merge，`git branch --merged` 永遠偵測不到已合併分支——清理分支請以 GitHub PR 的 merged 狀態為準（見 `.agent/skills/cleanup-merged-branches/`）。
+⚠️ 因為採 squash merge，`git branch --merged` 永遠偵測不到已合併分支——清理分支請以 GitHub PR 的 merged 狀態為準（完整 SOP 見 `.agent/workflows/cleanup-branches.md`）。
 
 ## 建置與發布
 

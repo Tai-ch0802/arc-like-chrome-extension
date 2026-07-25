@@ -117,25 +117,7 @@ test('sidepanel renders tab list', async () => {
 });
 ```
 
-### 4. 測試 Popup
-
-```javascript
-test('popup renders correctly', async () => {
-  // 透過 Service Worker 開啟 Popup
-  await worker.evaluate('chrome.action.openPopup();');
-
-  const popupTarget = await browser.waitForTarget(
-    target => target.type() === 'page' && target.url().endsWith('popup.html')
-  );
-  const popup = await popupTarget.asPage();
-
-  // 互動測試
-  await popup.click('#some-button');
-  await popup.waitForSelector('#result');
-});
-```
-
-### 5. 測試 Service Worker 終止
+### 4. 測試 Service Worker 終止
 
 ```javascript
 /**

@@ -15,7 +15,9 @@ Harness（agent 設定檔與知識庫）不維護就會腐爛：檔案改名了�
 | SDD 流程細節 | `.agent/skills/sdd/SKILL.md` | `RULE_007`、`.agent/workflows/sdd-process.md`、`AGENTS.md` |
 | E2E 測試模式 | `.agent/skills/puppeteer-test/SKILL.md` | `.agent/workflows/puppeteer-test.md` |
 | CI 測試穩定性 8 條方針 | `.agent/workflows/review-pr.md` | `code-review` skill（節錄） |
-| Commit / PR / Release 規範 | 各對應 skill | `RULE_004`、`CLAUDE.md` §1 |
+| Commit / Release 規範 | `RULE_004_COMMIT_AND_RELEASE.md` | `CLAUDE.md`、`AGENTS.md` 語言表 |
+| PR 規範 | `pull-request` skill、`RULE_006` | `CLAUDE.md` |
+| Release Note 產生流程 | `.agent/workflows/create-release-note.md`（含雙語模板） | `CLAUDE.md` |
 | 建置指令 | `Makefile`（程式即文件） | `RULE_003`、`AGENTS.md` Quick Start |
 | 人類導向專案文件 | `docs/wiki/`（經 Action 同步至 GitHub Wiki） | — |
 
@@ -32,7 +34,7 @@ Harness（agent 設定檔與知識庫）不維護就會腐爛：檔案改名了�
      | sort -u | while read f; do [ -e "$f" ] || echo "MISSING: $f"; done
    ```
 2. **指令正確性**：文件中的 `npm run *` 是否存在於 `package.json` scripts？`make` target 是否存在於 `Makefile`？
-3. **skill description 誠實性**：每個 SKILL.md 的 description 宣稱的檔案/腳本是否存在、觸發關鍵字清單是否與 `CLAUDE.md` §0 對齊。
+3. **skill description 誠實性**：每個 SKILL.md 的 description 宣稱的檔案/腳本是否存在、是否含清楚的觸發關鍵字（skill 觸發靠 description 本身，不另設對照表）。
 4. **副本一致性**：對照上方 SSOT 表，抽查各副本摘要與 SSOT 是否矛盾。
 5. **修正原則**：發現 drift 時**優先刪重複、改指標**，而不是把同一份細節再抄一遍。
 
@@ -42,13 +44,14 @@ Harness（agent 設定檔與知識庫）不維護就會腐爛：檔案改名了�
 - 內容是**專案特定**的（本 repo 的檔案、指令、歷史事故、慣例），模型自身知識給不出來；
 - 或是**判斷紀律**（步驟順序、檢查清單），弱模型照走就能達到強模型的決策品質。
 
-**應該刪除**的 skill 特徵（判例：2026-07 刪除 `ui-ux-pro-max`，560KB 通用 CSV 資料庫、13 種與本專案無關的 tech stack、需 Python 執行環境）：
+**應該刪除**的 skill 特徵：
 - 通用知識傾印（模型本來就會），且與專案技術棧大面積無關；
 - 依賴專案不保證存在的執行環境；
 - description 宣稱的能力與內容不符。
 
-新 skill 一律放 `.agent/skills/<name>/`（symlink 自動讓 Claude/Gemini 同步看到），並同步：
-1. `AGENTS.md` Skills 表格加一列；2. `CLAUDE.md` §0 觸發關鍵字表加一行；3. 用 `python3 .agent/skills/skill-creator/scripts/quick_validate.py` 驗證結構。刪除 skill 時反向清理同三處。
+判例：2026-07 刪除 `ui-ux-pro-max`（560KB 通用 CSV 資料庫、需 Python 執行環境）；2026-07 依 Claude 5 context engineering 原則再刪 7 個通用知識傾印型 skill（refactoring / image-master / web-design-guidelines / commit-message-helper / cleanup-merged-branches / release-notes / skill-creator）——內容模型原生就會，專案特定的零星事實已內聯回 CLAUDE.md / AGENTS.md / 對應 workflow。
+
+新 skill 一律放 `.agent/skills/<name>/`（symlink 自動讓 Claude/Gemini 同步看到），frontmatter 需含 `name`（與目錄同名）與 `description`（含觸發關鍵字——觸發靠 description，不另設對照表），並在 `AGENTS.md` Skills 表格加一列。刪除 skill 時反向清理 `AGENTS.md`，並**全 repo** grep 殘留引用——勿用列舉目錄縮小範圍：歷史 spec（`docs/specs/`）與多語文件（`.github/i18n/`）最容易漏（判例：PR #207 首輪清理即漏掉 `docs/specs/` 內一處 `image-master` 引用）。
 
 ## GitHub Wiki 維護
 

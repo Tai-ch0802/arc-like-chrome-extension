@@ -85,7 +85,6 @@ Assim que as especificações forem finalizadas, é hora de codificar com alegri
 ## 📝 Guias de Estilo
 
 *   **Mensagens de Commit**: Siga os Conventional Commits (`feat`, `fix`, `docs`, `refactor`...).
-    *   Você pode usar a skill `commit-message-helper` neste projeto.
 *   **Idioma**: A documentação do projeto e a comunicação podem usar seu idioma nativo, mas os comentários de código e variáveis devem usar o inglês.
 *   **Estilo de Código**: Mantenha a consistência, consulte o estilo de código existente.
 
