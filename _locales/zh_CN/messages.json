@@ -1573,6 +1573,6 @@
     "message": "覆盖失败"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "无法覆盖此工作区，数据未更改。"
+    "message": "覆盖未完成。当前窗口可能已绑定到该工作区，但标签页配置未必已保存——请确认该工作区的内容。"
   }
 }

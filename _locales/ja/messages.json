@@ -1573,6 +1573,6 @@
     "message": "上書きに失敗しました"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "この Workspace を上書きできませんでした。データは変更されていません。"
+    "message": "上書きは完了しませんでした。このウィンドウはすでにこの Workspace に紐づいている可能性がありますが、タブ構成は保存されていないことがあります。Workspace の内容をご確認ください。"
   }
 }

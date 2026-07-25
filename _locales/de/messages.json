@@ -1573,6 +1573,6 @@
     "message": "Überschreiben fehlgeschlagen"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "Dieser Workspace konnte nicht überschrieben werden. Es wurde nichts geändert."
+    "message": "Das Überschreiben wurde nicht abgeschlossen. Dieses Fenster ist möglicherweise bereits an den Workspace gebunden, die Tab-Anordnung wurde aber eventuell nicht gespeichert — bitte prüfen Sie den Inhalt des Workspace."
   }
 }

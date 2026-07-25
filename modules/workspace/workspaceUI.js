@@ -118,9 +118,6 @@ async function performSwitch(targetId) {
  * to create a new one from the current window's tabs.
  */
 function openManageDialog() {
-    const all = wsManager.getAllWorkspaces();
-    const activeId = wsManager.getActiveWorkspaceId(currentWindowId);
-
     const container = document.createElement('div');
     container.className = 'workspace-manage';
 
@@ -130,16 +127,7 @@ function openManageDialog() {
 
     const list = document.createElement('div');
     list.className = 'workspace-manage__list';
-    if (all.length === 0) {
-        const empty = document.createElement('div');
-        empty.className = 'workspace-manage__empty';
-        empty.textContent = api.getMessage('workspaceManageEmpty') || 'No workspaces yet.';
-        list.appendChild(empty);
-    } else {
-        for (const ws of all) {
-            list.appendChild(buildManageRow(ws, ws.id === activeId, list, dialogRef));
-        }
-    }
+    renderRows(list, dialogRef);
     container.appendChild(list);
 
     const createBtn = document.createElement('button');
@@ -148,10 +136,9 @@ function openManageDialog() {
     createBtn.addEventListener('click', async () => {
         const ws = await handleCreateFromCurrent();
         if (ws) {
-            // Replace the "empty" placeholder if present, then append new row.
-            const empty = list.querySelector('.workspace-manage__empty');
-            if (empty) empty.remove();
-            list.appendChild(buildManageRow(ws, true, list, dialogRef));
+            // 建立後會 setActiveWorkspace 綁定新工作區,原本 active 的那一列因此
+            // 不再 active——必須整批重繪,只 append 新列會讓舊列殘留 .active。
+            renderRows(list, dialogRef);
             renderSwitchButton();
         }
     });
@@ -165,6 +152,31 @@ function openManageDialog() {
             if (closeBtn) dialogRef.close = () => closeBtn.click();
         },
     });
+}
+
+/**
+ * 重繪整個工作區列表。
+ *
+ * 任何會改變「哪個工作區綁定目前視窗」的操作(覆蓋、建立)都必須整批重繪,不能
+ * 只 patch 自己那一列:setActiveWorkspace 具單一綁定不變式——它在綁定新工作區的
+ * 同時會解除**其他列**對目前視窗的綁定。只更新單列會讓畫面上的 .active 標記,
+ * 以及「覆蓋按鈕依 !isActive 才 render」的條件,與 storage 的真實狀態不一致,
+ * 直到使用者關閉再重開 dialog 為止。
+ */
+function renderRows(listEl, dialogRef) {
+    listEl.textContent = '';
+    const all = wsManager.getAllWorkspaces();
+    const activeId = wsManager.getActiveWorkspaceId(currentWindowId);
+    if (all.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'workspace-manage__empty';
+        empty.textContent = api.getMessage('workspaceManageEmpty') || 'No workspaces yet.';
+        listEl.appendChild(empty);
+        return;
+    }
+    for (const ws of all) {
+        listEl.appendChild(buildManageRow(ws, ws.id === activeId, listEl, dialogRef));
+    }
 }
 
 function buildManageRow(ws, isActive, listEl, dialogRef) {
@@ -218,7 +230,7 @@ function buildManageRow(ws, isActive, listEl, dialogRef) {
         overwriteBtn.title = api.getMessage('workspaceOverwrite') || 'Overwrite with current window';
         overwriteBtn.setAttribute('aria-label', overwriteBtn.title);
         overwriteBtn.innerHTML = renderIcon('download', { size: 16 });
-        overwriteBtn.addEventListener('click', () => handleOverwrite(ws, updateLabel));
+        overwriteBtn.addEventListener('click', () => handleOverwrite(ws, listEl, dialogRef));
         row.appendChild(overwriteBtn);
     }
 
@@ -284,9 +296,10 @@ function buildManageRow(ws, isActive, listEl, dialogRef) {
  * 靜默 return 既有 ws,無法從回傳值分辨是否真的寫入。預算可(a)給確認框準確的
  * 分頁數、(b)攔下全 chrome:// 視窗這種會靜默無效的情況。
  * @param {object} ws 目標工作區
- * @param {Function} updateLabel 覆蓋成功後刷新該列標籤
+ * @param {HTMLElement} listEl 工作區列表容器(成功後整批重繪,見 renderRows)
+ * @param {object} dialogRef 本 dialog 的關閉控制(重繪時傳給新列)
  */
-async function handleOverwrite(ws, updateLabel) {
+async function handleOverwrite(ws, listEl, dialogRef) {
     let preview = [];
     try {
         const tabs = await chrome.tabs.query({ windowId: currentWindowId });
@@ -323,16 +336,24 @@ async function handleOverwrite(ws, updateLabel) {
         // 綁定先行(見上方註解);同時解除其他視窗對此工作區的綁定(單一綁定不變式)。
         await wsManager.setActiveWorkspace(currentWindowId, ws.id);
         await wsManager.snapshotIntoWorkspace(ws.id, currentWindowId);
-        // in-place 更新供 closure 使用的鏡像,讓該列標籤即時反映新分頁數。
-        ws.tabSnapshot = preview;
-        if (updateLabel) updateLabel();
+        // 整批重繪:綁定已轉移,本列與「原本綁定目前視窗的那一列」的 .active 標記
+        // 與覆蓋按鈕顯示條件都變了(見 renderRows)。manager 的 in-memory mirror 於
+        // setActiveWorkspace/writeSnapRecord 內已同步,重繪即可取到正確狀態。
+        renderRows(listEl, dialogRef);
         renderSwitchButton();
     } catch (err) {
         console.error('[workspace] overwrite failed:', err);
+        // 刻意不宣稱「什麼都沒改變」:綁定與快照是兩個獨立的寫入,若第二步失敗,
+        // 第一步的綁定轉移已經生效(且其他視窗對此工作區的綁定已被解除,無法單純
+        // 回滾)。這裡誠實描述不確定狀態,而非給出可能與事實相反的保證。
+        // (實務上 setStorage 不 reject——見 apiManager——故此分支近乎不可觸發,
+        // 屬防禦性程式碼;但訊息措辭不應與「先綁定再快照」的順序邏輯矛盾。)
+        renderRows(listEl, dialogRef);
+        renderSwitchButton();
         await modal.showConfirm({
             title: api.getMessage('workspaceOverwriteFailedTitle') || 'Overwrite failed',
             message: api.getMessage('workspaceOverwriteFailedMessage')
-                || 'Could not overwrite this workspace. Nothing was changed.',
+                || 'The overwrite did not complete. This window may already be bound to the workspace, but its tab layout might not have been saved — please check the workspace contents.',
             confirmButtonText: api.getMessage('closeButton') || 'OK',
         });
     }

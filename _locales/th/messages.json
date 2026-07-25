@@ -1573,6 +1573,6 @@
     "message": "เขียนทับล้มเหลว"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "ไม่สามารถเขียนทับ Workspace นี้ได้ ไม่มีการเปลี่ยนแปลงใด ๆ"
+    "message": "การเขียนทับทำไม่สำเร็จ window นี้อาจถูกผูกกับ Workspace แล้ว แต่การตั้งค่า tabs อาจยังไม่ถูกบันทึก โปรดตรวจสอบเนื้อหาของ Workspace นั้น"
   }
 }

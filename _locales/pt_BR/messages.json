@@ -1573,6 +1573,6 @@
     "message": "Falha ao sobrescrever"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "Não foi possível sobrescrever este Workspace. Nada foi alterado."
+    "message": "A substituição não foi concluída. Esta janela talvez já esteja vinculada ao Workspace, mas o layout das abas pode não ter sido salvo — verifique o conteúdo do Workspace."
   }
 }

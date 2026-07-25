@@ -1204,7 +1204,7 @@
     "message": "Échec de l'écrasement"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "Impossible d'écraser ce Workspace. Rien n'a été modifié."
+    "message": "L'écrasement ne s'est pas terminé. Cette fenêtre est peut-être déjà liée au Workspace, mais sa configuration d'onglets n'a pas forcément été enregistrée — veuillez vérifier le contenu du Workspace."
   },
   "workspaceRename": {
     "message": "Renommer"

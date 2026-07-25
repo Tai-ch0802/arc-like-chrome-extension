@@ -1573,6 +1573,6 @@
     "message": "覆蓋失敗"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "無法覆蓋此工作區，資料未變更。"
+    "message": "覆蓋未完成。目前視窗可能已綁定至該工作區，但分頁配置未必已儲存——請確認該工作區的內容。"
   }
 }

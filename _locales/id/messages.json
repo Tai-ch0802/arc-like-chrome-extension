@@ -1204,7 +1204,7 @@
     "message": "Gagal menimpa"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "Tidak dapat menimpa Workspace ini. Tidak ada yang diubah."
+    "message": "Penimpaan tidak selesai. Window ini mungkin sudah terikat ke Workspace tersebut, tetapi layout tab-nya belum tentu tersimpan — silakan periksa isi Workspace tersebut."
   },
   "workspaceRename": {
     "message": "Ubah nama"

@@ -1573,6 +1573,6 @@
     "message": "Ghi đè thất bại"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "Không thể ghi đè Workspace này. Không có gì bị thay đổi."
+    "message": "Việc ghi đè chưa hoàn tất. Window này có thể đã được gắn với Workspace, nhưng bố cục tab có thể chưa được lưu — vui lòng kiểm tra nội dung của Workspace."
   }
 }

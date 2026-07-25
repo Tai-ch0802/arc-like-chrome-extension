@@ -1576,6 +1576,6 @@
     "message": "Overwrite failed"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "Could not overwrite this workspace. Nothing was changed."
+    "message": "The overwrite did not complete. This window may already be bound to the workspace, but its tab layout might not have been saved — please check the workspace contents."
   }
 }

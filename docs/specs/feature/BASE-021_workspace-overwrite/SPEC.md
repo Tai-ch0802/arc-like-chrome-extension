@@ -47,6 +47,28 @@ await wsManager.snapshotIntoWorkspace(ws.id, currentWindowId); // 再快照
 | 舊視窗被靜默解綁（單一綁定不變式的副作用） | 確認框文案明講「若有其他視窗綁定此工作區，該視窗會被解除綁定」 |
 | 全 `chrome://` 視窗 → 靜默無效 | 前置預算攔截，顯示「沒有可儲存的分頁」 |
 | 覆蓋被 Drive 回捲 | 綁定先行（見上）；已同步的工作區另有 `.conflict-*.json` 作為最後保險 |
+| **dialog 開著時畫面與 storage 不一致**（PR #206 review） | 覆蓋成功後**整批重繪**列表，見下 |
+
+### 為什麼必須整批重繪，而非只更新自己那列（PR #206 review 修正）
+
+`setActiveWorkspace` 具單一綁定不變式：綁定新工作區的同時，會**解除其他列**對目前視窗的綁定。若只 patch 自己那一列：
+
+1. 本列的 `switchEl` 不會補上 `.active`，覆蓋按鈕（依 `!isActive` 才 render）也還留著
+2. **原本綁定目前視窗的那一列已被解綁，卻仍顯示 `.active`、且不出現覆蓋按鈕**（它建立時 `isActive` 為 true）
+
+只要 dialog 不關，畫面就與 storage 不一致。故抽出 `renderRows(listEl, dialogRef)`，於覆蓋成功後整批重繪。
+
+**同一根因也適用「建立工作區」**：`handleCreateFromCurrent` 同樣呼叫 `setActiveWorkspace`，原本只 append 新列會讓舊的 active 列殘留標記——一併改用 `renderRows`。
+
+`rename`/`delete` 不牽動綁定，維持原本的單列處理。
+
+### 失敗訊息不得宣稱「什麼都沒改變」（PR #206 review 修正）
+
+覆蓋由兩個獨立寫入組成。若 `setActiveWorkspace` 成功而 `snapshotIntoWorkspace` 失敗，綁定**已經轉移**，此時顯示「Nothing was changed」與事實相反。
+
+採「誠實描述不確定狀態」而非「失敗時復原綁定」，理由：`setActiveWorkspace` 已解除其他視窗對此工作區的綁定，那部分無法單純回滾；且復原本身也可能失敗，會讓狀態更難推斷。訊息改為「視窗可能已綁定，但分頁配置未必已儲存，請確認工作區內容」，並在失敗路徑一併重繪讓畫面對齊真實狀態。
+
+（實務上 `apiManager` 的 `setStorage` 只 `resolve`、不檢查 `lastError`，故此 catch 分支近乎不可觸發，屬防禦性程式碼；但措辭不應與「先綁定再快照」的順序邏輯矛盾。）
 
 ### 排除的替代方案
 
@@ -83,6 +105,8 @@ await wsManager.snapshotIntoWorkspace(ws.id, currentWindowId); // 再快照
 - [ ] 管理面板中，**非**目前視窗所綁定的工作區列會出現覆蓋按鈕；目前視窗已綁定的那一列不出現
 - [ ] 點擊後顯示 destructive 確認框，內容包含工作區名稱、舊分頁數、新分頁數，以及「其他視窗會被解除綁定」的提示
 - [ ] 確認後：該工作區快照變成目前視窗的分頁、目前視窗綁定到該工作區、該列標籤的分頁數即時更新
+- [ ] 確認後（**dialog 不關閉**）：該列出現 `.active` 且覆蓋按鈕消失；原本綁定目前視窗的那一列失去 `.active` 且出現覆蓋按鈕
+- [ ] 建立新工作區後（dialog 不關閉）：原本 active 的列同樣失去 `.active`
 - [ ] 取消則完全不變更
 - [ ] 在只有 `chrome://newtab` 的視窗執行 → 顯示「沒有可儲存的分頁」，不做任何寫入
 - [ ] 覆蓋後 `isWorkspaceBound(id)` 為 true（Drive 回捲保護生效）

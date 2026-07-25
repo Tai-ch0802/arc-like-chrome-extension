@@ -1573,6 +1573,6 @@
     "message": "Error al sobrescribir"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "No se pudo sobrescribir este Workspace. No se modificó nada."
+    "message": "La sobrescritura no se completó. Puede que esta ventana ya esté vinculada al Workspace, pero quizá su configuración de pestañas no se haya guardado: revisa el contenido del Workspace."
   }
 }

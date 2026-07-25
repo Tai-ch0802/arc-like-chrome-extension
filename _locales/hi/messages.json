@@ -1573,6 +1573,6 @@
     "message": "Overwrite fail"
   },
   "workspaceOverwriteFailedMessage": {
-    "message": "इस Workspace को overwrite नहीं किया जा सका। कुछ भी नहीं बदला।"
+    "message": "Overwrite पूरा नहीं हुआ। यह window शायद पहले से ही इस Workspace से bound हो चुका है, लेकिन उसका tab layout save हुआ हो यह ज़रूरी नहीं — कृपया Workspace की सामग्री जाँच लें।"
   }
 }
