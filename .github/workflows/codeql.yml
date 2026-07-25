@@ -47,8 +47,13 @@ jobs:
           build-mode: none
         - language: javascript-typescript
           build-mode: none
-        - language: python
-          build-mode: none
+        # NOTE: 'python' was removed. This repository ships no Python source that
+        # CodeQL can see — the only .py files live under .agent/skills/ (agent
+        # tooling, and CodeQL skips dot-directories by default), so the Python
+        # analyzer always reported "Processed 0 modules". GitHub now treats
+        # "no source code seen" as a fatal error (exit 32), which broke every PR
+        # and every push to main. Re-add this entry if real Python code is ever
+        # added outside a dot-directory.
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
