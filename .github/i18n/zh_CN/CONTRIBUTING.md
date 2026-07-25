@@ -85,7 +85,6 @@
 ## 📝 样式指南
 
 *   **Commit Messages**: 遵循 Conventional Commits (`feat`, `fix`, `docs`, `refactor`...)。
-    *   可以采用本项目头里的 `commit-message-helper` SKILL。
 *   **Language**: 项目文档与沟通可采用您的原生语言，但代码注释与变量应使用英文。
 *   **Code Style**: 保持一致性，参考现有代码风格。
 

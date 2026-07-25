@@ -19,13 +19,15 @@
 
 ## Skills（技能庫）
 
-Skills 是可重用的操作知識，agent 依觸發關鍵字自動載入。分兩類：
+Skills 是可重用的操作知識，agent 依 SKILL.md 的 description 自動載入。分兩類：
 
 **流程類**（判斷紀律，讓任何等級的模型照走都有一致品質）：
-`sdd`（動工前分級）、`debugging`（除錯紀律 + 高頻根因表）、`verification`（交付前驗證火力表）、`code-review`、`pull-request`、`commit-message-helper`、`release-notes`、`cleanup-merged-branches`、`harness-maintenance`（本制度的自我維護 SOP）
+`sdd`（動工前分級）、`debugging`（除錯紀律 + 高頻根因表）、`verification`（交付前驗證火力表）、`code-review`、`pull-request`、`harness-maintenance`（本制度的自我維護 SOP）
 
 **領域知識類**（專案特定 know-how）：
-`prd` / `sa`（T2 spec 撰寫）、`puppeteer-test`（E2E 模式）、`refactoring`、`update-multilingual-docs`（14 語同步）、`image-master`（WebP/WCAG）、`web-design-guidelines`（sidepanel UI 審查）、`skill-creator`（meta）
+`prd` / `sa`（T2 spec 撰寫）、`puppeteer-test`（E2E 模式）、`update-multilingual-docs`（14 語同步）
+
+> Skill 只收「專案特定事實／歷史事故／判斷紀律」——通用知識傾印型 skill（重構教材、影像知識、git/commit 通用規範等）已依 Claude 5 context engineering 原則移除，模型原生能力即可勝任；判準見 `harness-maintenance` skill。
 
 ### 單一事實來源（SSOT）原則
 

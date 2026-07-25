@@ -6,7 +6,6 @@
 
 - **PRD Skill**: [`.agent/skills/prd/SKILL.md`](../../prd/SKILL.md)
 - **SA Skill**: [`.agent/skills/sa/SKILL.md`](../../sa/SKILL.md)
-- **Commit Helper**: [`.agent/skills/commit-message-helper/SKILL.md`](../../commit-message-helper/SKILL.md)
 - **PR Skill**: [`.agent/skills/pull-request/SKILL.md`](../../pull-request/SKILL.md)
 
 ---

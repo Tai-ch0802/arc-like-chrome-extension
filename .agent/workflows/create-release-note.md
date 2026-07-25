@@ -56,11 +56,34 @@ Analyze the commit messages:
   3. If updates are made to the `web/` directory, commit them before generating the release note.
 
 ## 7. Generate RELEASE_NOTE.md
-Use the `release-notes` skill to:
-1. Categorize commits by type (`feat:` vs others).
-2. Format them in the bilingual template.
-3. Include contributor attributions with PR links where available.
-4. Write to `RELEASE_NOTE.md` in project root.
+1. Categorize commits: `feat:` → 新功能；`fix:` / `perf:` / `refactor:` / `style:` / `docs:` / `chore:` → 改善與錯誤修復（區塊結構沿用 `.github/release.yml`）。
+2. Include contributor attributions with PR links where available.
+3. Write to `RELEASE_NOTE.md` in project root, using this bilingual template (zh-TW first):
+
+```markdown
+# v{VERSION} Release Notes
+
+## 繁體中文 (Traditional Chinese)
+
+### ✨ 新功能 (New Features)
+- {description} (#{PR} by @{author})
+
+### 🚀 改善與錯誤修復 (Improvements & Bug Fixes)
+- {description} (#{PR} by @{author})
+
+### 👥 貢獻者 (Contributors)
+感謝以下貢獻者！
+- @{contributor}
+
+---
+
+## English
+
+### ✨ New Features
+### 🚀 Improvements & Bug Fixes
+### 👥 Contributors
+(same structure in English)
+```
 
 ## 8. Present to User
 Notify the user with:

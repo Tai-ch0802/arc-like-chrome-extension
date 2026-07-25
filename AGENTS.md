@@ -58,20 +58,13 @@ make clean
 | `verification` | 交付前驗證火力表與連動檢查清單 | 🔴 任何實作收尾、送 PR 前 |
 | `prd` | 產品需求文件撰寫指南（T2 Phase 1） | 撰寫 PRD_spec.md 時 |
 | `sa` | 系統分析文件撰寫指南（T2 Phase 2） | 撰寫 SA_spec.md 時 |
-| `commit-message-helper` | Conventional Commits 規範 | 撰寫 Commit Message 時 |
-| `pull-request` | PR 建立指南與模板 | 建立 Pull Request 時 |
-| `code-review` | 程式碼審查最佳實踐 | Review PR 時 |
-| `refactoring` | 重構技巧與程式碼異味辨識 | 程式碼改善時 |
-| `release-notes` | 雙語 Release Note 產生 | 發布版本時 |
-| `update-multilingual-docs` | 多語系文件更新 | 文件翻譯時 |
-| `puppeteer-test` | Puppeteer + Jest E2E 測試指南 | 撰寫 / 修 E2E 測試時 |
-| `cleanup-merged-branches` | 清理已合併的本地 / 遠端分支 | merge 後清理分支時 |
-| `image-master` | 影像格式 / WebP / 色彩 / WCAG 對比度 | 處理圖示 / 自訂背景圖 / Web Store 截圖時 |
-| `web-design-guidelines` | sidepanel UI 與無障礙審查 | 審查 UI 程式碼 / 檢查 accessibility 時 |
+| `pull-request` | PR 建立慣例（雙語描述、check-pr.sh、模板） | 建立 Pull Request 時 |
+| `code-review` | 本專案審查重點（lint-check.sh、E2E race condition 表） | Review PR 時 |
+| `update-multilingual-docs` | 多語系文件更新（14 語、symlink 結構） | 文件翻譯時 |
+| `puppeteer-test` | Puppeteer + Jest E2E 測試指南（setup.js helper、動態 extensionId） | 撰寫 / 修 E2E 測試時 |
 | `harness-maintenance` | Agent harness / 文件 / wiki 的維護 SOP | 更新 AGENTS.md、skills、wiki，或發現文件過時時 |
-| `skill-creator` | 撰寫新 skill 的 meta 指南 | 新增 / 更新 skill 時 |
 
-> 2026-07 起 `ui-ux-pro-max` 已移除（通用 CSV 資料庫與本專案技術棧無關；刪除判準見 `harness-maintenance` skill）。
+> Skill 只保留「專案特定事實／歷史事故／判斷紀律」；通用知識傾印型 skill 已依 Claude 5 context engineering 原則移除（2026-07 移除 `ui-ux-pro-max`、`refactoring`、`image-master`、`web-design-guidelines`、`commit-message-helper`、`cleanup-merged-branches`、`release-notes`、`skill-creator`——模型原生能力已涵蓋；刪除判準見 `harness-maintenance` skill）。
 
 ### 📝 Workflows (工作流程)
 位於 `.agent/workflows/`，定義標準化操作步驟。
@@ -83,9 +76,8 @@ make clean
 | `review-pr.md` | `/review-pr` | 審核 Pull Request（含 CI 測試穩定性 8 條方針） |
 | `create-release-note.md` | `/create-release-note` | 產生 Release Note |
 | `update-docs.md` | `/update-docs` | 更新多語系文件 |
-| `cleanup-branches.md` | `/cleanup-branches` | 清理已合併分支 |
+| `cleanup-branches.md` | `/cleanup-branches` | 清理已合併分支（squash merge 下 `--merged` 失效的完整 SOP） |
 | `puppeteer-test.md` | `/puppeteer-test` | 撰寫 E2E 測試流程 |
-| `create-skill.md` | `/create-skill` | 建立新 skill 的流程 |
 
 ### 📜 Rules (最高遵循方針)
 位於 `.agent/rules/`，**必須嚴格遵守**。
@@ -203,6 +195,10 @@ graph LR
 - 表單元素必須有關聯的 `<label>`
 - 維持清晰的鍵盤導航 (Focus states, Tab order)
 
+### Sidepanel Layout 約束
+- sidepanel 預設約 320px 寬、使用者可拖至約 700px：layout 不可假設 desktop 寬度，長文字用 ellipsis / `min-width: 0` 處理，避免水平 scroll
+- 文字與背景對比需符合 WCAG AA（4.5:1）；自訂主題經 `modules/utils/colorUtils.js` 檢查
+
 ### 效能考量
 - 避免在迴圈中進行 DOM 操作
 - 使用 DocumentFragment 批次更新；列表更新優先沿用既有 `reconcileDOM` 模式
@@ -251,4 +247,4 @@ Agent 可自動掃描 `#TODO` 註解並提出改善建議。
 
 ---
 
-*Last updated: 2026-07-03 (Harness 總盤點 — 目錄級 Navigator 指向 GEMINI.md key_files、新增 debugging/verification/harness-maintenance skills、移除 ui-ux-pro-max、Jules prompts 移至 .jules/README.md)*
+*Last updated: 2026-07-25 (依 Claude 5 context engineering 原則精簡 harness — 移除 7 個通用知識傾印型 skill、CLAUDE.md 瘦身、release note 模板內聯至 workflow)*

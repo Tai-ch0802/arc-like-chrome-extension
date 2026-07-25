@@ -85,7 +85,6 @@ Sau khi các đặc tả đã hoàn thiện, đây là lúc bắt đầu viết 
 ## 📝 Hướng dẫn phong cách
 
 *   **Commit Messages**: Tuân theo quy tắc Conventional Commits (`feat`, `fix`, `docs`, `refactor`...).
-    *   Bạn có thể sử dụng skill `commit-message-helper` trong dự án này.
 *   **Ngôn ngữ**: Tài liệu dự án và giao tiếp có thể sử dụng tiếng mẹ đẻ của bạn, nhưng chú thích mã nguồn và tên biến nên sử dụng tiếng Anh.
 *   **Phong cách viết mã (Code Style)**: Duy trì sự nhất quán, tham khảo phong cách viết mã hiện có của dự án.
 

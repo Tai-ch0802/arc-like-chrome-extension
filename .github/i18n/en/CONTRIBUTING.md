@@ -85,7 +85,6 @@ Once specs are finalized, it's happy coding time.
 ## 📝 Style Guides
 
 *   **Commit Messages**: Follow Conventional Commits (`feat`, `fix`, `docs`, `refactor`...).
-    *   You can use the `commit-message-helper` SKILL in this project.
 *   **Language**: Project documentation and communication can use your native language, but code comments and variables should use English.
 *   **Code Style**: Maintain consistency, refer to existing code style.
 

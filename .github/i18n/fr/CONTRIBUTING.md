@@ -85,7 +85,6 @@ Une fois les spécifications finalisées, c'est le moment de coder avec plaisir.
 ## 📝 Guides de style
 
 *   **Messages de commit** : Suivre les Conventional Commits (`feat`, `fix`, `docs`, `refactor`...).
-    *   Vous pouvez utiliser la skill `commit-message-helper` dans ce projet.
 *   **Langue** : La documentation du projet et la communication peuvent utiliser votre langue maternelle, mais les commentaires de code et les variables doivent utiliser l'anglais.
 *   **Style de code** : Maintenir la cohérence, se référer au style de code existant.
 

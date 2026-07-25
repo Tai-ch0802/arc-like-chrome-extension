@@ -85,7 +85,6 @@ Setelah spesifikasi selesai, saatnya melakukan Coding dengan gembira.
 ## 📝 Panduan Gaya
 
 *   **Pesan Commit**: Ikuti Conventional Commits (`feat`, `fix`, `docs`, `refactor`...).
-    *   Anda dapat menggunakan keahlian `commit-message-helper` dalam proyek ini.
 *   **Bahasa**: Dokumentasi dan komunikasi proyek dapat menggunakan bahasa asli Anda, tetapi komentar kode dan variabel harus menggunakan bahasa Inggris.
 *   **Gaya Kode**: Jaga konsistensi, mengacu pada gaya kode yang ada.
 
