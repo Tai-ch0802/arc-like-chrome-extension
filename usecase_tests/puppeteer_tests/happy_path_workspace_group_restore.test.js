@@ -248,10 +248,16 @@ describe('Happy Path: Arc-style switch opens/focuses workspace window', () => {
             windowIds.push(result.oldWindowId, result.newWindowId);
             workspaceId = result.wsId;
 
-            // 快照被新視窗的分頁取代(舊 URL 不再存在)。
-            expect(result.oldSnapshotUrls.some(u => u.includes('example.com'))).toBe(true);
-            expect(result.newSnapshotUrls.some(u => u.includes('example.org'))).toBe(true);
-            expect(result.newSnapshotUrls.some(u => u.includes('example.com'))).toBe(false);
+            // 比對 hostname 全等而非子字串:子字串比對會被 CodeQL 的
+            // js/incomplete-url-substring-sanitization 標記(evil.com/example.com
+            // 之類也會通過),精確比對同時更嚴謹。
+            const hostsOf = (urls) => (urls || []).map((u) => {
+                try { return new URL(u).hostname; } catch { return ''; }
+            });
+            // 快照被新視窗的分頁取代(舊 host 不再存在)。
+            expect(hostsOf(result.oldSnapshotUrls)).toContain('example.com');
+            expect(hostsOf(result.newSnapshotUrls)).toContain('example.org');
+            expect(hostsOf(result.newSnapshotUrls)).not.toContain('example.com');
             expect(result.revAfter).toBeGreaterThan(1);
 
             // 綁定轉移到新視窗;舊視窗被解綁(單一綁定不變式)。
