@@ -210,6 +210,18 @@ function buildManageRow(ws, isActive, listEl, dialogRef) {
         row.appendChild(cloud);
     }
 
+    // 「以目前視窗覆蓋」:把此視窗的分頁配置寫進該工作區並接手綁定。只在該工作區
+    // 未綁定到本視窗時才有意義(已綁定者由背景 auto-snapshot 持續更新,不需手動)。
+    if (!isActive) {
+        const overwriteBtn = document.createElement('button');
+        overwriteBtn.className = 'workspace-manage__btn';
+        overwriteBtn.title = api.getMessage('workspaceOverwrite') || 'Overwrite with current window';
+        overwriteBtn.setAttribute('aria-label', overwriteBtn.title);
+        overwriteBtn.innerHTML = renderIcon('download', { size: 16 });
+        overwriteBtn.addEventListener('click', () => handleOverwrite(ws, updateLabel));
+        row.appendChild(overwriteBtn);
+    }
+
     const renameBtn = document.createElement('button');
     renameBtn.className = 'workspace-manage__btn';
     renameBtn.title = api.getMessage('workspaceRename') || 'Rename';
@@ -259,6 +271,71 @@ function buildManageRow(ws, isActive, listEl, dialogRef) {
     row.appendChild(deleteBtn);
 
     return row;
+}
+
+/**
+ * 以目前視窗的分頁配置覆蓋既有工作區,並讓本視窗接手該工作區的綁定。
+ *
+ * **順序不可調換**:必先 setActiveWorkspace 再 snapshotIntoWorkspace。若只寫快照而
+ * 未綁定,`isWorkspaceBound()` 為 false → 下次 Drive pull 時 keepLocalSnapshot 保護
+ * 不生效,遠端快照會把這次覆蓋整個蓋回去(見 background.js applyRemoteSnapshot dep)。
+ *
+ * 覆寫前先在 UI 端算一次快照:snapshotIntoWorkspace 對「空快照」與「內容相同」都
+ * 靜默 return 既有 ws,無法從回傳值分辨是否真的寫入。預算可(a)給確認框準確的
+ * 分頁數、(b)攔下全 chrome:// 視窗這種會靜默無效的情況。
+ * @param {object} ws 目標工作區
+ * @param {Function} updateLabel 覆蓋成功後刷新該列標籤
+ */
+async function handleOverwrite(ws, updateLabel) {
+    let preview = [];
+    try {
+        const tabs = await chrome.tabs.query({ windowId: currentWindowId });
+        preview = wsManager.buildSnapshotFromTabs(tabs, null);
+    } catch (err) {
+        console.warn('[workspace] overwrite preview failed:', err);
+    }
+
+    // 全 chrome://(或無可快照分頁):寫入會被 guard 擋掉而毫無反應,先明講。
+    if (preview.length === 0) {
+        await modal.showConfirm({
+            title: api.getMessage('workspaceOverwriteEmptyTitle') || 'Nothing to save',
+            message: api.getMessage('workspaceOverwriteEmptyMessage')
+                || 'This window has no saveable tabs (browser-internal pages are not stored). Open at least one page first.',
+            confirmButtonText: api.getMessage('closeButton') || 'OK',
+        });
+        return;
+    }
+
+    const oldCount = (ws.tabSnapshot || []).length;
+    const ok = await modal.showConfirm({
+        title: api.getMessage('workspaceOverwriteConfirmTitle') || 'Overwrite workspace',
+        message: (api.getMessage('workspaceOverwriteConfirmMessage')
+            || 'Replace "{ws}" ({old} tab(s)) with this window\'s {new} tab(s)? The saved layout cannot be recovered, and any other window bound to "{ws}" will be unbound.')
+            .replace(/\{ws\}/g, ws.name)
+            .replace('{old}', String(oldCount))
+            .replace('{new}', String(preview.length)),
+        confirmButtonText: api.getMessage('workspaceOverwrite') || 'Overwrite',
+        confirmButtonClass: 'danger',
+    });
+    if (!ok) return;
+
+    try {
+        // 綁定先行(見上方註解);同時解除其他視窗對此工作區的綁定(單一綁定不變式)。
+        await wsManager.setActiveWorkspace(currentWindowId, ws.id);
+        await wsManager.snapshotIntoWorkspace(ws.id, currentWindowId);
+        // in-place 更新供 closure 使用的鏡像,讓該列標籤即時反映新分頁數。
+        ws.tabSnapshot = preview;
+        if (updateLabel) updateLabel();
+        renderSwitchButton();
+    } catch (err) {
+        console.error('[workspace] overwrite failed:', err);
+        await modal.showConfirm({
+            title: api.getMessage('workspaceOverwriteFailedTitle') || 'Overwrite failed',
+            message: api.getMessage('workspaceOverwriteFailedMessage')
+                || 'Could not overwrite this workspace. Nothing was changed.',
+            confirmButtonText: api.getMessage('closeButton') || 'OK',
+        });
+    }
 }
 
 async function handleCreateFromCurrent() {

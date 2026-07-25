@@ -1185,6 +1185,27 @@
   "workspaceNoActive": {
     "message": "— aucun Workspace —"
   },
+  "workspaceOverwrite": {
+    "message": "Écraser avec la fenêtre actuelle"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Écraser le Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "Remplacer \"{ws}\" ({old} onglet(s)) par les {new} onglet(s) de cette fenêtre ? La configuration enregistrée sera définitivement perdue, et toute autre fenêtre liée à \"{ws}\" sera dissociée."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Rien à enregistrer"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "Cette fenêtre n'a aucun onglet enregistrable (les pages internes du navigateur ne sont pas conservées). Ouvrez d'abord au moins une page."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Échec de l'écrasement"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Impossible d'écraser ce Workspace. Rien n'a été modifié."
+  },
   "workspaceRename": {
     "message": "Renommer"
   },

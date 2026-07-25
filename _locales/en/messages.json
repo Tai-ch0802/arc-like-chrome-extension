@@ -1556,5 +1556,26 @@
   },
   "tgCuratedWarn": {
     "message": "Warning: a similar spoofing handle exists — verify before adding"
+  },
+  "workspaceOverwrite": {
+    "message": "Overwrite with current window"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Overwrite workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "Replace \"{ws}\" ({old} tab(s)) with this window's {new} tab(s)? The saved layout cannot be recovered, and any other window bound to \"{ws}\" will be unbound."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Nothing to save"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "This window has no saveable tabs (browser-internal pages are not stored). Open at least one page first."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Overwrite failed"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Could not overwrite this workspace. Nothing was changed."
   }
 }

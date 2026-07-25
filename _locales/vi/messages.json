@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "Cảnh báo: tồn tại handle giả mạo tương tự — xác minh trước khi thêm"
+  },
+  "workspaceOverwrite": {
+    "message": "Ghi đè bằng window hiện tại"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Ghi đè Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "Thay thế \"{ws}\" ({old} tab) bằng {new} tab của window này? Bố cục đã lưu sẽ không thể khôi phục, và mọi window khác đang gắn với \"{ws}\" sẽ bị hủy liên kết."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Không có gì để lưu"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "Window này không có tab nào có thể lưu (các trang nội bộ của trình duyệt không được lưu trữ). Hãy mở ít nhất một trang trước."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Ghi đè thất bại"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Không thể ghi đè Workspace này. Không có gì bị thay đổi."
   }
 }

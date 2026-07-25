@@ -243,3 +243,77 @@ describe('單一綁定不變式 (FR-06 / F5)', () => {
         expect(fake.store.sync['wsMeta_X'].lastActiveAt).toBeGreaterThan(1000);
     });
 });
+
+/**
+ * 「以目前視窗覆蓋既有工作區」(workspaceUI.handleOverwrite)所依賴的 manager 行為。
+ * UI 本身不含邏輯,真正的正確性在這兩個 primitive 的組合與**順序**上。
+ */
+describe('以目前視窗覆蓋工作區', () => {
+    it('綁定→快照:tabs 換新、rev bump、舊視窗解綁、覆蓋後為 live-bound', async () => {
+        // X 原綁在視窗 1(舊配置);使用者在未綁定的視窗 2 執行覆蓋。
+        seedV2(fake.store, 'X', { tabs: [{ url: 'https://old-a.com/', title: 'A', pinned: false }], rev: 5 });
+        const m = await loadManagerInstance();
+        await m.initWorkspaces();
+        await m.setActiveWorkspace(1, 'X');
+        fakeTabsByWindow[2] = [
+            { url: 'https://new-1.com/', title: 'N1', pinned: false, groupId: -1 },
+            { url: 'https://new-2.com/', title: 'N2', pinned: false, groupId: -1 },
+        ];
+
+        // UI 的執行順序(不可調換)。
+        await m.setActiveWorkspace(2, 'X');
+        await m.snapshotIntoWorkspace('X', 2);
+
+        const snap = fake.store.local['wsSnap_X'];
+        expect(snap.tabs.map(t => t.url)).toEqual(['https://new-1.com/', 'https://new-2.com/']);
+        expect(snap.rev).toBe(6);                       // 覆蓋算一次內容變更
+        expect(m.getActiveWorkspaceId(2)).toBe('X');
+        expect(m.getActiveWorkspaceId(1)).toBeNull();   // 舊視窗被解綁(單一綁定不變式)
+        // 覆蓋後必須是 live-bound——否則下次 Drive pull 的 keepLocalSnapshot 保護
+        // 不生效,遠端快照會把這次覆蓋整個蓋回去。
+        expect(m.isWorkspaceBound('X')).toBe(true);
+    });
+
+    it('★ 順序反過來(先快照後綁定)會留下未綁定空窗,遠端可回捲——鎖住順序', async () => {
+        seedV2(fake.store, 'X', { tabs: [{ url: 'https://old.com/', title: 'O', pinned: false }], rev: 5 });
+        const m = await loadManagerInstance();
+        await m.initWorkspaces();
+        fakeTabsByWindow[2] = [{ url: 'https://new.com/', title: 'N', pinned: false, groupId: -1 }];
+
+        // 錯誤順序:快照當下尚未綁定。
+        await m.snapshotIntoWorkspace('X', 2);
+        expect(m.isWorkspaceBound('X')).toBe(false);   // ← 這個空窗就是 Drive 回捲的破口
+
+        // 模擬此時抵達的遠端更新:未綁定 → 整顆蓋掉剛剛的覆蓋成果。
+        await m.applyRemoteWorkspace('X', {
+            metadata: { name: 'X' },
+            tabSnapshot: [{ url: 'https://remote.com/', title: 'R', pinned: false }],
+            rev: 99,
+            updatedAt: 999,
+        });
+        expect(m.getWorkspace('X').tabSnapshot[0].url).toBe('https://remote.com/'); // 覆蓋成果消失
+    });
+
+    it('空快照 guard:無可快照分頁時不清空既有配置', async () => {
+        seedV2(fake.store, 'X', { tabs: [{ url: 'https://keep.com/', title: 'K', pinned: false }], rev: 5 });
+        const m = await loadManagerInstance();
+        await m.initWorkspaces();
+        // 全 chrome://:buildSnapshotFromTabs 會全數濾掉。
+        fakeTabsByWindow[2] = [{ url: 'chrome://newtab/', title: 'New Tab', pinned: false, groupId: -1 }];
+
+        await m.setActiveWorkspace(2, 'X');
+        await m.snapshotIntoWorkspace('X', 2);
+
+        expect(fake.store.local['wsSnap_X'].tabs[0].url).toBe('https://keep.com/'); // 未被清空
+        expect(fake.store.local['wsSnap_X'].rev).toBe(5);                           // 未 bump
+    });
+
+    it('buildSnapshotFromTabs 濾掉瀏覽器內部頁——UI 用它預判「無可儲存分頁」', async () => {
+        const m = await loadManagerInstance();
+        const out = m.buildSnapshotFromTabs([
+            { url: 'chrome://newtab/', title: 'New Tab', pinned: false, groupId: -1 },
+            { url: 'chrome-extension://abc/sidepanel.html', title: 'Panel', pinned: false, groupId: -1 },
+        ], null);
+        expect(out).toHaveLength(0);
+    });
+});

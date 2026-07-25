@@ -1185,6 +1185,27 @@
   "workspaceNoActive": {
     "message": "— нет Workspace —"
   },
+  "workspaceOverwrite": {
+    "message": "Перезаписать текущим окном"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Перезаписать Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "Заменить \"{ws}\" ({old} вкл.) на {new} вкл. из этого окна? Сохранённую конфигурацию будет невозможно восстановить, а любое другое окно, привязанное к \"{ws}\", будет отвязано."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "Нечего сохранять"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "В этом окне нет вкладок, доступных для сохранения (внутренние страницы браузера не сохраняются). Сначала откройте хотя бы одну страницу."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Перезапись не удалась"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "Не удалось перезаписать этот Workspace. Ничего не изменилось."
+  },
   "workspaceRename": {
     "message": "Переименовать"
   },

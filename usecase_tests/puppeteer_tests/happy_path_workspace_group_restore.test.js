@@ -177,4 +177,107 @@ describe('Happy Path: Arc-style switch opens/focuses workspace window', () => {
             }
         }
     }, 120000);
+
+    /**
+     * BASE-021: a brand-new (unbound) window overwrites an existing workspace's
+     * layout and takes over its binding. Exercises the real manager wiring the
+     * UI calls — bind first, snapshot second — against real chrome.storage.
+     * The modal itself is not driven here (that is DOM assembly, and modal
+     * automation is this suite's known flake source); the data correctness and
+     * the ordering invariant are what matter.
+     */
+    test('overwrite: an unbound window replaces a workspace snapshot and takes the binding (BASE-021)', async () => {
+        const windowIds = [];
+        let workspaceId = null;
+        try {
+            const result = await page.evaluate(async () => {
+                const ws = await import('./modules/workspace/workspaceManager.js');
+                await ws.initWorkspaces();
+                const poll = async (fn, attempts = 100, interval = 100) => {
+                    for (let i = 0; i < attempts; i++) {
+                        const v = await fn();
+                        if (v) return v;
+                        await new Promise(r => setTimeout(r, interval));
+                    }
+                    return null;
+                };
+                const settledTabs = async (winId, n) => poll(async () => {
+                    const t = await chrome.tabs.query({ windowId: winId });
+                    const ready = t.filter(x => /^https?:/i.test(x.url || ''));
+                    return ready.length >= n ? ready : null;
+                });
+
+                // 1) 建立工作區 A(舊配置),來源視窗保持開啟並綁定 → 模擬「已在使用中的工作區」。
+                const oldWin = await chrome.windows.create({ url: ['https://example.com/'], focused: false });
+                if (!await settledTabs(oldWin.id, 1)) throw new Error('old window did not settle');
+                const wsA = await ws.createWorkspace({ name: 'Overwrite A ' + Date.now(), snapshotWindowId: oldWin.id });
+                await ws.setActiveWorkspace(oldWin.id, wsA.id);
+                const oldSnapshotUrls = (wsA.tabSnapshot || []).map(s => s.url);
+
+                // 2) 另開一個全新視窗(未綁定任何工作區),放入不同的分頁。
+                const newWin = await chrome.windows.create({
+                    url: ['https://example.org/', 'https://example.net/'],
+                    focused: false,
+                });
+                if (!await settledTabs(newWin.id, 2)) throw new Error('new window did not settle');
+
+                // 3) UI 的覆蓋流程:綁定先行,再快照(順序不可調換)。
+                await ws.setActiveWorkspace(newWin.id, wsA.id);
+                await ws.snapshotIntoWorkspace(wsA.id, newWin.id);
+
+                // storage 為權威事實;in-memory mirror 最終一致,用 poll。
+                const snapInStorage = await new Promise(r =>
+                    chrome.storage.local.get(['wsSnap_' + wsA.id], res => r(res['wsSnap_' + wsA.id] || {})));
+                const mapInStorage = await new Promise(r =>
+                    chrome.storage.local.get(['windowWorkspaceMap'], res => r(res.windowWorkspaceMap || {})));
+                const boundToNew = await poll(async () => ws.getActiveWorkspaceId(newWin.id) === wsA.id);
+
+                return {
+                    wsId: wsA.id,
+                    oldWindowId: oldWin.id,
+                    newWindowId: newWin.id,
+                    oldSnapshotUrls,
+                    newSnapshotUrls: (snapInStorage.tabs || []).map(t => t.url),
+                    revAfter: snapInStorage.rev,
+                    boundToNew: Boolean(boundToNew),
+                    oldWindowStillBound: mapInStorage[String(oldWin.id)] === wsA.id,
+                    isBound: ws.isWorkspaceBound(wsA.id),
+                };
+            });
+
+            windowIds.push(result.oldWindowId, result.newWindowId);
+            workspaceId = result.wsId;
+
+            // 快照被新視窗的分頁取代(舊 URL 不再存在)。
+            expect(result.oldSnapshotUrls.some(u => u.includes('example.com'))).toBe(true);
+            expect(result.newSnapshotUrls.some(u => u.includes('example.org'))).toBe(true);
+            expect(result.newSnapshotUrls.some(u => u.includes('example.com'))).toBe(false);
+            expect(result.revAfter).toBeGreaterThan(1);
+
+            // 綁定轉移到新視窗;舊視窗被解綁(單一綁定不變式)。
+            expect(result.boundToNew).toBe(true);
+            expect(result.oldWindowStillBound).toBe(false);
+
+            // 覆蓋後必須 live-bound,否則 Drive pull 會回捲這次覆蓋。
+            expect(result.isBound).toBe(true);
+        } finally {
+            try {
+                await page.evaluate(async (wsId) => {
+                    if (!wsId) return;
+                    const ws = await import('./modules/workspace/workspaceManager.js');
+                    await ws.initWorkspaces();
+                    await ws.deleteWorkspace(wsId);
+                }, workspaceId);
+            } catch (_) { /* best-effort */ }
+            for (const id of windowIds) {
+                if (id == null) continue;
+                try {
+                    await page.evaluate((winId) => new Promise(resolve => {
+                        try { chrome.windows.remove(winId, () => resolve()); }
+                        catch (_) { resolve(); }
+                    }), id);
+                } catch (_) { /* window may already be gone */ }
+            }
+        }
+    }, 120000);
 });

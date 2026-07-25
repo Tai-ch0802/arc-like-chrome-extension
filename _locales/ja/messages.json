@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "注意：類似のなりすまし handle が存在します。追加前に確認してください"
+  },
+  "workspaceOverwrite": {
+    "message": "現在のウィンドウで上書き"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Workspace を上書き"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "「{ws}」に保存されている {old} 個のタブを、このウィンドウの {new} 個のタブで置き換えますか？保存されていた構成は元に戻せません。また、「{ws}」に紐づいている他のウィンドウは紐づけが解除されます。"
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "保存できるタブがありません"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "このウィンドウには保存できるタブがありません（ブラウザーの内部ページは記録されません）。まず少なくとも 1 つのページを開いてください。"
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "上書きに失敗しました"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "この Workspace を上書きできませんでした。データは変更されていません。"
   }
 }

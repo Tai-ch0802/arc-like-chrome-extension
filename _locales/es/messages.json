@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "Aviso: existe un handle de suplantación similar; verifícalo antes de añadir"
+  },
+  "workspaceOverwrite": {
+    "message": "Sobrescribir con la ventana actual"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Sobrescribir Workspace"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "¿Reemplazar \"{ws}\" ({old} pestaña(s)) por las {new} pestaña(s) de esta ventana? La configuración guardada no se podrá recuperar, y cualquier otra ventana vinculada a \"{ws}\" quedará desvinculada."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "No hay nada que guardar"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "Esta ventana no tiene pestañas que se puedan guardar (las páginas internas del navegador no se registran). Abre al menos una página primero."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "Error al sobrescribir"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "No se pudo sobrescribir este Workspace. No se modificó nada."
   }
 }

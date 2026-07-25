@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "注意：有相似仿冒 handle，加入前务必确认"
+  },
+  "workspaceOverwrite": {
+    "message": "以当前窗口覆盖"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "覆盖工作区"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "要用当前窗口的 {new} 个标签页替换「{ws}」原有的 {old} 个标签页吗？原本保存的配置将无法恢复；若有其他窗口绑定「{ws}」，该窗口会被解除绑定。"
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "没有可保存的标签页"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "这个窗口没有可保存的标签页（浏览器内部页面不会被记录）。请先打开至少一个网页。"
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "覆盖失败"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "无法覆盖此工作区，数据未更改。"
   }
 }

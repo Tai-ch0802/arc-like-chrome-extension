@@ -1553,5 +1553,26 @@
   },
   "tgCuratedWarn": {
     "message": "주의: 유사한 스푸핑 handle이 있습니다 — 추가 전에 확인하세요"
+  },
+  "workspaceOverwrite": {
+    "message": "현재 창으로 덮어쓰기"
+  },
+  "workspaceOverwriteConfirmTitle": {
+    "message": "Workspace 덮어쓰기"
+  },
+  "workspaceOverwriteConfirmMessage": {
+    "message": "\"{ws}\" 에 저장된 {old} 개 탭을 이 창의 {new} 개 탭으로 바꾸시겠습니까? 저장된 구성은 복구할 수 없으며, \"{ws}\" 에 연결된 다른 창이 있으면 연결이 해제됩니다."
+  },
+  "workspaceOverwriteEmptyTitle": {
+    "message": "저장할 탭 없음"
+  },
+  "workspaceOverwriteEmptyMessage": {
+    "message": "이 창에는 저장할 수 있는 탭이 없습니다(브라우저 내부 페이지는 저장되지 않습니다). 먼저 페이지를 하나 이상 열어 주세요."
+  },
+  "workspaceOverwriteFailedTitle": {
+    "message": "덮어쓰기 실패"
+  },
+  "workspaceOverwriteFailedMessage": {
+    "message": "이 Workspace 를 덮어쓸 수 없습니다. 변경된 내용은 없습니다."
   }
 }
