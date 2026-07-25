@@ -227,7 +227,7 @@
         <h1 data-i18n="privacy_h1"
             style="font-size: 2.5rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.02em;">隱私權政策</h1>
         <p data-i18n="privacy_effective_date"
-            style="color: var(--text-secondary); margin-bottom: 40px; font-size: 1.1rem;">生效日期：2026年2月10日（最近更新：2026年6月8日 — 新增「Google 使用者資料揭露」專節，對應 Google API 服務使用者資料政策的五項揭露）</p>
+            style="color: var(--text-secondary); margin-bottom: 40px; font-size: 1.1rem;">生效日期：2026年2月10日（最近更新：2026年7月25日 — 新增「財經快訊」相關揭露：來源連線、API 金鑰與 Telegram session 的儲存方式，以及 <code>notifications</code> 權限用途）</p>
 
         <article class="privacy-document glow-card">
             <p data-i18n="privacy_intro">感謝您使用「Sidebar for Tabs/Bookmarks」（書籤/分頁側邊欄，Arc 風格）Chrome 擴充功能（以下簡稱「本擴充功能」）。我們致力於保護您的個人隱私。本隱私權政策旨在說明我們如何處理您的資訊。
@@ -240,6 +240,8 @@
                 <li data-i18n="privacy_s1_li2"><strong>書籤資訊：</strong>包括您所有書籤的網址、標題與資料夾結構。</li>
                 <li data-i18n="privacy_s1_li3"><strong>閱讀清單資訊：</strong>包括您 Chrome 閱讀清單中項目的網址、標題與已讀狀態。</li>
                 <li data-i18n="privacy_s1_li4"><strong>操作狀態資訊：</strong>包括「Linked Tabs」的關聯狀態、UI 展開狀態、RSS 訂閱設定與已抓取文章的雜湊值。
+                </li>
+                <li data-i18n="privacy_s1_li5"><strong>財經快訊設定與內容：</strong>包括您啟用的快訊來源、自訂關鍵字規則、Telegram 訂閱頻道清單，以及最近收到的快訊（標題、時間、原文連結）。快訊內容僅暫存於本機的環狀緩衝區（上限 300 則，逾量自動淘汰），可隨時一鍵清除。
                 </li>
             </ul>
 
@@ -287,6 +289,7 @@
                     以獲取對應的圖示。請注意，我們<strong>僅傳輸網域名稱</strong>，絕不會傳輸包含個人路徑或參數的完整網址。</li>
                 <li data-i18n="privacy_s3_li2"><strong>RSS 訂閱抓取：</strong>若您啟用 RSS 訂閱功能，本擴充功能會定期向您所訂閱的 RSS feed URL 發送
                     HTTP 請求以取得最新文章。這些請求<strong>僅限於您主動訂閱的網址</strong>，且抓取的內容僅用於加入您的 Chrome 閱讀清單，不會傳送至任何第三方伺服器。</li>
+                <li data-i18n="privacy_s3_li3"><strong>財經快訊來源連線：</strong>若您啟用「財經快訊」中的任一來源，本擴充功能會直接與<strong>您所啟用的該來源</strong>建立連線（Tree of Alpha、FinancialJuice、Alpaca News、金十數據的官方 WebSocket 端點；若啟用 Telegram 則為 Telegram 官方伺服器）。連線內容僅限於取得快訊，<strong>不會經過開發者或任何第三方伺服器</strong>。未啟用的來源完全不會發出任何連線。</li>
             </ul>
 
             <h3 data-i18n="privacy_s3_1_title" style="font-size: 1.15rem; margin-top: 32px;">3.1 使用者自行設定的 AI 供應商（選用，預設關閉）</h3>
@@ -296,6 +299,16 @@
                 <li data-i18n="privacy_s3_1_li2"><strong>API 金鑰：</strong>您輸入的 API 金鑰<strong>僅儲存於本機的 <code>chrome.storage.local</code></strong>，不會同步至其他裝置，也只會用於向您設定的供應商發送請求。</li>
                 <li data-i18n="privacy_s3_1_li3"><strong>Ollama（本機）：</strong>選擇 Ollama 時，請求僅送往您自行指定的本機／區網位址，資料不會傳送至網際網路上的第三方。</li>
                 <li data-i18n="privacy_s3_1_li4"><strong>隨時可停用：</strong>您可以隨時在設定頁切回內建模型；切回後即不再有任何 AI 相關的對外傳輸。</li>
+            </ul>
+
+            <h3 data-i18n="privacy_s3_2_title" style="font-size: 1.15rem; margin-top: 32px;">3.2 財經快訊的憑證與 Telegram session（選用，預設關閉）</h3>
+            <p data-i18n="privacy_s3_2_desc">「財經快訊」的所有來源<strong>預設全部關閉</strong>。只有在您主動啟用某個來源並填入對應憑證後，該來源才會開始連線。各項憑證的處理方式如下：</p>
+            <ul>
+                <li data-i18n="privacy_s3_2_li1"><strong>API 金鑰：</strong>FinancialJuice、Alpaca News 與金十數據的金鑰<strong>僅儲存於本機的 <code>chrome.storage.local</code></strong>，只用於向該來源的官方端點建立連線，不會傳送給開發者或任何第三方。</li>
+                <li data-i18n="privacy_s3_2_li2"><strong>Telegram 登入資訊：</strong>您的手機號碼、驗證碼與兩步驟驗證密碼<strong>僅在登入當下由您自行輸入並直接送往 Telegram 官方伺服器</strong>，本擴充功能<strong>不會儲存</strong>這些內容。登入成功後產生的 session 字串與 <code>api_id</code>/<code>api_hash</code> 儲存於本機 <code>chrome.storage.local</code>。</li>
+                <li data-i18n="privacy_s3_2_li3"><strong>session 的敏感性：</strong>Telegram session 等同於<strong>完整帳號存取權</strong>（可讀取您所有對話、以您的身分發送訊息），敏感度高於一般 API 金鑰。因此登入前會顯示明確的風險告知，並建議您使用小號。設定頁提供「登出並撤銷」，會呼叫 Telegram 官方 API 讓該 session 立即失效，同時清除本機資料。</li>
+                <li data-i18n="privacy_s3_2_li4"><strong>是否同步至雲端由您決定：</strong>上述金鑰與 Telegram session <strong>預設不會</strong>同步至 Google Drive。僅當您<strong>主動開啟</strong>設定頁的「同步 API 金鑰」開關後，它們才會隨其他快訊設定寫入<strong>您自己 Drive 的應用程式私有資料夾</strong>；開啟前系統會再次顯示風險告知。關閉該開關後，下次同步會將這些憑證從雲端資料中<strong>抹除 (scrub)</strong>。</li>
+                <li data-i18n="privacy_s3_2_li5"><strong>快訊內容不上傳：</strong>收到的快訊內容只存在本機的環狀緩衝區（上限 300 則），<strong>不會</strong>寫入 Google Drive，也不會傳送至任何第三方。</li>
             </ul>
 
             <h3 data-i18n="privacy_s4_title">4. 權限說明</h3>
@@ -354,8 +367,12 @@
                                 範圍）。僅在您主動連結 Google Drive 時使用。</td>
                         </tr>
                         <tr>
+                            <td><code>notifications</code></td>
+                            <td data-i18n="privacy_s4_td_notifications">用於「財經快訊」的 P0 系統通知：當快訊命中您自訂的最高優先關鍵字時發送 Chrome 通知。可在設定頁單獨關閉。</td>
+                        </tr>
+                        <tr>
                             <td><code>host_permissions</code></td>
-                            <td data-i18n="privacy_s4_td9">用於抓取 RSS feed 內容及顯示書籤圖示</td>
+                            <td data-i18n="privacy_s4_td9">用於抓取 RSS feed 內容、顯示書籤圖示，以及連線至您所啟用的財經快訊來源</td>
                         </tr>
                     </tbody>
                 </table>
@@ -367,6 +384,7 @@
                 <li data-i18n="privacy_s5_li1">在側邊欄中渲染、呈現您的分頁與書籤列表。</li>
                 <li data-i18n="privacy_s5_li2">讓您能夠透過側邊欄進行搜尋、排序、分組、關閉分頁與刪除書籤等管理操作。</li>
                 <li data-i18n="privacy_s5_li3">管理您的 Chrome 閱讀清單與 RSS 訂閱內容。</li>
+                <li data-i18n="privacy_s5_li4">連線至您主動啟用的財經快訊來源、依您自訂的關鍵字規則呈現與提醒快訊。</li>
             </ul>
             <p data-i18n="privacy_s5_outro">您的資料絕不會被用於任何廣告、追蹤或分析等其他目的。</p>
 
