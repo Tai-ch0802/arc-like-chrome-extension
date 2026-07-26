@@ -223,6 +223,9 @@
     "message": "API-Schlüssel erforderlich",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsLogin": {
+    "message": "session abgelaufen – neu anmelden"
+  },
   "newswireStatusNeedsConfig": {
     "message": "Kanal hinzufügen",
     "description": "Source status: enabled but no channel configured yet."
@@ -1530,6 +1533,9 @@
   "tgLogoutMessage": {
     "message": "Dadurch wird die session remote widerrufen und lokale Anmeldedaten werden gelöscht."
   },
+  "tgSessionInvalidNote": {
+    "message": "Telegram hat diese session ungültig gemacht. Nutze unten „Abmelden & widerrufen“ und melde dich anschließend erneut an, um den Feed wiederherzustellen."
+  },
   "tgChannelsHeader": {
     "message": "Kanäle"
   },
@@ -1574,5 +1580,11 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "Das Überschreiben wurde nicht abgeschlossen. Dieses Fenster ist möglicherweise bereits an den Workspace gebunden, die Tab-Anordnung wurde aber eventuell nicht gespeichert — bitte prüfen Sie den Inhalt des Workspace."
+  },
+  "tgResolving": {
+    "message": "Prüfen…"
+  },
+  "tgNotReady": {
+    "message": "Die Telegram-Verbindung ist noch nicht bereit. Warten Sie einen Moment und versuchen Sie es erneut. Zeigt der Status eine abgelaufene Sitzung, melden Sie sich neu an."
   }
 }

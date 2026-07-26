@@ -20,6 +20,23 @@ body {
 .opt-section h2 { margin-top: 0; font-size: 18px; color: var(--text-color-header, #fff); }
 .opt-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border-color, #45475a); }
 .opt-row__label { font-size: 14px; color: var(--text-color-primary, #cdd6f4); }
+/* Telegram session 被作廢的行內警示 + 破壞性登出按鈕自成一列(與策展清單分離)。 */
+.tg-session-invalid {
+    margin: 8px 0;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--danger-color, #f44336);
+    border: 1px solid var(--danger-color, #f44336);
+    border-radius: 6px;
+    background: rgba(244, 67, 54, 0.08);
+}
+.tg-session-invalid.hidden { display: none; }
+.tg-logout-row {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color, #45475a);
+}
+
 /* 工作區同步 opt-in 列的圖示(Material Symbols SVG):SVG 為 inline element,
    直接置於文字前會沿 baseline 對齊而偏低,故以 inline-flex 置中並留間距。 */
 .sync-ws-icon {

@@ -1574,5 +1574,17 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "Việc ghi đè chưa hoàn tất. Window này có thể đã được gắn với Workspace, nhưng bố cục tab có thể chưa được lưu — vui lòng kiểm tra nội dung của Workspace."
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "session hết hiệu lực — đăng nhập lại"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram đã vô hiệu hóa session này. Hãy dùng \"Đăng xuất & thu hồi\" bên dưới, rồi đăng nhập lại để nhận tin trở lại."
+  },
+  "tgResolving": {
+    "message": "Đang kiểm tra…"
+  },
+  "tgNotReady": {
+    "message": "Kết nối Telegram chưa sẵn sàng. Vui lòng đợi một chút rồi thử lại. Nếu trạng thái cho thấy phiên đã hết hạn, hãy đăng nhập lại."
   }
 }

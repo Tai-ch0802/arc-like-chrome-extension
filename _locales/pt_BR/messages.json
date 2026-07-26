@@ -1574,5 +1574,17 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "A substituição não foi concluída. Esta janela talvez já esteja vinculada ao Workspace, mas o layout das abas pode não ter sido salvo — verifique o conteúdo do Workspace."
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "Session expirada — entre novamente"
+  },
+  "tgSessionInvalidNote": {
+    "message": "O Telegram invalidou esta session. Use \"Sair e revogar\" abaixo e entre novamente para restaurar o recebimento."
+  },
+  "tgResolving": {
+    "message": "Verificando…"
+  },
+  "tgNotReady": {
+    "message": "A conexão do Telegram ainda não está pronta. Aguarde um momento e tente novamente. Se o status indicar que a sessão expirou, entre novamente."
   }
 }

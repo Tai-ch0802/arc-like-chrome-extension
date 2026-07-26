@@ -1574,5 +1574,17 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "覆蓋未完成。目前視窗可能已綁定至該工作區，但分頁配置未必已儲存——請確認該工作區的內容。"
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "session 已失效，請重新登入"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram 已使此 session 失效。請用下方的「登出並撤銷」後重新登入，即可恢復收訊。"
+  },
+  "tgResolving": {
+    "message": "確認中…"
+  },
+  "tgNotReady": {
+    "message": "Telegram 連線尚未就緒。請稍候後再試一次；若狀態顯示 session 已失效，請重新登入。"
   }
 }

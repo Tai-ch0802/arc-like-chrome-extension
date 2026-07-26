@@ -1543,6 +1543,8 @@ const NEWSWIRE_STATUS_LABEL_KEYS = {
     'disabled': 'newswireStatusDisabled',
     'needs-key': 'newswireStatusNeedsKey',
     'needs-config': 'newswireStatusNeedsConfig',
+    // session 被 Telegram 作廢(撤銷/過期/併發連線)→ 補救是重新登入,不是填 key。
+    'needs-login': 'newswireStatusNeedsLogin',
     'connecting': 'newswireStatusConnecting',
     'connected': 'newswireStatusConnected',
     'retrying': 'newswireStatusRetrying',
@@ -1731,8 +1733,13 @@ function renderTgCard(container, cfg, keys, statusEls) {
                 return;
             }
             const { session, me } = result;
-            state.keys = { ...state.keys, apiId, apiHash, session, meName: me?.firstName || me?.username || '' };
-            await rmwNewswireKeys((k) => { k.tg = { ...(k.tg || {}), apiId, apiHash, session }; });
+            // meName 一併落地:否則 reload 後「已登入為」只剩「(session)」,使用者無從
+            // 確認登入的是哪個帳號(尤其建議用小號,更需要看得出來)。它只是顯示名稱,
+            // 敏感度遠低於 session,與 apiId/apiHash 同層處置。記憶體與 storage 共用
+            // 同一個運算結果,避免兩處各自維護而漂移。
+            const meName = me?.firstName || me?.username || '';
+            state.keys = { ...state.keys, apiId, apiHash, session, meName };
+            await rmwNewswireKeys((k) => { k.tg = { ...(k.tg || {}), apiId, apiHash, session, meName }; });
             await rmwNewswireConfig((c) => {
                 c.sources = { ...(c.sources || {}) };
                 c.sources.tg = { ...(c.sources.tg || {}), enabled: true, updatedAt: Date.now() };
@@ -1764,13 +1771,29 @@ function renderTgCard(container, cfg, keys, statusEls) {
         });
         group.appendChild(makeRow(api.getMessage('newswireEnableSource') || 'Enable', enable));
 
+        // session 被 Telegram 作廢時的行內說明。預設隱藏,由 applyStatuses 依 tg 狀態
+        // toggle(沿用 needs-key 行內提示的既有模式);渲染當下狀態尚未由 SW 回報,
+        // 不能在此判斷。只靠狀態徽章不足——徽章看起來像按鈕卻不可點,使用者會誤以為
+        // 功能壞掉(實測回饋)。
+        const sessionNote = document.createElement('p');
+        sessionNote.className = 'tg-session-invalid hidden';
+        sessionNote.dataset.tgSessionNote = '1';
+        sessionNote.textContent = api.getMessage('tgSessionInvalidNote')
+            || 'Telegram invalidated this session. Use "Log out & revoke" below, then log in again to restore the feed.';
+        group.appendChild(sessionNote);
+
         paintChannels();
 
+        // 「登出並撤銷」為破壞性動作:與策展清單的「+ 頻道」按鈕分離到自己一列並用
+        // danger 樣式——原本混在同一排、樣式相同,使用者反映根本找不到它。
+        const logoutWrap = document.createElement('div');
+        logoutWrap.className = 'tg-logout-row';
         const logoutBtn = document.createElement('button');
-        logoutBtn.className = 'modal-button';
+        logoutBtn.className = 'modal-button danger';
         logoutBtn.textContent = api.getMessage('tgLogoutButton') || 'Log out & revoke';
         logoutBtn.addEventListener('click', () => doLogout(logoutBtn));
-        group.appendChild(logoutBtn);
+        logoutWrap.appendChild(logoutBtn);
+        group.appendChild(logoutWrap);
     }
 
     function paintChannels() {
@@ -1830,12 +1853,24 @@ function renderTgCard(container, cfg, keys, statusEls) {
 
     async function addChannel(username, btn) {
         if (!username) return;
+        const btnLabel = btn.textContent;
         btn.disabled = true;
+        // 解析可能要等常駐連線建立完成(dynamic import 2.6M bundle + MTProto DH,最長
+        // 20s),光 disabled 看起來像壞掉——換文字讓等待可被理解。
+        btn.textContent = api.getMessage('tgResolving') || 'Checking…';
         try {
-            const ctrl = await tgLoginCtrl();
-            const info = await ctrl.resolveChannel({
-                apiId: state.keys.apiId, apiHash: state.keys.apiHash, session: state.keys.session, username,
+            // 解析一律交由 SW 轉發到 offscreen 執行,**不在此建 client**:同一 session
+            // 若同時有兩條連線,Telegram 會以安全為由作廢它(AUTH_KEY_DUPLICATED)——
+            // 舊版在此自建短命 client,與 offscreen 的常駐收訊連線併發,使用者連續加
+            // 幾個頻道就被踢掉 session,而錯誤被歸為 needs-key、UI 卻顯示「需填入
+            // API key」,與真相完全不符。
+            const res = await api.sendRuntimeMessage({
+                action: 'newswire:tgResolveChannel',
+                cfg: { apiId: state.keys.apiId, apiHash: state.keys.apiHash, session: state.keys.session },
+                username,
             });
+            if (!res || !res.ok) throw new Error(res?.error || 'resolve failed');
+            const info = res.info || {};
             const msg = `${info.title || username}${info.username ? ` (@${info.username})` : ''}`
                 + (info.participantsCount ? ` · ${info.participantsCount} ${api.getMessage('tgSubscribers') || 'subscribers'}` : '');
             const ok = await modalManager.showConfirm({
@@ -1843,7 +1878,7 @@ function renderTgCard(container, cfg, keys, statusEls) {
                 message: `${api.getMessage('tgAddConfirm') || '加入此頻道?'}\n${msg}`,
                 confirmButtonText: api.getMessage('addButton') || 'Add',
             });
-            if (!ok) { btn.disabled = false; return; }
+            if (!ok) { btn.disabled = false; btn.textContent = btnLabel; return; }
             await rmwNewswireConfig((c) => {
                 c.sources = { ...(c.sources || {}) };
                 const arr = [...(c.sources.tg?.channels || [])];
@@ -1854,12 +1889,17 @@ function renderTgCard(container, cfg, keys, statusEls) {
             state.cfg = await reloadNewswireCfg();
             repaint();
         } catch (e) {
+            // offscreen 回報「常駐連線尚未就緒」是唯一預期得到的非技術性失敗(連線建立
+            // 中或 session 已失效),換成可行動的文案;其餘照原樣顯示技術訊息。
+            const raw = String(e?.errorMessage || e?.message || e);
+            const notReady = raw.includes('TG_NOT_READY');
             await modalManager.showConfirm({
                 title: api.getMessage('tgAddFailed') || '無法解析頻道',
-                message: String(e?.errorMessage || e?.message || e),
+                message: notReady ? (api.getMessage('tgNotReady') || raw) : raw,
                 confirmButtonText: api.getMessage('okButton') || 'OK',
             });
             btn.disabled = false;
+            btn.textContent = btnLabel;
         }
     }
 
@@ -1904,6 +1944,11 @@ function renderNewswire(container) {
                 el.textContent = api.getMessage(NEWSWIRE_STATUS_LABEL_KEYS[status] || '') || status;
             }
             if (noteEls[source]) noteEls[source].classList.toggle('hidden', status !== 'needs-key');
+            // tg session 被作廢的行內說明(卡片渲染時尚不知狀態,故在此 toggle)。
+            if (source === 'tg') {
+                const note = container.querySelector('[data-tg-session-note]');
+                if (note) note.classList.toggle('hidden', status !== 'needs-login');
+            }
         }
     };
 

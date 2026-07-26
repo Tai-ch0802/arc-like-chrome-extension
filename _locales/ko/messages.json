@@ -1574,5 +1574,17 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "덮어쓰기가 완료되지 않았습니다. 이 창은 이미 해당 Workspace 에 연결되었을 수 있지만, 탭 구성은 저장되지 않았을 수 있습니다. Workspace 내용을 확인해 주세요."
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "session 만료 — 재로그인"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram이 이 session을 무효화했습니다. 아래 \"로그아웃 및 해지\"를 누른 뒤 다시 로그인하면 수신이 복구됩니다."
+  },
+  "tgResolving": {
+    "message": "확인 중…"
+  },
+  "tgNotReady": {
+    "message": "Telegram 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도하세요. 세션이 만료된 것으로 표시되면 다시 로그인하세요."
   }
 }

@@ -223,6 +223,9 @@
     "message": "API कुंजी आवश्यक",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsLogin": {
+    "message": "session समाप्त — लॉग इन करें"
+  },
   "newswireStatusNeedsConfig": {
     "message": "चैनल जोड़ें",
     "description": "Source status: enabled but no channel configured yet."
@@ -1530,6 +1533,9 @@
   "tgLogoutMessage": {
     "message": "इससे session दूरस्थ रूप से रद्द हो जाती है और स्थानीय क्रेडेंशियल साफ़ हो जाते हैं।"
   },
+  "tgSessionInvalidNote": {
+    "message": "Telegram ने इस session को अमान्य कर दिया। नीचे \"लॉग आउट करें और रद्द करें\" का इस्तेमाल करें, फिर फ़ीड बहाल करने के लिए दोबारा लॉग इन करें।"
+  },
   "tgChannelsHeader": {
     "message": "चैनल"
   },
@@ -1574,5 +1580,11 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "Overwrite पूरा नहीं हुआ। यह window शायद पहले से ही इस Workspace से bound हो चुका है, लेकिन उसका tab layout save हुआ हो यह ज़रूरी नहीं — कृपया Workspace की सामग्री जाँच लें।"
+  },
+  "tgResolving": {
+    "message": "जाँच हो रही है…"
+  },
+  "tgNotReady": {
+    "message": "Telegram कनेक्शन अभी तैयार नहीं है। कुछ क्षण प्रतीक्षा करें और फिर प्रयास करें। यदि स्थिति दिखाती है कि सत्र समाप्त हो गया है, तो दोबारा लॉग इन करें।"
   }
 }

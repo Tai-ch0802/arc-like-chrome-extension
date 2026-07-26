@@ -66,4 +66,125 @@ describe('tgOffscreenController (BASE-018 TG2b)', () => {
         ctrl.disconnect();
         expect(ctrl.ping()).toEqual({ alive: false, hasAdapter: false, status: 'disabled' });
     });
+
+    /**
+     * 頻道解析必須「同時只有一條連線」——MTProto 對同一 auth key 的併發連線會直接
+     * 作廢 session(AUTH_KEY_DUPLICATED)。這組測試鎖住該不變式。
+     */
+    describe('resolveChannel 不得與常駐連線併發', () => {
+        const INFO = { id: 100n, username: 'BWEnews', title: 'Chan', participantsCount: 5000 };
+
+        it('★ 常駐連線活著 → 借用它,不另建 client', async () => {
+            let clientBuilt = 0;
+            const made = { ...fakeAdapter(), resolved: null };
+            made.resolveChannel = async function (u) { this.resolved = u; return { username: u, title: 'Chan' }; };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => made,
+                loadClient: async () => { clientBuilt += 1; return async () => ({}); },
+            });
+            await ctrl.connect(cfg);
+            const info = await ctrl.resolveChannel(cfg, 'BWEnews');
+
+            expect(made.resolved).toBe('BWEnews');   // 走既有連線
+            expect(clientBuilt).toBe(0);             // ← 關鍵:完全沒有建第二條連線
+            expect(info.title).toBe('Chan');
+        });
+
+        it('★ 無常駐連線(未啟用)→ 臨時建一條,用完必 disconnect', async () => {
+            let disconnected = false;
+            const fakeClient = {
+                connected: false,
+                async connect() { this.connected = true; },
+                async disconnect() { disconnected = true; this.connected = false; },
+                async getEntity() { return INFO; },
+            };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => fakeAdapter(),
+                loadClient: async () => async () => fakeClient,
+            });
+            // 未 connect → 無 adapter
+            const info = await ctrl.resolveChannel(cfg, 'BWEnews');
+
+            expect(info).toEqual({ id: '100', username: 'BWEnews', title: 'Chan', participantsCount: 5000 });
+            expect(disconnected).toBe(true);         // 用完就斷,不留第二條連線
+        });
+
+        it('臨時連線在 getEntity 拋錯時仍會 disconnect(不留殘連線觸發 AUTH_KEY_DUPLICATED)', async () => {
+            let disconnected = false;
+            const fakeClient = {
+                async connect() {},
+                async disconnect() { disconnected = true; },
+                async getEntity() { throw Object.assign(new Error('x'), { errorMessage: 'USERNAME_NOT_OCCUPIED' }); },
+            };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => fakeAdapter(),
+                loadClient: async () => async () => fakeClient,
+            });
+            await expect(ctrl.resolveChannel(cfg, 'nope')).rejects.toThrow('x');
+            expect(disconnected).toBe(true);
+        });
+
+        /**
+         * PR #212 review 抓到的殘餘窗口:只看 isAlive() 不足以判斷「有無常駐連線」。
+         * tgAdapter.open() 從 createClient()(dynamic import 2.6M bundle)到
+         * client.connect()(MTProto DH 交換)完成之間,isAlive() 一路 false 但連線正在
+         * 建立,窗口達秒級到十秒級。而 options 登入後寫完 storage 就立刻顯示加頻道 UI
+         * (不等 SW 連上),使用者「登入後連續加頻道」正好落在窗口內。
+         * 修正後的不變式:**adapter 存在 ⇒ 絕不另建連線**。
+         */
+        it('★ adapter 連線建立中(未 alive)→ 等它就緒後借用,絕不另建 client', async () => {
+            let clientBuilt = 0;
+            const made = { ...fakeAdapter(), resolved: null };
+            // connect() 不立刻 alive:模擬 createClient/DH 交換期間(此時 isAlive() 為 false)
+            made.connect = function () { /* 仍在建立中 */ };
+            made.resolveChannel = async function (u) { this.resolved = u; return { username: u }; };
+            let slept = 0;
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => made,
+                loadClient: async () => { clientBuilt += 1; return async () => ({}); },
+                // 第 3 次輪詢時連線才建立完成
+                sleep: async () => { slept += 1; if (slept === 3) made.connected = true; },
+            });
+            await ctrl.connect(cfg);
+            const info = await ctrl.resolveChannel(cfg, 'BWEnews');
+
+            expect(info.username).toBe('BWEnews');
+            expect(made.resolved).toBe('BWEnews');   // 等到就緒後走既有連線
+            expect(clientBuilt).toBe(0);             // ← 關鍵:窗口內也沒有建第二條連線
+        });
+
+        it('★ 等到逾時仍未就緒 → 報 TG_NOT_READY,不 fallback 成臨時連線(逾時只代表還在連)', async () => {
+            let clientBuilt = 0;
+            const made = { ...fakeAdapter(), connect() { /* 永遠連不上 */ } };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => made,
+                loadClient: async () => { clientBuilt += 1; return async () => ({}); },
+                sleep: async () => {},
+            });
+            await ctrl.connect(cfg);
+
+            await expect(ctrl.resolveChannel(cfg, 'BWEnews')).rejects.toThrow('TG_NOT_READY');
+            expect(clientBuilt).toBe(0);             // fallback 就是製造併發,故不可有
+        });
+
+        it('adapter 處於終止態(session 失效/憑證錯)→ 立刻報錯,不白等到逾時', async () => {
+            let slept = 0;
+            const made = { ...fakeAdapter(), connect() {}, isFailed: () => true };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => made,
+                loadClient: async () => async () => ({}),
+                sleep: async () => { slept += 1; },
+            });
+            await ctrl.connect(cfg);
+
+            await expect(ctrl.resolveChannel(cfg, 'BWEnews')).rejects.toThrow('TG_NOT_READY');
+            expect(slept).toBe(0);                   // 終止態永不會 alive,不該輪詢等待
+        });
+    });
 });

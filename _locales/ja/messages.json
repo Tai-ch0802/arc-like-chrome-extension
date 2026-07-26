@@ -1554,6 +1554,12 @@
   "tgCuratedWarn": {
     "message": "注意：類似のなりすまし handle が存在します。追加前に確認してください"
   },
+  "newswireStatusNeedsLogin": {
+    "message": "session 失効 — 再ログイン"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram がこの session を失効させました。下の「ログアウトして失効させる」を実行し、再ログインすると受信を再開できます。"
+  },
   "workspaceOverwrite": {
     "message": "現在のウィンドウで上書き"
   },
@@ -1574,5 +1580,11 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "上書きは完了しませんでした。このウィンドウはすでにこの Workspace に紐づいている可能性がありますが、タブ構成は保存されていないことがあります。Workspace の内容をご確認ください。"
+  },
+  "tgResolving": {
+    "message": "確認中…"
+  },
+  "tgNotReady": {
+    "message": "Telegram の接続がまだ準備できていません。しばらく待ってからもう一度お試しください。セッションの期限切れが表示されている場合は再度ログインしてください。"
   }
 }
