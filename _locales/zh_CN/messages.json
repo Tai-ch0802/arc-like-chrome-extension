@@ -1580,5 +1580,11 @@
   },
   "tgSessionInvalidNote": {
     "message": "Telegram 已使此 session 失效。请用下方的“登出并撤销”后重新登录，即可恢复接收消息。"
+  },
+  "tgResolving": {
+    "message": "确认中…"
+  },
+  "tgNotReady": {
+    "message": "Telegram 连接尚未就绪。请稍候后再试一次；若状态显示 session 已失效，请重新登录。"
   }
 }

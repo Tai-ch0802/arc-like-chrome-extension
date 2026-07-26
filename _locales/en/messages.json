@@ -1583,5 +1583,11 @@
   },
   "tgSessionInvalidNote": {
     "message": "Telegram invalidated this session. Use \"Log out & revoke\" below, then log in again to restore the feed."
+  },
+  "tgResolving": {
+    "message": "Checking…"
+  },
+  "tgNotReady": {
+    "message": "The Telegram connection is not ready yet. Wait a moment and try again. If the status shows the session has expired, log in again."
   }
 }

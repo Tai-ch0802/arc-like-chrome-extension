@@ -1580,5 +1580,11 @@
   },
   "tgSessionInvalidNote": {
     "message": "Telegram이 이 session을 무효화했습니다. 아래 \"로그아웃 및 해지\"를 누른 뒤 다시 로그인하면 수신이 복구됩니다."
+  },
+  "tgResolving": {
+    "message": "확인 중…"
+  },
+  "tgNotReady": {
+    "message": "Telegram 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도하세요. 세션이 만료된 것으로 표시되면 다시 로그인하세요."
   }
 }

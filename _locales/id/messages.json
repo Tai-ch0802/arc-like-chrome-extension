@@ -1580,5 +1580,11 @@
   },
   "tgSessionInvalidNote": {
     "message": "Telegram membatalkan session ini. Gunakan \"Keluar & cabut\" di bawah, lalu masuk lagi untuk memulihkan umpan."
+  },
+  "tgResolving": {
+    "message": "Memeriksa…"
+  },
+  "tgNotReady": {
+    "message": "Koneksi Telegram belum siap. Tunggu sejenak lalu coba lagi. Jika status menunjukkan sesi sudah tidak berlaku, masuk kembali."
   }
 }

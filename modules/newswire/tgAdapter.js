@@ -217,5 +217,8 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
             onStatus('disabled');
         },
         isAlive,
+        // 憑證/session 類終止態:永遠不會再變 alive。給 tgOffscreenController 的
+        // 「等連線就緒」用——否則 resolveChannel 會白等到逾時才報錯。
+        isFailed: () => failed,
     };
 }

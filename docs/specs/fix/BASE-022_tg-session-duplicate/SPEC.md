@@ -36,10 +36,13 @@ MTProto 對同一 auth key 的併發連線直接判定為安全風險並作廢 s
 ### 1. offscreen 成為唯一能用 session 連線的地方（根因修復）
 
 - `tgAdapter.resolveChannel(username)`（新）：用**既有連線**呼叫 `getEntity`，不另開連線
-- `tgOffscreenController.resolveChannel(cfg, username)`（新）：
-  - 常駐連線活著 → 借用它
-  - 未啟用／未連線（無常駐連線）→ 臨時建一條、用完立刻斷（`finally` 保證）
-  - **兩條路徑都保證同時只有一條連線**
+- `tgOffscreenController.resolveChannel(cfg, username)`（新）。不變式：**adapter 存在 ⇒ 絕不另建連線**
+  - adapter 存在 → 等它就緒後借用；逾時或終止態則報 `TG_NOT_READY`，**不 fallback**
+  - adapter 不存在（tg 未啟用）→ 臨時建一條、用完立刻斷（`finally` 保證）
+
+**為何不能只看 `isAlive()`**（PR #212 review 抓到的殘餘窗口，初版修法漏掉）：`open()` 內從 `createClient()`（dynamic import 2.6M bundle）到 `client.connect()`（MTProto DH 交換）完成之間，`isAlive()` 一路是 `false` 但連線正在建立，窗口達秒級到十秒級。而 options 登入後寫完 storage 就立刻顯示加頻道 UI（不等 SW 連上），**使用者「登入後連續加頻道」——正是原始 bug 的操作模式——恰好落在窗口內**，於是初版修法在該路徑仍會另建臨時連線、製造同一個併發。
+
+逾時亦不可 fallback：逾時只代表「還在連」，fallback 就是併發。故 adapter 存在時一律等待，並以 `isFailed()` 讓終止態（session 失效／憑證錯）立刻收手而非白等 20 秒。上限 20s 必須 < `resolveTgChannel` 的 30s `sendMessage` 逾時，否則 options 端收到的會是無意義的逾時而非明確錯誤碼。
 - `offscreen.js` 新增 `tg:resolveChannel` handler（回應式，比照 `tg:ping`）
 - `feedManager.resolveTgChannel()` + `newswire:tgResolveChannel` handler：由 SW 轉發（只有 SW 能 `ensureOffscreenDocument`，options 無此權限）
 - `options.js` 的 `addChannel` 改為發訊息，**不再自建 client**
@@ -72,13 +75,13 @@ MTProto 對同一 auth key 的併發連線直接判定為安全風險並作廢 s
 
 | 檔案 | 改動 |
 |---|---|
-| `modules/newswire/tgAdapter.js` | `resolveChannel` 新增；`classifyTgError` 加 `reason`；fatal 分流狀態 |
-| `modules/newswire/tgOffscreenController.js` | `resolveChannel` 新增（+ `loadClient` DI） |
+| `modules/newswire/tgAdapter.js` | `resolveChannel` 新增；`classifyTgError` 加 `reason`；fatal 分流狀態；`isFailed` 暴露終止態 |
+| `modules/newswire/tgOffscreenController.js` | `resolveChannel` 新增（+ `loadClient`／`sleep` DI）；`waitAdapterAlive` 輪詢等就緒；匯出 `TG_NOT_READY` |
 | `offscreen.js` | `tg:resolveChannel` handler |
 | `modules/newswire/feedManager.js` | `resolveTgChannel` + `newswire:tgResolveChannel` handler；import `ensureOffscreenDocument` |
-| `options.js` | `addChannel` 改走 SW；`needs-login` 狀態 map；行內警示 + toggle；登出鈕分離；`meName` 落地 |
+| `options.js` | `addChannel` 改走 SW；`needs-login` 狀態 map；行內警示 + toggle；登出鈕分離；`meName` 落地；解析中換按鈕文字；`TG_NOT_READY` 換 i18n 文案 |
 | `options.css` | `.tg-session-invalid`、`.tg-logout-row` |
-| `_locales/*` × 14 | `newswireStatusNeedsLogin`、`tgSessionInvalidNote`（433 → 435） |
+| `_locales/*` × 14 | `newswireStatusNeedsLogin`、`tgSessionInvalidNote`、`tgResolving`、`tgNotReady`（433 → 437） |
 
 - 無 storage schema 變更（`newswireKeys.tg` 多一個 `meName` 顯示欄位，向後相容）
 - 無 manifest / 權限變更
@@ -87,7 +90,7 @@ MTProto 對同一 auth key 的併發連線直接判定為安全風險並作廢 s
 ## Test Impact
 
 - `newswireTgAdapter.test.mjs`：新增「fatal 分 reason」；更新兩處既有斷言（原假設所有 fatal → `needs-key`，現分流）；`AUTH_KEY_DUPLICATED` 明確納入 `needs-login` 案例
-- `tgOffscreenController.test.mjs`：新增 describe「resolveChannel 不得與常駐連線併發」3 例——★ 借用既有連線時 `clientBuilt === 0`（核心不變式）、臨時連線用完必 disconnect、`getEntity` 拋錯時仍 disconnect
+- `tgOffscreenController.test.mjs`：新增 describe「resolveChannel 不得與常駐連線併發」6 例——★ 借用既有連線時 `clientBuilt === 0`（核心不變式）、臨時連線用完必 disconnect、`getEntity` 拋錯時仍 disconnect，以及 review 修正後的三例：★ 連線建立中（未 alive）等就緒後借用且 `clientBuilt === 0`、★ 逾時報 `TG_NOT_READY` 且不 fallback、終止態不輪詢白等。**後三例在初版修法下會 fail（實測 3 failed / 7 passed）**，是真回歸測試
 - `feedManagerTgWatchdog.test.mjs`：補 `needs-login` 亦不重連
 - i18n 驗證：14 語系 435 keys、格式一致、**逐一確認無語系把文案翻回「金鑰有問題」**（那會讓本修正在該語系失效）
 
@@ -96,6 +99,7 @@ MTProto 對同一 auth key 的併發連線直接判定為安全風險並作廢 s
 ## 驗收條件
 
 - [ ] 在 tg 啟用中連續加入多個頻道，session 不再被作廢（原本第 2～8 次就會踩到）
+- [ ] **登入後立刻加頻道**（常駐連線仍在建立中）亦不作廢 session——初版修法在此路徑仍會併發
 - [ ] tg 未啟用時仍可加頻道（offscreen 臨時連線），且結束後無殘留連線
 - [ ] session 被作廢時：徽章顯示「session 已失效，請重新登入」而非「需填入 API key」
 - [ ] 同情境下卡片內出現紅框行內警示，指向「登出並撤銷」

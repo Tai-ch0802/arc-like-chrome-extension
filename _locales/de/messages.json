@@ -1580,5 +1580,11 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "Das Überschreiben wurde nicht abgeschlossen. Dieses Fenster ist möglicherweise bereits an den Workspace gebunden, die Tab-Anordnung wurde aber eventuell nicht gespeichert — bitte prüfen Sie den Inhalt des Workspace."
+  },
+  "tgResolving": {
+    "message": "Prüfen…"
+  },
+  "tgNotReady": {
+    "message": "Die Telegram-Verbindung ist noch nicht bereit. Warten Sie einen Moment und versuchen Sie es erneut. Zeigt der Status eine abgelaufene Sitzung, melden Sie sich neu an."
   }
 }

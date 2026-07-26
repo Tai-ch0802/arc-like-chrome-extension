@@ -1580,5 +1580,11 @@
   },
   "tgSessionInvalidNote": {
     "message": "Telegram ha invalidado esta session. Usa «Cerrar sesión y revocar» abajo y vuelve a iniciar sesión para restaurar la recepción."
+  },
+  "tgResolving": {
+    "message": "Comprobando…"
+  },
+  "tgNotReady": {
+    "message": "La conexión de Telegram aún no está lista. Espera un momento e inténtalo de nuevo. Si el estado indica que la sesión caducó, inicia sesión otra vez."
   }
 }

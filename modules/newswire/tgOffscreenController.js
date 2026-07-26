@@ -7,10 +7,20 @@
 // DI:post(chrome.runtime.sendMessage)、loadAdapter(async 取 createTgAdapter;生產動態
 // import tgAdapter,其 open() 再動態 import 2.6M bundle → 不啟用 tg 零成本)。
 
+// 「常駐連線尚未就緒」的錯誤碼。跨 offscreen → SW → options 傳遞(只有字串會過
+// message boundary),options 端據此換成 i18n 文案。
+export const TG_NOT_READY = 'TG_NOT_READY';
+
+// 等常駐連線就緒的上限。必須 < feedManager.resolveTgChannel 的 30s sendMessage
+// 逾時,否則 options 收到的會是無意義的「逾時」而非本模組的明確錯誤碼。
+const READY_TIMEOUT_MS = 20000;
+const READY_POLL_MS = 250;
+
 export function createTgOffscreenController(deps = {}) {
     const post = deps.post || ((msg) => { try { chrome.runtime.sendMessage(msg).catch(() => {}); } catch { /* no receiver */ } });
     const loadAdapter = deps.loadAdapter || (() => import('./tgAdapter.js').then((m) => m.createTgAdapter));
     const loadClient = deps.loadClient || (() => import('./tgClient.js').then((m) => m.createTgClient));
+    const sleep = deps.sleep || ((ms) => new Promise((r) => setTimeout(r, ms)));
 
     let adapter = null;
     let lastStatus = 'disabled';
@@ -44,6 +54,22 @@ export function createTgOffscreenController(deps = {}) {
     }
 
     /**
+     * 等常駐連線就緒(輪詢)。回 false 的三種情形都代表「不該借用、也不該另建」:
+     *   - adapter 於等待期間被 disconnect(使用者關閉 tg)→ 讓使用者重試,下次走臨時連線;
+     *   - 終止態(needs-login/needs-key)→ 永不會 alive,立刻收手而非白等 20 秒;
+     *   - 逾時 → 仍在連線中(慢網路/大 bundle),絕不可 fallback 成臨時連線。
+     */
+    async function waitAdapterAlive() {
+        for (let waited = 0; waited < READY_TIMEOUT_MS; waited += READY_POLL_MS) {
+            if (!adapter) return false;
+            if (adapter.isAlive()) return true;
+            if (adapter.isFailed && adapter.isFailed()) return false;
+            await sleep(READY_POLL_MS);
+        }
+        return !!adapter && adapter.isAlive();
+    }
+
+    /**
      * 解析頻道(加頻道前的防仿冒確認)。**offscreen 是唯一被允許用 session 連線的地方**。
      *
      * 為何一定要集中在此:MTProto 對同一 auth key 的併發連線會直接作廢 session
@@ -51,14 +77,23 @@ export function createTgOffscreenController(deps = {}) {
      * 收訊連線併發 → 使用者連續加幾個頻道就被伺服器踢掉 session,且錯誤被歸類為
      * needs-key、UI 顯示「需填入 API key」完全對不上真相。
      *
-     * 兩條路徑都保證「同時只有一條連線」:
-     *   (a) 常駐連線活著 → 直接借用它,不另開連線;
-     *   (b) 未啟用/未連線(無常駐連線)→ 臨時建一條、用完立刻斷。
+     * 不變式:**adapter 存在 ⇒ 絕不另建連線**,不論它 alive / 連線建立中 / 退避中。
+     *   (a) adapter 存在 → 等它就緒後借用(逾時或終止態則報錯,**不 fallback**);
+     *   (b) adapter 不存在(tg 未啟用)→ 臨時建一條、用完立刻斷。
+     *
+     * 為何不以 isAlive() 當唯一條件(PR #212 review 抓到的殘餘窗口):`open()` 內
+     * `createClient()`(dynamic import 2.6M bundle)到 `client.connect()`(MTProto DH
+     * 交換)完成之間,isAlive() 一路是 false 但連線正在建立,窗口達秒級到十秒級。而
+     * options 登入後寫完 storage 就立刻顯示加頻道 UI(不等 SW 連上),使用者「登入後
+     * 連續加頻道」正好落在窗口內 → 只看 isAlive() 會誤判無連線而另建臨時連線,製造
+     * 出這個 PR 要修的併發。**逾時亦不可 fallback**:逾時只代表「還在連」,fallback
+     * 就是併發。
      * @param {object} cfg {session, apiId, apiHash}
      * @param {string} username
      */
     async function resolveChannel(cfg, username) {
-        if (adapter && adapter.isAlive() && typeof adapter.resolveChannel === 'function') {
+        if (adapter) {
+            if (!(await waitAdapterAlive())) throw new Error(TG_NOT_READY);
             return adapter.resolveChannel(username);
         }
         const createTgClient = await loadClient();

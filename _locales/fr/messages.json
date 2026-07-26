@@ -1580,5 +1580,11 @@
   },
   "tgSessionInvalidNote": {
     "message": "Telegram a invalidé cette session. Utilisez « Se déconnecter et révoquer » ci-dessous, puis reconnectez-vous pour rétablir le flux."
+  },
+  "tgResolving": {
+    "message": "Vérification…"
+  },
+  "tgNotReady": {
+    "message": "La connexion Telegram n’est pas encore prête. Patientez un instant puis réessayez. Si l’état indique que la session a expiré, reconnectez-vous."
   }
 }
