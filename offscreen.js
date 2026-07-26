@@ -190,4 +190,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             .catch(() => sendResponse({ alive: false, hasAdapter: false, status: 'disabled' }));
         return true;
     }
+    // 頻道解析集中在 offscreen:同一 session 不得有併發連線,否則 Telegram 會作廢它
+    // (AUTH_KEY_DUPLICATED)。options 頁一律經 SW 轉發到這裡,不自建 client。
+    if (message.action === 'tg:resolveChannel') {
+        tgControllerReady
+            .then((c) => c.resolveChannel(message.cfg, message.username))
+            .then((info) => sendResponse({ ok: true, info }))
+            .catch((err) => sendResponse({ ok: false, error: err?.errorMessage || err?.message || String(err) }));
+        return true;
+    }
 });

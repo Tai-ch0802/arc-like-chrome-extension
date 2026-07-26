@@ -1554,6 +1554,12 @@
   "tgCuratedWarn": {
     "message": "注意：類似のなりすまし handle が存在します。追加前に確認してください"
   },
+  "newswireStatusNeedsLogin": {
+    "message": "session 失効 — 再ログイン"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram がこの session を失効させました。下の「ログアウトして失効させる」を実行し、再ログインすると受信を再開できます。"
+  },
   "workspaceOverwrite": {
     "message": "現在のウィンドウで上書き"
   },

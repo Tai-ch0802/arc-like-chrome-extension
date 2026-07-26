@@ -72,6 +72,19 @@ describe('classifyTgError (pure)', () => {
       expect(classifyTgError({ errorMessage: m }).kind).toBe('fatal');
     }
   });
+  it('★ fatal 再分 reason:session 類 vs api_id 類(補救動作不同,UI 文案據此分流)', () => {
+    // session 類 → 重新登入。AUTH_KEY_DUPLICATED 是實測踩到的:同一 session 併發
+    // 連線被伺服器作廢,舊版一律回報 needs-key,UI 顯示「需填入 API key」與真相相反。
+    for (const m of ['AUTH_KEY_UNREGISTERED', 'AUTH_KEY_INVALID', 'AUTH_KEY_DUPLICATED',
+      'AUTH_KEY_PERM_EMPTY', 'SESSION_REVOKED', 'SESSION_EXPIRED', 'SESSION_PASSWORD_NEEDED',
+      'USER_DEACTIVATED']) {
+      expect(classifyTgError({ errorMessage: m })).toEqual({ kind: 'fatal', reason: 'session' });
+    }
+    // api_id 類 → 重新登入無用,要檢查/更換 my.telegram.org 的 api_id。
+    for (const m of ['API_ID_INVALID', 'API_ID_PUBLISHED_FLOOD']) {
+      expect(classifyTgError({ errorMessage: m })).toEqual({ kind: 'fatal', reason: 'apiId' });
+    }
+  });
   it('unknown/network errors → transient', () => {
     expect(classifyTgError({ message: 'ECONNRESET' }).kind).toBe('transient');
     expect(classifyTgError({ message: 'Timeout' }).kind).toBe('transient');
@@ -145,15 +158,21 @@ describe('createTgAdapter — lifecycle', () => {
     expect(timers.length).toBe(1); // 已排程重連（遵守 30s，非立即；不會誤判 transient 提前重連）
   });
 
-  it('fatal errors (SESSION_REVOKED / SESSION_EXPIRED / API_ID_INVALID) → needs-key, NO reconnect loop', async () => {
-    for (const em of ['SESSION_REVOKED', 'SESSION_EXPIRED', 'API_ID_INVALID']) {
+  it('fatal errors → 對應狀態(session 類 needs-login / api_id 類 needs-key), NO reconnect loop', async () => {
+    // 兩類都終止重試,但回報的狀態不同——UI 才能給出正確的補救指示。
+    for (const [em, want] of [
+      ['SESSION_REVOKED', 'needs-login'],
+      ['SESSION_EXPIRED', 'needs-login'],
+      ['AUTH_KEY_DUPLICATED', 'needs-login'],   // 併發連線被作廢(實測)
+      ['API_ID_INVALID', 'needs-key'],
+    ]) {
       const err = Object.assign(new Error('x'), { errorMessage: em });
       const { deps, timers } = makeDeps({ connectError: err });
       const { statuses, h } = hooks();
       const a = createTgAdapter(cfg(), h, deps);
       a.connect();
       await flush();
-      expect(statuses).toContain('needs-key');
+      expect(statuses).toContain(want);
       expect(timers.length).toBe(0);       // 不排程重連
       a.connect();                          // watchdog 重複呼叫
       await flush();
@@ -196,15 +215,15 @@ describe('createTgAdapter — lifecycle', () => {
     expect(statuses).not.toContain('needs-key');
   });
 
-  it('session dies at getEntity stage (not connect) → needs-key, NO reconnect (FR-10, PR#194 review)', async () => {
+  it('session dies at getEntity stage (not connect) → needs-login, NO reconnect (FR-10, PR#194 review)', async () => {
     // connect() 成功但 session 已撤銷:GramJS 到第一個 API call(getEntity)才回 fatal。
-    // 全頻道都因此失敗時,必須判 fatal 進 needs-key,而非泛用 'no channel resolved' → transient。
+    // 全頻道都因此失敗時,必須判 fatal(→ needs-login),而非泛用 'no channel resolved' → transient。
     const { deps, timers } = makeDeps({ getEntityError: Object.assign(new Error('x'), { errorMessage: 'SESSION_REVOKED' }) });
     const { statuses, h } = hooks();
     const a = createTgAdapter(cfg(), h, deps);
     a.connect();
     await flush();
-    expect(statuses).toContain('needs-key');
+    expect(statuses).toContain('needs-login');
     expect(statuses).not.toContain('retrying');
     expect(timers.length).toBe(0); // 不排程重連
     a.connect(); await flush();     // watchdog 重複呼叫

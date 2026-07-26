@@ -1574,5 +1574,11 @@
   },
   "tgCuratedWarn": {
     "message": "Внимание: существует похожий поддельный handle — проверьте перед добавлением"
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "session истекла — войдите снова"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram аннулировал эту session. Нажмите «Выйти и отозвать» ниже, затем войдите снова, чтобы восстановить приём сообщений."
   }
 }

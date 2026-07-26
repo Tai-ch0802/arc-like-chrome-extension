@@ -223,6 +223,9 @@
     "message": "API कुंजी आवश्यक",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsLogin": {
+    "message": "session समाप्त — लॉग इन करें"
+  },
   "newswireStatusNeedsConfig": {
     "message": "चैनल जोड़ें",
     "description": "Source status: enabled but no channel configured yet."
@@ -1529,6 +1532,9 @@
   },
   "tgLogoutMessage": {
     "message": "इससे session दूरस्थ रूप से रद्द हो जाती है और स्थानीय क्रेडेंशियल साफ़ हो जाते हैं।"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram ने इस session को अमान्य कर दिया। नीचे \"लॉग आउट करें और रद्द करें\" का इस्तेमाल करें, फिर फ़ीड बहाल करने के लिए दोबारा लॉग इन करें।"
   },
   "tgChannelsHeader": {
     "message": "चैनल"

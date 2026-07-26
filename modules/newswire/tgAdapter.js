@@ -32,10 +32,16 @@ export function classifyTgError(e) {
         const m = msg.match(/FLOOD_WAIT_(\d+)|wait of (\d+)/i);
         return { kind: 'flood', seconds: m ? Number(m[1] || m[2]) : 60 };
     }
-    // 憑證/session 失效:重試無用 → needs-key 終止(FR-09/10)。含金鑰未註冊/
-    // 無效/重複/權限空、session 撤銷/過期/需 2FA、帳號停用、api_id 無效/外洩限流。
-    if (/AUTH_KEY_UNREGISTERED|AUTH_KEY_INVALID|AUTH_KEY_DUPLICATED|AUTH_KEY_PERM_EMPTY|SESSION_REVOKED|SESSION_EXPIRED|SESSION_PASSWORD_NEEDED|USER_DEACTIVATED|API_ID_INVALID|API_ID_PUBLISHED_FLOOD/i.test(msg)) {
-        return { kind: 'fatal' };
+    // 憑證/session 失效:重試無用 → 終止(FR-09/10)。兩者都是 fatal,但**要分辨**:
+    // 使用者的補救動作完全不同(重新登入 vs 檢查 api_id),而舊版一律回報 needs-key,
+    // 讓 session 被作廢時 UI 顯示「需填入 API key」——key 明明還在,文案與真相相反。
+    // session 類:金鑰未註冊/無效/重複(併發連線)/權限空、session 撤銷/過期/需 2FA、帳號停用。
+    if (/AUTH_KEY_UNREGISTERED|AUTH_KEY_INVALID|AUTH_KEY_DUPLICATED|AUTH_KEY_PERM_EMPTY|SESSION_REVOKED|SESSION_EXPIRED|SESSION_PASSWORD_NEEDED|USER_DEACTIVATED/i.test(msg)) {
+        return { kind: 'fatal', reason: 'session' };
+    }
+    // api_id 類:重新登入沒用,要換/檢查 my.telegram.org 申請的 api_id。
+    if (/API_ID_INVALID|API_ID_PUBLISHED_FLOOD/i.test(msg)) {
+        return { kind: 'fatal', reason: 'apiId' };
     }
     return { kind: 'transient' };
 }
@@ -163,7 +169,9 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
             if (stopped) return; // disconnect 後才 reject:不再發狀態,保留 'disabled'
             if (c.kind === 'fatal') {
                 failed = true;
-                onStatus('needs-key'); // session 失效:等使用者重新登入（改 config）才重建
+                // 分辨補救動作:session 失效 → 重新登入(needs-login);api_id 問題 →
+                // 檢查/更換 api_id(needs-key)。兩者都不重試,等 config 變更才重建。
+                onStatus(c.reason === 'apiId' ? 'needs-key' : 'needs-login');
             } else if (c.kind === 'flood') {
                 scheduleReconnect(Math.max(1000, (c.seconds || 60) * 1000)); // 遵守 FLOOD_WAIT
             } else {
@@ -178,6 +186,25 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
         connect() {
             stopped = false;
             if (!failed && !isAlive() && !reconnectTimer && !connecting) open();
+        },
+        /**
+         * 用**既有連線**解析頻道(加頻道前的防仿冒確認)。
+         *
+         * 存在的唯一理由是避免 AUTH_KEY_DUPLICATED:MTProto 對同一 auth key 的併發
+         * 連線會直接作廢 session。原本 options 頁自建短命 client 做這件事,與此處的
+         * 常駐連線併發 → 使用者連續加幾個頻道就被伺服器踢掉 session。
+         * 回傳形狀與 tgLoginController.resolveChannel 一致(options 端共用同一段渲染)。
+         * @param {string} username 頻道 handle(不含 @)
+         */
+        async resolveChannel(username) {
+            if (!isAlive()) throw new Error('tg adapter not connected');
+            const entity = await client.getEntity(username);
+            return {
+                id: entity?.id != null ? String(entity.id) : undefined,
+                username: entity?.username,
+                title: entity?.title,
+                participantsCount: entity?.participantsCount,
+            };
         },
         disconnect() {
             stopped = true;

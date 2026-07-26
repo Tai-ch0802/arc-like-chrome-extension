@@ -1577,5 +1577,11 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "The overwrite did not complete. This window may already be bound to the workspace, but its tab layout might not have been saved — please check the workspace contents."
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "Session expired — log in again"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram invalidated this session. Use \"Log out & revoke\" below, then log in again to restore the feed."
   }
 }

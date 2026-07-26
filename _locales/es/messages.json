@@ -1574,5 +1574,11 @@
   },
   "workspaceOverwriteFailedMessage": {
     "message": "La sobrescritura no se completó. Puede que esta ventana ya esté vinculada al Workspace, pero quizá su configuración de pestañas no se haya guardado: revisa el contenido del Workspace."
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "Session caducada — inicia sesión"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram ha invalidado esta session. Usa «Cerrar sesión y revocar» abajo y vuelve a iniciar sesión para restaurar la recepción."
   }
 }

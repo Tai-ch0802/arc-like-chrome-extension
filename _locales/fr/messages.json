@@ -1574,5 +1574,11 @@
   },
   "tgCuratedWarn": {
     "message": "Attention : un handle d'usurpation similaire existe — vérifiez avant d'ajouter"
+  },
+  "newswireStatusNeedsLogin": {
+    "message": "session expirée — reconnectez-vous"
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram a invalidé cette session. Utilisez « Se déconnecter et révoquer » ci-dessous, puis reconnectez-vous pour rétablir le flux."
   }
 }

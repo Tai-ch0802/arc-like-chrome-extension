@@ -31,5 +31,9 @@ describe('shouldReconnectTg (BASE-018 TG2b watchdog)', () => {
     });
     it('憑證失效(hasAdapter=true, needs-key,終止態)→ 不重連', () => {
         expect(shouldReconnectTg({ alive: false, hasAdapter: true, status: 'needs-key' })).toBe(false);
+        // needs-login(session 被作廢)同屬終止態:watchdog 以 hasAdapter 判斷而非 status,
+        // 故新增狀態不需改 shouldReconnectTg——此斷言鎖住該設計,避免日後改回看 status
+        // 時漏掉新狀態而造成無限重連(對已作廢的 session 重連只會再被拒)。
+        expect(shouldReconnectTg({ alive: false, hasAdapter: true, status: 'needs-login' })).toBe(false);
     });
 });

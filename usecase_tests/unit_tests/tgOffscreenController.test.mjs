@@ -66,4 +66,65 @@ describe('tgOffscreenController (BASE-018 TG2b)', () => {
         ctrl.disconnect();
         expect(ctrl.ping()).toEqual({ alive: false, hasAdapter: false, status: 'disabled' });
     });
+
+    /**
+     * 頻道解析必須「同時只有一條連線」——MTProto 對同一 auth key 的併發連線會直接
+     * 作廢 session(AUTH_KEY_DUPLICATED)。這組測試鎖住該不變式。
+     */
+    describe('resolveChannel 不得與常駐連線併發', () => {
+        const INFO = { id: 100n, username: 'BWEnews', title: 'Chan', participantsCount: 5000 };
+
+        it('★ 常駐連線活著 → 借用它,不另建 client', async () => {
+            let clientBuilt = 0;
+            const made = { ...fakeAdapter(), resolved: null };
+            made.resolveChannel = async function (u) { this.resolved = u; return { username: u, title: 'Chan' }; };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => made,
+                loadClient: async () => { clientBuilt += 1; return async () => ({}); },
+            });
+            await ctrl.connect(cfg);
+            const info = await ctrl.resolveChannel(cfg, 'BWEnews');
+
+            expect(made.resolved).toBe('BWEnews');   // 走既有連線
+            expect(clientBuilt).toBe(0);             // ← 關鍵:完全沒有建第二條連線
+            expect(info.title).toBe('Chan');
+        });
+
+        it('★ 無常駐連線(未啟用)→ 臨時建一條,用完必 disconnect', async () => {
+            let disconnected = false;
+            const fakeClient = {
+                connected: false,
+                async connect() { this.connected = true; },
+                async disconnect() { disconnected = true; this.connected = false; },
+                async getEntity() { return INFO; },
+            };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => fakeAdapter(),
+                loadClient: async () => async () => fakeClient,
+            });
+            // 未 connect → 無 adapter
+            const info = await ctrl.resolveChannel(cfg, 'BWEnews');
+
+            expect(info).toEqual({ id: '100', username: 'BWEnews', title: 'Chan', participantsCount: 5000 });
+            expect(disconnected).toBe(true);         // 用完就斷,不留第二條連線
+        });
+
+        it('臨時連線在 getEntity 拋錯時仍會 disconnect(不留殘連線觸發 AUTH_KEY_DUPLICATED)', async () => {
+            let disconnected = false;
+            const fakeClient = {
+                async connect() {},
+                async disconnect() { disconnected = true; },
+                async getEntity() { throw Object.assign(new Error('x'), { errorMessage: 'USERNAME_NOT_OCCUPIED' }); },
+            };
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => () => fakeAdapter(),
+                loadClient: async () => async () => fakeClient,
+            });
+            await expect(ctrl.resolveChannel(cfg, 'nope')).rejects.toThrow('x');
+            expect(disconnected).toBe(true);
+        });
+    });
 });

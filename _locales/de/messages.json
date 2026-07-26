@@ -223,6 +223,9 @@
     "message": "API-Schlüssel erforderlich",
     "description": "Source status: enabled but missing API key."
   },
+  "newswireStatusNeedsLogin": {
+    "message": "session abgelaufen – neu anmelden"
+  },
   "newswireStatusNeedsConfig": {
     "message": "Kanal hinzufügen",
     "description": "Source status: enabled but no channel configured yet."
@@ -1529,6 +1532,9 @@
   },
   "tgLogoutMessage": {
     "message": "Dadurch wird die session remote widerrufen und lokale Anmeldedaten werden gelöscht."
+  },
+  "tgSessionInvalidNote": {
+    "message": "Telegram hat diese session ungültig gemacht. Nutze unten „Abmelden & widerrufen“ und melde dich anschließend erneut an, um den Feed wiederherzustellen."
   },
   "tgChannelsHeader": {
     "message": "Kanäle"

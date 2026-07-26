@@ -20,6 +20,7 @@ import {
     missingChannels,
 } from './adapters.js';
 import { createTgProxyAdapter } from './tgProxyAdapter.js';
+import { ensureOffscreenDocument } from '../offscreenManager.js';
 import { canonicalizeNewswire } from './newswireSyncLogic.js';
 import { buildP0Notification } from './notify.js';
 
@@ -311,6 +312,33 @@ export async function handleNewswireWatchdog() {
     ensureKeepalive();
 }
 
+/**
+ * 代 options 頁向 offscreen 索取頻道解析(加頻道前的防仿冒確認)。
+ *
+ * 為何要繞 SW 一手:只有 SW 能建 offscreen document,而**頻道解析必須在 offscreen
+ * 執行**——同一 session 若同時有兩條連線,Telegram 會直接作廢它
+ * (AUTH_KEY_DUPLICATED)。options 自建 client 正是先前 session 反覆被踢掉的原因。
+ * @param {{apiId, apiHash, session}} cfg
+ * @param {string} username
+ * @returns {Promise<{ok:boolean, info?:object, error?:string}>}
+ */
+async function resolveTgChannel(cfg, username) {
+    try {
+        await ensureOffscreenDocument();
+    } catch (err) {
+        return { ok: false, error: err?.message || String(err) };
+    }
+    try {
+        const res = await Promise.race([
+            chrome.runtime.sendMessage({ action: 'tg:resolveChannel', cfg, username }),
+            new Promise((_, reject) => { setTimeout(() => reject(new Error('tg:resolveChannel timeout')), 30000); }),
+        ]);
+        return res || { ok: false, error: 'no response from offscreen' };
+    } catch (err) {
+        return { ok: false, error: err?.message || String(err) };
+    }
+}
+
 /** ping offscreen 的 tg handler;offscreen 不存在(no receiver)或逾時回 null。 */
 async function pingTg() {
     try {
@@ -417,6 +445,14 @@ export function handleNewswireMessage(message, sendResponse) {
             broadcast({ type: 'newswire:cleared' });
             sendResponse({ ok: true });
         })().catch((err) => sendResponse({ ok: false, error: err?.message || String(err) }));
+        return true;
+    }
+    if (message.action === 'newswire:tgResolveChannel') {
+        // options 頁加頻道前的防仿冒確認。轉發到 offscreen 執行,使 session 全程只有
+        // 一條連線(見 resolveTgChannel 註解:併發會讓 Telegram 作廢 session)。
+        resolveTgChannel(message.cfg, message.username)
+            .then((res) => sendResponse(res))
+            .catch((err) => sendResponse({ ok: false, error: err?.message || String(err) }));
         return true;
     }
     if (message.action === 'newswire:markRead') {
