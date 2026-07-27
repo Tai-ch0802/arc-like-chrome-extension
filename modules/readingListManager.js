@@ -3,6 +3,7 @@
 
 import * as api from './apiManager.js';
 import { markAsFetched } from './rssManager.js';
+import { claimUrls } from './routing/rulesStore.js';
 
 /**
  * Group name for tabs opened from reading list.
@@ -19,6 +20,10 @@ const READING_LIST_GROUP_NAME = api.getMessage('readingListGroupName') || 'From 
  * @returns {Promise<chrome.tabs.Tab>} The created tab.
  */
 export async function openReadingListItem(entry) {
+    // Claim the URL BEFORE creating the tab so the routing engine (BASE-022)
+    // never races this flow's deferred grouping below (FR-2.07).
+    await claimUrls([entry.url]);
+
     // Create a new tab with the URL
     const tab = await api.createTab({ url: entry.url, active: true });
 

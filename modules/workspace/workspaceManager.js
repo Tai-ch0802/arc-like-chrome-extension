@@ -48,6 +48,7 @@
  * @property {string} [groupColor]
  */
 import { getStorage, setStorage, setStorageStrict, removeStorage, addTabToNewGroup } from '../apiManager.js';
+import { claimUrls } from '../routing/rulesStore.js';
 import { renderIcon, hasIcon } from '../icons.js';
 import { escapeHtml } from '../utils/textUtils.js';
 
@@ -597,6 +598,11 @@ export async function switchWorkspace(targetId, originWindowId) {
     const snapshotTabs = (target.tabSnapshot && target.tabSnapshot.length > 0)
         ? target.tabSnapshot
         : [{ url: 'chrome://newtab/', title: '', pinned: false }];
+
+    // Claim every restored URL BEFORE any window/tab creation so the routing
+    // engine (BASE-022) leaves the whole restore alone — the group rebuild
+    // below runs seconds after the tabs start navigating (FR-2.07).
+    await claimUrls(snapshotTabs.map(s => s.url));
 
     // The window is created with the first tab only; the rest are added
     // sequentially so a per-tab failure (e.g. revoked file:// access) skips
