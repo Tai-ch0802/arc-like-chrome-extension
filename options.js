@@ -2321,8 +2321,19 @@ async function renderRouting(container) {
         return form;
     }
 
+    let sortableInstance = null;
+
     async function renderList() {
         const state = await rulesStore.getRoutingState();
+        // renderList reuses the same container, so destroy the previous
+        // Sortable first (same convention as dragDropManager). Note: stacked
+        // instances would NOT double-fire onEnd (SortableJS has a global
+        // active-drag singleton — verified empirically); this guards against
+        // instance/listener leaks across re-renders, not double writes.
+        if (sortableInstance) {
+            sortableInstance.destroy();
+            sortableInstance = null;
+        }
         listEl.textContent = '';
 
         const atCap = state.rules.length >= MAX_RULES;
@@ -2401,7 +2412,7 @@ async function renderRouting(container) {
 
         // Drag reorder via the Sortable global loaded by options.html.
         if (typeof Sortable !== 'undefined') {
-            new Sortable(listEl, {
+            sortableInstance = new Sortable(listEl, {
                 handle: '.routing-drag-handle',
                 animation: 150,
                 onEnd: async () => {
