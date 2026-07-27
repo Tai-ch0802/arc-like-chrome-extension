@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "การเชื่อมต่อ Telegram ยังไม่พร้อม โปรดรอสักครู่แล้วลองอีกครั้ง หากสถานะแสดงว่าเซสชันหมดอายุ โปรดเข้าสู่ระบบใหม่"
+  },
+  "settingsNavRouting": {
+    "message": "กฎการจัดกลุ่มอัตโนมัติ",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "จัดกลุ่มแท็บใหม่ตามกฎ",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "แท็บใหม่ที่ตรงกับกฎจะถูกเพิ่มเข้ากลุ่มเป้าหมายโดยอัตโนมัติเมื่อโหลดครั้งแรก",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "เพิ่มกฎ",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "โดเมนตรงกับ",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL มีคำว่า",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "เช่น youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "ชื่อกลุ่ม",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "สีอัตโนมัติ",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "แก้ไขกฎ",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "ลบกฎ",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "เปิดใช้กฎ",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "ลากเพื่อจัดลำดับ",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "ยังไม่มีกฎ คลิกขวาที่แท็บในแถบด้านข้างแล้วเลือก “จัดไซต์นี้เข้ากลุ่มเสมอ…” หรือเพิ่มที่นี่",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "ตัวอย่าง: youtube.com → 🎵 มีเดีย",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "ถึงขีดจำกัดของกฎแล้ว (50 ข้อ) โปรดลบบางข้อก่อนเพิ่มใหม่",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "จัดไซต์นี้เข้ากลุ่มเสมอ…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "จัดแท็บของไซต์นี้เข้ากลุ่ม…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "ชื่อกลุ่มใหม่…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "สร้างกฎแล้ว — แท็บใหม่จากไซต์นี้จะเข้ากลุ่มโดยอัตโนมัติ",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

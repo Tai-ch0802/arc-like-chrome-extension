@@ -30,9 +30,9 @@ describe('Options Page Use Case', () => {
         await teardownBrowser(browser);
     });
 
-    test('left nav renders 8 sections with appearance active by default', async () => {
+    test('left nav renders all sections with appearance active by default', async () => {
         const navItems = await page.$$('.opt-nav__item');
-        expect(navItems.length).toBe(9); // +快訊(newswire, BASE-016 N2)
+        expect(navItems.length).toBe(10); // +快訊(newswire, BASE-016 N2) +自動分組規則(routing, BASE-022 P2)
 
         // The appearance section is active on load.
         await page.waitForSelector('.opt-section.active', { timeout: 5000 });

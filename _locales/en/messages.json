@@ -1589,5 +1589,85 @@
   },
   "tgNotReady": {
     "message": "The Telegram connection is not ready yet. Wait a moment and try again. If the status shows the session has expired, log in again."
+  },
+  "settingsNavRouting": {
+    "message": "Auto Grouping Rules",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "Route new tabs by rules",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "A new tab matching a rule joins its target group automatically on its first navigation.",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "Add rule",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "Domain equals",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL contains",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "e.g. youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "Group name",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "Auto color",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "Edit rule",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "Delete rule",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "Rule enabled",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "Drag to reorder",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "No rules yet. Right-click a tab in the sidebar and pick “Always group this site…”, or add one here.",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "Example: youtube.com → 🎵 Media",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "Rule limit reached (50). Delete one to add more.",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "Always group this site…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "Always group this site into…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "New group name…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "Rule created — new tabs from this site will join the group automatically.",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

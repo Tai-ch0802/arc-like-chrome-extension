@@ -3931,3 +3931,36 @@ mark.url-match {
     resize: vertical;
     margin-bottom: 8px;
 }
+
+/* --- Group Picker dialog (routing rules, BASE-022 P2) --- */
+.group-picker-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+.group-picker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.group-picker-item:hover {
+    background: var(--element-bg-hover-color);
+}
+.group-picker-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.group-picker-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}

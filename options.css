@@ -80,3 +80,33 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .newswire-card-toggle .opt-row__label::before { transition: none; }
 }
+
+/* --- Auto Grouping Rules section (BASE-022 P2) --- */
+.routing-rules-list { display: flex; flex-direction: column; margin: 8px 0; }
+.routing-rule-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--border-color, #45475a);
+    flex-wrap: wrap;
+}
+.routing-drag-handle { cursor: grab; opacity: 0.6; user-select: none; letter-spacing: -2px; }
+.routing-rule-text { flex: 1; min-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.routing-rule-target { display: inline-flex; align-items: center; gap: 6px; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.routing-rule-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.routing-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-flex;
+}
+.routing-icon-btn:hover { opacity: 1; background: var(--element-bg-hover-color, rgba(128,128,128,.2)); }
+.routing-rule-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; width: 100%; padding: 8px 0; }
+.routing-rule-form .modal-input { flex: 1; min-width: 140px; }
+.routing-empty-state { padding: 12px 0; }
+#routing-add-rule-btn { margin-top: 8px; }

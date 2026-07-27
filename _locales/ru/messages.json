@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "Подключение к Telegram ещё не готово. Подождите немного и попробуйте снова. Если статус показывает, что сеанс недействителен, войдите заново."
+  },
+  "settingsNavRouting": {
+    "message": "Правила автогруппировки",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "Группировать новые вкладки по правилам",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "Новая вкладка, соответствующая правилу, автоматически попадает в свою группу при первой загрузке.",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "Добавить правило",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "Домен равен",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL содержит",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "напр. youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "Название группы",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "Автоцвет",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "Изменить правило",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "Удалить правило",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "Правило включено",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "Перетащите для сортировки",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "Правил пока нет. Щёлкните вкладку в боковой панели правой кнопкой и выберите «Всегда группировать этот сайт…», либо добавьте правило здесь.",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "Пример: youtube.com → 🎵 Медиа",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "Достигнут лимит правил (50). Удалите одно, чтобы добавить новое.",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "Всегда группировать этот сайт…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "Всегда помещать вкладки этого сайта в…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "Название новой группы…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "Правило создано — новые вкладки этого сайта будут добавляться в группу автоматически.",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "Telegram 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도하세요. 세션이 만료된 것으로 표시되면 다시 로그인하세요."
+  },
+  "settingsNavRouting": {
+    "message": "자동 그룹화 규칙",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "규칙으로 새 탭 자동 그룹화",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "새 탭이 처음 로드될 때 규칙과 일치하면 지정한 그룹에 자동으로 추가됩니다.",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "규칙 추가",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "도메인 일치",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL 포함",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "예: youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "그룹 이름",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "자동 색상",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "규칙 편집",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "규칙 삭제",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "규칙 사용",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "드래그하여 순서 변경",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "아직 규칙이 없습니다. 사이드바에서 탭을 우클릭해 “이 사이트를 항상 그룹으로…”를 선택하거나 여기서 추가하세요.",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "예: youtube.com → 🎵 미디어",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "규칙이 상한(50개)에 도달했습니다. 삭제 후 추가하세요.",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "이 사이트를 항상 그룹으로…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "이 사이트의 탭을 항상 넣을 그룹…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "새 그룹 이름…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "규칙이 생성되었습니다. 이제 이 사이트의 새 탭은 자동으로 그룹에 추가됩니다.",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

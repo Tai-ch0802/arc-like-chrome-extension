@@ -1,11 +1,10 @@
 import * as api from '../apiManager.js';
 import * as aiManager from '../aiManager.js';
 import * as state from '../stateManager.js';
-import { showToast, hideToast } from './toast.js';
+import { showToast, hideToast, claimUndo } from './toast.js';
 
 export function initAiGrouper() {
     const aiGroupBtn = document.getElementById('ai-group-btn');
-    const undoBtn = document.getElementById('toast-undo-btn');
     const closeBtn = document.getElementById('toast-close-btn');
 
     if (aiGroupBtn) {
@@ -25,9 +24,8 @@ export function initAiGrouper() {
             }
         });
     }
-    if (undoBtn) {
-        undoBtn.addEventListener('click', handleUndoAction);
-    }
+    // Undo button ownership moved to toast.js claimUndo (shared with routing
+    // rules): the handler is claimed per-toast where the toast is shown.
     if (closeBtn) {
         closeBtn.addEventListener('click', hideToast);
     }
@@ -151,6 +149,7 @@ async function handleGroupAction() {
                 createdGroups: createdGroupIds
             });
             showToast(api.getMessage('autoGroupingSuccess'), true);
+            claimUndo(handleUndoAction);
         } else {
             showToast(api.getMessage('noTabsGrouped'));
         }

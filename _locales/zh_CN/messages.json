@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "Telegram 连接尚未就绪。请稍候后再试一次；若状态显示 session 已失效，请重新登录。"
+  },
+  "settingsNavRouting": {
+    "message": "自动分组规则",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "按规则自动分组新标签页",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "新标签页首次加载时，符合规则就会自动加入指定分组。",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "添加规则",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "域名等于",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "网址包含",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "例：youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "分组名称",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "自动配色",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "编辑规则",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "删除规则",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "启用规则",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "拖拽排序",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "暂无规则。在侧边栏的标签页上右键选择「始终将此网站分到分组…」，或在此添加。",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "例：youtube.com → 🎵 影音",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "规则已达上限（50 条），请先删除再添加。",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "始终将此网站分到分组…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "此网站的标签页始终分到…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "新分组名称…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "规则已创建——之后此网站的新标签页会自动加入分组。",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

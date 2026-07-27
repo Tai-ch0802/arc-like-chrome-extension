@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "Telegram कनेक्शन अभी तैयार नहीं है। कुछ क्षण प्रतीक्षा करें और फिर प्रयास करें। यदि स्थिति दिखाती है कि सत्र समाप्त हो गया है, तो दोबारा लॉग इन करें।"
+  },
+  "settingsNavRouting": {
+    "message": "स्वचालित समूहन नियम",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "नियमों से नए टैब समूहित करें",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "नियम से मेल खाने वाला नया टैब पहली बार लोड होते ही अपने समूह में अपने आप जुड़ जाता है।",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "नियम जोड़ें",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "डोमेन बराबर है",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL में शामिल है",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "जैसे youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "समूह का नाम",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "स्वचालित रंग",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "नियम संपादित करें",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "नियम हटाएँ",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "नियम सक्षम",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "क्रम बदलने के लिए खींचें",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "अभी कोई नियम नहीं है। साइडबार में किसी टैब पर राइट-क्लिक करके “इस साइट को हमेशा समूह में रखें…” चुनें, या यहाँ जोड़ें।",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "उदाहरण: youtube.com → 🎵 मीडिया",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "नियम सीमा (50) पूरी हो गई। और जोड़ने के लिए एक हटाएँ।",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "इस साइट को हमेशा समूह में रखें…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "इस साइट के टैब हमेशा इस समूह में…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "नए समूह का नाम…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "नियम बन गया — अब इस साइट के नए टैब अपने आप समूह में जुड़ेंगे।",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }
