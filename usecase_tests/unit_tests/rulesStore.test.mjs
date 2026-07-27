@@ -87,6 +87,19 @@ describe('updateRule / setRuleEnabled', () => {
     test('returns false for unknown id', async () => {
         expect(await rulesStore.updateRule('nope', { groupTitle: 'X' })).toBe(false);
     });
+    test('sanitizes patches like addRule: trims, caps, rejects bad enum values', async () => {
+        const rule = await rulesStore.addRule(input());
+
+        expect(await rulesStore.updateRule(rule.id, { matchType: 'regex' })).toBe(false);
+        expect(await rulesStore.updateRule(rule.id, { groupColor: 'magenta' })).toBe(false);
+        expect(await rulesStore.updateRule(rule.id, { pattern: '   ' })).toBe(false);
+        let state = await rulesStore.getRoutingState();
+        expect(state.rules[0].matchType).toBe('domain'); // rejected patches change nothing
+
+        expect(await rulesStore.updateRule(rule.id, { pattern: `  ${'y'.repeat(300)}  ` })).toBe(true);
+        state = await rulesStore.getRoutingState();
+        expect(state.rules[0].pattern).toHaveLength(256);
+    });
     test('setRuleEnabled toggles participation flag', async () => {
         const rule = await rulesStore.addRule(input());
         await rulesStore.setRuleEnabled(rule.id, false);

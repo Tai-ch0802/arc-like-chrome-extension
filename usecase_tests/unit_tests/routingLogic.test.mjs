@@ -9,6 +9,7 @@ import {
     consumeClaim,
     addClaims,
     pruneClaims,
+    sanitizeRuleInput,
     CLAIM_TTL_MS,
 } from '../../modules/routing/routingLogic.js';
 
@@ -108,6 +109,40 @@ describe('isStartupRestored (SA §5.3 matrix)', () => {
     test('no startup seen (startupUntil=0) or no candidate → not restored', () => {
         expect(isStartupRestored({ hadUrlAtCreate: true, hasOpener: false, createdAt: 1 }, 0)).toBe(false);
         expect(isStartupRestored(undefined, startupUntil)).toBe(false);
+    });
+});
+
+describe('sanitizeRuleInput', () => {
+    test('full valid input passes through trimmed and capped', () => {
+        const clean = sanitizeRuleInput({
+            matchType: 'domain',
+            pattern: `  ${'x'.repeat(300)}  `,
+            groupTitle: `  ${'t'.repeat(80)}  `,
+            groupColor: 'red',
+        });
+        expect(clean.matchType).toBe('domain');
+        expect(clean.pattern).toHaveLength(256);
+        expect(clean.groupTitle).toHaveLength(64);
+        expect(clean.groupColor).toBe('red');
+    });
+    test('rejects an invalid matchType', () => {
+        expect(sanitizeRuleInput({ matchType: 'regex' })).toBeNull();
+    });
+    test('rejects empty pattern/title after trimming', () => {
+        expect(sanitizeRuleInput({ pattern: '   ' })).toBeNull();
+        expect(sanitizeRuleInput({ groupTitle: '' })).toBeNull();
+    });
+    test('rejects a color outside the Chrome enum; null/undefined color is allowed', () => {
+        expect(sanitizeRuleInput({ groupColor: 'magenta' })).toBeNull();
+        expect(sanitizeRuleInput({ groupColor: null })).toEqual({ groupColor: null });
+        expect(sanitizeRuleInput({ groupColor: undefined })).toEqual({ groupColor: null });
+    });
+    test('is partial: only provided keys are checked and returned; unknown keys dropped', () => {
+        expect(sanitizeRuleInput({ groupTitle: 'News', order: 99, id: 'hack' })).toEqual({ groupTitle: 'News' });
+    });
+    test('coerces enabled to a boolean', () => {
+        expect(sanitizeRuleInput({ enabled: 1 })).toEqual({ enabled: true });
+        expect(sanitizeRuleInput({ enabled: 0 })).toEqual({ enabled: false });
     });
 });
 

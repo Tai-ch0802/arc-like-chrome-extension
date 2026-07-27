@@ -5,7 +5,7 @@
 // recorded from day one so the P4 Drive merge cannot resurrect deleted rules.
 
 import * as api from '../apiManager.js';
-import { ROUTING_RULES_KEY, ROUTING_RULES_SCHEMA, MAX_RULES, sortRules } from './routingLogic.js';
+import { ROUTING_RULES_KEY, ROUTING_RULES_SCHEMA, MAX_RULES, sortRules, sanitizeRuleInput } from './routingLogic.js';
 
 export { ROUTING_RULES_KEY };
 
@@ -37,38 +37,40 @@ async function saveRoutingState(state) {
 
 /**
  * @param {{matchType:'domain'|'contains', pattern:string, groupTitle:string, groupColor?:string|null}} input
- * @returns {Promise<Object|null>} the created rule, or null when the cap is hit
+ * @returns {Promise<Object|null>} the created rule; null when the cap is hit or the input is invalid
  */
 export async function addRule({ matchType, pattern, groupTitle, groupColor = null }) {
     const state = await getRoutingState();
     if (state.rules.length >= MAX_RULES) return null;
+    const clean = sanitizeRuleInput({ matchType, pattern, groupTitle, groupColor });
+    if (!clean || !clean.matchType || !clean.pattern || !clean.groupTitle) return null;
     const now = Date.now();
     const rule = {
         id: crypto.randomUUID(),
         enabled: true,
-        matchType,
-        pattern: String(pattern || '').trim().slice(0, 256),
-        groupTitle: String(groupTitle || '').trim().slice(0, 64),
-        groupColor: groupColor || null,
+        ...clean,
         order: state.rules.length ? Math.max(...state.rules.map(r => r.order)) + 1 : 0,
         createdAt: now,
         updatedAt: now,
     };
-    if (!rule.pattern || !rule.groupTitle) return null;
     state.rules.push(rule);
     await saveRoutingState(state);
     return rule;
 }
 
-/** @returns {Promise<boolean>} false when the rule does not exist */
+/**
+ * Patch a rule. The patch goes through the same sanitizer as addRule, so the
+ * stored RoutingRule invariants (matchType enum, 256/64 caps, color enum)
+ * hold no matter which caller writes.
+ * @returns {Promise<boolean>} false when the rule does not exist or any provided field is invalid
+ */
 export async function updateRule(id, patch) {
     const state = await getRoutingState();
     const rule = state.rules.find(r => r.id === id);
     if (!rule) return false;
-    const allowed = ['enabled', 'matchType', 'pattern', 'groupTitle', 'groupColor'];
-    for (const key of allowed) {
-        if (key in patch) rule[key] = patch[key];
-    }
+    const clean = sanitizeRuleInput(patch);
+    if (clean === null) return false;
+    Object.assign(rule, clean);
     rule.updatedAt = Date.now();
     await saveRoutingState(state);
     return true;

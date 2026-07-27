@@ -22,6 +22,45 @@ export const STARTUP_WINDOW_MS = 10_000;
  * @property {number} updatedAt
  */
 
+export const VALID_MATCH_TYPES = ['domain', 'contains'];
+// Chrome's own tabGroups color enum — an invalid color makes tabGroups.update
+// throw, which would abort the title write in applyRule.
+export const VALID_GROUP_COLORS = ['grey', 'blue', 'red', 'yellow', 'green', 'pink', 'purple', 'cyan', 'orange'];
+
+/**
+ * Normalize and validate rule input fields at the storage trust boundary.
+ * Partial by design: only the provided keys are checked, so it serves both
+ * addRule (full input) and updateRule (patch). Unknown keys are dropped.
+ * @param {Object} input
+ * @returns {Object|null} the sanitized subset, or null when any provided field is invalid
+ */
+export function sanitizeRuleInput(input) {
+    const out = {};
+    if ('matchType' in input) {
+        if (!VALID_MATCH_TYPES.includes(input.matchType)) return null;
+        out.matchType = input.matchType;
+    }
+    if ('pattern' in input) {
+        const pattern = String(input.pattern || '').trim().slice(0, 256);
+        if (!pattern) return null;
+        out.pattern = pattern;
+    }
+    if ('groupTitle' in input) {
+        const groupTitle = String(input.groupTitle || '').trim().slice(0, 64);
+        if (!groupTitle) return null;
+        out.groupTitle = groupTitle;
+    }
+    if ('groupColor' in input) {
+        const color = input.groupColor ?? null;
+        if (color !== null && !VALID_GROUP_COLORS.includes(color)) return null;
+        out.groupColor = color;
+    }
+    if ('enabled' in input) {
+        out.enabled = !!input.enabled;
+    }
+    return out;
+}
+
 /** Lowercase a hostname and strip a leading "www.". */
 export function normalizeHost(hostname) {
     const h = String(hostname || '').toLowerCase();
