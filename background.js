@@ -10,6 +10,7 @@ import { generateGroupName } from './modules/aiManager.js';
 import { getStorage, setStorage } from './modules/apiManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
+import { initRoutingEngine } from './modules/routing/routingEngine.js';
 import { createSyncEngine } from './modules/sync/syncEngine.js';
 import { createGoogleDriveProvider } from './modules/sync/googleDriveProvider.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
@@ -34,6 +35,9 @@ const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
 // window close, and post-restart window↔workspace re-binding. Listener
 // registration must happen synchronously at SW top level (MV3).
 initWorkspaceLifecycle();
+
+// Tab routing rules (BASE-022): first-navigation routing + claim exemptions.
+initRoutingEngine();
 
 // ---------------------------------------------------------------------------
 // Drive sync wiring (E3b)
