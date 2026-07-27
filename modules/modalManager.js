@@ -827,3 +827,98 @@ export function showTagDialog({ title, defaultName = '', defaultColor = 'blue' }
         };
     });
 }
+
+/**
+ * Group picker for routing-rule creation (BASE-022 P2): choose an EXISTING
+ * named tab group in the current window, or type a NEW group name and pick a
+ * color. Typing clears the existing-group selection and vice versa; submit
+ * resolves to whichever is active.
+ *
+ * @param {{ groups?: Array<{id:number,title:string,color:string}>, preselectGroupId?: number|null }} args
+ * @returns {Promise<{groupTitle:string, groupColor:string|null, existingGroupId:number|null} | null>}
+ */
+export function showGroupPickerDialog({ groups = [], preselectGroupId = null } = {}) {
+    return new Promise((resolve) => {
+        const namedGroups = groups.filter(g => g.title && g.title.trim());
+        let selectedColor = 'grey';
+
+        const form = document.createElement('form');
+        form.noValidate = true;
+        form.className = 'create-group-form group-picker-form';
+
+        const groupRows = namedGroups.map(g => `
+            <label class="group-picker-item">
+                <input type="radio" name="gp-existing" value="${g.id}" ${g.id === preselectGroupId ? 'checked' : ''}>
+                <span class="group-picker-dot" style="background-color: ${GROUP_COLORS[g.color] || GROUP_COLORS.grey};"></span>
+                <span class="group-picker-title">${escapeHtml(g.title)}</span>
+            </label>
+        `).join('');
+
+        const colorSwatches = Object.entries(GROUP_COLORS).map(([colorName, colorHex]) => `
+            <div class="color-swatch ${colorName === selectedColor ? 'selected' : ''}"
+                 data-color="${colorName}"
+                 style="background-color: ${colorHex};"
+                 tabindex="0" role="radio"
+                 aria-checked="${colorName === selectedColor}"
+                 aria-label="${colorName}" title="${colorName}"></div>
+        `).join('');
+
+        form.innerHTML = `
+            <h3 class="modal-title">${api.getMessage('groupPickerTitle') || 'Always group this site into…'}</h3>
+            ${namedGroups.length ? `<div class="group-picker-list" role="radiogroup">${groupRows}</div>` : ''}
+            <input type="text" class="modal-input group-picker-new-input" placeholder="${api.getMessage('groupPickerNewGroup') || 'New group name…'}">
+            <div class="color-swatches-container" role="radiogroup">${colorSwatches}</div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-button cancel-btn">${api.getMessage('cancelButton') || 'Cancel'}</button>
+                <button type="submit" class="modal-button confirm-btn primary">${api.getMessage('saveButton') || 'Save'}</button>
+            </div>
+        `;
+
+        const { overlay, modalContent } = createModal(form);
+        const input = modalContent.querySelector('.group-picker-new-input');
+        const radios = [...modalContent.querySelectorAll('input[name="gp-existing"]')];
+        const swatchesContainer = modalContent.querySelector('.color-swatches-container');
+
+        // Mutual exclusion: typing a new name clears the existing selection…
+        input.addEventListener('input', () => {
+            if (input.value.trim()) radios.forEach(r => { r.checked = false; });
+        });
+        // …and picking an existing group clears the new-name input.
+        radios.forEach(r => r.addEventListener('change', () => { input.value = ''; }));
+
+        const selectSwatch = (target) => {
+            const prev = swatchesContainer.querySelector('.selected');
+            if (prev) { prev.classList.remove('selected'); prev.setAttribute('aria-checked', 'false'); }
+            target.classList.add('selected');
+            target.setAttribute('aria-checked', 'true');
+            selectedColor = target.dataset.color;
+        };
+        swatchesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('color-swatch')) selectSwatch(e.target);
+        });
+        swatchesContainer.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('color-swatch')) {
+                e.preventDefault();
+                selectSwatch(e.target);
+            }
+        });
+
+        if (!preselectGroupId) input.focus();
+
+        const done = (v) => { removeModal(overlay); resolve(v); };
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const newName = input.value.trim();
+            if (newName) {
+                done({ groupTitle: newName.slice(0, 64), groupColor: selectedColor, existingGroupId: null });
+                return;
+            }
+            const checked = radios.find(r => r.checked);
+            if (!checked) { input.focus(); return; } // nothing chosen — keep the dialog open
+            const g = namedGroups.find(x => String(x.id) === checked.value);
+            done({ groupTitle: g.title, groupColor: g.color, existingGroupId: g.id });
+        };
+        modalContent.querySelector('.cancel-btn').onclick = () => done(null);
+        overlay.onclick = (e) => { if (e.target === overlay) done(null); };
+    });
+}

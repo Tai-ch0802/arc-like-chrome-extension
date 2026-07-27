@@ -397,3 +397,4 @@ make release && unzip -l *.zip | grep routing   # prod bundle 含 routing（間�
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | v1.0 | 2026-07-27 | Claude Code | Initial draft（基於 codebase 實地盤點：background 監聽現況、sync 五件組模板、session 單寫者模式、E2E 慣例） |
+| v1.1 | 2026-07-27 | Claude Code | P2 落地備註：(1) 建規則流程獨立為 `modules/ui/routingRuleUI.js`（原文「sidepanel.js 或 tabListeners 對應處」的具體化）；(2) 共用 toast undo 按鈕發現既存干擾（aiGrouperUI 的 undo 狀態在 toast 消失後殘留、會誤觸他功能復原）→ toast.js 新增 `claimUndo` 單一擁有者模式，aiGrouperUI 同步遷移；(3) FR-3.06 AI Auto Routing 開關依 phase 對齊改隨 P3 出貨（避免無行為的死開關），FR-4.02 於 P2 先落地全域開關 |

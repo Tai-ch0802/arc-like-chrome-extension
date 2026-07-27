@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "Telegram の接続がまだ準備できていません。しばらく待ってからもう一度お試しください。セッションの期限切れが表示されている場合は再度ログインしてください。"
+  },
+  "settingsNavRouting": {
+    "message": "自動グループ化ルール",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "ルールで新しいタブを自動グループ化",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "新しいタブの初回読み込み時、ルールに一致すると指定のグループへ自動的に追加されます。",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "ルールを追加",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "ドメインが一致",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL に含む",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "例：youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "グループ名",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "自動カラー",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "ルールを編集",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "ルールを削除",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "ルールを有効にする",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "ドラッグで並べ替え",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "まだルールがありません。サイドバーのタブを右クリックして「このサイトを常にグループへ…」を選ぶか、ここで追加してください。",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "例：youtube.com → 🎵 メディア",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "ルールが上限（50 件）に達しました。追加するには削除してください。",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "このサイトを常にグループへ…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "このサイトのタブを常に入れるグループ…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "新しいグループ名…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "ルールを作成しました。今後このサイトの新しいタブは自動的にグループへ追加されます。",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

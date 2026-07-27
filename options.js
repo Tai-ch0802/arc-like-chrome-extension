@@ -11,6 +11,9 @@ import * as modalManager from './modules/modalManager.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { renderIcon } from './modules/icons.js';
+import * as rulesStore from './modules/routing/rulesStore.js';
+import { MAX_RULES, VALID_GROUP_COLORS } from './modules/routing/routingLogic.js';
+import { GROUP_COLORS } from './modules/ui/groupColors.js';
 import { mergeSectionOrder, DEFAULT_SECTION_ORDER, SECTION_ORDER_KEY } from './modules/utils/sectionOrder.js';
 import { NEWSWIRE_CONFIG_KEY, NEWSWIRE_KEYS_KEY, defaultNewswireConfig } from './modules/newswire/feedManager.js';
 
@@ -2196,10 +2199,250 @@ function renderNewswire(container) {
     })().catch((err) => console.warn('[newswire] renderNewswire failed:', err?.message || err));
 }
 
+/**
+ * 渲染自動分組規則區塊（BASE-022 P2，FR-4.01~4.03）：全域開關、規則清單
+ * （啟停/編輯/刪除/拖曳排序）、inline 新增/編輯表單、空狀態與 50 條上限提示。
+ * 規則經 modules/routing/rulesStore.js 寫入 chrome.storage.local；background
+ * 引擎透過 storage.onChanged 立即生效，不 dispatch CustomEvent。
+ * AI Auto Routing 的獨立開關（FR-3.06）隨 P3 行為一起出貨，本區塊屆時補列。
+ * @param {HTMLElement} container
+ */
+async function renderRouting(container) {
+    const h = document.createElement('h2');
+    h.textContent = api.getMessage('settingsNavRouting') || 'Auto Grouping Rules';
+    container.appendChild(h);
+
+    const stored = await api.getStorage('sync', { routingEnabled: true });
+    const toggle = document.createElement('input');
+    toggle.type = 'checkbox';
+    toggle.id = 'routing-enabled-toggle';
+    toggle.checked = stored.routingEnabled !== false;
+    toggle.addEventListener('change', async (e) => {
+        await api.setStorage('sync', { routingEnabled: e.target.checked });
+    });
+    container.appendChild(makeRow(
+        api.getMessage('routingGlobalToggle') || 'Route new tabs by rules',
+        toggle,
+        api.getMessage('routingGlobalToggleDesc')
+            || 'A new tab matching a rule joins its target group automatically on its first navigation.'
+    ));
+
+    const listEl = document.createElement('div');
+    listEl.className = 'routing-rules-list';
+    container.appendChild(listEl);
+
+    const limitNote = document.createElement('div');
+    limitNote.className = 'opt-row__desc routing-limit-note';
+    limitNote.hidden = true;
+    limitNote.textContent = api.getMessage('routingLimitReached')
+        || `Rule limit reached (${MAX_RULES}). Delete one to add more.`;
+    container.appendChild(limitNote);
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.id = 'routing-add-rule-btn';
+    addBtn.className = 'modal-button';
+    addBtn.textContent = api.getMessage('routingAddRule') || 'Add rule';
+    container.appendChild(addBtn);
+
+    const matchTypeLabel = (mt) => (mt === 'contains'
+        ? (api.getMessage('routingMatchContains') || 'URL contains')
+        : (api.getMessage('routingMatchDomain') || 'Domain equals'));
+
+    /** Inline add/edit form; resolves via callbacks (no modal on the options page). */
+    function buildRuleForm(rule, onDone) {
+        const form = document.createElement('form');
+        form.className = 'routing-rule-form';
+        form.noValidate = true;
+
+        const typeSel = document.createElement('select');
+        for (const mt of ['domain', 'contains']) {
+            const opt = document.createElement('option');
+            opt.value = mt;
+            opt.textContent = matchTypeLabel(mt);
+            typeSel.appendChild(opt);
+        }
+        typeSel.value = rule ? rule.matchType : 'domain';
+
+        const patternInput = document.createElement('input');
+        patternInput.type = 'text';
+        patternInput.className = 'modal-input';
+        patternInput.placeholder = api.getMessage('routingPatternPlaceholder') || 'e.g. youtube.com';
+        patternInput.value = rule ? rule.pattern : '';
+
+        const titleInput = document.createElement('input');
+        titleInput.type = 'text';
+        titleInput.className = 'modal-input';
+        titleInput.placeholder = api.getMessage('routingTargetGroup') || 'Group name';
+        titleInput.value = rule ? rule.groupTitle : '';
+
+        const colorSel = document.createElement('select');
+        const noneOpt = document.createElement('option');
+        noneOpt.value = '';
+        noneOpt.textContent = api.getMessage('routingColorAuto') || 'Auto color';
+        colorSel.appendChild(noneOpt);
+        for (const c of VALID_GROUP_COLORS) {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            colorSel.appendChild(opt);
+        }
+        colorSel.value = rule && rule.groupColor ? rule.groupColor : '';
+
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'submit';
+        saveBtn.className = 'modal-button confirm-btn primary';
+        saveBtn.textContent = api.getMessage('saveButton') || 'Save';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'modal-button cancel-btn';
+        cancelBtn.textContent = api.getMessage('cancelButton') || 'Cancel';
+
+        form.append(typeSel, patternInput, titleInput, colorSel, saveBtn, cancelBtn);
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const payload = {
+                matchType: typeSel.value,
+                pattern: patternInput.value,
+                groupTitle: titleInput.value,
+                groupColor: colorSel.value || null,
+            };
+            let ok;
+            if (rule) {
+                ok = await rulesStore.updateRule(rule.id, payload);
+            } else {
+                ok = (await rulesStore.addRule(payload)) !== null;
+            }
+            if (!ok) { patternInput.focus(); return; } // invalid input or cap hit — keep the form open
+            onDone(true);
+        };
+        cancelBtn.onclick = () => onDone(false);
+        return form;
+    }
+
+    let sortableInstance = null;
+
+    async function renderList() {
+        const state = await rulesStore.getRoutingState();
+        // renderList reuses the same container, so destroy the previous
+        // Sortable first (same convention as dragDropManager). Note: stacked
+        // instances would NOT double-fire onEnd (SortableJS has a global
+        // active-drag singleton — verified empirically); this guards against
+        // instance/listener leaks across re-renders, not double writes.
+        if (sortableInstance) {
+            sortableInstance.destroy();
+            sortableInstance = null;
+        }
+        listEl.textContent = '';
+
+        const atCap = state.rules.length >= MAX_RULES;
+        limitNote.hidden = !atCap;
+        addBtn.disabled = atCap;
+
+        if (state.rules.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'opt-row__desc routing-empty-state';
+            empty.textContent = (api.getMessage('routingEmptyState')
+                || 'No rules yet. Right-click a tab in the sidebar and pick “Always group this site…”, or add one here.')
+                + ' ' + (api.getMessage('routingEmptyExample') || 'Example: youtube.com → 🎵 Media');
+            listEl.appendChild(empty);
+            return;
+        }
+
+        for (const rule of state.rules) {
+            const row = document.createElement('div');
+            row.className = 'routing-rule-row';
+            row.dataset.ruleId = rule.id;
+
+            const handle = document.createElement('span');
+            handle.className = 'routing-drag-handle';
+            handle.textContent = '⋮⋮';
+            handle.title = api.getMessage('routingDragHandle') || 'Drag to reorder';
+
+            const enabledBox = document.createElement('input');
+            enabledBox.type = 'checkbox';
+            enabledBox.checked = rule.enabled !== false;
+            enabledBox.title = api.getMessage('routingRuleEnabled') || 'Rule enabled';
+            enabledBox.setAttribute('aria-label', enabledBox.title);
+            enabledBox.addEventListener('change', async (e) => {
+                await rulesStore.setRuleEnabled(rule.id, e.target.checked);
+            });
+
+            const text = document.createElement('span');
+            text.className = 'routing-rule-text';
+            text.textContent = `${rule.pattern} (${matchTypeLabel(rule.matchType)})`;
+
+            const target = document.createElement('span');
+            target.className = 'routing-rule-target';
+            const dot = document.createElement('span');
+            dot.className = 'routing-rule-dot';
+            dot.style.backgroundColor = GROUP_COLORS[rule.groupColor] || GROUP_COLORS.grey;
+            const targetTitle = document.createElement('span');
+            targetTitle.textContent = `→ ${rule.groupTitle}`;
+            target.append(dot, targetTitle);
+
+            const editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'routing-icon-btn routing-edit-btn';
+            editBtn.innerHTML = renderIcon('edit', { size: 16 });
+            editBtn.title = api.getMessage('routingEditRule') || 'Edit rule';
+            editBtn.setAttribute('aria-label', editBtn.title);
+            editBtn.addEventListener('click', () => {
+                if (row.querySelector('.routing-rule-form')) return;
+                const form = buildRuleForm(rule, async () => { await renderList(); });
+                row.appendChild(form);
+                form.querySelector('input').focus();
+            });
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'routing-icon-btn routing-delete-btn';
+            deleteBtn.innerHTML = renderIcon('delete', { size: 16 });
+            deleteBtn.title = api.getMessage('routingDeleteRule') || 'Delete rule';
+            deleteBtn.setAttribute('aria-label', deleteBtn.title);
+            deleteBtn.addEventListener('click', async () => {
+                await rulesStore.deleteRule(rule.id);
+                await renderList();
+            });
+
+            row.append(handle, enabledBox, text, target, editBtn, deleteBtn);
+            listEl.appendChild(row);
+        }
+
+        // Drag reorder via the Sortable global loaded by options.html.
+        if (typeof Sortable !== 'undefined') {
+            sortableInstance = new Sortable(listEl, {
+                handle: '.routing-drag-handle',
+                animation: 150,
+                onEnd: async () => {
+                    const ids = [...listEl.querySelectorAll('.routing-rule-row')].map(r => r.dataset.ruleId);
+                    await rulesStore.reorderRules(ids);
+                },
+            });
+        }
+    }
+
+    addBtn.addEventListener('click', () => {
+        if (container.querySelector('.routing-rule-form')) return;
+        const form = buildRuleForm(null, async (saved) => {
+            form.remove();
+            addBtn.hidden = false;
+            if (saved) await renderList();
+        });
+        addBtn.hidden = true;
+        container.insertBefore(form, limitNote);
+        form.querySelector('input').focus();
+    });
+
+    await renderList();
+}
+
 const SECTIONS = [
     { id: 'appearance', labelKey: 'settingsNavAppearance', render: renderAppearance },
     { id: 'language',   labelKey: 'settingsNavLanguage',   render: renderLanguage },
     { id: 'features',   labelKey: 'settingsNavFeatures',   render: renderFeatures },
+    { id: 'routing',    labelKey: 'settingsNavRouting',    render: renderRouting, labelFallback: 'Auto Grouping Rules' },
     { id: 'sync',       labelKey: 'settingsNavSync',       render: renderSync, labelFallback: 'Backup & Sync' },
     { id: 'ai',         labelKey: 'settingsNavAi',         render: renderAi },
     { id: 'rss',        labelKey: 'settingsNavRss',        render: renderRss },

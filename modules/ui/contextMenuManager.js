@@ -3,8 +3,10 @@
  * Handles creation and management of custom context menus for tabs.
  */
 import * as api from '../apiManager.js';
-import { COPY_ICON_SVG, READING_LIST_ICON_SVG } from '../icons.js';
+import { COPY_ICON_SVG, READING_LIST_ICON_SVG, ADD_TO_GROUP_ICON_SVG } from '../icons.js';
 import { addToReadingList, isUrlInReadingList } from '../readingListManager.js';
+import { isRealHttpUrl } from '../routing/routingLogic.js';
+import { promptCreateRuleForTab } from './routingRuleUI.js';
 
 /**
  * Shows a custom context menu for a tab element.
@@ -142,6 +144,43 @@ export async function showContextMenu(x, y, tab, originElement) {
         }
 
         menu.appendChild(readingListOption);
+    }
+
+    // --- Always Group This Site Option (BASE-022 routing rule) ---
+    if (isRealHttpUrl(tab.url)) {
+        const routingOption = document.createElement('div');
+        routingOption.className = 'context-menu-item';
+        routingOption.setAttribute('role', 'menuitem');
+        routingOption.tabIndex = 0;
+        routingOption.innerHTML = `
+            ${ADD_TO_GROUP_ICON_SVG}
+            <span>${api.getMessage('ctxAlwaysGroupSite') || 'Always group this site…'}</span>
+        `;
+
+        const triggerCreateRule = () => {
+            // The dialog takes over the interaction — close the menu first.
+            closeMenu();
+            promptCreateRuleForTab(tab).catch(err =>
+                console.warn('[routing] create-rule flow failed', err));
+        };
+
+        routingOption.addEventListener('click', (e) => {
+            e.stopPropagation();
+            triggerCreateRule();
+        });
+        routingOption.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                triggerCreateRule();
+            } else if (e.key === 'Escape' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                closeMenu();
+            }
+        });
+
+        menu.appendChild(routingOption);
     }
 
     document.body.appendChild(menu);

@@ -3,18 +3,43 @@
  *
  * Extracted from aiGrouperUI so other features (e.g. cloud AI auth-error
  * surfacing) can reuse the same `#toast-*` DOM defined in sidepanel.html.
- * The undo BUTTON's click handling stays with its feature owner
- * (aiGrouperUI binds #toast-undo-btn); this module only controls visibility.
+ * The undo BUTTON is shared too: features claim it per-toast via claimUndo
+ * (last claim wins), so stale undo state can never fire another feature's
+ * handler.
  */
 import * as api from '../apiManager.js';
 import * as driveAuth from '../sync/driveAuth.js';
 
 let toastTimeoutId = null;
+let currentUndoHandler = null;
+let undoBound = false;
+
+/**
+ * Claims the shared #toast-undo-btn for the CURRENT toast (last claim wins).
+ * The toast shows one message at a time, so Undo ownership follows the
+ * visible message — claiming replaces any previous feature's pending undo,
+ * whose offer is no longer on screen anyway. This is what makes multiple
+ * undo-capable features (AI grouping, routing rules) safe on one button.
+ * Call right after showToast(message, true).
+ * @param {Function} handler - invoked once on click, then cleared
+ */
+export function claimUndo(handler) {
+    currentUndoHandler = handler;
+    if (undoBound) return;
+    const undoBtn = document.getElementById('toast-undo-btn');
+    if (!undoBtn) return;
+    undoBtn.addEventListener('click', () => {
+        const h = currentUndoHandler;
+        currentUndoHandler = null;
+        if (h) h();
+    });
+    undoBound = true;
+}
 
 /**
  * Shows the toast with a message; auto-hides after 10s.
  * @param {string} message
- * @param {boolean} [allowUndo] - Show the Undo button (caller owns its click handler).
+ * @param {boolean} [allowUndo] - Show the Undo button (claim it via claimUndo).
  */
 export function showToast(message, allowUndo = false) {
     const toastContainer = document.getElementById('toast-container');
@@ -29,6 +54,7 @@ export function showToast(message, allowUndo = false) {
         undoBtn.classList.remove('hidden');
     } else {
         undoBtn.classList.add('hidden');
+        currentUndoHandler = null;
     }
 
     toastContainer.classList.remove('hidden');
@@ -42,7 +68,7 @@ export function showToast(message, allowUndo = false) {
     }, 10000); // 10 seconds limit for Undo
 }
 
-/** Hides the toast and clears the auto-hide timer. */
+/** Hides the toast, clears the auto-hide timer and any pending undo claim. */
 export function hideToast() {
     const toastContainer = document.getElementById('toast-container');
     if (toastContainer) {
@@ -52,6 +78,7 @@ export function hideToast() {
         clearTimeout(toastTimeoutId);
         toastTimeoutId = null;
     }
+    currentUndoHandler = null;
 }
 
 // === Cloud AI provider auth-error surfacing ===

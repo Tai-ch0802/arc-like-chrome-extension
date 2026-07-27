@@ -1586,5 +1586,85 @@
   },
   "tgNotReady": {
     "message": "Kết nối Telegram chưa sẵn sàng. Vui lòng đợi một chút rồi thử lại. Nếu trạng thái cho thấy phiên đã hết hạn, hãy đăng nhập lại."
+  },
+  "settingsNavRouting": {
+    "message": "Quy tắc nhóm tự động",
+    "description": "Options nav label for the Auto Grouping Rules section."
+  },
+  "routingGlobalToggle": {
+    "message": "Nhóm thẻ mới theo quy tắc",
+    "description": "Global on/off switch for rule-based tab routing."
+  },
+  "routingGlobalToggleDesc": {
+    "message": "Thẻ mới khớp với quy tắc sẽ tự động vào nhóm đích ngay lần tải đầu tiên.",
+    "description": "Description under the global routing switch."
+  },
+  "routingAddRule": {
+    "message": "Thêm quy tắc",
+    "description": "Button that opens the add-rule form."
+  },
+  "routingMatchDomain": {
+    "message": "Tên miền bằng",
+    "description": "Match type option: hostname equals the pattern."
+  },
+  "routingMatchContains": {
+    "message": "URL chứa",
+    "description": "Match type option: URL contains the pattern."
+  },
+  "routingPatternPlaceholder": {
+    "message": "vd: youtube.com",
+    "description": "Placeholder for the rule pattern input."
+  },
+  "routingTargetGroup": {
+    "message": "Tên nhóm",
+    "description": "Placeholder/label for the target group name input."
+  },
+  "routingColorAuto": {
+    "message": "Màu tự động",
+    "description": "Color select option meaning no fixed color."
+  },
+  "routingEditRule": {
+    "message": "Sửa quy tắc",
+    "description": "Title/aria-label of the edit-rule icon button."
+  },
+  "routingDeleteRule": {
+    "message": "Xóa quy tắc",
+    "description": "Title/aria-label of the delete-rule icon button."
+  },
+  "routingRuleEnabled": {
+    "message": "Bật quy tắc",
+    "description": "Title/aria-label of the per-rule enable checkbox."
+  },
+  "routingDragHandle": {
+    "message": "Kéo để sắp xếp",
+    "description": "Title of the drag handle used to reorder rules."
+  },
+  "routingEmptyState": {
+    "message": "Chưa có quy tắc nào. Nhấp chuột phải vào một thẻ ở thanh bên và chọn “Luôn nhóm trang này…”, hoặc thêm tại đây.",
+    "description": "Shown when the rule list is empty."
+  },
+  "routingEmptyExample": {
+    "message": "Ví dụ: youtube.com → 🎵 Media",
+    "description": "Example line under the empty state."
+  },
+  "routingLimitReached": {
+    "message": "Đã đạt giới hạn quy tắc (50). Hãy xóa bớt để thêm mới.",
+    "description": "Shown when the 50-rule cap is reached."
+  },
+  "ctxAlwaysGroupSite": {
+    "message": "Luôn nhóm trang này…",
+    "description": "Tab context-menu item that creates a routing rule for the site."
+  },
+  "groupPickerTitle": {
+    "message": "Luôn nhóm trang này vào…",
+    "description": "Title of the group picker dialog."
+  },
+  "groupPickerNewGroup": {
+    "message": "Tên nhóm mới…",
+    "description": "Placeholder of the new-group name input in the group picker."
+  },
+  "routingRuleCreatedToast": {
+    "message": "Đã tạo quy tắc — thẻ mới từ trang này sẽ tự động vào nhóm.",
+    "description": "Toast shown after a routing rule is created from the context menu."
   }
 }

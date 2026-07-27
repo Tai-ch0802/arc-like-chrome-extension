@@ -95,7 +95,7 @@ key_files:
   - file_path: modules/ui/bookmarkRenderer.js
     description: "[UI] 書籤渲染。負責書籤列表、資料夾結構以及連結分頁面板的渲染邏輯。"
   - file_path: modules/modalManager.js
-    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。"
+    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。BASE-022 P2 新增 showGroupPickerDialog：既有群組單選 + 新群組名稱/色票二擇一（互斥自動清除），供路由規則建立流程使用。"
   - file_path: modules/apiManager.js
     description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。"
   - file_path: modules/stateManager.js
@@ -110,6 +110,8 @@ key_files:
     description: "[功能][純函式] Tab Routing Rules 決策核心（BASE-022 P1）。無 chrome/Date.now，時間由參數傳入：matchRule（清單順序首中即用）、normalizeHost（www 去前綴）、isStartupRestored（瀏覽器還原分頁排除啟發式：啟動窗 10s 內自帶 URL 且無 opener）、claim 生命週期（addClaims/consumeClaim count+TTL 30s/pruneClaims）、sortRules。常數 MAX_RULES=50。"
   - file_path: modules/routing/rulesStore.js
     description: "[功能] 路由規則儲存層。chrome.storage.local 單 key routingRules {schemaVersion,rules[],tombstones}（≤50 條、刪除記 tombstone 供 P4 Drive merge）；CRUD + reorder（重寫 order 並 bump updatedAt）；claimUrls：UI context 開分頁前送 routing:claim 給 background 並 await ack（fail-open，claim 失敗不得擋開分頁）。"
+  - file_path: modules/ui/routingRuleUI.js
+    description: "[UI] 路由規則建立流程（BASE-022 P2）。promptCreateRuleForTab：右鍵選單「一律將此網站分到群組…」→ showGroupPickerDialog → addRule（網域規則）→ 立即套用一次（沿用引擎豁免：已分組/pinned 不動）→ toast + claimUndo（復原＝刪規則＋退群）。分頁右鍵選單本體在 contextMenuManager（http/https 分頁才顯示此項）。"
   - file_path: modules/routing/routingEngine.js
     description: "[Service Worker] 路由引擎（僅 background 載入，BASE-022 P1）。tabs.onCreated/onUpdated 偵測分頁首次 http 導航（免 webNavigation 權限），依規則入群/建群；豁免鏈：claim（onCreated 以 pendingUrl 綁定，redirect-proof）→ 無 candidate 不路由（僅路由引擎在場時出生的分頁）→ 全域開關 → 啟動還原排除 → 已分組/pinned。暫態集中單一 chrome.storage.session key routingSessionState，單一寫者 + promise chain 序列化（SW 終止喚醒一致、瀏覽器重啟歸零）；規則與開關快取以 storage.onChanged 失效。每分頁最多判定一次、手動拖出永不搬回。"
   - file_path: modules/rssManager.js
@@ -133,7 +135,7 @@ key_files:
   - file_path: modules/ui/aiGrouperUI.js
     description: "[UI] 智慧整理介面。負責處理未分類分頁的讀取、呼叫 AI、執行群組化，以及 Undo 復原流程（Toast 顯示/隱藏已抽至 modules/ui/toast.js 共用）。"
   - file_path: modules/ui/toast.js
-    description: "[UI] 共用 Toast（自 aiGrouperUI 抽出）。showToast/hideToast 操作 sidepanel.html 的 #toast-* DOM；另提供 initAiProviderErrorToast：監聽 aiProviderAuthErrorChanged 顯示雲端 AI 授權失敗提示（60 秒 cooldown 防洗版）。"
+    description: "[UI] 共用 Toast（自 aiGrouperUI 抽出）。showToast/hideToast 操作 sidepanel.html 的 #toast-* DOM；另提供 initAiProviderErrorToast：監聽 aiProviderAuthErrorChanged 顯示雲端 AI 授權失敗提示（60 秒 cooldown 防洗版）。BASE-022 P2：undo 按鈕改為 claimUndo 單一擁有者模式（最後聲明者贏，hide/無 undo toast 時清除）——修多功能共用 #toast-undo-btn 時舊 undo 狀態誤觸他功能 handler 的干擾（aiGrouperUI 已遷移）。"
   - file_path: modules/ui/aiCleanupUI.js
     description: "[UI] AI Tab Cleanup 介面。Phase 4b 新增；在 Smart Group 旁顯示 🧹 按鈕，inline section 展示 AI 建議的可關閉分頁清單（預設不勾選 + 全選控制；降低雲端模型下 prompt-injection 誤關分頁的影響面）。Phase 12(批B) 每列加 tab group badge（彩色圓點 + 群組名，未分組不顯示），用 resolveTabGroupBadge 判定。"
   - file_path: modules/ui/hoverSummarizeManager.js
