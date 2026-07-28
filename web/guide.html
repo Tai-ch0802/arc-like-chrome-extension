@@ -388,6 +388,8 @@
         <a href="#linked-tabs" class="toc-link" data-i18n="guide_toc_linked">Linked Tabs</a>
         <a href="#cross-window" class="toc-link" data-i18n="guide_toc_window">跨視窗</a>
         <a href="#workspaces" class="toc-link" data-i18n="guide_toc_workspaces">工作區</a>
+        <a href="#routing-rules" class="toc-link" data-i18n="guide_toc_routing">自動分組規則</a>
+        <a href="#tab-lifecycle" class="toc-link" data-i18n="guide_toc_lifecycle">分頁生命週期</a>
         <a href="#search" class="toc-link" data-i18n="guide_toc_search">搜尋功能</a>
         <a href="#spotlight" class="toc-link" data-i18n="guide_toc_spotlight">Spotlight 搜尋</a>
         <a href="#reading-list" class="toc-link" data-i18n="guide_toc_reading">閱讀清單</a>
@@ -558,6 +560,38 @@
         <hr class="guide-divider">
 
         <!-- 7. Search -->
+        <section class="guide-section" id="routing-rules">
+            <h2 class="guide-section-title">
+                <i data-lucide="route" class="section-icon"></i>
+                <span data-i18n="guide_routing_title">自動分組規則</span>
+            </h2>
+            <p data-i18n="guide_routing_desc">為特定網站設定一次規則，之後開啟的新分頁會在載入的瞬間自動進入指定的分頁群組——側邊欄長期保持整齊，不再每天手動拖曳整理。</p>
+            <ul>
+                <li data-i18n="guide_routing_li1"><strong>兩步建立</strong>：在側邊欄的分頁上按右鍵，選「一律將此網站分到群組…」，挑一個既有群組或建立新群組即完成。</li>
+                <li data-i18n="guide_routing_li2"><strong>完整管理</strong>：設定頁的「自動分組規則」區塊可檢視、編輯、停用、拖曳排序所有規則，也有一鍵暫停的總開關。</li>
+                <li data-i18n="guide_routing_li3"><strong>AI 自動成組（選用）</strong>：沒有規則命中時，連續開啟同一網站的多個分頁會自動聚成一組，並由 AI 命名——適合一口氣點開一批連結的場景。預設關閉，可在設定頁開啟。</li>
+                <li data-i18n="guide_routing_li4"><strong>跨裝置同步</strong>：連結 Google Drive 後，規則會在你的裝置之間自動同步。手動拖出群組的分頁永遠不會被搬回去。</li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
+        <section class="guide-section" id="tab-lifecycle">
+            <h2 class="guide-section-title">
+                <i data-lucide="archive" class="section-icon purple"></i>
+                <span data-i18n="guide_lifecycle_title">分頁生命週期：自動封存與稍後再看</span>
+            </h2>
+            <p data-i18n="guide_lifecycle_desc">開了不敢關、關了怕找不回——分頁囤積的兩難有解了。閒置的分頁可以自動收進「封存」區隨時找回；暫時沒空看的分頁可以約好時間再回來。</p>
+            <ul>
+                <li data-i18n="guide_lifecycle_li1"><strong>自動封存（選用）</strong>：在設定頁開啟後，閒置超過門檻（預設 12 小時，可調 1 小時到 7 天）的分頁會自動關閉並收進側邊欄的「封存」區。釘選、群組內、使用中與播放聲音中的分頁一律不動，每輪最多收 10 個，並附一鍵復原。</li>
+                <li data-i18n="guide_lifecycle_li2"><strong>封存區</strong>：點擊任何封存項目立即還原成分頁；也可以逐筆刪除或全部清空。區塊在沒有內容時自動隱藏，不佔空間。</li>
+                <li data-i18n="guide_lifecycle_li3"><strong>稍後再看</strong>：分頁右鍵選「稍後再看…」，挑「1 小時後／今晚／明天早上／下週一」其中一個時段，分頁會先關閉、時間到自動重新開啟並發出通知。</li>
+                <li data-i18n="guide_lifecycle_li4"><strong>資料安全</strong>：所有封存與稍後再看的動作都先寫入本機儲存才關閉分頁——任何時刻你的網址至少存在一個地方，永遠找得回來。</li>
+            </ul>
+        </section>
+
+        <hr class="guide-divider">
+
         <section class="guide-section" id="search">
             <h2 class="guide-section-title">
                 <i data-lucide="search" class="section-icon"></i>
@@ -572,6 +606,7 @@
                 </li>
                 <li data-i18n="guide_search_li3"><strong>即時高亮</strong>：搜尋結果會即時標記匹配的關鍵字，保持視覺焦點清晰。</li>
                 <li data-i18n="guide_search_li4"><strong>跨視窗</strong>：搜尋結果包含所有 Chrome 視窗的分頁，不限於當前視窗。</li>
+                <li data-i18n="guide_search_li5"><strong>全區塊覆蓋</strong>：封存與財經快訊也在搜尋範圍內——過濾、關鍵字反白與網域比對一體適用。</li>
             </ul>
         </section>
 
