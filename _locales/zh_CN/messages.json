@@ -1678,5 +1678,86 @@
   "routingAiGroupedToast": {
     "message": "已自动将此网站的标签页分组。",
     "description": "Undoable toast shown when the engine auto-groups same-site tabs."
+  },
+  "archiveSectionHeader": {
+    "message": "封存",
+    "description": "Sidebar archive section header."
+  },
+  "archiveEmptyState": {
+    "message": "闲置标签页会自动收进这里，随时可以找回。",
+    "description": "Shown when the archive section has no items."
+  },
+  "archiveClearAll": {
+    "message": "全部清空",
+    "description": "Header button + confirm title for clearing the archive."
+  },
+  "archiveClearConfirm": {
+    "message": "确定清空所有封存标签页？此操作无法撤销。",
+    "description": "Confirm dialog message before clearing all archived tabs."
+  },
+  "archivedToast": {
+    "message": "已封存 $COUNT$ 个闲置标签页。",
+    "description": "Undoable toast after an auto-archive round; $1 = tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "archiveDeleteTitle": {
+    "message": "从封存移除",
+    "description": "Title of the per-item remove button (archived item)."
+  },
+  "archiveCancelSnoozeTitle": {
+    "message": "取消稍后再看（保留在封存）",
+    "description": "Title of the cancel button on a snoozed item (keeps it in archive)."
+  },
+  "archiveWakeNowTitle": {
+    "message": "点击立即唤醒",
+    "description": "Tooltip on a snoozed item: click wakes it immediately."
+  },
+  "timeJustNow": {
+    "message": "刚刚",
+    "description": "Relative time: under a minute ago."
+  },
+  "timeMinutesAgo": {
+    "message": "$COUNT$ 分钟前",
+    "description": "Relative time; $1 = minutes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeHoursAgo": {
+    "message": "$COUNT$ 小时前",
+    "description": "Relative time; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeDaysAgo": {
+    "message": "$COUNT$ 天前",
+    "description": "Relative time; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wakeTomorrow": {
+    "message": "明天 $TIME$",
+    "description": "Wake-time label; $1 = HH:mm.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "snoozeWakeNotifTitle": {
+    "message": "稍后再看的标签页回来了",
+    "description": "System notification title when a snoozed tab reopens."
   }
 }

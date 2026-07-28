@@ -1678,5 +1678,86 @@
   "routingAiGroupedToast": {
     "message": "จัดกลุ่มแท็บของไซต์นี้โดยอัตโนมัติแล้ว",
     "description": "Undoable toast shown when the engine auto-groups same-site tabs."
+  },
+  "archiveSectionHeader": {
+    "message": "คลังเก็บ",
+    "description": "Sidebar archive section header."
+  },
+  "archiveEmptyState": {
+    "message": "แท็บที่ไม่ได้ใช้จะถูกเก็บไว้ที่นี่ กู้คืนได้ทุกเมื่อ",
+    "description": "Shown when the archive section has no items."
+  },
+  "archiveClearAll": {
+    "message": "ล้างทั้งหมด",
+    "description": "Header button + confirm title for clearing the archive."
+  },
+  "archiveClearConfirm": {
+    "message": "ล้างแท็บที่เก็บไว้ทั้งหมด? ย้อนกลับไม่ได้",
+    "description": "Confirm dialog message before clearing all archived tabs."
+  },
+  "archivedToast": {
+    "message": "เก็บแท็บที่ไม่ได้ใช้ $COUNT$ แท็บแล้ว",
+    "description": "Undoable toast after an auto-archive round; $1 = tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "archiveDeleteTitle": {
+    "message": "นำออกจากคลังเก็บ",
+    "description": "Title of the per-item remove button (archived item)."
+  },
+  "archiveCancelSnoozeTitle": {
+    "message": "ยกเลิกการเลื่อน (เก็บไว้ในคลัง)",
+    "description": "Title of the cancel button on a snoozed item (keeps it in archive)."
+  },
+  "archiveWakeNowTitle": {
+    "message": "คลิกเพื่อเปิดตอนนี้",
+    "description": "Tooltip on a snoozed item: click wakes it immediately."
+  },
+  "timeJustNow": {
+    "message": "เมื่อสักครู่",
+    "description": "Relative time: under a minute ago."
+  },
+  "timeMinutesAgo": {
+    "message": "$COUNT$ นาทีที่แล้ว",
+    "description": "Relative time; $1 = minutes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeHoursAgo": {
+    "message": "$COUNT$ ชั่วโมงที่แล้ว",
+    "description": "Relative time; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeDaysAgo": {
+    "message": "$COUNT$ วันที่แล้ว",
+    "description": "Relative time; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wakeTomorrow": {
+    "message": "พรุ่งนี้ $TIME$",
+    "description": "Wake-time label; $1 = HH:mm.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "snoozeWakeNotifTitle": {
+    "message": "แท็บที่เลื่อนไว้กลับมาแล้ว",
+    "description": "System notification title when a snoozed tab reopens."
   }
 }

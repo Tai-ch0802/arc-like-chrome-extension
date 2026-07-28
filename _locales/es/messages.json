@@ -1678,5 +1678,86 @@
   "routingAiGroupedToast": {
     "message": "Las pestañas de este sitio se agruparon automáticamente.",
     "description": "Undoable toast shown when the engine auto-groups same-site tabs."
+  },
+  "archiveSectionHeader": {
+    "message": "Archivo",
+    "description": "Sidebar archive section header."
+  },
+  "archiveEmptyState": {
+    "message": "Las pestañas inactivas se guardan aquí; restáuralas cuando quieras.",
+    "description": "Shown when the archive section has no items."
+  },
+  "archiveClearAll": {
+    "message": "Vaciar todo",
+    "description": "Header button + confirm title for clearing the archive."
+  },
+  "archiveClearConfirm": {
+    "message": "¿Vaciar todas las pestañas archivadas? No se puede deshacer.",
+    "description": "Confirm dialog message before clearing all archived tabs."
+  },
+  "archivedToast": {
+    "message": "Se archivaron $COUNT$ pestañas inactivas.",
+    "description": "Undoable toast after an auto-archive round; $1 = tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "archiveDeleteTitle": {
+    "message": "Quitar del archivo",
+    "description": "Title of the per-item remove button (archived item)."
+  },
+  "archiveCancelSnoozeTitle": {
+    "message": "Cancelar posponer (mantener en el archivo)",
+    "description": "Title of the cancel button on a snoozed item (keeps it in archive)."
+  },
+  "archiveWakeNowTitle": {
+    "message": "Haz clic para reabrir ahora",
+    "description": "Tooltip on a snoozed item: click wakes it immediately."
+  },
+  "timeJustNow": {
+    "message": "justo ahora",
+    "description": "Relative time: under a minute ago."
+  },
+  "timeMinutesAgo": {
+    "message": "hace $COUNT$ min",
+    "description": "Relative time; $1 = minutes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeHoursAgo": {
+    "message": "hace $COUNT$ h",
+    "description": "Relative time; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeDaysAgo": {
+    "message": "hace $COUNT$ días",
+    "description": "Relative time; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wakeTomorrow": {
+    "message": "Mañana $TIME$",
+    "description": "Wake-time label; $1 = HH:mm.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "snoozeWakeNotifTitle": {
+    "message": "La pestaña pospuesta ha vuelto",
+    "description": "System notification title when a snoozed tab reopens."
   }
 }

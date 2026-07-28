@@ -1678,5 +1678,86 @@
   "routingAiGroupedToast": {
     "message": "इस साइट के टैब अपने आप समूहित कर दिए गए।",
     "description": "Undoable toast shown when the engine auto-groups same-site tabs."
+  },
+  "archiveSectionHeader": {
+    "message": "संग्रह",
+    "description": "Sidebar archive section header."
+  },
+  "archiveEmptyState": {
+    "message": "निष्क्रिय टैब यहाँ रख दिए जाते हैं — कभी भी वापस पाएँ।",
+    "description": "Shown when the archive section has no items."
+  },
+  "archiveClearAll": {
+    "message": "सब हटाएँ",
+    "description": "Header button + confirm title for clearing the archive."
+  },
+  "archiveClearConfirm": {
+    "message": "सभी संग्रहित टैब हटाएँ? इसे पूर्ववत नहीं किया जा सकता।",
+    "description": "Confirm dialog message before clearing all archived tabs."
+  },
+  "archivedToast": {
+    "message": "$COUNT$ निष्क्रिय टैब संग्रहित किए गए।",
+    "description": "Undoable toast after an auto-archive round; $1 = tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "archiveDeleteTitle": {
+    "message": "संग्रह से हटाएँ",
+    "description": "Title of the per-item remove button (archived item)."
+  },
+  "archiveCancelSnoozeTitle": {
+    "message": "स्नूज़ रद्द करें (संग्रह में रखें)",
+    "description": "Title of the cancel button on a snoozed item (keeps it in archive)."
+  },
+  "archiveWakeNowTitle": {
+    "message": "अभी खोलने के लिए क्लिक करें",
+    "description": "Tooltip on a snoozed item: click wakes it immediately."
+  },
+  "timeJustNow": {
+    "message": "अभी-अभी",
+    "description": "Relative time: under a minute ago."
+  },
+  "timeMinutesAgo": {
+    "message": "$COUNT$ मिनट पहले",
+    "description": "Relative time; $1 = minutes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeHoursAgo": {
+    "message": "$COUNT$ घंटे पहले",
+    "description": "Relative time; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeDaysAgo": {
+    "message": "$COUNT$ दिन पहले",
+    "description": "Relative time; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wakeTomorrow": {
+    "message": "कल $TIME$",
+    "description": "Wake-time label; $1 = HH:mm.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "snoozeWakeNotifTitle": {
+    "message": "स्नूज़ किया गया टैब वापस आ गया",
+    "description": "System notification title when a snoozed tab reopens."
   }
 }

@@ -3964,3 +3964,47 @@ mark.url-match {
     white-space: nowrap;
     min-width: 0;
 }
+
+/* --- Archive Section (BASE-024 P2) --- */
+#archive-list.collapsed { display: none; }
+.archive-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    min-width: 0;
+}
+.archive-item:hover { background: var(--element-bg-hover-color); }
+.archive-item-favicon { width: 16px; height: 16px; flex-shrink: 0; }
+.archive-item-content { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.archive-item-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.85em;
+}
+.archive-item-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72em;
+    opacity: 0.65;
+}
+.archive-item--snoozed .archive-item-meta { color: var(--accent-color); opacity: 0.9; }
+.archive-item-actions { visibility: hidden; flex-shrink: 0; }
+.archive-item:hover .archive-item-actions,
+.archive-item:focus-within .archive-item-actions { visibility: visible; }
+.archive-item-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    padding: 3px;
+    border-radius: 4px;
+    display: inline-flex;
+}
+.archive-item-btn:hover { opacity: 1; color: var(--danger-color); }
+.archive-empty-state { padding: 8px; font-size: 0.8em; opacity: 0.6; }

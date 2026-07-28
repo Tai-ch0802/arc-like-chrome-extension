@@ -12,7 +12,7 @@ const { setupBrowser, teardownBrowser } = require('./setup');
  * mergeSectionOrder 的 unit tests 與手動驗證涵蓋。
  */
 
-const DEFAULT_ORDER = ['tabs', 'otherWindows', 'readingList', 'bookmarks', 'newswire'];
+const DEFAULT_ORDER = ['tabs', 'otherWindows', 'readingList', 'archive', 'bookmarks', 'newswire']; // +archive (BASE-024 P2)
 
 const readOrder = (page) => page.$$eval(
     '#content-container > [data-section-id]',
@@ -49,20 +49,20 @@ describe('Sidebar Section Order (BASE-015)', () => {
 
     test('writing sectionOrder reorders the live sidepanel via the storage bridge', async () => {
         await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'newswire'],
+            sectionOrder: ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'archive', 'newswire'],
         }));
-        await waitForOrder(page, ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'newswire']);
+        await waitForOrder(page, ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'archive', 'newswire']);
 
         // Section ids the panel doesn't have (another device / future feature)
         // are tolerated — ignored for layout, and NOT rewritten back to storage.
         await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['ghostSection', 'newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows'],
+            sectionOrder: ['ghostSection', 'newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows'],
         }));
-        await waitForOrder(page, ['newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows']);
 
         const stored = await page.evaluate(() =>
             chrome.storage.sync.get('sectionOrder').then(v => v.sectionOrder));
-        expect(stored).toEqual(['ghostSection', 'newswire', 'readingList', 'bookmarks', 'tabs', 'otherWindows']);
+        expect(stored).toEqual(['ghostSection', 'newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows']);
 
         await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
         await waitForOrder(page, DEFAULT_ORDER);
@@ -72,20 +72,22 @@ describe('Sidebar Section Order (BASE-015)', () => {
         await page.evaluate(() => chrome.storage.sync.set({
             sectionOrder: ['bookmarks', 'tabs', 'otherWindows', 'readingList'],
         }));
-        await waitForOrder(page, ['bookmarks', 'tabs', 'otherWindows', 'readingList', 'newswire']);
+        await waitForOrder(page, ['bookmarks', 'tabs', 'otherWindows', 'readingList', 'archive', 'newswire']);
         await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
         await waitForOrder(page, DEFAULT_ORDER);
     }, 120000);
 
     test('stored order is applied on sidepanel load (persists across reload)', async () => {
+        // A pre-archive (5-id) preference: the unknown-to-storage 'archive'
+        // section appends at the end (BASE-024 P2 migration case).
         await page.evaluate(() => chrome.storage.sync.set({
             sectionOrder: ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows'],
         }));
-        await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows', 'archive']);
 
         await page.reload();
         await page.waitForSelector('#tab-list', { timeout: 10000 });
-        await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows']);
+        await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows', 'archive']);
 
         // Restore defaults for any test that follows in this profile.
         await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
