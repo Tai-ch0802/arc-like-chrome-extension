@@ -11,6 +11,13 @@ import { getStorage, setStorage } from './modules/apiManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
 import { initRoutingEngine } from './modules/routing/routingEngine.js';
+import {
+  initLifecycleEngine,
+  handleLifecycleAlarm,
+  handleSnoozeNotificationClick,
+  HEARTBEAT_ALARM as ALARM_LIFECYCLE_HEARTBEAT,
+  WAKE_ALARM_PREFIX as LIFECYCLE_WAKE_PREFIX,
+} from './modules/lifecycle/lifecycleEngine.js';
 import { createSyncEngine } from './modules/sync/syncEngine.js';
 import { createGoogleDriveProvider } from './modules/sync/googleDriveProvider.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
@@ -45,6 +52,9 @@ initWorkspaceLifecycle();
 
 // Tab routing rules (BASE-022): first-navigation routing + claim exemptions.
 initRoutingEngine();
+
+// Tab lifecycle (BASE-024): auto-archive scan heartbeat + snooze wake/sweep.
+initLifecycleEngine();
 
 // ---------------------------------------------------------------------------
 // Drive sync wiring (E3b)
@@ -425,10 +435,12 @@ ensurePullAlarm();
 // 記憶體,回收即消失;initNewswire 冪等,來源全關時為零網路行為的 no-op。
 initNewswire();
 
-// newswire P0 通知點擊 → 開原文(BASE-016 N4)。只認領 newswire: 前綴的通知。
+// 通知點擊分派鏈：各 handler 以 id prefix 認領（回傳 true 即消費）。
+// newswire: → 開原文(BASE-016 N4)；snooze: → 聚焦喚醒的分頁(BASE-024)。
 if (chrome.notifications && chrome.notifications.onClicked) {
   chrome.notifications.onClicked.addListener((notificationId) => {
-    handleNewswireNotificationClick(notificationId);
+    if (handleNewswireNotificationClick(notificationId)) return;
+    handleSnoozeNotificationClick(notificationId);
   });
 }
 
@@ -716,6 +728,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     // Debounced routing-rules Drive sync (BASE-022 P4). Explicit branch for the
     // same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
     routingSyncOnce();
+    return;
+  }
+  if (alarm.name === ALARM_LIFECYCLE_HEARTBEAT || alarm.name.startsWith(LIFECYCLE_WAKE_PREFIX)) {
+    // Tab lifecycle (BASE-024): auto-archive scan + snooze wake. Explicit
+    // branch — must not fall through to handleRssAlarm.
+    handleLifecycleAlarm(alarm);
     return;
   }
   if (alarm.name === ALARM_NEWSWIRE_WATCHDOG) {
