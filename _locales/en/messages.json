@@ -1669,5 +1669,17 @@
   "routingRuleCreatedToast": {
     "message": "Rule created — new tabs from this site will join the group automatically.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "AI Auto Routing",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "When no rule matches, opening several tabs from the same site in a row groups them automatically with an AI-generated name.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "Tabs from this site were grouped automatically.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "Aturan dibuat — tab baru dari situs ini akan otomatis masuk ke grup.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "Pengelompokan Otomatis AI",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "Jika tidak ada aturan yang cocok, membuka beberapa tab dari situs yang sama secara berurutan akan mengelompokkannya otomatis dengan nama buatan AI.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "Tab dari situs ini telah dikelompokkan secara otomatis.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

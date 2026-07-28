@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "규칙이 생성되었습니다. 이제 이 사이트의 새 탭은 자동으로 그룹에 추가됩니다.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "AI 자동 그룹화",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "일치하는 규칙이 없을 때 같은 사이트의 탭을 연속으로 열면 자동으로 그룹화되고 AI가 이름을 붙입니다.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "이 사이트의 탭을 자동으로 그룹화했습니다.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

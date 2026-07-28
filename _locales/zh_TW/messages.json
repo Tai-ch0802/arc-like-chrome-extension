@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "規則已建立——之後這個網站的新分頁會自動加入群組。",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "AI 自動分組",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "沒有規則命中時，連續開啟同一網站的多個分頁會自動成組，並由 AI 命名。",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "已自動將這個網站的分頁分組。",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

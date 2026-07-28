@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "नियम बन गया — अब इस साइट के नए टैब अपने आप समूह में जुड़ेंगे।",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "AI स्वचालित समूहन",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "जब कोई नियम मेल नहीं खाता, तो एक ही साइट के कई टैब लगातार खोलने पर वे अपने आप समूहित हो जाते हैं और AI नाम देता है।",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "इस साइट के टैब अपने आप समूहित कर दिए गए।",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

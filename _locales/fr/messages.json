@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "Règle créée : les nouveaux onglets de ce site rejoindront le groupe automatiquement.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "Regroupement automatique par IA",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "Si aucune règle ne correspond, l’ouverture de plusieurs onglets du même site à la suite les regroupe automatiquement avec un nom généré par l’IA.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "Les onglets de ce site ont été regroupés automatiquement.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

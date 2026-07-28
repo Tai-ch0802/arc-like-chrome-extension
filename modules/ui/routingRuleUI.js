@@ -9,6 +9,37 @@ import { normalizeHost } from '../routing/routingLogic.js';
 import { showToast, hideToast, claimUndo } from './toast.js';
 
 /**
+ * Listens for the engine's AI auto-grouping broadcast and offers the undoable
+ * toast in the affected window's sidepanel (FR-3.07; silent when no sidepanel
+ * is open — SA §5.7-D3).
+ */
+export function initAiRoutingToast() {
+    api.addRuntimeMessageListener((message) => {
+        if (!message || message.type !== 'routing:aiGrouped') return;
+        (async () => {
+            const win = await api.getCurrentWindow();
+            if (!win || message.windowId !== win.id) return; // another window's grouping
+            showToast(api.getMessage('routingAiGroupedToast')
+                || 'Tabs from this site were grouped automatically.', true);
+            claimUndo(async () => {
+                try {
+                    await api.sendRuntimeMessage({
+                        action: 'routing:aiUndo',
+                        windowId: message.windowId,
+                        domain: message.domain,
+                        groupId: message.groupId,
+                        tabIds: message.tabIds,
+                    });
+                } catch (err) {
+                    console.warn('[routing] ai undo failed', err);
+                }
+                hideToast();
+            });
+        })().catch(err => console.warn('[routing] ai toast failed', err));
+    });
+}
+
+/**
  * Runs the whole create-rule flow for a sidebar tab.
  * @param {{id:number, url:string}} tab
  */

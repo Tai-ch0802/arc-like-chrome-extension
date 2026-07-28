@@ -10,7 +10,9 @@ import {
     addClaims,
     pruneClaims,
     sanitizeRuleInput,
+    decideAiRouting,
     CLAIM_TTL_MS,
+    AI_CONSECUTIVE_WINDOW_MS,
 } from '../../modules/routing/routingLogic.js';
 
 const rule = (over = {}) => ({
@@ -143,6 +145,48 @@ describe('sanitizeRuleInput', () => {
     test('coerces enabled to a boolean', () => {
         expect(sanitizeRuleInput({ enabled: 1 })).toEqual({ enabled: true });
         expect(sanitizeRuleInput({ enabled: 0 })).toEqual({ enabled: false });
+    });
+});
+
+describe('decideAiRouting (FR-3.04/3.05 decision table)', () => {
+    const NOW = 1_000_000;
+    const nav = (over = {}) => ({ domain: 'github.com', windowId: 1, tabId: 20, ...over });
+    const lastNav = (over = {}) => ({ domain: 'github.com', windowId: 1, tabId: 10, ts: NOW - 5_000, ...over });
+
+    test('join wins when a living AI group exists for the domain in the window', () => {
+        const st = { aiGroups: { 1: { 'github.com': { groupId: 77, aiNamed: true } } }, lastNav: null, cooldown: {} };
+        expect(decideAiRouting(st, nav(), NOW)).toEqual({ action: 'join', groupId: 77 });
+    });
+    test('join is window-scoped: another window\'s group does not match', () => {
+        const st = { aiGroups: { 2: { 'github.com': { groupId: 77 } } }, lastNav: null, cooldown: {} };
+        expect(decideAiRouting(st, nav(), NOW).action).toBe('none');
+    });
+    test('create when previous first-nav is same domain, same window, within the window', () => {
+        const st = { aiGroups: {}, lastNav: lastNav(), cooldown: {} };
+        expect(decideAiRouting(st, nav(), NOW)).toEqual({ action: 'create', prevTabId: 10 });
+    });
+    test('no create across windows or across domains', () => {
+        expect(decideAiRouting({ aiGroups: {}, lastNav: lastNav({ windowId: 2 }), cooldown: {} }, nav(), NOW).action).toBe('none');
+        expect(decideAiRouting({ aiGroups: {}, lastNav: lastNav({ domain: 'gmail.com' }), cooldown: {} }, nav(), NOW).action).toBe('none');
+    });
+    test('no create outside the consecutive time window', () => {
+        const st = { aiGroups: {}, lastNav: lastNav({ ts: NOW - AI_CONSECUTIVE_WINDOW_MS - 1 }), cooldown: {} };
+        expect(decideAiRouting(st, nav(), NOW).action).toBe('none');
+        const edge = { aiGroups: {}, lastNav: lastNav({ ts: NOW - AI_CONSECUTIVE_WINDOW_MS }), cooldown: {} };
+        expect(decideAiRouting(edge, nav(), NOW).action).toBe('create'); // inclusive boundary
+    });
+    test('same tab navigating twice never pairs with itself', () => {
+        const st = { aiGroups: {}, lastNav: lastNav({ tabId: 20 }), cooldown: {} };
+        expect(decideAiRouting(st, nav({ tabId: 20 }), NOW).action).toBe('none');
+    });
+    test('undo cooldown blocks create for the window:domain pair (FR-3.07)', () => {
+        const st = { aiGroups: {}, lastNav: lastNav(), cooldown: { '1:github.com': NOW + 60_000 } };
+        expect(decideAiRouting(st, nav(), NOW).action).toBe('none');
+        const expired = { aiGroups: {}, lastNav: lastNav(), cooldown: { '1:github.com': NOW - 1 } };
+        expect(decideAiRouting(expired, nav(), NOW).action).toBe('create');
+    });
+    test('no lastNav at all → none', () => {
+        expect(decideAiRouting({ aiGroups: {}, lastNav: null, cooldown: {} }, nav(), NOW).action).toBe('none');
     });
 });
 

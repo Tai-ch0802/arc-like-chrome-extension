@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "Правило создано — новые вкладки этого сайта будут добавляться в группу автоматически.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "ИИ-автогруппировка",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "Если ни одно правило не сработало, несколько подряд открытых вкладок одного сайта автоматически объединяются в группу с названием от ИИ.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "Вкладки этого сайта автоматически сгруппированы.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }
