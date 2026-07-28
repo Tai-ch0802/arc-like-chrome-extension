@@ -24,12 +24,14 @@ async function handleSearch() {
     let otherWindowsTabCount = 0;
     let readingListCount = 0;
     let newswireCount = 0;
+    let archiveCount = 0;
     if (filterPanelSections) {
-        // 一般/關鍵字查詢:照舊過濾分頁、其他視窗、閱讀清單、快訊
+        // 一般/關鍵字查詢:照舊過濾分頁、其他視窗、閱讀清單、快訊、封存
         tabCount = filterTabsAndGroups(keywords);
         otherWindowsTabCount = filterOtherWindowsTabs(keywords);
         readingListCount = filterReadingList(keywords, regexes);
-        newswireCount = filterNewswire(keywords);
+        newswireCount = filterNewswire(keywords, regexes);
+        archiveCount = filterArchive(keywords, regexes);
     } else {
         // tag: 查詢:標籤只屬書籤,其餘區塊整批隱藏
         hideNonBookmarkSections();
@@ -45,9 +47,84 @@ async function handleSearch() {
     }
 
     const event = new CustomEvent('searchResultUpdated', {
-        detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount + newswireCount, bookmarkCount }
+        detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount + newswireCount + archiveCount, bookmarkCount }
     });
     document.dispatchEvent(event);
+}
+
+// --- Shared per-item highlight helpers (BASE-025) ---
+// The tab path keeps its own _refs-based variant; list-style sections
+// (readingList / archive / newswire) share these.
+
+/** Highlight a title element in place, remembering the original text. */
+function highlightTitleEl(titleEl, regexes) {
+    if (!titleEl || regexes.length === 0) return;
+    const originalTitle = titleEl.dataset.originalText || titleEl.textContent;
+    const highlighted = highlightText(originalTitle, regexes, 'title');
+    if (highlighted !== originalTitle) {
+        titleEl.innerHTML = highlighted; // highlightText escapes EVERY segment
+        if (!titleEl.dataset.originalText) titleEl.dataset.originalText = originalTitle;
+    }
+}
+
+/** Restore a highlighted title element to its original text. */
+function clearTitleEl(titleEl) {
+    if (titleEl && titleEl.dataset.originalText) {
+        titleEl.textContent = titleEl.dataset.originalText;
+        delete titleEl.dataset.originalText;
+    }
+}
+
+/** Show (or remove) the highlighted matched-domain line under an item. */
+function setMatchedDomainEl(item, parentEl, domain, regexes) {
+    const existing = item.querySelector('.matched-domain');
+    if (existing) existing.remove();
+    if (!domain || !parentEl) return;
+    const domainElement = document.createElement('div');
+    domainElement.className = 'matched-domain';
+    domainElement.innerHTML = highlightText(domain, regexes, 'url') + '...';
+    parentEl.appendChild(domainElement);
+}
+
+/**
+ * 過濾封存區項目(BASE-025):比對標題與網域、反白標題、URL 命中時附
+ * matched-domain;搜尋命中時以 search-reveal 蓋過收合(不動收合狀態機)。
+ * snooze 與封存項同列表一起過濾。
+ * @returns {number} 有搜尋時的可見項目數
+ */
+function filterArchive(keywords, regexes = []) {
+    const container = document.getElementById('archive-list');
+    if (!container) return 0;
+    const items = container.querySelectorAll('.archive-item');
+    if (items.length === 0) return 0;
+
+    let visibleCount = 0;
+    items.forEach(item => {
+        const title = item.dataset.title || '';
+        const domain = extractDomain(item.dataset.url || '');
+        const titleMatches = matchesAnyKeyword(title, keywords);
+        const urlMatches = matchesAnyKeyword(domain, keywords);
+        const matches = keywords.length === 0 || titleMatches || urlMatches;
+        item.classList.toggle('hidden', !matches);
+
+        const titleEl = item.querySelector('.archive-item-title');
+        if (matches && keywords.length > 0) {
+            visibleCount++;
+            highlightTitleEl(titleEl, regexes);
+            setMatchedDomainEl(
+                item,
+                (urlMatches && !titleMatches) ? item.querySelector('.archive-item-content') : null,
+                domain,
+                regexes
+            );
+        } else if (keywords.length === 0) {
+            clearTitleEl(titleEl);
+            setMatchedDomainEl(item, null, '', regexes);
+        }
+    });
+
+    container.classList.toggle('search-reveal', keywords.length > 0 && visibleCount > 0);
+    return visibleCount;
 }
 
 // --- Shared Filter Helpers ---
@@ -338,13 +415,15 @@ function filterReadingList(keywords, regexes = []) {
 }
 
 /**
- * 過濾快訊項目(BASE-017)。比對標題與來源標籤;空 keyword=全顯示。
- * 不做 innerHTML 高亮——快訊標題為外部不可信內容,維持該區塊
- * textContent-only 的安全紀律(newswireRenderer 同)。
+ * 過濾快訊項目(BASE-017;BASE-025 升級)。比對標題、來源標籤與網域;
+ * 反白標題——BASE-017 原基於安全紀律不做 innerHTML 反白,BASE-025 查證
+ * highlightText 對「每一段」(匹配與非匹配)皆先 escapeHtml 才組 <mark>,
+ * 不可信內容走此路徑安全(閱讀清單標題同屬外部內容、行之有年),故解除。
  * @param {string[]} keywords
+ * @param {RegExp[]} regexes
  * @returns {number} 有搜尋時的可見項目數
  */
-function filterNewswire(keywords) {
+function filterNewswire(keywords, regexes = []) {
     const container = document.getElementById('newswire-list');
     if (!container) return 0;
 
@@ -355,12 +434,24 @@ function filterNewswire(keywords) {
     items.forEach(item => {
         const title = item.dataset.title || '';
         const source = item.dataset.source || '';
+        const domain = extractDomain(item.dataset.url || '');
+        const titleMatches = matchesAnyKeyword(title, keywords);
         const matches = keywords.length === 0
-            || matchesAnyKeyword(title, keywords)
-            || matchesAnyKeyword(source, keywords);
+            || titleMatches
+            || matchesAnyKeyword(source, keywords)
+            || matchesAnyKeyword(domain, keywords);
         item.classList.toggle('hidden', !matches);
-        if (matches && keywords.length > 0) visibleCount++;
+
+        const titleEl = item.querySelector('.newswire-item__title');
+        if (matches && keywords.length > 0) {
+            visibleCount++;
+            highlightTitleEl(titleEl, regexes);
+        } else if (keywords.length === 0) {
+            clearTitleEl(titleEl);
+        }
     });
+
+    container.classList.toggle('search-reveal', keywords.length > 0 && visibleCount > 0);
     return visibleCount;
 }
 
@@ -400,6 +491,11 @@ function hideNonBookmarkSections() {
     const nw = document.getElementById('newswire-list');
     if (nw) {
         nw.querySelectorAll('.newswire-item').forEach(i => i.classList.add('hidden'));
+    }
+    // 封存項目(BASE-025;BASE-024 上線時此處漏接,tag: 查詢時封存區不會被藏)
+    const ar = document.getElementById('archive-list');
+    if (ar) {
+        ar.querySelectorAll('.archive-item').forEach(i => i.classList.add('hidden'));
     }
 }
 
@@ -648,6 +744,18 @@ function initialize() {
             handleSearch();
         }
     });
+
+    // BASE-025: archive/newswire re-render DURING an active search (live
+    // newswire events prepend unfiltered rows; archive refreshes on storage
+    // change) — re-apply the filter so fresh rows respect the query.
+    // Debounced: handleSearch re-RENDERS the bookmark tree while a query is
+    // active, so rapid newswire bursts must collapse into one re-run.
+    const debouncedRefilter = debounce(() => {
+        if (ui.searchBox.value.trim().length > 0) {
+            handleSearch();
+        }
+    }, 250);
+    document.addEventListener('sectionContentRerendered', debouncedRefilter);
 }
 
 export { initialize, handleSearch, filterTabsAndGroups, filterBookmarks };

@@ -53,6 +53,9 @@ function buildItem(item, { snoozed }) {
     row.className = `archive-item${snoozed ? ' archive-item--snoozed' : ''}`;
     row.dataset.itemId = item.id;
     row.dataset.kind = snoozed ? 'snoozed' : 'archived';
+    // BASE-025: searchManager filters/highlights off these datasets.
+    row.dataset.title = item.title || '';
+    row.dataset.url = item.url || '';
     row.tabIndex = 0;
     row.setAttribute('role', 'button');
     row.title = item.url;
@@ -137,6 +140,9 @@ export async function refreshArchiveSection() {
         ...archived.items.map(i => buildItem(i, { snoozed: false })),
     ];
     reconcileDOM(list, children);
+
+    // BASE-025: fresh rows must respect an active search query.
+    document.dispatchEvent(new CustomEvent('sectionContentRerendered', { detail: { section: 'archive' } }));
 }
 
 function initToggle() {

@@ -4013,3 +4013,9 @@ mark.url-match {
 .snooze-slots { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
 .snooze-slot-btn { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; }
 .snooze-slot-time { opacity: 0.65; font-size: 0.85em; }
+
+/* --- Search reveal (BASE-025): a hit inside a collapsed section shows its
+   list for the duration of the search WITHOUT touching the collapse state
+   machine (module vars / storage stay intact; clearing the search restores). */
+#newswire-list.collapsed.search-reveal,
+#archive-list.collapsed.search-reveal { display: block; }
