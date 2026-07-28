@@ -1759,5 +1759,63 @@
   "snoozeWakeNotifTitle": {
     "message": "Zurückgelegter Tab ist wieder da",
     "description": "System notification title when a snoozed tab reopens."
+  },
+  "ctxSnoozeTab": {
+    "message": "Tab zurücklegen…",
+    "description": "Tab context-menu item opening the snooze slot dialog."
+  },
+  "snoozeDialogTitle": {
+    "message": "Tab zurücklegen bis…",
+    "description": "Title of the snooze slot dialog."
+  },
+  "snoozeLater1h": {
+    "message": "In 1 Stunde",
+    "description": "Snooze slot: one hour from now."
+  },
+  "snoozeTonight": {
+    "message": "Heute Abend",
+    "description": "Snooze slot: tonight 20:00 (rolls to tomorrow if passed)."
+  },
+  "snoozeTomorrow": {
+    "message": "Morgen früh",
+    "description": "Snooze slot: tomorrow 09:00."
+  },
+  "snoozeNextMonday": {
+    "message": "Nächsten Montag",
+    "description": "Snooze slot: next Monday 09:00."
+  },
+  "snoozeFailedToast": {
+    "message": "Zurücklegen fehlgeschlagen – der Tab bleibt geöffnet.",
+    "description": "Toast when persisting a snooze failed; the tab stays open."
+  },
+  "autoArchiveToggle": {
+    "message": "Inaktive Tabs automatisch archivieren",
+    "description": "Options switch enabling idle-tab auto-archive."
+  },
+  "autoArchiveToggleDesc": {
+    "message": "Inaktive Tabs wandern ins Seitenleisten-Archiv (angeheftete, gruppierte, aktive und abspielende Tabs bleiben unberührt). Jederzeit wiederherstellbar.",
+    "description": "Description under the auto-archive switch."
+  },
+  "autoArchiveThreshold": {
+    "message": "Archivieren nach Inaktivität von",
+    "description": "Label of the idle-threshold select."
+  },
+  "thresholdHours": {
+    "message": "$COUNT$ Stunden",
+    "description": "Threshold option label; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "thresholdDays": {
+    "message": "$COUNT$ Tagen",
+    "description": "Threshold option label; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

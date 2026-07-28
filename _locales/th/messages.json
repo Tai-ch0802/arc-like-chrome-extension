@@ -1759,5 +1759,63 @@
   "snoozeWakeNotifTitle": {
     "message": "แท็บที่เลื่อนไว้กลับมาแล้ว",
     "description": "System notification title when a snoozed tab reopens."
+  },
+  "ctxSnoozeTab": {
+    "message": "เลื่อนแท็บนี้…",
+    "description": "Tab context-menu item opening the snooze slot dialog."
+  },
+  "snoozeDialogTitle": {
+    "message": "เลื่อนแท็บนี้ไปจนถึง…",
+    "description": "Title of the snooze slot dialog."
+  },
+  "snoozeLater1h": {
+    "message": "อีก 1 ชั่วโมง",
+    "description": "Snooze slot: one hour from now."
+  },
+  "snoozeTonight": {
+    "message": "คืนนี้",
+    "description": "Snooze slot: tonight 20:00 (rolls to tomorrow if passed)."
+  },
+  "snoozeTomorrow": {
+    "message": "พรุ่งนี้เช้า",
+    "description": "Snooze slot: tomorrow 09:00."
+  },
+  "snoozeNextMonday": {
+    "message": "วันจันทร์หน้า",
+    "description": "Snooze slot: next Monday 09:00."
+  },
+  "snoozeFailedToast": {
+    "message": "เลื่อนแท็บไม่สำเร็จ — แท็บยังเปิดอยู่",
+    "description": "Toast when persisting a snooze failed; the tab stays open."
+  },
+  "autoArchiveToggle": {
+    "message": "เก็บแท็บที่ไม่ได้ใช้อัตโนมัติ",
+    "description": "Options switch enabling idle-tab auto-archive."
+  },
+  "autoArchiveToggleDesc": {
+    "message": "แท็บที่ไม่ได้ใช้จะถูกเก็บเข้าคลังในแถบด้านข้าง (ไม่แตะแท็บที่ปักหมุด อยู่ในกลุ่ม กำลังใช้ หรือกำลังเล่นเสียง) กู้คืนได้ทุกเมื่อ",
+    "description": "Description under the auto-archive switch."
+  },
+  "autoArchiveThreshold": {
+    "message": "เก็บเมื่อไม่ได้ใช้นานเกิน",
+    "description": "Label of the idle-threshold select."
+  },
+  "thresholdHours": {
+    "message": "$COUNT$ ชั่วโมง",
+    "description": "Threshold option label; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "thresholdDays": {
+    "message": "$COUNT$ วัน",
+    "description": "Threshold option label; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

@@ -1762,5 +1762,63 @@
   "snoozeWakeNotifTitle": {
     "message": "Snoozed tab is back",
     "description": "System notification title when a snoozed tab reopens."
+  },
+  "ctxSnoozeTab": {
+    "message": "Snooze this tab…",
+    "description": "Tab context-menu item opening the snooze slot dialog."
+  },
+  "snoozeDialogTitle": {
+    "message": "Snooze this tab until…",
+    "description": "Title of the snooze slot dialog."
+  },
+  "snoozeLater1h": {
+    "message": "In 1 hour",
+    "description": "Snooze slot: one hour from now."
+  },
+  "snoozeTonight": {
+    "message": "Tonight",
+    "description": "Snooze slot: tonight 20:00 (rolls to tomorrow if passed)."
+  },
+  "snoozeTomorrow": {
+    "message": "Tomorrow morning",
+    "description": "Snooze slot: tomorrow 09:00."
+  },
+  "snoozeNextMonday": {
+    "message": "Next Monday",
+    "description": "Snooze slot: next Monday 09:00."
+  },
+  "snoozeFailedToast": {
+    "message": "Could not snooze this tab — it stays open.",
+    "description": "Toast when persisting a snooze failed; the tab stays open."
+  },
+  "autoArchiveToggle": {
+    "message": "Auto-archive idle tabs",
+    "description": "Options switch enabling idle-tab auto-archive."
+  },
+  "autoArchiveToggleDesc": {
+    "message": "Idle tabs are tucked into the sidebar Archive (pinned, grouped, active and audible tabs are never touched). Restore anytime.",
+    "description": "Description under the auto-archive switch."
+  },
+  "autoArchiveThreshold": {
+    "message": "Archive after idle for",
+    "description": "Label of the idle-threshold select."
+  },
+  "thresholdHours": {
+    "message": "$COUNT$ hours",
+    "description": "Threshold option label; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "thresholdDays": {
+    "message": "$COUNT$ days",
+    "description": "Threshold option label; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

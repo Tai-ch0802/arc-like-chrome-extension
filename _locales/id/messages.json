@@ -1759,5 +1759,63 @@
   "snoozeWakeNotifTitle": {
     "message": "Tab yang ditunda sudah kembali",
     "description": "System notification title when a snoozed tab reopens."
+  },
+  "ctxSnoozeTab": {
+    "message": "Tunda tab ini…",
+    "description": "Tab context-menu item opening the snooze slot dialog."
+  },
+  "snoozeDialogTitle": {
+    "message": "Tunda tab ini sampai…",
+    "description": "Title of the snooze slot dialog."
+  },
+  "snoozeLater1h": {
+    "message": "1 jam lagi",
+    "description": "Snooze slot: one hour from now."
+  },
+  "snoozeTonight": {
+    "message": "Malam ini",
+    "description": "Snooze slot: tonight 20:00 (rolls to tomorrow if passed)."
+  },
+  "snoozeTomorrow": {
+    "message": "Besok pagi",
+    "description": "Snooze slot: tomorrow 09:00."
+  },
+  "snoozeNextMonday": {
+    "message": "Senin depan",
+    "description": "Snooze slot: next Monday 09:00."
+  },
+  "snoozeFailedToast": {
+    "message": "Gagal menunda tab — tab tetap terbuka.",
+    "description": "Toast when persisting a snooze failed; the tab stays open."
+  },
+  "autoArchiveToggle": {
+    "message": "Arsipkan otomatis tab yang tak aktif",
+    "description": "Options switch enabling idle-tab auto-archive."
+  },
+  "autoArchiveToggleDesc": {
+    "message": "Tab yang lama tak dipakai disimpan ke Arsip bilah samping (tab yang disematkan, dalam grup, aktif, atau sedang memutar audio tidak disentuh). Pulihkan kapan saja.",
+    "description": "Description under the auto-archive switch."
+  },
+  "autoArchiveThreshold": {
+    "message": "Arsipkan setelah tak aktif selama",
+    "description": "Label of the idle-threshold select."
+  },
+  "thresholdHours": {
+    "message": "$COUNT$ jam",
+    "description": "Threshold option label; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "thresholdDays": {
+    "message": "$COUNT$ hari",
+    "description": "Threshold option label; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

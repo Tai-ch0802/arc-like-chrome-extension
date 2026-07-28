@@ -1759,5 +1759,63 @@
   "snoozeWakeNotifTitle": {
     "message": "स्नूज़ किया गया टैब वापस आ गया",
     "description": "System notification title when a snoozed tab reopens."
+  },
+  "ctxSnoozeTab": {
+    "message": "इस टैब को स्नूज़ करें…",
+    "description": "Tab context-menu item opening the snooze slot dialog."
+  },
+  "snoozeDialogTitle": {
+    "message": "इस टैब को कब तक स्नूज़ करें…",
+    "description": "Title of the snooze slot dialog."
+  },
+  "snoozeLater1h": {
+    "message": "1 घंटे बाद",
+    "description": "Snooze slot: one hour from now."
+  },
+  "snoozeTonight": {
+    "message": "आज रात",
+    "description": "Snooze slot: tonight 20:00 (rolls to tomorrow if passed)."
+  },
+  "snoozeTomorrow": {
+    "message": "कल सुबह",
+    "description": "Snooze slot: tomorrow 09:00."
+  },
+  "snoozeNextMonday": {
+    "message": "अगले सोमवार",
+    "description": "Snooze slot: next Monday 09:00."
+  },
+  "snoozeFailedToast": {
+    "message": "टैब स्नूज़ नहीं हो सका — यह खुला रहेगा।",
+    "description": "Toast when persisting a snooze failed; the tab stays open."
+  },
+  "autoArchiveToggle": {
+    "message": "निष्क्रिय टैब अपने आप संग्रहित करें",
+    "description": "Options switch enabling idle-tab auto-archive."
+  },
+  "autoArchiveToggleDesc": {
+    "message": "निष्क्रिय टैब साइडबार के संग्रह में रख दिए जाते हैं (पिन किए, समूह वाले, सक्रिय और चल रहे टैब कभी नहीं छुए जाते)। कभी भी वापस पाएँ।",
+    "description": "Description under the auto-archive switch."
+  },
+  "autoArchiveThreshold": {
+    "message": "इतनी निष्क्रियता के बाद संग्रहित करें",
+    "description": "Label of the idle-threshold select."
+  },
+  "thresholdHours": {
+    "message": "$COUNT$ घंटे",
+    "description": "Threshold option label; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "thresholdDays": {
+    "message": "$COUNT$ दिन",
+    "description": "Threshold option label; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

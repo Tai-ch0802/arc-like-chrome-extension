@@ -4008,3 +4008,8 @@ mark.url-match {
 }
 .archive-item-btn:hover { opacity: 1; color: var(--danger-color); }
 .archive-empty-state { padding: 8px; font-size: 0.8em; opacity: 0.6; }
+
+/* --- Snooze slot dialog (BASE-024 P3) --- */
+.snooze-slots { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.snooze-slot-btn { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; }
+.snooze-slot-time { opacity: 0.65; font-size: 0.85em; }
