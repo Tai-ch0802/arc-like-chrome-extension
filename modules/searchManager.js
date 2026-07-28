@@ -46,10 +46,59 @@ async function handleSearch() {
         clearHighlights();
     }
 
+    // 快取靜態區塊計數:動態區塊(archive/newswire)重繪後的輕量 refilter
+    // 只重算那兩區,其餘沿用本輪結果(review PR #223)。
+    lastStaticCounts = { tabCount, otherWindowsTabCount, readingListCount, bookmarkCount };
+
     const event = new CustomEvent('searchResultUpdated', {
         detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount + newswireCount + archiveCount, bookmarkCount }
     });
     document.dispatchEvent(event);
+}
+
+// 靜態區塊(不會在搜尋中自行重繪者)的最近一輪計數,供輕量 refilter 沿用。
+let lastStaticCounts = { tabCount: 0, otherWindowsTabCount: 0, readingListCount: 0, bookmarkCount: 0 };
+
+/**
+ * 動態區塊輕量 refilter(BASE-025;review PR #223 效能建議):
+ * archive/newswire 在搜尋作用中重繪(快訊即時 prepend、封存 storage 刷新)時,
+ * 只重跑這兩區的過濾——完整 handleSearch 會連帶把整棵書籤樹砍掉重繪,
+ * 與這兩區的重繪毫無關係。計數沿用 lastStaticCounts 重發 searchResultUpdated。
+ */
+function refilterDynamicSections() {
+    const { keywords, tags } = parseSearchQuery(ui.searchBox.value.trim());
+    const { filterPanelSections } = searchScope({ keywords, tags });
+
+    let newswireCount = 0;
+    let archiveCount = 0;
+    if (filterPanelSections) {
+        const regexes = keywords.map(keyword => new RegExp(`(${escapeRegExp(keyword)})`, 'gi'));
+        newswireCount = filterNewswire(keywords, regexes);
+        archiveCount = filterArchive(keywords, regexes);
+    } else {
+        // tag: 查詢作用中:重繪出的新列一樣整批隱藏
+        hideDynamicSections();
+    }
+
+    const { tabCount, otherWindowsTabCount, readingListCount, bookmarkCount } = lastStaticCounts;
+    document.dispatchEvent(new CustomEvent('searchResultUpdated', {
+        detail: { tabCount: tabCount + otherWindowsTabCount + readingListCount + newswireCount + archiveCount, bookmarkCount }
+    }));
+}
+
+/**
+ * 隱藏動態區塊全部項目並清掉 search-reveal(review PR #223 邊界情境:
+ * 關鍵字命中收合區→search-reveal 撐開後,追加 tag: 切到隱藏分支,
+ * 若不清 reveal 會殘留「展開但全空」直到下一輪關鍵字查詢)。
+ */
+function hideDynamicSections() {
+    for (const listId of ['newswire-list', 'archive-list']) {
+        const list = document.getElementById(listId);
+        if (!list) continue;
+        list.querySelectorAll(listId === 'newswire-list' ? '.newswire-item' : '.archive-item')
+            .forEach(i => i.classList.add('hidden'));
+        list.classList.remove('search-reveal');
+    }
 }
 
 // --- Shared per-item highlight helpers (BASE-025) ---
@@ -487,16 +536,8 @@ function hideNonBookmarkSections() {
     if (rl) {
         rl.querySelectorAll('.reading-list-item').forEach(i => i.classList.add('hidden'));
     }
-    // 快訊項目(BASE-017)
-    const nw = document.getElementById('newswire-list');
-    if (nw) {
-        nw.querySelectorAll('.newswire-item').forEach(i => i.classList.add('hidden'));
-    }
-    // 封存項目(BASE-025;BASE-024 上線時此處漏接,tag: 查詢時封存區不會被藏)
-    const ar = document.getElementById('archive-list');
-    if (ar) {
-        ar.querySelectorAll('.archive-item').forEach(i => i.classList.add('hidden'));
-    }
+    // 快訊+封存(BASE-025;BASE-024 上線時封存漏接):整批隱藏並清 search-reveal
+    hideDynamicSections();
 }
 
 // Search state to track if we are currently showing filtered results
@@ -748,11 +789,13 @@ function initialize() {
     // BASE-025: archive/newswire re-render DURING an active search (live
     // newswire events prepend unfiltered rows; archive refreshes on storage
     // change) — re-apply the filter so fresh rows respect the query.
-    // Debounced: handleSearch re-RENDERS the bookmark tree while a query is
-    // active, so rapid newswire bursts must collapse into one re-run.
+    // Scoped to the two dynamic sections (review PR #223): a full
+    // handleSearch would also tear down and re-render the bookmark tree,
+    // which has nothing to do with these re-renders. Debounce collapses
+    // newswire bursts.
     const debouncedRefilter = debounce(() => {
         if (ui.searchBox.value.trim().length > 0) {
-            handleSearch();
+            refilterDynamicSections();
         }
     }, 250);
     document.addEventListener('sectionContentRerendered', debouncedRefilter);

@@ -158,14 +158,32 @@ describe('Search across archive + newswire', () => {
         await page.click('#archive-toggle');
     }, 60000);
 
-    test('tag: query hides archive and newswire wholesale (BASE-024 omission regression)', async () => {
-        await typeSearch('tag:worktag');
+    test('tag: query hides archive and newswire wholesale and clears a lingering search-reveal', async () => {
+        // Collapse the archive section, then hit it with a keyword so
+        // search-reveal props it open…
+        await page.click('#archive-toggle');
+        await page.waitForFunction(() =>
+            document.getElementById('archive-list').classList.contains('collapsed'), { timeout: 5000 });
+        await typeSearch('Alpha');
+        await page.waitForFunction(() =>
+            document.getElementById('archive-list').classList.contains('search-reveal'), { timeout: 5000 });
+
+        // …then append a tag: filter in the SAME query: the hide branch must
+        // clear the reveal too, or the section lingers "open but empty"
+        // (review PR #223 edge case).
+        await typeSearch('Alpha tag:worktag');
         const bulk = await page.evaluate(() => ({
             archiveAllHidden: [...document.querySelectorAll('.archive-item')].every(el => el.classList.contains('hidden')),
             nwAllHidden: [...document.querySelectorAll('.newswire-item')].every(el => el.classList.contains('hidden')),
+            archiveReveal: document.getElementById('archive-list').classList.contains('search-reveal'),
+            nwReveal: document.getElementById('newswire-list').classList.contains('search-reveal'),
         }));
         expect(bulk.archiveAllHidden).toBe(true);
         expect(bulk.nwAllHidden).toBe(true);
+        expect(bulk.archiveReveal).toBe(false);
+        expect(bulk.nwReveal).toBe(false);
+
         await clearSearch();
+        await page.click('#archive-toggle'); // restore expanded
     }, 60000);
 });
