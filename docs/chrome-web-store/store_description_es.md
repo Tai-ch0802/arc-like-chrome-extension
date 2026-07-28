@@ -46,6 +46,7 @@ No solo busques, encuentra al instante.
 - **Filtrado Multi-Palabra Clave**: Soporta palabras clave separadas por espacios (ej. "google docs trabajo") para una precisión exacta.
 - **Búsqueda por Dominio**: Escribe un dominio (como `github.com`) para filtrar instantáneamente pestañas y marcadores de fuentes específicas.
 - **Resaltado Inteligente**: El resaltado en tiempo real de las palabras clave coincidentes mantiene tu enfoque visual claro.
+- **Cobertura total**: El filtrado, el resaltado y la coincidencia de dominios abarcan ahora todas las secciones de la barra lateral — incluido el nuevo Archivo.
 
 ### 🗂️ Espacio de Trabajo Unificado
 - **Pestañas Verticales**: Ve los títulos completos de las páginas, ya no comprimidos en iconos diminutos.
@@ -54,6 +55,12 @@ No solo busques, encuentra al instante.
 - **Arrastrar y Soltar**: Gestión intuitiva: mueve elementos sin esfuerzo entre pestañas, grupos y carpetas de marcadores.
 - **Arrastrar para Guardar**: Arrastra una pestaña al área de marcadores para guardarla al instante; arrastra un marcador al área de pestañas para abrirlo.
 - **Lista de lectura y RSS**: Tu centro personal de curación de artículos. Sincroniza con la lista de lectura nativa de Chrome, suscríbete a canales RSS y gestiónalo todo en un solo lugar con deduplicación y ordenación inteligentes.
+
+### 🚦 Piloto automático de pestañas (nuevo)
+- **Reglas de agrupación automática**: Haz clic derecho una vez — cada nueva pestaña de ese sitio entrará en su grupo en cuanto cargue. Gestión completa de reglas en Ajustes, sincronizadas entre dispositivos.
+- **Agrupación automática con IA (opcional)**: ¿Ninguna regla coincide? Abre varias pestañas del mismo sitio seguidas y la IA las agrupa y nombra el grupo por ti.
+- **Autoarchivado**: Las pestañas inactivas más allá del umbral (12 h por defecto) se guardan en el nuevo «Archivo» de la barra lateral — las pestañas fijadas, agrupadas, activas o con audio nunca se tocan, y cada ronda se deshace con un clic.
+- **Posponer (Snooze)**: «Posponer esta pestaña…» la cierra ahora y la reabre a su hora — en 1 hora, esta noche, mañana por la mañana o el próximo lunes.
 
 ### 🎨 Diseño Premium y Personalización
 - **Imagen de fondo personalizada**: ¡Personaliza su espacio de trabajo! Sube su propia imagen o usa una URL. Ajusta la **opacidad** y el **desenfoque** para lograr el aspecto perfecto.

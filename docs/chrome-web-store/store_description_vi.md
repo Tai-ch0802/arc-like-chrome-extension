@@ -46,6 +46,7 @@ Have thousands of bookmarks? No problem!
 - **Lọc Đa Từ khóa**: Hỗ trợ các từ khóa phân tách bằng dấu cách (ví dụ: "google docs công việc") để nhắm mục tiêu chính xác.
 - **Tìm kiếm Tên miền**: Nhập tên miền (như `github.com`) để lọc ngay lập tức các tab và dấu trang từ các nguồn cụ thể.
 - **Làm nổi bật Thông minh**: Làm nổi bật thời gian thực các từ khóa phù hợp giữ cho tiêu điểm hình ảnh của bạn rõ ràng.
+- **Phủ khắp mọi mục**: Lọc, tô sáng và khớp tên miền giờ áp dụng cho mọi mục của thanh bên — kể cả mục "Lưu trữ" mới.
 
 ### 🗂️ Không gian làm việc Thống nhất
 - **Tab Dọc**: Xem tiêu đề trang đầy đủ, không còn bị nén thành các biểu tượng nhỏ.
@@ -54,6 +55,12 @@ Have thousands of bookmarks? No problem!
 - **Kéo để Lưu**: Kéo một tab vào khu vực dấu trang để lưu ngay lập tức; kéo một dấu trang vào khu vực tab để mở nó.
 - **Danh sách đọc & RSS**: Trung tâm quản lý bài viết cá nhân của bạn. Đồng bộ hóa với Danh sách đọc gốc của Chrome, đăng ký nguồn cấp dữ liệu RSS và quản lý mọi thứ ở một nơi với tính năng khử trùng lặp và sắp xếp thông minh.
 - **Đặt tên cửa sổ tùy chỉnh**: Gán tên tùy chỉnh cho các cửa sổ của bạn (ví dụ: "Công việc", "Cá nhân") để có ngữ cảnh rõ ràng hơn.
+
+### 🚦 Chế độ lái tự động cho thẻ (mới)
+- **Quy tắc nhóm tự động**: Nhấp chuột phải thiết lập một lần — mọi thẻ mới từ trang đó sẽ tự vào nhóm ngay khi tải. Quản lý quy tắc đầy đủ trong Cài đặt, đồng bộ giữa các thiết bị.
+- **Nhóm tự động bằng AI (tùy chọn)**: Không quy tắc nào khớp? Mở liên tiếp nhiều thẻ cùng một trang, AI sẽ tự gom nhóm và đặt tên.
+- **Tự động lưu trữ**: Thẻ không dùng quá ngưỡng (mặc định 12 giờ) được cất vào mục "Lưu trữ" mới của thanh bên — thẻ đã ghim, trong nhóm, đang dùng hoặc đang phát âm thanh không bao giờ bị đụng đến, mỗi lượt đều hoàn tác được bằng một cú nhấp.
+- **Hoãn xem (Snooze)**: "Hoãn thẻ này…" đóng ngay và mở lại đúng hẹn — sau 1 giờ, tối nay, sáng mai hoặc thứ Hai tuần sau.
 
 ### 🎨 Thiết kế Cao cấp & Tùy chỉnh
 - **Hình nền tùy chỉnh**: Cá nhân hóa không gian làm việc của bạn! Tải lên hình ảnh của riêng bạn hoặc sử dụng URL. Tinh chỉnh với độ **mờ** và độ **nhòe** có thể điều chỉnh để có vẻ ngoài hoàn hảo.

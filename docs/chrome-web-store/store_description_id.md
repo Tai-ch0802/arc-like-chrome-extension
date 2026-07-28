@@ -46,6 +46,7 @@ Jangan hanya mencari—temukan secara instan.
 - **Penyaringan Multi-Kata Kunci**: Mendukung kata kunci yang dipisahkan spasi (mis. "google docs kerja") untuk penargetan yang tepat.
 - **Pencarian Domain**: Ketik domain (seperti `github.com`) untuk memfilter tab dan bookmark secara instan dari sumber tertentu.
 - **Penyorotan Cerdas**: Penyorotan waktu nyata dari kata kunci yang cocok menjaga fokus visual Anda tetap jelas.
+- **Mencakup Semua Bagian**: Pemfilteran, penyorotan, dan pencocokan domain kini mencakup semua bagian sidebar — termasuk Arsip baru.
 
 ### 🗂️ Ruang Kerja Terpadu
 - **Tab Vertikal**: Lihat judul halaman lengkap, tidak lagi dipadatkan menjadi ikon kecil.
@@ -54,6 +55,12 @@ Jangan hanya mencari—temukan secara instan.
 - **Seret & Lepas**: Manajemen intuitif—pindahkan item dengan mudah antara tab, grup, dan folder bookmark.
 - **Seret untuk Menyimpan**: Seret tab ke area bookmark untuk menyimpannya secara instan; seret bookmark ke area tab untuk membukanya.
 - **Daftar Bacaan & RSS**: Pusat kurasi artikel pribadi Anda. Sinkronkan dengan Daftar Bacaan asli Chrome, berlangganan umpan RSS, dan kelola semuanya di satu tempat dengan deduplikasi dan penyortiran cerdas.
+
+### 🚦 Autopilot Tab (baru)
+- **Aturan Pengelompokan Otomatis**: Klik kanan sekali — setiap tab baru dari situs itu langsung masuk ke grupnya begitu dimuat. Kelola aturan sepenuhnya di Pengaturan, tersinkron antar perangkat.
+- **Pengelompokan Otomatis AI (opsional)**: Tidak ada aturan yang cocok? Buka beberapa tab dari situs yang sama berturut-turut, AI akan mengelompokkan dan menamainya.
+- **Arsip Otomatis**: Tab yang menganggur melebihi ambang (bawaan 12 jam) otomatis masuk ke "Arsip" baru di sidebar — tab yang disematkan, dalam grup, aktif, atau sedang memutar audio tidak pernah disentuh, dan setiap putaran bisa dibatalkan sekali klik.
+- **Tunda (Snooze)**: "Tunda tab ini…" menutupnya sekarang dan membukanya kembali sesuai jadwal — 1 jam lagi, malam ini, besok pagi, atau Senin depan.
 
 ### 🎨 Desain Premium & Kustomisasi
 - **Gambar Latar Kustom**: Personalisasi ruang kerja Anda! Unggah gambar sendiri atau gunakan URL. Atur dengan **opasitas** dan **blur** yang dapat disesuaikan untuk tampilan sempurna.
