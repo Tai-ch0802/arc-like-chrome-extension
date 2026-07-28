@@ -190,6 +190,7 @@ async function renderAppearance(container) {
         tabs: 'tabsHeader',
         otherWindows: 'otherWindowsHeader',
         readingList: 'readingListHeader',
+        archive: 'archiveSectionHeader',
         bookmarks: 'bookmarksHeader',
         newswire: 'newswireSectionHeader',
     };

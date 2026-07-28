@@ -2,7 +2,7 @@ import { mergeSectionOrder, DEFAULT_SECTION_ORDER } from '../../modules/utils/se
 
 describe('mergeSectionOrder (BASE-015)', () => {
   it('default order includes the five built-in sections (newswire added in BASE-016 N1)', () => {
-    expect(DEFAULT_SECTION_ORDER).toEqual(['tabs', 'otherWindows', 'readingList', 'bookmarks', 'newswire']);
+    expect(DEFAULT_SECTION_ORDER).toEqual(['tabs', 'otherWindows', 'readingList', 'archive', 'bookmarks', 'newswire']);
   });
 
   it('empty stored → actual order as-is', () => {
@@ -17,26 +17,26 @@ describe('mergeSectionOrder (BASE-015)', () => {
 
   it('orders by stored preference', () => {
     expect(mergeSectionOrder(
-      ['newswire', 'bookmarks', 'readingList', 'tabs', 'otherWindows'],
+      ['newswire', 'bookmarks', 'readingList', 'archive', 'tabs', 'otherWindows'],
       DEFAULT_SECTION_ORDER
-    )).toEqual(['newswire', 'bookmarks', 'readingList', 'tabs', 'otherWindows']);
+    )).toEqual(['newswire', 'bookmarks', 'readingList', 'archive', 'tabs', 'otherWindows']);
   });
 
   it('partial stored (pre-newswire preference) → missing actual ids appended in actual order', () => {
     expect(mergeSectionOrder(['bookmarks', 'tabs'], DEFAULT_SECTION_ORDER))
-      .toEqual(['bookmarks', 'tabs', 'otherWindows', 'readingList', 'newswire']);
+      .toEqual(['bookmarks', 'tabs', 'otherWindows', 'readingList', 'archive', 'newswire']);
   });
 
   it('drops stored ids not present in actual (section from another device / future version)', () => {
     expect(mergeSectionOrder(
-      ['ghostSection', 'bookmarks', 'tabs', 'otherWindows', 'readingList', 'newswire'],
+      ['ghostSection', 'bookmarks', 'tabs', 'otherWindows', 'readingList', 'archive', 'newswire'],
       DEFAULT_SECTION_ORDER
-    )).toEqual(['bookmarks', 'tabs', 'otherWindows', 'readingList', 'newswire']);
+    )).toEqual(['bookmarks', 'tabs', 'otherWindows', 'readingList', 'archive', 'newswire']);
   });
 
   it('ignores duplicate ids in stored', () => {
     expect(mergeSectionOrder(['bookmarks', 'bookmarks', 'tabs'], DEFAULT_SECTION_ORDER))
-      .toEqual(['bookmarks', 'tabs', 'otherWindows', 'readingList', 'newswire']);
+      .toEqual(['bookmarks', 'tabs', 'otherWindows', 'readingList', 'archive', 'newswire']);
   });
 
   it('does not mutate its inputs', () => {

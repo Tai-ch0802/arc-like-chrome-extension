@@ -20,6 +20,7 @@ import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
 import { initAiProviderErrorToast, initRssSyncOnboarding, initNewswireSyncOnboarding } from './modules/ui/toast.js';
 import { initAiRoutingToast } from './modules/ui/routingRuleUI.js';
+import { initArchiveSection } from './modules/ui/archiveRenderer.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 
 // --- Spotlight 轉送動作處理 ---
@@ -284,6 +285,8 @@ async function initialize() {
     initAiProviderErrorToast();
     // BASE-022 P3: undoable toast when the engine auto-groups tabs in this window.
     initAiRoutingToast();
+    // BASE-024 P2: archive section (auto-archived + snoozed tabs) + archive toast.
+    initArchiveSection();
 
     rssManager.initRssManager()
         .then(() => initRssSyncOnboarding())

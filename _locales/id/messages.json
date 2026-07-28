@@ -1678,5 +1678,86 @@
   "routingAiGroupedToast": {
     "message": "Tab dari situs ini telah dikelompokkan secara otomatis.",
     "description": "Undoable toast shown when the engine auto-groups same-site tabs."
+  },
+  "archiveSectionHeader": {
+    "message": "Arsip",
+    "description": "Sidebar archive section header."
+  },
+  "archiveEmptyState": {
+    "message": "Tab yang lama tak dipakai disimpan di sini — pulihkan kapan saja.",
+    "description": "Shown when the archive section has no items."
+  },
+  "archiveClearAll": {
+    "message": "Bersihkan semua",
+    "description": "Header button + confirm title for clearing the archive."
+  },
+  "archiveClearConfirm": {
+    "message": "Hapus semua tab yang diarsipkan? Tindakan ini tidak bisa dibatalkan.",
+    "description": "Confirm dialog message before clearing all archived tabs."
+  },
+  "archivedToast": {
+    "message": "$COUNT$ tab tak aktif diarsipkan.",
+    "description": "Undoable toast after an auto-archive round; $1 = tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "archiveDeleteTitle": {
+    "message": "Hapus dari arsip",
+    "description": "Title of the per-item remove button (archived item)."
+  },
+  "archiveCancelSnoozeTitle": {
+    "message": "Batalkan tunda (tetap di arsip)",
+    "description": "Title of the cancel button on a snoozed item (keeps it in archive)."
+  },
+  "archiveWakeNowTitle": {
+    "message": "Klik untuk buka sekarang",
+    "description": "Tooltip on a snoozed item: click wakes it immediately."
+  },
+  "timeJustNow": {
+    "message": "baru saja",
+    "description": "Relative time: under a minute ago."
+  },
+  "timeMinutesAgo": {
+    "message": "$COUNT$ mnt lalu",
+    "description": "Relative time; $1 = minutes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeHoursAgo": {
+    "message": "$COUNT$ jam lalu",
+    "description": "Relative time; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeDaysAgo": {
+    "message": "$COUNT$ hari lalu",
+    "description": "Relative time; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wakeTomorrow": {
+    "message": "Besok $TIME$",
+    "description": "Wake-time label; $1 = HH:mm.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "snoozeWakeNotifTitle": {
+    "message": "Tab yang ditunda sudah kembali",
+    "description": "System notification title when a snoozed tab reopens."
   }
 }

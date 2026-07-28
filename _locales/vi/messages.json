@@ -1678,5 +1678,86 @@
   "routingAiGroupedToast": {
     "message": "Đã tự động nhóm các thẻ từ trang này.",
     "description": "Undoable toast shown when the engine auto-groups same-site tabs."
+  },
+  "archiveSectionHeader": {
+    "message": "Lưu trữ",
+    "description": "Sidebar archive section header."
+  },
+  "archiveEmptyState": {
+    "message": "Các thẻ không dùng sẽ được cất vào đây — khôi phục bất cứ lúc nào.",
+    "description": "Shown when the archive section has no items."
+  },
+  "archiveClearAll": {
+    "message": "Xóa tất cả",
+    "description": "Header button + confirm title for clearing the archive."
+  },
+  "archiveClearConfirm": {
+    "message": "Xóa toàn bộ thẻ đã lưu trữ? Không thể hoàn tác.",
+    "description": "Confirm dialog message before clearing all archived tabs."
+  },
+  "archivedToast": {
+    "message": "Đã lưu trữ $COUNT$ thẻ không hoạt động.",
+    "description": "Undoable toast after an auto-archive round; $1 = tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "archiveDeleteTitle": {
+    "message": "Xóa khỏi lưu trữ",
+    "description": "Title of the per-item remove button (archived item)."
+  },
+  "archiveCancelSnoozeTitle": {
+    "message": "Hủy hẹn lại (giữ trong lưu trữ)",
+    "description": "Title of the cancel button on a snoozed item (keeps it in archive)."
+  },
+  "archiveWakeNowTitle": {
+    "message": "Nhấp để mở ngay",
+    "description": "Tooltip on a snoozed item: click wakes it immediately."
+  },
+  "timeJustNow": {
+    "message": "vừa xong",
+    "description": "Relative time: under a minute ago."
+  },
+  "timeMinutesAgo": {
+    "message": "$COUNT$ phút trước",
+    "description": "Relative time; $1 = minutes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeHoursAgo": {
+    "message": "$COUNT$ giờ trước",
+    "description": "Relative time; $1 = hours.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeDaysAgo": {
+    "message": "$COUNT$ ngày trước",
+    "description": "Relative time; $1 = days.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wakeTomorrow": {
+    "message": "Ngày mai $TIME$",
+    "description": "Wake-time label; $1 = HH:mm.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "snoozeWakeNotifTitle": {
+    "message": "Thẻ đã hẹn lại vừa quay lại",
+    "description": "System notification title when a snoozed tab reopens."
   }
 }

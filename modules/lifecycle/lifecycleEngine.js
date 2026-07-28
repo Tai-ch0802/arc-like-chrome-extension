@@ -180,6 +180,51 @@ export function handleSnoozeNotificationClick(notificationId) {
     return true;
 }
 
+/**
+ * Sidepanel → SW store mutations (SA v1.2, single-writer resolution of the
+ * v1.1 precondition): archiveStore is lock-free RMW, so EVERY write funnels
+ * through this SW's serialize chain — the sidepanel never writes these keys
+ * directly. Reads stay local to each context (read-only races are benign).
+ */
+function handleLifecycleMessage(message, sendResponse) {
+    switch (message.action) {
+        case 'lifecycle:removeArchived':
+            serialize(() => store.removeArchived(message.ids || [])).then(() => sendResponse({ ok: true }));
+            return true;
+        case 'lifecycle:clearArchived':
+            serialize(() => store.clearArchived()).then(() => sendResponse({ ok: true }));
+            return true;
+        case 'lifecycle:wakeNow':
+            serialize(async () => {
+                await wake(message.id);
+                await chrome.alarms.clear(WAKE_ALARM_PREFIX + message.id).catch(() => {});
+            }).then(() => sendResponse({ ok: true }));
+            return true;
+        case 'lifecycle:cancelSnooze':
+            // Cancel = the snoozed item becomes a plain archived entry
+            // (FR-3.04). Archive-add BEFORE snooze-remove: the URL exists in
+            // at least one list at every instant.
+            serialize(async () => {
+                const state = await store.getSnoozed();
+                const item = state.items.find(i => i.id === message.id);
+                if (!item) return;
+                await store.addArchived([{
+                    id: crypto.randomUUID(),
+                    url: item.url,
+                    title: item.title,
+                    favIconUrl: item.favIconUrl || '',
+                    archivedAt: Date.now(),
+                    source: 'snooze-cancel',
+                }]);
+                await store.removeSnoozed(item.id);
+                await chrome.alarms.clear(WAKE_ALARM_PREFIX + item.id).catch(() => {});
+            }).then(() => sendResponse({ ok: true }));
+            return true;
+        default:
+            return false;
+    }
+}
+
 /** Register listeners. MUST be called synchronously at SW top level (MV3). */
 export function initLifecycleEngine() {
     chrome.runtime.onInstalled.addListener(() => ensureHeartbeat());
@@ -188,6 +233,11 @@ export function initLifecycleEngine() {
         serialize(() => sweepExpiredSnoozes());
     });
     ensureHeartbeat(); // SW cold start (idempotent: create only when absent)
+
+    chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+        if (!message || typeof message.action !== 'string' || !message.action.startsWith('lifecycle:')) return;
+        return handleLifecycleMessage(message, sendResponse);
+    });
 
     chrome.storage.onChanged.addListener((changes, area) => {
         if (area !== 'sync') return;

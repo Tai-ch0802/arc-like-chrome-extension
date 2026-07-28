@@ -132,6 +132,25 @@
             <hr class="divider">
         </section>
 
+        <!-- Archive Section (BASE-024 P2):自動歸檔的封存項 + snooze 中的分頁
+             (置頂帶喚醒時間 badge)。三條件全空時整塊隱藏(SA D1)。 -->
+        <section id="archive-section" class="panel-section hidden" data-section-id="archive">
+            <div class="section-header-row">
+                <button id="archive-toggle" class="section-toggle-btn" aria-expanded="true"
+                    aria-controls="archive-list">
+                    <h2 class="section-header" data-i18n="archiveSectionHeader"></h2>
+                    <span id="archive-count-badge" class="newswire-unread-badge hidden" aria-live="polite"></span>
+                    <span class="toggle-chevron"></span>
+                </button>
+                <div class="header-controls-right">
+                    <button id="archive-clear-btn" class="header-action-btn hidden"
+                        data-i18n="archiveClearAll" data-i18n-title="archiveClearAll"></button>
+                </div>
+            </div>
+            <div id="archive-list"></div>
+            <hr class="divider">
+        </section>
+
         <!-- Newswire Section (BASE-016 N1):內容由 modules/ui/newswireRenderer.js
              經 SW 的 newswire:getState 回填,即時事件走 runtime message 廣播。 -->
         <section id="newswire-section" class="panel-section" data-section-id="newswire">
