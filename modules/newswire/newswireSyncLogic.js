@@ -129,13 +129,20 @@ export function mergeNewswireState(local, remote) {
         // Opt-in ON: keys roam — EXCEPT keys.tg.session (device-local, see
         // stripTgSession). LWW runs on the session-less form of BOTH sides, so a
         // legacy remote payload that still carries a session can never win it into
-        // the local copy; the local device's own session is then re-attached to the
-        // local copy only. The Drive payload stays session-less (scrubs legacy).
+        // the local copy. The Drive payload stays session-less (scrubs legacy).
+        //
+        // While THIS device holds a session, its whole local tg entry is preserved
+        // as one unit (PR #219 review): the session must stay paired with the
+        // apiId/apiHash it was created under — re-attaching it onto a remote-won
+        // apiId/apiHash would produce a never-verified cross-device pairing, and a
+        // remote blob with no tg entry at all would strand the session without
+        // credentials. Roamed apiId/apiHash still reach devices with no session
+        // (they adopt `merged` wholesale and log in to mint their own session).
         const merged = mergeKeys(stripTgSession(local?.keys), stripTgSession(remote?.keys));
-        const localSession = local?.keys?.tg?.session;
-        localKeys = localSession === undefined
-            ? merged
-            : { ...merged, tg: { ...(merged.tg || {}), session: localSession } };
+        const localTg = local?.keys?.tg;
+        localKeys = localTg && localTg.session !== undefined
+            ? { ...merged, tg: localTg }
+            : merged;
         remoteKeys = merged;
     } else {
         // Opt-in OFF: local working copy is untouched (never lose the user's own

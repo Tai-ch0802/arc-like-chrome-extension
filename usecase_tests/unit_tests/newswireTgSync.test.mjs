@@ -62,13 +62,26 @@ describe('BASE-018 TG1 — tg joins existing key opt-in sync', () => {
     expect(merged.remoteKeys.tg.session).toBeUndefined();                         // 下次 write 即 scrub 遠端
   });
 
-  it('★ 遠端 keys 較新且無 session → 本機自己的 session 不被整包 LWW 蓋掉(re-attach)', () => {
+  it('★ 遠端 keys 較新且無 session → 本機 tg 憑證整組保留(session 與生成它的 apiId/apiHash 成對)', () => {
+    // PR #219 review:session 不可 re-attach 到遠端漫遊來的 apiId/apiHash 底下——
+    // 「A 的 session 配 B 的 apiId/apiHash」是從未驗證過的 cross-device 組合。
+    // 本機持有 session 期間整組保留;遠端較新的 apiId/apiHash 照常進 payload,
+    // 漫遊給「沒有 session 的裝置」使用。
     const merged = mergeNewswireState(
       { config: cfg(true), keys: tgKeys },                                                // updatedAt 5,有本機 session
       { config: cfg(true), keys: { tg: { apiId: 999, apiHash: 'rh' }, updatedAt: 50 } },  // 遠端較新
     );
-    expect(merged.localKeys.tg).toEqual({ apiId: 999, apiHash: 'rh', session: 'SECRET-SESSION' });
-    expect(merged.remoteKeys.tg.session).toBeUndefined();
+    expect(merged.localKeys.tg).toEqual({ apiId: 123, apiHash: 'h', session: 'SECRET-SESSION' });
+    expect(merged.remoteKeys.tg).toEqual({ apiId: 999, apiHash: 'rh' });   // 漫遊不受影響
+  });
+
+  it('★ 遠端較新且完全沒有 tg 條目 → 本機 tg 憑證整組保留,不留下「只剩 session」的殘缺組合', () => {
+    const merged = mergeNewswireState(
+      { config: cfg(true), keys: tgKeys },
+      { config: cfg(true), keys: { jin10: { secretKey: 'k' }, updatedAt: 50 } },          // 遠端較新、無 tg
+    );
+    expect(merged.localKeys.tg).toEqual({ apiId: 123, apiHash: 'h', session: 'SECRET-SESSION' });
+    expect(merged.remoteKeys.tg).toBeUndefined();                          // payload 依然無 session
   });
 
   it('stripTgSession:無 session 時回傳原物件(引用相等,不擾動 no-op write guard 的 canonical 比較)', () => {

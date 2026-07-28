@@ -23,7 +23,9 @@ PR #212 修掉單機內兩條已知併發路徑後，AUTH_KEY_DUPLICATED 仍復�
 
 ### a. session device-local（`newswireSyncLogic.js`）
 
-新增 `stripTgSession(keys)` 純函式；`mergeNewswireState` 在 syncKeys ON 時改為：LWW 跑在**去 session 形**的兩側 → 遠端 legacy session 永不勝出落地本機；本機 session 於 LWW 後 **re-attach 回本機副本**（整包 LWW 被較新遠端 blob 蓋過也不丟自己的 session）；Drive payload 一律無 session，下次 write 自動 scrub 遠端殘留。`apiId`/`apiHash` 照常漫遊（非連線憑證，各裝置自行登入取得各自 session）。
+新增 `stripTgSession(keys)` 純函式；`mergeNewswireState` 在 syncKeys ON 時改為：LWW 跑在**去 session 形**的兩側 → 遠端 legacy session 永不勝出落地本機；Drive payload 一律無 session，下次 write 自動 scrub 遠端殘留。
+
+**本機持有 session 期間，整組 `keys.tg`（session＋apiId/apiHash）視為一套裝置本地憑證原樣保留**（PR #219 review 修正：初版只 re-attach session，會把 A 的 session 接到遠端漫遊來的 B apiId/apiHash 底下——從未驗證過的 cross-device 配對；遠端較新且無 tg 條目時更會留下「只剩 session」的殘缺組合誤報 needs-key）。`apiId`/`apiHash` 照常進 payload 漫遊，**只影響尚未登入（無 session）的裝置**——它們整包採用 merged 後自行登入取得自己的 session。
 
 已被舊版同步過去的裝置無法回收（無從分辨 session 來源）：受影響使用者在要用的裝置重新登入即取得新 auth key，自然解除衝突；舊 session 可於 Telegram 裝置清單手動撤銷。
 
@@ -51,16 +53,16 @@ storage schema、manifest、跨 context 訊息協定（`tg:*`）皆不變。Driv
 
 ## Test Impact
 
-- `newswireTgSync.test.mjs`：**翻轉**原「session IS in payload」測試 → session 絕不進 payload；新增 legacy 遠端 session 不落地、本機 session re-attach、`stripTgSession` 引用相等（no-op guard 不受擾動）。
+- `newswireTgSync.test.mjs`：**翻轉**原「session IS in payload」測試 → session 絕不進 payload；新增 legacy 遠端 session 不落地、本機 tg 憑證整組保留（遠端較新有/無 tg 條目兩情境）、`stripTgSession` 引用相等（no-op guard 不受擾動）。
 - `tgOffscreenController.test.mjs`：新增「重建等舊拆除才建新」（★ 修正前 fail）、「拆除等待期間 disconnect 收手」、「resolveChannel 落在拆除窗口不建臨時 client」。
 - `newswireTgAdapter.test.mjs`：新增「disconnect 回傳可等待 promise」（★ 修正前 TypeError）、「destroy 優先於 disconnect」（★ 修正前 fail）。
 - `feedManagerTgWatchdog.test.mjs`：新增 `tgConfigIdentity` 三組（rules/prefs/他源 key/updatedAt 不變身分、enabled/channels/keys.tg 變更身分、null 安全）。
 - `handleNewswireConfigChange` 的 keepTg 佈線（5 行）無直接整合測試：feedManager 硬連 chrome 綁定的 adapter 工廠，stub 成本不成比例；決策核心已抽為純函式覆蓋。
-- 驗證指令：`npx jest --maxWorkers=2 usecase_tests/unit_tests/`（新增 12 tests，全套 681 綠）。回歸證明：stash 四個 module 後跑四個測試檔 = 4 suites / 11 tests fail。
+- 驗證指令：`npx jest --maxWorkers=2 usecase_tests/unit_tests/`（新增 13 tests，全套 682 綠）。回歸證明：stash 四個 module 後跑四個測試檔 = 4 suites / 11 tests fail（初版）；憑證整組保留另以 stash 驗證對初版 fail。
 
 ## 驗收條件
 
-- [x] syncKeys ON 時 Drive payload 不含 `keys.tg.session`；遠端 legacy session 不合入本機；本機 session 不因整包 LWW 遺失（unit 鎖定）
+- [x] syncKeys ON 時 Drive payload 不含 `keys.tg.session`；遠端 legacy session 不合入本機；本機持有 session 期間整組 tg 憑證不因整包 LWW 遺失或被換組（unit 鎖定）
 - [x] tg 重建路徑上，新 client 於舊 client 拆除 resolve 後才建立；捨棄 client 走 destroy 優先（unit 鎖定）
 - [x] 改 rules/prefs/其他源 key 不重建 tg 連線；改 tg enabled/channels/keys.tg 才重建（純函式 unit 鎖定 + 佈線目測）
 - [x] 全 unit suite 綠；lint-check 無新增問題（117 處 `$eval` 為既有 puppeteer 測試基線，非本次引入）
