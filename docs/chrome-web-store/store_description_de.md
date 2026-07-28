@@ -46,6 +46,7 @@ Suchen Sie nicht nur – finden Sie sofort.
 - **Multi-Keyword-Filterung**: Unterstützt durch Leerzeichen getrennte Schlüsselwörter (z. B. "google docs arbeit") für präzises Targeting.
 - **Domain-Suche**: Geben Sie eine Domain ein (wie `github.com`), um Tabs und Lesezeichen von bestimmten Quellen sofort zu filtern.
 - **Intelligente Hervorhebung**: Echtzeit-Hervorhebung passender Schlüsselwörter hält Ihren visuellen Fokus klar.
+- **Alle Bereiche abgedeckt**: Filterung, Hervorhebung und Domain-Abgleich erfassen jetzt jeden Bereich der Seitenleiste — einschließlich des neuen Archivs.
 
 ### 🗂️ Einheitlicher Arbeitsbereich
 - **Vertikale Tabs**: Sehen Sie vollständige Seitentitel, nicht mehr in winzige Symbole gepresst.
@@ -54,6 +55,12 @@ Suchen Sie nicht nur – finden Sie sofort.
 - **Drag & Drop**: Intuitive Verwaltung – verschieben Sie Elemente mühelos zwischen Tabs, Gruppen und Lesezeichenordnern.
 - **Drag to Save**: Ziehen Sie einen Tab in den Lesezeichenbereich, um ihn sofort zu speichern; ziehen Sie ein Lesezeichen in den Tabbereich, um es zu öffnen.
 - **Leseliste & RSS**: Ihr persönlicher Hub für die Artikel-Kuratierung. Synchronisieren Sie mit der nativen Chrome-Leseliste, abonnieren Sie RSS-Feeds und verwalten Sie alles an einem Ort mit intelligenter Duplikaterkennung und Sortierung.
+
+### 🚦 Tab-Autopilot (neu)
+- **Automatische Gruppierungsregeln**: Einmal per Rechtsklick festlegen — künftig wandert jeder neue Tab dieser Website beim Laden automatisch in die gewählte Gruppe. Vollständige Regelverwaltung in den Einstellungen, geräteübergreifend synchronisiert.
+- **KI-Auto-Gruppierung (optional)**: Keine Regel getroffen? Öffnen Sie mehrere Tabs derselben Website hintereinander, gruppiert die KI sie automatisch und benennt die Gruppe.
+- **Auto-Archiv**: Tabs, die länger als der Schwellenwert (standardmäßig 12 Stunden) inaktiv sind, wandern in das neue „Archiv“ der Seitenleiste — angeheftete, gruppierte, aktive oder abspielende Tabs bleiben unberührt, jede Runde lässt sich mit einem Klick rückgängig machen.
+- **Snooze**: „Tab später ansehen…“ schließt ihn jetzt und öffnet ihn pünktlich wieder — in 1 Stunde, heute Abend, morgen früh oder nächsten Montag.
 
 ### 🎨 Premium-Design & Anpassung
 - **Benutzerdefiniertes Hintergrundbild**: Personalisieren Sie Ihren Arbeitsbereich! Laden Sie Ihr eigenes Bild hoch oder verwenden Sie eine URL. Passen Sie die **Deckkraft** und **Unschärfe** für den perfekten Look an.

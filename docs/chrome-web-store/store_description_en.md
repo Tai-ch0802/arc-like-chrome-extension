@@ -17,6 +17,8 @@ Tired of getting lost in dozens of cluttered tabs? Craving the sleek, vertical t
 | RSS subscriptions | ❌ | ✅ |
 | Cross-window tab view | ❌ | ✅ |
 | **Workspaces (hibernate + restore, cross-device)** | ❌ | ✅ |
+| **Auto Grouping Rules (site → group routing)** | ❌ | ✅ |
+| **Auto-Archive + Snooze** | ❌ | ✅ |
 | **AI Auto Group Naming** | ❌ | ✅ Local AI |
 | **AI Tab Cleanup Suggestions** | ❌ | ✅ Local AI |
 | **AI Hover Summary** | ❌ | ✅ Local AI |
@@ -66,6 +68,7 @@ Don't just search—find instantly.
 - **Multi-Keyword Filtering**: Supports space-separated keywords (e.g., "google docs work") for precise targeting.
 - **Domain Search**: Type a domain (like `github.com`) to instantly filter tabs and bookmarks from specific sources.
 - **Smart Highlighting**: Real-time highlighting of matched keywords keeps your visual focus clear.
+- **Every Section Covered**: Filtering, keyword highlighting and domain matching now span every sidebar section — including the new Archive.
 
 ### 🗂️ Unified Workspace
 - **Vertical Tabs**: View full page titles, no longer compressed into tiny icons.
@@ -74,6 +77,12 @@ Don't just search—find instantly.
 - **Drag & Drop**: Intuitive management—move items effortlessly between tabs, groups, and bookmark folders.
 - **Drag to Save**: Drag a tab into the bookmarks area to save it instantly; drag a bookmark to the tabs area to open it.
 - **Reading List & RSS**: Your personal hub for article curation. Sync with the native Chrome Reading List, subscribe to RSS feeds, and manage everything in one place with smart deduplication and sorting.
+
+### 🚦 Tab Autopilot (new)
+- **Auto Grouping Rules**: Right-click a tab once — every future tab from that site slides into its group the moment it loads. Full rule management in Settings, synced across devices.
+- **AI Auto Grouping (optional)**: No rule matched? Open a few tabs from the same site in a row and AI groups them and names the group for you.
+- **Auto-Archive**: Tabs idle beyond your threshold (default 12h) tuck themselves into the sidebar’s new Archive — pinned, grouped, active or audible tabs are never touched, and every sweep undoes in one click.
+- **Snooze**: “Snooze this tab…” closes it now and brings it back on schedule — in 1 hour, tonight, tomorrow morning, or next Monday.
 
 ### 🎨 Premium Design & Customization
 - **Custom Background Image**: Personalize your workspace! Upload your own image or use a URL. Fine-tune it with adjustable **opacity** and **blur** for the perfect look.

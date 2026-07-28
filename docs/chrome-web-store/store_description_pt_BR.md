@@ -46,6 +46,7 @@ Não apenas pesquise — encontre instantaneamente.
 - **Filtragem Multi-Palavra-Chave**: Suporta palavras-chave separadas por espaço (ex: "google docs trabalho") para segmentação precisa.
 - **Pesquisa de Domínio**: Digite um domínio (como `github.com`) para filtrar instantaneamente abas e favoritos de fontes específicas.
 - **Destaque Inteligente**: O destaque em tempo real das palavras-chave correspondentes mantém seu foco visual claro.
+- **Todas as seções cobertas**: Filtragem, destaque e correspondência de domínio agora abrangem todas as seções da barra lateral — incluindo o novo Arquivo.
 
 ### 🗂️ Espaço de Trabalho Unificado
 - **Abas Verticais**: Veja títulos de páginas completos, não mais compactados em ícones minúsculos.
@@ -54,6 +55,12 @@ Não apenas pesquise — encontre instantaneamente.
 - **Arrastar e Soltar**: Gerenciamento intuitivo — mova itens sem esforço entre abas, grupos e pastas de favoritos.
 - **Arrastar para Salvar**: Arraste uma aba para a área de favoritos para salvá-la instantaneamente; arraste um favorito para a área de abas para abri-lo.
 - **Lista de Leitura & RSS**: Seu hub pessoal de curadoria de artigos. Sincronize com a Lista de Leitura nativa do Chrome, assine feeds RSS e gerencie tudo em um só lugar com deduplicação e ordenação inteligentes.
+
+### 🚦 Piloto automático de abas (novo)
+- **Regras de agrupamento automático**: Clique com o botão direito uma vez — toda nova aba daquele site entra no grupo assim que carrega. Gerenciamento completo de regras nas Configurações, sincronizadas entre dispositivos.
+- **Agrupamento automático com IA (opcional)**: Nenhuma regra correspondeu? Abra várias abas do mesmo site em sequência e a IA as agrupa e nomeia o grupo para você.
+- **Arquivamento automático**: Abas ociosas além do limite (padrão de 12 horas) vão para o novo "Arquivo" da barra lateral — abas fixadas, agrupadas, ativas ou reproduzindo áudio nunca são tocadas, e cada rodada pode ser desfeita com um clique.
+- **Soneca (Snooze)**: "Adiar esta aba…" fecha agora e reabre na hora marcada — em 1 hora, hoje à noite, amanhã de manhã ou na próxima segunda.
 
 ### 🎨 Design Premium e Personalização
 - **Imagem de Fundo Personalizada**: Personalize seu espaço de trabalho! Faça upload de sua própria imagem ou use uma URL. Ajuste a **opacidade** e o **desfoque** para o visual perfeito.
