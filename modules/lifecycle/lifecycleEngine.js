@@ -185,8 +185,9 @@ export function handleSnoozeNotificationClick(notificationId) {
  * v1.1 precondition): archiveStore is lock-free RMW, so EVERY write funnels
  * through this SW's serialize chain — the sidepanel never writes these keys
  * directly. Reads stay local to each context (read-only races are benign).
+ * Exported for unit tests (the fail-closed snooze ack has its own regression).
  */
-function handleLifecycleMessage(message, sendResponse) {
+export function handleLifecycleMessage(message, sendResponse) {
     switch (message.action) {
         case 'lifecycle:removeArchived':
             serialize(() => store.removeArchived(message.ids || [])).then(() => sendResponse({ ok: true }));
@@ -209,7 +210,10 @@ function handleLifecycleMessage(message, sendResponse) {
             let persisted = false;
             serialize(async () => {
                 await store.addSnoozed(message.item);
-                chrome.alarms.create(WAKE_ALARM_PREFIX + message.item.id, { when: message.item.wakeAt });
+                // Awaited on purpose (review PR #222): the fail-closed guarantee
+                // must cover the alarm registration too, or a rejected create
+                // would leave a record that never wakes while we ack ok:true.
+                await chrome.alarms.create(WAKE_ALARM_PREFIX + message.item.id, { when: message.item.wakeAt });
                 persisted = true;
             }).then(() => sendResponse({ ok: persisted }));
             return true;

@@ -39,7 +39,7 @@ key_files:
   - file_path: options.html
     description: "[UI] 獨立設定頁（options_ui + open_in_tab）。Phase 12(批D) 新增；左側導覽 + 內容區，載入 sidepanel.css(共用元件樣式) + options.css(頁面版面) + options.js。"
   - file_path: options.js
-    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（BASE-016 N2 起共 9 區塊：外觀/語言/功能/同步/AI/RSS/快訊/快捷鍵/關於；renderNewswire=四源卡片 enable+key 遮罩欄+申請引導、金十分段多選、P0/P1/靜音規則編輯，只寫 newswireConfig/newswireKeys 到 storage.local，狀態經 newswire:status 廣播即時顯示；BASE-019 起五張源卡可收折——buildCollapsibleCard 建「標題 toggle(名稱+狀態徽章,aria-expanded/aria-controls)+body」預設收合、不持久化，tg 卡 repaint 保留展開態）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
+    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。BASE-022 P2 加 routing 區（規則 CRUD/Sortable 排序/全域與 AI 開關）；BASE-024 P3 於 features 區尾端加 Auto-Archive 開關（預設關）＋閒置閾值六檔 select。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（BASE-016 N2 起共 9 區塊：外觀/語言/功能/同步/AI/RSS/快訊/快捷鍵/關於；renderNewswire=四源卡片 enable+key 遮罩欄+申請引導、金十分段多選、P0/P1/靜音規則編輯，只寫 newswireConfig/newswireKeys 到 storage.local，狀態經 newswire:status 廣播即時顯示；BASE-019 起五張源卡可收折——buildCollapsibleCard 建「標題 toggle(名稱+狀態徽章,aria-expanded/aria-controls)+body」預設收合、不持久化，tg 卡 repaint 保留展開態）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
   - file_path: modules/ui/settingsBridge.js
     description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。Phase 13(批E) 加入 driveSyncStatus 分支：local 區的 driveSyncStatus 變更映射成 dispatch driveSyncStatusChanged 事件，供 driveSyncBadge 即時更新徽章。另有 aiProviderAuthError 分支（雲端 AI 401/403 訊號 → dispatch aiProviderAuthErrorChanged，供 toast.js 顯示節流提示）。"
   - file_path: modules/ui/customThemeManager.js
@@ -95,7 +95,7 @@ key_files:
   - file_path: modules/ui/bookmarkRenderer.js
     description: "[UI] 書籤渲染。負責書籤列表、資料夾結構以及連結分頁面板的渲染邏輯。"
   - file_path: modules/modalManager.js
-    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。BASE-022 P2 新增 showGroupPickerDialog：既有群組單選 + 新群組名稱/色票二擇一（互斥自動清除），供路由規則建立流程使用。"
+    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。BASE-022 P2 新增 showGroupPickerDialog：既有群組單選 + 新群組名稱/色票二擇一（互斥自動清除），供路由規則建立流程使用。BASE-024 P3 新增 showSnoozeDialog：四固定時段按鈕（label＋Intl 解算時刻），供稍後再看流程。"
   - file_path: modules/apiManager.js
     description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。"
   - file_path: modules/stateManager.js
