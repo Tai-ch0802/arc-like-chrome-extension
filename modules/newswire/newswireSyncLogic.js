@@ -97,6 +97,21 @@ export function mergeKeys(localKeys, remoteKeys) {
 }
 
 /**
+ * Telegram 的 session 是 device-local,**永不漫遊**(BASE-023):MTProto 的 auth key
+ * 綁定單一裝置,兩台裝置同時以同一 session 連線,伺服器會直接作廢它
+ * (AUTH_KEY_DUPLICATED;單機內併發的前例見 fix/BASE-022_tg-session-duplicate)。
+ * 原設計讓 `keys.tg`「搭既有 keys 同步便車」把 session 一起送進 Drive payload,
+ * 正是跨裝置版的同一事故。apiId/apiHash 仍可漫遊(非連線憑證,各裝置自行登入)。
+ * @param {object|null|undefined} keys
+ * @returns {object|null|undefined} keys.tg.session 存在時回傳去掉它的淺拷貝;否則原樣
+ */
+export function stripTgSession(keys) {
+    if (!keys || !keys.tg || keys.tg.session === undefined) return keys;
+    const { session, ...tg } = keys.tg;
+    return { ...keys, tg };
+}
+
+/**
  * Merge local and remote newswire state into the converged result. Returns the
  * config to persist locally, plus keys split into what to persist locally vs
  * what to write to Drive (undefined remoteKeys = scrub remote keys).
@@ -111,10 +126,16 @@ export function mergeNewswireState(local, remote) {
     let localKeys;
     let remoteKeys;
     if (syncKeys) {
-        // Opt-in ON: keys roam. Both the local copy and the Drive payload get the
-        // LWW-merged keys.
-        const merged = mergeKeys(local?.keys, remote?.keys);
-        localKeys = merged;
+        // Opt-in ON: keys roam — EXCEPT keys.tg.session (device-local, see
+        // stripTgSession). LWW runs on the session-less form of BOTH sides, so a
+        // legacy remote payload that still carries a session can never win it into
+        // the local copy; the local device's own session is then re-attached to the
+        // local copy only. The Drive payload stays session-less (scrubs legacy).
+        const merged = mergeKeys(stripTgSession(local?.keys), stripTgSession(remote?.keys));
+        const localSession = local?.keys?.tg?.session;
+        localKeys = localSession === undefined
+            ? merged
+            : { ...merged, tg: { ...(merged.tg || {}), session: localSession } };
         remoteKeys = merged;
     } else {
         // Opt-in OFF: local working copy is untouched (never lose the user's own

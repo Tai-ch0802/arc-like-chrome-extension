@@ -25,6 +25,18 @@ export function createTgOffscreenController(deps = {}) {
     let adapter = null;
     let lastStatus = 'disabled';
     let generation = 0;
+    // 舊 adapter 的拆除鏈(BASE-023):connect 重建前必須 await 它——舊 client 沒拆完
+    // 就撥新連線,新舊會短暫以同一 auth key 併發,MTProto 直接作廢 session
+    // (AUTH_KEY_DUPLICATED)。鏈化(而非單一 promise)使並發 connect/disconnect 都
+    // 排在「所有已知舊 client 拆完」之後。
+    let teardownDone = Promise.resolve();
+
+    function scheduleTeardown() {
+        if (!adapter) return;
+        const old = adapter;
+        adapter = null;
+        teardownDone = teardownDone.then(() => old.disconnect()).catch(() => { /* noop */ });
+    }
 
     async function connect(cfg) {
         const gen = ++generation;
@@ -39,7 +51,10 @@ export function createTgOffscreenController(deps = {}) {
         }
         // import 期間若 disconnect 或新 connect(gen 已變)→ 收手,不建立無人管理的 orphan。
         if (gen !== generation) return;
-        if (adapter) { try { adapter.disconnect(); } catch { /* noop */ } adapter = null; }
+        scheduleTeardown();
+        await teardownDone;
+        // 等拆除期間若又有 disconnect/新 connect → 收手(同上,orphan 防護)。
+        if (gen !== generation) return;
         adapter = createTgAdapter(cfg, {
             onRaw: (raw) => post({ action: 'tg:raw', raw }),
             onStatus: (status) => { lastStatus = status; post({ action: 'tg:status', status }); },
@@ -49,7 +64,7 @@ export function createTgOffscreenController(deps = {}) {
 
     function disconnect() {
         generation += 1; // 使 in-flight connect 於 loadAdapter resolve 後收手
-        if (adapter) { try { adapter.disconnect(); } catch { /* noop */ } adapter = null; }
+        scheduleTeardown();
         lastStatus = 'disabled';
     }
 
@@ -92,6 +107,10 @@ export function createTgOffscreenController(deps = {}) {
      * @param {string} username
      */
     async function resolveChannel(cfg, username) {
+        // adapter 為 null 不代表沒有常駐連線:可能正處於重建的拆除窗口(connect 已拆舊、
+        // 還沒建新)或剛 disconnect 而舊 client 仍在拆(BASE-023)。等拆除鏈清空再重看:
+        // 重建中 → 此時新 adapter 已就位,走借用;真的沒有 → 臨時連線才安全。
+        if (!adapter) await teardownDone;
         if (adapter) {
             if (!(await waitAdapterAlive())) throw new Error(TG_NOT_READY);
             return adapter.resolveChannel(username);

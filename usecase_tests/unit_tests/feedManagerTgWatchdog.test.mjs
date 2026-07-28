@@ -5,7 +5,7 @@
  *   - 有 adapter 但退避中(retrying/degraded)→ 不重連,交給 adapter 自癒(review 抓到的
  *     「watchdog 每 30s 干預退避/加重 FLOOD_WAIT」問題)。
  */
-import { shouldReconnectTg } from '../../modules/newswire/feedManager.js';
+import { shouldReconnectTg, tgConfigIdentity } from '../../modules/newswire/feedManager.js';
 
 describe('shouldReconnectTg (BASE-018 TG2b watchdog)', () => {
     it('offscreen 無回應(null:不存在/逾時)→ 重連', () => {
@@ -35,5 +35,41 @@ describe('shouldReconnectTg (BASE-018 TG2b watchdog)', () => {
         // 故新增狀態不需改 shouldReconnectTg——此斷言鎖住該設計,避免日後改回看 status
         // 時漏掉新狀態而造成無限重連(對已作廢的 session 重連只會再被拒)。
         expect(shouldReconnectTg({ alive: false, hasAdapter: true, status: 'needs-login' })).toBe(false);
+    });
+});
+
+/**
+ * tgConfigIdentity(BASE-023):handleNewswireConfigChange 據此決定 tg 是否重建。
+ * newswireConfig/newswireKeys 是粗粒度 storage key——改 rules、prefs、其他源的
+ * key 都會觸發 onChanged;修正前一律全拆重建,每次都把 offscreen 的常駐 MTProto
+ * 連線拆掉重撥,放大同一 auth key 短暫雙連線(AUTH_KEY_DUPLICATED)的窗口。
+ */
+describe('tgConfigIdentity (BASE-023 — tg 內容身分)', () => {
+    const config = (tg, over = {}) => ({
+        sources: { tg, jin10: { enabled: true, updatedAt: 1 } },
+        rules: { p0: ['a'], p1: [], mute: [], updatedAt: 1 },
+        prefs: { notificationsEnabled: true, syncKeys: false, updatedAt: 1 },
+        ...over,
+    });
+    const tgSrc = { enabled: true, channels: [{ id: '1', username: 'BWEnews' }], updatedAt: 10 };
+    const keys = { tg: { apiId: 1, apiHash: 'h', session: 's' }, jin10: { secretKey: 'k' }, updatedAt: 3 };
+
+    it('★ rules/prefs/其他源 keys/updatedAt 變動 → 身分不變(tg 不重建)', () => {
+        const base = tgConfigIdentity(config(tgSrc), keys);
+        expect(tgConfigIdentity(config({ ...tgSrc, updatedAt: 99 }), keys)).toBe(base);                  // tg 原樣重存
+        expect(tgConfigIdentity(config(tgSrc, { rules: { p0: ['b'], p1: [], mute: [], updatedAt: 99 } }), keys)).toBe(base);
+        expect(tgConfigIdentity(config(tgSrc), { ...keys, jin10: { secretKey: 'K2' }, updatedAt: 9 })).toBe(base);
+    });
+
+    it('enabled/channels/keys.tg 變動 → 身分改變(需重建)', () => {
+        const base = tgConfigIdentity(config(tgSrc), keys);
+        expect(tgConfigIdentity(config({ ...tgSrc, enabled: false }), keys)).not.toBe(base);
+        expect(tgConfigIdentity(config({ ...tgSrc, channels: [] }), keys)).not.toBe(base);
+        expect(tgConfigIdentity(config(tgSrc), { ...keys, tg: { ...keys.tg, session: 's2' } })).not.toBe(base);
+    });
+
+    it('null 安全:config/keys 缺漏不拋錯,且與空物件同身分', () => {
+        expect(() => tgConfigIdentity(null, null)).not.toThrow();
+        expect(tgConfigIdentity(null, null)).toBe(tgConfigIdentity({}, {}));
     });
 });
