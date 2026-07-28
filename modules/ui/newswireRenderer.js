@@ -56,6 +56,8 @@ function renderRow(ev) {
     // 供 searchManager 過濾(BASE-017):快訊參與側欄搜尋。
     row.dataset.title = ev.title || '';
     row.dataset.source = ev.source || '';
+    // BASE-025: url 供搜尋的網域比對(已經 normalizer 的 new URL 驗證)。
+    row.dataset.url = ev.url || '';
 
     row.append(time, source, title);
 
@@ -89,6 +91,8 @@ function renderAll(events) {
     els.list.appendChild(frag);
     trimRows();
     for (const ev of events) latestTs = Math.max(latestTs, ev.tsIngest || 0);
+    // BASE-025: fresh rows must respect an active search query.
+    document.dispatchEvent(new CustomEvent('sectionContentRerendered', { detail: { section: 'newswire' } }));
 }
 
 /** 插入即時事件於頂部(events 新→舊;由舊到新逐一插到最上方保持排序)。 */
@@ -105,6 +109,9 @@ function prependEvents(events) {
     if (keepPosition) {
         els.list.scrollTop += els.list.scrollHeight - prevHeight;
     }
+    // BASE-025: live-inserted rows must respect an active search query
+    // (searchManager listens and re-filters only while a query is active).
+    document.dispatchEvent(new CustomEvent('sectionContentRerendered', { detail: { section: 'newswire' } }));
 }
 
 function refreshBadge() {

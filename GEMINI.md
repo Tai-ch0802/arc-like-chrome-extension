@@ -103,7 +103,7 @@ key_files:
   - file_path: modules/dragDropManager.js
     description: "[功能] 拖曳排序模組。封裝 SortableJS 的所有邏輯，處理分頁與書籤的拖曳事件，並在拖曳分頁成為書籤時建立關聯。"
   - file_path: modules/searchManager.js
-    description: "[功能] 搜尋過濾模組。負責處理搜尋框的輸入與列表的即時過濾邏輯。"
+    description: "[功能] 搜尋過濾模組。多關鍵字(AND)+tag: 語法解析,過濾+<mark>反白+URL網域比對,覆蓋 tabs/其他視窗/bookmarks/readingList/newswire/archive 全區塊(BASE-025 補齊後兩者;共用 highlightTitleEl/clearTitleEl/setMatchedDomainEl helper,tab 路徑因 _refs 快取另行)。反白安全依據:highlightText 對每一段先 escapeHtml 才組 mark(BASE-017 的快訊反白禁令據此解除)。收合區塊有命中→search-reveal 疊加 class 蓋 display(不碰收合狀態機,清除搜尋自動復原)。監聽 sectionContentRerendered(archive/newswire 重繪後 dispatch)於查詢作用中 debounce 250ms 重跑——快訊即時 prepend 的新列才會被過濾(搜尋中 handleSearch 含書籤樹重繪,連續批次必須收斂)。"
   - file_path: modules/readingListManager.js
     description: "[功能] 閱讀清單業務邏輯。管理閱讀清單 CRUD 操作、自動分組開啟的分頁（BASE-022：開分頁前先 await claimUrls 註冊 routing 豁免，防與路由引擎競速）、刪除時標記 hash 防止 RSS 重複加入、清除所有已讀功能。"
   - file_path: modules/routing/routingLogic.js
