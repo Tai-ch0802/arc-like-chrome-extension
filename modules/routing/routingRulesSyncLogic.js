@@ -99,6 +99,12 @@ export function mergeRoutingRules(local, remote, opts) {
         rules.push(rule);
     }
 
+    // DELIBERATELY no MAX_RULES cap here (review PR #218): rules are USER DATA,
+    // not droppable bookkeeping like RSS dedup hashes — capping a union would
+    // silently delete one device's rules, and the drop carries no tombstone so
+    // convergence would churn. The 50-rule cap is an ADD-time guard (rulesStore
+    // + options UI both block at >= MAX_RULES), so an over-cap merged set only
+    // shrinks, never grows. Worst case is bounded by devices × 50 tiny records.
     return { schemaVersion: ROUTING_SYNC_SCHEMA, rules: sortRules(rules), tombstones };
 }
 

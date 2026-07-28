@@ -87,6 +87,19 @@ describe('mergeRoutingRules', () => {
         expect(merged.tombstones.old).toBeUndefined();
     });
 
+    test('a union may exceed MAX_RULES and stays stable — merge never drops user rules', () => {
+        // Two devices each filled up offline; the union is deliberately NOT
+        // capped (rules are user data — a cap would silently delete one
+        // device's rules with no tombstone). The add-time guard elsewhere
+        // means the set can only shrink from here.
+        const l = { rules: Array.from({ length: 50 }, (_, i) => rule(`l${i}`)), tombstones: {} };
+        const r = { rules: Array.from({ length: 30 }, (_, i) => rule(`r${i}`)), tombstones: {} };
+        const merged = mergeRoutingRules(l, r, { now: NOW });
+        expect(merged.rules).toHaveLength(80);
+        const again = mergeRoutingRules(merged, r, { now: NOW });
+        expect(canonicalizeRoutingRules(again)).toBe(canonicalizeRoutingRules(merged)); // no churn
+    });
+
     test('re-sorts merged rules by (order, createdAt)', () => {
         const merged = mergeRoutingRules(
             { rules: [rule('b', { order: 1 }), rule('c', { order: 1, createdAt: 0 })], tombstones: {} },
