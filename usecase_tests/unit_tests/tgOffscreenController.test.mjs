@@ -187,4 +187,78 @@ describe('tgOffscreenController (BASE-018 TG2b)', () => {
             expect(slept).toBe(0);                   // 終止態永不會 alive,不該輪詢等待
         });
     });
+
+    /**
+     * BASE-023:重建(tg:connect 於 adapter 已存在時)必須等舊 client 拆除完成才建
+     * 新連線——fire-and-forget 拆除會讓新舊連線短暫以同一 auth key 併發,MTProto
+     * 判為安全風險直接作廢 session(AUTH_KEY_DUPLICATED)。
+     */
+    describe('重建不重疊(BASE-023):舊 client 拆完才建新連線', () => {
+        // 第一個 adapter 的 disconnect 回傳 pending promise(模擬 GramJS 拆線中),
+        // 由測試手動 release。
+        function slowTeardownFactory() {
+            const made = [];
+            const state = { release: null };
+            const createTgAdapter = (c, hooks) => {
+                const a = { ...fakeAdapter(), resolved: null, cfg: c, hooks };
+                a.resolveChannel = async function (u) { this.resolved = u; return { username: u }; };
+                if (made.length === 0) {
+                    a.disconnect = function () {
+                        this.connected = false;
+                        return new Promise((r) => { state.release = () => { a.disconnected = true; r(); }; });
+                    };
+                }
+                made.push(a);
+                return a;
+            };
+            return { made, state, createTgAdapter };
+        }
+
+        it('★ 重建時等舊 adapter 拆除 resolve 才建新 adapter', async () => {
+            const { made, state, createTgAdapter } = slowTeardownFactory();
+            const ctrl = createTgOffscreenController({ post: () => {}, loadAdapter: async () => createTgAdapter });
+            await ctrl.connect(cfg);
+            const p = ctrl.connect(cfg);   // 觸發重建:舊 adapter 拆除中(pending)
+            await flush();
+            expect(made.length).toBe(1);   // ← 修正前:未等拆除即建新,此時已是 2(同 key 雙連線)
+            state.release();
+            await p;
+            expect(made.length).toBe(2);
+            expect(made[1].connected).toBe(true);
+            expect(ctrl.ping().hasAdapter).toBe(true);
+        });
+
+        it('拆除等待期間 disconnect → 收手不建新 adapter(gen guard 覆蓋 teardown 窗口)', async () => {
+            const { made, state, createTgAdapter } = slowTeardownFactory();
+            const ctrl = createTgOffscreenController({ post: () => {}, loadAdapter: async () => createTgAdapter });
+            await ctrl.connect(cfg);
+            const p = ctrl.connect(cfg);   // 掛在 await teardown
+            await flush();
+            ctrl.disconnect();             // generation++
+            state.release();
+            await p;
+            expect(made.length).toBe(1);   // 未建第二個 adapter
+            expect(ctrl.ping().hasAdapter).toBe(false);
+        });
+
+        it('resolveChannel 落在重建拆除窗口(adapter 暫為 null)→ 等重建完成借用新 adapter,不建臨時 client', async () => {
+            let clientBuilt = 0;
+            const { made, state, createTgAdapter } = slowTeardownFactory();
+            const ctrl = createTgOffscreenController({
+                post: () => {},
+                loadAdapter: async () => createTgAdapter,
+                loadClient: async () => { clientBuilt += 1; return async () => ({}); },
+            });
+            await ctrl.connect(cfg);
+            const rebuild = ctrl.connect(cfg);                       // 舊 adapter 拆除中
+            await flush();
+            const resolving = ctrl.resolveChannel(cfg, 'BWEnews');   // 窗口內:controller 的 adapter === null
+            state.release();
+            await rebuild;
+            const info = await resolving;
+            expect(clientBuilt).toBe(0);   // 窗口內也不得另建連線(臨時 client 會與垂死連線併發)
+            expect(info.username).toBe('BWEnews');
+            expect(made[1].resolved).toBe('BWEnews');
+        });
+    });
 });

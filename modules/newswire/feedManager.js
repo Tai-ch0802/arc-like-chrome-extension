@@ -368,6 +368,26 @@ export function shouldReconnectTg(pong) {
 }
 
 /**
+ * 純函式:tg 連線的「內容身分」,欄位與 createTgProxyAdapter 的 cfg 輸入一一對應
+ * (enabled/channels + keys.tg 的 session/apiId/apiHash)。handleNewswireConfigChange
+ * 據此決定 tg 是否需要重建:每次重建都會拆掉 offscreen 的常駐 MTProto 連線再重撥,
+ * 無謂重建放大同一 auth key 短暫雙連線的窗口(AUTH_KEY_DUPLICATED,BASE-023)——
+ * 而 newswireConfig 是粗粒度 key,改 rules/prefs/其他源都會觸發 onChanged。
+ * 刻意排除 updatedAt:只比內容,tg 群組被原樣重存不算變更。
+ * @param {object|null} config newswireConfig 形狀
+ * @param {object|null} keys newswireKeys 形狀
+ * @returns {string} 可直接比較的身分字串
+ */
+export function tgConfigIdentity(config, keys) {
+    const src = config?.sources?.tg;
+    return JSON.stringify({
+        enabled: !!src?.enabled,
+        channels: src?.channels || [],
+        keys: keys?.tg ?? null,
+    });
+}
+
+/**
  * offscreen 回報的 tg 訊息分派(background onMessage 委派)。tg:raw → 進既有管線;
  * tg:status → 更新 tg proxy 狀態(透傳 setStatus 廣播)。
  * @returns {boolean} true = 已認領此訊息(tg:raw 會 async sendResponse,呼叫端須把
@@ -407,9 +427,17 @@ export function handleNewswireConfigChange(changes, areaName) {
     if (areaName !== 'local' && !uiLangChanged) return;
     if (!uiLangChanged && !changes[NEWSWIRE_CONFIG_KEY] && !changes[NEWSWIRE_KEYS_KEY]) return;
     (async () => {
+        const tgBefore = tgConfigIdentity(config, keysCache);
         await loadState();
-        for (const adapter of adapters.values()) adapter.disconnect();
-        adapters.clear();
+        // tg 內容沒變就保留既有連線(BASE-023):tg 的重建 = 拆掉 offscreen 常駐
+        // MTProto 連線再重撥,同一 auth key 的新舊連線窗口有被伺服器判併發的風險;
+        // 其他源的 WS 重建則廉價,維持原本的粗粒度全拆重建。
+        const keepTg = adapters.has('tg') && tgConfigIdentity(config, keysCache) === tgBefore;
+        for (const [source, adapter] of adapters) {
+            if (keepTg && source === 'tg') continue;
+            adapter.disconnect();
+            adapters.delete(source);
+        }
         applyAdapters();
     })().catch((err) => console.warn('[newswire] config reload failed:', err?.message || err));
 }

@@ -15,6 +15,20 @@ import { computeBackoffMs, DEGRADED_AFTER_FAILS } from './adapters.js';
 import { createTgClient, getNewMessage } from './tgClient.js';
 
 /**
+ * 捨棄 client 的完整終結(BASE-023)。destroy 優先:teleproto 的 autoReconnect 預設
+ * 開啟,只 disconnect 的殘骸可能自行重撥,與新 client 以同一 auth key 併發
+ * (AUTH_KEY_DUPLICATED);destroy 會一併停掉 update loop 與內部重連機制。
+ * @param {object|null} c GramJS client(或測試 fake)
+ */
+async function teardownClient(c) {
+    if (!c) return;
+    try {
+        if (c.destroy) await c.destroy();
+        else if (c.disconnect) await c.disconnect();
+    } catch { /* already closing */ }
+}
+
+/**
  * 純函式:分類 GramJS 錯誤。
  * - 'flood'：FLOOD_WAIT，附 seconds（遵守伺服器等待）
  * - 'fatal'：憑證/session 失效，重試無用 → needs-key 終止
@@ -105,12 +119,12 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
         connecting = true;
         onStatus('connecting');
         // 重建前拆掉殘留 client(watchdog 週期重建時避免洩漏 client/handler)。
-        if (client) { try { await (client.disconnect && client.disconnect()); } catch { /* noop */ } client = null; }
+        if (client) { const c = client; client = null; await teardownClient(c); }
         try {
             client = await createClient({ session: cfg.session, apiId: cfg.apiId, apiHash: cfg.apiHash });
             // async 窗口(dynamic import 2.6M bundle)期間若 disconnect,resume 時已 stopped
             // → 拆掉剛建好的 client 並收手,避免 orphan(false 'connected' after 'disabled')。
-            if (stopped || failed) { try { await client.disconnect(); } catch { /* noop */ } client = null; return; }
+            if (stopped || failed) { const c = client; client = null; await teardownClient(c); return; }
             await client.connect();
             // 逐頻道解析 entity,建 id→meta 對照供 onRaw 標記頻道。
             // 單一頻道解析失敗(handle 打錯/私有/仿冒)只跳過該頻道,不拖垮整個來源。
@@ -144,7 +158,7 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                 throw lastFatalErr || new Error('no channel resolved');
             }
             const NewMessage = await resolveNewMessage();
-            if (stopped || failed) { try { await client.disconnect(); } catch { /* noop */ } client = null; return; }
+            if (stopped || failed) { const c = client; client = null; await teardownClient(c); return; }
             // chats 必須傳頻道「識別碼」(entity.id),不能傳 entity 物件:teleproto 的
             // EventBuilder constructor 會對每個元素 .toString()(events/common.js:66),而
             // teleproto 實體無 toString → "[object Object]" → _intoIdSet 落到 getInputEntity
@@ -164,8 +178,9 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
             onStatus('connected'); // 部分頻道解析成功也算連上(壞頻道只是不推送)
         } catch (e) {
             const c = classifyTgError(e);
-            try { await (client && client.disconnect && client.disconnect()); } catch { /* noop */ }
+            const dead = client;
             client = null;
+            await teardownClient(dead);
             if (stopped) return; // disconnect 後才 reject:不再發狀態,保留 'disabled'
             if (c.kind === 'fatal') {
                 failed = true;
@@ -206,15 +221,19 @@ export function createTgAdapter(cfg = {}, hooks = {}, deps = {}) {
                 participantsCount: entity?.participantsCount,
             };
         },
+        /**
+         * 回傳「client 完整拆除」的 promise(BASE-023):重建路徑
+         * (tgOffscreenController.connect)必須 await 它,舊連線拆完才建新的——
+         * fire-and-forget 會讓新舊連線短暫以同一 auth key 併發(AUTH_KEY_DUPLICATED)。
+         */
         disconnect() {
             stopped = true;
             if (reconnectTimer) { clearTimer(reconnectTimer); reconnectTimer = null; }
             attempts = 0;
-            if (client) {
-                try { client.disconnect && client.disconnect(); } catch { /* already closing */ }
-                client = null;
-            }
+            const c = client;
+            client = null;
             onStatus('disabled');
+            return teardownClient(c);
         },
         isAlive,
         // 憑證/session 類終止態:永遠不會再變 alive。給 tgOffscreenController 的

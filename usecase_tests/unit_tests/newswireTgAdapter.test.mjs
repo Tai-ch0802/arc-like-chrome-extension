@@ -288,3 +288,56 @@ describe('createTgAdapter — lifecycle', () => {
     expect(client1.disconnected).toBe(true);  // 舊 client 已拆(未洩漏)
   });
 });
+
+/**
+ * BASE-023 — 拆除完整性。重建端(tgOffscreenController)要能 await「舊 client 真的
+ * 拆完」,且捨棄的 client 優先 destroy:teleproto autoReconnect 預設開啟,只
+ * disconnect 的殘骸可能自行重撥,與新 client 以同一 auth key 併發(AUTH_KEY_DUPLICATED)。
+ */
+describe('BASE-023 — teardown completeness', () => {
+  const bareDeps = (createClient) => ({
+    createClient, NewMessage: FakeNewMessage,
+    setTimer: () => 1, clearTimer: () => {}, computeBackoff: () => 5000,
+  });
+
+  it('★ disconnect() 回傳 promise,待 client 拆除完成才 resolve(重建端據此串行化)', async () => {
+    let release;
+    let torn = false;
+    const client = {
+      connected: false,
+      async connect() { this.connected = true; },
+      async getEntity(ref) { return { id: 100, username: String(ref), title: 'Chan' }; },
+      addEventHandler() {},
+      disconnect: () => new Promise((r) => { release = () => { torn = true; r(); }; }),
+    };
+    const a = createTgAdapter(cfg(), {}, bareDeps(async () => client));
+    a.connect();
+    await flush();
+    expect(client.connected).toBe(true);
+    const p = a.disconnect();
+    let settled = false;
+    p.then(() => { settled = true; });        // ← 修正前 disconnect 回傳 undefined,這裡直接 TypeError
+    await flush();
+    expect(settled).toBe(false);              // client 還沒拆完,不得提前 resolve
+    release();
+    await p;
+    expect(torn).toBe(true);
+  });
+
+  it('★ client 有 destroy → 優先呼叫(一併終結 update loop 與內部 autoReconnect)', async () => {
+    const calls = [];
+    const client = {
+      connected: false,
+      async connect() { this.connected = true; },
+      async getEntity(ref) { return { id: 100, username: String(ref), title: 'Chan' }; },
+      addEventHandler() {},
+      async destroy() { calls.push('destroy'); this.connected = false; },
+      async disconnect() { calls.push('disconnect'); this.connected = false; },
+    };
+    const a = createTgAdapter(cfg(), {}, bareDeps(async () => client));
+    a.connect();
+    await flush();
+    await a.disconnect();
+    expect(calls).toEqual(['destroy']);       // ← 修正前只會呼叫 disconnect
+  });
+});
