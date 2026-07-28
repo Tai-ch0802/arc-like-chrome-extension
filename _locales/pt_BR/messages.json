@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "Regra criada — novas abas deste site entrarão no grupo automaticamente.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "Agrupamento automático por IA",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "Quando nenhuma regra corresponde, abrir várias abas seguidas do mesmo site as agrupa automaticamente com um nome gerado por IA.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "As abas deste site foram agrupadas automaticamente.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "Regel erstellt – neue Tabs dieser Website werden automatisch der Gruppe hinzugefügt.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "KI-Auto-Gruppierung",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "Wenn keine Regel greift, werden nacheinander geöffnete Tabs derselben Website automatisch gruppiert und von der KI benannt.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "Tabs dieser Website wurden automatisch gruppiert.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

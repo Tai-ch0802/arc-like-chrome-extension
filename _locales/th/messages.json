@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "สร้างกฎแล้ว — แท็บใหม่จากไซต์นี้จะเข้ากลุ่มโดยอัตโนมัติ",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "จัดกลุ่มอัตโนมัติด้วย AI",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "เมื่อไม่มีกฎที่ตรงกัน การเปิดแท็บจากไซต์เดียวกันติดต่อกันหลายแท็บจะถูกจัดกลุ่มโดยอัตโนมัติพร้อมชื่อที่ AI ตั้งให้",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "จัดกลุ่มแท็บของไซต์นี้โดยอัตโนมัติแล้ว",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

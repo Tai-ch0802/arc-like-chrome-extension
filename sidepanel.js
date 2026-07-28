@@ -19,6 +19,7 @@ import { SEARCH_NO_RESULTS_ICON_SVG, renderIcon } from './modules/icons.js';
 import { debounce } from './modules/utils/functionUtils.js';
 import { initSettingsBridge } from './modules/ui/settingsBridge.js';
 import { initAiProviderErrorToast, initRssSyncOnboarding, initNewswireSyncOnboarding } from './modules/ui/toast.js';
+import { initAiRoutingToast } from './modules/ui/routingRuleUI.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
 
 // --- Spotlight 轉送動作處理 ---
@@ -281,6 +282,8 @@ async function initialize() {
     // Options page writes only to chrome.storage; react to those changes here.
     initSettingsBridge();
     initAiProviderErrorToast();
+    // BASE-022 P3: undoable toast when the engine auto-groups tabs in this window.
+    initAiRoutingToast();
 
     rssManager.initRssManager()
         .then(() => initRssSyncOnboarding())

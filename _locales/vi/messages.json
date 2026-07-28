@@ -1666,5 +1666,17 @@
   "routingRuleCreatedToast": {
     "message": "Đã tạo quy tắc — thẻ mới từ trang này sẽ tự động vào nhóm.",
     "description": "Toast shown after a routing rule is created from the context menu."
+  },
+  "routingAiToggle": {
+    "message": "Nhóm tự động bằng AI",
+    "description": "Opt-in switch for AI Auto Routing (grouping consecutive same-site tabs)."
+  },
+  "routingAiToggleDesc": {
+    "message": "Khi không có quy tắc nào khớp, mở liên tiếp nhiều thẻ từ cùng một trang sẽ tự động nhóm chúng với tên do AI đặt.",
+    "description": "Description under the AI Auto Routing switch."
+  },
+  "routingAiGroupedToast": {
+    "message": "Đã tự động nhóm các thẻ từ trang này.",
+    "description": "Undoable toast shown when the engine auto-groups same-site tabs."
   }
 }

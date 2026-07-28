@@ -8,6 +8,8 @@ export const ROUTING_RULES_SCHEMA = 1;
 export const MAX_RULES = 50;
 export const CLAIM_TTL_MS = 30_000;
 export const STARTUP_WINDOW_MS = 10_000;
+export const AI_CONSECUTIVE_WINDOW_MS = 10 * 60 * 1000;
+export const AI_UNDO_COOLDOWN_MS = 30 * 60 * 1000;
 
 /**
  * @typedef {Object} RoutingRule
@@ -170,6 +172,36 @@ export function addClaims(claims, urls, now, ttlMs = CLAIM_TTL_MS) {
         }
     }
     return claims;
+}
+
+/**
+ * AI Auto Routing decision (FR-3.04/3.05, pure).
+ * Priority: join a living AI group for this domain in this window; else create
+ * when the PREVIOUS new-tab first-navigation was the same domain in the same
+ * window within the consecutive window and no undo cooldown is active.
+ * The caller re-checks live tab state (exists/ungrouped/unpinned) before acting.
+ * @param {{aiGroups?: Object, lastNav?: {domain,windowId,tabId,ts}|null, cooldown?: Object}} state
+ * @param {{domain: string, windowId: number, tabId: number}} nav
+ * @param {number} now
+ * @returns {{action:'join', groupId:number} | {action:'create', prevTabId:number} | {action:'none'}}
+ */
+export function decideAiRouting(state, nav, now) {
+    const winGroups = (state.aiGroups || {})[nav.windowId];
+    const existing = winGroups && winGroups[nav.domain];
+    if (existing) return { action: 'join', groupId: existing.groupId };
+
+    const cooldownUntil = (state.cooldown || {})[`${nav.windowId}:${nav.domain}`];
+    if (cooldownUntil && cooldownUntil > now) return { action: 'none' };
+
+    const prev = state.lastNav;
+    if (prev
+        && prev.windowId === nav.windowId
+        && prev.domain === nav.domain
+        && prev.tabId !== nav.tabId
+        && (now - prev.ts) <= AI_CONSECUTIVE_WINDOW_MS) {
+        return { action: 'create', prevTabId: prev.tabId };
+    }
+    return { action: 'none' };
 }
 
 /** Drop expired claim entries (lazy sweep, called inside mutations). */

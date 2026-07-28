@@ -2212,7 +2212,7 @@ async function renderRouting(container) {
     h.textContent = api.getMessage('settingsNavRouting') || 'Auto Grouping Rules';
     container.appendChild(h);
 
-    const stored = await api.getStorage('sync', { routingEnabled: true });
+    const stored = await api.getStorage('sync', { routingEnabled: true, aiAutoRoutingEnabled: false });
     const toggle = document.createElement('input');
     toggle.type = 'checkbox';
     toggle.id = 'routing-enabled-toggle';
@@ -2225,6 +2225,22 @@ async function renderRouting(container) {
         toggle,
         api.getMessage('routingGlobalToggleDesc')
             || 'A new tab matching a rule joins its target group automatically on its first navigation.'
+    ));
+
+    // AI Auto Routing (FR-3.06): opt-in, ships with its P3 behavior. Master
+    // switch off ⇒ engine ignores this too (FR-2.06).
+    const aiToggle = document.createElement('input');
+    aiToggle.type = 'checkbox';
+    aiToggle.id = 'routing-ai-toggle';
+    aiToggle.checked = stored.aiAutoRoutingEnabled === true;
+    aiToggle.addEventListener('change', async (e) => {
+        await api.setStorage('sync', { aiAutoRoutingEnabled: e.target.checked });
+    });
+    container.appendChild(makeRow(
+        api.getMessage('routingAiToggle') || 'AI Auto Routing',
+        aiToggle,
+        api.getMessage('routingAiToggleDesc')
+            || 'When no rule matches, opening several tabs from the same site in a row groups them automatically with an AI-generated name.'
     ));
 
     const listEl = document.createElement('div');
