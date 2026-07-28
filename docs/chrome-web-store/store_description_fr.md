@@ -46,7 +46,7 @@ Ne cherchez pas seulement — trouvez instantanément.
 - **Filtrage Multi-Mots-Clés** : Prend en charge les mots-clés séparés par des espaces (ex. "google docs travail") pour un ciblage précis.
 - **Recherche par Domaine** : Tapez un domaine (comme `github.com`) pour filtrer instantanément les onglets et les favoris de sources spécifiques.
 - **Surlignage Intelligent** : Le surlignage en temps réel des mots-clés correspondants garde votre focus visuel clair.
-- **Toutes les sections couvertes**: Filtrage, surlignage et correspondance de domaine couvrent désormais toutes les sections de la barre latérale — y compris la nouvelle Archive.
+- **Toutes les sections couvertes** : Filtrage, surlignage et correspondance de domaine couvrent désormais toutes les sections de la barre latérale — y compris la nouvelle Archive.
 
 ### 🗂️ Espace de Travail Unifié
 - **Onglets Verticaux** : Affichez les titres complets des pages, qui ne sont plus compressés en minuscules icônes.
@@ -57,10 +57,10 @@ Ne cherchez pas seulement — trouvez instantanément.
 - **Liste de lecture et RSS** : Votre centre personnel de curation d'articles. Synchronisez-vous avec la liste de lecture native de Chrome, abonnez-vous à des flux RSS et gérez tout au même endroit grâce à la déduplication et au tri intelligents.
 
 ### 🚦 Pilote automatique des onglets (nouveau)
-- **Règles de regroupement automatique**: Un clic droit suffit — chaque nouvel onglet de ce site rejoint son groupe dès son chargement. Gestion complète des règles dans les paramètres, synchronisées entre appareils.
-- **Regroupement auto par IA (optionnel)**: Aucune règle ne correspond ? Ouvrez plusieurs onglets du même site à la suite : l’IA les regroupe et nomme le groupe pour vous.
-- **Archivage automatique**: Les onglets inactifs au-delà du seuil (12 h par défaut) rejoignent la nouvelle « Archive » de la barre latérale — les onglets épinglés, groupés, actifs ou en lecture ne sont jamais touchés, et chaque passage s’annule en un clic.
-- **Snooze**: « Reporter cet onglet… » le ferme maintenant et le rouvre à l’heure dite — dans 1 heure, ce soir, demain matin ou lundi prochain.
+- **Règles de regroupement automatique** : Un clic droit suffit — chaque nouvel onglet de ce site rejoint son groupe dès son chargement. Gestion complète des règles dans les paramètres, synchronisées entre appareils.
+- **Regroupement auto par IA (optionnel)** : Aucune règle ne correspond ? Ouvrez plusieurs onglets du même site à la suite : l’IA les regroupe et nomme le groupe pour vous.
+- **Archivage automatique** : Les onglets inactifs au-delà du seuil (12 h par défaut) rejoignent la nouvelle « Archive » de la barre latérale — les onglets épinglés, groupés, actifs ou en lecture ne sont jamais touchés, et chaque passage s’annule en un clic.
+- **Snooze** : « Reporter cet onglet… » le ferme maintenant et le rouvre à l’heure dite — dans 1 heure, ce soir, demain matin ou lundi prochain.
 
 ### 🎨 Design Premium & Personnalisation
 - **Image d'arrière-plan personnalisée** : Personnalisez votre espace de travail ! Téléchargez votre propre image ou utilisez une URL. Ajustez l'**opacité** et le **flou** pour un rendu parfait.
