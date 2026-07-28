@@ -21,6 +21,17 @@ const IDLE_HOURS_KEY = 'autoArchiveIdleHours';
 let enabledCache = null;   // boolean | null (opt-in, default false)
 let idleHoursCache = null; // number | null
 
+// All SW-side lifecycle work is serialized through one chain (rssSyncOnce
+// convention): archiveStore is lock-free read-modify-write, so overlapping
+// heartbeats / wake alarms must never interleave store mutations (review
+// PR #220). Cross-CONTEXT writers arrive in P2 — that design is recorded in
+// the SA as a P2 precondition; this chain covers every SW-side entry point.
+let opChain = Promise.resolve();
+function serialize(fn) {
+    opChain = opChain.then(fn).catch(err => console.warn('[lifecycle] op failed', err));
+    return opChain;
+}
+
 async function ensureEnabled() {
     if (enabledCache === null) {
         const res = await chrome.storage.sync.get({ [AUTO_ARCHIVE_KEY]: false });
@@ -142,13 +153,11 @@ async function sweepExpiredSnoozes() {
  */
 export function handleLifecycleAlarm(alarm) {
     if (alarm.name === HEARTBEAT_ALARM) {
-        return sweepExpiredSnoozes()
-            .then(() => scanIdleTabs())
-            .catch(err => console.warn('[lifecycle] heartbeat failed', err));
+        return serialize(() => sweepExpiredSnoozes().then(() => scanIdleTabs()));
     }
     if (alarm.name.startsWith(WAKE_ALARM_PREFIX)) {
-        return wake(alarm.name.slice(WAKE_ALARM_PREFIX.length))
-            .catch(err => console.warn('[lifecycle] wake failed', err));
+        const id = alarm.name.slice(WAKE_ALARM_PREFIX.length);
+        return serialize(() => wake(id));
     }
     return Promise.resolve();
 }
@@ -176,7 +185,7 @@ export function initLifecycleEngine() {
     chrome.runtime.onInstalled.addListener(() => ensureHeartbeat());
     chrome.runtime.onStartup.addListener(() => {
         ensureHeartbeat();
-        sweepExpiredSnoozes().catch(err => console.warn('[lifecycle] startup sweep failed', err));
+        serialize(() => sweepExpiredSnoozes());
     });
     ensureHeartbeat(); // SW cold start (idempotent: create only when absent)
 

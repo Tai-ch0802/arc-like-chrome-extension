@@ -323,3 +323,4 @@ make && make release   # 打包 grep modules/lifecycle
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | v1.0 | 2026-07-28 | Claude Code | Initial draft（基於實地盤點：section 六件組、通知 prefix 鏈式分派、alarms unpacked 豁免、lastAccessed Chrome 122+ fallback 先例；三項落地補充 D1-D3 隨 P1 PR 併審） |
+| v1.1 | 2026-07-28 | Claude Code | P1 review 併發觀察（PR #220）：archiveStore 為無鎖 RMW——SW 端全部進入點（heartbeat/wake/startup sweep）已以單一 promise chain 串行化（rssSyncOnce 慣例）；**P2 設計前提**：sidepanel 對 archivedTabs/snoozedTabs 的寫入（還原/刪除/清空/snooze 建立）與 SW 掃描屬跨 context 併發，P2 實作時二擇一——(a) 寫入走 runtime message 集中到 SW 串行鏈（單一寫者，同 routing claim 模式），或 (b) store 改 per-item keys。傾向 (a)，P2 落地時定案 |
