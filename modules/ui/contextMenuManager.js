@@ -3,10 +3,11 @@
  * Handles creation and management of custom context menus for tabs.
  */
 import * as api from '../apiManager.js';
-import { COPY_ICON_SVG, READING_LIST_ICON_SVG, ADD_TO_GROUP_ICON_SVG } from '../icons.js';
+import { COPY_ICON_SVG, READING_LIST_ICON_SVG, ADD_TO_GROUP_ICON_SVG, renderIcon } from '../icons.js';
 import { addToReadingList, isUrlInReadingList } from '../readingListManager.js';
 import { isRealHttpUrl } from '../routing/routingLogic.js';
 import { promptCreateRuleForTab } from './routingRuleUI.js';
+import { promptSnoozeTab } from './archiveRenderer.js';
 
 /**
  * Shows a custom context menu for a tab element.
@@ -181,6 +182,42 @@ export async function showContextMenu(x, y, tab, originElement) {
         });
 
         menu.appendChild(routingOption);
+    }
+
+    // --- Snooze Option (BASE-024 lifecycle) ---
+    if (isRealHttpUrl(tab.url)) {
+        const snoozeOption = document.createElement('div');
+        snoozeOption.className = 'context-menu-item';
+        snoozeOption.setAttribute('role', 'menuitem');
+        snoozeOption.tabIndex = 0;
+        snoozeOption.innerHTML = `
+            ${renderIcon('schedule', { size: 16 })}
+            <span>${api.getMessage('ctxSnoozeTab') || 'Snooze this tab…'}</span>
+        `;
+
+        const triggerSnooze = () => {
+            closeMenu(); // the dialog takes over
+            promptSnoozeTab(tab).catch(err =>
+                console.warn('[lifecycle] snooze flow failed', err));
+        };
+
+        snoozeOption.addEventListener('click', (e) => {
+            e.stopPropagation();
+            triggerSnooze();
+        });
+        snoozeOption.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                triggerSnooze();
+            } else if (e.key === 'Escape' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                closeMenu();
+            }
+        });
+
+        menu.appendChild(snoozeOption);
     }
 
     document.body.appendChild(menu);

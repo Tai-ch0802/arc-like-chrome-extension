@@ -366,6 +366,48 @@ async function renderFeatures(container) {
             await api.setStorage('sync', { [feat.key]: e.target.checked });
         });
     }
+
+    // --- Auto-Archive controls (BASE-024 P3, FR-5.01) ---
+    // Not in FEATURE_TOGGLES: opt-in default (false, === true semantics) plus a
+    // threshold select — the array only models default-true checkboxes.
+    const aa = await api.getStorage('sync', { autoArchiveEnabled: false, autoArchiveIdleHours: 12 });
+
+    const aaToggle = document.createElement('input');
+    aaToggle.type = 'checkbox';
+    aaToggle.id = 'auto-archive-toggle';
+    aaToggle.checked = aa.autoArchiveEnabled === true;
+    aaToggle.addEventListener('change', async (e) => {
+        await api.setStorage('sync', { autoArchiveEnabled: e.target.checked });
+    });
+    container.appendChild(makeRow(
+        api.getMessage('autoArchiveToggle') || 'Auto-archive idle tabs',
+        aaToggle,
+        api.getMessage('autoArchiveToggleDesc')
+            || 'Idle tabs are tucked into the sidebar Archive (pinned, grouped, active and audible tabs are never touched). Restore anytime.'
+    ));
+
+    const aaSelect = document.createElement('select');
+    aaSelect.id = 'auto-archive-threshold';
+    aaSelect.className = 'modal-select';
+    const THRESHOLDS = [
+        [1, 'thresholdHours', '1'], [6, 'thresholdHours', '6'], [12, 'thresholdHours', '12'],
+        [24, 'thresholdHours', '24'], [72, 'thresholdDays', '3'], [168, 'thresholdDays', '7'],
+    ];
+    for (const [hours, key, amount] of THRESHOLDS) {
+        const opt = document.createElement('option');
+        opt.value = String(hours);
+        opt.textContent = api.getMessage(key, [amount]) || `${amount} ${key === 'thresholdDays' ? 'days' : 'hours'}`;
+        aaSelect.appendChild(opt);
+    }
+    aaSelect.value = String(aa.autoArchiveIdleHours);
+    if (aaSelect.selectedIndex === -1) aaSelect.value = '12'; // non-preset stored value
+    aaSelect.addEventListener('change', async (e) => {
+        await api.setStorage('sync', { autoArchiveIdleHours: Number(e.target.value) });
+    });
+    container.appendChild(makeRow(
+        api.getMessage('autoArchiveThreshold') || 'Archive after idle for',
+        aaSelect
+    ));
 }
 
 /**

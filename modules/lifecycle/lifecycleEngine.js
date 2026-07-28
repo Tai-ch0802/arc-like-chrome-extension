@@ -185,8 +185,9 @@ export function handleSnoozeNotificationClick(notificationId) {
  * v1.1 precondition): archiveStore is lock-free RMW, so EVERY write funnels
  * through this SW's serialize chain — the sidepanel never writes these keys
  * directly. Reads stay local to each context (read-only races are benign).
+ * Exported for unit tests (the fail-closed snooze ack has its own regression).
  */
-function handleLifecycleMessage(message, sendResponse) {
+export function handleLifecycleMessage(message, sendResponse) {
     switch (message.action) {
         case 'lifecycle:removeArchived':
             serialize(() => store.removeArchived(message.ids || [])).then(() => sendResponse({ ok: true }));
@@ -200,6 +201,23 @@ function handleLifecycleMessage(message, sendResponse) {
                 await chrome.alarms.clear(WAKE_ALARM_PREFIX + message.id).catch(() => {});
             }).then(() => sendResponse({ ok: true }));
             return true;
+        case 'lifecycle:snooze': {
+            // FR-4.02 via the single-writer chain: the sidepanel closes the tab
+            // only AFTER a truthful ack. serialize() swallows errors to keep the
+            // chain alive, so success is reported via an explicit flag — a
+            // failed persist MUST ack ok:false or the caller would close the
+            // tab unpersisted (the exact data loss this feature guards against).
+            let persisted = false;
+            serialize(async () => {
+                await store.addSnoozed(message.item);
+                // Awaited on purpose (review PR #222): the fail-closed guarantee
+                // must cover the alarm registration too, or a rejected create
+                // would leave a record that never wakes while we ack ok:true.
+                await chrome.alarms.create(WAKE_ALARM_PREFIX + message.item.id, { when: message.item.wakeAt });
+                persisted = true;
+            }).then(() => sendResponse({ ok: persisted }));
+            return true;
+        }
         case 'lifecycle:cancelSnooze':
             // Cancel = the snoozed item becomes a plain archived entry
             // (FR-3.04). Archive-add BEFORE snooze-remove: the URL exists in

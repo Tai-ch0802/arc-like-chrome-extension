@@ -922,3 +922,55 @@ export function showGroupPickerDialog({ groups = [], preselectGroupId = null } =
         overlay.onclick = (e) => { if (e.target === overlay) done(null); };
     });
 }
+
+/**
+ * Snooze slot picker (BASE-024 P3, FR-4.01): the four fixed slots with their
+ * resolved local times. Resolves to the chosen slot object or null on cancel.
+ * @param {Array<{key:string, at:number}>} slots - from resolveSnoozeSlots()
+ * @returns {Promise<{key:string, at:number}|null>}
+ */
+export function showSnoozeDialog(slots) {
+    return new Promise((resolve) => {
+        const LABEL_KEYS = {
+            later1h: 'snoozeLater1h',
+            tonight: 'snoozeTonight',
+            tomorrow: 'snoozeTomorrow',
+            nextMonday: 'snoozeNextMonday',
+        };
+        const timeFmt = new Intl.DateTimeFormat(undefined, {
+            weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false,
+        });
+
+        const form = document.createElement('form');
+        form.noValidate = true;
+        form.className = 'create-group-form snooze-form';
+        const slotButtons = slots.map(s => `
+            <button type="button" class="modal-button snooze-slot-btn" data-key="${s.key}">
+                <span>${escapeHtml(api.getMessage(LABEL_KEYS[s.key]) || s.key)}</span>
+                <span class="snooze-slot-time">${escapeHtml(timeFmt.format(new Date(s.at)))}</span>
+            </button>
+        `).join('');
+        form.innerHTML = `
+            <h3 class="modal-title">${api.getMessage('snoozeDialogTitle') || 'Snooze this tab until…'}</h3>
+            <div class="snooze-slots">${slotButtons}</div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-button cancel-btn">${api.getMessage('cancelButton') || 'Cancel'}</button>
+            </div>
+        `;
+
+        const { overlay, modalContent } = createModal(form);
+        const done = (v) => { removeModal(overlay); resolve(v); };
+
+        modalContent.querySelector('.snooze-slots').addEventListener('click', (e) => {
+            const btn = e.target.closest('.snooze-slot-btn');
+            if (!btn) return;
+            done(slots.find(s => s.key === btn.dataset.key) || null);
+        });
+        modalContent.querySelector('.cancel-btn').onclick = () => done(null);
+        overlay.onclick = (e) => { if (e.target === overlay) done(null); };
+        form.onsubmit = (e) => e.preventDefault();
+
+        const first = modalContent.querySelector('.snooze-slot-btn');
+        if (first) first.focus();
+    });
+}

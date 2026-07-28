@@ -39,7 +39,7 @@ key_files:
   - file_path: options.html
     description: "[UI] 獨立設定頁（options_ui + open_in_tab）。Phase 12(批D) 新增；左側導覽 + 內容區，載入 sidepanel.css(共用元件樣式) + options.css(頁面版面) + options.js。"
   - file_path: options.js
-    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（BASE-016 N2 起共 9 區塊：外觀/語言/功能/同步/AI/RSS/快訊/快捷鍵/關於；renderNewswire=四源卡片 enable+key 遮罩欄+申請引導、金十分段多選、P0/P1/靜音規則編輯，只寫 newswireConfig/newswireKeys 到 storage.local，狀態經 newswire:status 廣播即時顯示；BASE-019 起五張源卡可收折——buildCollapsibleCard 建「標題 toggle(名稱+狀態徽章,aria-expanded/aria-controls)+body」預設收合、不持久化，tg 卡 repaint 保留展開態）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
+    description: "[UI] 設定頁控制器。Phase 12(批D) 新增；左 nav 區塊，重用 customThemeManager/backgroundImageManager/rssManager/aiManager。控制項只 setStorage（不 dispatch CustomEvent，跨 context 靠 settingsBridge）。BASE-022 P2 加 routing 區（規則 CRUD/Sortable 排序/全域與 AI 開關）；BASE-024 P3 於 features 區尾端加 Auto-Archive 開關（預設關）＋閒置閾值六檔 select。Phase 13(批E) 加入「備份與同步」(Backup & Sync) 區塊 renderSync（BASE-016 N2 起共 9 區塊：外觀/語言/功能/同步/AI/RSS/快訊/快捷鍵/關於；renderNewswire=四源卡片 enable+key 遮罩欄+申請引導、金十分段多選、P0/P1/靜音規則編輯，只寫 newswireConfig/newswireKeys 到 storage.local，狀態經 newswire:status 廣播即時顯示；BASE-019 起五張源卡可收折——buildCollapsibleCard 建「標題 toggle(名稱+狀態徽章,aria-expanded/aria-controls)+body」預設收合、不持久化，tg 卡 repaint 保留展開態）：Google Drive 連線/中斷(driveAuth.connect/disconnect)、同步狀態、立即同步、每個 workspace 的同步 opt-in、可從 Drive 還原的清單、隱私說明 + Privacy Policy 連結。先同步渲染骨架再 async hydrate（isConnected 不主動觸發互動式 OAuth）。"
   - file_path: modules/ui/settingsBridge.js
     description: "[UI] 設定傳播橋。Phase 12(批D) 新增；純函式 resolveSettingChangeActions 把 storage.onChanged 變更映射成 action（套主題/背景/reload/dispatch 既有可視性事件/refreshState 刷新 state 快取），sidepanel 端 initSettingsBridge 套用，使 options page 的變更即時反映且不需 reload。Phase 13(批E) 加入 driveSyncStatus 分支：local 區的 driveSyncStatus 變更映射成 dispatch driveSyncStatusChanged 事件，供 driveSyncBadge 即時更新徽章。另有 aiProviderAuthError 分支（雲端 AI 401/403 訊號 → dispatch aiProviderAuthErrorChanged，供 toast.js 顯示節流提示）。"
   - file_path: modules/ui/customThemeManager.js
@@ -95,7 +95,7 @@ key_files:
   - file_path: modules/ui/bookmarkRenderer.js
     description: "[UI] 書籤渲染。負責書籤列表、資料夾結構以及連結分頁面板的渲染邏輯。"
   - file_path: modules/modalManager.js
-    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。BASE-022 P2 新增 showGroupPickerDialog：既有群組單選 + 新群組名稱/色票二擇一（互斥自動清除），供路由規則建立流程使用。"
+    description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。BASE-022 P2 新增 showGroupPickerDialog：既有群組單選 + 新群組名稱/色票二擇一（互斥自動清除），供路由規則建立流程使用。BASE-024 P3 新增 showSnoozeDialog：四固定時段按鈕（label＋Intl 解算時刻），供稍後再看流程。"
   - file_path: modules/apiManager.js
     description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。"
   - file_path: modules/stateManager.js
@@ -118,8 +118,10 @@ key_files:
     description: "[功能] 封存/snooze 儲存層（BASE-024）。storage.local 兩 key：archivedTabs（newest-first、FIFO 500）/snoozedTabs；CRUD 全走 setStorageStrict——FR-1.04/4.02 的「先寫後關」依賴寫入失敗可觀測（reject 時呼叫端不得關分頁）。SW 與 sidepanel 共用。"
   - file_path: modules/lifecycle/lifecycleEngine.js
     description: "[Service Worker] 生命週期引擎（僅 background 載入，BASE-024 P1）。lifecycleHeartbeat 常駐 30min alarm（ensure 僅於不存在時建立——重建會重置週期，SW 頻繁喚醒會無限延後）：sweep 過期 snooze（兜底 FR-4.04）＋掃描歸檔（開關關閉只停掃描）；歸檔「批次寫入成功→逐一關閉→關閉失敗補償移除」、喚醒「先開分頁→後刪記錄」——雙向維持 URL 任一時刻至少存在一處；lifecycleWake_<id> one-shot 喚醒＋snooze:<tabId> 通知（點擊聚焦，通知分派鏈以 prefix 認領）；廣播 {type:'lifecycle:archived'} 供 sidepanel toast。全 SW 端操作經單一 serialize 鏈（PR #220 review：archiveStore 為無鎖 RMW）。P2 起為兩 key 的**唯一寫者**：sidepanel 寫入一律走 lifecycle:removeArchived/clearArchived/wakeNow/cancelSnooze 訊息進同一鏈（cancelSnooze＝轉封存，add 先於 remove）。閾值寬容讀取任何正數＝E2E 天然縫隙。onAlarm 分支在 background.js dispatcher（fall-through 事故防範）。"
+  - file_path: modules/ui/contextMenuManager.js
+    description: "[UI] 分頁右鍵選單（與書籤用 bookmarkContextMenu 分離）。手工組 .custom-context-menu，項目依序：Copy URL、加入閱讀清單（chrome:// 過濾、已存在 disabled）、「一律將此網站分到群組…」（BASE-022，http/https 限定→routingRuleUI）、「稍後再看…」（BASE-024 P3，http/https 限定→archiveRenderer.promptSnoozeTab）。E2E 以 i18n label 尋找項目（勿依賴順序/數量）。"
   - file_path: modules/ui/archiveRenderer.js
-    description: "[UI] 封存區 renderer（BASE-024 P2）。#archive-section：snooze 項置頂（時鐘 badge=formatWakeTime，點擊=提前喚醒、刪除鈕=取消轉封存）＋封存項（相對時間，點擊=還原開分頁、hover 刪除）；header 數字 badge（>99→99+）、清空需 confirm、收合存 sync archiveCollapsed；三條件全空（封存空∧snooze空∧開關關）整塊隱藏（SA D1）。**只讀 store**——所有寫入送 lifecycle:* 訊息給 SW 單一寫者；storage.onChanged（local 兩 key + sync 開關）debounce refresh；lifecycle:archived 廣播→整輪復原 toast（claimUndo）。"
+    description: "[UI] 封存區 renderer（BASE-024 P2）。#archive-section：snooze 項置頂（時鐘 badge=formatWakeTime，點擊=提前喚醒、刪除鈕=取消轉封存）＋封存項（相對時間，點擊=還原開分頁、hover 刪除）；header 數字 badge（>99→99+）、清空需 confirm、收合存 sync archiveCollapsed；三條件全空（封存空∧snooze空∧開關關）整塊隱藏（SA D1）。**只讀 store**——所有寫入送 lifecycle:* 訊息給 SW 單一寫者；storage.onChanged（local 兩 key + sync 開關）debounce refresh；lifecycle:archived 廣播→整輪復原 toast（claimUndo）。P3 增 promptSnoozeTab（右鍵入口流程）：showSnoozeDialog 四時段 → lifecycle:snooze 訊息、**ack ok 才關分頁**（fail-CLOSED——與 routing claim 的 fail-open 相反，資料遺失防線要求）。"
   - file_path: modules/utils/timeUtils.js
     description: "[工具][純函式] 時間格式化（BASE-024 P2，repo 首個共用時間 util）。formatRelativeTime（分/時/天級，i18n 帶參 key timeMinutesAgo 等）、formatWakeTime（今天→HH:mm、明天→wakeTomorrow($1)、其餘→Intl 短星期+時刻）；now 與 getMessage 皆入參可單元測試。"
   - file_path: modules/routing/routingRulesSyncLogic.js

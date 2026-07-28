@@ -15,6 +15,7 @@ import { escapeHtml } from '../utils/textUtils.js';
 import * as modal from '../modalManager.js';
 import { renderIcon, CLOCK_ICON_SVG } from '../icons.js';
 import { showToast, hideToast, claimUndo } from './toast.js';
+import { resolveSnoozeSlots } from '../lifecycle/lifecycleLogic.js';
 
 let initialized = false;
 let toggleInitialized = false;
@@ -182,6 +183,32 @@ async function handleListClick(e) {
     const state = await getArchived();
     const item = state.items.find(i => i.id === id);
     if (item) await restoreArchived(item); // FR-2.02
+}
+
+/**
+ * "Snooze this tab…" flow from the tab context menu (BASE-024 P3,
+ * FR-4.01/4.02): slot dialog → persist via the SW single-writer (ack gates
+ * the close — fail-CLOSED, unlike routing claims: an unpersisted close is
+ * exactly the data loss this feature exists to prevent).
+ * @param {{id:number, url:string, title?:string, favIconUrl?:string}} tab
+ */
+export async function promptSnoozeTab(tab) {
+    const slot = await modal.showSnoozeDialog(resolveSnoozeSlots(Date.now()));
+    if (!slot) return;
+    const item = {
+        id: crypto.randomUUID(),
+        url: tab.url,
+        title: tab.title || tab.url,
+        favIconUrl: tab.favIconUrl || '',
+        snoozedAt: Date.now(),
+        wakeAt: slot.at,
+    };
+    const ack = await api.sendRuntimeMessage({ action: 'lifecycle:snooze', item }).catch(() => null);
+    if (!ack || ack.ok !== true) {
+        showToast(api.getMessage('snoozeFailedToast') || 'Could not snooze this tab — it stays open.');
+        return;
+    }
+    await api.removeTab(tab.id);
 }
 
 /** Toast for a completed auto-archive round (FR-3.05): whole-round undo. */
