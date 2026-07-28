@@ -28,6 +28,13 @@ import {
   NEWSWIRE_KEYS_KEY,
 } from './modules/newswire/feedManager.js';
 import { mergeNewswireState, buildNewswirePayload, canonicalizeNewswire } from './modules/newswire/newswireSyncLogic.js';
+import { exportRoutingState, importMergedRoutingState, ROUTING_RULES_KEY } from './modules/routing/rulesStore.js';
+import {
+  mergeRoutingRules,
+  buildRoutingRulesPayload,
+  routingStatesEqual,
+  isRoutingSchemaTooNew,
+} from './modules/routing/routingRulesSyncLogic.js';
 
 const AI_AUTO_NAMING_KEY = 'aiAutoNamingEnabled';
 
@@ -79,6 +86,8 @@ const FLUSH_DEBOUNCE_MIN = 0.14;        // ~8.4s one-shot debounce (chrome.alarm
 // keys mirror rssManager's schema and are watched to trigger a debounced sync.
 const RSS_SYNC_FILE = 'rss-sync.json';
 const NEWSWIRE_SYNC_FILE = 'newswire-sync.json';
+const ROUTING_SYNC_FILE = 'routing-rules-sync.json';
+const ALARM_ROUTING_FLUSH = 'routingSyncFlush'; // one-shot debounced routing-rules Drive sync
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
 const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
 const RSS_TOMBSTONES_KEY = 'rssTombstones';
@@ -292,6 +301,8 @@ async function runSyncOnce() {
     // newswire settings sync (BASE-016 N3): same cadence, same single-flight
     // pattern; swallows its own errors internally.
     await newswireSyncOnce();
+    // routing rules sync (BASE-022 P4): same cadence and pattern.
+    await routingSyncOnce();
 }
 
 /**
@@ -360,6 +371,44 @@ function newswireSyncOnce() {
         }
     });
     return newswireSyncChain;
+}
+
+/**
+ * Single-flight routing-rules Drive sync (BASE-022 P4). Mirrors rssSyncOnce:
+ * read routing-rules-sync.json, merge with the local working copy (per-rule
+ * LWW + tombstones), write back BOTH sides only where they differ. Convergence
+ * relies on mergeRoutingRules being commutative + idempotent — the write-back
+ * fires onChanged → one more cycle that finds nothing to write → stop.
+ */
+let routingSyncChain = Promise.resolve();
+function routingSyncOnce() {
+    routingSyncChain = routingSyncChain.then(async () => {
+        try {
+            if (!(await syncProvider.isConnected())) return;
+            if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+            const remoteFile = await syncProvider.read(ROUTING_SYNC_FILE);
+            const remote = (remoteFile && remoteFile.json) || { rules: [], tombstones: {} };
+            if (isRoutingSchemaTooNew(remote)) {
+                // Never downgrade-write a payload from a newer extension version.
+                console.warn('[routing-sync] remote schema is newer than this client; skipping cycle');
+                return;
+            }
+            const local = await exportRoutingState();
+            const merged = mergeRoutingRules(local, remote, { now: Date.now() });
+            if (!routingStatesEqual(merged, local)) {
+                await importMergedRoutingState(merged);
+            }
+            if (!routingStatesEqual(merged, remote)) {
+                await syncProvider.write(
+                    ROUTING_SYNC_FILE,
+                    buildRoutingRulesPayload(merged, await getDeviceId(), Date.now()),
+                );
+            }
+        } catch (err) {
+            console.warn('[routing-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return routingSyncChain;
 }
 
 /** (Re)create the periodic pull alarm. Alarms don't survive a browser restart. */
@@ -663,6 +712,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     newswireSyncOnce();
     return;
   }
+  if (alarm.name === ALARM_ROUTING_FLUSH) {
+    // Debounced routing-rules Drive sync (BASE-022 P4). Explicit branch for the
+    // same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
+    routingSyncOnce();
+    return;
+  }
   if (alarm.name === ALARM_NEWSWIRE_WATCHDOG) {
     // newswire 看門狗:SW 存活時檢查各連線、被回收後由此喚醒重建(BASE-016)。
     handleNewswireWatchdog();
@@ -699,6 +754,19 @@ function handleNewswireStorageChange(changes, areaName) {
   chrome.alarms.create(ALARM_NEWSWIRE_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
 }
 
+/**
+ * onChanged → schedule a debounced routing-rules Drive sync when the local
+ * rules working copy changes (options/context-menu edits, engine has no write
+ * path to it). The write-back from routingSyncOnce also fires onChanged, but
+ * the no-op guard makes the follow-up cycle write nothing (same convergence
+ * property as RSS/newswire).
+ */
+function handleRoutingStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!changes[ROUTING_RULES_KEY]) return;
+  chrome.alarms.create(ALARM_ROUTING_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
 // chrome.storage.onChanged → derive sync pushes for changed workspaces + RSS.
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== 'sync' && areaName !== 'local') return;
@@ -708,6 +776,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   handleRssStorageChange(changes, areaName);
   handleNewswireStorageChange(changes, areaName);
   handleNewswireConfigChange(changes, areaName);
+  handleRoutingStorageChange(changes, areaName);
 });
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background

@@ -398,4 +398,5 @@ make release && unzip -l *.zip | grep routing   # prod bundle 含 routing（間�
 |---------|------|--------|---------|
 | v1.0 | 2026-07-27 | Claude Code | Initial draft（基於 codebase 實地盤點：background 監聽現況、sync 五件組模板、session 單寫者模式、E2E 慣例） |
 | v1.1 | 2026-07-27 | Claude Code | P2 落地備註：(1) 建規則流程獨立為 `modules/ui/routingRuleUI.js`（原文「sidepanel.js 或 tabListeners 對應處」的具體化）；(2) 共用 toast undo 按鈕發現既存干擾（aiGrouperUI 的 undo 狀態在 toast 消失後殘留、會誤觸他功能復原）→ toast.js 新增 `claimUndo` 單一擁有者模式，aiGrouperUI 同步遷移；(3) FR-3.06 AI Auto Routing 開關依 phase 對齊改隨 P3 出貨（避免無行為的死開關），FR-4.02 於 P2 先落地全域開關 |
+| v1.3 | 2026-07-28 | Claude Code | P4 落地備註：schema-too-new 的處置比照 rss/newswire 前例採「跳過該輪＋console.warn、拒絕降級回寫」，未動用 workspace 引擎的 needs-update status surface（§4.4 原文的 needs-update 指涉工作區引擎語意，規則同步屬單檔 merge 管道無獨立 status）。tombstone GC 60d 照 §4.1。全功能（P1–P4）至此交付完畢 |
 | v1.2 | 2026-07-27 | Claude Code | P3 落地備註：(1) §5.6 join 路徑補「更新 lastNav」——否則舊網域的 lastNav 會跨過中間插入的導航配對成組，違反 FR-3.04 連續性；(2) FR-3.07 undo 改以 groupId 查詢現任成員整組解散（建組後 join 的分頁也涵蓋，貼合 PRD「群組解散」語意），非建組當下的 tabIds 快照；(3) §8.1 的 AI E2E 由「本地跑」升級為 `happy_path_routing_ai_grouping`——斷言全部 AI-agnostic（Nano 不可用時網域暫名即為可斷言的決定性行為），CI 穩定性無虞 |
