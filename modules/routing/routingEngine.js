@@ -146,9 +146,17 @@ async function maybeAiRoute(st, tab, url, now) {
 
     if (decision.action === 'create') {
         // Retroactive inclusion (FR-3.05a): the previous tab was already judged;
-        // include it only if its LIVE state is still routable.
+        // include it only if its LIVE state is still routable AND it still
+        // shows this domain — judged-once means a later manual navigation away
+        // never updates lastNav, so the record can be stale (review PR #217).
         const prev = await chrome.tabs.get(decision.prevTabId).catch(() => null);
+        let prevOnDomain = false;
+        try {
+            const prevUrl = prev && (prev.url || prev.pendingUrl);
+            prevOnDomain = !!prevUrl && normalizeHost(new URL(prevUrl).hostname) === domain;
+        } catch { /* unparsable → ineligible */ }
         const prevEligible = prev
+            && prevOnDomain
             && prev.windowId === tab.windowId
             && !prev.pinned
             && prev.groupId === chrome.tabGroups.TAB_GROUP_ID_NONE;
