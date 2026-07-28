@@ -16,7 +16,10 @@ guide_{bm,groups,linked_how,reading,rss,search,tabs,theme_bg,window}_li*。
 
 - **zh_TW**：以 `guide.html` 的 inline 原文（唯一完整來源）程式化重建，逐字還原。
 - **其餘 13 語**：自 zh_TW 原文完整重譯（保留 `<strong>` 標籤結構與 `<kbd>` 範例）。
-- 注入沿用 web locale 慣例：JSON round-trip、**逐檔縮排偵測**（de.json 為 4 空格、其餘 2）。
+- 注入沿用 web locale 慣例：JSON round-trip、**逐檔縮排偵測**。
+  （勘誤 2026-07-28，PR #225 review 指正：原文寫「de.json 為 4 空格、其餘 2」有誤——
+  實測 14 檔全為 4 空格；誤判源於穩定性檢查腳本在第一個差異檔即 exit。逐檔偵測
+  寫回讓檔案本身不受此誤判影響。）
 - 排除的替代方案：從截斷值反推補綴（冒號後內容已不存在，無從補）；改 i18n.js 為
   fallback-on-truncation（治標且引入 heuristic，不如修資料）。
 
@@ -39,6 +42,10 @@ guide_{bm,groups,linked_how,reading,rss,search,tabs,theme_bg,window}_li*。
 ## 驗收條件
 
 - [x] 14 語 × 38 keys 全數為完整 `<strong>label</strong>：說明` 形態，零截斷殘留。
-- [x] zh_TW 與 guide.html inline 原文逐字一致。
+- [x] 38 個盤點 keys 的 zh_TW 值與 guide.html inline 原文逐字一致。
+  （勘誤 2026-07-28，PR #225 review 指正：原文寫成籠統的「zh_TW 逐字一致」不成立——
+  同型 bug 仍殘留於 38-key 清單外的 3 個 key（`guide_start_step1` / `guide_start_step3` /
+  `guide_kb_focus_tip`，未閉合 `<a>`/`<kbd>`，14 語全中），本 spec 的迴歸測試只掃
+  `<strong>` 也攔不到。後續由 [BASE-027](../BASE-027_web-guide-i18n-truncation-residual/SPEC.md) 收尾。）
 - [x] 迴歸測試進 unit 套件（未修前紅、修後綠）。
 - [x] 非預設語言於瀏覽器實測條目完整。
