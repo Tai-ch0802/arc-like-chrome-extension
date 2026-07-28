@@ -110,6 +110,27 @@ export function setRuleEnabled(id, enabled) {
 }
 
 /**
+ * Drive-sync bridge (BASE-022 P4). rulesStore stays Drive-agnostic — the
+ * background sync pipeline drives these (same split as rssManager's
+ * exportLocalRssState / importMergedRssState).
+ */
+export async function exportRoutingState() {
+    return getRoutingState();
+}
+
+/** Persist a merged state verbatim (rules + tombstones from the merge pass). */
+export async function importMergedRoutingState(merged) {
+    await api.setStorageStrict('local', {
+        [ROUTING_RULES_KEY]: {
+            schemaVersion: ROUTING_RULES_SCHEMA,
+            updatedAt: Date.now(),
+            rules: merged.rules || [],
+            tombstones: merged.tombstones || {},
+        },
+    });
+}
+
+/**
  * Register routing-claim exemptions for URLs this extension is about to open
  * with a designated group (FR-2.07). MUST be awaited BEFORE tabs.create /
  * windows.create: the ack guarantees the claim is registered before the
