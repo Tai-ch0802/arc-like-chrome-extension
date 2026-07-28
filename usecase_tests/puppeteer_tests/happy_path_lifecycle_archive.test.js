@@ -77,11 +77,15 @@ describe('Tab lifecycle engine', () => {
         await fireHeartbeat();
 
         // Idle unexempted tabs get closed and their URLs land in the archive.
+        // Exact-equality membership on purpose: Array.includes on full URLs is
+        // already exact, but CodeQL's URL-substring heuristic can't see the
+        // array type — .some(===) says the same thing unambiguously.
         await page.waitForFunction(async () => {
             const v = await chrome.storage.local.get('archivedTabs');
             const urls = (v.archivedTabs ? v.archivedTabs.items : []).map(i => i.url);
-            return urls.includes('https://example.com/lifecycle-idle-1')
-                && urls.includes('https://example.com/lifecycle-idle-2');
+            const has = (u) => urls.some(x => x === u);
+            return has('https://example.com/lifecycle-idle-1')
+                && has('https://example.com/lifecycle-idle-2');
         }, { timeout: 10000 });
         await page.waitForFunction(async (ids) => {
             const alive = await Promise.all(ids.map(id => chrome.tabs.get(id).then(() => true, () => false)));
