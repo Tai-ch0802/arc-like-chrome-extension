@@ -7,9 +7,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
-    "test:ci": "jest --maxWorkers=2 --bail --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
-    "test:full": "jest --clearCache && jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
+    "test:ci": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --maxWorkers=2 --bail --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
+    "test:full": "jest --clearCache && npm test",
     "test:unit": "jest --maxWorkers=2 usecase_tests/unit_tests/"
   },
   "repository": {
