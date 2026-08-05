@@ -1,10 +1,14 @@
-const puppeteer = require('puppeteer');
 const path = require('path');
 
 const EXTENSION_PATH = path.resolve(__dirname, '../../'); // Path to your extension's root directory
 // const EXTENSION_ID = 'YOUR_EXTENSION_ID'; // You'll need to get this dynamically or from manifest.json
 
 async function setupBrowser(retries = 2) {
+    // puppeteer 25+ 是 ESM-only（package.json "type": "module"），頂層 require() 會讓整個 E2E
+    // 套件在載入期就 SyntaxError。動態 import 需搭配 NODE_OPTIONS=--experimental-vm-modules
+    // （已加在 package.json 的 test scripts），module cache 保證實際只載入一次。
+    const puppeteer = (await import('puppeteer')).default;
+
     for (let attempt = 0; attempt <= retries; attempt++) {
         let browser;
         try {

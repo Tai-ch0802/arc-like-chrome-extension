@@ -7,9 +7,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
-    "test:ci": "jest --maxWorkers=2 --bail --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
-    "test:full": "jest --clearCache && jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --maxWorkers=2 usecase_tests/puppeteer_tests/",
+    "test:ci": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --maxWorkers=2 --bail --testPathPatterns 'usecase_tests/puppeteer_tests/happy_path_'",
+    "test:full": "jest --clearCache && npm test",
     "test:unit": "jest --maxWorkers=2 usecase_tests/unit_tests/"
   },
   "repository": {
@@ -29,7 +29,7 @@
     "esbuild": "^0.28.1",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
-    "puppeteer": "^24.42.0"
+    "puppeteer": "^25.4.0"
   },
   "overrides": {
     "test-exclude": "^7.0.1",

@@ -140,8 +140,11 @@ describe('Modify Bookmark Folder Use Case', () => {
         // Wait for modal
         await page.waitForSelector('.modal-input', { timeout: 15000 });
 
-        // Clear input and type new name
-        await page.click('.modal-input', { clickCount: 3 });
+        // Clear input and type new name.
+        // 用 DOM 的 select() 而非 triple-click：Chrome 151 起 triple-click 不再選取 input 內文，
+        // 選取範圍會停在游標處（start === end），type 就變成 append 而不是取代。
+        await page.click('.modal-input');
+        await page.$eval('.modal-input', el => el.select());
         const renamedName = 'Renamed via UI';
         await page.type('.modal-input', renamedName);
 
