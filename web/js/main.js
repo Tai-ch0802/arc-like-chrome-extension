@@ -14,11 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Reveal only once
-            }
+        entries.filter(entry => entry.isIntersecting).forEach((entry, i) => {
+            const el = entry.target;
+            // Stagger elements that enter the viewport together, then clear the
+            // delay so it never postpones hover transitions afterwards
+            el.style.transitionDelay = `${(i % 6) * 60}ms`;
+            el.addEventListener('transitionend', () => {
+                el.style.transitionDelay = '';
+            }, { once: true });
+            el.classList.add('active');
+            observer.unobserve(el); // Reveal only once
         });
     }, observerOptions);
 

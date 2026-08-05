@@ -39,6 +39,8 @@ const i18n = {
                 || this.langMap[browserLang.split('-')[0]]
                 || 'en';
         }
+        // Keep <html lang> in sync on auto-detect too, so :lang() CSS (CJK letter-spacing) applies
+        document.documentElement.lang = this.currentLang.replace('_', '-');
 
         // Init language switcher UI
         this.setupSwitcher();
@@ -105,6 +107,12 @@ const i18n = {
                 }
             }
         });
+
+        // Re-render lucide icons: innerHTML replacement above re-inserts <i data-lucide> tags
+        // after the initial createIcons() pass, so they stay empty without this
+        if (window.lucide) {
+            lucide.createIcons();
+        }
 
         // Update document title and meta description
         if (this.translations['page_title']) {
