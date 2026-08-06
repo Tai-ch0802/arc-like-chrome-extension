@@ -15,15 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.filter(entry => entry.isIntersecting).forEach((entry, i) => {
-            const el = entry.target;
-            // Stagger elements that enter the viewport together, then clear the
-            // delay so it never postpones hover transitions afterwards
-            el.style.transitionDelay = `${(i % 6) * 60}ms`;
-            el.addEventListener('transitionend', () => {
-                el.style.transitionDelay = '';
-            }, { once: true });
-            el.classList.add('active');
-            observer.unobserve(el); // Reveal only once
+            // Stagger elements entering together by delaying the class flip rather
+            // than setting transition-delay: nothing lingers to slow later hovers
+            setTimeout(() => entry.target.classList.add('active'), (i % 6) * 60);
+            observer.unobserve(entry.target); // Reveal only once
         });
     }, observerOptions);
 
