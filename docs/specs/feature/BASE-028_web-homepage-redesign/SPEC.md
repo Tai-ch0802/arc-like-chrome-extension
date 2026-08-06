@@ -32,6 +32,12 @@
 
 佈局家族 6 種、eyebrow 總數 1(hero badge-pill)、zigzag 0、marquee 0、scroll cue 0、em-dash 新增 0。
 
+### 後續修正(#233 合併後)
+
+hero 的「右出血」初版沒有上界,寬度隨視窗線性成長(2560 螢幕上 1822×1025,mockup 佔螢幕高 71~83%)。改為 `min()` 三重上限:出血量、1240px 絕對寬(素材 1800px,再大只是變糊)、`68svh` 換算 16/9 的寬度(用 `svh` 不用 `dvh`,避免手機橫向網址列收合造成捲動中重排)。設計語彙由「出血到視窗邊緣」調整為「有界的 overhang」— 超寬螢幕上真正的邊緣出血必然使 16/9 素材高過視窗,兩者不可兼得。
+
+同時修正 `.glow-blur`:它是 `position: absolute` 且 containing block 為 viewport,`html` 的 `overflow-x: clip` 裁不到它,375px 下實測可右拖 113px。改為 `width: min(600px, 100%)` 自我設限。
+
 ## 不變的契約
 
 - 路由、anchor id(`#philosophy` `#features` `#ai-setup` `#privacy`)、SEO meta / JSON-LD / OG、`sitemap.xml`
