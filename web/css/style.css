@@ -52,7 +52,9 @@
 }
 
 html {
-    /* clip, not hidden: kills decorative-glow overflow without creating a scroll container */
+    /* Safety net for in-flow overflow (the hero visual sizes off 100vw, which
+       counts the scrollbar). clip, not hidden: no scroll container is created.
+       It cannot clip the absolutely positioned glows, which bound their own width. */
     overflow-x: clip;
 }
 
@@ -119,7 +121,9 @@ a:hover {
 /* Background Glows */
 .glow-blur {
     position: absolute;
-    width: 600px;
+    /* absolute + viewport containing block means html's overflow cannot clip
+       these, so they must not be wider than the viewport themselves */
+    width: min(600px, 100%);
     height: 600px;
     background: radial-gradient(circle, var(--glow-primary) 0%, rgba(0, 0, 0, 0) 70%);
     filter: blur(80px);
@@ -411,19 +415,19 @@ a:hover {
 /* Mockup Presentation */
 .hero-visual {
     position: relative;
-    width: 100%;
+    /* 16/9 mockup: bound by viewport height so it cannot outgrow the fold.
+       svh, not dvh: a value that shifts with the mobile URL bar would reflow. */
+    width: min(100%, calc(68svh * 16 / 9));
     perspective: 1000px;
 }
 
-/* Bleed the carousel past the right container edge on wide screens */
+/* Overhang the container edge on wide screens, capped three ways: the asset is
+   1800px wide, and an unbounded width made the mockup taller than the viewport. */
 @media (min-width: 1240px) {
     .hero-visual {
-        width: calc(100% + (100vw - var(--container-max)) / 2);
-        margin-right: calc((100vw - var(--container-max)) / -2);
-    }
-
-    .hero-visual .mockup-window {
-        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        width: min(calc(100% + (100vw - var(--container-max)) / 2),
+                calc(68svh * 16 / 9),
+                1240px);
     }
 
     .next-btn {
