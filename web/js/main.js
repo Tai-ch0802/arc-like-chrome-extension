@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Reveal only once
-            }
+        entries.filter(entry => entry.isIntersecting).forEach((entry, i) => {
+            // Stagger elements entering together by delaying the class flip rather
+            // than setting transition-delay: nothing lingers to slow later hovers
+            setTimeout(() => entry.target.classList.add('active'), (i % 6) * 60);
+            observer.unobserve(entry.target); // Reveal only once
         });
     }, observerOptions);
 
