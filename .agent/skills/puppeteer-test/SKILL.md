@@ -169,6 +169,10 @@ const config = {
     '^.+\\.m?js$': '<rootDir>/jest.esbuild-transform.cjs', // 用 esbuild 轉 ESM
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)', '**/?(*.)+(spec|test).mjs'],
+  // 自訂此欄位會「取代」Jest 預設的 ['/node_modules/']，所以要一併寫回。
+  // '/\\.claude/' 擋掉 .claude/worktrees/ 底下的 worktree（各自帶著本 repo 的
+  // 測試副本，否則會被掃入變成假失敗）。守門測試：unit_tests/jestConfigIntegrity。
+  testPathIgnorePatterns: ['/node_modules/', '/\\.claude/'],
 };
 module.exports = config;
 ```
