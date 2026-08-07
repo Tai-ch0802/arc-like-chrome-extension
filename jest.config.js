@@ -7,6 +7,10 @@ const config = {
         '^.+\\.m?js$': '<rootDir>/jest.esbuild-transform.cjs',
     },
     testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)', '**/?(*.)+(spec|test).mjs'],
+    // Setting this REPLACES Jest's default ['/node_modules/'] — keep it listed.
+    // '/\\.claude/' skips the git worktrees under .claude/worktrees/, which carry
+    // their own copy of this repo's tests (guard: jestConfigIntegrity.test.mjs).
+    testPathIgnorePatterns: ['/node_modules/', '/\\.claude/'],
 };
 
 module.exports = config;
