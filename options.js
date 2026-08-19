@@ -1128,6 +1128,8 @@ async function renderAiProviderBlock(container) {
             input.className = 'modal-input';
             if (isTextarea) {
                 input.rows = 2;
+                // Deliberately not i18n'd: header names are technical
+                // literals with nothing translatable.
                 input.placeholder = 'CF-Access-Client-Id: xxx\nCF-Access-Client-Secret: xxx';
             } else {
                 input.type = field === 'apiKey' ? 'password' : (field === 'baseUrl' ? 'url' : 'text');

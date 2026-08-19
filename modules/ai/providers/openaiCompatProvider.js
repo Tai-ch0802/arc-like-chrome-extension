@@ -102,7 +102,7 @@ async function requestChat(config, params) {
 }
 
 /**
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @returns {Promise<string>}
  */
@@ -149,7 +149,7 @@ async function streamOnce(config, params, onChunk) {
  * Streaming chat with the same max_completion_tokens retry as chat().
  * The retry is safe: the 400 arrives before any SSE line is read, so no
  * chunks have been delivered when the second attempt starts.
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @param {(chunk: string) => void} [onChunk]
  * @returns {Promise<string>}
@@ -170,7 +170,7 @@ export async function chatStream(config, params, onChunk) {
  * GET {base}/models; some compat servers don't implement it (404/405), so
  * fall back to a minimal chat call. Any HTTP-200 chat response counts as
  * success — reasoning models may return empty text on a 1-token probe.
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @returns {Promise<{ok: boolean, code?: string, message?: string, models?: string[]}>}
  */
 export async function testConnection(config) {
