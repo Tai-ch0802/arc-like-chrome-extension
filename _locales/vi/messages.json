@@ -1398,6 +1398,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "URL cơ sở"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "Header tùy chỉnh"
+  },
   "aiProviderTestBtn": {
     "message": "Kiểm tra kết nối"
   },

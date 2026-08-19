@@ -173,6 +173,34 @@ describe('openaiCompatProvider', () => {
     expect(() => openaiCompat.parseChatResponse({ choices: [] })).toThrow();
   });
 
+  it('parseExtraHeaders parses "Name: value" lines, lowercases names, skips junk', () => {
+    expect(openaiCompat.parseExtraHeaders(
+      'CF-Access-Client-Id: abc\nCF-Access-Client-Secret: s3cr3t\n\nno-colon-line\n: empty-name\nempty-value:\n'
+    )).toEqual({ 'cf-access-client-id': 'abc', 'cf-access-client-secret': 's3cr3t' });
+    expect(openaiCompat.parseExtraHeaders('')).toEqual({});
+    expect(openaiCompat.parseExtraHeaders(undefined)).toEqual({});
+  });
+
+  it('buildChatRequest merges extraHeaders; explicit Authorization beats apiKey Bearer', () => {
+    const { init } = openaiCompat.buildChatRequest(
+      { ...config, extraHeaders: 'CF-Access-Client-Id: abc\nAuthorization: Basic dXNlcg==' },
+      PARAMS
+    );
+    expect(init.headers['cf-access-client-id']).toBe('abc');
+    expect(init.headers.authorization).toBe('Basic dXNlcg==');
+    expect(init.headers['content-type']).toBe('application/json');
+  });
+
+  it('testConnection sends extraHeaders on the /models probe', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ data: [{ id: 'm1' }] }) });
+    const res = await openaiCompat.testConnection({ ...config, extraHeaders: 'CF-Access-Client-Id: abc' });
+    expect(res.ok).toBe(true);
+    const [url, init] = global.fetch.mock.calls[0];
+    expect(url).toBe('https://api.openai.com/v1/models');
+    expect(init.headers['cf-access-client-id']).toBe('abc');
+    expect(init.headers.authorization).toBe('Bearer sk-x');
+  });
+
   it('testConnection falls back to a 1-token chat when /models is 404', async () => {
     global.fetch = jest.fn()
       .mockResolvedValueOnce({ ok: false, status: 404, text: async () => 'not found' })

@@ -1419,6 +1419,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "Базовый URL"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "Пользовательские заголовки"
+  },
   "aiProviderTestBtn": {
     "message": "Проверить подключение"
   },

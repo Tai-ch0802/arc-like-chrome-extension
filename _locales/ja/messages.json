@@ -1398,6 +1398,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "ベース URL"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "カスタムヘッダー"
+  },
   "aiProviderTestBtn": {
     "message": "接続をテスト"
   },

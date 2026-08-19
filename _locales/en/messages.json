@@ -1401,6 +1401,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "Base URL"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "Custom headers"
+  },
   "aiProviderTestBtn": {
     "message": "Test connection"
   },

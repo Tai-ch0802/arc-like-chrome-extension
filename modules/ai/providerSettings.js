@@ -23,7 +23,9 @@ export const PROVIDER_DEFAULTS = Object.freeze({
     providers: Object.freeze({
         gemini: Object.freeze({ apiKey: '', model: 'gemini-2.5-flash' }),
         anthropic: Object.freeze({ apiKey: '', model: 'claude-opus-4-8' }),
-        openai: Object.freeze({ apiKey: '', model: '', baseUrl: 'https://api.openai.com/v1' }),
+        // extraHeaders is a multiline "Name: value" STRING, not an object —
+        // mergeWithDefaults silently drops non-string values.
+        openai: Object.freeze({ apiKey: '', model: '', baseUrl: 'https://api.openai.com/v1', extraHeaders: '' }),
         ollama: Object.freeze({ apiKey: '', model: '', baseUrl: 'http://localhost:11434' }),
     }),
 });

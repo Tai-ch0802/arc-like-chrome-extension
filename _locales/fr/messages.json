@@ -1419,6 +1419,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "URL de base"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "En-têtes personnalisés"
+  },
   "aiProviderTestBtn": {
     "message": "Tester la connexion"
   },

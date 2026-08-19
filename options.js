@@ -1063,7 +1063,7 @@ const AI_PROVIDER_OPTIONS = [
 const AI_PROVIDER_FIELDS = {
     gemini: ['apiKey', 'model'],
     anthropic: ['apiKey', 'model'],
-    openai: ['baseUrl', 'apiKey', 'model'],
+    openai: ['baseUrl', 'apiKey', 'model', 'extraHeaders'],
     ollama: ['baseUrl', 'model', 'apiKey'],
 };
 
@@ -1100,6 +1100,7 @@ async function renderAiProviderBlock(container) {
         apiKey: () => api.getMessage('aiProviderApiKeyLabel') || 'API key',
         model: () => api.getMessage('aiProviderModelLabel') || 'Model',
         baseUrl: () => api.getMessage('aiProviderBaseUrlLabel') || 'Base URL',
+        extraHeaders: () => api.getMessage('aiProviderExtraHeadersLabel') || 'Custom headers',
     };
 
     async function renderConfigFields() {
@@ -1121,12 +1122,19 @@ async function renderAiProviderBlock(container) {
         const fieldInputs = {};
 
         for (const field of AI_PROVIDER_FIELDS[id] || []) {
-            const input = document.createElement('input');
-            input.type = field === 'apiKey' ? 'password' : (field === 'baseUrl' ? 'url' : 'text');
+            // extraHeaders is multiline ("Name: value" per line) → textarea.
+            const isTextarea = field === 'extraHeaders';
+            const input = document.createElement(isTextarea ? 'textarea' : 'input');
             input.className = 'modal-input';
-            // 'new-password' suppresses Chrome's save-password prompt more
-            // reliably than 'off' on password fields.
-            input.autocomplete = field === 'apiKey' ? 'new-password' : 'off';
+            if (isTextarea) {
+                input.rows = 2;
+                input.placeholder = 'CF-Access-Client-Id: xxx\nCF-Access-Client-Secret: xxx';
+            } else {
+                input.type = field === 'apiKey' ? 'password' : (field === 'baseUrl' ? 'url' : 'text');
+                // 'new-password' suppresses Chrome's save-password prompt more
+                // reliably than 'off' on password fields.
+                input.autocomplete = field === 'apiKey' ? 'new-password' : 'off';
+            }
             input.value = config[field] || '';
             fieldInputs[field] = input;
             input.setAttribute('aria-label', FIELD_LABELS[field]());
