@@ -1398,6 +1398,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "Base URL"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "自訂標頭"
+  },
   "aiProviderTestBtn": {
     "message": "測試連線"
   },

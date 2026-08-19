@@ -1398,6 +1398,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "URL base"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "Cabeceras personalizadas"
+  },
   "aiProviderTestBtn": {
     "message": "Probar conexión"
   },

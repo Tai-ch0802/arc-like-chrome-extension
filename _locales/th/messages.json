@@ -1398,6 +1398,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "URL หลัก"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "ส่วนหัวที่กำหนดเอง"
+  },
   "aiProviderTestBtn": {
     "message": "ทดสอบการเชื่อมต่อ"
   },

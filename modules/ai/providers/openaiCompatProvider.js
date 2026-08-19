@@ -10,8 +10,29 @@
 import { fetchJson, consumeStreamText, toTestFailure, normalizeBaseUrl, HttpError } from './httpUtils.js';
 
 /**
+ * Parses the user-supplied extra-headers text ("Name: value", one per line)
+ * into a headers object. Pure. Lines without a colon (or with an empty
+ * name/value) are skipped. Names are lowercased so a user-typed
+ * "Authorization:" replaces the apiKey-derived `authorization` key instead
+ * of producing a duplicate pair.
+ * @param {string|undefined} text
+ * @returns {Object<string, string>}
+ */
+export function parseExtraHeaders(text) {
+    const headers = {};
+    for (const line of String(text || '').split('\n')) {
+        const idx = line.indexOf(':');
+        if (idx <= 0) continue;
+        const name = line.slice(0, idx).trim().toLowerCase();
+        const value = line.slice(idx + 1).trim();
+        if (name && value) headers[name] = value;
+    }
+    return headers;
+}
+
+/**
  * Builds the chat/completions request. Pure — unit-testable without fetch.
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @param {{system?: string, prompt: string, maxTokens?: number, tokenParam?: string, stream?: boolean}} params
  *        tokenParam: 'max_tokens' (default, widest gateway compat) or
  *        'max_completion_tokens' (required by newer OpenAI reasoning models).
@@ -28,6 +49,9 @@ export function buildChatRequest(config, { system, prompt, maxTokens = 1024, tok
     if (config.apiKey) {
         headers.authorization = `Bearer ${config.apiKey}`;
     }
+    // Extras last: an explicit user header (e.g. a custom auth scheme) wins
+    // over the derived defaults.
+    Object.assign(headers, parseExtraHeaders(config.extraHeaders));
     return {
         url: `${base}/chat/completions`,
         init: {
@@ -78,7 +102,7 @@ async function requestChat(config, params) {
 }
 
 /**
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @returns {Promise<string>}
  */
@@ -125,7 +149,7 @@ async function streamOnce(config, params, onChunk) {
  * Streaming chat with the same max_completion_tokens retry as chat().
  * The retry is safe: the 400 arrives before any SSE line is read, so no
  * chunks have been delivered when the second attempt starts.
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @param {{system?: string, prompt: string, maxTokens?: number, signal?: AbortSignal}} params
  * @param {(chunk: string) => void} [onChunk]
  * @returns {Promise<string>}
@@ -146,7 +170,7 @@ export async function chatStream(config, params, onChunk) {
  * GET {base}/models; some compat servers don't implement it (404/405), so
  * fall back to a minimal chat call. Any HTTP-200 chat response counts as
  * success — reasoning models may return empty text on a 1-token probe.
- * @param {{apiKey?: string, model: string, baseUrl: string}} config
+ * @param {{apiKey?: string, model: string, baseUrl: string, extraHeaders?: string}} config
  * @returns {Promise<{ok: boolean, code?: string, message?: string, models?: string[]}>}
  */
 export async function testConnection(config) {
@@ -155,6 +179,9 @@ export async function testConnection(config) {
     if (config.apiKey) {
         headers.authorization = `Bearer ${config.apiKey}`;
     }
+    // Same extras as chat: without them the /models probe is rejected by
+    // gateways that gate on e.g. Cloudflare Access service-token headers.
+    Object.assign(headers, parseExtraHeaders(config.extraHeaders));
     try {
         const json = await fetchJson(`${base}/models`, { headers });
         const models = (json?.data || []).map(m => m?.id).filter(Boolean);

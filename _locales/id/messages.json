@@ -1419,6 +1419,9 @@
   "aiProviderBaseUrlLabel": {
     "message": "URL dasar"
   },
+  "aiProviderExtraHeadersLabel": {
+    "message": "Header kustom"
+  },
   "aiProviderTestBtn": {
     "message": "Uji koneksi"
   },
