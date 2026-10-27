@@ -12,8 +12,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   test:
+    # 公開 repo + self-hosted runner：外部 fork 的 PR 會在你的機器上執行 PR 裡的任意程式碼
+    # （npm ci 的 install script、被改過的測試檔），所以 self-hosted 只跑本 repo 自己的分支。
+    # fork PR 改走下方 GitHub-hosted 的 test-fork job。
+    # 注意：pull_request 事件用的是 PR 裡的 workflow 檔，fork 仍可改掉這個條件 ——
+    # 請同時在 Settings → Actions → General 把 fork PR 設為「Require approval for all external contributors」。
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: self-hosted
     permissions:
       contents: read
@@ -21,12 +30,14 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      with:
+        persist-credentials: false
 
     - name: Set up Node.js
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
       with:
-        node-version: '20'
+        node-version: '22' # Node.js 20 已於 2026-04-30 EOL
         cache: 'npm'
 
     - name: Install dependencies
@@ -38,3 +49,31 @@ jobs:
         CI: true
         NODE_OPTIONS: "--max-old-space-size=8192"
       run: npm run test:full
+
+  test-fork:
+    # 外部 fork 的 PR：只在 GitHub-hosted runner 跑單元測試，不碰 self-hosted、不拿任何 secret
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      with:
+        persist-credentials: false
+
+    - name: Set up Node.js
+      uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+      with:
+        node-version: '22'
+        package-manager-cache: false
+
+    - name: Install dependencies
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: 'true' # 單元測試不需要瀏覽器
+      run: npm ci --ignore-scripts
+
+    - name: Run unit tests
+      run: npm run test:unit
