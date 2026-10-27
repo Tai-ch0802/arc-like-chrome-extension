@@ -9,3 +9,19 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    # 新版本發布滿 7 天才開 PR：2025–2026 年多起 npm 套件被盜發惡意版本（Shai-Hulud 等）
+    # 通常在數天內被下架。Dependabot 的 PR 會在 self-hosted runner 上跑 npm ci，等一週更安全。
+    # （安全性更新不受 cooldown 影響。）
+    cooldown:
+      default-days: 7
+
+  # workflow 的 action 已改釘 commit SHA，由 Dependabot 連同行尾版本註解一起升級
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
