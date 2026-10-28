@@ -2,9 +2,9 @@
 
 | Attribute | Details |
 | :--- | :--- |
-| **Version** | v1.0 |
+| **Version** | v1.1 |
 | **Status** | Review（待需求方核准後動工） |
-| **對應 PRD** | 同目錄 `PRD_spec.md` v1.0（§9 決議已定） |
+| **對應 PRD** | 同目錄 `PRD_spec.md` v1.1（§9 決議已定） |
 | **前置研究** | `SPIKE.md`、`dia-api-probe.js` |
 | **交付** | 單一 PR，依 WP 分 commit |
 | **Issue** | [#257](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/257) |
@@ -52,7 +52,7 @@ graph TB
 | FR | 模組 | 函式 / 介面 | 測試 |
 |---|---|---|---|
 | FR-0.01 / 0.03 | `background.js`、`browserCapabilities` | `handleActionClick(tab)`、`sidePanel.onOpened/onClosed` 監聽 | `sidePanelEntry.test.mjs`（純函式 `decideActionClick`） |
-| FR-0.02 | `background.js` | `openSidePanelOrFallback(windowId)` | 同上 + 手動（Dia 正式 profile） |
+| FR-0.02 | `background.js` | `openSidePanelOrExplain(windowId)` | 同上 + 手動（Dia 正式 profile） |
 | FR-1.01 / 1.01a / 1.01b | `apiManager`、`browserCapabilities` | `guardTabGroupOp`、`classifyTabGroupFailure`、`resetCapabilityFlagsIfBrowserChanged` | `browserCapabilities.test.mjs`、`apiManagerGroupGuard.test.mjs` |
 | FR-1.02 | `aiGrouperUI`、`tabRenderer`、`contextMenuManager`、`commandPalette/actions`、`options.js` | `isTabGroupingAvailable()` + `capabilitiesChanged` 事件 | `aiGrouperUI.test.mjs`（新）、E2E `dia_capability_degrade.test.js`（新） |
 | FR-1.03 | `apiManager` | 全部群組 wrapper 經 `guardTabGroupOp` | `apiManagerGroupGuard.test.mjs` |
@@ -61,7 +61,7 @@ graph TB
 | FR-2.01 / 2.02 / 2.03 | `webAuthFlow`、`driveAuth` | `createWebAuthFlow(deps)`、`buildAuthUrl`、`parseRedirect`、`getToken(interactive)` | `webAuthFlow.test.mjs`、`driveAuth.test.mjs`（新） |
 | FR-2.04 | `driveAuth` | `getAuthMode()` / `driveAuthMode` 持久化 | `driveAuth.test.mjs` |
 | FR-2.05 | `driveAuth` | `disconnect()` 依模式 | 同上 |
-| FR-2.06 / 2.07 | `manifest.json`、`driveAuth.fetchAccountEmail`、`options.js`、`_locales` | — | E2E `happy_path_options_page`（文案）、手動 |
+| FR-2.06 / 2.07 | `webAuthFlow.buildAuthUrl`（scope 含 `userinfo.email`）、`driveAuth.fetchAccountEmail`、`options.js`、`_locales`（manifest **不變**） | — | `webAuthFlow.test.mjs`、E2E `happy_path_options_page`（文案）、手動 |
 | FR-3.01 ～ 3.06 | `prefsStore`、`prefsSyncLogic`、`settingsBridge`、`background.js`、各讀寫點 | `getPref/setPref/exportPrefsState/importMergedPrefs`、`mergePrefsState`、`prefsSyncOnce` | `prefsStore.test.mjs`、`prefsSyncLogic.test.mjs`、`settingsBridge.test.mjs`（改）、`prefsSyncIntegration.test.mjs`（fake provider） |
 | FR-4.01 ～ 4.06 | `readingListSyncLogic`、`background.js`、`apiManager` | `mergeReadingListState`、`diffReadingList`、`readingListSyncOnce` | `readingListSyncLogic.test.mjs`、`readingListSyncIntegration.test.mjs`、E2E `reading_list_edge_cases`（既有） |
 | FR-5.01 ～ 5.04 | `options.js`、`_locales`、`web/`、`PRIVACY_POLICY.md`、`GEMINI.md`、wiki | — | `lint-check.sh`、`update-multilingual-docs` |
@@ -77,7 +77,7 @@ graph TB
 /** @returns {{isGoogleChrome:boolean, brand:string, majorVersion:number}} */
 export function parseBrowserInfo(brands /* navigator.userAgentData.brands|undefined */, uaString);
 export function getBrowserInfo();                       // 快取；brands 缺席 → 視為 Chrome（保守）
-export function decideActionClick({ isGoogleChrome, panelOpen, sidePanelUnavailable }); // 純：'noop'|'open'|'close'|'popup'
+export function decideActionClick({ isGoogleChrome, panelOpen, sidePanelUnavailable }); // 純：'noop'|'open'|'close'|'options'
 export async function getCapabilityFlag(name);          // 'tabGroupsUnsupported' | 'sidePanelUnavailable'
 export async function markCapabilityUnsupported(name);  // 寫 {unsupported:true, brand, majorVersion, at}
 export async function resetCapabilityFlagsIfBrowserChanged(); // FR-1.01b，SW onStartup/onInstalled 呼叫
@@ -88,7 +88,7 @@ export async function isTabGroupingAvailable();         // UI 用；快取 + sto
 `background.js`：
 
 - `onInstalled` / `onStartup`：`resetCapabilityFlagsIfBrowserChanged()` → 若 `!isGoogleChrome` → `sidePanel.setPanelBehavior({openPanelOnActionClick:false})`；Chrome 維持 `true`（現行碼不動）。
-- 頂層同步註冊 `chrome.action.onClicked`（MV3 要求）：`handleActionClick(tab)` → `decideActionClick(...)` → `open`：`sidePanel.open({windowId})` 並以 `Promise.race` 等 `onOpened` 3 秒；逾時或 reject → `markCapabilityUnsupported('sidePanelUnavailable')` + `windows.create({type:'popup', url: runtime.getURL('sidepanel.html'), width: 420, height: 800})`；`close`：`sidePanel.close` 存在則呼叫，否則 no-op。
+- 頂層同步註冊 `chrome.action.onClicked`（MV3 要求）：`handleActionClick(tab)` → `decideActionClick(...)` → `open`：`sidePanel.open({windowId})` 並以 `Promise.race` 等 `onOpened` 3 秒；逾時或 reject → `markCapabilityUnsupported('sidePanelUnavailable')` + `chrome.runtime.openOptionsPage()`（能力列說明「此瀏覽器無法開啟側欄」）；旗標存在時 `decideActionClick` 直接回 `'options'`。`close`：`sidePanel.close` 存在則呼叫，否則 no-op。**不做** detached popup 視窗：`sidepanel.js` 以「目前視窗」為基準（`getTabGroupsInCurrentWindow`、active tab、工作區 window 綁定），在 popup 內只會看到自己；若 P0 實測證明面板真的開不了，另立 spec。
 - `sidePanel.onOpened` / `onClosed`（Chromium ≥ 140，Dia 156 的二進位有此符號）→ `storage.session.sidePanelOpenByWindow[windowId]`。事件缺席時 `decideActionClick` 永遠回 `open`（open 對已開面板為 no-op，只是失去 toggle）。
 - `_execute_action` 在非 Chrome 由同一個 `onClicked` 進來（Chromium 行為），不另處理。
 - **Chrome 零變更**：`isGoogleChrome` 為 true 時 handler 直接 return，避免「關不掉」。
@@ -165,11 +165,11 @@ export function createWebAuthFlow({ identity, storage, now, randomState, fetchFn
 `modules/sync/driveAuth.js`（facade，對外介面不變：`getToken / isConnected / connect / disconnect / authedFetch`，新增 `getAuthMode / getAccountEmail`）：
 
 - `getAuthMode()`：讀 `storage.local.driveAuthMode`；缺席時：`isGoogleChrome` → `'chrome'`；否則 `'web'`。
-- `connect()`：依品牌決定並**持久化**模式 → 對應策略互動式連結 → 成功後 `fetchAccountEmail(token)`（`USERINFO_ENDPOINT`，需 `userinfo.email` scope）→ 存 `driveAccountEmail`（local）。Chrome 模式失敗 **不** 落入 web（FR-2.04）。
-- `getToken(interactive)`：`'chrome'` → 現行 `getAuthToken`；`'web'` → `getValidToken({allowSilent: !interactive})`。靜默續期每個 pull 週期最多一次（`driveWebAuth.silentTriedAt`），失敗回 null → 引擎既有邏輯寫 `needs-auth`。
+- `connect()`：依品牌決定並**持久化**模式 → 對應策略互動式連結。`'web'`：授權 URL scope = manifest `oauth2.scopes` + `userinfo.email`（**manifest 不改**：Chrome 的 `getAuthToken` 授權快取以 manifest scope 集合為鍵，改了會讓所有既有 Chrome 使用者升級當天非互動取 token 失敗、全數掉到 `needs-auth`）→ 成功後 `fetchAccountEmail(token)`（`USERINFO_ENDPOINT`）→ 存 `driveAccountEmail`（local）。`'chrome'`：現行流程，不取 email。Chrome 模式失敗 **不** 落入 web（FR-2.04）。
+- `getToken(interactive)`：`'chrome'` → 現行 `getAuthToken`；`'web'` → `getValidToken({allowSilent: !interactive})`：token 未過期 → 直接回；已過期 → 靜默續期（`interactive:false` + `prompt=none` + `login_hint`），每個 pull 週期最多嘗試一次（`driveWebAuth.silentTriedAt` 節流），失敗回 null → 引擎既有邏輯寫 `needs-auth`、badge 顯示重新連結。
 - `authedFetch`：不變（401 → `removeCachedToken` 在 web 模式等於清 accessToken → 重取一次）。
-- `disconnect()`：依模式；兩者皆清 `driveAccountEmail`。
-- `isConnected()`：`'web'` 模式只看本機 token 是否存在且未過期（**不**在 isConnected 觸發靜默續期，避免每次 alarm 開隱藏視窗）；過期時由 `getToken(false)` 在真正需要時續期。
+- `disconnect()`：依模式；清 `driveWebAuth` 與 `driveAccountEmail`。
+- `isConnected()`：`'web'` 模式 = **`driveWebAuth` 記錄存在**（不看是否過期）。理由：`runSyncOnce()` 在 `!isConnected()` 時於任何狀態寫入之前就 early-return（`background.js:294`），若以「未過期」定義，implicit token 一小時後就沒有任何路徑會嘗試續期、也不會出現 `needs-auth`，Dia 會**靜默停止同步**且 options 顯示「未連結」。改為「記錄存在」後，續期與失敗狀態都由 `getToken(false)` 在引擎內處理。
 
 `background.js`：`driveConnect` / `driveDisconnect` handler 不變（呼叫 facade）。`options.js renderSync`：已連結列顯示 `syncConnectedAs`（email）；失敗文案改 `syncConnectFailedNote`（通用）；能力列（§3.5）。
 
@@ -185,17 +185,22 @@ export const PREF_DEFS = { theme:{def:'geek'}, listDensity:{def:'cozy'}, customT
   autoArchiveEnabled:{def:false}, autoArchiveIdleHours:{def:12},
   routingEnabled:{def:true}, aiAutoRoutingEnabled:{def:false}, readingListSortOrder:{def:'date-newest'} };
 export const PREF_KEY_PREFIX = 'pref_';            // storage.local["pref_"+name] = { v, t }
-export async function ensurePrefsMigrated();       // 一次性：flag prefsMigratedFromSync；sync flat key → {v, t:0}
-export async function getPref(name);               // 缺 → def
+export async function ensurePrefsMigrated();       // 一次性：flag prefsMigratedFromSync；只對 sync 裡「實際存在」的 key 寫 {v, t:0}
+export async function getPref(name);               // 記錄缺席 → def（defaults 永遠不落地成記錄）
 export async function getPrefs(names);
 export async function setPref(name, value, { now } = {}); // t = nextTimestamp(prev.t, now)
-export async function exportPrefsState();          // {schema:1, entries:{name:{v,t}}}
+export async function exportPrefsState();          // {schema:1, entries:{name:{v,t}}}，只含既有記錄
 export async function importMergedPrefs(entries);  // 只寫有差異的 key（no-op guard）
 export function isPrefStorageKey(key);             // settingsBridge / background 用
 
 // modules/prefs/prefsSyncLogic.js（新，純）
 export const PREFS_SYNC_SCHEMA = 1;
-export function mergePrefsState(local, remote);    // per-key：t 大者勝；t 相等取 JSON 字典序大者（交換律）
+export function mergePrefsState(local, remote);    // per-key：t 大者勝；t 相等取 JSON 字典序大者（交換律）；一方「缺席」= 無主張，直接採另一方
+```
+
+**不變量（阻斷級）**：**預設值永遠不得被寫成 `t=0` 的記錄**。否則新裝置（例如 Dia）落地的預設值會與 Chrome 從 sync 做種的真實值同為 `t=0`，由 JSON 字典序決勝 —— `listDensity` 的預設 `'cozy'` 會打敗使用者設定的 `'compact'`、預設 `true` 會打敗 `false`。因此：遷移只寫 sync 裡實際存在的 key；`getPref` 在記錄缺席時回傳 default 而不落地；`exportPrefsState` 只匯出既有記錄；合併把「缺席」視為無主張。`prefsSyncLogic.test.mjs` 必含此案例（本機缺席 + 遠端 `t=0` 真實值 → 採遠端）。
+
+```js
 export function canonicalizePrefs(state); export function prefsStateEqual(a, b);
 ```
 
@@ -238,7 +243,8 @@ export function readingListStateEqual(a, b); export function canonicalizeReading
 `background.js`：
 
 - 頂層註冊 `chrome.readingList.onEntryAdded / onEntryRemoved / onEntryUpdated`（存在才註冊；事件會喚醒 SW，所以 sidepanel 端的新增 / 刪除也會被看見）。handler：若 `rlEngineEcho.get(url)` 與事件相符 → consume、只更新 `lastKnown`；否則 `readingListSyncMeta[url] = { updatedAt: nextTimestamp(prev, now), title, hasBeenRead }`，刪除 → `readingListTombstones[url] = now` 並刪 meta。寫入 local 觸發 onChanged → `ALARM_RL_FLUSH='readingListSyncFlush'` debounce。
-- `exportLocalReadingListState()`：`readingList.query({})` ∪ sidecar；sidecar 缺席的既有項目以 `updatedAt = 0` 做種（與 RSS seeding 同語意：任何真實編輯或遠端 tombstone 勝出）。
+- **側車寫入必須序列化**：`deleteAllRead` 會在同一瞬間觸發 N 個 `onEntryRemoved`，若每個 handler 各自 read-modify-write 整個 `readingListSyncMeta` / `readingListTombstones` 物件，會重演 `mutateWindowMap` 的 lost-update。SW 內所有側車變更經單一 promise chain `rlMetaChain = rlMetaChain.then(() => mutate(fn))` 串行化（與 `rssSyncChain` 同手法）；`readingListSyncIntegration.test.mjs` 必含「同時 20 筆刪除 → tombstones 齊全」案例。
+- `exportLocalReadingListState()`：`readingList.query({})` ∪ sidecar；sidecar 缺席的既有項目以 `updatedAt = 0` 做種（與 RSS seeding 同語意：任何真實編輯或遠端 tombstone 勝出）。同 `t` 的決勝規則：`hasBeenRead: true` 優先、再比 title JSON 字典序 —— 兩裝置皆以 `t=0` 做種、一邊已讀一邊未讀時收斂為已讀，可接受。
 - `readingListSyncOnce()` single-flight：read `reading-list-sync.json` → export → merge → `diffReadingList` → 逐筆 `addEntry / updateEntry({url, hasBeenRead, title})/ removeEntry`，每筆先 `rlEngineEcho.set(url, {...})` 再呼叫 → 更新 sidecar（t 採 merged 的 t，不 bump）→ no-op guard 後 `provider.write`。`runSyncOnce` 尾端 piggyback。
 - `readingListManager.deleteEntry` 仍呼叫 `markAsFetched`（RSS 去重）不變。
 
@@ -321,7 +327,7 @@ sequenceDiagram
 
 ### 4.4 Dia 點圖示（WP0）
 
-`action.onClicked(tab)` → `decideActionClick({isGoogleChrome:false, panelOpen:session[windowId], sidePanelUnavailable})` → `'open'` → `sidePanel.open({windowId})` + 等 `onOpened` 3 秒 → 成功：session 標記；逾時 / reject：`markCapabilityUnsupported('sidePanelUnavailable')` → `windows.create({type:'popup', url:'sidepanel.html'})`；下一次點擊因旗標直接 `'popup'`。
+`action.onClicked(tab)` → `decideActionClick({isGoogleChrome:false, panelOpen:session[windowId], sidePanelUnavailable})` → `'open'` → `sidePanel.open({windowId})` + 等 `onOpened` 3 秒 → 成功：session 標記；逾時 / reject：`markCapabilityUnsupported('sidePanelUnavailable')` → `runtime.openOptionsPage()`（能力列說明）；下一次點擊因旗標直接 `'options'`。
 
 ---
 
@@ -373,29 +379,21 @@ sequenceDiagram
 
 | 情境 | 行為 |
 |---|---|
-| 升級（Chrome，已連 Drive） | `ensurePrefsMigrated` 做種 `t=0` → 第一次 `prefsSyncOnce` 推上 Drive；閱讀清單 sidecar 做種 `t=0` → 推上；`driveAuthMode` 缺席 → `'chrome'`；scope 增加 → 下次互動連結要求重新同意（`getAuthToken` 標準行為，非互動取 token 照常直到使用者重新同意；若 Google 強制 → `needs-auth` badge） |
+| 升級（Chrome，已連 Drive） | `ensurePrefsMigrated` 只對 sync 裡存在的 key 做種 `t=0` → 第一次 `prefsSyncOnce` 推上 Drive；閱讀清單 sidecar 做種 `t=0` → 推上；`driveAuthMode` 缺席 → `'chrome'`；manifest scope 不變 → **不需重新同意** |
 | 升級（Chrome，未連 Drive） | 做種後本機照常；**失去原生跨裝置設定同步**（release note） |
 | 混版（一台舊版仍寫 sync flat key） | 新版忽略 sync prefs；舊版不會看到新版的變更；升級後收斂 |
-| 新裝置（Dia，Drive 已有資料） | 本機 defaults `t=0` → pull 後遠端全勝 → 一次到位 |
+| 新裝置（Dia，Drive 已有資料） | 本機**無記錄**（defaults 不落地）→ pull 後遠端全部採用 → 一次到位 |
 | 兩裝置離線各改不同 key | per-key LWW → 兩者皆保留 |
-| 同 key 同 t（做種後兩邊皆 0 但值不同） | JSON 字典序決定，確定性收斂；之後任一真實編輯勝出 |
+| 同 key 同 t（兩邊都從 sync 做種 `t=0` 但值不同） | JSON 字典序決定，確定性收斂；之後任一真實編輯勝出。預設值因不落地，不參與此決勝 |
 
 ---
 
 ## 6. Manifest Diff
 
-```diff
-   "oauth2": {
-     "client_id": "849720332841-ouhe2qbugvd0skkf5sbjlm3ftnn9loop.apps.googleusercontent.com",
--    "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
-+    "scopes": [
-+      "https://www.googleapis.com/auth/drive.appdata",
-+      "https://www.googleapis.com/auth/userinfo.email"
-+    ]
-   },
-```
+**無變更。**
 
-- 無新增 `permissions`（`identity`、`sidePanel`、`readingList`、`storage`、`alarms` 皆已宣告；`windows.create` 不需權限；`identity.email` 權限**不需要**，因 email 經 userinfo endpoint 取得而非 `getProfileUserInfo`）。
+- `oauth2.scopes` 維持 `["https://www.googleapis.com/auth/drive.appdata"]`：`userinfo.email` 只在 Web 路徑的授權 URL 中要求（`webAuthFlow.buildAuthUrl`），避免 Chrome `getAuthToken` 授權快取因 scope 集合改變而失效、既有使用者全數掉到 `needs-auth`。
+- 無新增 `permissions`（`identity`、`sidePanel`、`readingList`、`storage`、`alarms` 皆已宣告；`identity.email` 權限**不需要**，因 email 經 userinfo endpoint 取得而非 `getProfileUserInfo`）。
 - Web client id 不放 `oauth2`（`getAuthToken` 只認一個 `client_id`），放 `modules/sync/oauthConfig.js`。
 
 ---
@@ -405,8 +403,10 @@ sequenceDiagram
 | # | 風險 | 處理 |
 |---|---|---|
 | R-1 | **R-2.a** appdata 是否跨 client 共享 | 使用者在 WP2 完成後先驗證；不共享 → Chrome 改用 Web client（PRD bump） |
-| R-2 | Dia 多 Google 帳號 → `prompt=none` 失敗 | `login_hint=email`；仍失敗 → `needs-auth`，使用者重新連結 |
+| R-2 | Dia 多 Google 帳號 → `prompt=none` 失敗；或 implicit token 一小時到期 | `login_hint=email`；`isConnected` 以「記錄存在」定義，讓 `getToken(false)` 有機會續期；仍失敗 → `needs-auth`，使用者重新連結（每 pull 週期最多一次靜默嘗試） |
 | R-3 | SW 在 `launchWebAuthFlow` 互動期間被終止 | 互動流程有開啟視窗 → Chromium 延長 SW 壽命；仍失敗則 options 顯示失敗、可重試 |
+| R-12 | 預設值落地成 `t=0` 記錄 → 新裝置預設值打敗既有真實值 | §3.3 不變量：defaults 不落地、缺席 = 無主張；單元測試鎖定 |
+| R-13 | `readingListSyncMeta` 並發 read-modify-write（`deleteAllRead` 連發） | `rlMetaChain` 串行化；整合測試鎖定 |
 | R-4 | `rlEngineEcho` 在 SW 重啟後遺失 → 遠端套用被當本機編輯回推一次 | 回推內容與遠端相同 → merge 無差異 → no-op；只多一次寫入，不發散 |
 | R-5 | Chrome 原生 reading list 同步 + Drive 同步並存 | 兩者資料相同、LWW + tombstone 收斂；與 RSS 的「可接受殘留」同級 |
 | R-6 | `uiLanguage` pull 觸發 sidepanel reload | 只在值真的變更時（import 的 no-op guard 已保證） |
@@ -429,11 +429,12 @@ sequenceDiagram
 | `workspaceGroups.test.mjs` | 改 | `carryForwardGroups`、`buildSnapshotFromTabs(..., {carryFrom})` |
 | `webAuthFlow.test.mjs` | 新 | `buildAuthUrl`、`parseRedirect`（state 不符 / origin 不符 / 缺 token）、`connectInteractive`、靜默續期成功 / 失敗、disconnect |
 | `driveAuth.test.mjs` | 新 | 模式判定與持久化、Chrome 不落 web、`getToken` 分派、email 快取 |
-| `prefsStore.test.mjs` | 新 | 遷移（flag、`t=0`、customTheme 與 theme 同批）、`setPref` 單調 t、`exportPrefsState` 白名單（旗標 / token 不得出現） |
-| `prefsSyncLogic.test.mjs` | 新 | 交換律 / 冪等 / 同 t 決定性 / schema |
+| `prefsStore.test.mjs` | 新 | 遷移（flag、只做種 sync 裡存在的 key、customTheme 與 theme 同批）、`getPref` 缺席回 default 且不落地、`setPref` 單調 t、`exportPrefsState` 只含既有記錄且白名單（旗標 / token 不得出現） |
+| `prefsSyncLogic.test.mjs` | 新 | 交換律 / 冪等 / 同 t 決定性 / 缺席 = 無主張（本機缺席 + 遠端 `t=0` → 採遠端）/ schema |
+| `driveAuth.test.mjs` | 新 | web 模式 `isConnected` 在 token 過期時仍為 true；`getToken(false)` 續期節流；失敗回 null |
 | `prefsSyncIntegration.test.mjs` | 新 | fake provider 兩裝置收斂、no-op guard、echo 不發散 |
 | `readingListSyncLogic.test.mjs` | 新 | merge / diff / tombstone 排除與復活規則 / GC / 交換律 / 冪等 |
-| `readingListSyncIntegration.test.mjs` | 新 | mock `chrome.readingList` + fake provider：add / toggle read / delete 跨裝置、echo 守衛 |
+| `readingListSyncIntegration.test.mjs` | 新 | mock `chrome.readingList` + fake provider：add / toggle read / delete 跨裝置、echo 守衛、**同時 20 筆刪除 → tombstones 齊全**（側車串行化） |
 | `settingsBridge.test.mjs` | 改 | sync `theme` → **不再**產生 action；local `pref_theme` → `applyTheme`；local `tabGroupsUnsupported` → `capabilitiesChanged` |
 | `workspacePersistence.test.mjs` | 查 | mock 的 sync area 仍只需 `wsMeta_`，預期不變 |
 | `lifecycleEngine.test.mjs` | 改 | `autoArchive` 讀取改 mock `pref_*` |
@@ -462,8 +463,8 @@ sequenceDiagram
 ## 9. 實作順序（單一 PR，每 WP 一個 commit）
 
 1. **WP1**（最小可用）：`browserCapabilities` + `apiManager` guard + 四處直呼改 wrapper + 呼叫端 null 處理 + UI 隱藏 + 快照 carry-forward + 測試。
-2. **WP0**：`action.onClicked` 開關 + popup 退路 + 測試（依 P0 實測結果調整，見 §10）。
-3. **WP2**：`oauthConfig` + `webAuthFlow` + `driveAuth` facade + manifest scope + email + options 文案 + 測試。
+2. **WP0**：`action.onClicked` 開關 + 旗標 / options 說明 + 測試（依 P0 實測結果調整，見 §10）。
+3. **WP2**：`oauthConfig` + `webAuthFlow`（URL scope 含 email）+ `driveAuth` facade + email + options 文案 + 測試（manifest 不動）。
 4. **WP3**：`prefsStore` / `prefsSyncLogic` + 遷移 + 20 處讀寫點 + `settingsBridge` + background 接線 + lint 規則 + 測試（含 E2E 修正）。
 5. **WP4**：`readingListSyncLogic` + background 接線 + apiManager 守衛 + 測試。
 6. **WP5**：i18n ×14、web、PRIVACY_POLICY、GEMINI key_files、wiki、release note 草稿。
@@ -473,7 +474,7 @@ sequenceDiagram
 
 | # | 項目 | 影響 |
 |---|---|---|
-| P0 實測 | 使用者在 Dia 正式 profile 做 PRD §10 三步測試 | 面板原生可開 → WP0 只保留退路邏輯（不改預設行為）；不可開 → WP0 如 §3.0 全量 |
+| P0 實測 | 使用者在 Dia 正式 profile 做 PRD §10 三步測試 | 面板原生可開 → WP0 如 §3.0（開關 + 旗標 + 說明）；不可開 → 另立 detached 模式 spec |
 | GCP | Web application client id + redirect URI | `oauthConfig.WEB_CLIENT_ID` 填值；實作期間可先用 placeholder，connect 失敗訊息明確 |
 | R-2.a | appdata 跨 client 共享 | WP2 完成後第一個手動驗證項 |
 
@@ -484,3 +485,4 @@ sequenceDiagram
 | Version | Date | Author | Changes |
 |---|---|---|---|
 | v1.0 | 2026-10-28 | Claude | 依 PRD v1.0 與兩份 call-site / storage 盤點起草 |
+| v1.1 | 2026-10-28 | Claude | 審閱回饋：web 模式 `isConnected` 改「記錄存在」（避免一小時後靜默停同步）；manifest scope 不改、email 只在 Web URL；取消 detached popup；defaults 不落地不變量；閱讀清單側車串行化 |

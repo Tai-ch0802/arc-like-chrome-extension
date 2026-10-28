@@ -2,14 +2,14 @@
 
 | Attribute | Details |
 | :--- | :--- |
-| **Version** | v1.0 |
+| **Version** | v1.1 |
 | **Status** | Review（§9 七項決策已由需求方定案；僅 P0 需在正式 Dia profile 驗證） |
 | **Author** | Claude（依使用者 2026-10-28 需求起草） |
 | **Reviewers** | Tai |
 | **Created** | 2026-10-28 |
 | **Last Updated** | 2026-10-28 |
 | **Issue** | [#257](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/257) |
-| **SDD 層級** | **T2**：改 `chrome.storage` schema（設定搬遷、閱讀清單側車）、`manifest.json` 新增 `email` scope、新增 Drive 檔案與跨 context 同步協定、OAuth 流程變更、涉及資料遺失風險（同步引擎） |
+| **SDD 層級** | **T2**：改 `chrome.storage` schema（設定搬遷、閱讀清單側車）、新增 Drive 檔案與跨 context 同步協定、OAuth 流程變更、涉及資料遺失風險（同步引擎）。`manifest.json` **不變**（見 FR-2.07） |
 | **交付方式** | 單一 PR（需求方決定） |
 | **前置研究** | 同目錄 `SPIKE.md`（Dia 1.54.2 實測 API 矩陣）、`dia-api-probe.js` |
 
@@ -36,7 +36,7 @@
 1. **Dia 可正常使用**：入口可開啟；所有既有功能在 Dia 不丟未處理例外；Dia 做不到的能力（分頁群組）優雅降級、UI 不呈現做不到的操作。
 2. **Dia ↔ Chrome 以使用者自己的 Google Drive 為中介互相同步**：設定、閱讀清單加入既有同步範圍；兩邊連同一個 Google 帳號即可雙向收斂。
 3. **Chrome 使用者零驚訝**：已連 Drive 的 Chrome 使用者不需重新連結；設定搬遷無損；唯一的行為差異（未連 Drive 者失去 Chrome 原生跨裝置設定同步，見 §3.3）在 release note 明示。
-4. **隱私面擴大必揭露**：新增上傳至 Drive 的資料（設定值、閱讀清單 URL / 標題）與新增的 `email` scope 比照 BASE-014 §5 完整揭露。
+4. **隱私面擴大必揭露**：新增上傳至 Drive 的資料（設定值、閱讀清單 URL / 標題）與 Web 登入路徑讀取帳號 email，比照 BASE-014 §5 完整揭露。
 
 ### 1.3 Success Metrics（可檢驗）
 
@@ -69,9 +69,9 @@
 ### 3.0 WP0 — 側欄入口健壯化（修 P0）
 
 - **FR-0.01**（Ubiquitous）：service worker **必須**註冊 `chrome.action.onClicked`；**While** 瀏覽器品牌不含 `Google Chrome`，**then** 以 `sidePanel.setPanelBehavior({openPanelOnActionClick: false})` 關閉自動行為，改由 `onClicked` 自行以 `sidePanel.open({windowId})` / `sidePanel.close()` 切換（開關狀態以 `sidePanel.onOpened / onClosed` 追蹤於 `storage.session`）。Chrome 維持現行 `openPanelOnActionClick: true`，**不得**在 Chrome 註冊會造成「關不掉」的重複開啟邏輯。
-- **FR-0.02**（Event）：**When** `sidePanel.open()` 失敗或 3 秒內未收到 `onOpened`，**then** 系統**必須**記錄 `sidePanelUnavailable` 旗標（`storage.local`，含品牌與版本，規則同 FR-1.01b）並以 `windows.create({type:'popup', url:'sidepanel.html'})` 開啟**獨立視窗模式**作為退路；options「備份與同步」能力列顯示此狀態。
+- **FR-0.02**（Event）：**When** `sidePanel.open()` 失敗或 3 秒內未收到 `onOpened`，**then** 系統**必須**記錄 `sidePanelUnavailable` 旗標（`storage.local`，含品牌與版本，規則同 FR-1.01b）並開啟 options 頁，其「備份與同步」能力列說明「此瀏覽器無法開啟側欄」；之後的點擊直接開 options。**不做**獨立視窗（detached popup）模式：側欄程式碼以「目前視窗」為基準（`getTabGroupsInCurrentWindow`、active tab、工作區綁定），在 popup 視窗內會只看到自己，支援它要改動大量呼叫點，而探測已顯示 `sidePanel.open()` 在 Dia 能成功建立面板；若 P0 實測證明面板真的開不了，再另立 spec。
 - **FR-0.03**（Ubiquitous）：`_execute_action`（⌘I）在非 Chrome 瀏覽器**必須**與圖示點擊走同一條開關邏輯。
-- **驗證依賴**：P0 的真因需使用者在正式 profile 做 §10 的三步測試；若測試顯示 Dia 原生即可開啟面板，FR-0.02 的退路**仍保留**（成本低、對其他 Chromium 分支亦有用），但不再是 P0 的主修。
+- **驗證依賴**：P0 的真因需使用者在正式 profile 做 §10 的三步測試；結果決定 WP0 是「只保留旗標 + 說明」還是需要另立 detached 模式 spec。
 
 ### 3.1 WP1 — 分頁群組能力偵測與降級（修 P1）
 
@@ -92,7 +92,7 @@
 - **FR-2.04**（Ubiquitous）：Chrome 使用者**必須**維持現行 `getAuthToken` 路徑（零回歸）。auth 模式在連結當下依品牌決定並持久化為 `driveAuthMode: 'chrome' | 'web'`（`storage.local`）；`isConnected / authedFetch / disconnect` 依此分支，**Chrome 不會落入 web 模式**。implicit grant 為硬性限制：零後端，**不得**為了 refresh token 把 client_secret 打包進擴充功能。
 - **FR-2.05**（Event）：**When** 使用者按「中斷連結」，**then** 撤銷並清除本機 token 與 email。
 - **FR-2.06**（Ubiquitous）：`syncConnectFailedNote`（「需要可登入的 Google Chrome」）**必須**改為通用說明；14 語同步。
-- **FR-2.07**（Ubiquitous，**決議：加 `email` scope**）：`manifest.json` `oauth2.scopes` **必須**新增 `https://www.googleapis.com/auth/userinfo.email`（目前只有 `drive.appdata`，**沒有** email）；兩種 auth 模式都以該 scope 取得帳號 email，用於 (1) `login_hint` 靜默續期、(2) options 顯示「已連結：\<email\>」。email 僅存本機，**不**上傳 Drive。Chrome 既有使用者因 scope 增加會在下次互動時被 Chrome 要求重新同意一次（`getAuthToken` 對 scope 變更的標準行為），release note 需說明。
+- **FR-2.07**（Ubiquitous，**決議：加 `email` scope，但只在 Web 登入路徑**）：Web 流程的授權 URL **必須**要求 `drive.appdata` + `https://www.googleapis.com/auth/userinfo.email`（目前 manifest 只有 `drive.appdata`，**沒有** email），成功後以 userinfo endpoint 取得帳號 email，用於 (1) `login_hint` 靜默續期、(2) options 顯示「已連結：\<email\>」。email 僅存本機，**不**上傳 Drive。**`manifest.json` 的 `oauth2.scopes` 不變**：Chrome 的 `getAuthToken` 授權快取以 manifest scope 集合為鍵，一改 scope 所有既有 Chrome 使用者升級當天的非互動取 token 都會失敗、全數掉到 `needs-auth`，違反 US-05；Chrome 模式不需要 `login_hint`（瀏覽器帳號層自行續期），因此不顯示 email，維持現行「已連結 Google 雲端硬碟」文案。
 - **已驗證（SPIKE §2.1）**：Dia 能捕捉 `chromiumapp.org` redirect、互動式 `launchWebAuthFlow` 會開出 Google 登入彈窗、`prompt=none` 需互動時立即失敗。
 - **限制 C-2.a**：需在 Google Cloud 同專案新增 **Web application** OAuth client，授權 redirect URI = `https://beoonblekmppafnjppedgpgfngghebji.chromiumapp.org/`（商店版 id）。**使用者在 GCP Console 的手動步驟**；既有 Chrome Extension 類型 client 對未封裝 id 回 `redirect_uri_mismatch`。開發版 id 不同，無法測 OAuth。
 - **風險 R-2.a（實作前必驗證）**：Drive `appDataFolder` 是否在同專案兩個 client id 間共享（官方文件只說「per app」）。若不共享，Chrome 也改用同一個 Web client（既有使用者重新連結一次，PRD bump）。
@@ -122,7 +122,7 @@
 - **FR-5.01**：options「備份與同步」**必須**列出同步範圍（工作區 / RSS / Newswire / 路由規則 / 設定 / 閱讀清單）、已連結帳號 email、當前瀏覽器能力（品牌、版本、分頁群組、側欄）。
 - **FR-5.02**：隱私揭露 modal（`syncConnectDisclosureMessage`）**必須**涵蓋設定值、閱讀清單 URL / 標題、以及讀取帳號 email；`_locales` ×14、`web/locales` ×14、`web/privacy.html`、`web/guide.html`、`PRIVACY_POLICY.md` 同步（觸發 `update-multilingual-docs`）。
 - **FR-5.03**：首次在非 Chrome 瀏覽器啟動時，side panel **可以**顯示一次性 toast 引導至「備份與同步」（共用 BASE-014 的 onboarding 旗標機制）。
-- **FR-5.04**：`GEMINI.md` `key_files` 新增模組職責；`Makefile` 打包清單同步新增檔案；`docs/wiki/Architecture.md` 補 Dia 相容說明；release note 列出 §3.3 的行為差異與 §3.2 的重新同意。
+- **FR-5.04**：`GEMINI.md` `key_files` 新增模組職責；`Makefile` 打包清單同步新增檔案；`docs/wiki/Architecture.md` 補 Dia 相容說明；release note 列出 §3.3 的行為差異。
 
 ---
 
@@ -144,9 +144,9 @@ Then 系統呼叫 sidePanel.close()
 Given 品牌不含 "Google Chrome"
 And sidePanel.open 會拒絕或 3 秒內無 onOpened
 When 使用者點擊擴充功能圖示
-Then 開啟一個 type: 'popup' 的獨立視窗載入 sidepanel.html
-And storage.local.sidePanelUnavailable 被設定
-And options 能力列顯示「側欄：獨立視窗模式」
+Then storage.local.sidePanelUnavailable 被設定
+And options 頁被開啟，能力列顯示「此瀏覽器無法開啟側欄」
+And 再次點擊圖示直接開啟 options（不重試 sidePanel.open）
 ```
 
 ### AC-1.01（FR-1.01 / 1.03）
@@ -193,7 +193,7 @@ And 推上 Drive 的 payload 保留群組欄位
 Given 品牌不含 "Google Chrome"
 And 使用者已確認隱私揭露 modal
 When 使用者點擊「連結 Google 雲端硬碟」
-Then 系統呼叫 chrome.identity.launchWebAuthFlow（interactive: true）且 scope 含 drive.appdata 與 userinfo.email
+Then 系統呼叫 chrome.identity.launchWebAuthFlow（interactive: true）且授權 URL 的 scope 含 drive.appdata 與 userinfo.email（manifest 不變）
 And 成功後 storage.local 含 {accessToken, expiresAt, email} 與 driveAuthMode === 'web'
 And 任何 Drive 檔案與 storage.sync 皆不含 token 或 email
 And options 顯示「已連結：<email>」並立即執行一次 runSyncOnce
@@ -213,7 +213,7 @@ And 沒有任何互動式視窗被開啟
 Given 品牌含 "Google Chrome" 且先前已以 getAuthToken 連結
 When 升級到本版本
 Then driveAuthMode 判定為 'chrome'
-And 同步照常運作；scope 增加時僅在下一次互動連結要求重新同意一次
+And 同步照常運作，不需重新同意（manifest scope 未變）
 ```
 
 ### AC-3.01（FR-3.03 純函式）
@@ -292,11 +292,11 @@ graph TD
 
 ### 5.2 Dia 上的側欄差異
 
-- 入口：圖示 / ⌘I 由 WP0 的手動開關邏輯處理；面板開不了時落到獨立視窗模式。
+- 入口：圖示 / ⌘I 由 WP0 的手動開關邏輯處理；面板開不了時記錄旗標並開啟 options 說明。
 - 「Smart Group」、AI 分群區塊、Cleanup 的分群動作：**隱藏**（非 disabled）。
 - 閱讀清單項目點擊：行為與 Chrome 相同，唯獨不建立「From Reading List」群組。
 - 工作區還原：所有分頁開在新視窗、不分群；群組資訊由 carry-forward 保留給 Chrome。
-- options「備份與同步」能力列：`此瀏覽器：Dia（Chromium 156）· 分頁群組 API 不可用 · 側欄：原生 / 獨立視窗`。
+- options「備份與同步」能力列：`此瀏覽器：Dia（Chromium 156）· 分頁群組 API 不可用 · 側欄：可用 / 無法開啟`。
 
 ### 5.3 同步狀態
 
@@ -322,6 +322,7 @@ graph TD
 - AI provider 設定與 API key 同步。
 - 閱讀清單 AI 摘要同步（決議 v1 不做）。
 - 設定的 per-device override（決議 v1 不做，另立 spec）。
+- 側欄的獨立視窗（detached popup）模式（側欄程式碼以目前視窗為基準，改動面大；僅在 P0 實測證明面板開不了時另立 spec）。
 - 操作 Dia Profiles、整合 Dia 自有 Tab Groups / Skills / Memory。
 - Chrome 與 Dia 之間的書籤本體同步。
 - 內建 AI（Gemini Nano）在 Dia 的特別處理：維持 `availability()` 判斷 + 雲端 provider 退路。
@@ -334,7 +335,7 @@ graph TD
 |---|---|---|
 | Q-0 | Dia 實際症狀 | 商店版安裝後「點開沒有任何反應」（→ 新增 P0 / WP0）；「連結 Google 雲端硬碟」被 Google `400 invalid_request: Custom URI scheme is not supported on Chrome apps` 擋下（→ 確認 P2） |
 | Q-1 | 設定同步架構 | **(a)** local + Drive，`storage.sync` 僅一次性種子；接受未連 Drive 的 Chrome 使用者失去原生跨裝置設定同步 |
-| Q-2 | `email` scope | **加**（需求方原以為現行 scope 已含 email；實際 manifest 只有 `drive.appdata`，故屬 manifest 變更 + 隱私揭露） |
+| Q-2 | `email` scope | **加**，但只在 Web 登入路徑的授權 URL 要求（需求方原以為現行 scope 已含 email；實際 manifest 只有 `drive.appdata`）。**不改 manifest**：改了會讓所有既有 Chrome 使用者升級當天掉到 `needs-auth`（FR-2.07）；隱私揭露照加 |
 | Q-3 | 閱讀清單上傳 / 摘要 | 連結後**自動**；AI 摘要**不**同步 |
 | Q-4 | 交付方式 | **單一 PR** |
 | Q-5 | 命名 | 開 Issue [#257](https://github.com/Tai-ch0802/arc-like-chrome-extension/issues/257)，目錄改為 `ISSUE-257_dia-compat` |
@@ -350,7 +351,7 @@ graph TD
 | E2E | 既有 `happy_path_*` 不得變紅；新增：注入失敗的 `tabs.group` 下閱讀清單仍標記已讀 |
 | 自動化探測 | `dia-api-probe.js` 於隔離 Dia profile 重跑，確認版本升級後 API 行為未變 |
 | **使用者需親自驗證** | **(0) P0 三步測試（實作前）**：在 Dia 正式 profile 啟用擴充功能 → 點圖示、按 ⌘I 各一次，記錄側欄是否出現 → 開 `chrome://extensions` → 本擴充功能「檢查檢視 service worker」看 console 有無錯誤。(1) 在 GCP 建立 Web client 並設 redirect URI。(2) 在 Dia 以真實 Google 帳號完成 Web 登入。(3) 驗證 R-2.a：Chrome 與 Dia 看到同一份 appdata。(4) ⌘I 是否被 Dia 攔截 |
-| 文件 | SPEC 路徑寫入 PR description；`GEMINI.md` key_files；wiki；release note 雙語（含 §3.3 行為差異與 scope 重新同意） |
+| 文件 | SPEC 路徑寫入 PR description；`GEMINI.md` key_files；wiki；release note 雙語（含 §3.3 行為差異） |
 
 ---
 
@@ -360,3 +361,4 @@ graph TD
 |---|---|---|---|
 | v0.1 | 2026-10-28 | Claude | 依 SPIKE 實測起草；經 advisor 與 builder-check 兩輪審閱後補 FR-1.01a/b、FR-1.03a、FR-2.04 持久化 auth 模式、Q-6 / Q-7 |
 | v1.0 | 2026-10-28 | Claude | 需求方定案 Q-0～Q-7（§9）；新增 P0 / WP0 入口健壯化；Q-1 定為 (a)、Q-2 加 `email` scope（FR-2.07）、Q-3 自動 + 摘要不同步、Q-6 carry-forward、Q-7 接受；目錄改 ISSUE-257；§10 新增 P0 三步測試 |
+| v1.1 | 2026-10-28 | Claude | SA 審閱回饋：FR-2.07 改為只在 Web 路徑要求 email scope、manifest 不變（避免既有 Chrome 使用者全數重新同意）；FR-0.02 取消 detached popup 退路，改旗標 + options 說明；FR-3.03 改 per-key 記錄 |
