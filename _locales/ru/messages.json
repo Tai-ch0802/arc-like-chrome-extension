@@ -1234,7 +1234,7 @@
     "message": "Резервное копирование и синхронизация"
   },
   "syncAccountDesc": {
-    "message": "Создавайте резервные копии и синхронизируйте свои Workspaces и подписки RSS между устройствами через собственный Google Диск."
+    "message": "Создавайте резервные копии и синхронизируйте свои Workspaces, подписки RSS, настройки и список для чтения между устройствами и браузерами (Chrome, Dia и другими браузерами на Chromium) через собственный Google Диск."
   },
   "syncConflictLabel": {
     "message": "Конфликты синхронизации"
@@ -1252,13 +1252,13 @@
     "message": "Подключить Google Диск"
   },
   "syncConnectDisclosureMessage": {
-    "message": "При этом на ваш собственный Google Диск (приватную папку приложения) загружаются: URL-адреса вкладок, заголовки и сведения о группах для выбранных вами Workspaces; а также ваш список подписок RSS и односторонний отпечаток уже загруженных ссылок на статьи. Синхронизация Workspaces включается для каждого Workspace отдельно и по умолчанию ВЫКЛЮЧЕНА; данные RSS синхронизируются автоматически, пока есть подключение. Отключение останавливает все загрузки."
+    "message": "При этом на ваш собственный Google Диск (приватную папку приложения) загружаются: URL-адреса вкладок, заголовки и сведения о группах для Workspaces, которые вы включили; ваш список подписок RSS и односторонний отпечаток уже загруженных ссылок на статьи; ваши настройки (тема, язык, переключатели разделов); и ваш список для чтения (URL страниц, заголовки, статус прочтения). В браузерах, отличных от Google Chrome, при входе расширение также может прочитать адрес электронной почты вашего аккаунта, чтобы вы оставались в системе. Синхронизация Workspaces включается отдельно для каждого Workspace и по умолчанию ВЫКЛЮЧЕНА; остальное синхронизируется автоматически, пока вы подключены. Отключение останавливает все загрузки."
   },
   "syncConnectDisclosureTitle": {
     "message": "Подключить Google Диск"
   },
   "syncConnectFailedNote": {
-    "message": "Не удалось подключиться. Для синхронизации с Google Диском требуется Google Chrome с доступным входом в аккаунт."
+    "message": "Не удалось подключиться к Google. Убедитесь, что окно входа не было заблокировано, и повторите попытку."
   },
   "syncConnected": {
     "message": "Подключено к Google Диску"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "Этот браузер не поддерживает API групп вкладок, поэтому функции группировки здесь недоступны.",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "Этот браузер не поддерживает группы вкладок.",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "Повторите попытку.",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "Этот браузер",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "API групп вкладок недоступен",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "не удалось открыть боковую панель",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "Подключено как $EMAIL$",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "Что синхронизируется",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "Рабочие пространства (Workspaces), которые вы включили, подписки RSS, источники новостей, правила маршрутизации, настройки (тема, язык, переключатели разделов) и ваш список для чтения.",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

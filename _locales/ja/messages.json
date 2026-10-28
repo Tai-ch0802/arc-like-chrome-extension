@@ -1213,7 +1213,7 @@
     "message": "バックアップと同期"
   },
   "syncAccountDesc": {
-    "message": "ご自身の Google ドライブを使って、Workspaces と RSS 購読をデバイス間でバックアップ・同期します。"
+    "message": "ご自身の Google ドライブを使って、Workspaces、RSS 購読、設定、リーディングリストをデバイスやブラウザ（Chrome、Dia、その他の Chromium ブラウザ）間でバックアップ・同期します。"
   },
   "syncConflictLabel": {
     "message": "同期の競合"
@@ -1231,13 +1231,13 @@
     "message": "Google ドライブに接続"
   },
   "syncConnectDisclosureMessage": {
-    "message": "これは、ご自身の Google ドライブ（アプリ専用フォルダ）に次の情報をアップロードします。オプトインした Workspaces のタブ URL、タイトル、グループ情報。加えて、RSS 購読リストと、取得済みの記事リンクの一方向フィンガープリント。Workspaces の同期は Workspaces ごとのオプトインで、既定ではオフです。RSS データは接続中に自動的に同期されます。接続を解除するとすべてのアップロードが停止します。"
+    "message": "これは、ご自身の Google ドライブ（アプリ専用フォルダ）に次の情報をアップロードします。オプトインした Workspaces のタブ URL、タイトル、グループ情報。RSS 購読リストと、取得済みの記事リンクの一方向フィンガープリント。設定（テーマ、言語、セクションの切り替え）。リーディングリスト（ページの URL、タイトル、既読状態）。Google Chrome 以外のブラウザでは、サインインにより、ログイン状態を維持するために拡張機能がアカウントのメールアドレスを読み取ることもあります。Workspaces の同期は Workspaces ごとのオプトインで、既定ではオフです。それ以外は接続中に自動的に同期されます。接続を解除するとすべてのアップロードが停止します。"
   },
   "syncConnectDisclosureTitle": {
     "message": "Google ドライブに接続"
   },
   "syncConnectFailedNote": {
-    "message": "接続できませんでした。Google ドライブの同期にはサインイン可能な Google Chrome が必要です。"
+    "message": "Google に接続できませんでした。サインインウィンドウがブロックされていないことを確認して、もう一度お試しください。"
   },
   "syncConnected": {
     "message": "Google ドライブに接続済み"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "このブラウザはタブグループ API に対応していないため、グループ化機能はここでは利用できません。",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "このブラウザはタブグループに対応していません。",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "もう一度お試しください。",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "このブラウザ",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "タブグループ API が利用できません",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "サイドパネルを開けませんでした",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "$EMAIL$ として接続中",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "同期される内容",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "オプトインした Workspaces、RSS 購読、ニュースソース、ルーティングルール、設定（テーマ、言語、セクションの切り替え）、リーディングリスト。",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

@@ -1213,7 +1213,7 @@
     "message": "백업 및 동기화"
   },
   "syncAccountDesc": {
-    "message": "본인의 Google 드라이브를 통해 Workspaces와 RSS 구독을 여러 기기에서 백업하고 동기화합니다."
+    "message": "본인의 Google 드라이브를 통해 Workspaces, RSS 구독, 환경설정, 읽기 목록을 여러 기기와 브라우저(Chrome, Dia 및 기타 Chromium 브라우저)에서 백업하고 동기화합니다."
   },
   "syncConflictLabel": {
     "message": "동기화 충돌"
@@ -1231,13 +1231,13 @@
     "message": "Google 드라이브 연결"
   },
   "syncConnectDisclosureMessage": {
-    "message": "본인의 Google 드라이브(앱 전용 폴더)에 다음을 업로드합니다: 옵트인한 Workspaces의 탭 URL, 제목, 그룹 정보, 그리고 RSS 구독 목록과 이미 가져온 기사 링크의 단방향 지문. Workspace 동기화는 Workspaces별 옵트인이며 기본값은 꺼짐이고, RSS 데이터는 연결되어 있는 동안 자동으로 동기화됩니다. 연결을 해제하면 모든 업로드가 중지됩니다."
+    "message": "본인의 Google 드라이브(앱 전용 폴더)에 다음을 업로드합니다: 옵트인한 Workspaces의 탭 URL, 제목, 그룹 정보; RSS 구독 목록과 이미 가져온 기사 링크의 단방향 지문; 환경설정(테마, 언어, 섹션 토글); 읽기 목록(페이지 URL, 제목, 읽음 상태). Google Chrome 이외의 브라우저에서는 로그인 상태를 유지하기 위해 로그인 시 확장 프로그램이 계정 이메일을 읽을 수도 있습니다. Workspace 동기화는 Workspace별 옵트인이며 기본적으로 꺼져 있고, 나머지는 연결된 동안 자동으로 동기화됩니다. 연결을 해제하면 모든 업로드가 중단됩니다."
   },
   "syncConnectDisclosureTitle": {
     "message": "Google 드라이브 연결"
   },
   "syncConnectFailedNote": {
-    "message": "연결할 수 없습니다. Google 드라이브 동기화에는 로그인 가능한 Google Chrome이 필요합니다."
+    "message": "Google에 연결할 수 없습니다. 로그인 창이 차단되지 않았는지 확인한 후 다시 시도하세요."
   },
   "syncConnected": {
     "message": "Google 드라이브에 연결됨"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "이 브라우저는 탭 그룹 API를 지원하지 않아 그룹화 기능을 사용할 수 없습니다.",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "이 브라우저는 탭 그룹을 지원하지 않습니다.",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "다시 시도해 주세요.",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "이 브라우저",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "탭 그룹 API 사용 불가",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "사이드 패널을 열 수 없었습니다",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "$EMAIL$(으)로 연결됨",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "동기화되는 항목",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "옵트인한 Workspaces, RSS 구독, 뉴스 소스, 라우팅 규칙, 환경설정(테마, 언어, 섹션 토글), 읽기 목록.",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }
