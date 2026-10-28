@@ -97,7 +97,7 @@ key_files:
   - file_path: modules/modalManager.js
     description: "[互動] 提供客製化的 `showPrompt` 和 `showConfirm` 函式，用以取代原生對話框，提升使用者體驗。BASE-022 P2 新增 showGroupPickerDialog：既有群組單選 + 新群組名稱/色票二擇一（互斥自動清除），供路由規則建立流程使用。BASE-024 P3 新增 showSnoozeDialog：四固定時段按鈕（label＋Intl 解算時刻），供稍後再看流程。"
   - file_path: modules/apiManager.js
-    description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。"
+    description: "[通訊] Chrome API 的封裝層。統一管理所有對 `chrome.*` API 的呼叫（包含書籤搜尋），方便維護與測試。ISSUE-257 起：分頁群組 wrapper 為 best-effort（失敗回 null、Dia 的 No window 或非 Chrome 連續失敗記 tabGroupsUnsupported 旗標、旗標存在時 addTabToNewGroup 短路）、能力旗標 API（isTabGroupingAvailable / isSidePanelUnavailable / resetCapabilityFlagsIfBrowserChanged，跨 context 以 storage.onChanged 失效快取）、readingList wrapper 在 API 缺席時退化為空。"
   - file_path: modules/stateManager.js
     description: "[狀態] UI 狀態管理員。集中管理如『書籤資料夾是否展開』等非同步 UI 狀態，以及『書籤-分頁』的持久化關聯狀態。"
   - file_path: modules/dragDropManager.js
@@ -181,7 +181,29 @@ key_files:
   - file_path: modules/sync/syncProvider.js
     description: "[同步] SyncProvider 介面定義（版本化 KV：isConnected/list/read/write/remove，read/write 帶 server version 樂觀鎖）。Phase 13(批E) 新增；提供 NoopSyncProvider（同步關閉時的 inert 預設，全部安全 no-op，保留 local-only 行為）與 createFakeSyncProvider（純 Map 記憶體模擬 + __failNext 故障注入，供單元/整合測試在 Node 跑、無 chrome/fetch/OAuth 依賴）。"
   - file_path: modules/sync/driveAuth.js
-    description: "[同步] Google Drive OAuth 封裝。Phase 13(批E) 新增；用 chrome.identity.getAuthToken 管理 token 生命週期（MV3 不持久化 refresh token），提供 getToken/isConnected/connect(互動式，需 user gesture)/disconnect(flush + best-effort server revoke) 與 authedFetch(注入 Bearer、401 時 flush stale token 重取一次)。無真實 oauth2 client_id 時 getAuthToken reject → isConnected()=false → 整個同步層維持 inert。"
+    description: "[同步] Google Drive auth facade（ISSUE-257 WP2 改制）。連結當下依 userAgentData 品牌決定並持久化 driveAuthMode：chrome（Google Chrome 的 chrome.identity.getAuthToken，瀏覽器帳號層快取 token）| web（其他 Chromium 品牌如 Dia，走 webAuthFlow 的 launchWebAuthFlow implicit grant）。Chrome 絕不落入 web 模式；web 模式 isConnected = 本機有授權記錄（即使過期），續期由 getToken(false) 節流靜默處理、失敗交給引擎寫 needs-auth；401 依模式 flush 後重試一次。createDriveAuth 可注入（單元測試），對外函式名不變（getToken/isConnected/connect/disconnect/authedFetch + getAuthMode/getAccountEmail）。"
+  - file_path: modules/sync/webAuthFlow.js
+    description: "[同步][純函式+DI] launchWebAuthFlow implicit grant（ISSUE-257 WP2）。buildAuthUrl / parseRedirect（只認 fragment、驗證 state 與 redirect origin、expires_in 邊界與上限）純函式；createWebAuthFlow 注入 identity/storage/now/fetch：connectInteractive（prompt=consent，取 userinfo email）、getValidToken（過期才靜默續期，prompt=none + login_hint，single-flight、每 5 分鐘最多一次、寫回前重讀防 disconnect 競態）、clearAccessToken（401 後）、disconnect（POST body revoke）。token 絕不進 log / error。"
+  - file_path: modules/sync/oauthConfig.js
+    description: "[同步] Web application OAuth client id（與 manifest oauth2.client_id 同專案；redirect URI 註冊商店版 id 的 chromiumapp.org）與 userinfo.email scope。email scope 只在 Web 授權 URL 要求、不進 manifest，避免既有 Chrome 使用者授權快取失效。"
+  - file_path: modules/utils/browserCapabilities.js
+    description: "[工具][純函式] 瀏覽器品牌偵測與每裝置能力旗標（ISSUE-257）。parseBrowserInfo 以 navigator.userAgentData.brands 判斷是否為 Google Chrome（UA 字串與 Chrome 相同不可用；brands 缺席保守視為 Chrome）；classifyTabGroupFailure 只認 Dia 的 \"No window\" 或非 Chrome 連續 ≥2 次非暫時性失敗（isTransientTabGroupError 排除 No tab with id / cannot be edited）；decideActionClick（noop/open/close/options）；createCapabilityStore 以注入 KV 存 tabGroupsUnsupported / sidePanelUnavailable（含 brand / majorVersion / reason），品牌或主版本變更時自動重置。"
+  - file_path: modules/sidePanelEntry.js
+    description: "[SW][DI] 非 Chrome 品牌的側欄入口（ISSUE-257 WP0）。建構時同步註冊 sidePanel.onOpened/onClosed；init 關閉 openPanelOnActionClick；action.onClicked 以記憶體鏡像同步決策並在 user gesture 內呼叫 sidePanel.open，等 onOpened 3 秒確認；open 被拒（非 gesture 類）或未確認 → 記 sidePanelUnavailable（含 reason）並開 options 說明；同視窗 pending 中的再次點擊忽略；close 失敗重設狀態。Chrome 完全 no-op。"
+  - file_path: modules/prefs/prefsStore.js
+    description: "[設定] 偏好設定 per-key 本機 store（ISSUE-257 WP3）：19 個偏好各一筆 storage.local pref_<name> = { v, t }（值與 Lamport 時戳同筆，避免多 context 整包覆寫）。defaults 永不落地（缺席 = 無主張）；一次性自 storage.sync 做種（只對實際存在的 key、t=0、寫前重讀不覆蓋本機、不刪 legacy key、sync 讀取失敗不阻斷）；setPref 同值不寫；exportState 只含既有記錄；importMerged 只寫差異並沿用遠端 t。getPrefsLike / setPrefsFromObject 為舊 getStorage('sync', …) 呼叫點的 drop-in。"
+  - file_path: modules/prefs/prefsSyncLogic.js
+    description: "[設定][純函式] 偏好設定 Drive 合併核心：per-key LWW（t 大者勝、同 t 以穩定字串字典序決勝、缺席 = 無主張），未知 key 原樣通過（向前相容）、filterToAllowlist 只在套用本機時過濾；交換律 + 冪等；isPrefsSchemaTooNew。"
+  - file_path: modules/prefs/prefsSync.js
+    description: "[設定] runPrefsSync 一個同步週期（讀 settings-sync.json → 合併 → 只寫差異，≤2 週期收斂；遠端 schema 較新只讀不寫）。background.js 的 prefsSyncOnce 以 single-flight 包裝；fake provider 端到端測試。"
+  - file_path: modules/utils/lamportClock.js
+    description: "[工具][純函式] nextTimestamp(known, now) Lamport-lite 單調時戳，RSS / prefs / reading list 同步共用（自 rssSyncLogic 抽出，該處 re-export）。"
+  - file_path: modules/readingList/readingListSyncLogic.js
+    description: "[閱讀清單][純函式] 閱讀清單 Drive 合併核心（ISSUE-257 WP4）：url 鍵 LWW（updatedAt 大者勝、同 t hasBeenRead:true 優先）、tombstone（先 GC 再排除以保冪等、deletedAt ≥ updatedAt 排除、較晚編輯復活）、diffReadingList 的 remove 只收 tombstone 命中的 url、tombstoneTimestamp = max(now, prev+1)；now 非有限數字即丟錯。"
+  - file_path: modules/readingList/readingListSyncStore.js
+    description: "[閱讀清單][SW][DI] 閱讀清單同步側車：app 控制的 Lamport updatedAt（readingListSyncMeta）與 tombstones（readingListTombstones），SW 頂層同步註冊 onEntryAdded/Updated/Removed；echo 守衛（含 5 秒 TTL）讓引擎自身的寫入不被當成使用者編輯；側車寫入經單一 promise chain 串行化；applyMerged 末端重讀側車，只採用未失敗且不比本機新的 stamp（同步期間的使用者編輯 / 刪除不被覆寫）；未見過的既有項目以 updatedAt 0 做種。"
+  - file_path: modules/readingList/readingListSync.js
+    description: "[閱讀清單] runReadingListSync 一個同步週期（讀 reading-list-sync.json → 合併 → diff 套用 chrome.readingList → 只寫差異）；background.js 的 readingListSyncOnce 以 single-flight 包裝。"
   - file_path: modules/sync/syncLogic.js
     description: "[同步] 純函式同步決策核心。Phase 13(批E) 新增；無 chrome/fetch/Date/Math.random/模組狀態，時間一律由 now 參數傳入，可在 Node 全量單元測試。含 decideSync(3-way：須兩端皆超過 baseRev 才算 conflict，避免乾淨 fast-forward 被誤判)、resolveConflict(rev-LWW + deviceId 字典序 tiebreak，loser 永不丟棄→保留為 conflicted copy ws_<id>.conflict-<loserDeviceId>.json)、decidePull、reconcile(union 三方對賬)、coalesceQueue(每 workspace 收斂單一 op，delete 為終態)、tombstonesToGC(grace window 過期墓碑)、isSchemaTooNew(遠端 schema 較新時不回寫降級)。"
   - file_path: modules/sync/googleDriveProvider.js

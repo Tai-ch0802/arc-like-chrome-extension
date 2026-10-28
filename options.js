@@ -739,6 +739,14 @@ function renderSync(container) {
     accountBlock.className = 'sync-account-block';
     container.appendChild(accountBlock);
 
+    // --- 1b. What syncs (ISSUE-257 FR-5.01): static list, no hydration needed ---
+    container.appendChild(makeRow(
+        api.getMessage('syncScopeHeader') || 'What syncs',
+        null,
+        api.getMessage('syncScopeDesc')
+            || 'Workspaces you opt in, RSS subscriptions, news sources, routing rules, preferences (theme, language, section toggles) and your reading list.'
+    ));
+
     // --- 2. Status row (skeleton) ---
     const statusBlock = document.createElement('div');
     container.appendChild(statusBlock);

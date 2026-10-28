@@ -486,3 +486,4 @@ sequenceDiagram
 |---|---|---|---|
 | v1.0 | 2026-10-28 | Claude | 依 PRD v1.0 與兩份 call-site / storage 盤點起草 |
 | v1.1 | 2026-10-28 | Claude | 審閱回饋：web 模式 `isConnected` 改「記錄存在」（避免一小時後靜默停同步）；manifest scope 不改、email 只在 Web URL；取消 detached popup；defaults 不落地不變量；閱讀清單側車串行化 |
+| v1.2 | 2026-10-28 | Claude | 實作後對齊（Living Doc）：WP0 入口邏輯抽為 `modules/sidePanelEntry.js`（DI），`sidePanel.open` 必須在 user gesture 內同步呼叫、以記憶體鏡像決策，gesture 類錯誤不設旗標，旗標含 `reason`；WP1 失敗 streak 只計 `tabs.group`、暫時性錯誤（No tab with id / cannot be edited）不計、`addTabToNewGroup` 建群組成功即回 id；WP3 同步週期抽為 `modules/prefs/prefsSync.js`（runPrefsSync）、`setPref` 同值不寫、settingsBridge 只在值真的變更時產生 action、migration 在 sync 讀取失敗時不阻斷；WP4 側車抽為 `modules/readingList/readingListSyncStore.js` + `readingListSync.js`，`applyMerged` 末端重讀側車只採用未失敗且不比本機新的 stamp，echo 守衛加 5 秒 TTL；`nextTimestamp` 抽至 `modules/utils/lamportClock.js`。每裝置 UI 摺疊狀態改存 local（升級後重置一次） |
