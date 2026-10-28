@@ -832,7 +832,13 @@ function renderSync(container) {
         if (connected) {
             const connectedLabel = document.createElement('div');
             connectedLabel.className = 'opt-row__label';
-            connectedLabel.textContent = api.getMessage('syncConnected') || 'Connected to Google Drive';
+            // Web (non-Chrome) mode knows the account email (ISSUE-257 FR-2.07);
+            // chrome mode has no email scope and keeps the generic label.
+            let accountEmail = '';
+            try { accountEmail = await driveAuth.getAccountEmail(); } catch { accountEmail = ''; }
+            connectedLabel.textContent = accountEmail
+                ? (api.getMessage('syncConnectedAs', [accountEmail]) || `Connected as ${accountEmail}`)
+                : (api.getMessage('syncConnected') || 'Connected to Google Drive');
             const disconnectBtn = document.createElement('button');
             disconnectBtn.className = 'modal-button primary';
             disconnectBtn.textContent = api.getMessage('syncDisconnectButton') || 'Disconnect';
@@ -887,7 +893,7 @@ function renderSync(container) {
                     // rather than hanging.
                     connectNote.hidden = false;
                     connectNote.textContent = api.getMessage('syncConnectFailedNote') ||
-                        'Could not connect. Google Drive sync requires Google Chrome with sign-in available.';
+                        'Could not connect to Google. Make sure the sign-in window was not blocked, then try again.';
                 }
                 await hydrate();
             });
