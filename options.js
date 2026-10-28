@@ -799,7 +799,11 @@ function renderSync(container) {
             ]);
             const parts = [`${info.brand} ${info.majorVersion || ''}`.trim()];
             if (!groupingOk) parts.push(api.getMessage('capabilityTabGroupsUnsupported') || 'tab group API unavailable');
-            if (panelUnavailable) parts.push(api.getMessage('capabilitySidePanelUnavailable') || 'the side panel could not be opened');
+            if (panelUnavailable) {
+                const reason = await api.getSidePanelUnavailableReason();
+                parts.push((api.getMessage('capabilitySidePanelUnavailable') || 'the side panel could not be opened')
+                    + (reason ? ` (${reason})` : ''));
+            }
             capabilityBlock.appendChild(makeRow(
                 api.getMessage('capabilityRowLabel') || 'This browser',
                 null,

@@ -53,7 +53,13 @@ function getCapabilityStore() {
 export const isTabGroupingAvailable = async () => !(await getCapabilityStore().isUnsupported(CAP_TAB_GROUPS));
 /** @returns {Promise<boolean>} true once opening the side panel failed here. */
 export const isSidePanelUnavailable = () => getCapabilityStore().isUnsupported(CAP_SIDE_PANEL);
-export const markSidePanelUnavailable = () => getCapabilityStore().markUnsupported(CAP_SIDE_PANEL);
+/** @param {string} [reason] why (e.g. 'open-rejected: …' / 'no-onOpened'), shown in options */
+export const markSidePanelUnavailable = (reason) => getCapabilityStore().markUnsupported(CAP_SIDE_PANEL, reason ? { reason } : {});
+/** @returns {Promise<string>} the recorded reason, or '' */
+export const getSidePanelUnavailableReason = async () => {
+    const flag = await getCapabilityStore().getFlag(CAP_SIDE_PANEL);
+    return (flag && flag.reason) || '';
+};
 /** Call at SW startup: drops flags recorded by another brand / major version. */
 export const resetCapabilityFlagsIfBrowserChanged = () => getCapabilityStore().resetIfBrowserChanged();
 /** Call from a storage.onChanged handler so a flag written elsewhere is seen. */

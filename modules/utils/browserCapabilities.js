@@ -168,10 +168,17 @@ export function createCapabilityStore({ storage, getInfo, now = () => Date.now()
             const flag = await read(name);
             return Boolean(flag && flag.unsupported);
         },
-        /** @param {string} name */
-        async markUnsupported(name) {
+        /** @param {string} name @returns {Promise<any>} the stored flag object or undefined */
+        async getFlag(name) {
+            return read(name);
+        },
+        /**
+         * @param {string} name
+         * @param {Object} [extra] diagnostic fields (e.g. `{ reason }`) kept with the flag
+         */
+        async markUnsupported(name, extra = {}) {
             const info = getInfo();
-            const flag = { unsupported: true, brand: info.brand, majorVersion: info.majorVersion, at: now() };
+            const flag = { ...extra, unsupported: true, brand: info.brand, majorVersion: info.majorVersion, at: now() };
             cache.set(name, flag);
             await storage.set(name, flag);
         },

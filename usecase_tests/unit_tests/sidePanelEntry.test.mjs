@@ -30,7 +30,7 @@ function makeFakes({ info = DIA, openImpl, withEvents = true, withClose = true, 
         sidePanel,
         runtime: { openOptionsPage: async () => { calls.options += 1; } },
         session: { get: async (k) => sessionData[k], set: async (k, v) => { sessionData[k] = v; } },
-        caps: { isSidePanelUnavailable: async () => flag, markSidePanelUnavailable: async () => { flag = true; calls.marked += 1; } },
+        caps: { isSidePanelUnavailable: async () => flag, markSidePanelUnavailable: async (reason) => { flag = true; calls.marked += 1; calls.reasons = (calls.reasons || []).concat([reason]); } },
         getInfo: () => info,
         // Resolves when the "timeout" elapses; tests decide whether it ever does.
         waitTimeout: () => new Promise(() => {}),
@@ -142,5 +142,86 @@ describe('createSidePanelEntry — non-Chrome (Dia)', () => {
         await entry.init();
         await entry.handleActionClick({ windowId: 5 });
         expect(calls.log.some((l) => /open/.test(l))).toBe(true);
+    });
+});
+
+
+describe('createSidePanelEntry — review round 1', () => {
+    it('calls sidePanel.open synchronously inside the click handler (user gesture must not be lost to an await)', async () => {
+        const { deps, calls, fireOpened } = makeFakes({ openImpl: async (o) => fireOpened(o.windowId) });
+        const entry = createSidePanelEntry(deps);
+        await entry.init();
+        const p = entry.handleActionClick({ windowId: 1 });
+        expect(calls.open).toEqual([{ windowId: 1 }]); // same tick, before any await resolved
+        await p;
+    });
+
+    it('registers onOpened/onClosed listeners at construction time, before init()', () => {
+        const { deps } = makeFakes();
+        let registered = 0;
+        deps.sidePanel.onOpened = { addListener: () => { registered += 1; } };
+        deps.sidePanel.onClosed = { addListener: () => { registered += 1; } };
+        createSidePanelEntry(deps);
+        expect(registered).toBe(2);
+    });
+
+    it('does not register listeners on Google Chrome', () => {
+        const { deps } = makeFakes({ info: CHROME });
+        let registered = 0;
+        deps.sidePanel.onOpened = { addListener: () => { registered += 1; } };
+        deps.sidePanel.onClosed = { addListener: () => { registered += 1; } };
+        createSidePanelEntry(deps);
+        expect(registered).toBe(0);
+    });
+
+    it('a second click while the first open is still unconfirmed is ignored (no second open, no give-up)', async () => {
+        let resolveOpen;
+        const { deps, calls, fireOpened } = makeFakes({ openImpl: () => new Promise((r) => { resolveOpen = r; }) });
+        const entry = createSidePanelEntry(deps);
+        await entry.init();
+        const p1 = entry.handleActionClick({ windowId: 1 });
+        const p2 = entry.handleActionClick({ windowId: 1 });
+        resolveOpen();
+        fireOpened(1);
+        await Promise.all([p1, p2]);
+        expect(calls.open).toHaveLength(1);
+        expect(calls.marked).toBe(0);
+    });
+
+    it('when close() fails, resets the open state so the NEXT click opens again (open must stay inside a fresh gesture)', async () => {
+        const { deps, calls, fireOpened } = makeFakes({ openImpl: async (o) => fireOpened(o.windowId) });
+        deps.sidePanel.close = async () => { throw new Error('No active side panel'); };
+        const entry = createSidePanelEntry(deps);
+        await entry.init();
+        await entry.handleActionClick({ windowId: 1 }); // open
+        await entry.handleActionClick({ windowId: 1 }); // close fails → state reset, no open in this (consumed) gesture
+        expect(calls.open).toHaveLength(1);
+        expect(await entry.isPanelOpen(1)).toBe(false);
+        await entry.handleActionClick({ windowId: 1 }); // next click opens
+        expect(calls.open).toHaveLength(2);
+    });
+
+    it('a user-gesture rejection does not mark the panel unavailable', async () => {
+        const { deps, calls } = makeFakes({ openImpl: async () => { throw new Error('`sidePanel.open()` may only be called in response to a user gesture.'); } });
+        const entry = createSidePanelEntry(deps);
+        await entry.init();
+        await entry.handleActionClick({ windowId: 1 });
+        expect(calls.marked).toBe(0);
+        expect(calls.options).toBe(0);
+    });
+
+    it('records WHY the panel was declared unavailable', async () => {
+        const rejected = makeFakes({ openImpl: async () => { throw new Error('No active side panel for windowId'); } });
+        const e1 = createSidePanelEntry(rejected.deps);
+        await e1.init();
+        await e1.handleActionClick({ windowId: 1 });
+        expect(rejected.calls.reasons[0]).toMatch(/^open-rejected: No active side panel/);
+
+        const silent = makeFakes();
+        silent.deps.waitTimeout = () => Promise.resolve();
+        const e2 = createSidePanelEntry(silent.deps);
+        await e2.init();
+        await e2.handleActionClick({ windowId: 1 });
+        expect(silent.calls.reasons[0]).toBe('no-onOpened');
     });
 });

@@ -177,3 +177,14 @@ describe('isTransientTabGroupError / classify on non-Chrome', () => {
         expect(classifyTabGroupFailure('No group with id: 7.', dia, 5)).toBe(false);
     });
 });
+
+describe('createCapabilityStore — diagnostic extras (review round 1)', () => {
+    const dia = { isGoogleChrome: false, brand: 'Chromium', majorVersion: 156 };
+    it('keeps a reason alongside the flag and exposes it via getFlag', async () => {
+        const kv = fakeKv();
+        const store = createCapabilityStore({ storage: kv, getInfo: () => dia, now: () => 5 });
+        await store.markUnsupported(CAP_SIDE_PANEL, { reason: 'no-onOpened' });
+        expect(kv.data[CAP_SIDE_PANEL]).toEqual({ reason: 'no-onOpened', unsupported: true, brand: 'Chromium', majorVersion: 156, at: 5 });
+        expect((await store.getFlag(CAP_SIDE_PANEL)).reason).toBe('no-onOpened');
+    });
+});
