@@ -16,6 +16,10 @@ import {
     resetCapabilityFlagsIfBrowserChanged,
 } from './modules/apiManager.js';
 import { getBrowserInfo } from './modules/utils/browserCapabilities.js';
+import { getPrefs, exportPrefsState, importMergedPrefs, isPrefStorageKey } from './modules/prefs/prefsStore.js';
+import { runPrefsSync, PREFS_SYNC_FILE } from './modules/prefs/prefsSync.js';
+import { createReadingListSyncStore, RL_META_KEY, RL_TOMBSTONES_KEY } from './modules/readingList/readingListSyncStore.js';
+import { runReadingListSync, READING_LIST_SYNC_FILE } from './modules/readingList/readingListSync.js';
 import { createSidePanelEntry } from './modules/sidePanelEntry.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
@@ -62,6 +66,18 @@ initWorkspaceLifecycle();
 // Tab routing rules (BASE-022): first-navigation routing + claim exemptions.
 initRoutingEngine();
 
+// Reading-list sync store (ISSUE-257 WP4): listeners registered synchronously at
+// SW top level so entries added/removed from the side panel (or by native
+// Chrome sync) wake the SW and get a Lamport stamp / tombstone.
+const readingListSyncStore = createReadingListSyncStore({
+    readingList: (typeof chrome !== 'undefined' && chrome.readingList) || null,
+    storage: {
+        get: (k) => getStorage('local', [k]).then((r) => r[k]),
+        set: (k, v) => setStorage('local', { [k]: v }),
+    },
+});
+readingListSyncStore.attach();
+
 // Tab lifecycle (BASE-024): auto-archive scan heartbeat + snooze wake/sweep.
 initLifecycleEngine();
 
@@ -107,6 +123,14 @@ const RSS_SYNC_FILE = 'rss-sync.json';
 const NEWSWIRE_SYNC_FILE = 'newswire-sync.json';
 const ROUTING_SYNC_FILE = 'routing-rules-sync.json';
 const ALARM_ROUTING_FLUSH = 'routingSyncFlush'; // one-shot debounced routing-rules Drive sync
+// ISSUE-257 WP3: preferences (former storage.sync flat keys) now live in
+// storage.local as pref_<name> records and sync through ONE Drive file
+// (PREFS_SYNC_FILE from modules/prefs/prefsSync.js).
+const ALARM_PREFS_FLUSH = 'prefsSyncFlush';
+// ISSUE-257 WP4: chrome.readingList stays the local store on every device; the
+// SW keeps an app-controlled Lamport sidecar + tombstones and mirrors the list
+// to ONE Drive file (READING_LIST_SYNC_FILE from modules/readingList/readingListSync.js).
+const ALARM_RL_FLUSH = 'readingListSyncFlush';
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
 const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
 const RSS_TOMBSTONES_KEY = 'rssTombstones';
@@ -322,6 +346,10 @@ async function runSyncOnce() {
     await newswireSyncOnce();
     // routing rules sync (BASE-022 P4): same cadence and pattern.
     await routingSyncOnce();
+    // preferences sync (ISSUE-257 WP3): same cadence and pattern.
+    await prefsSyncOnce();
+    // reading list sync (ISSUE-257 WP4): same cadence and pattern.
+    await readingListSyncOnce();
 }
 
 /**
@@ -428,6 +456,48 @@ function routingSyncOnce() {
         }
     });
     return routingSyncChain;
+}
+
+/**
+ * Single-flight preferences Drive sync (ISSUE-257 WP3). The cycle itself is
+ * modules/prefs/prefsSync.js (tested end-to-end against the fake provider);
+ * this wrapper only adds the serialisation + error swallowing every *SyncOnce
+ * here has.
+ */
+let prefsSyncChain = Promise.resolve();
+function prefsSyncOnce() {
+    prefsSyncChain = prefsSyncChain.then(async () => {
+        try {
+            await runPrefsSync({
+                provider: syncProvider,
+                store: { exportState: exportPrefsState, importMerged: importMergedPrefs },
+                fileName: PREFS_SYNC_FILE,
+                isOnline: () => !(typeof navigator !== 'undefined' && navigator.onLine === false),
+            });
+        } catch (err) {
+            console.warn('[prefs-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return prefsSyncChain;
+}
+
+/** Single-flight reading-list Drive sync (ISSUE-257 WP4); cycle in modules/readingList/readingListSync.js. */
+let readingListSyncChain = Promise.resolve();
+function readingListSyncOnce() {
+    readingListSyncChain = readingListSyncChain.then(async () => {
+        try {
+            if (!(typeof chrome !== 'undefined' && chrome.readingList)) return; // engine without the API
+            await runReadingListSync({
+                provider: syncProvider,
+                store: readingListSyncStore,
+                fileName: READING_LIST_SYNC_FILE,
+                isOnline: () => !(typeof navigator !== 'undefined' && navigator.onLine === false),
+            });
+        } catch (err) {
+            console.warn('[rl-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return readingListSyncChain;
 }
 
 /** (Re)create the periodic pull alarm. Alarms don't survive a browser restart. */
@@ -743,6 +813,18 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     })();
     return;
   }
+  if (alarm.name === ALARM_RL_FLUSH) {
+    // Debounced reading-list Drive sync (ISSUE-257 WP4). Explicit branch for the
+    // same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
+    readingListSyncOnce();
+    return;
+  }
+  if (alarm.name === ALARM_PREFS_FLUSH) {
+    // Debounced preferences Drive sync (ISSUE-257 WP3). Explicit branch for the
+    // same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
+    prefsSyncOnce();
+    return;
+  }
   if (alarm.name === ALARM_RSS_FLUSH) {
     // Debounced RSS Drive sync. MUST be an explicit branch: without it this
     // alarm falls through to handleRssAlarm, whose `rss_fetch_` prefix guard
@@ -811,6 +893,20 @@ function handleNewswireStorageChange(changes, areaName) {
  * the no-op guard makes the follow-up cycle write nothing (same convergence
  * property as RSS/newswire).
  */
+/** Sidecar (meta / tombstones) change → debounced reading-list Drive push. */
+function handleReadingListStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!changes[RL_META_KEY] && !changes[RL_TOMBSTONES_KEY]) return;
+  chrome.alarms.create(ALARM_RL_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
+/** Any local pref_<name> record change → debounced preferences Drive push. */
+function handlePrefsStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!Object.keys(changes).some(isPrefStorageKey)) return;
+  chrome.alarms.create(ALARM_PREFS_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
 function handleRoutingStorageChange(changes, areaName) {
   if (areaName !== 'local') return;
   if (!changes[ROUTING_RULES_KEY]) return;
@@ -827,6 +923,8 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   handleNewswireStorageChange(changes, areaName);
   handleNewswireConfigChange(changes, areaName);
   handleRoutingStorageChange(changes, areaName);
+  handlePrefsStorageChange(changes, areaName);
+  handleReadingListStorageChange(changes, areaName);
 });
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background
@@ -838,7 +936,7 @@ chrome.tabGroups.onCreated.addListener(async (group) => {
     try {
         if (group.title && group.title.trim()) return; // user provided a title
 
-        const settings = await chrome.storage.sync.get([AI_AUTO_NAMING_KEY]);
+        const settings = await getPrefs([AI_AUTO_NAMING_KEY]);
         if (settings[AI_AUTO_NAMING_KEY] === false) return; // disabled by user
 
         // Two reasons for an 800ms delay before querying tabs:

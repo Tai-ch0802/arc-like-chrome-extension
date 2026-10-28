@@ -311,10 +311,12 @@ export const sendRuntimeMessage = (message) => chrome.runtime.sendMessage(messag
 export const addRuntimeMessageListener = (listener) => chrome.runtime.onMessage.addListener(listener);
 export const openOptionsPage = () => chrome.runtime.openOptionsPage();
 
-export const queryReadingList = (info = {}) => chrome.readingList.query(info);
-export const addReadingListEntry = (options) => chrome.readingList.addEntry(options);
-export const removeReadingListEntry = (options) => chrome.readingList.removeEntry(options);
-export const updateReadingListEntry = (options) => chrome.readingList.updateEntry(options);
+/** chrome.readingList exists on Chrome and Dia; other Chromium brands may lack it (ISSUE-257 FR-4.05). */
+export const hasReadingListApi = () => typeof chrome !== 'undefined' && Boolean(chrome.readingList && chrome.readingList.query);
+export const queryReadingList = (info = {}) => (hasReadingListApi() ? chrome.readingList.query(info) : Promise.resolve([]));
+export const addReadingListEntry = (options) => (hasReadingListApi() ? chrome.readingList.addEntry(options) : Promise.resolve());
+export const removeReadingListEntry = (options) => (hasReadingListApi() ? chrome.readingList.removeEntry(options) : Promise.resolve());
+export const updateReadingListEntry = (options) => (hasReadingListApi() ? chrome.readingList.updateEntry(options) : Promise.resolve());
 
 /**
  * Checks if a URL exists in the reading list.

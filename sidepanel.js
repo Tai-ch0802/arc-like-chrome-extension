@@ -161,7 +161,8 @@ async function refreshReadingList() {
 function applyReadingListVisibility(visible) {
     const section = document.getElementById('reading-list-section');
     if (section) {
-        section.style.display = visible ? '' : 'none';
+        // Hidden (never an error) on engines without chrome.readingList (ISSUE-257 FR-4.05).
+        section.style.display = (visible && api.hasReadingListApi()) ? '' : 'none';
     }
 }
 
