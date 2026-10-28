@@ -10,6 +10,7 @@
  * setting by clicking the hidden button).
  */
 import * as state from '../stateManager.js';
+import { groupTabs } from '../apiManager.js';
 import { requestPanelAction, resolveTargetWindowId } from './panelBridge.js';
 
 /**
@@ -22,7 +23,8 @@ export function buildActions() {
             type: 'action',
             icon: 'auto_awesome',
             titleKey: 'cmdPaletteActionSmartGroup',
-            isVisible: () => state.isAiGroupingVisible(),
+            // ISSUE-257: also hidden where this browser cannot create tab groups.
+            isVisible: () => state.isAiGroupingVisible() && state.isTabGroupingAvailable(),
             handler: () => requestPanelAction('smart-group'),
         },
         {
@@ -52,7 +54,8 @@ export function buildActions() {
                 const [active] = await chrome.tabs.query({ active: true, windowId: winId });
                 if (!active) return;
                 const newTab = await chrome.tabs.create({ windowId: winId, index: active.index + 1, active: true });
-                if (active.groupId > 0) await chrome.tabs.group({ groupId: active.groupId, tabIds: newTab.id });
+                // Best-effort (ISSUE-257): the tab is created either way.
+                if (active.groupId > 0) await groupTabs(newTab.id, active.groupId);
             },
         },
         {

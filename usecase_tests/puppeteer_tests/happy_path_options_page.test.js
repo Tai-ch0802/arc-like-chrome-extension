@@ -6,7 +6,7 @@ const { setupBrowser, teardownBrowser } = require('./setup');
  * options page and verifies:
  *   1. The left nav renders 8 items, with the first section (appearance) active.
  *   2. Clicking the "features" nav item activates the features section.
- *   3. Toggling a feature checkbox persists the value to chrome.storage.sync.
+ *   3. Toggling a feature checkbox persists the value to the prefs store (storage.local pref_* record).
  */
 describe('Options Page Use Case', () => {
     let browser;
@@ -69,7 +69,7 @@ describe('Options Page Use Case', () => {
         expect(checkbox).not.toBeNull();
     }, 30000);
 
-    test('toggling a feature checkbox persists to chrome.storage.sync', async () => {
+    test('toggling a feature checkbox persists to the prefs store (local pref_* record)', async () => {
         // Ensure we are on the features section.
         await page.click('.opt-nav__item[data-section="features"]');
         await page.waitForFunction(
@@ -89,7 +89,8 @@ describe('Options Page Use Case', () => {
         // The change handler writes to chrome.storage.sync asynchronously.
         await page.waitForFunction(
             (expected) => new Promise(resolve => {
-                chrome.storage.sync.get({ readingListVisible: true }, (res) => {
+                chrome.storage.local.get('pref_readingListVisible', (raw) => {
+                    const res = { readingListVisible: raw.pref_readingListVisible ? raw.pref_readingListVisible.v : true };
                     resolve(res.readingListVisible === expected);
                 });
             }),
@@ -98,7 +99,8 @@ describe('Options Page Use Case', () => {
         );
 
         const persisted = await page.evaluate(() => new Promise(resolve => {
-            chrome.storage.sync.get({ readingListVisible: true }, (res) => {
+            chrome.storage.local.get('pref_readingListVisible', (raw) => {
+                    const res = { readingListVisible: raw.pref_readingListVisible ? raw.pref_readingListVisible.v : true };
                 resolve(res.readingListVisible);
             });
         }));

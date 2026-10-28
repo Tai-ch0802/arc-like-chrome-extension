@@ -10,19 +10,18 @@ export function initAiGrouper() {
     if (aiGroupBtn) {
         aiGroupBtn.addEventListener('click', handleGroupAction);
 
-        // Apply initial visibility state
-        if (!state.isAiGroupingVisible()) {
-            aiGroupBtn.style.display = 'none';
-        }
+        // Visible only when the user enabled it AND this browser can create tab
+        // groups at all (ISSUE-257: Dia rejects chrome.tabs.group → hide, never
+        // show an action that cannot work).
+        const applyVisibility = () => {
+            const visible = state.isAiGroupingVisible() && state.isTabGroupingAvailable();
+            aiGroupBtn.style.display = visible ? '' : 'none';
+        };
+        applyVisibility();
 
-        // Listen for visibility toggle from settings
-        document.addEventListener('aiGroupingVisibilityChanged', (e) => {
-            if (e.detail.visible) {
-                aiGroupBtn.style.display = '';
-            } else {
-                aiGroupBtn.style.display = 'none';
-            }
-        });
+        // Listen for visibility toggle from settings / capability changes
+        document.addEventListener('aiGroupingVisibilityChanged', applyVisibility);
+        document.addEventListener('capabilitiesChanged', applyVisibility);
     }
     // Undo button ownership moved to toast.js claimUndo (shared with routing
     // rules): the handler is claimed per-toast where the toast is shown.
@@ -128,6 +127,7 @@ async function handleGroupAction() {
 
         let affectedTabIds = [];
         let createdGroupIds = [];
+        let failedGroups = 0;
 
         // Step 3: Group them
         for (const group of mappingResults) {
@@ -138,12 +138,20 @@ async function handleGroupAction() {
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
                 const newGroupId = await api.addTabToNewGroup(tabIdsToGroup, group.theme, randomColor);
+                // null = the wrapper swallowed a failure (ISSUE-257): either this
+                // browser cannot group (flag recorded) or a transient Chrome error.
+                if (newGroupId == null) { failedGroups += 1; continue; }
                 affectedTabIds.push(...tabIdsToGroup);
                 createdGroupIds.push(newGroupId);
             }
         }
 
-        if (affectedTabIds.length > 0) {
+        if (affectedTabIds.length === 0 && !state.isTabGroupingAvailable()) {
+            showToast(api.getMessage('tabGroupsUnsupportedToast') || 'This browser does not support tab groups.');
+        } else if (affectedTabIds.length === 0 && failedGroups > 0) {
+            // Transient failure (e.g. a tab mid-drag): surface as retryable (AC-1.01b).
+            showToast(api.getMessage('autoGroupingError') + (api.getMessage('autoGroupingRetryHint') || 'Please try again.'));
+        } else if (affectedTabIds.length > 0) {
             state.setLastAutoGroupState({
                 affectedTabs: affectedTabIds,
                 createdGroups: createdGroupIds

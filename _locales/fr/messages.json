@@ -1234,7 +1234,7 @@
     "message": "Sauvegarde et synchronisation"
   },
   "syncAccountDesc": {
-    "message": "Sauvegardez et synchronisez vos Workspaces et vos abonnements RSS sur tous vos appareils via votre propre Google Drive."
+    "message": "Sauvegardez et synchronisez vos Workspaces, abonnements RSS, préférences et liste de lecture sur tous vos appareils et navigateurs (Chrome, Dia et autres navigateurs Chromium) via votre propre Google Drive."
   },
   "syncConflictLabel": {
     "message": "Conflits de synchronisation"
@@ -1252,13 +1252,13 @@
     "message": "Connecter Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Cela téléverse, vers votre propre Google Drive (un dossier privé de l’application) : les URL des onglets, les titres et les informations de groupe des Workspaces que vous activez ; ainsi que votre liste d’abonnements RSS et une empreinte à sens unique des liens d’articles déjà récupérés. La synchronisation est activée Workspace par Workspace et désactivée par défaut ; les données RSS se synchronisent automatiquement lorsque vous êtes connecté. La déconnexion arrête tous les téléversements."
+    "message": "Cela téléverse, vers votre propre Google Drive (un dossier privé de l’application) : les URL des onglets, les titres et les informations de groupe des Workspaces que vous activez ; votre liste d’abonnements RSS et une empreinte à sens unique des liens d’articles déjà récupérés ; vos sources d’actualités et leurs réglages ; vos règles de regroupement automatique (routage); vos préférences (thème, langue, bascules de sections) ; et votre liste de lecture (URL des pages, titres, état de lecture). Sur les navigateurs autres que Google Chrome, la connexion permet aussi à l’extension de lire l’adresse e-mail de votre compte afin de vous maintenir connecté. La synchronisation des Workspaces est en opt-in par Workspace et DÉSACTIVÉE par défaut ; le reste se synchronise automatiquement tant que vous êtes connecté. La déconnexion arrête tous les téléversements."
   },
   "syncConnectDisclosureTitle": {
     "message": "Connecter Google Drive"
   },
   "syncConnectFailedNote": {
-    "message": "Connexion impossible. La synchronisation Google Drive nécessite Google Chrome avec une connexion disponible."
+    "message": "Impossible de se connecter à Google. Vérifiez que la fenêtre de connexion n’a pas été bloquée, puis réessayez."
   },
   "syncConnected": {
     "message": "Connecté à Google Drive"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "Ce navigateur ne prend pas en charge l’API des groupes d’onglets ; les fonctions de regroupement y sont donc indisponibles.",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "Ce navigateur ne prend pas en charge les groupes d’onglets.",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "Veuillez réessayer.",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "Ce navigateur",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "API des groupes d’onglets indisponible",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "le panneau latéral n’a pas pu être ouvert",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "Connecté en tant que $EMAIL$",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "Ce qui est synchronisé",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "Les Workspaces que vous activez, les abonnements RSS, les sources d’actualités, les règles de routage, les préférences (thème, langue, bascules de sections) et votre liste de lecture.",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

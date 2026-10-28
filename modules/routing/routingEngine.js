@@ -25,6 +25,10 @@ import {
 } from './routingLogic.js';
 import { getRoutingState } from './rulesStore.js';
 import { generateGroupName } from '../aiManager.js';
+// ISSUE-257: group operations go through apiManager's best-effort wrappers
+// (null on failure / where unsupported) instead of raw chrome.tabs.group.
+import { groupTabs, ungroupTabs, addTabToNewGroup, updateTabGroup, isTabGroupingAvailable } from '../apiManager.js';
+import { getPrefs, prefStorageKey } from '../prefs/prefsStore.js';
 
 const SESSION_KEY = 'routingSessionState';
 const ROUTING_ENABLED_KEY = 'routingEnabled';
@@ -73,7 +77,7 @@ async function ensureRules() {
 
 async function ensureEnabled() {
     if (enabledCache === null) {
-        const res = await chrome.storage.sync.get({ [ROUTING_ENABLED_KEY]: true });
+        const res = await getPrefs([ROUTING_ENABLED_KEY]);
         enabledCache = res[ROUTING_ENABLED_KEY] !== false;
     }
     return enabledCache;
@@ -81,7 +85,7 @@ async function ensureEnabled() {
 
 async function ensureAiEnabled() {
     if (aiEnabledCache === null) {
-        const res = await chrome.storage.sync.get({ [AI_ROUTING_KEY]: false });
+        const res = await getPrefs([AI_ROUTING_KEY]);
         aiEnabledCache = res[AI_ROUTING_KEY] === true; // opt-in (FR-3.06)
     }
     return aiEnabledCache;
@@ -101,7 +105,7 @@ async function scheduleAiNaming(groupId, domain, tabs) {
         if (!name) return; // AI unavailable → keep the domain placeholder
         const g = await chrome.tabGroups.get(groupId).catch(() => null);
         if (!g || g.title !== domain) return;
-        await chrome.tabGroups.update(groupId, { title: name });
+        await updateTabGroup(groupId, { title: name });
         await mutate(async (st) => {
             const entry = st.aiGroups[g.windowId] && st.aiGroups[g.windowId][domain];
             if (entry && entry.groupId === groupId) entry.aiNamed = true;
@@ -134,7 +138,7 @@ async function maybeAiRoute(st, tab, url, now) {
     if (decision.action === 'join') {
         const alive = await chrome.tabGroups.get(decision.groupId).catch(() => null);
         if (alive && alive.windowId === tab.windowId) {
-            await chrome.tabs.group({ tabIds: [tab.id], groupId: decision.groupId });
+            if ((await groupTabs([tab.id], decision.groupId)) == null) return; // unsupported here (ISSUE-257)
             // A join is still this window's most recent first-navigation: it must
             // overwrite lastNav, or an older domain's nav would survive an
             // intervening one and pair non-consecutive tabs (FR-3.04).
@@ -162,11 +166,8 @@ async function maybeAiRoute(st, tab, url, now) {
             && prev.groupId === chrome.tabGroups.TAB_GROUP_ID_NONE;
         if (prevEligible) {
             const color = VALID_GROUP_COLORS[Math.floor(Math.random() * VALID_GROUP_COLORS.length)];
-            const groupId = await chrome.tabs.group({
-                tabIds: [prev.id, tab.id],
-                createProperties: { windowId: tab.windowId },
-            });
-            await chrome.tabGroups.update(groupId, { title: domain, color });
+            const groupId = await addTabToNewGroup([prev.id, tab.id], domain, color, tab.windowId);
+            if (groupId == null) return; // grouping unavailable on this browser (ISSUE-257)
             st.aiGroups[tab.windowId] = st.aiGroups[tab.windowId] || {};
             st.aiGroups[tab.windowId][domain] = { groupId, aiNamed: false };
             st.lastNav = null;
@@ -184,16 +185,10 @@ async function applyRule(tab, rule) {
     const groups = await chrome.tabGroups.query({ windowId: tab.windowId });
     const existing = groups.find(g => g.title === rule.groupTitle);
     if (existing) {
-        await chrome.tabs.group({ tabIds: [tab.id], groupId: existing.id });
+        await groupTabs([tab.id], existing.id);
         return;
     }
-    const groupId = await chrome.tabs.group({
-        tabIds: [tab.id],
-        createProperties: { windowId: tab.windowId },
-    });
-    const update = { title: rule.groupTitle };
-    if (rule.groupColor) update.color = rule.groupColor;
-    await chrome.tabGroups.update(groupId, update);
+    await addTabToNewGroup([tab.id], rule.groupTitle, rule.groupColor || undefined, tab.windowId);
 }
 
 /** The single judgment per tab (FR-2.04): claim → exemptions → rules. */
@@ -213,6 +208,7 @@ function handleFirstNavigation(tabId, url) {
         if (consumeClaim(st.claims, url, now)) return;           // FR-2.07 (fallback by URL)
         if (!candidate) return;             // tab not born under engine watch — never route
         if (!(await ensureEnabled())) return;                    // FR-2.06
+        if (!(await isTabGroupingAvailable())) return;           // ISSUE-257: nothing to route into
         if (isStartupRestored(candidate, st.startupUntil)) return; // SA §5.3
 
         let tab;
@@ -292,7 +288,7 @@ export function initRoutingEngine() {
                     // than trusting the creation-time tabIds snapshot.
                     const members = await chrome.tabs.query({ groupId: message.groupId }).catch(() => []);
                     const ids = members.length ? members.map(t => t.id) : message.tabIds;
-                    await chrome.tabs.ungroup(ids);
+                    await ungroupTabs(ids);
                 } catch { /* tabs may be gone already */ }
                 st.cooldown[`${message.windowId}:${message.domain}`] = Date.now() + AI_UNDO_COOLDOWN_MS;
                 const wg = st.aiGroups[message.windowId];
@@ -324,7 +320,7 @@ export function initRoutingEngine() {
 
     chrome.storage.onChanged.addListener((changes, area) => {
         if (area === 'local' && changes[ROUTING_RULES_KEY]) rulesCache = null;
-        if (area === 'sync' && changes[ROUTING_ENABLED_KEY]) enabledCache = null;
-        if (area === 'sync' && changes[AI_ROUTING_KEY]) aiEnabledCache = null;
+        if (area === 'local' && changes[prefStorageKey(ROUTING_ENABLED_KEY)]) enabledCache = null;
+        if (area === 'local' && changes[prefStorageKey(AI_ROUTING_KEY)]) aiEnabledCache = null;
     });
 }

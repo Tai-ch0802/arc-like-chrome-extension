@@ -1213,7 +1213,7 @@
     "message": "Sao lưu & Đồng bộ"
   },
   "syncAccountDesc": {
-    "message": "Sao lưu và đồng bộ các Workspaces và đăng ký RSS của bạn trên các thiết bị thông qua Google Drive của riêng bạn."
+    "message": "Sao lưu và đồng bộ Workspaces, đăng ký RSS, tùy chọn và danh sách đọc của bạn trên các thiết bị và trình duyệt (Chrome, Dia và các trình duyệt Chromium khác) thông qua Google Drive của riêng bạn."
   },
   "syncConflictLabel": {
     "message": "Xung đột đồng bộ"
@@ -1231,13 +1231,13 @@
     "message": "Kết nối Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Thao tác này tải lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng): URL của tab, tiêu đề và thông tin nhóm của các Workspaces bạn chọn tham gia; cùng với danh sách đăng ký RSS của bạn và một dấu vân tay một chiều của các liên kết bài viết đã được tải. Đồng bộ Workspace là tùy chọn theo từng Workspace và TẮT theo mặc định; dữ liệu RSS được đồng bộ tự động khi đang kết nối. Ngắt kết nối sẽ dừng mọi quá trình tải lên."
+    "message": "Thao tác này tải lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng): URL của tab, tiêu đề và thông tin nhóm cho các Workspaces bạn chọn tham gia; danh sách đăng ký RSS của bạn và một dấu vân tay một chiều của các liên kết bài viết đã tải; nguồn tin tức và cài đặt của chúng; quy tắc tự động nhóm (định tuyến) của bạn; tùy chọn của bạn (giao diện, ngôn ngữ, công tắc các mục); và danh sách đọc của bạn (URL trang, tiêu đề, trạng thái đã đọc). Trên các trình duyệt không phải Google Chrome, việc đăng nhập cũng cho phép tiện ích đọc email tài khoản của bạn để giữ bạn luôn đăng nhập. Đồng bộ Workspace là chọn tham gia theo từng Workspace và TẮT theo mặc định; phần còn lại tự động đồng bộ khi đang kết nối. Ngắt kết nối sẽ dừng mọi hoạt động tải lên."
   },
   "syncConnectDisclosureTitle": {
     "message": "Kết nối Google Drive"
   },
   "syncConnectFailedNote": {
-    "message": "Không thể kết nối. Đồng bộ Google Drive yêu cầu Google Chrome có thể đăng nhập."
+    "message": "Không thể kết nối với Google. Hãy đảm bảo cửa sổ đăng nhập không bị chặn, rồi thử lại."
   },
   "syncConnected": {
     "message": "Đã kết nối với Google Drive"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "Trình duyệt này không hỗ trợ API nhóm thẻ nên các tính năng nhóm không khả dụng ở đây.",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "Trình duyệt này không hỗ trợ nhóm thẻ.",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "Vui lòng thử lại.",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "Trình duyệt này",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "API nhóm thẻ không khả dụng",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "không thể mở bảng điều khiển bên",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "Đã kết nối với tư cách $EMAIL$",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "Nội dung được đồng bộ",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "Các Workspaces bạn chọn tham gia, đăng ký RSS, nguồn tin tức, quy tắc định tuyến, tùy chọn (giao diện, ngôn ngữ, công tắc các mục) và danh sách đọc của bạn.",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

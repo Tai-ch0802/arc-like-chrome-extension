@@ -42,8 +42,8 @@ describe('Theme Edge Cases', () => {
 
         // Manually corrupt the state: set theme to 'custom' but ensure no custom theme data exists
         await page.evaluate(async () => {
-            await chrome.storage.sync.set({ theme: 'custom' });
-            await chrome.storage.sync.remove('customTheme');
+            await chrome.storage.local.set({ pref_theme: { v: 'custom', t: 1 } });
+            await chrome.storage.local.remove('pref_customTheme');
         });
 
         // Reload page to trigger initThemeSwitcher logic
@@ -56,7 +56,8 @@ describe('Theme Edge Cases', () => {
         expect(theme).toBe('geek');
 
         const storedTheme = await page.evaluate(async () => {
-            const data = await chrome.storage.sync.get('theme');
+            const data = await chrome.storage.local.get('pref_theme');
+            data.theme = data.pref_theme ? data.pref_theme.v : undefined;
             return data.theme;
         });
         expect(storedTheme).toBe('geek');
@@ -85,13 +86,13 @@ describe('Theme Edge Cases', () => {
 
     test('should handle storage quota exceeded gracefully', async () => {
         // Mock storage.sync.set failure ON THE OPTIONS PAGE — the theme write now
-        // happens there via api.setStorage('sync', { theme }). The non-strict
+        // happens there via the prefs store (pref_theme). The non-strict
         // setStorage swallows lastError and still resolves, so the options page
         // proceeds to apply the theme to its own body for preview. The point of
         // this test is "no crash on a failed sync write", not persistence.
         await optionsPage.evaluate(() => {
-            window.__originalSyncSet = chrome.storage.sync.set;
-            chrome.storage.sync.set = (items, callback) => {
+            window.__originalSyncSet = chrome.storage.local.set;
+            chrome.storage.local.set = (items, callback) => {
                 console.log('Mocking storage quota error');
                 setTimeout(() => {
                     chrome.runtime.lastError = { message: 'QUOTA_BYTES_PER_ITEM quota exceeded' };
@@ -118,7 +119,7 @@ describe('Theme Edge Cases', () => {
             // Restore the real storage API and reset theme to default.
             await optionsPage.evaluate(() => {
                 if (window.__originalSyncSet) {
-                    chrome.storage.sync.set = window.__originalSyncSet;
+                    chrome.storage.local.set = window.__originalSyncSet;
                     delete window.__originalSyncSet;
                 }
             });

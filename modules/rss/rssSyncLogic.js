@@ -41,19 +41,10 @@ export const MAX_STORED_HASHES = 5000;
  *  "delete it again"). */
 export const TOMBSTONE_GC_MS = 180 * 24 * 60 * 60 * 1000;
 
-/**
- * Lamport-lite monotonic timestamp. Guarantees the returned value is strictly
- * greater than any timestamp this device has already observed for the record,
- * so a device whose wall clock runs slow cannot mint an `updatedAt` that looks
- * OLDER than what it last wrote (which would let a stale edit lose forever).
- *
- * @param {number} known - the largest timestamp already seen for this record (0 if none).
- * @param {number} now - Date.now() supplied by the caller.
- * @returns {number}
- */
-export function nextTimestamp(known, now) {
-    return Math.max(now || 0, (known || 0) + 1);
-}
+// Lamport-lite monotonic timestamp — shared with prefs / reading-list sync
+// (ISSUE-257); re-exported so existing importers keep working.
+import { nextTimestamp } from '../utils/lamportClock.js';
+export { nextTimestamp };
 
 /**
  * Deduplicate + cap a hash list deterministically. Under the cap the input set

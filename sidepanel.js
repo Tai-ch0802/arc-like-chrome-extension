@@ -161,7 +161,8 @@ async function refreshReadingList() {
 function applyReadingListVisibility(visible) {
     const section = document.getElementById('reading-list-section');
     if (section) {
-        section.style.display = visible ? '' : 'none';
+        // Hidden (never an error) on engines without chrome.readingList (ISSUE-257 FR-4.05).
+        section.style.display = (visible && api.hasReadingListApi()) ? '' : 'none';
     }
 }
 
@@ -227,8 +228,14 @@ async function initialize() {
         state.initAiAutoNaming(), // Load AI Auto Naming state (drives bg listener gating via storage)
         state.initAiCleanupVisibility(), // Load AI Cleanup visibility state
         state.initPageReaderVisibility(), // Load Page Reader visibility state
-        state.initNewswireVisibility() // Load Newswire visibility state (BASE-016)
+        state.initNewswireVisibility(), // Load Newswire visibility state (BASE-016)
+        state.initTabGroupingAvailability() // ISSUE-257: tab groups unusable on Dia → hide grouping UI
     ]);
+
+    // ISSUE-257: a capability flag flipped (apiManager's guard observed a
+    // failure in some context) — settingsBridge refreshed the cached value;
+    // re-render so per-row group buttons follow it.
+    document.addEventListener('capabilitiesChanged', () => { updateTabList(); });
 
     // Ensure custom language dictionary is loaded BEFORE applying any translations
     await api.loadCustomI18n(uiLang);

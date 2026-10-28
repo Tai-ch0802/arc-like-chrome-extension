@@ -1,4 +1,5 @@
-import { getStorage, setStorage, getAllWindows } from './apiManager.js';
+import { getStorage, setStorage, getAllWindows, isTabGroupingAvailable as isTabGroupingAvailableAsync } from './apiManager.js';
+import { getPrefsLike, setPrefsFromObject } from './prefs/prefsStore.js';
 import { filterBookmarksUnderFolder } from './bookmark/bookmarkUtils.js';
 
 // --- Smart Auto-Grouping Undo State ---
@@ -131,7 +132,7 @@ let readingListVisible = true; // Default to visible
  * @returns {Promise<boolean>} The visibility state.
  */
 export async function initReadingListVisibility() {
-  const result = await getStorage('sync', [READING_LIST_VISIBLE_KEY]);
+  const result = await getPrefsLike([READING_LIST_VISIBLE_KEY]);
   readingListVisible = result[READING_LIST_VISIBLE_KEY] !== false; // Default true if not set
   return readingListVisible;
 }
@@ -150,7 +151,7 @@ export function isReadingListVisible() {
  */
 export async function setReadingListVisible(visible) {
   readingListVisible = visible;
-  await setStorage('sync', { [READING_LIST_VISIBLE_KEY]: visible });
+  await setPrefsFromObject({ [READING_LIST_VISIBLE_KEY]: visible });
 }
 
 // --- Newswire Visibility State (BASE-016 N1) ---
@@ -163,7 +164,7 @@ let newswireVisible = true; // Default to visible
  * @returns {Promise<boolean>} The visibility state.
  */
 export async function initNewswireVisibility() {
-  const result = await getStorage('sync', [NEWSWIRE_VISIBLE_KEY]);
+  const result = await getPrefsLike([NEWSWIRE_VISIBLE_KEY]);
   newswireVisible = result[NEWSWIRE_VISIBLE_KEY] !== false; // Default true if not set
   return newswireVisible;
 }
@@ -182,7 +183,27 @@ export function isNewswireVisible() {
  */
 export async function setNewswireVisible(visible) {
   newswireVisible = visible;
-  await setStorage('sync', { [NEWSWIRE_VISIBLE_KEY]: visible });
+  await setPrefsFromObject({ [NEWSWIRE_VISIBLE_KEY]: visible });
+}
+
+// --- Browser capability: tab grouping (ISSUE-257) ---
+
+let tabGroupingAvailable = true; // Default: assume supported until observed otherwise
+
+/**
+ * Loads whether this browser can create tab groups (false once apiManager's
+ * guard recorded the per-device `tabGroupsUnsupported` flag, e.g. on Dia).
+ * Synchronous readers (renderers, context menu, Spotlight) use the cached value.
+ * @returns {Promise<boolean>}
+ */
+export async function initTabGroupingAvailability() {
+  tabGroupingAvailable = await isTabGroupingAvailableAsync();
+  return tabGroupingAvailable;
+}
+
+/** @returns {boolean} cached capability; true until initTabGroupingAvailability() says otherwise. */
+export function isTabGroupingAvailable() {
+  return tabGroupingAvailable;
 }
 
 // --- AI Grouping Visibility State ---
@@ -195,7 +216,7 @@ let aiGroupingVisible = true; // Default to visible
  * @returns {Promise<boolean>} The visibility state.
  */
 export async function initAiGroupingVisibility() {
-  const result = await getStorage('sync', [AI_GROUPING_VISIBLE_KEY]);
+  const result = await getPrefsLike([AI_GROUPING_VISIBLE_KEY]);
   aiGroupingVisible = result[AI_GROUPING_VISIBLE_KEY] !== false; // Default true if not set
   return aiGroupingVisible;
 }
@@ -214,7 +235,7 @@ export function isAiGroupingVisible() {
  */
 export async function setAiGroupingVisible(visible) {
   aiGroupingVisible = visible;
-  await setStorage('sync', { [AI_GROUPING_VISIBLE_KEY]: visible });
+  await setPrefsFromObject({ [AI_GROUPING_VISIBLE_KEY]: visible });
 }
 
 // --- AI Auto Group Naming State ---
@@ -227,7 +248,7 @@ let aiAutoNamingEnabled = true; // Default to enabled
  * @returns {Promise<boolean>}
  */
 export async function initAiAutoNaming() {
-  const result = await getStorage('sync', [AI_AUTO_NAMING_KEY]);
+  const result = await getPrefsLike([AI_AUTO_NAMING_KEY]);
   aiAutoNamingEnabled = result[AI_AUTO_NAMING_KEY] !== false; // Default true if not set
   return aiAutoNamingEnabled;
 }
@@ -238,7 +259,7 @@ export function isAiAutoNamingEnabled() {
 
 export async function setAiAutoNamingEnabled(enabled) {
   aiAutoNamingEnabled = enabled;
-  await setStorage('sync', { [AI_AUTO_NAMING_KEY]: enabled });
+  await setPrefsFromObject({ [AI_AUTO_NAMING_KEY]: enabled });
 }
 
 // --- AI Cleanup Suggestion Visibility State ---
@@ -247,7 +268,7 @@ const AI_CLEANUP_VISIBLE_KEY = 'aiCleanupVisible';
 let aiCleanupVisible = true; // Default to visible
 
 export async function initAiCleanupVisibility() {
-  const result = await getStorage('sync', [AI_CLEANUP_VISIBLE_KEY]);
+  const result = await getPrefsLike([AI_CLEANUP_VISIBLE_KEY]);
   aiCleanupVisible = result[AI_CLEANUP_VISIBLE_KEY] !== false;
   return aiCleanupVisible;
 }
@@ -258,7 +279,7 @@ export function isAiCleanupVisible() {
 
 export async function setAiCleanupVisible(visible) {
   aiCleanupVisible = visible;
-  await setStorage('sync', { [AI_CLEANUP_VISIBLE_KEY]: visible });
+  await setPrefsFromObject({ [AI_CLEANUP_VISIBLE_KEY]: visible });
 }
 
 // --- Page Reader Visibility State ---
@@ -271,7 +292,7 @@ let pageReaderVisible = true; // Default to visible
  * @returns {Promise<boolean>} The visibility state.
  */
 export async function initPageReaderVisibility() {
-  const result = await getStorage('sync', [PAGE_READER_VISIBLE_KEY]);
+  const result = await getPrefsLike([PAGE_READER_VISIBLE_KEY]);
   pageReaderVisible = result[PAGE_READER_VISIBLE_KEY] !== false; // Default true if not set
   return pageReaderVisible;
 }
@@ -290,7 +311,7 @@ export function isPageReaderVisible() {
  */
 export async function setPageReaderVisible(visible) {
   pageReaderVisible = visible;
-  await setStorage('sync', { [PAGE_READER_VISIBLE_KEY]: visible });
+  await setPrefsFromObject({ [PAGE_READER_VISIBLE_KEY]: visible });
 }
 
 // --- Hover Summarize State ---
@@ -303,7 +324,7 @@ let hoverSummarizeEnabled = true; // Default to enabled
  * @returns {Promise<boolean>} The enabled state.
  */
 export async function initHoverSummarize() {
-  const result = await getStorage('sync', [HOVER_SUMMARIZE_KEY]);
+  const result = await getPrefsLike([HOVER_SUMMARIZE_KEY]);
   hoverSummarizeEnabled = result[HOVER_SUMMARIZE_KEY] !== false; // Default true if not set
   return hoverSummarizeEnabled;
 }
@@ -322,7 +343,7 @@ export function isHoverSummarizeEnabled() {
  */
 export async function setHoverSummarizeEnabled(enabled) {
   hoverSummarizeEnabled = enabled;
-  await setStorage('sync', { [HOVER_SUMMARIZE_KEY]: enabled });
+  await setPrefsFromObject({ [HOVER_SUMMARIZE_KEY]: enabled });
 }
 
 // --- Reading List Summary Memory State ---
@@ -331,7 +352,7 @@ const READING_LIST_SUMMARY_KEY = 'readingListSummaryEnabled';
 let readingListSummaryEnabled = true; // Default to enabled
 
 export async function initReadingListSummary() {
-  const result = await getStorage('sync', [READING_LIST_SUMMARY_KEY]);
+  const result = await getPrefsLike([READING_LIST_SUMMARY_KEY]);
   readingListSummaryEnabled = result[READING_LIST_SUMMARY_KEY] !== false;
   return readingListSummaryEnabled;
 }
@@ -342,7 +363,7 @@ export function isReadingListSummaryEnabled() {
 
 export async function setReadingListSummaryEnabled(enabled) {
   readingListSummaryEnabled = enabled;
-  await setStorage('sync', { [READING_LIST_SUMMARY_KEY]: enabled });
+  await setPrefsFromObject({ [READING_LIST_SUMMARY_KEY]: enabled });
 }
 
 // --- UI Language Override State ---
@@ -355,7 +376,7 @@ let uiLanguage = 'auto'; // Default to 'auto' (follow browser)
  * @returns {Promise<string>} The configured UI language code.
  */
 export async function initUiLanguage() {
-  const result = await getStorage('sync', [UI_LANGUAGE_KEY]);
+  const result = await getPrefsLike([UI_LANGUAGE_KEY]);
   uiLanguage = result[UI_LANGUAGE_KEY] || 'auto';
   return uiLanguage;
 }
@@ -374,7 +395,7 @@ export function getUiLanguage() {
  */
 export async function setUiLanguage(lang) {
   uiLanguage = lang;
-  await setStorage('sync', { [UI_LANGUAGE_KEY]: lang });
+  await setPrefsFromObject({ [UI_LANGUAGE_KEY]: lang });
 }
 
 // --- Bookmark-Tab Linking State ---

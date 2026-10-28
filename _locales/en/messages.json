@@ -1216,7 +1216,7 @@
     "message": "Backup & Sync"
   },
   "syncAccountDesc": {
-    "message": "Back up and sync your workspaces and RSS subscriptions across devices via your own Google Drive."
+    "message": "Back up and sync your workspaces, RSS subscriptions, preferences and reading list across devices and browsers (Chrome, Dia and other Chromium browsers) via your own Google Drive."
   },
   "syncConflictLabel": {
     "message": "Sync conflicts"
@@ -1234,13 +1234,13 @@
     "message": "Connect Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "This uploads, to your own Google Drive (an app-private folder): tab URLs, titles, and group info for the workspaces you opt in; plus your RSS subscription list and a one-way fingerprint of article links already fetched. Workspace sync is opt-in per workspace and OFF by default; RSS data syncs automatically while connected. Disconnecting stops all uploads."
+    "message": "This uploads, to your own Google Drive (an app-private folder): tab URLs, titles, and group info for the workspaces you opt in; your RSS subscription list and a one-way fingerprint of article links already fetched; your news sources and their settings; your auto-grouping (routing) rules; your preferences (theme, language, section toggles); and your reading list (page URLs, titles, read state). On browsers other than Google Chrome, signing in also lets the extension read your account email to keep you signed in. Workspace sync is opt-in per workspace and OFF by default; the rest syncs automatically while connected. Disconnecting stops all uploads."
   },
   "syncConnectDisclosureTitle": {
     "message": "Connect Google Drive"
   },
   "syncConnectFailedNote": {
-    "message": "Could not connect. Google Drive sync requires Google Chrome with sign-in available."
+    "message": "Could not connect to Google. Make sure the sign-in window was not blocked, then try again."
   },
   "syncConnected": {
     "message": "Connected to Google Drive"
@@ -1823,5 +1823,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "This browser does not support the tab group API, so grouping features are unavailable here.",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "This browser does not support tab groups.",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "Please try again.",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "This browser",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "tab group API unavailable",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "the side panel could not be opened",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "Connected as $EMAIL$",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "What syncs",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "Workspaces you opt in, RSS subscriptions, news sources, routing rules, preferences (theme, language, section toggles) and your reading list.",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

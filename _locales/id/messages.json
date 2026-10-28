@@ -1234,7 +1234,7 @@
     "message": "Pencadangan & Sinkronisasi"
   },
   "syncAccountDesc": {
-    "message": "Cadangkan dan sinkronkan Workspaces serta langganan RSS Anda di seluruh perangkat melalui Google Drive Anda sendiri."
+    "message": "Cadangkan dan sinkronkan Workspaces, langganan RSS, preferensi, dan daftar bacaan Anda di berbagai perangkat dan browser (Chrome, Dia, dan browser Chromium lainnya) melalui Google Drive Anda sendiri."
   },
   "syncConflictLabel": {
     "message": "Konflik sinkronisasi"
@@ -1252,13 +1252,13 @@
     "message": "Hubungkan Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Ini mengunggah, ke Google Drive Anda sendiri (folder privat aplikasi): URL tab, judul, dan info grup untuk Workspaces yang Anda ikutkan; ditambah daftar langganan RSS Anda dan sidik jari satu arah dari tautan artikel yang sudah diambil. Sinkronisasi Workspace bersifat opt-in per Workspace dan NONAKTIF secara default; data RSS disinkronkan otomatis selama terhubung. Memutuskan koneksi menghentikan semua unggahan."
+    "message": "Ini mengunggah, ke Google Drive Anda sendiri (folder privat aplikasi): URL tab, judul, dan info grup untuk Workspaces yang Anda ikutsertakan; daftar langganan RSS Anda dan sidik jari satu arah dari tautan artikel yang sudah diambil; sumber berita Anda beserta pengaturannya; aturan pengelompokan otomatis (perutean) Anda; preferensi Anda (tema, bahasa, sakelar bagian); dan daftar bacaan Anda (URL halaman, judul, status baca). Di browser selain Google Chrome, proses masuk juga memungkinkan ekstensi membaca email akun Anda agar Anda tetap masuk. Sinkronisasi Workspace bersifat opt-in per Workspace dan MATI secara default; sisanya disinkronkan otomatis selama terhubung. Memutuskan koneksi menghentikan semua unggahan."
   },
   "syncConnectDisclosureTitle": {
     "message": "Hubungkan Google Drive"
   },
   "syncConnectFailedNote": {
-    "message": "Tidak dapat terhubung. Sinkronisasi Google Drive memerlukan Google Chrome dengan login yang tersedia."
+    "message": "Tidak dapat terhubung ke Google. Pastikan jendela masuk tidak diblokir, lalu coba lagi."
   },
   "syncConnected": {
     "message": "Terhubung ke Google Drive"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "Browser ini tidak mendukung API grup tab, sehingga fitur pengelompokan tidak tersedia di sini.",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "Browser ini tidak mendukung grup tab.",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "Silakan coba lagi.",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "Browser ini",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "API grup tab tidak tersedia",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "panel samping tidak dapat dibuka",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "Terhubung sebagai $EMAIL$",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "Yang disinkronkan",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "Workspaces yang Anda ikutsertakan, langganan RSS, sumber berita, aturan perutean, preferensi (tema, bahasa, sakelar bagian), dan daftar bacaan Anda.",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

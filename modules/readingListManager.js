@@ -49,15 +49,19 @@ async function findReadingListGroup() {
 /**
  * Adds a tab to the reading list group, creating the group if needed.
  * @param {number} tabId - The tab ID to add.
- * @returns {Promise<number>} The group ID.
+ * @returns {Promise<number|null>} The group ID, or null when grouping is
+ *   unavailable on this browser or the group operation failed (best-effort).
  */
 export async function addTabToReadingListGroup(tabId) {
+    // ISSUE-257 FR-1.01: on a browser without tab groups (Dia) skip grouping
+    // entirely — the caller still opens the tab and marks the entry read.
+    if (!(await api.isTabGroupingAvailable())) return null;
     const groups = await api.getTabGroupsInCurrentWindow();
     const existingGroup = groups.find(g => g.title === READING_LIST_GROUP_NAME);
 
     if (existingGroup) {
-        await api.groupTabs([tabId], existingGroup.id);
-        return existingGroup.id;
+        const joined = await api.groupTabs([tabId], existingGroup.id);
+        return joined == null ? null : existingGroup.id;
     }
 
     // Create a new group with the tab

@@ -1,4 +1,5 @@
 import * as api from './modules/apiManager.js';
+import * as prefs from './modules/prefs/prefsStore.js';
 import { applyTheme } from './modules/ui/settingManager.js';
 import * as customTheme from './modules/ui/customThemeManager.js';
 import * as state from './modules/stateManager.js';
@@ -9,7 +10,7 @@ import { initSpotlight } from './modules/spotlight/spotlightController.js';
 
 async function applyOwnTheme() {
     try {
-        const { theme } = await api.getStorage('sync', { theme: 'geek' });
+        const { theme } = await prefs.getPrefsLike({ theme: 'geek' });
         if (theme === 'custom') { await customTheme.loadAndApplyCustomTheme(); }
         else { applyTheme(theme); }
     } catch (e) { console.warn('spotlight theme apply failed', e); }
@@ -50,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         state.initAiGroupingVisibility(),
         state.initAiCleanupVisibility(),
         state.initPageReaderVisibility(),
+        state.initTabGroupingAvailability(), // ISSUE-257: hides Smart Group where tab groups are unusable
         workspaceManager.initWorkspaces(),
         tagManager.initTags(), // tag: 查詢需要(ISSUE-162 WP6)
     ]);

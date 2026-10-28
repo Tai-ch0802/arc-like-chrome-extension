@@ -9,6 +9,11 @@ import { applyTheme, applyDensity } from './settingManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 import * as state from '../stateManager.js';
+import { invalidateCapabilityFlag } from '../apiManager.js';
+import { isPrefStorageKey, prefNameFromKey, prefValuesEqual } from '../prefs/prefsStore.js';
+import { CAP_TAB_GROUPS, CAP_SIDE_PANEL } from '../utils/browserCapabilities.js';
+
+const CAPABILITY_FLAG_KEYS = [CAP_TAB_GROUPS, CAP_SIDE_PANEL];
 
 /**
  * Pure: map a storage change set to UI actions. No side effects.
@@ -18,7 +23,26 @@ import * as state from '../stateManager.js';
  */
 export function resolveSettingChangeActions(changes, areaName) {
     const actions = [];
-    if (areaName === 'sync') {
+    // ISSUE-257 WP3: preferences live in storage.local as `pref_<name>` records
+    // ({ v, t }); map them back to plain name → newValue so the mapping below is
+    // unchanged. Legacy storage.sync writes from not-yet-upgraded devices are
+    // deliberately ignored (no dual-write, BASE-014 §3.4).
+    const prefChanges = {};
+    if (areaName === 'local') {
+        for (const [key, change] of Object.entries(changes)) {
+            if (!isPrefStorageKey(key)) continue;
+            const rec = change && change.newValue;
+            const old = change && change.oldValue;
+            const nextV = rec && typeof rec === 'object' ? rec.v : undefined;
+            const oldV = old && typeof old === 'object' ? old.v : undefined;
+            // A Drive pull may rewrite a record with only a newer `t` and the same
+            // value — that must not re-apply themes or reload the panel (uiLanguage).
+            if (old !== undefined && prefValuesEqual(oldV, nextV)) continue;
+            prefChanges[prefNameFromKey(key)] = { newValue: nextV };
+        }
+    }
+    if (Object.keys(prefChanges).length) {
+        const changes = prefChanges; // shadow on purpose: same mapping as before the move
         if (changes.theme) actions.push({ type: 'applyTheme', value: changes.theme.newValue });
         if (changes.listDensity) actions.push({ type: 'applyDensity', value: changes.listDensity.newValue });
         if (changes.customTheme) actions.push({ type: 'applyCustomTheme' });
@@ -49,7 +73,8 @@ export function resolveSettingChangeActions(changes, areaName) {
         for (const key of refreshKeys) {
             if (changes[key]) actions.push({ type: 'refreshState', key });
         }
-    } else if (areaName === 'local') {
+    }
+    if (areaName === 'local') {
         if (changes.custom_bg_image_data) actions.push({ type: 'applyBackground' });
         // The background service worker writes Drive-sync status here; surface it
         // to the sidepanel badge via a DOM event (applySettingChanges dispatches it).
@@ -57,6 +82,15 @@ export function resolveSettingChangeActions(changes, areaName) {
         // aiManager (any context, incl. the background SW) records cloud AI
         // 401/403 here; the sidepanel shows a throttled toast (modules/ui/toast.js).
         if (changes.aiProviderAuthError) actions.push({ type: 'dispatch', event: 'aiProviderAuthErrorChanged', detail: changes.aiProviderAuthError.newValue });
+        // ISSUE-257: per-device capability flags (written by apiManager's group
+        // guard in whichever context hit the failure). The sidepanel re-evaluates
+        // grouping UI; applySettingChanges also drops apiManager's cached value.
+        for (const name of CAPABILITY_FLAG_KEYS) {
+            if (changes[name]) {
+                const next = changes[name].newValue;
+                actions.push({ type: 'dispatch', event: 'capabilitiesChanged', detail: { name, unsupported: Boolean(next && next.unsupported) } });
+            }
+        }
     }
     return actions;
 }
@@ -77,6 +111,10 @@ export async function applySettingChanges(actions) {
             } else if (a.type === 'reload') {
                 window.location.reload();
             } else if (a.type === 'dispatch') {
+                if (a.event === 'capabilitiesChanged') {
+                    invalidateCapabilityFlag(a.detail.name);
+                    await state.initTabGroupingAvailability();
+                }
                 document.dispatchEvent(new CustomEvent(a.event, { detail: a.detail }));
             } else if (a.type === 'refreshState') {
                 const initByKey = {

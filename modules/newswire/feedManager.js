@@ -6,6 +6,7 @@
 // 20s keepalive(官方建議,涵蓋靜流時段),回收後由 newswireWatchdog
 // alarm(30s)喚醒重建。storage 經 apiManager;alarms/runtime 為 SW 專屬。
 
+import { getPrefsLike } from '../prefs/prefsStore.js';
 import { getStorage, setStorage } from '../apiManager.js';
 import { parseTree, parseFj, parseAlpaca, parseJin10, parseTgMessage } from './normalizer.js';
 import { createDedupeSet } from './dedupe.js';
@@ -206,7 +207,7 @@ async function loadState() {
         await setStorage('local', { [NEWSWIRE_CONFIG_KEY]: config });
     }
     keysCache = res[NEWSWIRE_KEYS_KEY] || {};
-    const { uiLanguage } = await getStorage('sync', { uiLanguage: 'auto' });
+    const { uiLanguage } = await getPrefsLike({ uiLanguage: 'auto' });
     uiLangCache = (uiLanguage && uiLanguage !== 'auto')
         ? uiLanguage
         : (chrome.i18n?.getUILanguage?.() || '').replace('-', '_');
@@ -423,7 +424,7 @@ export function handleTgOffscreenMessage(message, sendResponse = () => {}) {
  * 變更頻率低);sync uiLanguage 變更也重建(金十 traditional 參數跟著換)。
  */
 export function handleNewswireConfigChange(changes, areaName) {
-    const uiLangChanged = areaName === 'sync' && !!changes.uiLanguage;
+    const uiLangChanged = areaName === 'local' && !!changes.pref_uiLanguage;
     if (areaName !== 'local' && !uiLangChanged) return;
     if (!uiLangChanged && !changes[NEWSWIRE_CONFIG_KEY] && !changes[NEWSWIRE_KEYS_KEY]) return;
     (async () => {

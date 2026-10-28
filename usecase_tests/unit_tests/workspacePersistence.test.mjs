@@ -317,3 +317,34 @@ describe('以目前視窗覆蓋工作區', () => {
         expect(out).toHaveLength(0);
     });
 });
+
+// ISSUE-257 FR-1.03a: on a device whose browser cannot group tabs, the
+// auto-snapshot must carry the stored snapshot's group fields forward.
+describe('snapshotIntoWorkspace carry-forward (ISSUE-257)', () => {
+    const grouped = [{ url: 'https://a.com', title: 'A', pinned: false, groupKey: 100, groupTitle: 'Docs', groupColor: 'blue' }];
+
+    it('keeps group fields when tabGroupsUnsupported is set and live tabs report groupId -1', async () => {
+        const fake = createFakeChrome();
+        globalThis.chrome = fake.chrome;
+        fake.store.local.tabGroupsUnsupported = { unsupported: true, brand: 'Chromium', majorVersion: 156, at: 1 };
+        seedV2(fake.store, 'X', { tabs: grouped, rev: 3, updatedAt: 5000 });
+        fakeTabsByWindow = { 1: [{ url: 'https://a.com', title: 'A2', pinned: false, groupId: -1 }] };
+        const m = await loadManagerInstance();
+        await m.initWorkspaces();
+        await m.snapshotIntoWorkspace('X', 1);
+        expect(fake.store.local.wsSnap_X.tabs).toEqual([
+            { url: 'https://a.com', title: 'A2', pinned: false, groupKey: 100, groupTitle: 'Docs', groupColor: 'blue' },
+        ]);
+    });
+
+    it('does not carry forward when grouping is available (live state wins)', async () => {
+        const fake = createFakeChrome();
+        globalThis.chrome = fake.chrome;
+        seedV2(fake.store, 'X', { tabs: grouped, rev: 3, updatedAt: 5000 });
+        fakeTabsByWindow = { 1: [{ url: 'https://a.com', title: 'A2', pinned: false, groupId: -1 }] };
+        const m = await loadManagerInstance();
+        await m.initWorkspaces();
+        await m.snapshotIntoWorkspace('X', 1);
+        expect(fake.store.local.wsSnap_X.tabs).toEqual([{ url: 'https://a.com', title: 'A2', pinned: false }]);
+    });
+});

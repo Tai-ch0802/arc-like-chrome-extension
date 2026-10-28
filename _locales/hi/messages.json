@@ -1216,7 +1216,7 @@
     "message": "बैकअप और सिंक"
   },
   "syncAccountDesc": {
-    "message": "अपनी खुद की Google Drive के ज़रिए अपने Workspaces और RSS सदस्यताओं का बैकअप लें और उन्हें सभी डिवाइस पर सिंक करें।"
+    "message": "अपनी खुद की Google Drive के ज़रिए अपने Workspaces, RSS सदस्यताओं, प्राथमिकताओं और रीडिंग लिस्ट का बैकअप लें और उन्हें सभी डिवाइस और ब्राउज़र (Chrome, Dia और अन्य Chromium ब्राउज़र) पर सिंक करें।"
   },
   "syncConflictLabel": {
     "message": "सिंक विरोध"
@@ -1234,13 +1234,13 @@
     "message": "Google Drive कनेक्ट करें"
   },
   "syncConnectDisclosureMessage": {
-    "message": "यह आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) पर अपलोड करता है: आपके द्वारा ऑप्ट-इन किए गए Workspaces के टैब URL, शीर्षक और समूह जानकारी; साथ ही आपकी RSS सदस्यता सूची और पहले से प्राप्त किए गए लेख लिंक का एक-तरफ़ा फ़िंगरप्रिंट। Workspace सिंक प्रत्येक Workspace के लिए ऑप्ट-इन है और डिफ़ॉल्ट रूप से बंद है; कनेक्ट रहने पर RSS डेटा स्वचालित रूप से सिंक होता है। कनेक्शन हटाने पर सभी अपलोड रुक जाते हैं।"
+    "message": "यह आपकी खुद की Google Drive (ऐप-निजी फ़ोल्डर) पर अपलोड करता है: आपके द्वारा ऑप्ट-इन किए गए Workspaces के टैब URL, शीर्षक और ग्रुप की जानकारी; आपकी RSS सदस्यता सूची और पहले से प्राप्त किए गए लेख लिंक का एक-तरफ़ा फ़िंगरप्रिंट; आपके समाचार स्रोत और उनकी सेटिंग्स; आपके ऑटो-ग्रुपिंग (रूटिंग) नियम; आपकी प्राथमिकताएँ (थीम, भाषा, सेक्शन टॉगल); और आपकी रीडिंग लिस्ट (पेज URL, शीर्षक, पढ़ने की स्थिति)। Google Chrome के अलावा अन्य ब्राउज़रों पर, साइन-इन करने से एक्सटेंशन आपको साइन-इन रखने के लिए आपके खाते का ईमेल भी पढ़ सकता है। Workspace सिंक प्रत्येक Workspace के लिए ऑप्ट-इन है और डिफ़ॉल्ट रूप से बंद है; बाकी सब कनेक्ट रहने तक अपने-आप सिंक होता है। डिस्कनेक्ट करने पर सभी अपलोड रुक जाते हैं।"
   },
   "syncConnectDisclosureTitle": {
     "message": "Google Drive कनेक्ट करें"
   },
   "syncConnectFailedNote": {
-    "message": "कनेक्ट नहीं हो सका। Google Drive सिंक के लिए साइन-इन उपलब्ध वाला Google Chrome आवश्यक है।"
+    "message": "Google से कनेक्ट नहीं हो सका। सुनिश्चित करें कि साइन-इन विंडो ब्लॉक नहीं हुई थी, फिर दोबारा कोशिश करें।"
   },
   "syncConnected": {
     "message": "Google Drive से कनेक्ट किया गया"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "यह ब्राउज़र टैब ग्रुप API को सपोर्ट नहीं करता, इसलिए यहाँ ग्रुपिंग सुविधाएँ उपलब्ध नहीं हैं।",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "यह ब्राउज़र टैब ग्रुप को सपोर्ट नहीं करता।",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "कृपया फिर से कोशिश करें।",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "यह ब्राउज़र",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "टैब ग्रुप API उपलब्ध नहीं है",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "साइड पैनल नहीं खोला जा सका",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "$EMAIL$ के रूप में कनेक्ट है",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "क्या सिंक होता है",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "आपके द्वारा ऑप्ट-इन किए गए Workspaces, RSS सदस्यताएँ, समाचार स्रोत, रूटिंग नियम, प्राथमिकताएँ (थीम, भाषा, सेक्शन टॉगल) और आपकी रीडिंग लिस्ट।",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

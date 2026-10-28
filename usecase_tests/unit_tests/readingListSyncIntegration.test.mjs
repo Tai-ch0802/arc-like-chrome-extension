@@ -1,0 +1,312 @@
+/**
+ * ISSUE-257 WP4 — reading list ↔ Drive two-way sync, end-to-end in Node.
+ *
+ * Pieces under test: createReadingListSyncStore (SW-side sidecar + echo guard
+ * over a chrome.readingList-like API), runReadingListSync (one cycle against a
+ * SyncProvider) and the pure merge in readingListSyncLogic. Two "devices" each
+ * get their own fake reading list + fake storage; both share the in-memory
+ * fake SyncProvider.
+ */
+import { createReadingListSyncStore } from '../../modules/readingList/readingListSyncStore.js';
+import { runReadingListSync, READING_LIST_SYNC_FILE } from '../../modules/readingList/readingListSync.js';
+import { createFakeSyncProvider } from '../../modules/sync/syncProvider.js';
+
+/** Minimal chrome.readingList fake that also fires the three events. */
+function fakeReadingList() {
+    const entries = new Map();
+    const listeners = { added: [], removed: [], updated: [] };
+    const queue = [];
+    const state = { defer: false };
+    const fire = (kind, entry) => {
+        const deliver = () => listeners[kind].forEach((fn) => fn({ ...entry }));
+        if (state.defer) queue.push(deliver); else deliver();
+    };
+    const now = () => Date.now();
+    return {
+        entries,
+        state,
+        flushEvents: () => { while (queue.length) queue.shift()(); },
+        api: {
+            query: async ({ url } = {}) => {
+                const all = [...entries.values()].map((e) => ({ ...e }));
+                return url === undefined ? all : all.filter((e) => e.url === url);
+            },
+            addEntry: async ({ url, title, hasBeenRead }) => {
+                if (entries.has(url)) throw new Error('Duplicate URL.');
+                const e = { url, title, hasBeenRead: Boolean(hasBeenRead), creationTime: now(), lastUpdateTime: now() };
+                entries.set(url, e);
+                fire('added', e);
+            },
+            updateEntry: async ({ url, title, hasBeenRead }) => {
+                const e = entries.get(url);
+                if (!e) throw new Error('Not found.');
+                if (title !== undefined) e.title = title;
+                if (hasBeenRead !== undefined) e.hasBeenRead = hasBeenRead;
+                e.lastUpdateTime = now();
+                fire('updated', e);
+            },
+            removeEntry: async ({ url }) => {
+                const e = entries.get(url);
+                if (!e) throw new Error('Not found.');
+                entries.delete(url);
+                fire('removed', e);
+            },
+            onEntryAdded: { addListener: (fn) => listeners.added.push(fn) },
+            onEntryRemoved: { addListener: (fn) => listeners.removed.push(fn) },
+            onEntryUpdated: { addListener: (fn) => listeners.updated.push(fn) },
+        },
+    };
+}
+
+function fakeKv() {
+    const data = {};
+    const clone = (v) => JSON.parse(JSON.stringify(v));
+    return {
+        data,
+        get: async (k) => (k in data ? clone(data[k]) : undefined),
+        set: async (k, v) => { data[k] = clone(v); },
+        remove: async (k) => { delete data[k]; },
+    };
+}
+
+function device(clock0 = 1_000_000) {
+    const rl = fakeReadingList();
+    const kv = fakeKv();
+    let clock = clock0;
+    const store = createReadingListSyncStore({ readingList: rl.api, storage: kv, now: () => clock });
+    store.attach(); // registers the event listeners
+    const sync = (provider) => runReadingListSync({ provider, store, now: () => clock });
+    return { rl, kv, store, sync, tick: (n) => { clock += n; } };
+}
+
+// Let the fake events' async handlers settle.
+const settle = () => new Promise((r) => setTimeout(r, 0));
+
+describe('reading list sync — cross-device', () => {
+    it('an entry added on A appears on B, and B pushes nothing back (echo guard)', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device(2_000_000);
+        await A.rl.api.addEntry({ url: 'https://x/1', title: 'One', hasBeenRead: false });
+        await settle();
+        await A.sync(provider);
+        const v1 = (await provider.read(READING_LIST_SYNC_FILE)).version;
+
+        await B.sync(provider);
+        await settle();
+        expect(B.rl.entries.get('https://x/1')).toMatchObject({ title: 'One', hasBeenRead: false });
+        // The addEntry on B fired onEntryAdded — the echo guard must not treat it
+        // as a local edit, so a second cycle writes nothing.
+        await B.sync(provider);
+        expect((await provider.read(READING_LIST_SYNC_FILE)).version).toBe(v1);
+    });
+
+    it('marking read on B propagates to A', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/2', title: 'Two', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        B.tick(10);
+        await B.rl.api.updateEntry({ url: 'https://x/2', hasBeenRead: true });
+        await settle();
+        await B.sync(provider); await A.sync(provider); await settle();
+        expect(A.rl.entries.get('https://x/2').hasBeenRead).toBe(true);
+    });
+
+    it('AC-4.02: a delete on A beats a later-pulled read-toggle on B; nothing resurrects', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/3', title: 'Three', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        // B toggles read BEFORE A's delete, but only syncs after it.
+        B.tick(5);
+        await B.rl.api.updateEntry({ url: 'https://x/3', hasBeenRead: true });
+        await settle();
+        A.tick(50);
+        await A.rl.api.removeEntry({ url: 'https://x/3' });
+        await settle();
+        await A.sync(provider);
+        await B.sync(provider); await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        expect(A.rl.entries.has('https://x/3')).toBe(false);
+        expect(B.rl.entries.has('https://x/3')).toBe(false);
+    });
+
+    it('a deletion made while the clock lags still wins over the entry (tombstone > updatedAt)', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(5_000_000); const B = device(1_000_000); // B's clock is far behind
+        await A.rl.api.addEntry({ url: 'https://x/4', title: 'Four', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        await B.rl.api.removeEntry({ url: 'https://x/4' }); // B deletes with now < entry.updatedAt
+        await settle();
+        await B.sync(provider); await A.sync(provider); await settle();
+        expect(A.rl.entries.has('https://x/4')).toBe(false);
+    });
+
+    it('re-adding a previously deleted url resurrects it everywhere', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/5', title: 'Five', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        A.tick(10);
+        await A.rl.api.removeEntry({ url: 'https://x/5' });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        expect(B.rl.entries.has('https://x/5')).toBe(false);
+        A.tick(10);
+        await A.rl.api.addEntry({ url: 'https://x/5', title: 'Five again', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        expect(B.rl.entries.get('https://x/5')).toMatchObject({ title: 'Five again' });
+    });
+
+    it('twenty near-simultaneous deletions all produce tombstones (serialised sidecar writes)', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device();
+        for (let i = 0; i < 20; i++) await A.rl.api.addEntry({ url: `https://x/bulk/${i}`, title: `b${i}`, hasBeenRead: true });
+        await settle();
+        await A.sync(provider);
+        await Promise.all([...Array(20).keys()].map((i) => A.rl.api.removeEntry({ url: `https://x/bulk/${i}` })));
+        await settle();
+        await A.store.idle(); // wait for the serialised sidecar chain
+        const tombstones = await A.store.getTombstones();
+        expect(Object.keys(tombstones)).toHaveLength(20);
+    });
+
+    it('entries that pre-date the sync layer are exported with updatedAt 0 (never dropped as removals)', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device();
+        A.rl.entries.set('https://x/legacy', { url: 'https://x/legacy', title: 'Legacy', hasBeenRead: false, creationTime: 1, lastUpdateTime: 1 });
+        await A.sync(provider);
+        const file = (await provider.read(READING_LIST_SYNC_FILE)).json;
+        expect(file.entries['https://x/legacy']).toMatchObject({ title: 'Legacy', updatedAt: 0 });
+        expect(A.rl.entries.has('https://x/legacy')).toBe(true);
+    });
+
+    it('does nothing when the provider is not connected', async () => {
+        const provider = createFakeSyncProvider({ connected: false });
+        const A = device();
+        await A.rl.api.addEntry({ url: 'https://x/6', title: 'Six', hasBeenRead: false });
+        await settle();
+        await A.sync(provider);
+        expect(await provider.read(READING_LIST_SYNC_FILE)).toBeNull();
+    });
+});
+
+
+describe('reading list sync — review round 1 (echo guard and mid-cycle edits)', () => {
+    it('events that arrive AFTER applyMerged (real Chrome timing) are still recognised as echoes', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device(2_000_000);
+        await A.rl.api.addEntry({ url: 'https://x/late', title: 'Late', hasBeenRead: false });
+        await settle();
+        await A.sync(provider);
+        const v1 = (await provider.read(READING_LIST_SYNC_FILE)).version;
+        B.rl.state.defer = true;            // hold the events back…
+        await B.sync(provider);             // …through the whole apply + sidecar write
+        B.rl.state.defer = false;
+        B.rl.flushEvents();                 // now they land, late
+        await settle();
+        await B.store.idle();
+        await B.sync(provider);
+        expect((await provider.read(READING_LIST_SYNC_FILE)).version).toBe(v1); // no echo push
+    });
+
+    it('a user deletion made while a sync cycle is running is not clobbered (no resurrection)', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/v', title: 'V', hasBeenRead: false });
+        await A.rl.api.addEntry({ url: 'https://x/w', title: 'W', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        // A changes W so B's next cycle has something to apply.
+        A.tick(10);
+        await A.rl.api.updateEntry({ url: 'https://x/w', hasBeenRead: true });
+        await settle();
+        await A.sync(provider);
+        // During B's cycle (after exportState, before applyMerged) the user deletes V on B.
+        const hooked = {
+            ...provider,
+            read: async (name) => {
+                const r = await provider.read(name);
+                B.tick(20);
+                await B.rl.api.removeEntry({ url: 'https://x/v' });
+                await settle();
+                return r;
+            },
+        };
+        await runReadingListSync({ provider: hooked, store: B.store, now: () => 1_000_100 });
+        await B.store.idle();
+        expect(await B.store.getTombstones()).toHaveProperty('https://x/v');
+        await B.sync(provider); await A.sync(provider); await B.sync(provider); await settle();
+        expect(B.rl.entries.has('https://x/v')).toBe(false);
+        expect(A.rl.entries.has('https://x/v')).toBe(false);
+    });
+
+    it('a user toggle made while a sync cycle is running keeps its newer stamp', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/u', title: 'U', hasBeenRead: true });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        A.tick(10);
+        await A.rl.api.updateEntry({ url: 'https://x/u', title: 'U2' });
+        await settle();
+        await A.sync(provider);
+        const hooked = {
+            ...provider,
+            read: async (name) => {
+                const r = await provider.read(name);
+                B.tick(50);
+                await B.rl.api.updateEntry({ url: 'https://x/u', hasBeenRead: false }); // user: back to unread
+                await settle();
+                return r;
+            },
+        };
+        await runReadingListSync({ provider: hooked, store: B.store, now: () => 1_000_200 });
+        await B.store.idle();
+        const meta = await B.store.getMeta();
+        expect(meta['https://x/u'].hasBeenRead).toBe(false);
+        await B.sync(provider); await A.sync(provider); await settle();
+        expect(A.rl.entries.get('https://x/u').hasBeenRead).toBe(false);
+    });
+
+    it('a failed engine write does not adopt the remote stamp for that url', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/f', title: 'F', hasBeenRead: false });
+        await settle();
+        await A.sync(provider);
+        const realAdd = B.rl.api.addEntry;
+        B.rl.api.addEntry = async () => { throw new Error('Duplicate URL.'); };
+        await B.sync(provider);
+        await B.store.idle();
+        expect(await B.store.getMeta()).not.toHaveProperty('https://x/f');
+        B.rl.api.addEntry = realAdd;
+        await B.sync(provider); await settle();
+        expect(B.rl.entries.has('https://x/f')).toBe(true);
+    });
+});
+
+
+describe('reading list sync — final review I4 (tombstones are garbage-collected locally)', () => {
+    it('a never-synced device does not accumulate tombstones older than the GC window', async () => {
+        const A = device(1_000_000);
+        await A.rl.api.addEntry({ url: 'https://x/old', title: 'Old', hasBeenRead: true });
+        await settle();
+        await A.rl.api.removeEntry({ url: 'https://x/old' });
+        await settle(); await A.store.idle();
+        expect(await A.store.getTombstones()).toHaveProperty('https://x/old');
+        A.tick(200 * 24 * 60 * 60 * 1000); // 200 days later
+        await A.rl.api.addEntry({ url: 'https://x/new', title: 'New', hasBeenRead: true });
+        await settle();
+        await A.rl.api.removeEntry({ url: 'https://x/new' });
+        await settle(); await A.store.idle();
+        const tombs = await A.store.getTombstones();
+        expect(tombs).not.toHaveProperty('https://x/old');
+        expect(tombs).toHaveProperty('https://x/new');
+    });
+});

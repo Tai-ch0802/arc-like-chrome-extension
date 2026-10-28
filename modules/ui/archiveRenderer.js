@@ -7,6 +7,7 @@
 // single-writer); this module only reads.
 
 import * as api from '../apiManager.js';
+import * as prefs from '../prefs/prefsStore.js';
 import { getArchived, getSnoozed } from '../lifecycle/archiveStore.js';
 import { reconcileDOM } from '../utils/domUtils.js';
 import { formatRelativeTime, formatWakeTime } from '../utils/timeUtils.js';
@@ -103,7 +104,7 @@ function buildItem(item, { snoozed }) {
  *  show AND auto-archive is off. */
 async function resolveHidden(archivedCount, snoozedCount) {
     if (archivedCount || snoozedCount) return false;
-    const res = await api.getStorage('sync', { autoArchiveEnabled: false });
+    const res = await prefs.getPrefsLike({ autoArchiveEnabled: false });
     return res.autoArchiveEnabled !== true;
 }
 
@@ -156,14 +157,14 @@ function initToggle() {
         const list = el.list();
         if (list) list.classList.toggle('collapsed', collapsed);
     };
-    api.getStorage('sync', ['archiveCollapsed'])
+    api.getStorage('local', ['archiveCollapsed'])
         .then(r => setCollapsed(r.archiveCollapsed === true))
         .catch(() => {});
     toggleBtn.addEventListener('click', (e) => {
         if (e.target.closest('#archive-count-badge')) return;
         const collapsed = toggleBtn.getAttribute('aria-expanded') === 'true';
         setCollapsed(collapsed);
-        api.setStorage('sync', { archiveCollapsed: collapsed });
+        api.setStorage('local', { archiveCollapsed: collapsed });
     });
 }
 
@@ -272,7 +273,7 @@ export function initArchiveSection() {
     }, 150);
     chrome.storage.onChanged.addListener((changes, area) => {
         if (area === 'local' && (changes.archivedTabs || changes.snoozedTabs)) refresh();
-        if (area === 'sync' && changes.autoArchiveEnabled) refresh();
+        if (area === 'local' && changes.pref_autoArchiveEnabled) refresh();
     });
 
     refreshArchiveSection().catch(err => console.warn('[archive] initial render failed', err));

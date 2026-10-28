@@ -77,12 +77,12 @@ export async function promptCreateRuleForTab(tab) {
     try {
         const fresh = await api.getTab(tab.id);
         if (fresh && !fresh.pinned && fresh.groupId === chrome.tabGroups.TAB_GROUP_ID_NONE) {
-            if (pick.existingGroupId !== null) {
-                await api.groupTabs([tab.id], pick.existingGroupId);
-            } else {
-                await api.addTabToNewGroup(tab.id, pick.groupTitle, pick.groupColor || undefined);
-            }
-            applied = true;
+            // Wrappers resolve null when grouping is unavailable (ISSUE-257);
+            // the rule is still saved for browsers that can apply it.
+            const result = (pick.existingGroupId !== null)
+                ? await api.groupTabs([tab.id], pick.existingGroupId)
+                : await api.addTabToNewGroup(tab.id, pick.groupTitle, pick.groupColor || undefined);
+            applied = result != null;
         }
     } catch (err) {
         console.warn('[routing] immediate apply failed', err);

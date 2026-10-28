@@ -1213,7 +1213,7 @@
     "message": "สำรองข้อมูลและซิงค์"
   },
   "syncAccountDesc": {
-    "message": "สำรองข้อมูลและซิงค์ Workspaces และการสมัครรับ RSS ของคุณข้ามอุปกรณ์ผ่าน Google ไดรฟ์ของคุณเอง"
+    "message": "สำรองข้อมูลและซิงค์ Workspaces, การสมัครรับ RSS, การตั้งค่า และรายการอ่านของคุณข้ามอุปกรณ์และเบราว์เซอร์ (Chrome, Dia และเบราว์เซอร์ Chromium อื่น ๆ) ผ่าน Google ไดรฟ์ของคุณเอง"
   },
   "syncConflictLabel": {
     "message": "ความขัดแย้งในการซิงค์"
@@ -1231,13 +1231,13 @@
     "message": "เชื่อมต่อ Google ไดรฟ์"
   },
   "syncConnectDisclosureMessage": {
-    "message": "การดำเนินการนี้จะอัปโหลดไปยัง Google ไดรฟ์ของคุณเอง (โฟลเดอร์ส่วนตัวของแอป) ได้แก่ URL ของแท็บ ชื่อ และข้อมูลกลุ่มของ Workspaces ที่คุณเลือกเข้าร่วม รวมถึงรายการการสมัครรับ RSS ของคุณ และลายนิ้วมือแบบทางเดียวของลิงก์บทความที่ดึงมาแล้ว การซิงค์ Workspace เป็นแบบเลือกเข้าร่วมต่อ Workspace และปิดอยู่โดยค่าเริ่มต้น ส่วนข้อมูล RSS จะซิงค์โดยอัตโนมัติขณะเชื่อมต่ออยู่ การยกเลิกการเชื่อมต่อจะหยุดการอัปโหลดทั้งหมด"
+    "message": "การดำเนินการนี้จะอัปโหลดไปยัง Google ไดรฟ์ของคุณเอง (โฟลเดอร์ส่วนตัวของแอป) ได้แก่ URL ของแท็บ ชื่อ และข้อมูลกลุ่มของ Workspaces ที่คุณเลือกเปิดใช้ รายการการสมัครรับ RSS และลายนิ้วมือแบบทางเดียวของลิงก์บทความที่ดึงมาแล้ว แหล่งข่าวและการตั้งค่าของแหล่งข่าว กฎการจัดกลุ่มอัตโนมัติ (การกำหนดเส้นทาง) การตั้งค่าของคุณ (ธีม ภาษา สวิตช์ของส่วนต่าง ๆ) และรายการอ่านของคุณ (URL ของหน้า ชื่อ สถานะการอ่าน) ในเบราว์เซอร์อื่นที่ไม่ใช่ Google Chrome การลงชื่อเข้าใช้ยังอนุญาตให้ส่วนขยายอ่านอีเมลบัญชีของคุณเพื่อให้คุณคงสถานะลงชื่อเข้าใช้ไว้ได้ด้วย การซิงค์ Workspace เป็นแบบเลือกเปิดเองทีละ Workspace และปิดโดยค่าเริ่มต้น ส่วนที่เหลือจะซิงค์อัตโนมัติขณะที่เชื่อมต่ออยู่ การตัดการเชื่อมต่อจะหยุดการอัปโหลดทั้งหมด"
   },
   "syncConnectDisclosureTitle": {
     "message": "เชื่อมต่อ Google ไดรฟ์"
   },
   "syncConnectFailedNote": {
-    "message": "ไม่สามารถเชื่อมต่อได้ การซิงค์ Google ไดรฟ์ต้องใช้ Google Chrome ที่สามารถลงชื่อเข้าใช้ได้"
+    "message": "ไม่สามารถเชื่อมต่อกับ Google ได้ ตรวจสอบว่าหน้าต่างลงชื่อเข้าใช้ไม่ถูกบล็อก แล้วลองอีกครั้ง"
   },
   "syncConnected": {
     "message": "เชื่อมต่อกับ Google ไดรฟ์แล้ว"
@@ -1820,5 +1820,47 @@
         "content": "$1"
       }
     }
+  },
+  "tabGroupsUnsupportedNote": {
+    "message": "เบราว์เซอร์นี้ไม่รองรับ API กลุ่มแท็บ ฟีเจอร์การจัดกลุ่มจึงใช้งานที่นี่ไม่ได้",
+    "description": "Options note shown under grouping-dependent toggles when the browser (e.g. Dia) cannot create tab groups."
+  },
+  "tabGroupsUnsupportedToast": {
+    "message": "เบราว์เซอร์นี้ไม่รองรับกลุ่มแท็บ",
+    "description": "Toast when Smart Group is triggered on a browser without tab group support."
+  },
+  "autoGroupingRetryHint": {
+    "message": "โปรดลองอีกครั้ง",
+    "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
+  },
+  "capabilityRowLabel": {
+    "message": "เบราว์เซอร์นี้",
+    "description": "Label of the browser-capability row at the top of Backup & Sync."
+  },
+  "capabilityTabGroupsUnsupported": {
+    "message": "ไม่มี API กลุ่มแท็บ",
+    "description": "Capability row fragment: tab group API unavailable on this browser."
+  },
+  "capabilitySidePanelUnavailable": {
+    "message": "ไม่สามารถเปิดแผงด้านข้างได้",
+    "description": "Capability row fragment: opening the side panel failed on this browser."
+  },
+  "syncConnectedAs": {
+    "message": "เชื่อมต่อแล้วในชื่อ $EMAIL$",
+    "description": "Connected label when the account email is known (non-Chrome web sign-in).",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "name@example.com"
+      }
+    }
+  },
+  "syncScopeHeader": {
+    "message": "สิ่งที่ซิงค์",
+    "description": "Header of the list of data categories that sync through Google Drive."
+  },
+  "syncScopeDesc": {
+    "message": "Workspaces ที่คุณเลือกเปิดใช้, การสมัครรับ RSS, แหล่งข่าว, กฎการกำหนดเส้นทาง, การตั้งค่า (ธีม ภาษา สวิตช์ของส่วนต่าง ๆ) และรายการอ่านของคุณ",
+    "description": "One-sentence list of what syncs through Google Drive."
   }
 }

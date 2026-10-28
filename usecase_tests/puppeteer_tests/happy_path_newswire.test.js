@@ -217,13 +217,13 @@ describe('Newswire Section (BASE-016 N1)', () => {
     }, 120000);
 
     test('newswireVisible toggle hides/shows the section via the settings bridge', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({ newswireVisible: false }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_newswireVisible: { v: false, t: 1 } }));
         await page.waitForFunction(() =>
             document.getElementById('newswire-section').style.display === 'none', { timeout: 5000 });
 
-        await page.evaluate(() => chrome.storage.sync.set({ newswireVisible: true }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_newswireVisible: { v: true, t: 2 } }));
         await page.waitForFunction(() =>
             document.getElementById('newswire-section').style.display !== 'none', { timeout: 5000 });
-        await page.evaluate(() => chrome.storage.sync.remove('newswireVisible'));
+        await page.evaluate(() => chrome.storage.local.remove('pref_newswireVisible'));
     }, 120000);
 });

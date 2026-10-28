@@ -23,19 +23,21 @@ describe('Routing options section', () => {
         await teardownBrowser(browser);
     });
 
-    test('renders the global toggle and empty state; toggle persists to storage.sync', async () => {
+    test('renders the global toggle and empty state; toggle persists to the prefs store (local pref_routingEnabled)', async () => {
         await page.waitForSelector('#routing-enabled-toggle', { timeout: 5000 });
         await page.waitForSelector('.routing-empty-state', { timeout: 5000 });
 
         await page.click('#routing-enabled-toggle'); // default on → off
         await page.waitForFunction(async () => {
-            const v = await chrome.storage.sync.get({ routingEnabled: true });
+            const r = await chrome.storage.local.get('pref_routingEnabled');
+            const v = { routingEnabled: r.pref_routingEnabled ? r.pref_routingEnabled.v : true };
             return v.routingEnabled === false;
         }, { timeout: 5000 });
 
         await page.click('#routing-enabled-toggle'); // back on
         await page.waitForFunction(async () => {
-            const v = await chrome.storage.sync.get({ routingEnabled: true });
+            const r = await chrome.storage.local.get('pref_routingEnabled');
+            const v = { routingEnabled: r.pref_routingEnabled ? r.pref_routingEnabled.v : true };
             return v.routingEnabled === true;
         }, { timeout: 5000 });
     }, 60000);

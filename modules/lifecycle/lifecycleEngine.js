@@ -9,6 +9,7 @@
 //     keeps the record for the next sweep. Either direction, the URL exists
 //     in at least one place at every instant.
 
+import { getPrefs, prefStorageKey } from '../prefs/prefsStore.js';
 import { selectArchiveCandidates, isWakeExpired, DEFAULT_IDLE_HOURS, ARCHIVE_BATCH_CAP } from './lifecycleLogic.js';
 import * as store from './archiveStore.js';
 
@@ -34,7 +35,7 @@ function serialize(fn) {
 
 async function ensureEnabled() {
     if (enabledCache === null) {
-        const res = await chrome.storage.sync.get({ [AUTO_ARCHIVE_KEY]: false });
+        const res = await getPrefs([AUTO_ARCHIVE_KEY]);
         enabledCache = res[AUTO_ARCHIVE_KEY] === true; // opt-in (FR-1.01)
     }
     return enabledCache;
@@ -42,7 +43,7 @@ async function ensureEnabled() {
 
 async function ensureIdleHours() {
     if (idleHoursCache === null) {
-        const res = await chrome.storage.sync.get({ [IDLE_HOURS_KEY]: DEFAULT_IDLE_HOURS });
+        const res = await getPrefs([IDLE_HOURS_KEY]);
         const v = Number(res[IDLE_HOURS_KEY]);
         // Permissive: any positive number of hours (the UI offers six presets;
         // this tolerance doubles as the E2E seam — SA §8.1).
@@ -258,8 +259,8 @@ export function initLifecycleEngine() {
     });
 
     chrome.storage.onChanged.addListener((changes, area) => {
-        if (area !== 'sync') return;
-        if (changes[AUTO_ARCHIVE_KEY]) enabledCache = null;
-        if (changes[IDLE_HOURS_KEY]) idleHoursCache = null;
+        if (area !== 'local') return;
+        if (changes[prefStorageKey(AUTO_ARCHIVE_KEY)]) enabledCache = null;
+        if (changes[prefStorageKey(IDLE_HOURS_KEY)]) idleHoursCache = null;
     });
 }

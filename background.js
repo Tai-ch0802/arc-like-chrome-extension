@@ -7,7 +7,20 @@ import {
 } from './modules/rssManager.js';
 import { mergeRssState, rssStateEqual } from './modules/rss/rssSyncLogic.js';
 import { generateGroupName } from './modules/aiManager.js';
-import { getStorage, setStorage } from './modules/apiManager.js';
+import {
+    getStorage,
+    setStorage,
+    groupTabs,
+    isSidePanelUnavailable,
+    markSidePanelUnavailable,
+    resetCapabilityFlagsIfBrowserChanged,
+} from './modules/apiManager.js';
+import { getBrowserInfo } from './modules/utils/browserCapabilities.js';
+import { getPrefs, exportPrefsState, importMergedPrefs, isPrefStorageKey } from './modules/prefs/prefsStore.js';
+import { runPrefsSync, PREFS_SYNC_FILE } from './modules/prefs/prefsSync.js';
+import { createReadingListSyncStore, RL_META_KEY, RL_TOMBSTONES_KEY } from './modules/readingList/readingListSyncStore.js';
+import { runReadingListSync, READING_LIST_SYNC_FILE } from './modules/readingList/readingListSync.js';
+import { createSidePanelEntry } from './modules/sidePanelEntry.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
 import { initRoutingEngine } from './modules/routing/routingEngine.js';
@@ -52,6 +65,18 @@ initWorkspaceLifecycle();
 
 // Tab routing rules (BASE-022): first-navigation routing + claim exemptions.
 initRoutingEngine();
+
+// Reading-list sync store (ISSUE-257 WP4): listeners registered synchronously at
+// SW top level so entries added/removed from the side panel (or by native
+// Chrome sync) wake the SW and get a Lamport stamp / tombstone.
+const readingListSyncStore = createReadingListSyncStore({
+    readingList: (typeof chrome !== 'undefined' && chrome.readingList) || null,
+    storage: {
+        get: (k) => getStorage('local', [k]).then((r) => r[k]),
+        set: (k, v) => setStorage('local', { [k]: v }),
+    },
+});
+readingListSyncStore.attach();
 
 // Tab lifecycle (BASE-024): auto-archive scan heartbeat + snooze wake/sweep.
 initLifecycleEngine();
@@ -98,6 +123,14 @@ const RSS_SYNC_FILE = 'rss-sync.json';
 const NEWSWIRE_SYNC_FILE = 'newswire-sync.json';
 const ROUTING_SYNC_FILE = 'routing-rules-sync.json';
 const ALARM_ROUTING_FLUSH = 'routingSyncFlush'; // one-shot debounced routing-rules Drive sync
+// ISSUE-257 WP3: preferences (former storage.sync flat keys) now live in
+// storage.local as pref_<name> records and sync through ONE Drive file
+// (PREFS_SYNC_FILE from modules/prefs/prefsSync.js).
+const ALARM_PREFS_FLUSH = 'prefsSyncFlush';
+// ISSUE-257 WP4: chrome.readingList stays the local store on every device; the
+// SW keeps an app-controlled Lamport sidecar + tombstones and mirrors the list
+// to ONE Drive file (READING_LIST_SYNC_FILE from modules/readingList/readingListSync.js).
+const ALARM_RL_FLUSH = 'readingListSyncFlush';
 const RSS_SUBSCRIPTIONS_KEY = 'rssSubscriptions';
 const RSS_FETCHED_HASHES_KEY = 'rssFetchedHashes';
 const RSS_TOMBSTONES_KEY = 'rssTombstones';
@@ -313,6 +346,10 @@ async function runSyncOnce() {
     await newswireSyncOnce();
     // routing rules sync (BASE-022 P4): same cadence and pattern.
     await routingSyncOnce();
+    // preferences sync (ISSUE-257 WP3): same cadence and pattern.
+    await prefsSyncOnce();
+    // reading list sync (ISSUE-257 WP4): same cadence and pattern.
+    await readingListSyncOnce();
 }
 
 /**
@@ -419,6 +456,48 @@ function routingSyncOnce() {
         }
     });
     return routingSyncChain;
+}
+
+/**
+ * Single-flight preferences Drive sync (ISSUE-257 WP3). The cycle itself is
+ * modules/prefs/prefsSync.js (tested end-to-end against the fake provider);
+ * this wrapper only adds the serialisation + error swallowing every *SyncOnce
+ * here has.
+ */
+let prefsSyncChain = Promise.resolve();
+function prefsSyncOnce() {
+    prefsSyncChain = prefsSyncChain.then(async () => {
+        try {
+            await runPrefsSync({
+                provider: syncProvider,
+                store: { exportState: exportPrefsState, importMerged: importMergedPrefs },
+                fileName: PREFS_SYNC_FILE,
+                isOnline: () => !(typeof navigator !== 'undefined' && navigator.onLine === false),
+            });
+        } catch (err) {
+            console.warn('[prefs-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return prefsSyncChain;
+}
+
+/** Single-flight reading-list Drive sync (ISSUE-257 WP4); cycle in modules/readingList/readingListSync.js. */
+let readingListSyncChain = Promise.resolve();
+function readingListSyncOnce() {
+    readingListSyncChain = readingListSyncChain.then(async () => {
+        try {
+            if (!(typeof chrome !== 'undefined' && chrome.readingList)) return; // engine without the API
+            await runReadingListSync({
+                provider: syncProvider,
+                store: readingListSyncStore,
+                fileName: READING_LIST_SYNC_FILE,
+                isOnline: () => !(typeof navigator !== 'undefined' && navigator.onLine === false),
+            });
+        } catch (err) {
+            console.warn('[rl-sync] failed:', err && err.message ? err.message : err);
+        }
+    });
+    return readingListSyncChain;
 }
 
 /** (Re)create the periodic pull alarm. Alarms don't survive a browser restart. */
@@ -656,23 +735,46 @@ chrome.commands.onCommand.addListener(async (command) => {
         index: currentTab.index + 1,
         active: true
       });
-      // 如果當前分頁在群組中，也將新分頁加入同一個群組
+      // 如果當前分頁在群組中，也將新分頁加入同一個群組（best-effort，ISSUE-257）
       if (currentTab.groupId > 0) {
-        await chrome.tabs.group({
-          groupId: currentTab.groupId,
-          tabIds: newTab.id
-        });
+        await groupTabs(newTab.id, currentTab.groupId);
       }
     }
   }
 });
 
+// --- Side panel entry (ISSUE-257 WP0) ---------------------------------------
+// Chrome: the browser opens the panel on icon click (behaviour set below).
+// Other Chromium brands (Dia): we toggle it ourselves from action.onClicked,
+// confirm via sidePanel.onOpened, and on failure flag + explain in options.
+const sidePanelEntry = createSidePanelEntry({
+  sidePanel: chrome.sidePanel,
+  runtime: chrome.runtime,
+  session: {
+    get: (k) => chrome.storage.session.get(k).then((r) => r[k]),
+    set: (k, v) => chrome.storage.session.set({ [k]: v }),
+  },
+  caps: { isSidePanelUnavailable, markSidePanelUnavailable },
+  getInfo: getBrowserInfo,
+});
+chrome.action.onClicked.addListener((tab) => {
+  sidePanelEntry.handleActionClick(tab).catch((err) => console.warn('[sidePanelEntry] click failed', err));
+});
+// Every SW start: drop capability flags recorded by another brand/major
+// version (FR-1.01b), then arm the non-Chrome entry path.
+resetCapabilityFlagsIfBrowserChanged()
+  .catch(() => [])
+  .then(() => sidePanelEntry.init())
+  .catch((err) => console.warn('[sidePanelEntry] init failed', err));
+
 // 首次安裝擴充功能時執行的程式碼
 chrome.runtime.onInstalled.addListener(() => {
   // 這個設定會告訴瀏覽器，當使用者點擊工具列圖示「或觸發 _execute_action 指令」時，
-  // 自動開關側邊欄。
-  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
-    .catch((error) => console.error(error));
+  // 自動開關側邊欄。非 Chrome 品牌由 sidePanelEntry 自行接管（ISSUE-257）。
+  if (getBrowserInfo().isGoogleChrome) {
+    chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
+      .catch((error) => console.error(error));
+  }
   // (Re)create the periodic pull alarm on install/update as well as cold start.
   ensurePullAlarm();
 });
@@ -709,6 +811,18 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         console.warn('[sync] flush failed:', err && err.message ? err.message : err);
       }
     })();
+    return;
+  }
+  if (alarm.name === ALARM_RL_FLUSH) {
+    // Debounced reading-list Drive sync (ISSUE-257 WP4). Explicit branch for the
+    // same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
+    readingListSyncOnce();
+    return;
+  }
+  if (alarm.name === ALARM_PREFS_FLUSH) {
+    // Debounced preferences Drive sync (ISSUE-257 WP3). Explicit branch for the
+    // same reason as ALARM_RSS_FLUSH — must not fall through to handleRssAlarm.
+    prefsSyncOnce();
     return;
   }
   if (alarm.name === ALARM_RSS_FLUSH) {
@@ -772,6 +886,20 @@ function handleNewswireStorageChange(changes, areaName) {
   chrome.alarms.create(ALARM_NEWSWIRE_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
 }
 
+/** Sidecar (meta / tombstones) change → debounced reading-list Drive push. */
+function handleReadingListStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!changes[RL_META_KEY] && !changes[RL_TOMBSTONES_KEY]) return;
+  chrome.alarms.create(ALARM_RL_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
+/** Any local pref_<name> record change → debounced preferences Drive push. */
+function handlePrefsStorageChange(changes, areaName) {
+  if (areaName !== 'local') return;
+  if (!Object.keys(changes).some(isPrefStorageKey)) return;
+  chrome.alarms.create(ALARM_PREFS_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
+}
+
 /**
  * onChanged → schedule a debounced routing-rules Drive sync when the local
  * rules working copy changes (options/context-menu edits, engine has no write
@@ -795,6 +923,8 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   handleNewswireStorageChange(changes, areaName);
   handleNewswireConfigChange(changes, areaName);
   handleRoutingStorageChange(changes, areaName);
+  handlePrefsStorageChange(changes, areaName);
+  handleReadingListStorageChange(changes, areaName);
 });
 
 // AI Auto Group Naming: 當使用者建立一個空白名稱的新群組時，由 background
@@ -806,7 +936,7 @@ chrome.tabGroups.onCreated.addListener(async (group) => {
     try {
         if (group.title && group.title.trim()) return; // user provided a title
 
-        const settings = await chrome.storage.sync.get([AI_AUTO_NAMING_KEY]);
+        const settings = await getPrefs([AI_AUTO_NAMING_KEY]);
         if (settings[AI_AUTO_NAMING_KEY] === false) return; // disabled by user
 
         // Two reasons for an 800ms delay before querying tabs:
