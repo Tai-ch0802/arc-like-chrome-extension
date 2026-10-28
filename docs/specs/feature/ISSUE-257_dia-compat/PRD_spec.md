@@ -101,7 +101,7 @@
 
 - **FR-3.01**（Ubiquitous）：以下偏好設定**必須**納入 Drive 同步（完整 key 清單於 SA 定稿）：`theme`、`uiLanguage`、`listDensity`、`autoArchiveEnabled`、`autoArchiveIdleHours`、`routingEnabled`、`aiAutoRoutingEnabled`、`readingListSortOrder`、各區塊顯示開關（reading list / newswire / AI grouping / AI cleanup / page reader）、`aiAutoNaming`、`hoverSummarize`、`readingListSummary`、`customTheme`、`bgConfig`（不含圖片本體）、`sectionOrder`。
 - **FR-3.02**（Ubiquitous）：**不得**同步：每裝置 UI 暫態（`readingListCollapsed`、`archiveCollapsed`）、`wsMeta_*`、`aiProviderSettings`（含 API key）、背景圖 base64、任何 token / email、能力旗標。
-- **FR-3.03**（Ubiquitous，方案 (a)）：受管設定的工作副本**必須**搬到 `storage.local`（單一 bundle key，值與應用程式控制的 `updatedAt` 一起儲存），Drive 檔 `settings-sync.json` 為跨裝置唯一真實來源；合併採 per-key LWW，對固定 `now` 滿足交換律與冪等（純函式 + 單元測試，比照 `rssSyncLogic`）。
+- **FR-3.03**（Ubiquitous，方案 (a)）：受管設定的工作副本**必須**搬到 `storage.local`，**每個 key 一筆記錄**，值與應用程式控制的 `updatedAt` 存在同一筆（`{v, t}`）；**不得**用單一 bundle key（sidepanel / options / SW 三個 context 同時寫不同設定時，整包 read-modify-write 會重演 ISSUE-162 的 lost-update；per-key 是本專案既定紀律）。Drive 檔 `settings-sync.json` 為跨裝置唯一真實來源，於同步時由 per-key 記錄組裝；合併採 per-key LWW，對固定 `now` 滿足交換律與冪等（純函式 + 單元測試，比照 `rssSyncLogic`）。
 - **FR-3.04**（Event）：**When** 本機任一受管 key 變更，**then** debounce alarm 推送（比照 `rssSyncFlush`）；**When** `runSyncOnce()` 執行，**then** piggyback pull；套用遠端值**不得**再觸發推送（echo 守衛）。
 - **FR-3.05**（Event，遷移）：**When** 首次升級，**then** 以一次性旗標從 `storage.sync` 既有 flat keys 做種到 local bundle（`updatedAt = 0`，任何真實編輯皆勝出）；**不刪** `storage.sync` 舊 key（刪除經原生 sync 傳播會 wipe 未升級裝置）、**不 dual-write 回 sync**（BASE-014 §3.4 同款）。
 - **FR-3.06**（Ubiquitous）：`settingsBridge` 的跨 context 傳播**必須**改聽 local bundle 的 `storage.onChanged`，對 UI 模組的事件介面不變。
