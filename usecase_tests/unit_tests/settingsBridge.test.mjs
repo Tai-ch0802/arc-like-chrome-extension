@@ -106,3 +106,17 @@ describe('legacy storage.sync prefs are ignored (ISSUE-257 WP3)', () => {
       .toContainEqual({ type: 'applyTheme', value: undefined });
   });
 });
+
+
+describe('pref records rewritten with only a newer t (Drive pull) produce no actions', () => {
+  it('pref_uiLanguage same value, different t → no reload', () => {
+    expect(resolveSettingChangeActions({ pref_uiLanguage: { oldValue: { v: 'ja', t: 1 }, newValue: { v: 'ja', t: 9 } } }, 'local')).toEqual([]);
+  });
+  it('pref_customTheme same value with different key order → no action', () => {
+    expect(resolveSettingChangeActions({ pref_customTheme: { oldValue: { v: { a: 1, b: 2 }, t: 1 }, newValue: { v: { b: 2, a: 1 }, t: 2 } } }, 'local')).toEqual([]);
+  });
+  it('a genuine value change still acts', () => {
+    expect(resolveSettingChangeActions({ pref_uiLanguage: { oldValue: { v: 'ja', t: 1 }, newValue: { v: 'en', t: 2 } } }, 'local'))
+      .toContainEqual({ type: 'reload' });
+  });
+});

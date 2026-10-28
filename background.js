@@ -886,13 +886,6 @@ function handleNewswireStorageChange(changes, areaName) {
   chrome.alarms.create(ALARM_NEWSWIRE_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
 }
 
-/**
- * onChanged → schedule a debounced routing-rules Drive sync when the local
- * rules working copy changes (options/context-menu edits, engine has no write
- * path to it). The write-back from routingSyncOnce also fires onChanged, but
- * the no-op guard makes the follow-up cycle write nothing (same convergence
- * property as RSS/newswire).
- */
 /** Sidecar (meta / tombstones) change → debounced reading-list Drive push. */
 function handleReadingListStorageChange(changes, areaName) {
   if (areaName !== 'local') return;
@@ -907,6 +900,13 @@ function handlePrefsStorageChange(changes, areaName) {
   chrome.alarms.create(ALARM_PREFS_FLUSH, { delayInMinutes: FLUSH_DEBOUNCE_MIN });
 }
 
+/**
+ * onChanged → schedule a debounced routing-rules Drive sync when the local
+ * rules working copy changes (options/context-menu edits, engine has no write
+ * path to it). The write-back from routingSyncOnce also fires onChanged, but
+ * the no-op guard makes the follow-up cycle write nothing (same convergence
+ * property as RSS/newswire).
+ */
 function handleRoutingStorageChange(changes, areaName) {
   if (areaName !== 'local') return;
   if (!changes[ROUTING_RULES_KEY]) return;

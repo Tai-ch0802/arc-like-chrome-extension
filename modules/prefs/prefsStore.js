@@ -79,6 +79,17 @@ export function prefNameFromKey(key) {
 const clone = (v) => (v === undefined ? undefined : JSON.parse(JSON.stringify(v)));
 const isRecord = (r) => r && typeof r === 'object' && 'v' in r && Number.isFinite(r.t) && r.t >= 0;
 
+/** Key-order-insensitive JSON for value comparison (merged values arrive key-sorted). */
+function stableStringify(v) {
+    if (v === null || typeof v !== 'object') return JSON.stringify(v);
+    if (Array.isArray(v)) return `[${v.map(stableStringify).join(',')}]`;
+    return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${stableStringify(v[k])}`).join(',')}}`;
+}
+/** @param {any} a @param {any} b @returns {boolean} */
+export function prefValuesEqual(a, b) {
+    return stableStringify(a) === stableStringify(b);
+}
+
 /**
  * @param {Object} deps
  * @param {{get:(area:string, keys:string[])=>Promise<Object>, set:(area:string, items:Object)=>Promise<void>, remove:(area:string, keys:string|string[])=>Promise<void>}} deps.storage
@@ -102,17 +113,25 @@ export function createPrefsStore({ storage, now = () => Date.now() }) {
         return out;
     }
 
-    /** One-time seed from storage.sync. Single-flight; idempotent via the flag. */
+    /**
+     * One-time seed from storage.sync. Single-flight; idempotent via the flag.
+     * Never rejects: a sync area that is missing or fails to read (possible on a
+     * Chromium derivative) leaves local records / defaults fully usable; the
+     * flag is then NOT written so a later context retries, but this context
+     * will not retry on every getPref.
+     */
     function ensureMigrated() {
         if (!migration) {
             migration = (async () => {
-                const flags = await storage.get('local', [PREFS_MIGRATED_KEY]);
+                const flags = (await storage.get('local', [PREFS_MIGRATED_KEY])) || {};
                 if (flags[PREFS_MIGRATED_KEY]) return;
-                const [syncVals, localRecs] = await Promise.all([
-                    storage.get('sync', PREF_NAMES),
-                    readRecords(PREF_NAMES),
-                ]);
+                let syncVals = null;
+                try { syncVals = (await storage.get('sync', PREF_NAMES)) || {}; } catch { syncVals = null; }
+                if (!syncVals) return; // could not read sync: keep going without a seed, retry later
                 const batch = {};
+                // Re-read right before writing: another context may have just set a
+                // pref; a legacy value must never overwrite a fresh local record.
+                const localRecs = await readRecords(PREF_NAMES);
                 for (const name of PREF_NAMES) {
                     if (syncVals[name] === undefined) continue;   // default → no record (invariant)
                     if (localRecs[name]) continue;                 // never overwrite a real local record
@@ -120,7 +139,7 @@ export function createPrefsStore({ storage, now = () => Date.now() }) {
                 }
                 if (Object.keys(batch).length) await storage.set('local', batch);
                 await storage.set('local', { [PREFS_MIGRATED_KEY]: true });
-            })().catch((err) => { migration = null; throw err; });
+            })().catch(() => { /* swallowed: prefs stay readable; flag not set */ });
         }
         return migration;
     }
@@ -145,6 +164,8 @@ export function createPrefsStore({ storage, now = () => Date.now() }) {
     async function setPref(name, value) {
         assertKnown(name);
         const recs = await readRecords([name]);
+        // Same value again: no write, no Lamport bump, no Drive flush, no UI churn.
+        if (recs[name] && prefValuesEqual(recs[name].v, value)) return;
         const t = nextTimestamp(recs[name] ? recs[name].t : 0, now());
         await storage.set('local', { [prefStorageKey(name)]: { v: clone(value), t } });
     }
@@ -173,7 +194,7 @@ export function createPrefsStore({ storage, now = () => Date.now() }) {
         for (const name of names) {
             const next = allowed[name];
             const cur = current[name];
-            if (cur && cur.t === next.t && JSON.stringify(cur.v) === JSON.stringify(next.v)) continue;
+            if (cur && cur.t === next.t && prefValuesEqual(cur.v, next.v)) continue;
             batch[prefStorageKey(name)] = { v: clone(next.v), t: next.t };
             written.push(name);
         }

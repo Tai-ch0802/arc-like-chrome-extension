@@ -169,3 +169,46 @@ describe('exportState / importMerged', () => {
         expect(areas.data.local.pref_theme).toEqual({ v: 'light', t: 42 });
     });
 });
+
+
+describe('review round 1 (ISSUE-257 WP3)', () => {
+    it('setPref with the same value writes nothing and does not bump t', async () => {
+        const { store, areas } = build(5000);
+        await store.setPref('customTheme', { b: 2, a: 1 });
+        const writes = areas.writes.local;
+        await store.setPref('customTheme', { a: 1, b: 2 }); // same value, different key order
+        expect(areas.writes.local).toBe(writes);
+        expect(areas.data.local.pref_customTheme.t).toBe(5000);
+    });
+
+    it('a failing storage.sync read leaves prefs readable (defaults / local records) and sets no flag', async () => {
+        const areas = fakeAreas();
+        const realGet = areas.storage.get;
+        areas.storage.get = async (area, keys) => { if (area === 'sync') throw new Error('sync unavailable'); return realGet(area, keys); };
+        const store = createPrefsStore({ storage: areas.storage, now: () => 1 });
+        await store.setPref('theme', 'ocean');
+        expect(await store.getPref('theme')).toBe('ocean');
+        expect(await store.getPref('listDensity')).toBe('cozy');
+        await store.ensureMigrated();
+        expect(areas.data.local[PREFS_MIGRATED_KEY]).toBeUndefined();
+    });
+
+    it('a sync read that resolves undefined is treated as empty', async () => {
+        const areas = fakeAreas();
+        const realGet = areas.storage.get;
+        areas.storage.get = async (area, keys) => (area === 'sync' ? undefined : realGet(area, keys));
+        const store = createPrefsStore({ storage: areas.storage, now: () => 1 });
+        await store.ensureMigrated();
+        expect(areas.data.local[PREFS_MIGRATED_KEY]).toBe(true);
+        expect(await store.getPref('theme')).toBe('geek');
+    });
+
+    it('importMerged treats key-order-only differences as equal (no rewrite)', async () => {
+        const { store, areas } = build(7);
+        await store.setPref('customTheme', { b: 2, a: 1 });
+        const writes = areas.writes.local;
+        const written = await store.importMerged({ customTheme: { v: { a: 1, b: 2 }, t: 7 } });
+        expect(written).toEqual([]);
+        expect(areas.writes.local).toBe(writes);
+    });
+});

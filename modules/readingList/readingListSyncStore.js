@@ -35,8 +35,10 @@ export const RL_TOMBSTONES_KEY = 'readingListTombstones';
  * @param {{warn: Function}} [deps.log]
  */
 export function createReadingListSyncStore({ readingList, storage, now = () => Date.now(), log = console }) {
-    /** @type {Map<string, {op:'add'|'update'|'remove', hasBeenRead?:boolean, title?:string}>} */
+    /** @type {Map<string, {op:'add'|'update'|'remove', hasBeenRead?:boolean, at:number}>} */
     const echo = new Map();
+    /** An engine write whose event never arrived must not swallow a later real edit. */
+    const ECHO_TTL_MS = 5000;
     let chain = Promise.resolve();
 
     function serialize(fn) {
@@ -49,11 +51,14 @@ export function createReadingListSyncStore({ readingList, storage, now = () => D
 
     function matchesEcho(url, op, entry) {
         const e = echo.get(url);
-        if (!e || e.op !== op) return false;
+        if (!e) return false;
+        if (now() - e.at > ECHO_TTL_MS) { echo.delete(url); return false; }
+        if (e.op !== op) return false;
         if (op === 'update' && entry && e.hasBeenRead !== undefined && e.hasBeenRead !== Boolean(entry.hasBeenRead)) return false;
         echo.delete(url);
         return true;
     }
+    const setEcho = (url, fields) => echo.set(url, { ...fields, at: now() });
 
     /** User (or native-sync) edit observed → bump the url's Lamport stamp. */
     function recordLocalChange(entry) {
@@ -137,30 +142,45 @@ export function createReadingListSyncStore({ readingList, storage, now = () => D
      * @param {Object} merged the merged state (entries + tombstones)
      */
     async function applyMerged(diff, merged) {
+        const failed = new Set();
         for (const a of diff.add) {
-            echo.set(a.url, { op: 'add' });
+            setEcho(a.url, { op: 'add' });
             try { await readingList.addEntry({ url: a.url, title: a.title, hasBeenRead: a.hasBeenRead }); }
-            catch (err) { echo.delete(a.url); log.warn('[rl-sync] addEntry failed:', err && err.message); }
+            catch (err) { echo.delete(a.url); failed.add(a.url); log.warn('[rl-sync] addEntry failed:', err && err.message); }
         }
         for (const u of diff.update) {
-            echo.set(u.url, { op: 'update', hasBeenRead: u.hasBeenRead });
+            setEcho(u.url, { op: 'update', hasBeenRead: u.hasBeenRead });
             try { await readingList.updateEntry({ url: u.url, title: u.title, hasBeenRead: u.hasBeenRead }); }
-            catch (err) { echo.delete(u.url); log.warn('[rl-sync] updateEntry failed:', err && err.message); }
+            catch (err) { echo.delete(u.url); failed.add(u.url); log.warn('[rl-sync] updateEntry failed:', err && err.message); }
         }
         for (const url of diff.remove) {
-            echo.set(url, { op: 'remove' });
+            setEcho(url, { op: 'remove' });
             try { await readingList.removeEntry({ url }); }
-            catch (err) { echo.delete(url); log.warn('[rl-sync] removeEntry failed:', err && err.message); }
+            catch (err) { echo.delete(url); failed.add(url); log.warn('[rl-sync] removeEntry failed:', err && err.message); }
         }
+        // Adopt the merged stamps into the sidecar — but the cycle started from a
+        // snapshot taken in exportState(), and the user may have edited or
+        // deleted entries since (those edits are already queued ahead of us on
+        // the chain). Re-read and keep every local record that is NEWER than
+        // what the merge knew, and skip urls whose API call failed (chrome still
+        // holds the old content; the next export must not claim the new stamp).
         await serialize(async () => {
-            const meta = {};
+            const [meta, tombs] = await Promise.all([readMeta(), readTombstones()]);
             for (const [url, e] of Object.entries(merged.entries)) {
+                if (failed.has(url)) continue;
+                const cur = meta[url];
+                if (cur && cur.updatedAt > e.updatedAt) continue;          // edited locally after the snapshot
+                if (tombs[url] !== undefined && tombs[url] > e.updatedAt) continue; // deleted locally after the snapshot
                 meta[url] = { updatedAt: e.updatedAt, title: e.title, hasBeenRead: e.hasBeenRead, createdAt: e.createdAt };
             }
-            await Promise.all([
-                storage.set(RL_META_KEY, meta),
-                storage.set(RL_TOMBSTONES_KEY, { ...merged.tombstones }),
-            ]);
+            for (const [url, deletedAt] of Object.entries(merged.tombstones)) {
+                if (failed.has(url)) continue;
+                const cur = meta[url];
+                if (cur && cur.updatedAt > deletedAt) continue;              // re-added locally after the snapshot
+                tombs[url] = Math.max(tombs[url] || 0, deletedAt);
+                if (cur && cur.updatedAt <= deletedAt) delete meta[url];
+            }
+            await Promise.all([storage.set(RL_META_KEY, meta), storage.set(RL_TOMBSTONES_KEY, tombs)]);
         });
     }
 

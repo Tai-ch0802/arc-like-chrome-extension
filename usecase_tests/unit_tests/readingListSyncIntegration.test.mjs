@@ -15,10 +15,17 @@ import { createFakeSyncProvider } from '../../modules/sync/syncProvider.js';
 function fakeReadingList() {
     const entries = new Map();
     const listeners = { added: [], removed: [], updated: [] };
-    const fire = (kind, entry) => listeners[kind].forEach((fn) => fn({ ...entry }));
+    const queue = [];
+    const state = { defer: false };
+    const fire = (kind, entry) => {
+        const deliver = () => listeners[kind].forEach((fn) => fn({ ...entry }));
+        if (state.defer) queue.push(deliver); else deliver();
+    };
     const now = () => Date.now();
     return {
         entries,
+        state,
+        flushEvents: () => { while (queue.length) queue.shift()(); },
         api: {
             query: async ({ url } = {}) => {
                 const all = [...entries.values()].map((e) => ({ ...e }));
@@ -186,5 +193,100 @@ describe('reading list sync — cross-device', () => {
         await settle();
         await A.sync(provider);
         expect(await provider.read(READING_LIST_SYNC_FILE)).toBeNull();
+    });
+});
+
+
+describe('reading list sync — review round 1 (echo guard and mid-cycle edits)', () => {
+    it('events that arrive AFTER applyMerged (real Chrome timing) are still recognised as echoes', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device(2_000_000);
+        await A.rl.api.addEntry({ url: 'https://x/late', title: 'Late', hasBeenRead: false });
+        await settle();
+        await A.sync(provider);
+        const v1 = (await provider.read(READING_LIST_SYNC_FILE)).version;
+        B.rl.state.defer = true;            // hold the events back…
+        await B.sync(provider);             // …through the whole apply + sidecar write
+        B.rl.state.defer = false;
+        B.rl.flushEvents();                 // now they land, late
+        await settle();
+        await B.store.idle();
+        await B.sync(provider);
+        expect((await provider.read(READING_LIST_SYNC_FILE)).version).toBe(v1); // no echo push
+    });
+
+    it('a user deletion made while a sync cycle is running is not clobbered (no resurrection)', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/v', title: 'V', hasBeenRead: false });
+        await A.rl.api.addEntry({ url: 'https://x/w', title: 'W', hasBeenRead: false });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        // A changes W so B's next cycle has something to apply.
+        A.tick(10);
+        await A.rl.api.updateEntry({ url: 'https://x/w', hasBeenRead: true });
+        await settle();
+        await A.sync(provider);
+        // During B's cycle (after exportState, before applyMerged) the user deletes V on B.
+        const hooked = {
+            ...provider,
+            read: async (name) => {
+                const r = await provider.read(name);
+                B.tick(20);
+                await B.rl.api.removeEntry({ url: 'https://x/v' });
+                await settle();
+                return r;
+            },
+        };
+        await runReadingListSync({ provider: hooked, store: B.store, now: () => 1_000_100 });
+        await B.store.idle();
+        expect(await B.store.getTombstones()).toHaveProperty('https://x/v');
+        await B.sync(provider); await A.sync(provider); await B.sync(provider); await settle();
+        expect(B.rl.entries.has('https://x/v')).toBe(false);
+        expect(A.rl.entries.has('https://x/v')).toBe(false);
+    });
+
+    it('a user toggle made while a sync cycle is running keeps its newer stamp', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/u', title: 'U', hasBeenRead: true });
+        await settle();
+        await A.sync(provider); await B.sync(provider); await settle();
+        A.tick(10);
+        await A.rl.api.updateEntry({ url: 'https://x/u', title: 'U2' });
+        await settle();
+        await A.sync(provider);
+        const hooked = {
+            ...provider,
+            read: async (name) => {
+                const r = await provider.read(name);
+                B.tick(50);
+                await B.rl.api.updateEntry({ url: 'https://x/u', hasBeenRead: false }); // user: back to unread
+                await settle();
+                return r;
+            },
+        };
+        await runReadingListSync({ provider: hooked, store: B.store, now: () => 1_000_200 });
+        await B.store.idle();
+        const meta = await B.store.getMeta();
+        expect(meta['https://x/u'].hasBeenRead).toBe(false);
+        await B.sync(provider); await A.sync(provider); await settle();
+        expect(A.rl.entries.get('https://x/u').hasBeenRead).toBe(false);
+    });
+
+    it('a failed engine write does not adopt the remote stamp for that url', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(); const B = device();
+        await A.rl.api.addEntry({ url: 'https://x/f', title: 'F', hasBeenRead: false });
+        await settle();
+        await A.sync(provider);
+        const realAdd = B.rl.api.addEntry;
+        B.rl.api.addEntry = async () => { throw new Error('Duplicate URL.'); };
+        await B.sync(provider);
+        await B.store.idle();
+        expect(await B.store.getMeta()).not.toHaveProperty('https://x/f');
+        B.rl.api.addEntry = realAdd;
+        await B.sync(provider); await settle();
+        expect(B.rl.entries.has('https://x/f')).toBe(true);
     });
 });

@@ -10,7 +10,7 @@ import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 import * as state from '../stateManager.js';
 import { invalidateCapabilityFlag } from '../apiManager.js';
-import { isPrefStorageKey, prefNameFromKey } from '../prefs/prefsStore.js';
+import { isPrefStorageKey, prefNameFromKey, prefValuesEqual } from '../prefs/prefsStore.js';
 import { CAP_TAB_GROUPS, CAP_SIDE_PANEL } from '../utils/browserCapabilities.js';
 
 const CAPABILITY_FLAG_KEYS = [CAP_TAB_GROUPS, CAP_SIDE_PANEL];
@@ -32,7 +32,13 @@ export function resolveSettingChangeActions(changes, areaName) {
         for (const [key, change] of Object.entries(changes)) {
             if (!isPrefStorageKey(key)) continue;
             const rec = change && change.newValue;
-            prefChanges[prefNameFromKey(key)] = { newValue: rec && typeof rec === 'object' ? rec.v : undefined };
+            const old = change && change.oldValue;
+            const nextV = rec && typeof rec === 'object' ? rec.v : undefined;
+            const oldV = old && typeof old === 'object' ? old.v : undefined;
+            // A Drive pull may rewrite a record with only a newer `t` and the same
+            // value — that must not re-apply themes or reload the panel (uiLanguage).
+            if (old !== undefined && prefValuesEqual(oldV, nextV)) continue;
+            prefChanges[prefNameFromKey(key)] = { newValue: nextV };
         }
     }
     if (Object.keys(prefChanges).length) {
