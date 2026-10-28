@@ -20,7 +20,7 @@ Nous avons complètement réimaginé Chrome, en introduisant un panneau latéral
 - **AI résumé au survol**: 2 s sur un onglet → résumé en une phrase.
 - **AI mémoire de résumés de liste de lecture**: AI résume à l'ajout, stocké local, lisible hors ligne.
 - **Ask AI recherche en langage naturel (⌘K)**: une phrase pour chercher dans tabs / bookmarks / reading list.
-- **Workspaces**: paquets d'onglets nommés, hibernate-restore, métadonnées synchronisées entre appareils.
+- **Workspaces**: paquets d'onglets nommés, hibernate-restore ; workspaces, préférences et liste de lecture synchronisés via Google Drive — fonctionne aussi dans Dia et d'autres navigateurs Chromium.
 - **Command Palette (⌘K / Ctrl+K)**: recherche + actions unifiées.
 - **Bookmark Tools**: 🛠️ tags / dedupe / liens morts.
 - **Local par défaut, cloud en option**: l'IA tourne d'emblée sur Gemini Nano intégré à Chrome — rien ne quitte votre machine. En option, connectez votre propre clé API (Gemini API / Claude / compatible OpenAI / Ollama).

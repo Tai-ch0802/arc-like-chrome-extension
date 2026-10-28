@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Sidebar สไตล์ Arc ที่ก้าวข้าม vertical tabs ที่ Chrome มีมาให้: tabs + bookmarks + reading list รวมในที่เดียว, **AI ในเครื่องเป็นค่าเริ่มต้น** (ตั้งชื่อกลุ่มอัตโนมัติ, คำแนะนำ tab cleanup, hover summary, natural-language search), **Workspaces** (hibernate & restore tab bundles, ซิงค์ metadata ข้ามอุปกรณ์), **⌘K Command Palette**, และ **Bookmark Tools** (tags, dedupe, dead-link cleanup) — ค่าเริ่มต้นทำงานบนเครื่องโดยไม่ต้องใช้ API key และเลือกใช้ API key ของคุณเองสำหรับโมเดลคลาวด์ได้ (Gemini API / Claude / OpenAI-compatible / Ollama)
+Sidebar สไตล์ Arc ที่ก้าวข้าม vertical tabs ที่ Chrome มีมาให้: tabs + bookmarks + reading list รวมในที่เดียว, **AI ในเครื่องเป็นค่าเริ่มต้น** (ตั้งชื่อกลุ่มอัตโนมัติ, คำแนะนำ tab cleanup, hover summary, natural-language search), **Workspaces** (hibernate & restore tab bundles, ซิงค์ metadata ข้ามอุปกรณ์), **⌘K Command Palette**, และ **Bookmark Tools** (tags, dedupe, dead-link cleanup) — ค่าเริ่มต้นทำงานบนเครื่องโดยไม่ต้องใช้ API key และเลือกใช้ API key ของคุณเองสำหรับโมเดลคลาวด์ได้ (Gemini API / Claude / OpenAI-compatible / Ollama) ใช้งานได้ใน Dia และเบราว์เซอร์ Chromium อื่น ๆ — เชื่อมต่อ Google Drive เพื่อซิงค์ workspaces, การตั้งค่า และ reading list ระหว่าง Chrome กับ Dia
 
 ## 🚀 อัปเดตเวอร์ชันใหม่ v1.14.0! 
 [![วิดีโอสาธิต](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Chrome के native vertical tabs से कहीं आगे जाने वाला Arc-style sidebar: tabs + bookmarks + reading list एक साथ, **डिफ़ॉल्ट रूप से लोकल AI** (group auto-name, tab cleanup सुझाव, hover summary, natural-language search — built-in Gemini Nano, या Gemini API / Claude / OpenAI-compatible / Ollama के लिए अपनी API key लाएँ), **Workspaces** (tab bundles को hibernate और restore करें, devices के बीच metadata sync), **⌘K Command Palette**, और **Bookmark Tools** (tags, dedupe, dead-link cleanup) — डिफ़ॉल्ट रूप से device पर, कोई API key ज़रूरी नहीं।
+Chrome के native vertical tabs से कहीं आगे जाने वाला Arc-style sidebar: tabs + bookmarks + reading list एक साथ, **डिफ़ॉल्ट रूप से लोकल AI** (group auto-name, tab cleanup सुझाव, hover summary, natural-language search — built-in Gemini Nano, या Gemini API / Claude / OpenAI-compatible / Ollama के लिए अपनी API key लाएँ), **Workspaces** (tab bundles को hibernate और restore करें, devices के बीच metadata sync), **⌘K Command Palette**, और **Bookmark Tools** (tags, dedupe, dead-link cleanup) — डिफ़ॉल्ट रूप से device पर, कोई API key ज़रूरी नहीं। Dia और अन्य Chromium browsers में काम करता है — Google Drive कनेक्ट करके Chrome और Dia के बीच workspaces, preferences और reading list sync करें।
 
 ## 🚀 नया रिलीज़ v1.14.0 अपडेट! 
 [![डेमो वीडियो](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Chrome 의 기본 수직 탭을 훨씬 뛰어넘는 Arc 스타일 사이드바: 탭 + 북마크 + 리딩 리스트 통합, **기본값이 로컬인 AI**(그룹 자동 명명, 탭 정리 제안, 호버 요약, 자연어 검색 —— 내장 Gemini Nano, 또는 본인의 API 키로 Gemini API / Claude / OpenAI 호환 / Ollama 사용 가능), **Workspaces**(탭 묶음 hibernate 및 restore, 기기 간 메타데이터 동기화), **⌘K 명령 팔레트**, **북마크 도구**(태그, 중복 감지, 죽은 링크 정리) —— 기본적으로 기기에서 작동, API 키 불필요.
+Chrome 의 기본 수직 탭을 훨씬 뛰어넘는 Arc 스타일 사이드바: 탭 + 북마크 + 리딩 리스트 통합, **기본값이 로컬인 AI**(그룹 자동 명명, 탭 정리 제안, 호버 요약, 자연어 검색 —— 내장 Gemini Nano, 또는 본인의 API 키로 Gemini API / Claude / OpenAI 호환 / Ollama 사용 가능), **Workspaces**(탭 묶음 hibernate 및 restore, 기기 간 메타데이터 동기화), **⌘K 명령 팔레트**, **북마크 도구**(태그, 중복 감지, 죽은 링크 정리) —— 기본적으로 기기에서 작동, API 키 불필요. Dia 및 기타 Chromium 기반 브라우저에서도 작동 —— Google Drive 를 연결하면 Chrome 과 Dia 간에 워크스페이스, 설정, 리딩 리스트를 동기화할 수 있습니다.
 
 ## 🚀 새 릴리스 v1.14.0 업데이트! 
 [![데모 비디오](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

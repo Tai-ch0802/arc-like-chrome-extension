@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Sidebar bergaya Arc yang jauh melampaui vertical tabs bawaan Chrome: tabs + bookmarks + reading list disatukan, **AI lokal secara default** (penamaan grup otomatis, saran cleanup tab, ringkasan hover, pencarian bahasa natural — Gemini Nano bawaan, atau bawa API key Anda sendiri untuk Gemini API / Claude / kompatibel OpenAI / Ollama), **Workspaces** (hibernate & restore kumpulan tab, sinkronisasi metadata antar device), **Command Palette ⌘K**, dan **Bookmark Tools** (tags, dedupe, dead-link cleanup) — berjalan di device secara default, tanpa perlu API key.
+Sidebar bergaya Arc yang jauh melampaui vertical tabs bawaan Chrome: tabs + bookmarks + reading list disatukan, **AI lokal secara default** (penamaan grup otomatis, saran cleanup tab, ringkasan hover, pencarian bahasa natural — Gemini Nano bawaan, atau bawa API key Anda sendiri untuk Gemini API / Claude / kompatibel OpenAI / Ollama), **Workspaces** (hibernate & restore kumpulan tab, sinkronisasi metadata antar device), **Command Palette ⌘K**, dan **Bookmark Tools** (tags, dedupe, dead-link cleanup) — berjalan di device secara default, tanpa perlu API key. Berfungsi di Dia dan browser Chromium lainnya — hubungkan Google Drive untuk menyinkronkan workspaces, preferensi, dan reading list antara Chrome dan Dia.
 
 ## 🚀 Pembaruan Rilis Baru v1.14.0! 
 [![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

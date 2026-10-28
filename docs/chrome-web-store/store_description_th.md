@@ -20,7 +20,7 @@ Vertical tabs ของ Chrome (2025) แค่แสดงแท็บแนว
 - **AI Hover Summary**: hover บนแท็บ 2 วินาที → สรุปหนึ่งประโยค
 - **AI Reading List Summary Memory**: เมื่อเพิ่มแล้ว AI สรุปและบันทึกในเครื่อง อ่านได้แม้ออฟไลน์
 - **Ask AI Natural-Language Search (⌘K)**: ประโยคเดียวค้น tabs / bookmarks / reading list
-- **Workspaces**: ชุดแท็บที่ตั้งชื่อ, hibernate-restore, metadata ซิงค์ข้ามอุปกรณ์
+- **Workspaces**: ชุดแท็บที่ตั้งชื่อ, hibernate-restore; workspaces, การตั้งค่า และ reading list ซิงค์ผ่าน Google Drive — ใช้งานได้ใน Dia และเบราว์เซอร์ Chromium อื่น ๆ ด้วย
 - **Command Palette (⌘K / Ctrl+K)**: ค้นหา + การกระทำในที่เดียว
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup
 - **ในเครื่องเป็นค่าเริ่มต้น คลาวด์เป็นตัวเลือก**: AI ทำงานบน Gemini Nano ที่ Chrome ติดมาให้ตั้งแต่แกะกล่อง — ข้อมูลไม่ออกจากเครื่องของคุณ และเลือกเชื่อมต่อ API key ของคุณเองได้ (Gemini API / Claude / OpenAI-compatible / Ollama)

@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-超越 Chrome 原生垂直标签的 Arc 风格侧边栏：统一管理标签页、书签与阅读清单，**默认本地的 AI**（自动命名群组、标签页清理建议、悬停摘要、自然语言搜索），**工作区**（一键 hibernate 与 restore 标签集合，metadata 跨设备同步），**⌘K 命令面板**，以及 **书签工具**（多标签、重复检测、失效链接清理）—— 默认在设备上运算，无需 API key；也可自带 API key 接云端模型（Gemini API / Claude / OpenAI 兼容 / Ollama）。
+超越 Chrome 原生垂直标签的 Arc 风格侧边栏：统一管理标签页、书签与阅读清单，**默认本地的 AI**（自动命名群组、标签页清理建议、悬停摘要、自然语言搜索），**工作区**（一键 hibernate 与 restore 标签集合，metadata 跨设备同步），**⌘K 命令面板**，以及 **书签工具**（多标签、重复检测、失效链接清理）—— 默认在设备上运算，无需 API key；也可自带 API key 接云端模型（Gemini API / Claude / OpenAI 兼容 / Ollama）。 支持 Dia 及其他 Chromium 系浏览器——连接 Google Drive 即可在 Chrome 与 Dia 之间同步工作区、偏好设置与阅读清单。
 
 ## 🚀 新版本 v1.14.0 更新！
 [![演示视频](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

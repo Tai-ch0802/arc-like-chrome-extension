@@ -20,7 +20,7 @@ Wir haben Chrome komplett neu konzipiert und eine moderne Seitenleiste eingefüh
 - **AI Hover-Zusammenfassung**: 2 s über einen Tab schweben für einen Satz Zusammenfassung.
 - **AI Leseliste-Zusammenfassungsspeicher**: AI fasst beim Hinzufügen zusammen, lokal gespeichert, offline lesbar.
 - **Ask AI natürlichsprachliche Suche (⌘K)**: Ein Satz durchsucht tabs / bookmarks / reading list.
-- **Workspaces**: Tab-Bündel als benannte Workspaces speichern, hibernate-restore, Metadaten geräteübergreifend.
+- **Workspaces**: Tab-Bündel als benannte Workspaces speichern, hibernate-restore; Workspaces, Einstellungen und Leseliste synchronisieren über Google Drive — funktioniert auch in Dia und anderen Chromium-Browsern.
 - **Command Palette (⌘K / Ctrl+K)**: Vereinheitlichte Suche + Aktions-Overlay.
 - **Bookmark Tools**: 🛠️ Tags / Dedupe / tote Links.
 - **Standardmäßig lokal, Cloud optional**: KI läuft ab Werk auf Chromes eingebautem Gemini Nano — dabei verlässt nichts Ihren Rechner. Optional verbinden Sie Ihren eigenen API-Schlüssel (Gemini API / Claude / OpenAI-kompatibel / Ollama).

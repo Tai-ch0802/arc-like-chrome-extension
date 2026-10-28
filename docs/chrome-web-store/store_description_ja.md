@@ -20,7 +20,7 @@ Chrome ネイティブの垂直タブ（2025）はタブを垂直に並べるだ
 - **AI ホバー要約**: タブに 2 秒ホバーで一文要約。
 - **AI リーディングリスト要約記憶**: 追加時 AI 要約してローカル保存、オフライン閲覧可。
 - **Ask AI 自然言語検索 (⌘K)**: 一文で tabs / bookmarks / reading list を検索。
-- **Workspaces**: タブ集合を名前付き Workspace に保存、ハイバネート・復元、メタデータをデバイス間で同期。
+- **Workspaces**: タブ集合を名前付き Workspace に保存、ハイバネート・復元。Workspace・設定・リーディングリストは Google Drive で同期、Dia などの Chromium 系ブラウザーにも対応。
 - **Command Palette (⌘K / Ctrl+K)**: 統一検索 + アクションオーバーレイ。
 - **Bookmark Tools**: 🛠️ タグ / 重複検出 / リンク切れチェック。
 - **既定でローカル、クラウドは任意**: AI は標準で Chrome 内蔵 Gemini Nano 上で動作 —— データはデバイスの外に出ません。任意で自分の API キー（Gemini API / Claude / OpenAI 互換 / Ollama）を接続できます。
