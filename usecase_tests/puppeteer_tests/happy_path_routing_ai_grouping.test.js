@@ -72,7 +72,7 @@ describe('AI Auto Routing', () => {
     }, 60000);
 
     test('two consecutive same-domain tabs create a domain-named group; later tabs join it (FR-3.04/3.05)', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({ aiAutoRoutingEnabled: true }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_aiAutoRoutingEnabled: { v: true, t: 1 } }));
 
         const t1 = await createTab('https://example.com/ai-pair-1');
         await waitJudged(t1.id);

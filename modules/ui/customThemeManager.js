@@ -5,6 +5,7 @@
  */
 
 import * as api from '../apiManager.js';
+import * as prefs from '../prefs/prefsStore.js';
 import { showCustomDialog, showConfirm } from '../modalManager.js';
 import {
     calculateDerivedColors,
@@ -29,7 +30,7 @@ let currentCustomTheme = null;
  */
 export async function loadCustomTheme() {
     try {
-        const result = await api.getStorage('sync', { [CUSTOM_THEME_STORAGE_KEY]: null });
+        const result = await prefs.getPrefsLike({ [CUSTOM_THEME_STORAGE_KEY]: null });
         currentCustomTheme = result[CUSTOM_THEME_STORAGE_KEY];
         return currentCustomTheme;
     } catch (error) {
@@ -45,7 +46,7 @@ export async function loadCustomTheme() {
 async function saveCustomTheme(themeData) {
     try {
         currentCustomTheme = themeData;
-        await api.setStorage('sync', { [CUSTOM_THEME_STORAGE_KEY]: themeData });
+        await prefs.setPrefsFromObject({ [CUSTOM_THEME_STORAGE_KEY]: themeData });
     } catch (error) {
         console.error('[customThemeManager] Error saving custom theme:', error);
     }

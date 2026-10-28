@@ -28,6 +28,7 @@ import { generateGroupName } from '../aiManager.js';
 // ISSUE-257: group operations go through apiManager's best-effort wrappers
 // (null on failure / where unsupported) instead of raw chrome.tabs.group.
 import { groupTabs, ungroupTabs, addTabToNewGroup, updateTabGroup, isTabGroupingAvailable } from '../apiManager.js';
+import { getPrefs, prefStorageKey } from '../prefs/prefsStore.js';
 
 const SESSION_KEY = 'routingSessionState';
 const ROUTING_ENABLED_KEY = 'routingEnabled';
@@ -76,7 +77,7 @@ async function ensureRules() {
 
 async function ensureEnabled() {
     if (enabledCache === null) {
-        const res = await chrome.storage.sync.get({ [ROUTING_ENABLED_KEY]: true });
+        const res = await getPrefs([ROUTING_ENABLED_KEY]);
         enabledCache = res[ROUTING_ENABLED_KEY] !== false;
     }
     return enabledCache;
@@ -84,7 +85,7 @@ async function ensureEnabled() {
 
 async function ensureAiEnabled() {
     if (aiEnabledCache === null) {
-        const res = await chrome.storage.sync.get({ [AI_ROUTING_KEY]: false });
+        const res = await getPrefs([AI_ROUTING_KEY]);
         aiEnabledCache = res[AI_ROUTING_KEY] === true; // opt-in (FR-3.06)
     }
     return aiEnabledCache;
@@ -319,7 +320,7 @@ export function initRoutingEngine() {
 
     chrome.storage.onChanged.addListener((changes, area) => {
         if (area === 'local' && changes[ROUTING_RULES_KEY]) rulesCache = null;
-        if (area === 'sync' && changes[ROUTING_ENABLED_KEY]) enabledCache = null;
-        if (area === 'sync' && changes[AI_ROUTING_KEY]) aiEnabledCache = null;
+        if (area === 'local' && changes[prefStorageKey(ROUTING_ENABLED_KEY)]) enabledCache = null;
+        if (area === 'local' && changes[prefStorageKey(AI_ROUTING_KEY)]) aiEnabledCache = null;
     });
 }

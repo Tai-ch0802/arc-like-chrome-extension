@@ -1,4 +1,5 @@
 import * as api from '../apiManager.js';
+import * as prefs from '../prefs/prefsStore.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 
@@ -48,12 +49,12 @@ export function initThemeSwitcher() {
     });
 
     // 從存儲中加載並應用主題 (首次載入時)
-    api.getStorage('sync', { theme: 'geek' }).then(async (data) => {
+    prefs.getPrefsLike({ theme: 'geek' }).then(async (data) => {
         if (data.theme === 'custom') {
             const applied = await customTheme.loadAndApplyCustomTheme();
             if (!applied) {
                 applyTheme('geek');
-                api.setStorage('sync', { theme: 'geek' });
+                prefs.setPrefsFromObject({ theme: 'geek' });
             }
         } else {
             applyTheme(data.theme);
@@ -64,7 +65,7 @@ export function initThemeSwitcher() {
     bgImage.loadAndApplyBackgroundImage().catch(console.error);
 
     // Load and apply list-row density (runs in parallel with theme)
-    api.getStorage('sync', { listDensity: 'cozy' })
+    prefs.getPrefsLike({ listDensity: 'cozy' })
         .then((d) => applyDensity(d.listDensity))
         .catch(console.error);
 }

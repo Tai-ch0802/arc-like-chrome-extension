@@ -55,7 +55,7 @@ describe('Tab lifecycle engine', () => {
     });
 
     test('stays inert while the switch is off — opt-in (FR-1.01)', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({ autoArchiveIdleHours: 0.0001 }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_autoArchiveIdleHours: { v: 0.0001, t: 1 } }));
         const t = await createTab('https://example.com/lifecycle-off');
         await new Promise(r => setTimeout(r, 800)); // idle beyond the tiny threshold
         await fireHeartbeat();
@@ -65,7 +65,7 @@ describe('Tab lifecycle engine', () => {
     }, 60000);
 
     test('archives idle tabs (persisted BEFORE close) and honors the exemption chain', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({ autoArchiveEnabled: true }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_autoArchiveEnabled: { v: true, t: 1 } }));
 
         const idle1 = await createTab('https://example.com/lifecycle-idle-1');
         const idle2 = await createTab('https://example.com/lifecycle-idle-2');

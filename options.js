@@ -1,4 +1,5 @@
 import * as api from './modules/apiManager.js';
+import * as prefs from './modules/prefs/prefsStore.js';
 import { applyTheme } from './modules/ui/settingManager.js';
 import * as customTheme from './modules/ui/customThemeManager.js';
 import * as bgImage from './modules/ui/backgroundImageManager.js';
@@ -82,7 +83,7 @@ async function renderAppearance(container) {
     h.textContent = api.getMessage('settingsNavAppearance') || 'Appearance';
     container.appendChild(h);
 
-    const { theme: storedTheme } = await api.getStorage('sync', { theme: 'geek' });
+    const { theme: storedTheme } = await prefs.getPrefsLike({ theme: 'geek' });
     const selectedTheme = storedTheme || 'geek';
 
     // --- Theme select ---
@@ -111,7 +112,7 @@ async function renderAppearance(container) {
     // --- Theme change handler ---
     themeSelect.addEventListener('change', async (event) => {
         const newTheme = event.target.value;
-        await api.setStorage('sync', { theme: newTheme });
+        await prefs.setPrefsFromObject({ theme: newTheme });
 
         // Apply to THIS options page for instant preview.
         if (newTheme === 'custom') {
@@ -125,7 +126,7 @@ async function renderAppearance(container) {
     });
 
     // --- List density select ---
-    const { listDensity: storedDensity } = await api.getStorage('sync', { listDensity: 'cozy' });
+    const { listDensity: storedDensity } = await prefs.getPrefsLike({ listDensity: 'cozy' });
     const densitySelect = document.createElement('select');
     densitySelect.id = 'density-select-dropdown';
     densitySelect.className = 'modal-select';
@@ -138,7 +139,7 @@ async function renderAppearance(container) {
     }
     // 只寫 storage;側邊欄透過 settingsBridge 的 storage.onChanged 即時套用密度。
     densitySelect.addEventListener('change', async (event) => {
-        await api.setStorage('sync', { listDensity: event.target.value });
+        await prefs.setPrefsFromObject({ listDensity: event.target.value });
     });
     container.appendChild(
         makeRow(api.getMessage('densitySectionHeader') || 'List spacing', densitySelect)
@@ -201,7 +202,7 @@ async function renderAppearance(container) {
         bookmarks: 'bookmarksHeader',
         newswire: 'newswireSectionHeader',
     };
-    const { [SECTION_ORDER_KEY]: storedOrder } = await api.getStorage('sync', { [SECTION_ORDER_KEY]: [] });
+    const { [SECTION_ORDER_KEY]: storedOrder } = await prefs.getPrefsLike({ [SECTION_ORDER_KEY]: [] });
     for (const id of mergeSectionOrder(storedOrder, DEFAULT_SECTION_ORDER)) {
         const row = document.createElement('div');
         row.className = 'opt-row';
@@ -219,7 +220,7 @@ async function renderAppearance(container) {
             animation: 150,
             onEnd: async () => {
                 const ids = [...soList.querySelectorAll('[data-section-id]')].map(el => el.dataset.sectionId);
-                await api.setStorage('sync', { [SECTION_ORDER_KEY]: ids });
+                await prefs.setPrefsFromObject({ [SECTION_ORDER_KEY]: ids });
             },
         });
     }
@@ -254,7 +255,7 @@ async function renderLanguage(container) {
     h.textContent = api.getMessage('settingsNavLanguage') || 'Language';
     container.appendChild(h);
 
-    const { uiLanguage: storedLang } = await api.getStorage('sync', { uiLanguage: 'auto' });
+    const { uiLanguage: storedLang } = await prefs.getPrefsLike({ uiLanguage: 'auto' });
     const selectedLang = storedLang || 'auto';
 
     const langSelect = document.createElement('select');
@@ -272,7 +273,7 @@ async function renderLanguage(container) {
     );
 
     langSelect.addEventListener('change', async (e) => {
-        await api.setStorage('sync', { uiLanguage: e.target.value });
+        await prefs.setPrefsFromObject({ uiLanguage: e.target.value });
         // Reload this options page to apply the new locale.
         // NOTE: no CustomEvent dispatch — sidepanel reacts via D6 storage bridge.
         window.location.reload();
@@ -337,7 +338,7 @@ async function renderFeatures(container) {
 
     // Load all feature toggle states in one batch
     const defaults = Object.fromEntries(FEATURE_TOGGLES.map(f => [f.key, f.defaultVal]));
-    const stored = await api.getStorage('sync', defaults);
+    const stored = await prefs.getPrefsLike(defaults);
     // ISSUE-257: grouping-dependent toggles are inert where the browser (Dia)
     // cannot create tab groups — show why instead of a switch that does nothing.
     const groupingAvailable = await api.isTabGroupingAvailable();
@@ -378,21 +379,21 @@ async function renderFeatures(container) {
 
         checkbox.addEventListener('change', async (e) => {
             // NOTE: no CustomEvent dispatch — sidepanel reacts via D6 storage bridge.
-            await api.setStorage('sync', { [feat.key]: e.target.checked });
+            await prefs.setPrefsFromObject({ [feat.key]: e.target.checked });
         });
     }
 
     // --- Auto-Archive controls (BASE-024 P3, FR-5.01) ---
     // Not in FEATURE_TOGGLES: opt-in default (false, === true semantics) plus a
     // threshold select — the array only models default-true checkboxes.
-    const aa = await api.getStorage('sync', { autoArchiveEnabled: false, autoArchiveIdleHours: 12 });
+    const aa = await prefs.getPrefsLike({ autoArchiveEnabled: false, autoArchiveIdleHours: 12 });
 
     const aaToggle = document.createElement('input');
     aaToggle.type = 'checkbox';
     aaToggle.id = 'auto-archive-toggle';
     aaToggle.checked = aa.autoArchiveEnabled === true;
     aaToggle.addEventListener('change', async (e) => {
-        await api.setStorage('sync', { autoArchiveEnabled: e.target.checked });
+        await prefs.setPrefsFromObject({ autoArchiveEnabled: e.target.checked });
     });
     container.appendChild(makeRow(
         api.getMessage('autoArchiveToggle') || 'Auto-archive idle tabs',
@@ -417,7 +418,7 @@ async function renderFeatures(container) {
     aaSelect.value = String(aa.autoArchiveIdleHours);
     if (aaSelect.selectedIndex === -1) aaSelect.value = '12'; // non-preset stored value
     aaSelect.addEventListener('change', async (e) => {
-        await api.setStorage('sync', { autoArchiveIdleHours: Number(e.target.value) });
+        await prefs.setPrefsFromObject({ autoArchiveIdleHours: Number(e.target.value) });
     });
     container.appendChild(makeRow(
         api.getMessage('autoArchiveThreshold') || 'Archive after idle for',
@@ -2316,7 +2317,7 @@ async function renderRouting(container) {
     h.textContent = api.getMessage('settingsNavRouting') || 'Auto Grouping Rules';
     container.appendChild(h);
 
-    const stored = await api.getStorage('sync', { routingEnabled: true, aiAutoRoutingEnabled: false });
+    const stored = await prefs.getPrefsLike({ routingEnabled: true, aiAutoRoutingEnabled: false });
     // ISSUE-257: routing targets tab groups; explain and disable where unsupported.
     const groupingAvailable = await api.isTabGroupingAvailable();
     if (!groupingAvailable) {
@@ -2331,7 +2332,7 @@ async function renderRouting(container) {
     toggle.disabled = !groupingAvailable;
     toggle.checked = stored.routingEnabled !== false;
     toggle.addEventListener('change', async (e) => {
-        await api.setStorage('sync', { routingEnabled: e.target.checked });
+        await prefs.setPrefsFromObject({ routingEnabled: e.target.checked });
     });
     container.appendChild(makeRow(
         api.getMessage('routingGlobalToggle') || 'Route new tabs by rules',
@@ -2348,7 +2349,7 @@ async function renderRouting(container) {
     aiToggle.disabled = !groupingAvailable;
     aiToggle.checked = stored.aiAutoRoutingEnabled === true;
     aiToggle.addEventListener('change', async (e) => {
-        await api.setStorage('sync', { aiAutoRoutingEnabled: e.target.checked });
+        await prefs.setPrefsFromObject({ aiAutoRoutingEnabled: e.target.checked });
     });
     container.appendChild(makeRow(
         api.getMessage('routingAiToggle') || 'AI Auto Routing',
@@ -2583,7 +2584,7 @@ const SECTIONS = [
 
 async function applyOwnTheme() {
     try {
-        const { theme } = await api.getStorage('sync', { theme: 'geek' });
+        const { theme } = await prefs.getPrefsLike({ theme: 'geek' });
         if (theme === 'custom') { await customTheme.loadAndApplyCustomTheme(); }
         else { applyTheme(theme); }
     } catch (e) { console.warn('options theme apply failed', e); }
@@ -2619,7 +2620,7 @@ function buildNav(navEl, contentEl) {
 document.addEventListener('DOMContentLoaded', async () => {
     // 套用 uiLanguage 覆寫:必須在 buildNav(以 api.getMessage 渲染全頁)前載入自訂字典,
     // 否則 getMessage 會退回瀏覽器語系、忽略使用者選的語言(比照 sidepanel.js / spotlight.js)。
-    const { uiLanguage } = await api.getStorage('sync', { uiLanguage: 'auto' });
+    const { uiLanguage } = await prefs.getPrefsLike({ uiLanguage: 'auto' });
     await api.loadCustomI18n(uiLanguage);
     applyOwnTheme();
     buildNav(document.getElementById('opt-nav'), document.getElementById('opt-content'));

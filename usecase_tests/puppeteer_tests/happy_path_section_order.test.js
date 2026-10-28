@@ -3,7 +3,7 @@ const { setupBrowser, teardownBrowser } = require('./setup');
 /**
  * BASE-015: sidebar section order (+ BASE-016 N1 加入第五區塊 newswire)。
  *
- * 排序偏好存 chrome.storage.sync.sectionOrder;options 外觀頁的拖曳清單只寫
+ * 排序偏好存 chrome.storage.local 的 pref_sectionOrder 記錄（ISSUE-257）;options 外觀頁的拖曳清單只寫
  * storage,sidepanel 經 settingsBridge 的 sectionOrderChanged 事件以 appendChild
  * 重排 .panel-section wrapper。
  *
@@ -48,40 +48,40 @@ describe('Sidebar Section Order (BASE-015)', () => {
     }, 120000);
 
     test('writing sectionOrder reorders the live sidepanel via the storage bridge', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'archive', 'newswire'],
+        await page.evaluate(() => chrome.storage.local.set({
+            pref_sectionOrder: { v: ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'archive', 'newswire'], t: 1 },
         }));
         await waitForOrder(page, ['bookmarks', 'readingList', 'tabs', 'otherWindows', 'archive', 'newswire']);
 
         // Section ids the panel doesn't have (another device / future feature)
         // are tolerated — ignored for layout, and NOT rewritten back to storage.
-        await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['ghostSection', 'newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows'],
+        await page.evaluate(() => chrome.storage.local.set({
+            pref_sectionOrder: { v: ['ghostSection', 'newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows'], t: 2 },
         }));
         await waitForOrder(page, ['newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows']);
 
         const stored = await page.evaluate(() =>
-            chrome.storage.sync.get('sectionOrder').then(v => v.sectionOrder));
+            chrome.storage.local.get('pref_sectionOrder').then(v => v.pref_sectionOrder.v));
         expect(stored).toEqual(['ghostSection', 'newswire', 'readingList', 'archive', 'bookmarks', 'tabs', 'otherWindows']);
 
-        await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
+        await page.evaluate(() => chrome.storage.local.remove('pref_sectionOrder'));
         await waitForOrder(page, DEFAULT_ORDER);
     }, 120000);
 
     test('a pre-newswire preference (4 ids) appends the new section at the end', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['bookmarks', 'tabs', 'otherWindows', 'readingList'],
+        await page.evaluate(() => chrome.storage.local.set({
+            pref_sectionOrder: { v: ['bookmarks', 'tabs', 'otherWindows', 'readingList'], t: 11 },
         }));
         await waitForOrder(page, ['bookmarks', 'tabs', 'otherWindows', 'readingList', 'archive', 'newswire']);
-        await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
+        await page.evaluate(() => chrome.storage.local.remove('pref_sectionOrder'));
         await waitForOrder(page, DEFAULT_ORDER);
     }, 120000);
 
     test('stored order is applied on sidepanel load (persists across reload)', async () => {
         // A pre-archive (5-id) preference: the unknown-to-storage 'archive'
         // section appends at the end (BASE-024 P2 migration case).
-        await page.evaluate(() => chrome.storage.sync.set({
-            sectionOrder: ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows'],
+        await page.evaluate(() => chrome.storage.local.set({
+            pref_sectionOrder: { v: ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows'], t: 12 },
         }));
         await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows', 'archive']);
 
@@ -90,7 +90,7 @@ describe('Sidebar Section Order (BASE-015)', () => {
         await waitForOrder(page, ['readingList', 'bookmarks', 'newswire', 'tabs', 'otherWindows', 'archive']);
 
         // Restore defaults for any test that follows in this profile.
-        await page.evaluate(() => chrome.storage.sync.remove('sectionOrder'));
+        await page.evaluate(() => chrome.storage.local.remove('pref_sectionOrder'));
         await waitForOrder(page, DEFAULT_ORDER);
     }, 120000);
 

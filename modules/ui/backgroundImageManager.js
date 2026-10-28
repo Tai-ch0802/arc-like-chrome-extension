@@ -6,6 +6,7 @@
  */
 
 import * as api from '../apiManager.js';
+import * as prefs from '../prefs/prefsStore.js';
 import { processImage } from '../utils/imageUtils.js';
 import { escapeHtml } from '../utils/textUtils.js';
 
@@ -43,7 +44,7 @@ let currentConfig = null;
  */
 export async function loadBackgroundConfig() {
     try {
-        const result = await api.getStorage('sync', { [BG_CONFIG_KEY]: DEFAULT_CONFIG });
+        const result = await prefs.getPrefsLike({ [BG_CONFIG_KEY]: DEFAULT_CONFIG });
         currentConfig = result[BG_CONFIG_KEY] || DEFAULT_CONFIG;
         return currentConfig;
     } catch (error) {
@@ -59,7 +60,7 @@ export async function loadBackgroundConfig() {
 async function saveBackgroundConfig(config) {
     try {
         currentConfig = { ...config, updatedAt: Date.now() };
-        await api.setStorage('sync', { [BG_CONFIG_KEY]: currentConfig });
+        await prefs.setPrefsFromObject({ [BG_CONFIG_KEY]: currentConfig });
     } catch (error) {
         console.error('[backgroundImageManager] Error saving config:', error);
     }

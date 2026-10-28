@@ -2,6 +2,7 @@
 // UI rendering for Reading List items
 
 import * as api from '../apiManager.js';
+import * as prefs from '../prefs/prefsStore.js';
 import * as readingListManager from '../readingListManager.js';
 import * as modalManager from '../modalManager.js';
 import { CHECK_ICON_SVG, CLOCK_ICON_SVG, PLUS_ICON_SVG } from '../icons.js';
@@ -211,7 +212,7 @@ function initReadingListListeners(containerElement) {
     if (sortSelect) {
         sortSelect.addEventListener('change', async (e) => {
             const sortOrder = e.target.value;
-            await api.setStorage('sync', { readingListSortOrder: sortOrder });
+            await prefs.setPrefsFromObject({ readingListSortOrder: sortOrder });
             handleRefresh();
         }, { signal });
     }
@@ -273,7 +274,7 @@ export function renderReadingList(entries, containerElement, refreshCallback) {
     updateClearAllReadButton(hasReadItems);
 
     // Sort based on preference
-    api.getStorage('sync', { readingListSortOrder: 'date-newest' }).then(result => {
+    prefs.getPrefsLike({ readingListSortOrder: 'date-newest' }).then(result => {
         // Guard against race conditions using generation
         if (thisGeneration !== readingListSearchGeneration) return;
 
@@ -341,7 +342,7 @@ function initToggleButton() {
     toggleInitialized = true;
 
     // Initialize state from storage
-    api.getStorage('sync', ['readingListCollapsed']).then(result => {
+    api.getStorage('local', ['readingListCollapsed']).then(result => {
         const isCollapsed = result.readingListCollapsed === true;
         setCollapsedState(isCollapsed);
     }).catch(err => {
@@ -352,7 +353,7 @@ function initToggleButton() {
         const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
         const newCollapsedState = isExpanded; // If expanded, we're collapsing
         setCollapsedState(newCollapsedState);
-        api.setStorage('sync', { readingListCollapsed: newCollapsedState });
+        api.setStorage('local', { readingListCollapsed: newCollapsedState });
     });
 }
 

@@ -6,6 +6,7 @@
 // 既有事件監聽,因此不需要任何 renderer 重繪。後續變更經 settingsBridge
 // 派發的 sectionOrderChanged 事件驅動。
 import * as api from '../apiManager.js';
+import * as prefs from '../prefs/prefsStore.js';
 import { contentContainer } from './elements.js';
 import { SECTION_ORDER_KEY, DEFAULT_SECTION_ORDER, mergeSectionOrder } from '../utils/sectionOrder.js';
 
@@ -21,7 +22,7 @@ export async function applySectionOrder() {
         ...DEFAULT_SECTION_ORDER.filter(id => byId.has(id)),
         ...[...byId.keys()].filter(id => !DEFAULT_SECTION_ORDER.includes(id)),
     ];
-    const stored = (await api.getStorage('sync', { [SECTION_ORDER_KEY]: [] }))[SECTION_ORDER_KEY];
+    const stored = (await prefs.getPrefsLike({ [SECTION_ORDER_KEY]: [] }))[SECTION_ORDER_KEY];
     const order = mergeSectionOrder(stored, canonical);
     for (const id of order) contentContainer.appendChild(byId.get(id));
 }

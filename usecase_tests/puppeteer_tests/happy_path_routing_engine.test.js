@@ -151,12 +151,12 @@ describe('Tab Routing Rules — engine', () => {
     }, 60000);
 
     test('does nothing while the global switch is off (FR-2.06)', async () => {
-        await page.evaluate(() => chrome.storage.sync.set({ routingEnabled: false }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_routingEnabled: { v: false, t: 1 } }));
         const tab = await createTab('https://example.com/routing-p1-e');
         await assertStaysUngrouped(tab.id);
 
         // Switch back on: the very next tab routes again (cache invalidation works).
-        await page.evaluate(() => chrome.storage.sync.set({ routingEnabled: true }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_routingEnabled: { v: true, t: 2 } }));
         const tab2 = await createTab('https://example.com/routing-p1-f');
         expect(await waitForGroup(tab2.id)).not.toBeNull();
     }, 60000);

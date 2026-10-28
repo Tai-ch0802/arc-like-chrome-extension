@@ -105,17 +105,19 @@ describe('Snooze entry + lifecycle settings', () => {
 
         await page.click('#auto-archive-toggle');
         await page.waitForFunction(async () => {
-            const v = await chrome.storage.sync.get({ autoArchiveEnabled: false });
+            const r = await chrome.storage.local.get('pref_autoArchiveEnabled');
+            const v = { autoArchiveEnabled: r.pref_autoArchiveEnabled ? r.pref_autoArchiveEnabled.v : false };
             return v.autoArchiveEnabled === true;
         }, { timeout: 5000 });
 
         await page.select('#auto-archive-threshold', '24');
         await page.waitForFunction(async () => {
-            const v = await chrome.storage.sync.get({ autoArchiveIdleHours: 12 });
+            const r = await chrome.storage.local.get('pref_autoArchiveIdleHours');
+            const v = { autoArchiveIdleHours: r.pref_autoArchiveIdleHours ? r.pref_autoArchiveIdleHours.v : 12 };
             return v.autoArchiveIdleHours === 24;
         }, { timeout: 5000 });
 
         // Reset for hermetic retries.
-        await page.evaluate(() => chrome.storage.sync.set({ autoArchiveEnabled: false, autoArchiveIdleHours: 12 }));
+        await page.evaluate(() => chrome.storage.local.set({ pref_autoArchiveEnabled: { v: false, t: 9 }, pref_autoArchiveIdleHours: { v: 12, t: 9 } }));
     }, 60000);
 });

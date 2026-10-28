@@ -213,11 +213,11 @@ export async function initNewswireSection() {
     });
 
     const { [NEWSWIRE_COLLAPSED_KEY]: storedCollapsed } =
-        await api.getStorage('sync', { [NEWSWIRE_COLLAPSED_KEY]: false });
+        await api.getStorage('local', { [NEWSWIRE_COLLAPSED_KEY]: false });
     setCollapsed(storedCollapsed === true);
     els.toggle.addEventListener('click', async () => {
         setCollapsed(!collapsed);
-        await api.setStorage('sync', { [NEWSWIRE_COLLAPSED_KEY]: collapsed });
+        await api.setStorage('local', { [NEWSWIRE_COLLAPSED_KEY]: collapsed });
     });
 
     els.badge.addEventListener('click', (e) => {
