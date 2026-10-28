@@ -1,4 +1,5 @@
 import * as api from '../apiManager.js';
+import * as state from '../stateManager.js';
 import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG, renderIcon } from '../icons.js';
 import { tabListContainer } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
@@ -217,7 +218,8 @@ export function createTabElement(tab, { onAddToGroupClick }) {
 
     const actionsContainer = document.createElement('div');
     actionsContainer.className = 'tab-actions';
-    actionsContainer.appendChild(addToGroupBtn);
+    // ISSUE-257: no "add to group" affordance where the browser cannot group tabs.
+    if (state.isTabGroupingAvailable()) actionsContainer.appendChild(addToGroupBtn);
     actionsContainer.appendChild(addToBookmarkBtn);
     actionsContainer.appendChild(closeBtn);
 

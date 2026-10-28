@@ -39,6 +39,12 @@ const DENSITY_OPTIONS = [
  * @param {string} [descText]
  * @returns {HTMLElement}
  */
+/** ISSUE-257: shared note for grouping-dependent controls on browsers without tab groups. */
+function tabGroupsUnsupportedNote() {
+    return api.getMessage('tabGroupsUnsupportedNote')
+        || 'This browser does not support the tab group API, so grouping features are unavailable here.';
+}
+
 function makeRow(labelText, control, descText) {
     const row = document.createElement('div');
     row.className = 'opt-row';
@@ -331,6 +337,10 @@ async function renderFeatures(container) {
     // Load all feature toggle states in one batch
     const defaults = Object.fromEntries(FEATURE_TOGGLES.map(f => [f.key, f.defaultVal]));
     const stored = await api.getStorage('sync', defaults);
+    // ISSUE-257: grouping-dependent toggles are inert where the browser (Dia)
+    // cannot create tab groups — show why instead of a switch that does nothing.
+    const groupingAvailable = await api.isTabGroupingAvailable();
+    const GROUPING_KEYS = new Set(['aiGroupingVisible', 'aiAutoNamingEnabled']);
 
     for (const feat of FEATURE_TOGGLES) {
         const checkbox = document.createElement('input');
@@ -339,7 +349,11 @@ async function renderFeatures(container) {
         checkbox.checked = stored[feat.key] !== false; // default true guard
 
         const labelText = api.getMessage(feat.labelKey) || feat.key;
-        const descText  = feat.descKey ? (api.getMessage(feat.descKey) || '') : undefined;
+        let descText  = feat.descKey ? (api.getMessage(feat.descKey) || '') : undefined;
+        if (!groupingAvailable && GROUPING_KEYS.has(feat.key)) {
+            checkbox.disabled = true;
+            descText = tabGroupsUnsupportedNote();
+        }
 
         const row = makeRow(labelText, checkbox, descText);
         container.appendChild(row);
@@ -2266,9 +2280,18 @@ async function renderRouting(container) {
     container.appendChild(h);
 
     const stored = await api.getStorage('sync', { routingEnabled: true, aiAutoRoutingEnabled: false });
+    // ISSUE-257: routing targets tab groups; explain and disable where unsupported.
+    const groupingAvailable = await api.isTabGroupingAvailable();
+    if (!groupingAvailable) {
+        const note = document.createElement('p');
+        note.className = 'opt-row__desc routing-unsupported-note';
+        note.textContent = tabGroupsUnsupportedNote();
+        container.appendChild(note);
+    }
     const toggle = document.createElement('input');
     toggle.type = 'checkbox';
     toggle.id = 'routing-enabled-toggle';
+    toggle.disabled = !groupingAvailable;
     toggle.checked = stored.routingEnabled !== false;
     toggle.addEventListener('change', async (e) => {
         await api.setStorage('sync', { routingEnabled: e.target.checked });
@@ -2285,6 +2308,7 @@ async function renderRouting(container) {
     const aiToggle = document.createElement('input');
     aiToggle.type = 'checkbox';
     aiToggle.id = 'routing-ai-toggle';
+    aiToggle.disabled = !groupingAvailable;
     aiToggle.checked = stored.aiAutoRoutingEnabled === true;
     aiToggle.addEventListener('change', async (e) => {
         await api.setStorage('sync', { aiAutoRoutingEnabled: e.target.checked });

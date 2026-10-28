@@ -79,3 +79,20 @@ describe('resolveSettingChangeActions', () => {
       .toContainEqual({ type: 'dispatch', event: 'sectionOrderChanged', detail: { order } });
   });
 });
+
+// ISSUE-257: per-device capability flags live in storage.local; the sidepanel
+// re-evaluates grouping UI when they change (written by apiManager in any context).
+describe('capability flags (ISSUE-257)', () => {
+  it('local tabGroupsUnsupported → capabilitiesChanged dispatch', () => {
+    const flag = { unsupported: true, brand: 'Chromium', majorVersion: 156, at: 1 };
+    expect(resolveSettingChangeActions({ tabGroupsUnsupported: { newValue: flag } }, 'local'))
+      .toContainEqual({ type: 'dispatch', event: 'capabilitiesChanged', detail: { name: 'tabGroupsUnsupported', unsupported: true } });
+  });
+  it('local sidePanelUnavailable removed → capabilitiesChanged with unsupported false', () => {
+    expect(resolveSettingChangeActions({ sidePanelUnavailable: { oldValue: { unsupported: true } } }, 'local'))
+      .toContainEqual({ type: 'dispatch', event: 'capabilitiesChanged', detail: { name: 'sidePanelUnavailable', unsupported: false } });
+  });
+  it('sync tabGroupsUnsupported is ignored (flags are per-device)', () => {
+    expect(resolveSettingChangeActions({ tabGroupsUnsupported: { newValue: { unsupported: true } } }, 'sync')).toEqual([]);
+  });
+});

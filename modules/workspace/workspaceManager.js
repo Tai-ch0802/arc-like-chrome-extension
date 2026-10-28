@@ -47,7 +47,7 @@
  * @property {string} [groupTitle]
  * @property {string} [groupColor]
  */
-import { getStorage, setStorage, setStorageStrict, removeStorage, addTabToNewGroup } from '../apiManager.js';
+import { getStorage, setStorage, setStorageStrict, removeStorage, addTabToNewGroup, isTabGroupingAvailable } from '../apiManager.js';
 import { claimUrls } from '../routing/rulesStore.js';
 import { renderIcon, hasIcon } from '../icons.js';
 import { escapeHtml } from '../utils/textUtils.js';
@@ -407,7 +407,11 @@ export async function deleteWorkspace(id) {
 export async function snapshotIntoWorkspace(id, windowId) {
     const ws = workspaces[id];
     if (!ws) return null;
-    const snap = await snapshotWindowTabs(windowId);
+    // ISSUE-257 FR-1.03a: where tab groups are unavailable (Dia), live tabs can
+    // never report a group — carry the stored snapshot's group fields forward
+    // so this device's re-snapshot does not strip groups for every other device.
+    const carryFrom = (await isTabGroupingAvailable()) ? undefined : ws.tabSnapshot;
+    const snap = await snapshotWindowTabs(windowId, { carryFrom });
     // Never wipe a non-empty snapshot with an empty one from this path: an
     // all-chrome:// window legitimately yields [], but so does a window in
     // mid-teardown (tabs already gone) — and the background auto-snapshot
@@ -461,14 +465,45 @@ export async function setActiveWorkspace(windowId, workspaceId, { touch = true }
 }
 
 /**
+ * ISSUE-257 FR-1.03a：在不支援分頁群組的瀏覽器（Dia）上，活分頁全部 groupId -1，
+ * 直接重新快照會把群組欄位剝掉並推上 Drive，Chrome 端永久失去群組。本函式依 URL
+ * 把前一份快照的 groupKey/groupTitle/groupColor 補回；快照本身已有群組者以活群組
+ * 為準；每筆舊記錄只配對一次（同 URL 多筆依序消耗）。純函式、不改輸入。
+ * @param {Array} snapshot 新建的 TabSnapshot[]
+ * @param {Array|undefined} previous 前一份 TabSnapshot[]
+ * @returns {Array}
+ */
+export function carryForwardGroups(snapshot, previous) {
+    if (!Array.isArray(previous) || previous.length === 0) return snapshot.map(s => ({ ...s }));
+    const pool = new Map();
+    for (const p of previous) {
+        if (!p || typeof p.url !== 'string') continue;
+        if (!pool.has(p.url)) pool.set(p.url, []);
+        pool.get(p.url).push(p);
+    }
+    return snapshot.map(s => {
+        const out = { ...s };
+        const queue = pool.get(out.url);
+        const prev = queue && queue.length ? queue.shift() : null;
+        if (out.groupKey == null && prev && prev.groupKey != null) {
+            out.groupKey = prev.groupKey;
+            out.groupTitle = prev.groupTitle || '';
+            out.groupColor = prev.groupColor;
+        }
+        return out;
+    });
+}
+
+/**
  * 把 chrome.tabs.query 結果映射成 TabSnapshot[]，對分組分頁帶上 group 資訊。
  * 純函式，便於單元測試。
  * @param {Array<{url:string,title?:string,pinned?:boolean,groupId?:number}>} tabs
- * @param {Map<number,{title?:string,color:string}>} groupsById
+ * @param {Map<number,{title?:string,color:string}>|null} groupsById
+ * @param {{carryFrom?: Array}} [opts] carryFrom：前一份快照（群組 API 不可用時沿用其群組欄位）
  * @returns {Array}
  */
-export function buildSnapshotFromTabs(tabs, groupsById) {
-    return tabs
+export function buildSnapshotFromTabs(tabs, groupsById, { carryFrom } = {}) {
+    const snapshot = tabs
         .filter(t => t.url && /^(https?|file|ftp):/i.test(t.url))
         .map(t => {
             const snap = { url: t.url, title: t.title || '', pinned: Boolean(t.pinned) };
@@ -482,6 +517,7 @@ export function buildSnapshotFromTabs(tabs, groupsById) {
             }
             return snap;
         });
+    return carryFrom ? carryForwardGroups(snapshot, carryFrom) : snapshot;
 }
 
 /**
@@ -510,14 +546,14 @@ export function clusterCreatedTabsByGroup(snapshotTabs, createdTabIds) {
     return order.map(k => byKey.get(k)).filter(c => c.tabIds.length > 0);
 }
 
-async function snapshotWindowTabs(windowId) {
+async function snapshotWindowTabs(windowId, { carryFrom } = {}) {
     const [tabs, groups] = await Promise.all([
         chrome.tabs.query({ windowId }).catch(() => []),
         chrome.tabGroups.query({ windowId }).catch(() => []),
     ]);
     const groupsById = new Map(groups.map(g => [g.id, { title: g.title, color: g.color }]));
     // chrome:// / about: pages are filtered inside buildSnapshotFromTabs.
-    return buildSnapshotFromTabs(tabs, groupsById);
+    return buildSnapshotFromTabs(tabs, groupsById, { carryFrom });
 }
 
 /**

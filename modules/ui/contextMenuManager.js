@@ -3,6 +3,7 @@
  * Handles creation and management of custom context menus for tabs.
  */
 import * as api from '../apiManager.js';
+import * as state from '../stateManager.js';
 import { COPY_ICON_SVG, READING_LIST_ICON_SVG, ADD_TO_GROUP_ICON_SVG, renderIcon } from '../icons.js';
 import { addToReadingList, isUrlInReadingList } from '../readingListManager.js';
 import { isRealHttpUrl } from '../routing/routingLogic.js';
@@ -148,7 +149,8 @@ export async function showContextMenu(x, y, tab, originElement) {
     }
 
     // --- Always Group This Site Option (BASE-022 routing rule) ---
-    if (isRealHttpUrl(tab.url)) {
+    // Hidden where the browser cannot create tab groups (ISSUE-257).
+    if (isRealHttpUrl(tab.url) && state.isTabGroupingAvailable()) {
         const routingOption = document.createElement('div');
         routingOption.className = 'context-menu-item';
         routingOption.setAttribute('role', 'menuitem');

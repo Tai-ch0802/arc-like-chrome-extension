@@ -1,4 +1,4 @@
-import { getStorage, setStorage, getAllWindows } from './apiManager.js';
+import { getStorage, setStorage, getAllWindows, isTabGroupingAvailable as isTabGroupingAvailableAsync } from './apiManager.js';
 import { filterBookmarksUnderFolder } from './bookmark/bookmarkUtils.js';
 
 // --- Smart Auto-Grouping Undo State ---
@@ -183,6 +183,26 @@ export function isNewswireVisible() {
 export async function setNewswireVisible(visible) {
   newswireVisible = visible;
   await setStorage('sync', { [NEWSWIRE_VISIBLE_KEY]: visible });
+}
+
+// --- Browser capability: tab grouping (ISSUE-257) ---
+
+let tabGroupingAvailable = true; // Default: assume supported until observed otherwise
+
+/**
+ * Loads whether this browser can create tab groups (false once apiManager's
+ * guard recorded the per-device `tabGroupsUnsupported` flag, e.g. on Dia).
+ * Synchronous readers (renderers, context menu, Spotlight) use the cached value.
+ * @returns {Promise<boolean>}
+ */
+export async function initTabGroupingAvailability() {
+  tabGroupingAvailable = await isTabGroupingAvailableAsync();
+  return tabGroupingAvailable;
+}
+
+/** @returns {boolean} cached capability; true until initTabGroupingAvailability() says otherwise. */
+export function isTabGroupingAvailable() {
+  return tabGroupingAvailable;
 }
 
 // --- AI Grouping Visibility State ---

@@ -1,4 +1,11 @@
 // --- Chrome API Wrapper Module ---
+import {
+    CAP_TAB_GROUPS,
+    CAP_SIDE_PANEL,
+    classifyTabGroupFailure,
+    createCapabilityStore,
+    getBrowserInfo,
+} from './utils/browserCapabilities.js';
 
 // Wrappers for chrome.tabs API
 export const getTabsInCurrentWindow = () => chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT });
@@ -7,30 +14,94 @@ export const getActiveTab = async () => {
     return tabs[0];
 };
 export const moveTab = (tabId, index) => chrome.tabs.move(tabId, { index });
-export const groupTabs = (tabIds, groupId) => chrome.tabs.group({ tabIds, groupId });
-export const ungroupTabs = (tabIds) => chrome.tabs.ungroup(tabIds);
 export const getTab = (tabId) => chrome.tabs.get(tabId);
 export const removeTab = (tabId) => chrome.tabs.remove(tabId);
 export const updateTab = (tabId, options) => chrome.tabs.update(tabId, options);
 export const createTab = (options) => chrome.tabs.create(options);
 export const getTabsInGroup = (groupId) => chrome.tabs.query({ groupId });
 
-// Wrappers for chrome.tabGroups API
-export const getTabGroupsInCurrentWindow = () => chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT });
-export const getAllTabGroups = () => chrome.tabGroups.query({});
-export const moveTabGroup = (groupId, index) => chrome.tabGroups.move(groupId, { index });
-export const updateTabGroup = (groupId, options) => chrome.tabGroups.update(groupId, options);
+// --- Browser capability flags (ISSUE-257) ---------------------------------
+// Per-device flags in chrome.storage.local, never synced. Created lazily so
+// the storage wrappers further down are initialised first (ES const TDZ).
+let capabilityStore = null;
+function getCapabilityStore() {
+    if (!capabilityStore) {
+        capabilityStore = createCapabilityStore({
+            storage: {
+                get: (k) => getStorage('local', [k]).then((r) => r[k]),
+                set: (k, v) => setStorage('local', { [k]: v }),
+                remove: (k) => removeStorage('local', k),
+            },
+            getInfo: getBrowserInfo,
+        });
+    }
+    return capabilityStore;
+}
 
+/** @returns {Promise<boolean>} false once tab groups were observed broken here (Dia). */
+export const isTabGroupingAvailable = async () => !(await getCapabilityStore().isUnsupported(CAP_TAB_GROUPS));
+/** @returns {Promise<boolean>} true once opening the side panel failed here. */
+export const isSidePanelUnavailable = () => getCapabilityStore().isUnsupported(CAP_SIDE_PANEL);
+export const markSidePanelUnavailable = () => getCapabilityStore().markUnsupported(CAP_SIDE_PANEL);
+/** Call at SW startup: drops flags recorded by another brand / major version. */
+export const resetCapabilityFlagsIfBrowserChanged = () => getCapabilityStore().resetIfBrowserChanged();
+/** Call from a storage.onChanged handler so a flag written elsewhere is seen. */
+export const invalidateCapabilityFlag = (name) => getCapabilityStore().invalidate(name);
+
+/**
+ * Tab-group operations are BEST-EFFORT (PRD FR-1.01/1.03): Dia rejects every
+ * chrome.tabs.group() with "No window". A failure resolves to null instead of
+ * throwing so callers finish their remaining steps (mark reading-list item
+ * read, open the rest of a workspace, …). The Dia-specific error — or a
+ * streak of failures on a non-Chrome brand — records the unsupported flag;
+ * Chrome's transient errors never do (see classifyTabGroupFailure).
+ */
+let tabGroupFailStreak = 0;
+async function guardTabGroupOp(label, fn) {
+    try {
+        const result = await fn();
+        tabGroupFailStreak = 0;
+        return result;
+    } catch (err) {
+        tabGroupFailStreak += 1;
+        const message = err && err.message;
+        if (classifyTabGroupFailure(message, getBrowserInfo(), tabGroupFailStreak)) {
+            try { await getCapabilityStore().markUnsupported(CAP_TAB_GROUPS); } catch { /* best-effort */ }
+        }
+        console.warn(`[tabGroups] ${label} failed:`, message);
+        return null;
+    }
+}
+
+export const groupTabs = (tabIds, groupId) => guardTabGroupOp('group', () => chrome.tabs.group({ tabIds, groupId }));
+export const ungroupTabs = (tabIds) => guardTabGroupOp('ungroup', () => chrome.tabs.ungroup(tabIds));
+
+// Wrappers for chrome.tabGroups API (queries degrade to [] where the API is absent/broken)
+export const getTabGroupsInCurrentWindow = () => Promise.resolve()
+    .then(() => chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }))
+    .catch(() => []);
+export const getAllTabGroups = () => Promise.resolve().then(() => chrome.tabGroups.query({})).catch(() => []);
+export const moveTabGroup = (groupId, index) => guardTabGroupOp('move', () => chrome.tabGroups.move(groupId, { index }));
+export const updateTabGroup = (groupId, options) => guardTabGroupOp('update', () => chrome.tabGroups.update(groupId, options));
+
+/**
+ * Create a new group from `tabIds` and title/color it.
+ * @returns {Promise<number|null>} the new group id, or null when grouping is
+ *   unavailable on this browser (flag already set) or the call failed.
+ */
 export async function addTabToNewGroup(tabIds, title, color, windowId = undefined) {
+    if (!(await isTabGroupingAvailable())) return null;
     // tabIds can be a single number or an array of numbers
     const ids = Array.isArray(tabIds) ? tabIds : [tabIds];
     const groupOptions = { tabIds: ids };
     if (windowId !== undefined) {
         groupOptions.createProperties = { windowId };
     }
-    const groupId = await chrome.tabs.group(groupOptions);
-    await chrome.tabGroups.update(groupId, { title, color });
-    return groupId;
+    return guardTabGroupOp('create', async () => {
+        const groupId = await chrome.tabs.group(groupOptions);
+        await chrome.tabGroups.update(groupId, { title, color });
+        return groupId;
+    });
 }
 
 // Wrappers for chrome.bookmarks API

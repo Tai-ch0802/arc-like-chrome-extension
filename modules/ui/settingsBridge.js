@@ -9,6 +9,10 @@ import { applyTheme, applyDensity } from './settingManager.js';
 import * as customTheme from './customThemeManager.js';
 import * as bgImage from './backgroundImageManager.js';
 import * as state from '../stateManager.js';
+import { invalidateCapabilityFlag } from '../apiManager.js';
+import { CAP_TAB_GROUPS, CAP_SIDE_PANEL } from '../utils/browserCapabilities.js';
+
+const CAPABILITY_FLAG_KEYS = [CAP_TAB_GROUPS, CAP_SIDE_PANEL];
 
 /**
  * Pure: map a storage change set to UI actions. No side effects.
@@ -57,6 +61,15 @@ export function resolveSettingChangeActions(changes, areaName) {
         // aiManager (any context, incl. the background SW) records cloud AI
         // 401/403 here; the sidepanel shows a throttled toast (modules/ui/toast.js).
         if (changes.aiProviderAuthError) actions.push({ type: 'dispatch', event: 'aiProviderAuthErrorChanged', detail: changes.aiProviderAuthError.newValue });
+        // ISSUE-257: per-device capability flags (written by apiManager's group
+        // guard in whichever context hit the failure). The sidepanel re-evaluates
+        // grouping UI; applySettingChanges also drops apiManager's cached value.
+        for (const name of CAPABILITY_FLAG_KEYS) {
+            if (changes[name]) {
+                const next = changes[name].newValue;
+                actions.push({ type: 'dispatch', event: 'capabilitiesChanged', detail: { name, unsupported: Boolean(next && next.unsupported) } });
+            }
+        }
     }
     return actions;
 }
@@ -77,6 +90,10 @@ export async function applySettingChanges(actions) {
             } else if (a.type === 'reload') {
                 window.location.reload();
             } else if (a.type === 'dispatch') {
+                if (a.event === 'capabilitiesChanged') {
+                    invalidateCapabilityFlag(a.detail.name);
+                    await state.initTabGroupingAvailability();
+                }
                 document.dispatchEvent(new CustomEvent(a.event, { detail: a.detail }));
             } else if (a.type === 'refreshState') {
                 const initByKey = {

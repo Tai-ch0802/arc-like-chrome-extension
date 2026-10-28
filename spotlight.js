@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         state.initAiGroupingVisibility(),
         state.initAiCleanupVisibility(),
         state.initPageReaderVisibility(),
+        state.initTabGroupingAvailability(), // ISSUE-257: hides Smart Group where tab groups are unusable
         workspaceManager.initWorkspaces(),
         tagManager.initTags(), // tag: 查詢需要(ISSUE-162 WP6)
     ]);

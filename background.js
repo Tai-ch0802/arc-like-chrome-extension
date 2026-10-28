@@ -7,7 +7,7 @@ import {
 } from './modules/rssManager.js';
 import { mergeRssState, rssStateEqual } from './modules/rss/rssSyncLogic.js';
 import { generateGroupName } from './modules/aiManager.js';
-import { getStorage, setStorage } from './modules/apiManager.js';
+import { getStorage, setStorage, groupTabs } from './modules/apiManager.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
 import { initRoutingEngine } from './modules/routing/routingEngine.js';
@@ -656,12 +656,9 @@ chrome.commands.onCommand.addListener(async (command) => {
         index: currentTab.index + 1,
         active: true
       });
-      // 如果當前分頁在群組中，也將新分頁加入同一個群組
+      // 如果當前分頁在群組中，也將新分頁加入同一個群組（best-effort，ISSUE-257）
       if (currentTab.groupId > 0) {
-        await chrome.tabs.group({
-          groupId: currentTab.groupId,
-          tabIds: newTab.id
-        });
+        await groupTabs(newTab.id, currentTab.groupId);
       }
     }
   }
