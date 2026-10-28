@@ -7,7 +7,16 @@ import {
 } from './modules/rssManager.js';
 import { mergeRssState, rssStateEqual } from './modules/rss/rssSyncLogic.js';
 import { generateGroupName } from './modules/aiManager.js';
-import { getStorage, setStorage, groupTabs } from './modules/apiManager.js';
+import {
+    getStorage,
+    setStorage,
+    groupTabs,
+    isSidePanelUnavailable,
+    markSidePanelUnavailable,
+    resetCapabilityFlagsIfBrowserChanged,
+} from './modules/apiManager.js';
+import { getBrowserInfo } from './modules/utils/browserCapabilities.js';
+import { createSidePanelEntry } from './modules/sidePanelEntry.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
 import { initWorkspaceLifecycle } from './modules/workspace/workspaceLifecycle.js';
 import { initRoutingEngine } from './modules/routing/routingEngine.js';
@@ -664,12 +673,38 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
+// --- Side panel entry (ISSUE-257 WP0) ---------------------------------------
+// Chrome: the browser opens the panel on icon click (behaviour set below).
+// Other Chromium brands (Dia): we toggle it ourselves from action.onClicked,
+// confirm via sidePanel.onOpened, and on failure flag + explain in options.
+const sidePanelEntry = createSidePanelEntry({
+  sidePanel: chrome.sidePanel,
+  runtime: chrome.runtime,
+  session: {
+    get: (k) => chrome.storage.session.get(k).then((r) => r[k]),
+    set: (k, v) => chrome.storage.session.set({ [k]: v }),
+  },
+  caps: { isSidePanelUnavailable, markSidePanelUnavailable },
+  getInfo: getBrowserInfo,
+});
+chrome.action.onClicked.addListener((tab) => {
+  sidePanelEntry.handleActionClick(tab).catch((err) => console.warn('[sidePanelEntry] click failed', err));
+});
+// Every SW start: drop capability flags recorded by another brand/major
+// version (FR-1.01b), then arm the non-Chrome entry path.
+resetCapabilityFlagsIfBrowserChanged()
+  .catch(() => [])
+  .then(() => sidePanelEntry.init())
+  .catch((err) => console.warn('[sidePanelEntry] init failed', err));
+
 // 首次安裝擴充功能時執行的程式碼
 chrome.runtime.onInstalled.addListener(() => {
   // 這個設定會告訴瀏覽器，當使用者點擊工具列圖示「或觸發 _execute_action 指令」時，
-  // 自動開關側邊欄。
-  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
-    .catch((error) => console.error(error));
+  // 自動開關側邊欄。非 Chrome 品牌由 sidePanelEntry 自行接管（ISSUE-257）。
+  if (getBrowserInfo().isGoogleChrome) {
+    chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
+      .catch((error) => console.error(error));
+  }
   // (Re)create the periodic pull alarm on install/update as well as cold start.
   ensurePullAlarm();
 });

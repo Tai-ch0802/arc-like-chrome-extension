@@ -10,6 +10,7 @@ import { isInsecureRemoteBaseUrl } from './modules/ai/providers/httpUtils.js';
 import * as modalManager from './modules/modalManager.js';
 import * as driveAuth from './modules/sync/driveAuth.js';
 import * as workspaceManager from './modules/workspace/workspaceManager.js';
+import { getBrowserInfo } from './modules/utils/browserCapabilities.js';
 import { renderIcon } from './modules/icons.js';
 import * as rulesStore from './modules/routing/rulesStore.js';
 import { MAX_RULES, VALID_GROUP_COLORS } from './modules/routing/routingLogic.js';
@@ -32,6 +33,12 @@ const DENSITY_OPTIONS = [
     { value: 'comfortable', labelKey: 'densityOptionComfortable' }
 ];
 
+/** ISSUE-257: shared note for grouping-dependent controls on browsers without tab groups. */
+function tabGroupsUnsupportedNote() {
+    return api.getMessage('tabGroupsUnsupportedNote')
+        || 'This browser does not support the tab group API, so grouping features are unavailable here.';
+}
+
 /**
  * 建立一個 .opt-row 容器：左側 label（含選用說明），右側 control。
  * @param {string} labelText
@@ -39,12 +46,6 @@ const DENSITY_OPTIONS = [
  * @param {string} [descText]
  * @returns {HTMLElement}
  */
-/** ISSUE-257: shared note for grouping-dependent controls on browsers without tab groups. */
-function tabGroupsUnsupportedNote() {
-    return api.getMessage('tabGroupsUnsupportedNote')
-        || 'This browser does not support the tab group API, so grouping features are unavailable here.';
-}
-
 function makeRow(labelText, control, descText) {
     const row = document.createElement('div');
     row.className = 'opt-row';
@@ -724,6 +725,14 @@ function renderSync(container) {
     h.textContent = api.getMessage('settingsNavSync') || 'Backup & Sync';
     container.appendChild(h);
 
+    // --- 0. Browser capability row (ISSUE-257) ---
+    // Brand + what this browser cannot do (tab groups on Dia, side panel when
+    // opening it failed). This is where a Dia user lands when the icon click
+    // could not open the panel, so it must explain itself.
+    const capabilityBlock = document.createElement('div');
+    capabilityBlock.className = 'sync-capability-block';
+    container.appendChild(capabilityBlock);
+
     // --- 1. Account block (skeleton) ---
     const accountBlock = document.createElement('div');
     accountBlock.className = 'sync-account-block';
@@ -780,6 +789,24 @@ function renderSync(container) {
      * Called after the skeleton paints and re-called after any mutating action.
      */
     async function hydrate() {
+        // ===== 0. Browser capability row =====
+        capabilityBlock.innerHTML = '';
+        try {
+            const info = getBrowserInfo();
+            const [groupingOk, panelUnavailable] = await Promise.all([
+                api.isTabGroupingAvailable(),
+                api.isSidePanelUnavailable(),
+            ]);
+            const parts = [`${info.brand} ${info.majorVersion || ''}`.trim()];
+            if (!groupingOk) parts.push(api.getMessage('capabilityTabGroupsUnsupported') || 'tab group API unavailable');
+            if (panelUnavailable) parts.push(api.getMessage('capabilitySidePanelUnavailable') || 'the side panel could not be opened');
+            capabilityBlock.appendChild(makeRow(
+                api.getMessage('capabilityRowLabel') || 'This browser',
+                null,
+                parts.join(' · ')
+            ));
+        } catch { /* best-effort diagnostics only */ }
+
         let connected = false;
         try {
             connected = await driveAuth.isConnected();
