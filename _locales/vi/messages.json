@@ -1231,7 +1231,7 @@
     "message": "Kết nối Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Thao tác này tải lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng): URL của tab, tiêu đề và thông tin nhóm cho các Workspaces bạn chọn tham gia; danh sách đăng ký RSS của bạn và một dấu vân tay một chiều của các liên kết bài viết đã tải; tùy chọn của bạn (giao diện, ngôn ngữ, công tắc các mục); và danh sách đọc của bạn (URL trang, tiêu đề, trạng thái đã đọc). Trên các trình duyệt không phải Google Chrome, việc đăng nhập cũng cho phép tiện ích đọc email tài khoản của bạn để giữ bạn luôn đăng nhập. Đồng bộ Workspace là chọn tham gia theo từng Workspace và TẮT theo mặc định; phần còn lại tự động đồng bộ khi đang kết nối. Ngắt kết nối sẽ dừng mọi hoạt động tải lên."
+    "message": "Thao tác này tải lên Google Drive của riêng bạn (một thư mục riêng của ứng dụng): URL của tab, tiêu đề và thông tin nhóm cho các Workspaces bạn chọn tham gia; danh sách đăng ký RSS của bạn và một dấu vân tay một chiều của các liên kết bài viết đã tải; nguồn tin tức và cài đặt của chúng; quy tắc tự động nhóm (định tuyến) của bạn; tùy chọn của bạn (giao diện, ngôn ngữ, công tắc các mục); và danh sách đọc của bạn (URL trang, tiêu đề, trạng thái đã đọc). Trên các trình duyệt không phải Google Chrome, việc đăng nhập cũng cho phép tiện ích đọc email tài khoản của bạn để giữ bạn luôn đăng nhập. Đồng bộ Workspace là chọn tham gia theo từng Workspace và TẮT theo mặc định; phần còn lại tự động đồng bộ khi đang kết nối. Ngắt kết nối sẽ dừng mọi hoạt động tải lên."
   },
   "syncConnectDisclosureTitle": {
     "message": "Kết nối Google Drive"

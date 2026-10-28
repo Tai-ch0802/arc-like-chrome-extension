@@ -1234,7 +1234,7 @@
     "message": "Google Drive verbinden"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Dies lädt in dein eigenes Google Drive (einen app-privaten Ordner) hoch: Tab-URLs, Titel und Gruppeninformationen der Workspaces, für die du dich entschieden hast; deine RSS-Abonnementliste und einen unumkehrbaren Fingerabdruck bereits abgerufener Artikel-Links; deine Einstellungen (Design, Sprache, Bereichsschalter); und deine Leseliste (Seiten-URLs, Titel, Lesestatus). In anderen Browsern als Google Chrome darf die Erweiterung bei der Anmeldung außerdem deine Konto-E-Mail-Adresse lesen, um dich angemeldet zu halten. Die Workspace-Synchronisierung ist pro Workspace Opt-in und standardmäßig AUS; alles andere wird bei bestehender Verbindung automatisch synchronisiert. Das Trennen beendet alle Uploads."
+    "message": "Dies lädt in dein eigenes Google Drive (einen app-privaten Ordner) hoch: Tab-URLs, Titel und Gruppeninformationen der Workspaces, für die du dich entschieden hast; deine RSS-Abonnementliste und einen unumkehrbaren Fingerabdruck bereits abgerufener Artikel-Links; deine Nachrichtenquellen samt Einstellungen; deine Regeln zur automatischen Gruppierung (Routing); deine Einstellungen (Design, Sprache, Bereichsschalter); und deine Leseliste (Seiten-URLs, Titel, Lesestatus). In anderen Browsern als Google Chrome darf die Erweiterung bei der Anmeldung außerdem deine Konto-E-Mail-Adresse lesen, um dich angemeldet zu halten. Die Workspace-Synchronisierung ist pro Workspace Opt-in und standardmäßig AUS; alles andere wird bei bestehender Verbindung automatisch synchronisiert. Das Trennen beendet alle Uploads."
   },
   "syncConnectDisclosureTitle": {
     "message": "Google Drive verbinden"

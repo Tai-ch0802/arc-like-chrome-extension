@@ -1231,7 +1231,7 @@
     "message": "Conectar Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "Isso envia, para o seu próprio Google Drive (uma pasta privada do app): as URLs das abas, os títulos e as informações de grupo dos Workspaces que você ativar; sua lista de assinaturas RSS e uma impressão digital unidirecional dos links de artigos já obtidos; suas preferências (tema, idioma, alternadores de seção); e sua lista de leitura (URLs das páginas, títulos, estado de leitura). Em navegadores que não sejam o Google Chrome, o login também permite que a extensão leia o e-mail da sua conta para manter você conectado. A sincronização de Workspaces é opt-in por Workspace e vem DESATIVADA por padrão; o restante é sincronizado automaticamente enquanto você estiver conectado. Desconectar interrompe todos os envios."
+    "message": "Isso envia, para o seu próprio Google Drive (uma pasta privada do app): as URLs das abas, os títulos e as informações de grupo dos Workspaces que você ativar; sua lista de assinaturas RSS e uma impressão digital unidirecional dos links de artigos já obtidos; suas fontes de notícias e as configurações delas; suas regras de agrupamento automático (roteamento); suas preferências (tema, idioma, alternadores de seção); e sua lista de leitura (URLs das páginas, títulos, estado de leitura). Em navegadores que não sejam o Google Chrome, o login também permite que a extensão leia o e-mail da sua conta para manter você conectado. A sincronização de Workspaces é opt-in por Workspace e vem DESATIVADA por padrão; o restante é sincronizado automaticamente enquanto você estiver conectado. Desconectar interrompe todos os envios."
   },
   "syncConnectDisclosureTitle": {
     "message": "Conectar Google Drive"

@@ -1234,7 +1234,7 @@
     "message": "Connect Google Drive"
   },
   "syncConnectDisclosureMessage": {
-    "message": "This uploads, to your own Google Drive (an app-private folder): tab URLs, titles, and group info for the workspaces you opt in; your RSS subscription list and a one-way fingerprint of article links already fetched; your preferences (theme, language, section toggles); and your reading list (page URLs, titles, read state). On browsers other than Google Chrome, signing in also lets the extension read your account email to keep you signed in. Workspace sync is opt-in per workspace and OFF by default; the rest syncs automatically while connected. Disconnecting stops all uploads."
+    "message": "This uploads, to your own Google Drive (an app-private folder): tab URLs, titles, and group info for the workspaces you opt in; your RSS subscription list and a one-way fingerprint of article links already fetched; your news sources and their settings; your auto-grouping (routing) rules; your preferences (theme, language, section toggles); and your reading list (page URLs, titles, read state). On browsers other than Google Chrome, signing in also lets the extension read your account email to keep you signed in. Workspace sync is opt-in per workspace and OFF by default; the rest syncs automatically while connected. Disconnecting stops all uploads."
   },
   "syncConnectDisclosureTitle": {
     "message": "Connect Google Drive"
