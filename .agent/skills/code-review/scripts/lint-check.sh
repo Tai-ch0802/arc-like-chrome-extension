@@ -78,7 +78,7 @@ check_pattern "document\.write" "檢查 document.write 使用..." "warning"
 
 # ISSUE-257：偏好設定一律經 modules/prefs/prefsStore.js（storage.local pref_* 記錄 + Drive 同步）。
 # storage.sync 只剩 wsMeta_*（workspaceManager，用 setStorageStrict）與一次性 legacy 遷移讀取。
-check_pattern "[^t]setStorage('sync'" "檢查偏好設定直寫 storage.sync（應改 prefsStore.setPref）..." "warning"
+check_pattern "setStorage('sync'" "檢查偏好設定直寫 storage.sync（應改 prefsStore.setPref）..." "warning"
 check_pattern "getStorage('sync', {" "檢查偏好設定直讀 storage.sync（應改 prefsStore.getPref）..." "warning"
 
 # ===== 程式碼品質檢查 =====

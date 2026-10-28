@@ -50,6 +50,11 @@ export function createSidePanelEntry({ sidePanel, runtime, session, caps, getInf
     const info = getInfo();
     const manual = !info.isGoogleChrome;
     const hasEvents = manual && Boolean(sidePanel && sidePanel.onOpened && sidePanel.onClosed);
+    // Dia-style "symbol exists but never fires" protection: once open() resolved
+    // but no onOpened arrived, stop trusting the events for this SW lifetime and
+    // fall back to "open on every click" (no toggle) instead of declaring the
+    // panel unavailable — only a REJECTED open() is evidence of that.
+    let eventsTrusted = hasEvents;
 
     // In-memory mirrors — consulted synchronously inside the click handler.
     const openWindows = new Set();
@@ -118,7 +123,7 @@ export function createSidePanelEntry({ sidePanel, runtime, session, caps, getInf
         const windowId = tab && tab.windowId;
         const decision = decideActionClick({
             isGoogleChrome: !manual,
-            panelOpen: hasEvents && openWindows.has(windowId),
+            panelOpen: eventsTrusted && openWindows.has(windowId),
             sidePanelUnavailable: unavailable,
         });
         log.info(`${tag} action click window=${windowId} → ${decision}`);
@@ -138,7 +143,7 @@ export function createSidePanelEntry({ sidePanel, runtime, session, caps, getInf
         }
         if (pendingOpen.has(windowId)) { log.info(`${tag} open already pending for window=${windowId}`); return; }
 
-        const confirmed = hasEvents
+        const confirmed = eventsTrusted
             ? new Promise((resolve) => { pendingOpen.set(windowId, resolve); })
             : null;
         let openPromise;
@@ -161,14 +166,15 @@ export function createSidePanelEntry({ sidePanel, runtime, session, caps, getInf
             await giveUp(`open-rejected: ${message}`);
             return;
         }
-        if (!confirmed) return; // no events on this engine: trust open()
+        if (!confirmed) return; // no (trusted) events on this engine: trust open()
         const ok = await Promise.race([
             confirmed,
             waitTimeout(OPEN_CONFIRM_TIMEOUT_MS).then(() => false),
         ]);
         if (!ok) {
             pendingOpen.delete(windowId);
-            await giveUp('no-onOpened');
+            eventsTrusted = false;
+            log.warn(`${tag} open() resolved but onOpened never fired within ${OPEN_CONFIRM_TIMEOUT_MS}ms — assuming the panel is open and ignoring open/close events from now on`);
         }
     }
 

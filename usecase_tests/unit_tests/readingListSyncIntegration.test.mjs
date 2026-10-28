@@ -290,3 +290,23 @@ describe('reading list sync — review round 1 (echo guard and mid-cycle edits)'
         expect(B.rl.entries.has('https://x/f')).toBe(true);
     });
 });
+
+
+describe('reading list sync — final review I4 (tombstones are garbage-collected locally)', () => {
+    it('a never-synced device does not accumulate tombstones older than the GC window', async () => {
+        const A = device(1_000_000);
+        await A.rl.api.addEntry({ url: 'https://x/old', title: 'Old', hasBeenRead: true });
+        await settle();
+        await A.rl.api.removeEntry({ url: 'https://x/old' });
+        await settle(); await A.store.idle();
+        expect(await A.store.getTombstones()).toHaveProperty('https://x/old');
+        A.tick(200 * 24 * 60 * 60 * 1000); // 200 days later
+        await A.rl.api.addEntry({ url: 'https://x/new', title: 'New', hasBeenRead: true });
+        await settle();
+        await A.rl.api.removeEntry({ url: 'https://x/new' });
+        await settle(); await A.store.idle();
+        const tombs = await A.store.getTombstones();
+        expect(tombs).not.toHaveProperty('https://x/old');
+        expect(tombs).toHaveProperty('https://x/new');
+    });
+});

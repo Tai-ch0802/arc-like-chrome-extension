@@ -195,6 +195,9 @@ export function createPrefsStore({ storage, now = () => Date.now() }) {
             const next = allowed[name];
             const cur = current[name];
             if (cur && cur.t === next.t && prefValuesEqual(cur.v, next.v)) continue;
+            // A local edit made while this cycle ran (after exportState) is newer
+            // than anything the merge knew — never regress it; the next cycle pushes it.
+            if (cur && cur.t > next.t) continue;
             batch[prefStorageKey(name)] = { v: clone(next.v), t: next.t };
             written.push(name);
         }

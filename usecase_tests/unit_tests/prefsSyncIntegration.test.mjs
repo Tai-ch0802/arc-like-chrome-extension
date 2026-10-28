@@ -94,3 +94,23 @@ describe('runPrefsSync — cross-device convergence', () => {
         expect(await provider.read(PREFS_SYNC_FILE)).toBeNull();
     });
 });
+
+
+describe('runPrefsSync — final review I1 (edit during a cycle survives)', () => {
+    it('a setPref made between exportState and importMerged is not overwritten and is pushed next cycle', async () => {
+        const provider = createFakeSyncProvider();
+        const A = device(1000); const B = device(1000);
+        await A.store.setPref('theme', 'from-a');
+        await runPrefsSync({ provider, store: A.store });
+        // B's cycle: after the remote read (= after exportState), the user edits theme on B.
+        const hooked = {
+            ...provider,
+            read: async (name) => { const r = await provider.read(name); B.tick(5000); await B.store.setPref('theme', 'b-edit'); return r; },
+        };
+        await runPrefsSync({ provider: hooked, store: B.store });
+        expect(await B.store.getPref('theme')).toBe('b-edit');
+        await runPrefsSync({ provider, store: B.store });
+        await runPrefsSync({ provider, store: A.store });
+        expect(await A.store.getPref('theme')).toBe('b-edit');
+    });
+});

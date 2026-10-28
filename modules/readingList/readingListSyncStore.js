@@ -20,7 +20,7 @@
  * thing runs in Node; background.js wires chrome.readingList + storage.local.
  */
 import { nextTimestamp } from '../utils/lamportClock.js';
-import { tombstoneTimestamp, RL_SYNC_SCHEMA } from './readingListSyncLogic.js';
+import { tombstoneTimestamp, RL_SYNC_SCHEMA, RL_TOMBSTONE_GC_MS } from './readingListSyncLogic.js';
 
 /** storage.local: { [url]: { updatedAt, title, hasBeenRead } } */
 export const RL_META_KEY = 'readingListSyncMeta';
@@ -80,8 +80,14 @@ export function createReadingListSyncStore({ readingList, storage, now = () => D
         return serialize(async () => {
             const [meta, tombs] = await Promise.all([readMeta(), readTombstones()]);
             const prev = meta[entry.url];
-            tombs[entry.url] = tombstoneTimestamp(prev ? prev.updatedAt : 0, now());
+            const at = now();
+            tombs[entry.url] = tombstoneTimestamp(prev ? prev.updatedAt : 0, at);
             delete meta[entry.url];
+            // Local GC too: a device that never connects Drive would otherwise
+            // grow this object forever (merge-time GC only runs while syncing).
+            for (const [url, deletedAt] of Object.entries(tombs)) {
+                if (deletedAt < at - RL_TOMBSTONE_GC_MS) delete tombs[url];
+            }
             await Promise.all([storage.set(RL_TOMBSTONES_KEY, tombs), storage.set(RL_META_KEY, meta)]);
         });
     }

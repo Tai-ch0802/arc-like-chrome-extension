@@ -188,3 +188,22 @@ describe('createCapabilityStore — diagnostic extras (review round 1)', () => {
         expect((await store.getFlag(CAP_SIDE_PANEL)).reason).toBe('no-onOpened');
     });
 });
+
+
+// Final review C1: Chromium's own "No window with id: N." (window closed mid-call)
+// must never be mistaken for Dia's bare "No window".
+describe('classifyTabGroupFailure — Dia "No window" vs Chromium "No window with id"', () => {
+    const chrome = { isGoogleChrome: true, brand: 'Google Chrome', majorVersion: 156 };
+    const dia = { isGoogleChrome: false, brand: 'Chromium', majorVersion: 156 };
+    it('treats "No window with id: N." as transient on every brand', () => {
+        expect(isTransientTabGroupError('No window with id: 123.')).toBe(true);
+        expect(classifyTabGroupFailure('No window with id: 123.', chrome, 1)).toBe(false);
+        expect(classifyTabGroupFailure('No window with id: 123.', dia, 5)).toBe(false);
+    });
+    it('still recognises the bare Dia message in its observed spellings', () => {
+        expect(classifyTabGroupFailure('No window', dia, 1)).toBe(true);
+        expect(classifyTabGroupFailure('Error: No window', chrome, 1)).toBe(true);
+        expect(classifyTabGroupFailure('No window.', chrome, 1)).toBe(true);
+        expect(classifyTabGroupFailure(' no window ', chrome, 1)).toBe(true);
+    });
+});

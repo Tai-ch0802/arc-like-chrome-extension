@@ -21,8 +21,13 @@ export const CAP_TAB_GROUPS = 'tabGroupsUnsupported';
 export const CAP_SIDE_PANEL = 'sidePanelUnavailable';
 const ALL_FLAGS = [CAP_TAB_GROUPS, CAP_SIDE_PANEL];
 
-/** Dia-specific failure text from chrome.tabs.group (SPIKE §2). */
-const NO_WINDOW_RE = /no window/i;
+/**
+ * Dia-specific failure text from chrome.tabs.group (SPIKE §2): the BARE
+ * message, optionally "Error: "-prefixed / dot-terminated. Anchored on purpose:
+ * Chromium's own "No window with id: N." (target window closed mid-call) is a
+ * recoverable error and must never match.
+ */
+const NO_WINDOW_RE = /^(?:error:\s*)?no window\.?$/i;
 /** Non-Chrome brands: generic failures this many times in a row ⇒ unsupported. */
 const NON_CHROME_FAILURE_STREAK = 2;
 /**
@@ -31,7 +36,7 @@ const NON_CHROME_FAILURE_STREAK = 2;
  * count toward the unsupported streak on any brand (Edge/Brave/Chrome for
  * Testing all report a non-"Google Chrome" brand).
  */
-const TRANSIENT_RE = /no tab with id|no group with id|cannot be edited|dragging|tab strip/i;
+const TRANSIENT_RE = /no tab with id|no group with id|no window with id|cannot be edited|dragging|tab strip/i;
 
 /**
  * @param {string|undefined} errMsg
@@ -108,7 +113,7 @@ export function setBrowserInfoOverride(info) {
  * @returns {boolean}
  */
 export function classifyTabGroupFailure(errMsg, info, consecutiveFailures) {
-    if (NO_WINDOW_RE.test(String(errMsg || ''))) return true;
+    if (NO_WINDOW_RE.test(String(errMsg || '').trim())) return true;
     if (isTransientTabGroupError(errMsg)) return false;
     if (info && info.isGoogleChrome) return false;
     return (consecutiveFailures || 0) >= NON_CHROME_FAILURE_STREAK;

@@ -22,7 +22,7 @@
  * injectable core for unit tests. SECURITY: tokens never reach logs or error
  * messages.
  */
-import { getStorage, setStorage, removeStorage } from '../apiManager.js';
+import { getStorage, setStorage, removeStorage, getManifest } from '../apiManager.js';
 import { getBrowserInfo } from '../utils/browserCapabilities.js';
 import { createWebAuthFlow } from './webAuthFlow.js';
 import { WEB_CLIENT_ID, USERINFO_EMAIL_SCOPE } from './oauthConfig.js';
@@ -183,7 +183,7 @@ function instance() {
             remove: (k) => removeStorage('local', k),
         };
         const manifestScopes = (() => {
-            try { return chrome.runtime.getManifest().oauth2.scopes || []; } catch { return []; }
+            try { return getManifest().oauth2.scopes || []; } catch { return []; }
         })();
         defaultAuth = createDriveAuth({
             identity,

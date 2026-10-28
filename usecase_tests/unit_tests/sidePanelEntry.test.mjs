@@ -92,15 +92,15 @@ describe('createSidePanelEntry — non-Chrome (Dia)', () => {
         expect(calls.options).toBe(1);
     });
 
-    it('when open resolves but onOpened never arrives before the timeout, records the flag', async () => {
+    it('when open resolves but onOpened never arrives before the timeout, it is NOT treated as unavailable (fail-soft)', async () => {
         const { deps, calls } = makeFakes();
         deps.waitTimeout = () => Promise.resolve(); // timeout elapses immediately
         const entry = createSidePanelEntry(deps);
         await entry.init();
         await entry.handleActionClick({ windowId: 2 });
         expect(calls.open).toHaveLength(1);
-        expect(calls.marked).toBe(1);
-        expect(calls.options).toBe(1);
+        expect(calls.marked).toBe(0);
+        expect(calls.options).toBe(0);
     });
 
     it('once the flag is set, clicks go straight to the options page without retrying open', async () => {
@@ -216,12 +216,31 @@ describe('createSidePanelEntry — review round 1', () => {
         await e1.init();
         await e1.handleActionClick({ windowId: 1 });
         expect(rejected.calls.reasons[0]).toMatch(/^open-rejected: No active side panel/);
+    });
+});
 
-        const silent = makeFakes();
-        silent.deps.waitTimeout = () => Promise.resolve();
-        const e2 = createSidePanelEntry(silent.deps);
-        await e2.init();
-        await e2.handleActionClick({ windowId: 1 });
-        expect(silent.calls.reasons[0]).toBe('no-onOpened');
+
+describe('createSidePanelEntry — final review I2 (fail-soft when onOpened never fires)', () => {
+    it('open() resolved but no onOpened within the timeout: treated as success, no flag, no options page', async () => {
+        const { deps, calls } = makeFakes();
+        deps.waitTimeout = () => Promise.resolve();
+        const entry = createSidePanelEntry(deps);
+        await entry.init();
+        await entry.handleActionClick({ windowId: 1 });
+        expect(calls.marked).toBe(0);
+        expect(calls.options).toBe(0);
+        // The engine evidently does not report open/close: fall back to "open on
+        // every click" for the rest of this SW lifetime instead of toggling.
+        await entry.handleActionClick({ windowId: 1 });
+        expect(calls.open).toHaveLength(2);
+        expect(calls.close).toEqual([]);
+    });
+    it('only a rejected open() still declares the panel unavailable', async () => {
+        const { deps, calls } = makeFakes({ openImpl: async () => { throw new Error('No active side panel for windowId'); } });
+        const entry = createSidePanelEntry(deps);
+        await entry.init();
+        await entry.handleActionClick({ windowId: 1 });
+        expect(calls.marked).toBe(1);
+        expect(calls.options).toBe(1);
     });
 });

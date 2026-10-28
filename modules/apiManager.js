@@ -93,7 +93,10 @@ async function guardTabGroupOp(label, fn, { countsTowardStreak = false } = {}) {
     }
 }
 
-export const groupTabs = (tabIds, groupId) => guardTabGroupOp('group', () => chrome.tabs.group({ tabIds, groupId }), { countsTowardStreak: true });
+export const groupTabs = async (tabIds, groupId) => {
+    if (!(await isTabGroupingAvailable())) return null; // same short-circuit as addTabToNewGroup
+    return guardTabGroupOp('group', () => chrome.tabs.group({ tabIds, groupId }), { countsTowardStreak: true });
+};
 export const ungroupTabs = (tabIds) => guardTabGroupOp('ungroup', () => chrome.tabs.ungroup(tabIds));
 
 // Wrappers for chrome.tabGroups API (queries degrade to [] where the API is absent/broken)
@@ -310,6 +313,7 @@ export const removeStorage = (area, keys) => {
 export const sendRuntimeMessage = (message) => chrome.runtime.sendMessage(message);
 export const addRuntimeMessageListener = (listener) => chrome.runtime.onMessage.addListener(listener);
 export const openOptionsPage = () => chrome.runtime.openOptionsPage();
+export const getManifest = () => chrome.runtime.getManifest();
 
 /** chrome.readingList exists on Chrome and Dia; other Chromium brands may lack it (ISSUE-257 FR-4.05). */
 export const hasReadingListApi = () => typeof chrome !== 'undefined' && Boolean(chrome.readingList && chrome.readingList.query);

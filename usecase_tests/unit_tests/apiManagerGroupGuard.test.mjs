@@ -157,3 +157,21 @@ describe('apiManager tab-group guard — review round 1', () => {
         expect(await api.isTabGroupingAvailable()).toBe(false);
     });
 });
+
+
+describe('apiManager tab-group guard — final review', () => {
+    afterEach(() => { delete globalThis.chrome; });
+    it('"No window with id" (window closed mid-call) on Chrome sets no flag', async () => {
+        const { local } = installChrome({ group: async () => { throw new Error('No window with id: 42.'); } });
+        const { api, caps } = await load(CHROME);
+        await expect(api.addTabToNewGroup([1], 'T', 'blue')).resolves.toBeNull();
+        expect(local.data[caps.CAP_TAB_GROUPS]).toBeUndefined();
+    });
+    it('groupTabs (join) short-circuits once the flag is set, like addTabToNewGroup', async () => {
+        const { local } = installChrome({ group: async () => 42 });
+        const { api, caps } = await load(DIA);
+        local.data[caps.CAP_TAB_GROUPS] = { unsupported: true, brand: 'Chromium', majorVersion: 156, at: 1 };
+        await expect(api.groupTabs([1], 5)).resolves.toBeNull();
+        expect(chrome.tabs.group).not.toHaveBeenCalled();
+    });
+});

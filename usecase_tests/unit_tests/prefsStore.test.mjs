@@ -212,3 +212,14 @@ describe('review round 1 (ISSUE-257 WP3)', () => {
         expect(areas.writes.local).toBe(writes);
     });
 });
+
+
+describe('final review I1 — importMerged never regresses a newer local record', () => {
+    it('skips a merged entry whose t is older than the local record', async () => {
+        const { store, areas } = build(500);
+        await store.setPref('theme', 'user-edit'); // t = 500
+        const written = await store.importMerged({ theme: { v: 'remote', t: 100 } });
+        expect(written).toEqual([]);
+        expect(areas.data.local.pref_theme).toEqual({ v: 'user-edit', t: 500 });
+    });
+});
