@@ -20,7 +20,7 @@ Kami telah sepenuhnya membayangkan kembali Chrome, memperkenalkan panel samping 
 - **AI Hover Summary**: hover tab 2 detik → ringkasan satu kalimat.
 - **AI Reading List Summary Memory**: AI ringkas saat ditambahkan, simpan lokal, baca offline.
 - **Ask AI Natural-Language Search (⌘K)**: satu kalimat untuk mencari tabs / bookmarks / reading list.
-- **Workspaces**: bundel tab bernama, hibernate-restore, metadata sinkron antar device.
+- **Workspaces**: bundel tab bernama, hibernate-restore; workspaces, preferensi, dan reading list disinkronkan lewat Google Drive — juga berfungsi di Dia dan browser Chromium lainnya.
 - **Command Palette (⌘K / Ctrl+K)**: pencarian + aksi terpadu.
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup.
 - **Lokal secara default, cloud opsional**: AI berjalan di Gemini Nano bawaan Chrome sejak awal — data tidak meninggalkan mesin Anda. Secara opsional, hubungkan API key Anda sendiri (Gemini API / Claude / kompatibel OpenAI / Ollama).

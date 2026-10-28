@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-超越 Chrome 原生垂直分頁的 Arc 風格側邊欄：統一管理分頁、書籤與閱讀清單，**預設本機的 AI**（自動命名群組、分頁清理建議、滑鼠停留摘要、網頁導讀、自然語言搜尋 — 內建 Gemini Nano，也可自帶 API key 接 Gemini API / Claude / OpenAI 相容 / Ollama），**工作區**（一鍵 hibernate 與 restore 分頁集合，metadata 跨裝置同步），**⌘K 命令面板**，以及 **書籤工具**（多標籤、重複偵測、失效連結清理）—— 預設在裝置上運算，無需 API key。
+超越 Chrome 原生垂直分頁的 Arc 風格側邊欄：統一管理分頁、書籤與閱讀清單，**預設本機的 AI**（自動命名群組、分頁清理建議、滑鼠停留摘要、網頁導讀、自然語言搜尋 — 內建 Gemini Nano，也可自帶 API key 接 Gemini API / Claude / OpenAI 相容 / Ollama），**工作區**（一鍵 hibernate 與 restore 分頁集合，metadata 跨裝置同步），**⌘K 命令面板**，以及 **書籤工具**（多標籤、重複偵測、失效連結清理）—— 預設在裝置上運算，無需 API key。 支援 Dia 與其他 Chromium 系瀏覽器——連結 Google Drive 即可在 Chrome 與 Dia 之間同步工作區、偏好設定與閱讀清單。
 
 ## 🚀 新版本 v1.14.0 更新！
 [![示範影片](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -24,7 +24,8 @@
 - **AI 滑鼠停留摘要**：滑鼠停留分頁 2 秒，顯示頁面一句話摘要。
 - **AI 閱讀清單摘要記憶**：加入閱讀清單時 AI 摘要一次並存本地，之後即可離線預覽。
 - **Ask AI 自然語言搜尋** (⌘K)：用一句話搜尋 tabs / bookmarks / reading list（如「上週看的 React 文章」）。
-- **工作區**：把分頁綁成具名工作區；每個工作區有自己的視窗——切換時聚焦或重新開啟、完全不動目前分頁，瀏覽器重啟後視窗自動綁回原工作區。metadata 跨裝置同步。
+- **工作區**：把分頁綁成具名工作區；每個工作區有自己的視窗——切換時聚焦或重新開啟、完全不動目前分頁，瀏覽器重啟後視窗自動綁回原工作區。工作區、偏好設定與閱讀清單可透過你自己的 Google Drive 在 Chrome 與 Dia 之間同步。
+- **支援 Dia 與 Chromium 系瀏覽器**：可在 Dia 與其他 Chromium 系瀏覽器使用；連結 Google Drive 即可在 Chrome 與 Dia 之間同步工作區、偏好設定與閱讀清單。
 - **命令面板** (⌘K / Ctrl+K)：Linear / Raycast 風格的統一搜尋 + 動作入口。
 - **書籤工具**：🛠️ 面板含多標籤、重複偵測、失效連結清理。
 - **預設本機，雲端可選**：AI 開箱即跑在 Chrome 內建 Gemini Nano，資料不離開你的裝置；也可自帶 API key（Gemini API / Claude / OpenAI 相容 / Ollama）換用更強的模型。

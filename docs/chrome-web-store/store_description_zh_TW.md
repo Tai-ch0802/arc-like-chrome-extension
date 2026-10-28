@@ -20,7 +20,7 @@ Chrome 原生垂直分頁（2025）只把分頁改成垂直顯示。**這是一�
 - **AI 滑鼠停留摘要**: 停留分頁 2 秒顯示頁面一句話摘要。
 - **AI 閱讀清單摘要記憶**: 加入閱讀清單時 AI 摘要一次並存本地，離線可看。
 - **Ask AI 自然語言搜尋 (⌘K)**: 用一句話搜尋 tabs / bookmarks / reading list。
-- **Workspaces**: 把分頁綁成工作區，一鍵 hibernate 與 restore，metadata 跨裝置同步。
+- **Workspaces**: 把分頁綁成工作區，一鍵 hibernate 與 restore；工作區、偏好設定與閱讀清單可透過 Google Drive 同步，亦支援 Dia 與其他 Chromium 系瀏覽器。
 - **Command Palette (⌘K / Ctrl+K)**: 統一搜尋 + 動作入口。
 - **Bookmark Tools**: 🛠️ 多標籤 / 重複偵測 / 失效連結清理。
 - **預設本機，雲端可選**: AI 開箱即跑在 Chrome 內建 Gemini Nano；也可自帶 API key（Gemini API / Claude / OpenAI 相容 / Ollama）。

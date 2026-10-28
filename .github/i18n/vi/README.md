@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Thanh bên phong cách Arc vượt xa vertical tabs có sẵn của Chrome: tabs + bookmarks + reading list tích hợp một chỗ, **AI cục bộ theo mặc định** (đặt tên nhóm tự động, gợi ý cleanup tab, hover summary, tìm kiếm ngôn ngữ tự nhiên), **Workspaces** (hibernate & restore bộ tab, đồng bộ metadata giữa các thiết bị), **⌘K Command Palette**, và **Bookmark Tools** (tags, dedupe, dead-link cleanup) — mặc định chạy trên thiết bị, không cần API key; tùy chọn dùng API key của riêng bạn cho các mô hình đám mây (Gemini API / Claude / OpenAI-compatible / Ollama).
+Thanh bên phong cách Arc vượt xa vertical tabs có sẵn của Chrome: tabs + bookmarks + reading list tích hợp một chỗ, **AI cục bộ theo mặc định** (đặt tên nhóm tự động, gợi ý cleanup tab, hover summary, tìm kiếm ngôn ngữ tự nhiên), **Workspaces** (hibernate & restore bộ tab, đồng bộ metadata giữa các thiết bị), **⌘K Command Palette**, và **Bookmark Tools** (tags, dedupe, dead-link cleanup) — mặc định chạy trên thiết bị, không cần API key; tùy chọn dùng API key của riêng bạn cho các mô hình đám mây (Gemini API / Claude / OpenAI-compatible / Ollama). Hoạt động trên Dia và các trình duyệt Chromium khác — kết nối Google Drive để đồng bộ workspaces, cài đặt và reading list giữa Chrome và Dia.
 
 ## 🚀 Cập nhật phiên bản mới v1.14.0! 
 [![Video Demo](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

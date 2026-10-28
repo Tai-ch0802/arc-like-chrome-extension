@@ -20,7 +20,7 @@ Chrome के native vertical tabs (2025) सिर्फ tabs को vertical �
 - **AI Hover Summary**: किसी tab पर 2s hover करें → एक वाक्य summary।
 - **AI Reading List Summary Memory**: जोड़ने पर AI summarize करता है, local में store, offline preview।
 - **Ask AI Natural-Language Search (⌘K)**: एक वाक्य से tabs / bookmarks / reading list search।
-- **Workspaces**: tab bundles को named workspaces में save, hibernate-restore, metadata sync।
+- **Workspaces**: tab bundles को named workspaces में save, hibernate-restore; workspaces, preferences और reading list Google Drive से sync — Dia और अन्य Chromium browsers में भी काम करता है।
 - **Command Palette (⌘K / Ctrl+K)**: unified search + actions overlay।
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup।
 - **Local by Default, Cloud Optional**: AI डिफ़ॉल्ट रूप से Chrome के built-in Gemini Nano पर चलता है — कुछ भी आपकी मशीन से बाहर नहीं जाता। चाहें तो अपनी API key कनेक्ट करें (Gemini API / Claude / OpenAI-compatible / Ollama)।

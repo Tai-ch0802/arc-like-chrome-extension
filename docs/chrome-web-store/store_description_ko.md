@@ -20,7 +20,7 @@ Chrome 의 네이티브 수직 탭(2025)은 탭을 수직으로 보여줄 뿐. *
 - **AI 호버 요약**: 탭에 2 초 호버 시 한 줄 요약.
 - **AI 리딩 리스트 요약 기억**: 추가 시 AI 요약 후 로컬 저장, 오프라인 열람 가능.
 - **Ask AI 자연어 검색 (⌘K)**: 한 문장으로 tabs / bookmarks / reading list 검색.
-- **Workspaces**: 탭 묶음을 명명된 workspace 로 저장, hibernate-restore, 메타데이터 기기 간 동기화.
+- **Workspaces**: 탭 묶음을 명명된 workspace 로 저장, hibernate-restore; workspace, 설정, 리딩 리스트를 Google Drive 로 동기화, Dia 및 기타 Chromium 기반 브라우저에서도 작동.
 - **Command Palette (⌘K / Ctrl+K)**: 통합 검색 + 액션 오버레이.
 - **Bookmark Tools**: 🛠️ 태그 / 중복 감지 / 죽은 링크 체크.
 - **기본은 로컬, 클라우드는 선택**: AI 는 기본적으로 Chrome 내장 Gemini Nano 상에서 실행 —— 데이터가 기기를 벗어나지 않습니다. 선택적으로 본인의 API 키(Gemini API / Claude / OpenAI 호환 / Ollama)를 연결할 수 있습니다.

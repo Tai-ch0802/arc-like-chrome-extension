@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](../../LICENSE)
 
-Chrome ネイティブの垂直タブをはるかに超える Arc スタイルのサイドバー：タブ・ブックマーク・リーディングリストを統合し、**既定でローカルの AI**（グループ自動命名・タブクリーンアップ提案・ホバー要約・自然言語検索 —— 内蔵 Gemini Nano、または自分の API キーで Gemini API / Claude / OpenAI 互換 / Ollama も利用可能）、**Workspaces**（タブ集合のハイバネート・復元、メタデータをデバイス間で同期）、**⌘K コマンドパレット**、そして **ブックマークツール**（タグ・重複検出・リンク切れチェック）—— 既定ではデバイス上で動作、API キー不要。
+Chrome ネイティブの垂直タブをはるかに超える Arc スタイルのサイドバー：タブ・ブックマーク・リーディングリストを統合し、**既定でローカルの AI**（グループ自動命名・タブクリーンアップ提案・ホバー要約・自然言語検索 —— 内蔵 Gemini Nano、または自分の API キーで Gemini API / Claude / OpenAI 互換 / Ollama も利用可能）、**Workspaces**（タブ集合のハイバネート・復元、メタデータをデバイス間で同期）、**⌘K コマンドパレット**、そして **ブックマークツール**（タグ・重複検出・リンク切れチェック）—— 既定ではデバイス上で動作、API キー不要。 Dia などの Chromium 系ブラウザーにも対応 —— Google Drive を連携すると、Chrome と Dia の間でワークスペース・設定・リーディングリストを同期できます。
 
 ## 🚀 新リリース v1.14.0 アップデート！
 [![デモビデオ](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)

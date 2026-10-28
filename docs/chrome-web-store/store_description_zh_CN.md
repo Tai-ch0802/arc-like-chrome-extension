@@ -20,7 +20,7 @@ Chrome 原生垂直标签页（2025）只把标签页改成垂直显示。**这�
 - **AI 悬停摘要**: 悬停标签 2 秒显示页面一句话摘要。
 - **AI 阅读清单摘要记忆**: 加入阅读清单时 AI 摘要一次并存本地，离线可看。
 - **Ask AI 自然语言搜索 (⌘K)**: 一句话搜寻 tabs / bookmarks / reading list。
-- **Workspaces**: 把标签集合绑成工作区，一键 hibernate 与 restore，metadata 跨设备同步。
+- **Workspaces**: 把标签集合绑成工作区，一键 hibernate 与 restore；工作区、偏好设置与阅读清单可通过 Google Drive 同步，亦支持 Dia 及其他 Chromium 系浏览器。
 - **Command Palette (⌘K / Ctrl+K)**: 统一搜索 + 动作入口。
 - **Bookmark Tools**: 🛠️ 多标签 / 重复检测 / 失效链接清理。
 - **默认本地，云端可选**: AI 开箱即跑在 Chrome 内建 Gemini Nano；也可自带 API key（Gemini API / Claude / OpenAI 兼容 / Ollama）。

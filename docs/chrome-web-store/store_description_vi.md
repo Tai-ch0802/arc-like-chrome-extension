@@ -20,7 +20,7 @@ Chúng tôi đã hoàn toàn tái hiện lại Chrome, giới thiệu một bả
 - **AI Hover Summary**: hover tab 2 giây → tóm tắt một câu.
 - **AI Reading List Summary Memory**: khi thêm vào, AI tóm tắt và lưu cục bộ, đọc được offline.
 - **Ask AI Natural-Language Search (⌘K)**: một câu để tìm tabs / bookmarks / reading list.
-- **Workspaces**: bộ tab có tên, hibernate-restore, metadata đồng bộ giữa các thiết bị.
+- **Workspaces**: bộ tab có tên, hibernate-restore; workspaces, cài đặt và reading list đồng bộ qua Google Drive — cũng hoạt động trên Dia và các trình duyệt Chromium khác.
 - **Command Palette (⌘K / Ctrl+K)**: tìm kiếm + hành động hợp nhất.
 - **Bookmark Tools**: 🛠️ tags / dedupe / dead-link cleanup.
 - **Cục bộ theo mặc định, đám mây tùy chọn**: AI chạy ngay trên Gemini Nano tích hợp sẵn của Chrome — dữ liệu không rời khỏi máy bạn; tùy chọn kết nối API key của riêng bạn (Gemini API / Claude / OpenAI-compatible / Ollama).

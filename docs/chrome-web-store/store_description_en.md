@@ -44,7 +44,7 @@ We've completely reimagined Chrome, introducing a modern side panel that unifies
 - **AI Hover Summary**: Hover any tab 2s for a one-sentence page summary.
 - **AI Reading List Summary Memory**: Added to Reading List? AI summarizes once and stores locally — preview later, even offline.
 - **Ask AI to Find (⌘K)**: Natural-language search across tabs, bookmarks, and reading list — "the React Hooks article I read last week" actually works.
-- **Workspaces**: Bundle tabs as named workspaces, hibernate-and-restore one-click, metadata sync across devices.
+- **Workspaces**: Bundle tabs as named workspaces, hibernate-and-restore one-click; workspaces, preferences and your reading list sync via Google Drive — also works in Dia and other Chromium browsers.
 - **Command Palette (⌘K / Ctrl+K)**: Linear/Raycast-style unified search + actions overlay.
 - **Bookmark Tools**: 🛠️ for multi-tag, duplicate finder, dead-link checker.
 - **Local by Default, Cloud Optional**: AI runs on Chrome's built-in Gemini Nano out of the box — nothing leaves your machine. Optionally connect your own API key (Gemini API / Claude / OpenAI-compatible / Ollama).

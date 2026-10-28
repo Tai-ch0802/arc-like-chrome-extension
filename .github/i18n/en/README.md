@@ -13,7 +13,7 @@
 [![Build Status](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Tai-ch0802/arc-like-chrome-extension/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/Tai-ch0802/arc-like-chrome-extension?style=flat-square)](LICENSE)
 
-An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: unified tabs + bookmarks + reading list, **local-by-default AI** (auto-name groups, tab cleanup suggestions, hover summaries, page digests, natural-language search — built-in Gemini Nano, or bring your own API key for Gemini API / Claude / OpenAI-compatible / Ollama), **Workspaces** (hibernate & restore tab bundles, sync metadata across devices), a **⌘K Command Palette**, and **Bookmark Tools** for tagging, deduping, and dead-link cleanup — on-device by default, no API key required.
+An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: unified tabs + bookmarks + reading list, **local-by-default AI** (auto-name groups, tab cleanup suggestions, hover summaries, page digests, natural-language search — built-in Gemini Nano, or bring your own API key for Gemini API / Claude / OpenAI-compatible / Ollama), **Workspaces** (hibernate & restore tab bundles, sync metadata across devices), a **⌘K Command Palette**, and **Bookmark Tools** for tagging, deduping, and dead-link cleanup — on-device by default, no API key required. Works in Dia and other Chromium browsers — connect Google Drive to sync workspaces, preferences and your reading list between Chrome and Dia.
 
 ## 🚀 New Release v1.14.0 update! 
 [![Demo Video](http://img.youtube.com/vi/aRSQ1atlyCw/0.jpg)](https://www.youtube.com/watch?v=aRSQ1atlyCw)
@@ -24,7 +24,8 @@ An Arc-style sidebar that goes **far beyond** Chrome's native vertical tabs: uni
 - **AI Hover Summarize**: Hover any tab for 2s to see a one-sentence summary of the page.
 - **AI Reading List Summary Memory**: Pages you add to Reading List get summarized once and stored locally — preview later, even offline.
 - **Ask AI to Find** (⌘K): Natural-language search across tabs, bookmarks, and reading-list entries.
-- **Workspaces**: Save bundles of tabs as named workspaces; each workspace opens in its own window — switching focuses or reopens it without touching your current tabs, and windows re-bind to their workspaces automatically after a browser restart. Metadata syncs across devices.
+- **Workspaces**: Save bundles of tabs as named workspaces; each workspace opens in its own window — switching focuses or reopens it without touching your current tabs, and windows re-bind to their workspaces automatically after a browser restart. Workspaces, preferences and your reading list sync between Chrome and Dia via your own Google Drive.
+- **Dia & Chromium Browsers**: Works in Dia and other Chromium browsers. Connect Google Drive to sync workspaces, preferences and your reading list between Chrome and Dia.
 - **Command Palette** (⌘K / Ctrl+K): Unified search + actions overlay, Linear/Raycast-style.
 - **Bookmark Tools**: 🛠️ panel for multi-tag, duplicate finder, and dead-link checker.
 - **Local by Default, Cloud Optional**: AI runs on Chrome's built-in Gemini Nano out of the box — nothing leaves your machine. Optionally connect your own API key (Gemini API / Claude / OpenAI-compatible / Ollama) for stronger models.
