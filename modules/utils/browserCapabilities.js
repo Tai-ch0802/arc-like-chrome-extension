@@ -25,6 +25,21 @@ const ALL_FLAGS = [CAP_TAB_GROUPS, CAP_SIDE_PANEL];
 const NO_WINDOW_RE = /no window/i;
 /** Non-Chrome brands: generic failures this many times in a row ⇒ unsupported. */
 const NON_CHROME_FAILURE_STREAK = 2;
+/**
+ * Errors Chromium raises for ordinary, recoverable reasons (stale ids, a tab
+ * mid-drag). They say nothing about the browser's capability and must never
+ * count toward the unsupported streak on any brand (Edge/Brave/Chrome for
+ * Testing all report a non-"Google Chrome" brand).
+ */
+const TRANSIENT_RE = /no tab with id|no group with id|cannot be edited|dragging|tab strip/i;
+
+/**
+ * @param {string|undefined} errMsg
+ * @returns {boolean} true for Chromium's recoverable tab-group errors
+ */
+export function isTransientTabGroupError(errMsg) {
+    return TRANSIENT_RE.test(String(errMsg || ''));
+}
 
 /**
  * Derive brand info from `navigator.userAgentData.brands` with a UA fallback.
@@ -94,6 +109,7 @@ export function setBrowserInfoOverride(info) {
  */
 export function classifyTabGroupFailure(errMsg, info, consecutiveFailures) {
     if (NO_WINDOW_RE.test(String(errMsg || ''))) return true;
+    if (isTransientTabGroupError(errMsg)) return false;
     if (info && info.isGoogleChrome) return false;
     return (consecutiveFailures || 0) >= NON_CHROME_FAILURE_STREAK;
 }

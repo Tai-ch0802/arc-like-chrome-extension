@@ -113,3 +113,47 @@ describe('apiManager tab-group guard (ISSUE-257 WP1)', () => {
         expect(await api.isTabGroupingAvailable()).toBe(true);
     });
 });
+
+describe('apiManager tab-group guard — review round 1', () => {
+    afterEach(() => { delete globalThis.chrome; });
+
+    it('addTabToNewGroup returns the group id when the group was created but titling failed', async () => {
+        installChrome({ group: async () => 42 });
+        chrome.tabGroups.update = jest.fn(async () => { throw new Error('No group with id: 42.'); });
+        const { api } = await load(CHROME);
+        await expect(api.addTabToNewGroup([1], 'T', 'blue')).resolves.toBe(42);
+    });
+
+    it('ungroup/move/update failures do not count toward the unsupported streak', async () => {
+        const { local } = installChrome({ group: async () => 1 });
+        chrome.tabs.ungroup = jest.fn(async () => { throw new Error('odd'); });
+        chrome.tabGroups.move = jest.fn(async () => { throw new Error('odd'); });
+        chrome.tabGroups.update = jest.fn(async () => { throw new Error('odd'); });
+        const { api, caps } = await load(DIA);
+        await api.ungroupTabs([1]);
+        await api.moveTabGroup(1, 0);
+        await api.updateTabGroup(1, { collapsed: true });
+        await api.ungroupTabs([1]);
+        expect(local.data[caps.CAP_TAB_GROUPS]).toBeUndefined();
+    });
+
+    it('two transient "No tab with id" failures on a non-Chrome brand set no flag', async () => {
+        const { local } = installChrome({ group: async () => { throw new Error('No tab with id: 9.'); } });
+        const { api, caps } = await load(DIA);
+        await api.groupTabs([9]);
+        await api.groupTabs([9]);
+        expect(local.data[caps.CAP_TAB_GROUPS]).toBeUndefined();
+        expect(await api.isTabGroupingAvailable()).toBe(true);
+    });
+
+    it('a flag written by another context is seen after storage.onChanged fires', async () => {
+        const { local } = installChrome({ group: async () => 1 });
+        const listeners = [];
+        chrome.storage.onChanged.addListener = (fn) => listeners.push(fn);
+        const { api, caps } = await load(DIA);
+        expect(await api.isTabGroupingAvailable()).toBe(true); // cached as supported
+        local.data[caps.CAP_TAB_GROUPS] = { unsupported: true, brand: 'Chromium', majorVersion: 156, at: 1 };
+        listeners.forEach((fn) => fn({ [caps.CAP_TAB_GROUPS]: { newValue: local.data[caps.CAP_TAB_GROUPS] } }, 'local'));
+        expect(await api.isTabGroupingAvailable()).toBe(false);
+    });
+});

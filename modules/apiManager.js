@@ -3,6 +3,7 @@ import {
     CAP_TAB_GROUPS,
     CAP_SIDE_PANEL,
     classifyTabGroupFailure,
+    isTransientTabGroupError,
     createCapabilityStore,
     getBrowserInfo,
 } from './utils/browserCapabilities.js';
@@ -34,6 +35,16 @@ function getCapabilityStore() {
             },
             getInfo: getBrowserInfo,
         });
+        // A flag written in another context (sidepanel vs SW vs options) must
+        // not be masked by this context's cache.
+        try {
+            chrome.storage.onChanged.addListener((changes, area) => {
+                if (area !== 'local') return;
+                for (const name of [CAP_TAB_GROUPS, CAP_SIDE_PANEL]) {
+                    if (changes[name]) capabilityStore.invalidate(name);
+                }
+            });
+        } catch { /* environments without storage.onChanged (tests) */ }
     }
     return capabilityStore;
 }
@@ -56,16 +67,19 @@ export const invalidateCapabilityFlag = (name) => getCapabilityStore().invalidat
  * streak of failures on a non-Chrome brand — records the unsupported flag;
  * Chrome's transient errors never do (see classifyTabGroupFailure).
  */
+// Only chrome.tabs.group (create/join) failures count toward the streak:
+// ungroup/move/update fail for ordinary reasons (stale ids, collapsed state)
+// and say nothing about whether this browser can group at all.
 let tabGroupFailStreak = 0;
-async function guardTabGroupOp(label, fn) {
+async function guardTabGroupOp(label, fn, { countsTowardStreak = false } = {}) {
     try {
         const result = await fn();
-        tabGroupFailStreak = 0;
+        if (countsTowardStreak) tabGroupFailStreak = 0;
         return result;
     } catch (err) {
-        tabGroupFailStreak += 1;
         const message = err && err.message;
-        if (classifyTabGroupFailure(message, getBrowserInfo(), tabGroupFailStreak)) {
+        if (countsTowardStreak && !isTransientTabGroupError(message)) tabGroupFailStreak += 1;
+        if (countsTowardStreak && classifyTabGroupFailure(message, getBrowserInfo(), tabGroupFailStreak)) {
             try { await getCapabilityStore().markUnsupported(CAP_TAB_GROUPS); } catch { /* best-effort */ }
         }
         console.warn(`[tabGroups] ${label} failed:`, message);
@@ -73,7 +87,7 @@ async function guardTabGroupOp(label, fn) {
     }
 }
 
-export const groupTabs = (tabIds, groupId) => guardTabGroupOp('group', () => chrome.tabs.group({ tabIds, groupId }));
+export const groupTabs = (tabIds, groupId) => guardTabGroupOp('group', () => chrome.tabs.group({ tabIds, groupId }), { countsTowardStreak: true });
 export const ungroupTabs = (tabIds) => guardTabGroupOp('ungroup', () => chrome.tabs.ungroup(tabIds));
 
 // Wrappers for chrome.tabGroups API (queries degrade to [] where the API is absent/broken)
@@ -87,7 +101,9 @@ export const updateTabGroup = (groupId, options) => guardTabGroupOp('update', ()
 /**
  * Create a new group from `tabIds` and title/color it.
  * @returns {Promise<number|null>} the new group id, or null when grouping is
- *   unavailable on this browser (flag already set) or the call failed.
+ *   unavailable on this browser (flag already set) or the group could not be
+ *   created. A group that was created but could not be titled/colored still
+ *   returns its id (the caller owns it, e.g. for undo).
  */
 export async function addTabToNewGroup(tabIds, title, color, windowId = undefined) {
     if (!(await isTabGroupingAvailable())) return null;
@@ -97,11 +113,10 @@ export async function addTabToNewGroup(tabIds, title, color, windowId = undefine
     if (windowId !== undefined) {
         groupOptions.createProperties = { windowId };
     }
-    return guardTabGroupOp('create', async () => {
-        const groupId = await chrome.tabs.group(groupOptions);
-        await chrome.tabGroups.update(groupId, { title, color });
-        return groupId;
-    });
+    const groupId = await guardTabGroupOp('create', () => chrome.tabs.group(groupOptions), { countsTowardStreak: true });
+    if (groupId == null) return null;
+    await updateTabGroup(groupId, { title, color });
+    return groupId;
 }
 
 // Wrappers for chrome.bookmarks API

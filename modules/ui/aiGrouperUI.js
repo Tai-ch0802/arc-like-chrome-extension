@@ -127,6 +127,7 @@ async function handleGroupAction() {
 
         let affectedTabIds = [];
         let createdGroupIds = [];
+        let failedGroups = 0;
 
         // Step 3: Group them
         for (const group of mappingResults) {
@@ -137,9 +138,9 @@ async function handleGroupAction() {
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
                 const newGroupId = await api.addTabToNewGroup(tabIdsToGroup, group.theme, randomColor);
-                // null = grouping unavailable on this browser (ISSUE-257); the
-                // wrapper already recorded the capability flag.
-                if (newGroupId == null) continue;
+                // null = the wrapper swallowed a failure (ISSUE-257): either this
+                // browser cannot group (flag recorded) or a transient Chrome error.
+                if (newGroupId == null) { failedGroups += 1; continue; }
                 affectedTabIds.push(...tabIdsToGroup);
                 createdGroupIds.push(newGroupId);
             }
@@ -147,6 +148,9 @@ async function handleGroupAction() {
 
         if (affectedTabIds.length === 0 && !state.isTabGroupingAvailable()) {
             showToast(api.getMessage('tabGroupsUnsupportedToast') || 'This browser does not support tab groups.');
+        } else if (affectedTabIds.length === 0 && failedGroups > 0) {
+            // Transient failure (e.g. a tab mid-drag): surface as retryable (AC-1.01b).
+            showToast(api.getMessage('autoGroupingError') + (api.getMessage('autoGroupingRetryHint') || 'Please try again.'));
         } else if (affectedTabIds.length > 0) {
             state.setLastAutoGroupState({
                 affectedTabs: affectedTabIds,

@@ -27,7 +27,7 @@ import { getRoutingState } from './rulesStore.js';
 import { generateGroupName } from '../aiManager.js';
 // ISSUE-257: group operations go through apiManager's best-effort wrappers
 // (null on failure / where unsupported) instead of raw chrome.tabs.group.
-import { groupTabs, addTabToNewGroup, updateTabGroup, isTabGroupingAvailable } from '../apiManager.js';
+import { groupTabs, ungroupTabs, addTabToNewGroup, updateTabGroup, isTabGroupingAvailable } from '../apiManager.js';
 
 const SESSION_KEY = 'routingSessionState';
 const ROUTING_ENABLED_KEY = 'routingEnabled';
@@ -287,7 +287,7 @@ export function initRoutingEngine() {
                     // than trusting the creation-time tabIds snapshot.
                     const members = await chrome.tabs.query({ groupId: message.groupId }).catch(() => []);
                     const ids = members.length ? members.map(t => t.id) : message.tabIds;
-                    await chrome.tabs.ungroup(ids);
+                    await ungroupTabs(ids);
                 } catch { /* tabs may be gone already */ }
                 st.cooldown[`${message.windowId}:${message.domain}`] = Date.now() + AI_UNDO_COOLDOWN_MS;
                 const wg = st.aiGroups[message.windowId];

@@ -158,3 +158,22 @@ describe('createCapabilityStore', () => {
         expect(await store.isUnsupported(CAP_TAB_GROUPS)).toBe(true);
     });
 });
+
+// Review round 1: Chromium's recoverable errors (stale ids, mid-drag) must never
+// count on ANY brand — Edge/Brave/Chrome-for-Testing all report a non-Chrome brand.
+import { isTransientTabGroupError } from '../../modules/utils/browserCapabilities.js';
+
+describe('isTransientTabGroupError / classify on non-Chrome', () => {
+    const dia = { isGoogleChrome: false, brand: 'Chromium', majorVersion: 156 };
+    it('recognises the recoverable Chromium messages', () => {
+        expect(isTransientTabGroupError('No tab with id: 42.')).toBe(true);
+        expect(isTransientTabGroupError('No group with id: 7.')).toBe(true);
+        expect(isTransientTabGroupError('Tabs cannot be edited right now (user may be dragging a tab).')).toBe(true);
+        expect(isTransientTabGroupError('No window')).toBe(false);
+        expect(isTransientTabGroupError(undefined)).toBe(false);
+    });
+    it('never marks unsupported on a transient error, even past the streak on a non-Chrome brand', () => {
+        expect(classifyTabGroupFailure('No tab with id: 42.', dia, 5)).toBe(false);
+        expect(classifyTabGroupFailure('No group with id: 7.', dia, 5)).toBe(false);
+    });
+});
