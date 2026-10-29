@@ -13,7 +13,7 @@
 |---|---|
 | **未 pin 的群組是正常的 Chromium TabGroup** | `get` 回 title / color / collapsed / windowId；`query({})` 回它；新建群組（F）預設如此 |
 | **pin 會把群組從 Chromium 模型移除、分頁保留 `groupId`** | B：pin 後 `get` 丟 `No group with specified id`、`query({})` 少它，tab diff 為空 |
-| **unpin 以同一個 id 重新註冊並帶回 Dia 的 title / color** | C：群組 4 以「capy-music_TEST」紫色回來，群組 6 帶原標題回來 |
+| **unpin 以同一個 id 重新註冊並帶回 Dia 的 title / color** | C：兩個群組都以原 id 回來，標題與顏色和 pin 前一致 |
 | **Dia 不發任何 `tabGroups.*` 事件，也不發帶 `groupId` 的 `tabs.onUpdated`** | 六個動作零事件，只有 `frozen` 翻轉 |
 | Favorites（⌘⇧D）無法辨識 | 唯一效果是分頁 `groupId` 變 -1 |
 | 書籤不是即時鏡射；`tabs.db` 加密 | 零筆 `bookmarks.*` 事件；檔頭非 SQLite magic |
@@ -30,7 +30,7 @@
    - URL 正規化：`origin + pathname`（去 query / hash），非 http(s) 原樣。
 3. **退路標題**：沒有快取時，成員共同網域（去 `www.`）；沒有共同網域則 i18n `pinnedGroupFallbackTitle`（「釘選群組」）；標頭 tooltip 改用 `pinnedGroupFallbackHint` 提示「取消釘選再釘選一次即可顯示名稱」。
 4. **守門**：
-   - `dragDropManager`：合成標頭不可拖（`.tab-group-header:not(.is-synthetic)`）、合成內容區不建 Sortable（`.tab-group-content:not(.is-synthetic)`），`getNextDraggable` 略過合成標頭但會進入其內容區找下一個分頁；`handleDragAdd` 對沒有 `dataset.groupId` 的標頭直接返回。
+   - `dragDropManager`：合成標頭不可拖（`.tab-group-header:not(.is-synthetic)`）、合成內容區不建 Sortable（`.tab-group-content:not(.is-synthetic)`），`getNextDraggable` 略過合成標頭但會進入其內容區找下一個分頁；`handleDragAdd` 對沒有 `dataset.groupId` 的標頭直接返回。**代價**：合成群組裡的列完全不能拖（含拖到書籤區建書籤，#262 平鋪時可以）；列上的「加入書籤」按鈕仍可用。
    - `tab/tabListeners`：點擊合成標頭只切換 DOM 並寫本地摺疊狀態，不呼叫 `api.updateTabGroup`。
    - `searchManager`：主列表照 `tabsCache` 的真實 `groupId` 計數（不變）；其他視窗與 DOM fallback 改讀 `dataset.groupId ?? dataset.syntheticGroupId`。合成標頭登記在既有的 header cache（鍵為真實 groupId），搜尋展開／隱藏與 tag 查詢的整批隱藏不需另寫。
 5. **Chrome 不受影響**：`tabGroups.query` 在 Chrome 永遠可用，只有群組在兩次查詢之間建立的那一幀會短暫畫出合成標頭，下一幀換成真標頭（元素沿用快取）。
