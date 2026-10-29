@@ -78,15 +78,15 @@ export function resetOtherWindowCaches() {
  * @param {Object} tab - Chrome tab object
  * @returns {HTMLElement}
  */
-function createOtherWindowTabElement(tab) {
+function createOtherWindowTabElement(tab, displayGroupId = tab.groupId) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
     tabItem.setAttribute('role', 'button');
     tabItem.tabIndex = 0;
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
-    if (tab.groupId > 0) {
-        tabItem.dataset.groupId = tab.groupId;
+    if (displayGroupId > 0) {
+        tabItem.dataset.groupId = displayGroupId;
     }
 
     let urlPreview = tab.url;
@@ -280,7 +280,16 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
             if (tab.groupId > 0) {
                 const group = groupsMap.get(tab.groupId);
-                if (!group) continue;
+                if (!group) {
+                    // Group missing from `allGroups` (Dia: tabGroups.query() → []): render the
+                    // tab flat inside the window folder, without dataset.groupId, instead of
+                    // dropping it. Same rule as tabRenderer.
+                    const tabElement = createOtherWindowTabElement(tab, -1);
+                    otherTabElementsCache.set(tab.id, tabElement);
+                    folderContent.appendChild(tabElement);
+                    renderedTabIds.add(tab.id);
+                    continue;
+                }
 
                 const groupHeader = document.createElement('div');
                 groupHeader.className = 'tab-group-header';

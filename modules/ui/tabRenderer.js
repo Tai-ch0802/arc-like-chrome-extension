@@ -63,7 +63,7 @@ export function getGroupHeaderElementsCache() {
     return groupHeaderElementsCache;
 }
 
-function updateTabElement(tabItem, tab) {
+function updateTabElement(tabItem, tab, displayGroupId = tab.groupId) {
     const isActive = tab.active;
     const hasActiveClass = tabItem.classList.contains('active');
     if (isActive && !hasActiveClass) {
@@ -78,7 +78,7 @@ function updateTabElement(tabItem, tab) {
     if (tabItem.dataset.windowId !== String(tab.windowId)) tabItem.dataset.windowId = tab.windowId;
 
     const currentGroupId = tabItem.dataset.groupId ? parseInt(tabItem.dataset.groupId) : -1;
-    const newGroupId = tab.groupId > 0 ? tab.groupId : -1;
+    const newGroupId = displayGroupId > 0 ? displayGroupId : -1;
     if (currentGroupId !== newGroupId) {
         if (newGroupId > 0) tabItem.dataset.groupId = newGroupId;
         else delete tabItem.dataset.groupId;
@@ -147,7 +147,7 @@ function updateGroupHeaderElement(header, group) {
     }
 }
 
-export function createTabElement(tab, { onAddToGroupClick }) {
+export function createTabElement(tab, { onAddToGroupClick, displayGroupId = tab.groupId }) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
     if (tab.active) {
@@ -159,8 +159,8 @@ export function createTabElement(tab, { onAddToGroupClick }) {
     tabItem.dataset.tabId = tab.id;
     tabItem.dataset.url = tab.url;
     tabItem.dataset.windowId = tab.windowId;
-    if (tab.groupId > 0) {
-        tabItem.dataset.groupId = tab.groupId;
+    if (displayGroupId > 0) {
+        tabItem.dataset.groupId = displayGroupId;
     }
 
     let urlPreview = tab.url;
@@ -271,13 +271,21 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
     const splitTabsMap = buildSplitTabsMap(tabs);
 
+    // A tab whose group is missing from `groups` is shown as a plain top-level
+    // row (Dia reports groupId on its native groups but tabGroups.query() returns
+    // []; Chrome hits this for one frame when a group is created between the
+    // two queries behind a render). Such a row must not carry dataset.groupId:
+    // drag/drop and search read it as a real group that has a header.
+    const displayGroupIdFor = (tab) => (tab.groupId > 0 && groupsMap.has(tab.groupId)) ? tab.groupId : -1;
+
     // Helper to get or create tab element
     const getOrCreateTabElement = (tab) => {
+        const displayGroupId = displayGroupIdFor(tab);
         let tabElement = tabElementsCache.get(tab.id);
         if (tabElement) {
-            updateTabElement(tabElement, tab);
+            updateTabElement(tabElement, tab, displayGroupId);
         } else {
-            tabElement = createTabElement(tab, { onAddToGroupClick });
+            tabElement = createTabElement(tab, { onAddToGroupClick, displayGroupId });
         }
         newTabElementsCache.set(tab.id, tabElement);
         return tabElement;
@@ -298,7 +306,11 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
         if (tab.groupId > 0) {
             const group = groupsMap.get(tab.groupId);
-            if (!group) continue;
+            if (!group) {
+                // Unknown group: render flat in tab-strip order instead of dropping the tab.
+                renderSplitOrTab(tab, topLevelChildren);
+                continue;
+            }
 
             let groupHeader = groupHeaderElementsCache.get(group.id);
             if (groupHeader) {
