@@ -32,9 +32,10 @@ function initializeTabSortable(updateTabList) {
         scrollSpeed: 15,
         // Specify which elements can be dragged:
         // - .tab-item (but not .in-split-view - those are filtered out)
-        // - .tab-group-header
+        // - .tab-group-header, except synthetic ones (ISSUE-263: a group the
+        //   browser hides from the tabGroups API has no group to move)
         // - .tab-split-group (entire split view groups)
-        draggable: '.tab-item, .tab-group-header, .tab-split-group',
+        draggable: '.tab-item, .tab-group-header:not(.is-synthetic), .tab-split-group',
         // Prevent dragging individual tabs within a split view to preserve splitViewId
         filter: '.in-split-view',
         preventOnFilter: true,
@@ -42,8 +43,10 @@ function initializeTabSortable(updateTabList) {
         onAdd: (evt) => handleDragAdd(evt, updateTabList),
     };
     tabSortableInstances.push(new Sortable(ui.tabListContainer, sortableOptions));
-    // Only initialize Sortable on tab groups within the main tab list
-    ui.tabListContainer.querySelectorAll('.tab-group-content').forEach(groupContent => {
+    // Only initialize Sortable on tab groups within the main tab list. Synthetic
+    // group containers get none: tabs.group / ungroup cannot target a group the
+    // browser hides, so their rows are not draggable and nothing can be dropped in.
+    ui.tabListContainer.querySelectorAll('.tab-group-content:not(.is-synthetic)').forEach(groupContent => {
         tabSortableInstances.push(new Sortable(groupContent, sortableOptions));
     });
 }
@@ -124,7 +127,8 @@ async function handleDragAdd(evt, updateTabList) {
     // We should NOT call moveItem afterwards as it causes race conditions/crashes.
     if (to.classList.contains('tab-group-content')) {
         const header = to.previousElementSibling;
-        const targetGroupId = parseInt(header.dataset.groupId, 10);
+        const targetGroupId = parseInt(header && header.dataset.groupId, 10);
+        if (isNaN(targetGroupId)) return; // synthetic group: no real group to join
         await api.groupTabs(tabIdsToMove, targetGroupId);
         // No moveItem call - groupTabs handles positioning
     } else if (to.id === 'tab-list') {
@@ -137,7 +141,7 @@ function getNextDraggable(currentElement) {
     // Helper to check if element matches draggable selector
     const matches = (el) => {
         return (el.classList.contains('tab-item') && !el.classList.contains('in-split-view')) ||
-            el.classList.contains('tab-group-header') ||
+            (el.classList.contains('tab-group-header') && !el.classList.contains('is-synthetic')) ||
             el.classList.contains('tab-split-group');
     };
 

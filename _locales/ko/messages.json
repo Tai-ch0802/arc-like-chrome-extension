@@ -1829,6 +1829,14 @@
     "message": "이 브라우저는 탭 그룹을 지원하지 않습니다.",
     "description": "Toast when Smart Group is triggered on a browser without tab group support."
   },
+  "pinnedGroupFallbackTitle": {
+    "message": "고정된 그룹",
+    "description": "Side panel header for a tab group the browser hides from the tabGroups API (Dia pinned group) when no cached name is known and the members share no common host."
+  },
+  "pinnedGroupFallbackHint": {
+    "message": "이름을 가져올 수 없습니다. 이 그룹의 고정을 해제했다가 다시 고정하면 표시됩니다.",
+    "description": "Tooltip under the fallback header above, telling the user how to make the real group name appear (ISSUE-263)."
+  },
   "autoGroupingRetryHint": {
     "message": "다시 시도해 주세요.",
     "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."

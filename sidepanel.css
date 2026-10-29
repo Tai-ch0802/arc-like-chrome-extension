@@ -848,6 +848,18 @@ mark.url-match {
     /* 群組內分頁的縮排 */
 }
 
+/* ISSUE-263：瀏覽器藏起來的群組（Dia 釘選群組）以成員關係合成標頭。
+   虛線框 + 釘選圖示把它和真群組區分開；顏色沿用快取到的群組色，沒有就灰。 */
+.tab-group-header.is-synthetic {
+    border: 1px dashed var(--group-bg-hover-color);
+}
+
+.tab-group-pin {
+    flex-shrink: 0;
+    margin-right: 6px;
+    color: var(--text-color-secondary);
+}
+
 
 /* --- 書籤樣式 --- */
 .bookmark-item,

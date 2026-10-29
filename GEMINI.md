@@ -91,7 +91,9 @@ key_files:
   - file_path: modules/ui/searchUI.js
     description: "[UI] 搜尋介面。負責搜尋結果計數顯示與無結果提示的 UI 更新。"
   - file_path: modules/ui/tabRenderer.js
-    description: "[UI] 分頁渲染。負責分頁與分頁群組的 DOM 結構生成與事件綁定。"
+    description: "[UI] 分頁渲染。負責分頁與分頁群組的 DOM 結構生成與事件綁定。ISSUE-263：分頁帶 groupId 但群組不在 tabGroups 查詢結果（Dia 釘選群組）時，以成員關係畫合成標頭（.is-synthetic、dataset.syntheticGroupId、釘選圖示；標題／顏色向 groupMetaCache 要），不掛 dataset.groupId，摺疊狀態存本地。"
+  - file_path: modules/groupMetaCache.js
+    description: "[狀態] 群組 title/color 快取（ISSUE-263）。Dia 把群組 pin 進側欄時會從 tabGroups 模型移除、分頁保留 groupId、且不發任何群組事件；observe 在每次 updateTabList 把查得到的群組記進 storage.session（by id）與 storage.local（成員 URL 指紋，Jaccard ≥ 0.5、上限 100 筆），resolve 先 by id 再指紋；合成群組的摺疊狀態也存這裡（storage.session）。buildSyntheticGroupView 組退路標題（共同網域 → i18n 釘選群組 + 提示）。DI 工廠 + chrome.storage 預設單例，storage 失敗降級為記憶體。"
   - file_path: modules/ui/bookmarkRenderer.js
     description: "[UI] 書籤渲染。負責書籤列表、資料夾結構以及連結分頁面板的渲染邏輯。"
   - file_path: modules/modalManager.js

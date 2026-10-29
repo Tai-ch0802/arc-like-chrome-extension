@@ -1829,6 +1829,14 @@
     "message": "यह ब्राउज़र टैब ग्रुप को सपोर्ट नहीं करता।",
     "description": "Toast when Smart Group is triggered on a browser without tab group support."
   },
+  "pinnedGroupFallbackTitle": {
+    "message": "पिन किया गया समूह",
+    "description": "Side panel header for a tab group the browser hides from the tabGroups API (Dia pinned group) when no cached name is known and the members share no common host."
+  },
+  "pinnedGroupFallbackHint": {
+    "message": "नाम उपलब्ध नहीं: इसे दिखाने के लिए इस समूह को एक बार अनपिन करके फिर से पिन करें।",
+    "description": "Tooltip under the fallback header above, telling the user how to make the real group name appear (ISSUE-263)."
+  },
   "autoGroupingRetryHint": {
     "message": "कृपया फिर से कोशिश करें।",
     "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."

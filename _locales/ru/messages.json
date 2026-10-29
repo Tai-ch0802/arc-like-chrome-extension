@@ -1829,6 +1829,14 @@
     "message": "Этот браузер не поддерживает группы вкладок.",
     "description": "Toast when Smart Group is triggered on a browser without tab group support."
   },
+  "pinnedGroupFallbackTitle": {
+    "message": "Закреплённая группа",
+    "description": "Side panel header for a tab group the browser hides from the tabGroups API (Dia pinned group) when no cached name is known and the members share no common host."
+  },
+  "pinnedGroupFallbackHint": {
+    "message": "Название недоступно: открепите и снова закрепите эту группу, чтобы оно появилось.",
+    "description": "Tooltip under the fallback header above, telling the user how to make the real group name appear (ISSUE-263)."
+  },
   "autoGroupingRetryHint": {
     "message": "Повторите попытку.",
     "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."

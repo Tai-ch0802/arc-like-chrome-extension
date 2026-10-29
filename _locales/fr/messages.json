@@ -1829,6 +1829,14 @@
     "message": "Ce navigateur ne prend pas en charge les groupes d’onglets.",
     "description": "Toast when Smart Group is triggered on a browser without tab group support."
   },
+  "pinnedGroupFallbackTitle": {
+    "message": "Groupe épinglé",
+    "description": "Side panel header for a tab group the browser hides from the tabGroups API (Dia pinned group) when no cached name is known and the members share no common host."
+  },
+  "pinnedGroupFallbackHint": {
+    "message": "Nom indisponible : désépinglez puis réépinglez ce groupe une fois pour l’afficher.",
+    "description": "Tooltip under the fallback header above, telling the user how to make the real group name appear (ISSUE-263)."
+  },
   "autoGroupingRetryHint": {
     "message": "Veuillez réessayer.",
     "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."

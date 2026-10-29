@@ -1829,6 +1829,14 @@
     "message": "このブラウザはタブグループに対応していません。",
     "description": "Toast when Smart Group is triggered on a browser without tab group support."
   },
+  "pinnedGroupFallbackTitle": {
+    "message": "ピン留めグループ",
+    "description": "Side panel header for a tab group the browser hides from the tabGroups API (Dia pinned group) when no cached name is known and the members share no common host."
+  },
+  "pinnedGroupFallbackHint": {
+    "message": "名前を取得できません。このグループのピン留めを一度解除して再度ピン留めすると表示されます。",
+    "description": "Tooltip under the fallback header above, telling the user how to make the real group name appear (ISSUE-263)."
+  },
   "autoGroupingRetryHint": {
     "message": "もう一度お試しください。",
     "description": "Appended to autoGroupingError when a transient grouping failure can simply be retried."
