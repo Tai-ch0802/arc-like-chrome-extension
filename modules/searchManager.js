@@ -196,8 +196,10 @@ function filterTabItem(item, tab, keywords) {
         const titleElement = item._refs ? item._refs.title : item.querySelector('.tab-title');
         title = titleElement ? titleElement.textContent : '';
         url = item.dataset.url || '';
-        if (item.dataset.groupId) {
-            groupId = parseInt(item.dataset.groupId);
+        // ISSUE-263: rows of a synthetic (browser-hidden) group carry the id separately.
+        const groupIdAttr = item.dataset.groupId || item.dataset.syntheticGroupId;
+        if (groupIdAttr) {
+            groupId = parseInt(groupIdAttr);
         }
     }
 
@@ -307,8 +309,8 @@ function filterOtherWindowsTabs(keywords) {
                     visibleWindowCounts.set(wId, (visibleWindowCounts.get(wId) || 0) + 1);
                 }
             }
-            // 從 DOM dataset 取得 groupId
-            const groupIdStr = item.dataset.groupId;
+            // 從 DOM dataset 取得 groupId（ISSUE-263：合成群組的列掛在 syntheticGroupId）
+            const groupIdStr = item.dataset.groupId || item.dataset.syntheticGroupId;
             if (groupIdStr) {
                 const gId = parseInt(groupIdStr, 10);
                 if (!isNaN(gId) && gId > 0) {

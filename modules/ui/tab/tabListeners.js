@@ -17,7 +17,9 @@ let listenerAbortController = null;
  * @param {{
  *   getTabsCache: () => Map<number, chrome.tabs.Tab>,
  *   getAddToGroupCallback: () => ((tabId: number) => void) | null,
- * }} deps
+ *   getGroupMeta?: () => ({ setCollapsed: (groupId: number, collapsed: boolean) => Promise<void> } | null),
+ * }} deps getGroupMeta (ISSUE-263): where a synthetic group's collapsed state
+ *   goes, since the browser hides that group from chrome.tabGroups.
  */
 export function initTabListeners(container, deps) {
     if (listenersInitialized) return;
@@ -38,10 +40,14 @@ export function initTabListeners(container, deps) {
     const getGroupData = (element) => {
         const header = element.closest('.tab-group-header');
         if (!header) return null;
+        // ISSUE-263: a synthetic header (group the browser hides) carries
+        // dataset.syntheticGroupId and must never reach chrome.tabGroups.
+        const synthetic = header.dataset.syntheticGroupId !== undefined;
         return {
-            id: parseInt(header.dataset.groupId),
+            id: parseInt(synthetic ? header.dataset.syntheticGroupId : header.dataset.groupId),
             collapsed: header.dataset.collapsed === 'true',
-            element: header
+            element: header,
+            synthetic,
         };
     };
 
@@ -83,7 +89,12 @@ export function initTabListeners(container, deps) {
             header.setAttribute('aria-expanded', (!newCollapsedState).toString());
             header.dataset.collapsed = newCollapsedState ? 'true' : 'false';
 
-            api.updateTabGroup(groupData.id, { collapsed: newCollapsedState });
+            if (groupData.synthetic) {
+                const meta = deps.getGroupMeta ? deps.getGroupMeta() : null;
+                if (meta) Promise.resolve(meta.setCollapsed(groupData.id, newCollapsedState)).catch(() => { /* memory-only */ });
+            } else {
+                api.updateTabGroup(groupData.id, { collapsed: newCollapsedState });
+            }
             return;
         }
 

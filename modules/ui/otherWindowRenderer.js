@@ -5,9 +5,10 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
 import * as wsManager from '../workspace/workspaceManager.js';
-import { EDIT_ICON_SVG, renderIcon } from '../icons.js';
+import { EDIT_ICON_SVG, PIN_ICON_SVG, renderIcon } from '../icons.js';
 import { otherWindowsList } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
+import { getGroupMetaCache, buildSyntheticGroupView } from '../groupMetaCache.js';
 
 /** @type {Map<number, chrome.tabs.Tab>} Cache of tab objects for other windows */
 let otherTabsCache = new Map();
@@ -78,7 +79,7 @@ export function resetOtherWindowCaches() {
  * @param {Object} tab - Chrome tab object
  * @returns {HTMLElement}
  */
-function createOtherWindowTabElement(tab, displayGroupId = tab.groupId) {
+function createOtherWindowTabElement(tab, displayGroupId = tab.groupId, syntheticGroupId = -1) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
     tabItem.setAttribute('role', 'button');
@@ -87,6 +88,11 @@ function createOtherWindowTabElement(tab, displayGroupId = tab.groupId) {
     tabItem.dataset.url = tab.url;
     if (displayGroupId > 0) {
         tabItem.dataset.groupId = displayGroupId;
+    }
+    // ISSUE-263: row of a synthetic group (hidden from the tabGroups API); searchManager
+    // counts it under this id, drag/drop never sees it (no dataset.groupId).
+    if (syntheticGroupId > 0) {
+        tabItem.dataset.syntheticGroupId = syntheticGroupId;
     }
 
     let urlPreview = tab.url;
@@ -150,8 +156,10 @@ function createOtherWindowTabElement(tab, displayGroupId = tab.groupId) {
  * @param {Array} otherWindows - Array of window objects with tabs
  * @param {number} currentWindowId - ID of the current window
  * @param {Array} allGroups - Array of all tab groups across all windows
+ * @param {{ groupMeta?: object }} [options] groupMeta (ISSUE-263): title/color cache +
+ *   local collapse state for groups the browser hides; defaults to the storage-backed instance.
  */
-export function renderOtherWindowsSection(otherWindows, currentWindowId, allGroups = []) {
+export function renderOtherWindowsSection(otherWindows, currentWindowId, allGroups = [], { groupMeta = getGroupMetaCache() } = {}) {
     if (!otherWindowsList) return;
 
     // Filter out: current window, non-normal windows (popup/devtools/app — e.g. the
@@ -280,41 +288,42 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
             if (tab.groupId > 0) {
                 const group = groupsMap.get(tab.groupId);
-                if (!group) {
-                    // Group missing from `allGroups` (Dia: tabGroups.query() → []): render the
-                    // tab flat inside the window folder, without dataset.groupId, instead of
-                    // dropping it. Same rule as tabRenderer.
-                    const tabElement = createOtherWindowTabElement(tab, -1);
-                    otherTabElementsCache.set(tab.id, tabElement);
-                    folderContent.appendChild(tabElement);
-                    renderedTabIds.add(tab.id);
-                    continue;
-                }
+                // Optimization: Use pre-grouped tabs
+                const tabsInThisGroup = tabsByGroup.get(tab.groupId) || [];
+                // Group missing from `allGroups` (Dia pinned group — hidden from the
+                // tabGroups API, groupId kept on its tabs): rebuild it as a synthetic
+                // group from membership (ISSUE-263). Same rule as tabRenderer.
+                const synthetic = !group;
+                const view = group || buildSyntheticGroupView(tab.groupId, tabsInThisGroup, groupMeta, api.getMessage);
 
                 const groupHeader = document.createElement('div');
-                groupHeader.className = 'tab-group-header';
+                groupHeader.className = 'tab-group-header' + (synthetic ? ' is-synthetic' : '');
                 groupHeader.tabIndex = 0;
                 groupHeader.setAttribute('role', 'button');
-                groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
-                groupHeader.dataset.collapsed = group.collapsed;
-                groupHeader.dataset.groupId = group.id;
-                groupHeader.title = group.title;
+                groupHeader.setAttribute('aria-expanded', (!view.collapsed).toString());
+                groupHeader.dataset.collapsed = view.collapsed ? 'true' : 'false';
+                // A synthetic header must NOT carry dataset.groupId (searchManager /
+                // dragDropManager read it as a real group).
+                if (synthetic) groupHeader.dataset.syntheticGroupId = view.id;
+                else groupHeader.dataset.groupId = view.id;
+                groupHeader.title = view.tooltip || view.title;
 
                 const arrow = document.createElement('span');
                 arrow.className = 'tab-group-arrow is-chevron';
                 arrow.innerHTML = renderIcon('expand_more', { size: 16 });
-                arrow.classList.toggle('is-collapsed', group.collapsed);
+                arrow.classList.toggle('is-collapsed', view.collapsed);
 
                 const colorDot = document.createElement('div');
                 colorDot.className = 'tab-group-color-dot';
-                const groupColorHex = GROUP_COLORS[group.color] || '#5f6368';
+                const groupColorHex = GROUP_COLORS[view.color] || '#5f6368';
                 colorDot.style.backgroundColor = groupColorHex;
 
                 const groupTitle = document.createElement('span');
                 groupTitle.className = 'tab-group-title';
-                groupTitle.textContent = group.title;
+                groupTitle.textContent = view.title;
 
                 groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.2);
+                groupHeader.style.setProperty('--group-bg-hover-color', hexToRgba(groupColorHex, 0.35));
                 groupHeader.addEventListener('mouseenter', () => {
                     groupHeader.style.backgroundColor = hexToRgba(groupColorHex, 0.35);
                 });
@@ -324,21 +333,21 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
 
                 groupHeader.appendChild(arrow);
                 groupHeader.appendChild(colorDot);
+                if (synthetic) groupHeader.insertAdjacentHTML('beforeend', PIN_ICON_SVG); // static, trusted markup
                 groupHeader.appendChild(groupTitle);
                 folderContent.appendChild(groupHeader);
-                otherGroupHeaderElementsCache.set(group.id, groupHeader);
+                otherGroupHeaderElementsCache.set(view.id, groupHeader);
 
                 const groupContent = document.createElement('div');
-                groupContent.className = 'tab-group-content';
-                groupContent.style.display = group.collapsed ? 'none' : 'block';
-                otherGroupContentElementsCache.set(group.id, groupContent);
-
-                // Optimization: Use pre-grouped tabs
-                const tabsInThisGroup = tabsByGroup.get(group.id) || [];
+                groupContent.className = 'tab-group-content' + (synthetic ? ' is-synthetic' : '');
+                groupContent.style.display = view.collapsed ? 'none' : 'block';
+                otherGroupContentElementsCache.set(view.id, groupContent);
 
                 for (const groupTab of tabsInThisGroup) {
                     if (renderedTabIds.has(groupTab.id)) continue;
-                    const tabElement = createOtherWindowTabElement(groupTab);
+                    const tabElement = synthetic
+                        ? createOtherWindowTabElement(groupTab, -1, view.id)
+                        : createOtherWindowTabElement(groupTab);
                     otherTabElementsCache.set(groupTab.id, tabElement);
                     groupContent.appendChild(tabElement);
                     renderedTabIds.add(groupTab.id);
@@ -351,6 +360,10 @@ export function renderOtherWindowsSection(otherWindows, currentWindowId, allGrou
                     groupContent.style.display = isCollapsed ? 'block' : 'none';
                     arrow.classList.toggle('is-collapsed', !isCollapsed);
                     groupHeader.setAttribute('aria-expanded', isCollapsed.toString());
+                    groupHeader.dataset.collapsed = isCollapsed ? 'false' : 'true';
+                    // Other-window headers only toggle the DOM; a synthetic group also
+                    // remembers it locally since the browser hides it from the API.
+                    if (synthetic) Promise.resolve(groupMeta.setCollapsed(view.id, !isCollapsed)).catch(() => { /* memory-only */ });
                 });
 
                 groupHeader.addEventListener('keydown', (e) => {

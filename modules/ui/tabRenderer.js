@@ -1,11 +1,12 @@
 import * as api from '../apiManager.js';
 import * as state from '../stateManager.js';
-import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG, renderIcon } from '../icons.js';
+import { ADD_TO_GROUP_ICON_SVG, BOOKMARK_ICON_SVG, PIN_ICON_SVG, renderIcon } from '../icons.js';
 import { tabListContainer } from './elements.js';
 import { GROUP_COLORS, hexToRgba } from './groupColors.js';
 import { reconcileDOM } from '../utils/domUtils.js';
 import { initTabListeners, resetTabListeners as resetListeners } from './tab/tabListeners.js';
 import { buildSplitTabsMap, createSplitOrTabRenderer } from './tab/splitViewRenderer.js';
+import { getGroupMetaCache, buildSyntheticGroupView } from '../groupMetaCache.js';
 
 /**
  * Module-level state for event delegation and render-cycle caching.
@@ -14,6 +15,8 @@ import { buildSplitTabsMap, createSplitOrTabRenderer } from './tab/splitViewRend
 
 /** @type {Function|null} Set per renderTabsAndGroups call, read by listeners on click. */
 let currentAddToGroupCallback = null;
+/** @type {import('../groupMetaCache.js').GroupMetaCache|null} Set per render; listeners store synthetic-group collapse through it. */
+let currentGroupMeta = null;
 
 /** @type {Map<number, chrome.tabs.Tab>} */
 let tabsCache = new Map();
@@ -32,6 +35,7 @@ let splitGroupElementsCache = new Map();
 export function resetTabListeners() {
     resetListeners();
     currentAddToGroupCallback = null;
+    currentGroupMeta = null;
     tabsCache = new Map();
     tabElementsCache = new Map();
     groupHeaderElementsCache = new Map();
@@ -63,7 +67,7 @@ export function getGroupHeaderElementsCache() {
     return groupHeaderElementsCache;
 }
 
-function updateTabElement(tabItem, tab, displayGroupId = tab.groupId) {
+function updateTabElement(tabItem, tab, displayGroupId = tab.groupId, syntheticGroupId = -1) {
     const isActive = tab.active;
     const hasActiveClass = tabItem.classList.contains('active');
     if (isActive && !hasActiveClass) {
@@ -82,6 +86,14 @@ function updateTabElement(tabItem, tab, displayGroupId = tab.groupId) {
     if (currentGroupId !== newGroupId) {
         if (newGroupId > 0) tabItem.dataset.groupId = newGroupId;
         else delete tabItem.dataset.groupId;
+    }
+    // ISSUE-263: a row inside a synthetic group carries its id separately, so
+    // drag/drop and tabListeners (which key group ops on dataset.groupId) leave it alone.
+    const currentSyntheticId = tabItem.dataset.syntheticGroupId ? parseInt(tabItem.dataset.syntheticGroupId) : -1;
+    const newSyntheticId = syntheticGroupId > 0 ? syntheticGroupId : -1;
+    if (currentSyntheticId !== newSyntheticId) {
+        if (newSyntheticId > 0) tabItem.dataset.syntheticGroupId = newSyntheticId;
+        else delete tabItem.dataset.syntheticGroupId;
     }
 
     let urlPreview = tab.url;
@@ -131,7 +143,9 @@ function updateGroupHeaderElement(header, group) {
         if (arrow) arrow.classList.toggle('is-collapsed', isCollapsed);
     }
 
-    if (header.title !== group.title) header.title = group.title;
+    // Synthetic groups (ISSUE-263) carry a tooltip that may add a recovery hint.
+    const tooltip = group.tooltip || group.title;
+    if (header.title !== tooltip) header.title = tooltip;
 
     const titleSpan = header.querySelector('.tab-group-title');
     if (titleSpan && titleSpan.textContent !== group.title) {
@@ -147,7 +161,47 @@ function updateGroupHeaderElement(header, group) {
     }
 }
 
-export function createTabElement(tab, { onAddToGroupClick, displayGroupId = tab.groupId }) {
+/**
+ * Builds a group header. `view` is a chrome.tabGroups.TabGroup, or the object
+ * buildSyntheticGroupView() returns for a group the browser hides (ISSUE-263).
+ * @param {{id:number, title:string, color:string, collapsed:boolean, tooltip?:string}} view
+ * @param {boolean} synthetic
+ */
+function createGroupHeaderElement(view, synthetic) {
+    const groupHeader = document.createElement('div');
+    groupHeader.className = 'tab-group-header' + (synthetic ? ' is-synthetic' : '');
+    groupHeader.tabIndex = 0;
+    groupHeader.setAttribute('role', 'button');
+    // 初始狀態必須在建立時就寫齊(ISSUE-162 C5):updateGroupHeaderElement
+    // 只在 isCollapsed 變化時更新,新建的「展開」header 會卡在
+    // 無 aria-expanded 的狀態(role=button 卻沒有開合語意)。
+    groupHeader.setAttribute('aria-expanded', (!view.collapsed).toString());
+    groupHeader.dataset.collapsed = view.collapsed ? 'true' : 'false';
+    // A synthetic header must NOT carry dataset.groupId: dragDropManager /
+    // tabListeners / searchManager read that as "a real group the API can act on".
+    if (synthetic) groupHeader.dataset.syntheticGroupId = view.id;
+    else groupHeader.dataset.groupId = view.id;
+
+    const arrow = document.createElement('span');
+    arrow.className = 'tab-group-arrow is-chevron' + (view.collapsed ? ' is-collapsed' : '');
+    arrow.innerHTML = renderIcon('expand_more', { size: 16 });
+
+    const colorDot = document.createElement('div');
+    colorDot.className = 'tab-group-color-dot';
+
+    const title = document.createElement('span');
+    title.className = 'tab-group-title';
+
+    groupHeader.appendChild(arrow);
+    groupHeader.appendChild(colorDot);
+    if (synthetic) groupHeader.insertAdjacentHTML('beforeend', PIN_ICON_SVG); // static, trusted markup
+    groupHeader.appendChild(title);
+
+    updateGroupHeaderElement(groupHeader, view);
+    return groupHeader;
+}
+
+export function createTabElement(tab, { onAddToGroupClick, displayGroupId = tab.groupId, syntheticGroupId = -1 }) {
     const tabItem = document.createElement('div');
     tabItem.className = 'tab-item';
     if (tab.active) {
@@ -161,6 +215,9 @@ export function createTabElement(tab, { onAddToGroupClick, displayGroupId = tab.
     tabItem.dataset.windowId = tab.windowId;
     if (displayGroupId > 0) {
         tabItem.dataset.groupId = displayGroupId;
+    }
+    if (syntheticGroupId > 0) {
+        tabItem.dataset.syntheticGroupId = syntheticGroupId;
     }
 
     let urlPreview = tab.url;
@@ -237,12 +294,21 @@ export function createTabElement(tab, { onAddToGroupClick, displayGroupId = tab.
     return tabItem;
 }
 
-export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
+/**
+ * @param {chrome.tabs.Tab[]} tabs current-window tabs in index order
+ * @param {chrome.tabGroups.TabGroup[]} groups groups the browser reports for this window
+ * @param {{ onAddToGroupClick: Function, groupMeta?: object }} options
+ *   groupMeta (ISSUE-263): title/color cache + local collapse state for groups
+ *   the browser hides; defaults to the chrome.storage-backed instance.
+ */
+export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick, groupMeta = getGroupMetaCache() }) {
     initTabListeners(tabListContainer, {
         getTabsCache: () => tabsCache,
         getAddToGroupCallback: () => currentAddToGroupCallback,
+        getGroupMeta: () => currentGroupMeta,
     });
     currentAddToGroupCallback = onAddToGroupClick;
+    currentGroupMeta = groupMeta;
 
     // Update cache with full tab objects
     tabsCache = new Map(tabs.map(t => [t.id, t]));
@@ -271,21 +337,24 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
     const splitTabsMap = buildSplitTabsMap(tabs);
 
-    // A tab whose group is missing from `groups` is shown as a plain top-level
-    // row (Dia reports groupId on its native groups but tabGroups.query() returns
-    // []; Chrome hits this for one frame when a group is created between the
-    // two queries behind a render). Such a row must not carry dataset.groupId:
-    // drag/drop and search read it as a real group that has a header.
-    const displayGroupIdFor = (tab) => (tab.groupId > 0 && groupsMap.has(tab.groupId)) ? tab.groupId : -1;
+    // A tab whose group is missing from `groups` belongs to a group the browser
+    // hides from the tabGroups API (Dia pinned group — groupId stays on the tab;
+    // Chrome hits this for one frame when a group is created between the two
+    // queries behind a render). It is rendered under a SYNTHETIC header
+    // (ISSUE-263) and its row carries dataset.syntheticGroupId instead of
+    // dataset.groupId, which drag/drop and search read as "a real group".
+    const knownGroupIdFor = (tab) => (tab.groupId > 0 && groupsMap.has(tab.groupId)) ? tab.groupId : -1;
+    const syntheticGroupIdFor = (tab) => (tab.groupId > 0 && !groupsMap.has(tab.groupId)) ? tab.groupId : -1;
 
     // Helper to get or create tab element
     const getOrCreateTabElement = (tab) => {
-        const displayGroupId = displayGroupIdFor(tab);
+        const displayGroupId = knownGroupIdFor(tab);
+        const syntheticGroupId = syntheticGroupIdFor(tab);
         let tabElement = tabElementsCache.get(tab.id);
         if (tabElement) {
-            updateTabElement(tabElement, tab, displayGroupId);
+            updateTabElement(tabElement, tab, displayGroupId, syntheticGroupId);
         } else {
-            tabElement = createTabElement(tab, { onAddToGroupClick, displayGroupId });
+            tabElement = createTabElement(tab, { onAddToGroupClick, displayGroupId, syntheticGroupId });
         }
         newTabElementsCache.set(tab.id, tabElement);
         return tabElement;
@@ -306,58 +375,33 @@ export function renderTabsAndGroups(tabs, groups, { onAddToGroupClick }) {
 
         if (tab.groupId > 0) {
             const group = groupsMap.get(tab.groupId);
-            if (!group) {
-                // Unknown group: render flat in tab-strip order instead of dropping the tab.
-                renderSplitOrTab(tab, topLevelChildren);
-                continue;
-            }
+            // Optimization: Use pre-grouped tabs
+            const tabsInThisGroup = tabsByGroup.get(tab.groupId) || [];
+            // Group the browser does not report → rebuild it from membership (ISSUE-263).
+            const synthetic = !group;
+            const view = group || buildSyntheticGroupView(tab.groupId, tabsInThisGroup, groupMeta, api.getMessage);
 
-            let groupHeader = groupHeaderElementsCache.get(group.id);
+            let groupHeader = groupHeaderElementsCache.get(view.id);
+            // Same id, other kind (Dia unpinned / re-pinned the group): rebuild the header.
+            if (groupHeader && groupHeader.classList.contains('is-synthetic') !== synthetic) groupHeader = undefined;
             if (groupHeader) {
-                updateGroupHeaderElement(groupHeader, group);
+                updateGroupHeaderElement(groupHeader, view);
             } else {
-                groupHeader = document.createElement('div');
-                groupHeader.className = 'tab-group-header';
-                groupHeader.tabIndex = 0;
-                groupHeader.setAttribute('role', 'button');
-                // 初始狀態必須在建立時就寫齊(ISSUE-162 C5):updateGroupHeaderElement
-                // 只在 isCollapsed 變化時更新,新建的「展開」header 會卡在
-                // 無 aria-expanded 的狀態(role=button 卻沒有開合語意)。
-                groupHeader.setAttribute('aria-expanded', (!group.collapsed).toString());
-                groupHeader.dataset.collapsed = group.collapsed ? 'true' : 'false';
-
-                const arrow = document.createElement('span');
-                arrow.className = 'tab-group-arrow is-chevron' + (group.collapsed ? ' is-collapsed' : '');
-                arrow.innerHTML = renderIcon('expand_more', { size: 16 });
-
-                const colorDot = document.createElement('div');
-                colorDot.className = 'tab-group-color-dot';
-
-                const title = document.createElement('span');
-                title.className = 'tab-group-title';
-
-                groupHeader.appendChild(arrow);
-                groupHeader.appendChild(colorDot);
-                groupHeader.appendChild(title);
-
-                updateGroupHeaderElement(groupHeader, group);
+                groupHeader = createGroupHeaderElement(view, synthetic);
             }
 
-            groupHeader.dataset.groupId = group.id; // Ensure ID is set
-            newGroupHeaderElementsCache.set(group.id, groupHeader);
+            if (!synthetic) groupHeader.dataset.groupId = view.id; // Ensure ID is set
+            newGroupHeaderElementsCache.set(view.id, groupHeader);
             topLevelChildren.push(groupHeader);
 
             // Get or create groupContent container
-            let groupContent = groupContentElementsCache.get(group.id);
-            if (!groupContent) {
+            let groupContent = groupContentElementsCache.get(view.id);
+            if (!groupContent || groupContent.classList.contains('is-synthetic') !== synthetic) {
                 groupContent = document.createElement('div');
-                groupContent.className = 'tab-group-content';
+                groupContent.className = 'tab-group-content' + (synthetic ? ' is-synthetic' : '');
             }
-            groupContent.style.display = group.collapsed ? 'none' : 'block';
-            newGroupContentElementsCache.set(group.id, groupContent);
-
-            // Optimization: Use pre-grouped tabs
-            const tabsInThisGroup = tabsByGroup.get(group.id) || [];
+            groupContent.style.display = view.collapsed ? 'none' : 'block';
+            newGroupContentElementsCache.set(view.id, groupContent);
 
             const groupChildren = [];
             for (const groupTab of tabsInThisGroup) {

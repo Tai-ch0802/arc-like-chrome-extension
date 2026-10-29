@@ -22,6 +22,7 @@ import { initAiProviderErrorToast, initRssSyncOnboarding, initNewswireSyncOnboar
 import { initAiRoutingToast } from './modules/ui/routingRuleUI.js';
 import { initArchiveSection } from './modules/ui/archiveRenderer.js';
 import { initDriveSyncBadge } from './modules/ui/driveSyncBadge.js';
+import { getGroupMetaCache } from './modules/groupMetaCache.js';
 
 // --- Spotlight 轉送動作處理 ---
 
@@ -132,8 +133,17 @@ async function updateTabList() {
         api.getAllWindowsWithTabs(),
         api.getAllTabGroups()
     ]);
-    ui.renderTabsAndGroups(tabs, groups, { onAddToGroupClick: handleAddToGroupClick });
-    ui.renderOtherWindowsSection(allWindows, currentWindow.id, allGroups);
+    const groupMeta = getGroupMetaCache();
+    ui.renderTabsAndGroups(tabs, groups, { onAddToGroupClick: handleAddToGroupClick, groupMeta });
+    ui.renderOtherWindowsSection(allWindows, currentWindow.id, allGroups, { groupMeta });
+    // ISSUE-263: remember title/color of every group the browser reports (all
+    // windows) so a group Dia later pins — gone from tabGroups, groupId kept on
+    // its tabs, no event fired — can still be labelled by a later render. Runs
+    // after the paint and is never awaited: a group only has to have been seen
+    // in SOME earlier render while it was still reported.
+    const reportedGroups = new Map([...allGroups, ...groups].map(g => [g.id, g]));
+    groupMeta.observe([...reportedGroups.values()], allWindows.flatMap(w => w.tabs || []))
+        .catch(err => console.warn('[groupMeta] observe failed:', err));
     // 觸發搜尋以套用當前的過濾狀態
     search.handleSearch();
     dragDrop.initializeTabSortable(updateTabList);
@@ -280,6 +290,9 @@ async function initialize() {
     // Workspace cache must be loaded BEFORE the first updateTabList(): the
     // Other Windows section titles windows by their bound workspace's name.
     await workspaceManager.initWorkspaces();
+    // Likewise the group title cache (ISSUE-263), so pinned Dia groups get their
+    // cached names on the first paint instead of the fallback title.
+    await getGroupMetaCache().load();
     await updateTabList();
 
     refreshBookmarks();

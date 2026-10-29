@@ -36,7 +36,7 @@ description: 本專案 (MV3 Chrome extension) 的除錯紀律與 playbook：先�
 | release 版壞、dev 版好 | 檔案沒進 `Makefile` 打包清單，或 esbuild bundle 差異 | 解開 zip 比對；`make release` 後檢查產物 |
 | SW 訊息處理「有時」沒完成（事件丟失/廣播未達），attach devtools 就正常 | onMessage handler **fire-and-forget**（return false 且處理是 async）——SW 在 idle 掛起邊緣被喚醒時，事件 return 後的 async 後續無保活保障 | 改 pending `sendResponse` 模式（return true + 完成後回應）= MV3 keep-alive 訊號；BASE-020 tg:raw 實例 |
 | storage 寫入「有時」沒發生（UI 更新了、重開卻消失） | debounce/`setTimeout` 排的寫入 timer **隨 SW 掛起蒸發**；低頻使用者操作沒有後續事件補寫 | 低頻操作直接 flush 立即落地（高頻串流才值得 debounce）；BASE-020 markRead 實例 |
-| 側欄「分頁」區少了一批分頁（非 Chrome 瀏覽器尤其 Dia；Chrome 偶發閃一幀） | 分頁帶 `groupId > 0` 但 `tabGroups.query()` 沒回該群組（Dia 一律回 `[]`；Chrome 是群組在兩次查詢之間建立）；renderer 若以「查不到群組」為由跳過，整批分頁就消失 | SW console 跑 `chrome.tabs.query({})` 與 `chrome.tabGroups.query({})` 對照 groupId；ISSUE-261：群組未知改平鋪、不掛 `dataset.groupId` |
+| 側欄「分頁」區少了一批分頁，或 Dia 釘選群組沒有階層／標題（Chrome 偶發閃一幀） | 分頁帶 `groupId > 0` 但 `tabGroups.query()` 沒回該群組：Dia **pin 進側欄的群組會從 Chromium 群組模型消失、分頁保留 groupId、且 Dia 不發任何 tabGroups 事件**（未 pin 的群組正常；unpin 以同一 id 帶 title/color 回來）；Chrome 是群組在兩次查詢之間建立。renderer 若以「查不到群組」為由跳過，整批分頁就消失 | SW console 跑 `chrome.tabs.query({})` 對照 `chrome.tabGroups.get(id)`；ISSUE-261 不丟分頁 → ISSUE-263 以成員關係畫合成標頭（`.is-synthetic`、`dataset.syntheticGroupId`，不掛 `dataset.groupId`），title/color 由 `groupMetaCache` 在群組未 pin 期間快取（session by id + local URL 指紋） |
 
 ## 觀測工具
 
